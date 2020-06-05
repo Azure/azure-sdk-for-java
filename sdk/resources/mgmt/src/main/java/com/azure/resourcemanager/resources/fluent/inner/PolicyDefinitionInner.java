@@ -219,7 +219,14 @@ public class PolicyDefinitionInner extends ProxyResource {
      */
     public void validate() {
         if (parameters() != null) {
-            parameters().values().forEach(e -> e.validate());
+            parameters()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

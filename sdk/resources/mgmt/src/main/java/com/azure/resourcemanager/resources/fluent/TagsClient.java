@@ -23,12 +23,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManagementClient;
+import com.azure.resourcemanager.resources.fluent.inner.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.inner.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.inner.TagsListResultInner;
 import reactor.core.publisher.Mono;
@@ -44,11 +44,11 @@ public final class TagsClient {
     private final ResourceManagementClient client;
 
     /**
-     * Initializes an instance of TagsInner.
+     * Initializes an instance of TagsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TagsClient(ResourceManagementClient client) {
+    public TagsClient(ResourceManagementClient client) {
         this.service = RestProxy.create(TagsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -65,7 +65,7 @@ public final class TagsClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteValue(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("tagName") String tagName,
             @PathParam("tagValue") String tagValue,
             @QueryParam("api-version") String apiVersion,
@@ -76,8 +76,8 @@ public final class TagsClient {
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TagValueInner>> createOrUpdateValue(
-            @HostParam("$host") String host,
+        Mono<Response<TagValueInner>> createOrUpdateValue(
+            @HostParam("$host") String endpoint,
             @PathParam("tagName") String tagName,
             @PathParam("tagValue") String tagValue,
             @QueryParam("api-version") String apiVersion,
@@ -88,8 +88,8 @@ public final class TagsClient {
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TagDetailsClient>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<TagDetailsInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("tagName") String tagName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -100,7 +100,7 @@ public final class TagsClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("tagName") String tagName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -110,8 +110,8 @@ public final class TagsClient {
         @Get("/subscriptions/{subscriptionId}/tagNames")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TagsListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<TagsListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -120,7 +120,7 @@ public final class TagsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TagsListResultInner>> listNext(
+        Mono<Response<TagsListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -136,9 +136,11 @@ public final class TagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -157,7 +159,7 @@ public final class TagsClient {
                 context ->
                     service
                         .deleteValue(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             tagName,
                             tagValue,
                             this.client.getApiVersion(),
@@ -179,9 +181,11 @@ public final class TagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -197,7 +201,7 @@ public final class TagsClient {
         }
         return service
             .deleteValue(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 tagName,
                 tagValue,
                 this.client.getApiVersion(),
@@ -225,6 +229,22 @@ public final class TagsClient {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteValueAsync(String tagName, String tagValue, Context context) {
+        return deleteValueWithResponseAsync(tagName, tagValue, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -232,6 +252,21 @@ public final class TagsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteValue(String tagName, String tagValue) {
         deleteValueAsync(tagName, tagValue).block();
+    }
+
+    /**
+     * Deletes a tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteValue(String tagName, String tagValue, Context context) {
+        deleteValueAsync(tagName, tagValue, context).block();
     }
 
     /**
@@ -245,10 +280,12 @@ public final class TagsClient {
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TagValueInner>> createOrUpdateValueWithResponseAsync(String tagName, String tagValue) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(String tagName, String tagValue) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -267,7 +304,7 @@ public final class TagsClient {
                 context ->
                     service
                         .createOrUpdateValue(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             tagName,
                             tagValue,
                             this.client.getApiVersion(),
@@ -288,11 +325,13 @@ public final class TagsClient {
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TagValueInner>> createOrUpdateValueWithResponseAsync(
+    public Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(
         String tagName, String tagValue, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -308,7 +347,7 @@ public final class TagsClient {
         }
         return service
             .createOrUpdateValue(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 tagName,
                 tagValue,
                 this.client.getApiVersion(),
@@ -330,7 +369,31 @@ public final class TagsClient {
     public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
         return createOrUpdateValueWithResponseAsync(tagName, tagValue)
             .flatMap(
-                (SimpleResponse<TagValueInner> res) -> {
+                (Response<TagValueInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a tag value. The name of the tag must already exist.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, Context context) {
+        return createOrUpdateValueWithResponseAsync(tagName, tagValue, context)
+            .flatMap(
+                (Response<TagValueInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -355,6 +418,22 @@ public final class TagsClient {
     }
 
     /**
+     * Creates a tag value. The name of the tag must already exist.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagValueInner createOrUpdateValue(String tagName, String tagValue, Context context) {
+        return createOrUpdateValueAsync(tagName, tagValue, context).block();
+    }
+
+    /**
      * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have
      * prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
      *
@@ -365,10 +444,12 @@ public final class TagsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TagDetailsClient>> createOrUpdateWithResponseAsync(String tagName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -384,7 +465,7 @@ public final class TagsClient {
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             tagName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -404,10 +485,12 @@ public final class TagsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TagDetailsClient>> createOrUpdateWithResponseAsync(String tagName, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -420,7 +503,11 @@ public final class TagsClient {
         }
         return service
             .createOrUpdate(
-                this.client.getHost(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+                this.client.getEndpoint(),
+                tagName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
     }
 
     /**
@@ -434,10 +521,34 @@ public final class TagsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagDetailsClient> createOrUpdateAsync(String tagName) {
+    public Mono<TagDetailsInner> createOrUpdateAsync(String tagName) {
         return createOrUpdateWithResponseAsync(tagName)
             .flatMap(
-                (SimpleResponse<TagDetailsClient> res) -> {
+                (Response<TagDetailsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have
+     * prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
+     *
+     * @param tagName The name of the tag to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TagDetailsInner> createOrUpdateAsync(String tagName, Context context) {
+        return createOrUpdateWithResponseAsync(tagName, context)
+            .flatMap(
+                (Response<TagDetailsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -457,8 +568,24 @@ public final class TagsClient {
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagDetailsClient createOrUpdate(String tagName) {
+    public TagDetailsInner createOrUpdate(String tagName) {
         return createOrUpdateAsync(tagName).block();
+    }
+
+    /**
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have
+     * prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
+     *
+     * @param tagName The name of the tag to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagDetailsInner createOrUpdate(String tagName, Context context) {
+        return createOrUpdateAsync(tagName, context).block();
     }
 
     /**
@@ -472,9 +599,11 @@ public final class TagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String tagName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -490,7 +619,7 @@ public final class TagsClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             tagName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -510,9 +639,11 @@ public final class TagsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String tagName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -525,7 +656,11 @@ public final class TagsClient {
         }
         return service
             .delete(
-                this.client.getHost(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+                this.client.getEndpoint(),
+                tagName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
     }
 
     /**
@@ -546,6 +681,21 @@ public final class TagsClient {
      * You must remove all values from a resource tag before you can delete it.
      *
      * @param tagName The name of the tag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String tagName, Context context) {
+        return deleteWithResponseAsync(tagName, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * You must remove all values from a resource tag before you can delete it.
+     *
+     * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -556,6 +706,20 @@ public final class TagsClient {
     }
 
     /**
+     * You must remove all values from a resource tag before you can delete it.
+     *
+     * @param tagName The name of the tag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String tagName, Context context) {
+        deleteAsync(tagName, context).block();
+    }
+
+    /**
      * Gets the names and values of all resource tags that are defined in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -563,10 +727,12 @@ public final class TagsClient {
      * @return the names and values of all resource tags that are defined in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsClient>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+    public Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync() {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -579,11 +745,11 @@ public final class TagsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
-            .<PagedResponse<TagDetailsClient>>map(
+            .<PagedResponse<TagDetailsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -605,10 +771,12 @@ public final class TagsClient {
      * @return the names and values of all resource tags that are defined in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsClient>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -617,7 +785,7 @@ public final class TagsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -637,7 +805,7 @@ public final class TagsClient {
      * @return the names and values of all resource tags that are defined in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TagDetailsClient> listAsync() {
+    public PagedFlux<TagDetailsInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -651,7 +819,7 @@ public final class TagsClient {
      * @return the names and values of all resource tags that are defined in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<TagDetailsClient> listAsync(Context context) {
+    public PagedFlux<TagDetailsInner> listAsync(Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -663,8 +831,22 @@ public final class TagsClient {
      * @return the names and values of all resource tags that are defined in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TagDetailsClient> list() {
+    public PagedIterable<TagDetailsInner> list() {
         return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Gets the names and values of all resource tags that are defined in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the names and values of all resource tags that are defined in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TagDetailsInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
     }
 
     /**
@@ -677,13 +859,13 @@ public final class TagsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsClient>> listNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<TagDetailsClient>>map(
+            .<PagedResponse<TagDetailsInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -706,7 +888,7 @@ public final class TagsClient {
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<TagDetailsClient>> listNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

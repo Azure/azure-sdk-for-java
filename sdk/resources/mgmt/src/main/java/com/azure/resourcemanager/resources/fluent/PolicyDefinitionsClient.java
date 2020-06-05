@@ -24,7 +24,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -45,11 +44,11 @@ public final class PolicyDefinitionsClient {
     private final PolicyClient client;
 
     /**
-     * Initializes an instance of PolicyDefinitionsInner.
+     * Initializes an instance of PolicyDefinitionsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PolicyDefinitionsClient(PolicyClient client) {
+    public PolicyDefinitionsClient(PolicyClient client) {
         this.service =
             RestProxy.create(PolicyDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -68,8 +67,8 @@ public final class PolicyDefinitionsClient {
                 + "/{policyDefinitionName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -83,7 +82,7 @@ public final class PolicyDefinitionsClient {
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -95,8 +94,8 @@ public final class PolicyDefinitionsClient {
                 + "/{policyDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -106,20 +105,20 @@ public final class PolicyDefinitionsClient {
         @Get("/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionInner>> getBuiltIn(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionInner>> getBuiltIn(
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
-                + "/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
+            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+                + "/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdateAtManagementGroup(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
@@ -128,12 +127,12 @@ public final class PolicyDefinitionsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
-                + "/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
+            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+                + "/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteAtManagementGroup(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
@@ -141,12 +140,12 @@ public final class PolicyDefinitionsClient {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
-                + "/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
+            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+                + "/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionInner>> getAtManagementGroup(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionInner>> getAtManagementGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("policyDefinitionName") String policyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
@@ -156,8 +155,8 @@ public final class PolicyDefinitionsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -166,17 +165,17 @@ public final class PolicyDefinitionsClient {
         @Get("/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionListResultInner>> listBuiltIn(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<PolicyDefinitionListResultInner>> listBuiltIn(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
-                + "/Microsoft.Authorization/policyDefinitions")
+            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+                + "/policyDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionListResultInner>> listByManagementGroup(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyDefinitionListResultInner>> listByManagementGroup(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
             Context context);
@@ -185,21 +184,21 @@ public final class PolicyDefinitionsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionListResultInner>> listNext(
+        Mono<Response<PolicyDefinitionListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionListResultInner>> listBuiltInNext(
+        Mono<Response<PolicyDefinitionListResultInner>> listBuiltInNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyDefinitionListResultInner>> listByManagementGroupNext(
+        Mono<Response<PolicyDefinitionListResultInner>> listByManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -214,11 +213,13 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(
         String policyDefinitionName, PolicyDefinitionInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -240,7 +241,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyDefinitionName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -261,11 +262,13 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> createOrUpdateWithResponseAsync(
         String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -284,7 +287,7 @@ public final class PolicyDefinitionsClient {
         }
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 policyDefinitionName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -307,7 +310,32 @@ public final class PolicyDefinitionsClient {
         String policyDefinitionName, PolicyDefinitionInner parameters) {
         return createOrUpdateWithResponseAsync(policyDefinitionName, parameters)
             .flatMap(
-                (SimpleResponse<PolicyDefinitionInner> res) -> {
+                (Response<PolicyDefinitionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation creates or updates a policy definition in the given subscription with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to create.
+     * @param parameters The policy definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyDefinitionInner> createOrUpdateAsync(
+        String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(policyDefinitionName, parameters, context)
+            .flatMap(
+                (Response<PolicyDefinitionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -332,6 +360,23 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation creates or updates a policy definition in the given subscription with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to create.
+     * @param parameters The policy definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyDefinitionInner createOrUpdate(
+        String policyDefinitionName, PolicyDefinitionInner parameters, Context context) {
+        return createOrUpdateAsync(policyDefinitionName, parameters, context).block();
+    }
+
+    /**
      * This operation deletes the policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
@@ -342,9 +387,11 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -361,7 +408,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyDefinitionName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -381,9 +428,11 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String policyDefinitionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -397,7 +446,7 @@ public final class PolicyDefinitionsClient {
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 policyDefinitionName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -422,6 +471,21 @@ public final class PolicyDefinitionsClient {
      * This operation deletes the policy definition in the given subscription with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String policyDefinitionName, Context context) {
+        return deleteWithResponseAsync(policyDefinitionName, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * This operation deletes the policy definition in the given subscription with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -429,6 +493,20 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String policyDefinitionName) {
         deleteAsync(policyDefinitionName).block();
+    }
+
+    /**
+     * This operation deletes the policy definition in the given subscription with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String policyDefinitionName, Context context) {
+        deleteAsync(policyDefinitionName, context).block();
     }
 
     /**
@@ -441,10 +519,12 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -461,7 +541,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyDefinitionName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -480,11 +560,12 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> getWithResponseAsync(
-        String policyDefinitionName, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyDefinitionInner>> getWithResponseAsync(String policyDefinitionName, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -498,7 +579,7 @@ public final class PolicyDefinitionsClient {
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 policyDefinitionName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -518,7 +599,30 @@ public final class PolicyDefinitionsClient {
     public Mono<PolicyDefinitionInner> getAsync(String policyDefinitionName) {
         return getWithResponseAsync(policyDefinitionName)
             .flatMap(
-                (SimpleResponse<PolicyDefinitionInner> res) -> {
+                (Response<PolicyDefinitionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation retrieves the policy definition in the given subscription with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyDefinitionInner> getAsync(String policyDefinitionName, Context context) {
+        return getWithResponseAsync(policyDefinitionName, context)
+            .flatMap(
+                (Response<PolicyDefinitionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -542,6 +646,21 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation retrieves the policy definition in the given subscription with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyDefinitionInner get(String policyDefinitionName, Context context) {
+        return getAsync(policyDefinitionName, context).block();
+    }
+
+    /**
      * This operation retrieves the built-in policy definition with the given name.
      *
      * @param policyDefinitionName The name of the built-in policy definition to get.
@@ -551,10 +670,12 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> getBuiltInWithResponseAsync(String policyDefinitionName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyDefinitionInner>> getBuiltInWithResponseAsync(String policyDefinitionName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -564,7 +685,8 @@ public final class PolicyDefinitionsClient {
             .withContext(
                 context ->
                     service
-                        .getBuiltIn(this.client.getHost(), policyDefinitionName, this.client.getApiVersion(), context))
+                        .getBuiltIn(
+                            this.client.getEndpoint(), policyDefinitionName, this.client.getApiVersion(), context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -579,17 +701,20 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> getBuiltInWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> getBuiltInWithResponseAsync(
         String policyDefinitionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null."));
         }
-        return service.getBuiltIn(this.client.getHost(), policyDefinitionName, this.client.getApiVersion(), context);
+        return service
+            .getBuiltIn(this.client.getEndpoint(), policyDefinitionName, this.client.getApiVersion(), context);
     }
 
     /**
@@ -605,7 +730,30 @@ public final class PolicyDefinitionsClient {
     public Mono<PolicyDefinitionInner> getBuiltInAsync(String policyDefinitionName) {
         return getBuiltInWithResponseAsync(policyDefinitionName)
             .flatMap(
-                (SimpleResponse<PolicyDefinitionInner> res) -> {
+                (Response<PolicyDefinitionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation retrieves the built-in policy definition with the given name.
+     *
+     * @param policyDefinitionName The name of the built-in policy definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyDefinitionInner> getBuiltInAsync(String policyDefinitionName, Context context) {
+        return getBuiltInWithResponseAsync(policyDefinitionName, context)
+            .flatMap(
+                (Response<PolicyDefinitionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -629,6 +777,21 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation retrieves the built-in policy definition with the given name.
+     *
+     * @param policyDefinitionName The name of the built-in policy definition to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyDefinitionInner getBuiltIn(String policyDefinitionName, Context context) {
+        return getBuiltInAsync(policyDefinitionName, context).block();
+    }
+
+    /**
      * This operation creates or updates a policy definition in the given management group with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to create.
@@ -640,11 +803,13 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -664,7 +829,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .createOrUpdateAtManagementGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyDefinitionName,
                             this.client.getApiVersion(),
                             managementGroupId,
@@ -686,11 +851,13 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> createOrUpdateAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -707,7 +874,7 @@ public final class PolicyDefinitionsClient {
         }
         return service
             .createOrUpdateAtManagementGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 policyDefinitionName,
                 this.client.getApiVersion(),
                 managementGroupId,
@@ -731,7 +898,34 @@ public final class PolicyDefinitionsClient {
         String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters) {
         return createOrUpdateAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, parameters)
             .flatMap(
-                (SimpleResponse<PolicyDefinitionInner> res) -> {
+                (Response<PolicyDefinitionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation creates or updates a policy definition in the given management group with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to create.
+     * @param managementGroupId The ID of the management group.
+     * @param parameters The policy definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyDefinitionInner> createOrUpdateAtManagementGroupAsync(
+        String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters, Context context) {
+        return createOrUpdateAtManagementGroupWithResponseAsync(
+                policyDefinitionName, managementGroupId, parameters, context)
+            .flatMap(
+                (Response<PolicyDefinitionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -758,6 +952,25 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation creates or updates a policy definition in the given management group with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to create.
+     * @param managementGroupId The ID of the management group.
+     * @param parameters The policy definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyDefinitionInner createOrUpdateAtManagementGroup(
+        String policyDefinitionName, String managementGroupId, PolicyDefinitionInner parameters, Context context) {
+        return createOrUpdateAtManagementGroupAsync(policyDefinitionName, managementGroupId, parameters, context)
+            .block();
+    }
+
+    /**
      * This operation deletes the policy definition in the given management group with the given name.
      *
      * @param policyDefinitionName The name of the policy definition to delete.
@@ -770,9 +983,11 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -787,7 +1002,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .deleteAtManagementGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyDefinitionName,
                             this.client.getApiVersion(),
                             managementGroupId,
@@ -809,9 +1024,11 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -823,7 +1040,11 @@ public final class PolicyDefinitionsClient {
         }
         return service
             .deleteAtManagementGroup(
-                this.client.getHost(), policyDefinitionName, this.client.getApiVersion(), managementGroupId, context);
+                this.client.getEndpoint(),
+                policyDefinitionName,
+                this.client.getApiVersion(),
+                managementGroupId,
+                context);
     }
 
     /**
@@ -847,6 +1068,24 @@ public final class PolicyDefinitionsClient {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAtManagementGroupAsync(
+        String policyDefinitionName, String managementGroupId, Context context) {
+        return deleteAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * This operation deletes the policy definition in the given management group with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to delete.
+     * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -854,6 +1093,21 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String policyDefinitionName, String managementGroupId) {
         deleteAtManagementGroupAsync(policyDefinitionName, managementGroupId).block();
+    }
+
+    /**
+     * This operation deletes the policy definition in the given management group with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to delete.
+     * @param managementGroupId The ID of the management group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAtManagementGroup(String policyDefinitionName, String managementGroupId, Context context) {
+        deleteAtManagementGroupAsync(policyDefinitionName, managementGroupId, context).block();
     }
 
     /**
@@ -867,11 +1121,13 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -886,7 +1142,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .getAtManagementGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyDefinitionName,
                             this.client.getApiVersion(),
                             managementGroupId,
@@ -906,11 +1162,13 @@ public final class PolicyDefinitionsClient {
      * @return the policy definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(
+    public Mono<Response<PolicyDefinitionInner>> getAtManagementGroupWithResponseAsync(
         String policyDefinitionName, String managementGroupId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyDefinitionName == null) {
             return Mono
@@ -922,7 +1180,11 @@ public final class PolicyDefinitionsClient {
         }
         return service
             .getAtManagementGroup(
-                this.client.getHost(), policyDefinitionName, this.client.getApiVersion(), managementGroupId, context);
+                this.client.getEndpoint(),
+                policyDefinitionName,
+                this.client.getApiVersion(),
+                managementGroupId,
+                context);
     }
 
     /**
@@ -940,7 +1202,32 @@ public final class PolicyDefinitionsClient {
         String policyDefinitionName, String managementGroupId) {
         return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId)
             .flatMap(
-                (SimpleResponse<PolicyDefinitionInner> res) -> {
+                (Response<PolicyDefinitionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation retrieves the policy definition in the given management group with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param managementGroupId The ID of the management group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyDefinitionInner> getAtManagementGroupAsync(
+        String policyDefinitionName, String managementGroupId, Context context) {
+        return getAtManagementGroupWithResponseAsync(policyDefinitionName, managementGroupId, context)
+            .flatMap(
+                (Response<PolicyDefinitionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -965,6 +1252,23 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation retrieves the policy definition in the given management group with the given name.
+     *
+     * @param policyDefinitionName The name of the policy definition to get.
+     * @param managementGroupId The ID of the management group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyDefinitionInner getAtManagementGroup(
+        String policyDefinitionName, String managementGroupId, Context context) {
+        return getAtManagementGroupAsync(policyDefinitionName, managementGroupId, context).block();
+    }
+
+    /**
      * This operation retrieves a list of all the policy definitions in a given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -973,9 +1277,11 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -988,7 +1294,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
@@ -1015,9 +1321,11 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyDefinitionInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1026,7 +1334,7 @@ public final class PolicyDefinitionsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1077,6 +1385,20 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation retrieves a list of all the policy definitions in a given subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyDefinitionInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * This operation retrieves a list of all the built-in policy definitions.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1085,12 +1407,15 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listBuiltIn(this.client.getHost(), this.client.getApiVersion(), context))
+            .withContext(
+                context -> service.listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1114,12 +1439,14 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyDefinitionInner>> listBuiltInSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return service
-            .listBuiltIn(this.client.getHost(), this.client.getApiVersion(), context)
+            .listBuiltIn(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1172,6 +1499,20 @@ public final class PolicyDefinitionsClient {
     }
 
     /**
+     * This operation retrieves a list of all the built-in policy definitions.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyDefinitionInner> listBuiltIn(Context context) {
+        return new PagedIterable<>(listBuiltInAsync(context));
+    }
+
+    /**
      * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param managementGroupId The ID of the management group.
@@ -1182,9 +1523,11 @@ public final class PolicyDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(String managementGroupId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
@@ -1195,7 +1538,7 @@ public final class PolicyDefinitionsClient {
                 context ->
                     service
                         .listByManagementGroup(
-                            this.client.getHost(), this.client.getApiVersion(), managementGroupId, context))
+                            this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId, context))
             .<PagedResponse<PolicyDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1221,16 +1564,18 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyDefinitionInner>> listByManagementGroupSinglePageAsync(
         String managementGroupId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter managementGroupId is required and cannot be null."));
         }
         return service
-            .listByManagementGroup(this.client.getHost(), this.client.getApiVersion(), managementGroupId, context)
+            .listByManagementGroup(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1287,6 +1632,21 @@ public final class PolicyDefinitionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId) {
         return new PagedIterable<>(listByManagementGroupAsync(managementGroupId));
+    }
+
+    /**
+     * This operation retrieves a list of all the policy definitions in a given management group.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyDefinitionInner> listByManagementGroup(String managementGroupId, Context context) {
+        return new PagedIterable<>(listByManagementGroupAsync(managementGroupId, context));
     }
 
     /**

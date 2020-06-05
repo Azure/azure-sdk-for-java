@@ -22,17 +22,17 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.PolicyClient;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentListResultInner;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyAssignments. */
@@ -47,11 +47,11 @@ public final class PolicyAssignmentsClient
     private final PolicyClient client;
 
     /**
-     * Initializes an instance of PolicyAssignmentsInner.
+     * Initializes an instance of PolicyAssignmentsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PolicyAssignmentsClient(PolicyClient client) {
+    public PolicyAssignmentsClient(PolicyClient client) {
         this.service =
             RestProxy.create(PolicyAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -68,8 +68,8 @@ public final class PolicyAssignmentsClient
         @Delete("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentInner>> delete(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentInner>> delete(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("policyAssignmentName") String policyAssignmentName,
             @QueryParam("api-version") String apiVersion,
@@ -79,8 +79,8 @@ public final class PolicyAssignmentsClient
         @Put("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentInner>> create(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentInner>> create(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("policyAssignmentName") String policyAssignmentName,
             @QueryParam("api-version") String apiVersion,
@@ -91,8 +91,8 @@ public final class PolicyAssignmentsClient
         @Get("/{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("policyAssignmentName") String policyAssignmentName,
             @QueryParam("api-version") String apiVersion,
@@ -100,12 +100,12 @@ public final class PolicyAssignmentsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.Authorization/policyAssignments")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization"
+                + "/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentListResultInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam(value = "$filter", encoded = true) String filter,
             @QueryParam("api-version") String apiVersion,
@@ -114,13 +114,13 @@ public final class PolicyAssignmentsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers"
-                + "/Microsoft.Authorization/policyAssignments")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization"
+                + "/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listForResource(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentListResultInner>> listForResource(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -133,12 +133,12 @@ public final class PolicyAssignmentsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
-                + "/Microsoft.Authorization/policyAssignments")
+            "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers/Microsoft.Authorization"
+                + "/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listForManagementGroup(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentListResultInner>> listForManagementGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("managementGroupId") String managementGroupId,
             @QueryParam(value = "$filter", encoded = true) String filter,
             @QueryParam("api-version") String apiVersion,
@@ -148,8 +148,8 @@ public final class PolicyAssignmentsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -159,8 +159,8 @@ public final class PolicyAssignmentsClient
         @Delete("/{policyAssignmentId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentInner>> deleteById(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentInner>> deleteById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -169,8 +169,8 @@ public final class PolicyAssignmentsClient
         @Put("/{policyAssignmentId}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentInner>> createById(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentInner>> createById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PolicyAssignmentInner parameters,
@@ -180,8 +180,8 @@ public final class PolicyAssignmentsClient
         @Get("/{policyAssignmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentInner>> getById(
-            @HostParam("$host") String host,
+        Mono<Response<PolicyAssignmentInner>> getById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -190,28 +190,28 @@ public final class PolicyAssignmentsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listForResourceGroupNext(
+        Mono<Response<PolicyAssignmentListResultInner>> listForResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listForResourceNext(
+        Mono<Response<PolicyAssignmentListResultInner>> listForResourceNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listForManagementGroupNext(
+        Mono<Response<PolicyAssignmentListResultInner>> listForManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PolicyAssignmentListResultInner>> listNext(
+        Mono<Response<PolicyAssignmentListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -232,11 +232,12 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> deleteWithResponseAsync(
-        String scope, String policyAssignmentName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyAssignmentInner>> deleteWithResponseAsync(String scope, String policyAssignmentName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -250,7 +251,11 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(), scope, policyAssignmentName, this.client.getApiVersion(), context))
+                            this.client.getEndpoint(),
+                            scope,
+                            policyAssignmentName,
+                            this.client.getApiVersion(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -272,11 +277,13 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> deleteWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> deleteWithResponseAsync(
         String scope, String policyAssignmentName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -285,7 +292,8 @@ public final class PolicyAssignmentsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        return service.delete(this.client.getHost(), scope, policyAssignmentName, this.client.getApiVersion(), context);
+        return service
+            .delete(this.client.getEndpoint(), scope, policyAssignmentName, this.client.getApiVersion(), context);
     }
 
     /**
@@ -308,7 +316,37 @@ public final class PolicyAssignmentsClient
     public Mono<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName) {
         return deleteWithResponseAsync(scope, policyAssignmentName)
             .flatMap(
-                (SimpleResponse<PolicyAssignmentInner> res) -> {
+                (Response<PolicyAssignmentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation deletes a policy assignment, given its name and the scope it was created in. The scope of a policy
+     * assignment is the part of its ID preceding
+     * '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     *
+     * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyAssignmentName The name of the policy assignment to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName, Context context) {
+        return deleteWithResponseAsync(scope, policyAssignmentName, context)
+            .flatMap(
+                (Response<PolicyAssignmentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -339,6 +377,28 @@ public final class PolicyAssignmentsClient
     }
 
     /**
+     * This operation deletes a policy assignment, given its name and the scope it was created in. The scope of a policy
+     * assignment is the part of its ID preceding
+     * '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     *
+     * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyAssignmentName The name of the policy assignment to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyAssignmentInner delete(String scope, String policyAssignmentName, Context context) {
+        return deleteAsync(scope, policyAssignmentName, context).block();
+    }
+
+    /**
      * This operation creates or updates a policy assignment with the given scope and name. Policy assignments apply to
      * all resources contained within their scope. For example, when you assign a policy at resource group scope, that
      * policy applies to all resources in the group.
@@ -356,11 +416,13 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> createWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> createWithResponseAsync(
         String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -379,7 +441,7 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             scope,
                             policyAssignmentName,
                             this.client.getApiVersion(),
@@ -407,11 +469,13 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> createWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> createWithResponseAsync(
         String scope, String policyAssignmentName, PolicyAssignmentInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -427,7 +491,12 @@ public final class PolicyAssignmentsClient
         }
         return service
             .create(
-                this.client.getHost(), scope, policyAssignmentName, this.client.getApiVersion(), parameters, context);
+                this.client.getEndpoint(),
+                scope,
+                policyAssignmentName,
+                this.client.getApiVersion(),
+                parameters,
+                context);
     }
 
     /**
@@ -452,7 +521,39 @@ public final class PolicyAssignmentsClient
         String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
         return createWithResponseAsync(scope, policyAssignmentName, parameters)
             .flatMap(
-                (SimpleResponse<PolicyAssignmentInner> res) -> {
+                (Response<PolicyAssignmentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation creates or updates a policy assignment with the given scope and name. Policy assignments apply to
+     * all resources contained within their scope. For example, when you assign a policy at resource group scope, that
+     * policy applies to all resources in the group.
+     *
+     * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyAssignmentName The name of the policy assignment.
+     * @param parameters The policy assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyAssignmentInner> createAsync(
+        String scope, String policyAssignmentName, PolicyAssignmentInner parameters, Context context) {
+        return createWithResponseAsync(scope, policyAssignmentName, parameters, context)
+            .flatMap(
+                (Response<PolicyAssignmentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -484,6 +585,30 @@ public final class PolicyAssignmentsClient
     }
 
     /**
+     * This operation creates or updates a policy assignment with the given scope and name. Policy assignments apply to
+     * all resources contained within their scope. For example, when you assign a policy at resource group scope, that
+     * policy applies to all resources in the group.
+     *
+     * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyAssignmentName The name of the policy assignment.
+     * @param parameters The policy assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyAssignmentInner create(
+        String scope, String policyAssignmentName, PolicyAssignmentInner parameters, Context context) {
+        return createAsync(scope, policyAssignmentName, parameters, context).block();
+    }
+
+    /**
      * This operation retrieves a single policy assignment, given its name and the scope it was created at.
      *
      * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
@@ -498,10 +623,12 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(String scope, String policyAssignmentName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -514,7 +641,12 @@ public final class PolicyAssignmentsClient
             .withContext(
                 context ->
                     service
-                        .get(this.client.getHost(), scope, policyAssignmentName, this.client.getApiVersion(), context))
+                        .get(
+                            this.client.getEndpoint(),
+                            scope,
+                            policyAssignmentName,
+                            this.client.getApiVersion(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -534,11 +666,13 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> getWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> getWithResponseAsync(
         String scope, String policyAssignmentName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -547,7 +681,8 @@ public final class PolicyAssignmentsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null."));
         }
-        return service.get(this.client.getHost(), scope, policyAssignmentName, this.client.getApiVersion(), context);
+        return service
+            .get(this.client.getEndpoint(), scope, policyAssignmentName, this.client.getApiVersion(), context);
     }
 
     /**
@@ -568,7 +703,35 @@ public final class PolicyAssignmentsClient
     public Mono<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName) {
         return getWithResponseAsync(scope, policyAssignmentName)
             .flatMap(
-                (SimpleResponse<PolicyAssignmentInner> res) -> {
+                (Response<PolicyAssignmentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation retrieves a single policy assignment, given its name and the scope it was created at.
+     *
+     * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyAssignmentName The name of the policy assignment to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName, Context context) {
+        return getWithResponseAsync(scope, policyAssignmentName, context)
+            .flatMap(
+                (Response<PolicyAssignmentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -597,6 +760,26 @@ public final class PolicyAssignmentsClient
     }
 
     /**
+     * This operation retrieves a single policy assignment, given its name and the scope it was created at.
+     *
+     * @param scope The scope of the policy assignment. Valid scopes are: management group (format:
+     *     '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
+     *     '/subscriptions/{subscriptionId}'), resource group (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     * @param policyAssignmentName The name of the policy assignment to get.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyAssignmentInner get(String scope, String policyAssignmentName, Context context) {
+        return getAsync(scope, policyAssignmentName, context).block();
+    }
+
+    /**
      * This operation retrieves the list of all policy assignments associated with the given resource group in the given
      * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or
      * 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
@@ -618,9 +801,11 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyAssignmentInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -637,7 +822,7 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             filter,
                             this.client.getApiVersion(),
@@ -678,9 +863,11 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyAssignmentInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -694,7 +881,7 @@ public final class PolicyAssignmentsClient
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 filter,
                 this.client.getApiVersion(),
@@ -827,6 +1014,32 @@ public final class PolicyAssignmentsClient
      * policy definition whose id is {value} that apply to the resource group.
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+     *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyAssignmentInner> listByResourceGroup(
+        String resourceGroupName, String filter, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
+    }
+
+    /**
+     * This operation retrieves the list of all policy assignments associated with the given resource group in the given
+     * subscription that match the optional given $filter. Valid values for $filter are: 'atScope()' or
+     * 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
+     * assignments associated with the resource group, including those that apply directly or apply from containing
+     * scopes, as well as any applied to resources contained within the resource group. If $filter=atScope() is
+     * provided, the returned list includes all policy assignments that apply to the resource group, which is everything
+     * in the unfiltered list except those applied to resources contained within the resource group. If
+     * $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the
+     * policy definition whose id is {value} that apply to the resource group.
+     *
+     * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -881,9 +1094,11 @@ public final class PolicyAssignmentsClient
         String resourceType,
         String resourceName,
         String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -916,7 +1131,7 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .listForResource(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -982,9 +1197,11 @@ public final class PolicyAssignmentsClient
         String resourceName,
         String filter,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1014,7 +1231,7 @@ public final class PolicyAssignmentsClient
         }
         return service
             .listForResource(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -1273,6 +1490,61 @@ public final class PolicyAssignmentsClient
      * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
      *     Microsoft.Web/sites).
      * @param resourceName The name of the resource.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+     *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyAssignmentInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listForResourceAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                filter,
+                context));
+    }
+
+    /**
+     * This operation retrieves the list of all policy assignments associated with the specified resource in the given
+     * resource group and subscription that match the optional given $filter. Valid values for $filter are: 'atScope()'
+     * or 'policyDefinitionId eq '{value}''. If $filter is not provided, the unfiltered list includes all policy
+     * assignments associated with the resource, including those that apply directly or from all containing scopes, as
+     * well as any applied to resources contained within the resource. If $filter=atScope() is provided, the returned
+     * list includes all policy assignments that apply to the resource, which is everything in the unfiltered list
+     * except those applied to resources contained within the resource. If $filter=policyDefinitionId eq '{value}' is
+     * provided, the returned list includes all policy assignments of the policy definition whose id is {value} that
+     * apply to the resource. Three parameters plus the resource name are used to identify a specific resource. If the
+     * resource is not part of a parent resource (the more common case), the parent resource path should not be provided
+     * (or provided as ''). For example a web app could be specified as ({resourceProviderNamespace} == 'Microsoft.Web',
+     * {parentResourcePath} == '', {resourceType} == 'sites', {resourceName} == 'MyWebApp'). If the resource is part of
+     * a parent resource, then all parameters should be provided. For example a virtual machine DNS name could be
+     * specified as ({resourceProviderNamespace} == 'Microsoft.Compute', {parentResourcePath} ==
+     * 'virtualMachines/MyVirtualMachine', {resourceType} == 'domainNames', {resourceName} == 'MyComputerName'). A
+     * convenient alternative to providing the namespace and type name separately is to provide both in the
+     * {resourceType} parameter, format: ({resourceProviderNamespace} == '', {parentResourcePath} == '', {resourceType}
+     * == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
+     *
+     * @param resourceGroupName The name of the resource group containing the resource.
+     * @param resourceProviderNamespace The namespace of the resource provider. For example, the namespace of a virtual
+     *     machine is Microsoft.Compute (from Microsoft.Compute/virtualMachines).
+     * @param parentResourcePath The parent resource path. Use empty string if there is none.
+     * @param resourceType The resource type name. For example the type name of a web app is 'sites' (from
+     *     Microsoft.Web/sites).
+     * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1312,9 +1584,11 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyAssignmentInner>> listForManagementGroupSinglePageAsync(
         String managementGroupId, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
@@ -1328,7 +1602,7 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .listForManagementGroup(
-                            this.client.getHost(), managementGroupId, filter, this.client.getApiVersion(), context))
+                            this.client.getEndpoint(), managementGroupId, filter, this.client.getApiVersion(), context))
             .<PagedResponse<PolicyAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1362,9 +1636,11 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyAssignmentInner>> listForManagementGroupSinglePageAsync(
         String managementGroupId, String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (managementGroupId == null) {
             return Mono
@@ -1375,7 +1651,7 @@ public final class PolicyAssignmentsClient
         }
         return service
             .listForManagementGroup(
-                this.client.getHost(), managementGroupId, filter, this.client.getApiVersion(), context)
+                this.client.getEndpoint(), managementGroupId, filter, this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1460,6 +1736,30 @@ public final class PolicyAssignmentsClient
     }
 
     /**
+     * This operation retrieves the list of all policy assignments applicable to the management group that match the
+     * given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If
+     * $filter=atScope() is provided, the returned list includes all policy assignments that are assigned to the
+     * management group or the management group's ancestors. If $filter=policyDefinitionId eq '{value}' is provided, the
+     * returned list includes all policy assignments of the policy definition whose id is {value} that apply to the
+     * management group.
+     *
+     * @param managementGroupId The ID of the management group.
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+     *     'policyDefinitionId eq '{value}''. A filter is required when listing policy assignments at management group
+     *     scope.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyAssignmentInner> listForManagementGroup(
+        String managementGroupId, String filter, Context context) {
+        return new PagedIterable<>(listForManagementGroupAsync(managementGroupId, filter, context));
+    }
+
+    /**
      * This operation retrieves the list of all policy assignments associated with the given subscription that match the
      * optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If
      * $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription,
@@ -1478,9 +1778,11 @@ public final class PolicyAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyAssignmentInner>> listSinglePageAsync(String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1493,7 +1795,7 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             filter,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -1530,9 +1832,11 @@ public final class PolicyAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PolicyAssignmentInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1541,7 +1845,12 @@ public final class PolicyAssignmentsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .list(
+                this.client.getEndpoint(),
+                filter,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1652,6 +1961,29 @@ public final class PolicyAssignmentsClient
      * those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is
      * provided, the returned list includes all policy assignments of the policy definition whose id is {value}.
      *
+     * @param filter The filter to apply on the operation. Valid values for $filter are: 'atScope()' or
+     *     'policyDefinitionId eq '{value}''. If $filter is not provided, no filtering is performed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of policy assignments.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyAssignmentInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
+    }
+
+    /**
+     * This operation retrieves the list of all policy assignments associated with the given subscription that match the
+     * optional given $filter. Valid values for $filter are: 'atScope()' or 'policyDefinitionId eq '{value}''. If
+     * $filter is not provided, the unfiltered list includes all policy assignments associated with the subscription,
+     * including those that apply directly or from management groups that contain the given subscription, as well as any
+     * applied to objects contained within the subscription. If $filter=atScope() is provided, the returned list
+     * includes all policy assignments that apply to the subscription, which is everything in the unfiltered list except
+     * those applied to objects contained within the subscription. If $filter=policyDefinitionId eq '{value}' is
+     * provided, the returned list includes all policy assignments of the policy definition whose id is {value}.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy assignments.
@@ -1680,10 +2012,12 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> deleteByIdWithResponseAsync(String policyAssignmentId) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyAssignmentInner>> deleteByIdWithResponseAsync(String policyAssignmentId) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyAssignmentId == null) {
             return Mono
@@ -1692,7 +2026,9 @@ public final class PolicyAssignmentsClient
         return FluxUtil
             .withContext(
                 context ->
-                    service.deleteById(this.client.getHost(), policyAssignmentId, this.client.getApiVersion(), context))
+                    service
+                        .deleteById(
+                            this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -1714,17 +2050,19 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> deleteByIdWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> deleteByIdWithResponseAsync(
         String policyAssignmentId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyAssignmentId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        return service.deleteById(this.client.getHost(), policyAssignmentId, this.client.getApiVersion(), context);
+        return service.deleteById(this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), context);
     }
 
     /**
@@ -1747,7 +2085,37 @@ public final class PolicyAssignmentsClient
     public Mono<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId) {
         return deleteByIdWithResponseAsync(policyAssignmentId)
             .flatMap(
-                (SimpleResponse<PolicyAssignmentInner> res) -> {
+                (Response<PolicyAssignmentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation deletes the policy with the given ID. Policy assignment IDs have this format:
+     * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid formats for {scope}
+     * are: '/providers/Microsoft.Management/managementGroups/{managementGroup}' (management group),
+     * '/subscriptions/{subscriptionId}' (subscription),
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' (resource group), or
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+     * (resource).
+     *
+     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format
+     *     '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId, Context context) {
+        return deleteByIdWithResponseAsync(policyAssignmentId, context)
+            .flatMap(
+                (Response<PolicyAssignmentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1778,6 +2146,28 @@ public final class PolicyAssignmentsClient
     }
 
     /**
+     * This operation deletes the policy with the given ID. Policy assignment IDs have this format:
+     * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid formats for {scope}
+     * are: '/providers/Microsoft.Management/managementGroups/{managementGroup}' (management group),
+     * '/subscriptions/{subscriptionId}' (subscription),
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' (resource group), or
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
+     * (resource).
+     *
+     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format
+     *     '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyAssignmentInner deleteById(String policyAssignmentId, Context context) {
+        return deleteByIdAsync(policyAssignmentId, context).block();
+    }
+
+    /**
      * This operation creates or updates the policy assignment with the given ID. Policy assignments made on a scope
      * apply to all resources contained in that scope. For example, when you assign a policy to a resource group that
      * policy applies to all resources in the group. Policy assignment IDs have this format:
@@ -1796,11 +2186,13 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> createByIdWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> createByIdWithResponseAsync(
         String policyAssignmentId, PolicyAssignmentInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyAssignmentId == null) {
             return Mono
@@ -1816,7 +2208,7 @@ public final class PolicyAssignmentsClient
                 context ->
                     service
                         .createById(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             policyAssignmentId,
                             this.client.getApiVersion(),
                             parameters,
@@ -1844,11 +2236,13 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> createByIdWithResponseAsync(
+    public Mono<Response<PolicyAssignmentInner>> createByIdWithResponseAsync(
         String policyAssignmentId, PolicyAssignmentInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyAssignmentId == null) {
             return Mono
@@ -1860,7 +2254,8 @@ public final class PolicyAssignmentsClient
             parameters.validate();
         }
         return service
-            .createById(this.client.getHost(), policyAssignmentId, this.client.getApiVersion(), parameters, context);
+            .createById(
+                this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), parameters, context);
     }
 
     /**
@@ -1885,7 +2280,40 @@ public final class PolicyAssignmentsClient
     public Mono<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
         return createByIdWithResponseAsync(policyAssignmentId, parameters)
             .flatMap(
-                (SimpleResponse<PolicyAssignmentInner> res) -> {
+                (Response<PolicyAssignmentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * This operation creates or updates the policy assignment with the given ID. Policy assignments made on a scope
+     * apply to all resources contained in that scope. For example, when you assign a policy to a resource group that
+     * policy applies to all resources in the group. Policy assignment IDs have this format:
+     * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid scopes are:
+     * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+     * (format: '/subscriptions/{subscriptionId}'), resource group (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to create. Use the format
+     *     '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param parameters The policy assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyAssignmentInner> createByIdAsync(
+        String policyAssignmentId, PolicyAssignmentInner parameters, Context context) {
+        return createByIdWithResponseAsync(policyAssignmentId, parameters, context)
+            .flatMap(
+                (Response<PolicyAssignmentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1918,6 +2346,31 @@ public final class PolicyAssignmentsClient
     }
 
     /**
+     * This operation creates or updates the policy assignment with the given ID. Policy assignments made on a scope
+     * apply to all resources contained in that scope. For example, when you assign a policy to a resource group that
+     * policy applies to all resources in the group. Policy assignment IDs have this format:
+     * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid scopes are:
+     * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+     * (format: '/subscriptions/{subscriptionId}'), resource group (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to create. Use the format
+     *     '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param parameters The policy assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyAssignmentInner createById(
+        String policyAssignmentId, PolicyAssignmentInner parameters, Context context) {
+        return createByIdAsync(policyAssignmentId, parameters, context).block();
+    }
+
+    /**
      * The operation retrieves the policy assignment with the given ID. Policy assignment IDs have this format:
      * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid scopes are:
      * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
@@ -1933,10 +2386,12 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyAssignmentId == null) {
             return Mono
@@ -1945,7 +2400,8 @@ public final class PolicyAssignmentsClient
         return FluxUtil
             .withContext(
                 context ->
-                    service.getById(this.client.getHost(), policyAssignmentId, this.client.getApiVersion(), context))
+                    service
+                        .getById(this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -1966,17 +2422,18 @@ public final class PolicyAssignmentsClient
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PolicyAssignmentInner>> getByIdWithResponseAsync(
-        String policyAssignmentId, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (policyAssignmentId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null."));
         }
-        return service.getById(this.client.getHost(), policyAssignmentId, this.client.getApiVersion(), context);
+        return service.getById(this.client.getEndpoint(), policyAssignmentId, this.client.getApiVersion(), context);
     }
 
     /**
@@ -1998,7 +2455,36 @@ public final class PolicyAssignmentsClient
     public Mono<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
         return getByIdWithResponseAsync(policyAssignmentId)
             .flatMap(
-                (SimpleResponse<PolicyAssignmentInner> res) -> {
+                (Response<PolicyAssignmentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * The operation retrieves the policy assignment with the given ID. Policy assignment IDs have this format:
+     * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid scopes are:
+     * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+     * (format: '/subscriptions/{subscriptionId}'), resource group (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to get. Use the format
+     *     '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId, Context context) {
+        return getByIdWithResponseAsync(policyAssignmentId, context)
+            .flatMap(
+                (Response<PolicyAssignmentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2025,6 +2511,27 @@ public final class PolicyAssignmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyAssignmentInner getById(String policyAssignmentId) {
         return getByIdAsync(policyAssignmentId).block();
+    }
+
+    /**
+     * The operation retrieves the policy assignment with the given ID. Policy assignment IDs have this format:
+     * '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'. Valid scopes are:
+     * management group (format: '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription
+     * (format: '/subscriptions/{subscriptionId}'), resource group (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to get. Use the format
+     *     '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the policy assignment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyAssignmentInner getById(String policyAssignmentId, Context context) {
+        return getByIdAsync(policyAssignmentId, context).block();
     }
 
     /**

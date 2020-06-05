@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.resources.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
-import com.azure.resourcemanager.resources.models.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,7 +20,7 @@ public final class DeploymentValidateResultInner {
      * The deployment validation error.
      */
     @JsonProperty(value = "error")
-    private ErrorResponse error;
+    private ManagementError error;
 
     /*
      * The template deployment properties.
@@ -33,7 +33,7 @@ public final class DeploymentValidateResultInner {
      *
      * @return the error value.
      */
-    public ErrorResponse error() {
+    public ManagementError error() {
         return this.error;
     }
 
@@ -43,7 +43,7 @@ public final class DeploymentValidateResultInner {
      * @param error the error value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
-    public DeploymentValidateResultInner withError(ErrorResponse error) {
+    public DeploymentValidateResultInner withError(ManagementError error) {
         this.error = error;
         return this;
     }
@@ -74,9 +74,6 @@ public final class DeploymentValidateResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
         if (properties() != null) {
             properties().validate();
         }

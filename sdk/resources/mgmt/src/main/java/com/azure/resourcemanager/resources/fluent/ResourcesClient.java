@@ -27,18 +27,19 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.ResourceManagementClient;
-import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceExpandedInner;
 import com.azure.resourcemanager.resources.fluent.inner.GenericResourceInner;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceListResultInner;
-import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.azure.resourcemanager.resources.models.ResourcesMoveInfo;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,11 +55,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     private final ResourceManagementClient client;
 
     /**
-     * Initializes an instance of ResourcesInner.
+     * Initializes an instance of ResourcesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ResourcesClient(ResourceManagementClient client) {
+    public ResourcesClient(ResourceManagementClient client) {
         this.service =
             RestProxy.create(ResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -75,8 +76,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceListResultInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$filter") String filter,
             @QueryParam("$expand") String expand,
@@ -89,8 +90,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> moveResources(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> moveResources(
+            @HostParam("$host") String endpoint,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -101,8 +102,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResources(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> validateMoveResources(
+            @HostParam("$host") String endpoint,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -113,8 +114,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$expand") String expand,
             @QueryParam("$top") Integer top,
@@ -124,12 +125,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Boolean>> checkExistence(
-            @HostParam("$host") String host,
+        Mono<Response<Boolean>> checkExistence(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -141,12 +142,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -158,12 +159,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -176,12 +177,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -194,12 +195,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<GenericResourceInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<GenericResourceInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -213,8 +214,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Head("/{resourceId}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Boolean>> checkExistenceById(
-            @HostParam("$host") String host,
+        Mono<Response<Boolean>> checkExistenceById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -223,8 +224,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteById(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> deleteById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -233,8 +234,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateById(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdateById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenericResourceInner parameters,
@@ -244,8 +245,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateById(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> updateById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenericResourceInner parameters,
@@ -255,8 +256,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("/{resourceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<GenericResourceInner>> getById(
-            @HostParam("$host") String host,
+        Mono<Response<GenericResourceInner>> getById(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -265,8 +266,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginMoveResources(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginMoveResourcesWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -277,8 +278,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginValidateMoveResources(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginValidateMoveResourcesWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -287,12 +288,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDelete(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -304,12 +305,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<GenericResourceInner>> beginCreateOrUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -322,12 +323,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
+                + "/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<GenericResourceInner>> beginUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
             @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
@@ -342,8 +343,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteById(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteByIdWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -352,8 +353,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateById(
-            @HostParam("$host") String host,
+        Mono<Response<GenericResourceInner>> beginCreateOrUpdateByIdWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenericResourceInner parameters,
@@ -363,8 +364,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginUpdateById(
-            @HostParam("$host") String host,
+        Mono<Response<GenericResourceInner>> beginUpdateByIdWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GenericResourceInner parameters,
@@ -374,14 +375,14 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroupNext(
+        Mono<Response<ResourceListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listNext(
+        Mono<Response<ResourceListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -413,9 +414,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter, String expand, Integer top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -432,7 +435,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             filter,
                             expand,
@@ -481,9 +484,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter, String expand, Integer top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -497,7 +502,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 filter,
                 expand,
@@ -638,6 +643,38 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * Get all the resources for a resource group.
      *
      * @param resourceGroupName The resource group with the resources to get.
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param top The number of results to return. If null is passed, returns all resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(
+        String resourceGroupName, String filter, String expand, Integer top, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top, context));
+    }
+
+    /**
+     * Get all the resources for a resource group.
+     *
+     * @param resourceGroupName The resource group with the resources to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -665,11 +702,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sourceResourceGroupName == null) {
             return Mono
@@ -692,13 +731,101 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .moveResources(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             sourceResourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (sourceResourceGroupName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter sourceResourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .moveResources(
+                this.client.getEndpoint(),
+                sourceResourceGroupName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginMoveResources(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginMoveResources(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            moveResourcesWithResponseAsync(sourceResourceGroupName, parameters, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
@@ -715,8 +842,32 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> moveResourcesAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            moveResourcesWithResponseAsync(sourceResourceGroupName, parameters, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -741,6 +892,23 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void moveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        moveResourcesAsync(sourceResourceGroupName, parameters, context).block();
+    }
+
+    /**
      * This operation checks whether the specified resources can be moved to the target. The resources to move must be
      * in the same source resource group. The target resource group may be in a different subscription. If validation
      * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
@@ -755,11 +923,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sourceResourceGroupName == null) {
             return Mono
@@ -782,13 +952,108 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .validateMoveResources(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             sourceResourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (sourceResourceGroupName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter sourceResourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .validateMoveResources(
+                this.client.getEndpoint(),
+                sourceResourceGroupName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginValidateMoveResources(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginValidateMoveResources(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
@@ -807,8 +1072,35 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> validateMoveResourcesAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -832,6 +1124,25 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateMoveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
         validateMoveResourcesAsync(sourceResourceGroupName, parameters).block();
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateMoveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        validateMoveResourcesAsync(sourceResourceGroupName, parameters, context).block();
     }
 
     /**
@@ -861,9 +1172,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
         String filter, String expand, Integer top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -876,7 +1189,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             filter,
                             expand,
                             top,
@@ -923,9 +1236,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
         String filter, String expand, Integer top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -935,7 +1250,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 filter,
                 expand,
                 top,
@@ -1064,6 +1379,37 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     /**
      * Get all the resources in a subscription.
      *
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param top The number of results to return. If null is passed, returns all resource groups.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<GenericResourceExpandedInner> list(
+        String filter, String expand, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(filter, expand, top, context));
+    }
+
+    /**
+     * Get all the resources in a subscription.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
@@ -1093,16 +1439,18 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> checkExistenceWithResponseAsync(
+    public Mono<Response<Boolean>> checkExistenceWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
         String resourceType,
         String resourceName,
         String apiVersion) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1138,7 +1486,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .checkExistence(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -1167,7 +1515,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> checkExistenceWithResponseAsync(
+    public Mono<Response<Boolean>> checkExistenceWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1175,9 +1523,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1210,7 +1560,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         }
         return service
             .checkExistence(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -1252,7 +1602,50 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion)
             .flatMap(
-                (SimpleResponse<Boolean> res) -> {
+                (Response<Boolean> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Checks whether a resource exists.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> checkExistenceAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        return checkExistenceWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
+            .flatMap(
+                (Response<Boolean> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1301,6 +1694,48 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Checks whether a resource exists.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The resource provider of the resource to check.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to check whether it exists.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean checkExistence(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        Boolean value =
+            checkExistenceAsync(
+                    resourceGroupName,
+                    resourceProviderNamespace,
+                    parentResourcePath,
+                    resourceType,
+                    resourceName,
+                    apiVersion,
+                    context)
+                .block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
+    }
+
+    /**
      * Deletes a resource.
      *
      * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
@@ -1316,16 +1751,18 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
         String resourceType,
         String resourceName,
         String apiVersion) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1361,7 +1798,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -1371,6 +1808,150 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                             this.client.getSubscriptionId(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (parentResourcePath == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (apiVersion == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
@@ -1396,7 +1977,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceType,
         String resourceName,
         String apiVersion) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
@@ -1404,6 +1985,47 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceType,
                 resourceName,
                 apiVersion);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -1444,6 +2066,41 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        deleteAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
+            .block();
+    }
+
+    /**
      * Creates a resource.
      *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
@@ -1459,7 +2116,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1467,9 +2124,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1510,7 +2169,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -1521,6 +2180,167 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                             parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (parentResourcePath == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (apiVersion == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
     }
 
     /**
@@ -1547,7 +2367,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
@@ -1556,6 +2376,50 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion,
                 parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context);
         return this
             .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
@@ -1600,6 +2464,44 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner createOrUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        return createOrUpdateAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context)
+            .block();
+    }
+
+    /**
      * Updates a resource.
      *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
@@ -1615,7 +2517,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1623,9 +2525,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1666,7 +2570,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -1677,6 +2581,167 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                             parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceProviderNamespace == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter resourceProviderNamespace is required and cannot be null."));
+        }
+        if (parentResourcePath == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (apiVersion == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .update(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+    }
+
+    /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
     }
 
     /**
@@ -1703,7 +2768,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
@@ -1712,6 +2777,50 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion,
                 parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> updateAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context);
         return this
             .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
@@ -1756,6 +2865,44 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner update(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        return updateAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context)
+            .block();
+    }
+
+    /**
      * Gets a resource.
      *
      * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
@@ -1771,16 +2918,18 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> getWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> getWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
         String resourceType,
         String resourceName,
         String apiVersion) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1816,7 +2965,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -1845,7 +2994,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> getWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> getWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -1853,9 +3002,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1888,7 +3039,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         }
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -1930,7 +3081,50 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion)
             .flatMap(
-                (SimpleResponse<GenericResourceInner> res) -> {
+                (Response<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> getAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
+            .flatMap(
+                (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1973,6 +3167,42 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Gets a resource.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner get(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        return getAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
+            .block();
+    }
+
+    /**
      * Checks by ID whether a resource exists.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
@@ -1985,10 +3215,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> checkExistenceByIdWithResponseAsync(String resourceId, String apiVersion) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Boolean>> checkExistenceByIdWithResponseAsync(String resourceId, String apiVersion) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -1997,7 +3229,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.checkExistenceById(this.client.getHost(), resourceId, apiVersion, context))
+            .withContext(
+                context -> service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -2015,11 +3248,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> checkExistenceByIdWithResponseAsync(
+    public Mono<Response<Boolean>> checkExistenceByIdWithResponseAsync(
         String resourceId, String apiVersion, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -2027,7 +3262,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
-        return service.checkExistenceById(this.client.getHost(), resourceId, apiVersion, context);
+        return service.checkExistenceById(this.client.getEndpoint(), resourceId, apiVersion, context);
     }
 
     /**
@@ -2046,7 +3281,33 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion)
             .flatMap(
-                (SimpleResponse<Boolean> res) -> {
+                (Response<Boolean> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Checks by ID whether a resource exists.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, Context context) {
+        return checkExistenceByIdWithResponseAsync(resourceId, apiVersion, context)
+            .flatMap(
+                (Response<Boolean> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2078,6 +3339,29 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Checks by ID whether a resource exists.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean checkExistenceById(String resourceId, String apiVersion, Context context) {
+        Boolean value = checkExistenceByIdAsync(resourceId, apiVersion, context).block();
+        if (value != null) {
+            return value;
+        } else {
+            throw logger.logExceptionAsError(new NullPointerException());
+        }
+    }
+
+    /**
      * Deletes a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
@@ -2090,10 +3374,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String resourceId, String apiVersion) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String resourceId, String apiVersion) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -2102,8 +3388,76 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.deleteById(this.client.getHost(), resourceId, apiVersion, context))
+            .withContext(context -> service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(
+        String resourceId, String apiVersion, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (apiVersion == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+        }
+        return service.deleteById(this.client.getEndpoint(), resourceId, apiVersion, context);
+    }
+
+    /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
@@ -2120,7 +3474,30 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByIdAsync(String resourceId, String apiVersion) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteByIdAsync(String resourceId, String apiVersion, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -2145,6 +3522,23 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteById(String resourceId, String apiVersion, Context context) {
+        deleteByIdAsync(resourceId, apiVersion, context).block();
+    }
+
+    /**
      * Create a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
@@ -2158,11 +3552,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -2178,8 +3574,93 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         return FluxUtil
             .withContext(
                 context ->
-                    service.createOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+                    service.createOrUpdateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (apiVersion == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service.createOrUpdateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
+    }
+
+    /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+    }
+
+    /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters, context);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
     }
 
     /**
@@ -2198,8 +3679,34 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> createOrUpdateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> createOrUpdateByIdAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters, context);
         return this
             .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
@@ -2228,6 +3735,26 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner createOrUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        return createOrUpdateByIdAsync(resourceId, apiVersion, parameters, context).block();
+    }
+
+    /**
      * Updates a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
@@ -2241,11 +3768,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -2260,8 +3789,93 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         }
         return FluxUtil
             .withContext(
-                context -> service.updateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+                context -> service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (apiVersion == null) {
+            return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service.updateById(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
+    }
+
+    /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
+    }
+
+    /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateByIdWithResponseAsync(resourceId, apiVersion, parameters, context);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class);
     }
 
     /**
@@ -2280,7 +3894,34 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> updateByIdAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        return this
+            .client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> updateByIdAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateByIdWithResponseAsync(resourceId, apiVersion, parameters, context);
         return this
             .client
             .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
@@ -2308,6 +3949,26 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner updateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        return updateByIdAsync(resourceId, apiVersion, parameters, context).block();
+    }
+
+    /**
      * Gets a resource by ID.
      *
      * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
@@ -2320,10 +3981,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> getByIdWithResponseAsync(String resourceId, String apiVersion) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<GenericResourceInner>> getByIdWithResponseAsync(String resourceId, String apiVersion) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -2332,7 +3995,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.getById(this.client.getHost(), resourceId, apiVersion, context))
+            .withContext(context -> service.getById(this.client.getEndpoint(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -2350,11 +4013,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> getByIdWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> getByIdWithResponseAsync(
         String resourceId, String apiVersion, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -2362,7 +4027,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
-        return service.getById(this.client.getHost(), resourceId, apiVersion, context);
+        return service.getById(this.client.getEndpoint(), resourceId, apiVersion, context);
     }
 
     /**
@@ -2381,7 +4046,33 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
         return getByIdWithResponseAsync(resourceId, apiVersion)
             .flatMap(
-                (SimpleResponse<GenericResourceInner> res) -> {
+                (Response<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, Context context) {
+        return getByIdWithResponseAsync(resourceId, apiVersion, context)
+            .flatMap(
+                (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2408,6 +4099,24 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
     }
 
     /**
+     * Gets a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner getById(String resourceId, String apiVersion, Context context) {
+        return getByIdAsync(resourceId, apiVersion, context).block();
+    }
+
+    /**
      * The resources to move must be in the same source resource group. The target resource group may be in a different
      * subscription. When moving resources, both the source group and the target group are locked for the duration of
      * the operation. Write and delete operations are blocked on the groups until the move completes.
@@ -2420,11 +4129,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginMoveResourcesWithResponseAsync(
+    public Mono<Response<Void>> beginMoveResourcesWithoutPollingWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sourceResourceGroupName == null) {
             return Mono
@@ -2446,8 +4157,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             .withContext(
                 context ->
                     service
-                        .beginMoveResources(
-                            this.client.getHost(),
+                        .beginMoveResourcesWithoutPolling(
+                            this.client.getEndpoint(),
                             sourceResourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -2470,11 +4181,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginMoveResourcesWithResponseAsync(
+    public Mono<Response<Void>> beginMoveResourcesWithoutPollingWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sourceResourceGroupName == null) {
             return Mono
@@ -2493,8 +4206,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             parameters.validate();
         }
         return service
-            .beginMoveResources(
-                this.client.getHost(),
+            .beginMoveResourcesWithoutPolling(
+                this.client.getEndpoint(),
                 sourceResourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -2515,8 +4228,29 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return beginMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters)
+    public Mono<Void> beginMoveResourcesWithoutPollingAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        return beginMoveResourcesWithoutPollingWithResponseAsync(sourceResourceGroupName, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginMoveResourcesWithoutPollingAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        return beginMoveResourcesWithoutPollingWithResponseAsync(sourceResourceGroupName, parameters, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2532,8 +4266,26 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginMoveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        beginMoveResourcesAsync(sourceResourceGroupName, parameters).block();
+    public void beginMoveResourcesWithoutPolling(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        beginMoveResourcesWithoutPollingAsync(sourceResourceGroupName, parameters).block();
+    }
+
+    /**
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginMoveResourcesWithoutPolling(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        beginMoveResourcesWithoutPollingAsync(sourceResourceGroupName, parameters, context).block();
     }
 
     /**
@@ -2551,11 +4303,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginValidateMoveResourcesWithResponseAsync(
+    public Mono<Response<Void>> beginValidateMoveResourcesWithoutPollingWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sourceResourceGroupName == null) {
             return Mono
@@ -2577,8 +4331,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             .withContext(
                 context ->
                     service
-                        .beginValidateMoveResources(
-                            this.client.getHost(),
+                        .beginValidateMoveResourcesWithoutPolling(
+                            this.client.getEndpoint(),
                             sourceResourceGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -2603,11 +4357,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginValidateMoveResourcesWithResponseAsync(
+    public Mono<Response<Void>> beginValidateMoveResourcesWithoutPollingWithResponseAsync(
         String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sourceResourceGroupName == null) {
             return Mono
@@ -2626,8 +4382,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             parameters.validate();
         }
         return service
-            .beginValidateMoveResources(
-                this.client.getHost(),
+            .beginValidateMoveResourcesWithoutPolling(
+                this.client.getEndpoint(),
                 sourceResourceGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
@@ -2650,8 +4406,31 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginValidateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return beginValidateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters)
+    public Mono<Void> beginValidateMoveResourcesWithoutPollingAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        return beginValidateMoveResourcesWithoutPollingWithResponseAsync(sourceResourceGroupName, parameters)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginValidateMoveResourcesWithoutPollingAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        return beginValidateMoveResourcesWithoutPollingWithResponseAsync(sourceResourceGroupName, parameters, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2669,8 +4448,28 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginValidateMoveResources(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        beginValidateMoveResourcesAsync(sourceResourceGroupName, parameters).block();
+    public void beginValidateMoveResourcesWithoutPolling(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        beginValidateMoveResourcesWithoutPollingAsync(sourceResourceGroupName, parameters).block();
+    }
+
+    /**
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
+     * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
+     * @param parameters Parameters of move resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginValidateMoveResourcesWithoutPolling(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters, Context context) {
+        beginValidateMoveResourcesWithoutPollingAsync(sourceResourceGroupName, parameters, context).block();
     }
 
     /**
@@ -2689,16 +4488,18 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
         String resourceType,
         String resourceName,
         String apiVersion) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2733,8 +4534,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             .withContext(
                 context ->
                     service
-                        .beginDelete(
-                            this.client.getHost(),
+                        .beginDeleteWithoutPolling(
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -2763,7 +4564,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2771,9 +4572,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2805,8 +4608,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .beginDelete(
-                this.client.getHost(),
+            .beginDeleteWithoutPolling(
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -2833,14 +4636,14 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(
+    public Mono<Void> beginDeleteWithoutPollingAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
         String resourceType,
         String resourceName,
         String apiVersion) {
-        return beginDeleteWithResponseAsync(
+        return beginDeleteWithoutPollingWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -2860,25 +4663,96 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @param resourceType The resource type.
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteWithoutPollingAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        return beginDeleteWithoutPollingWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(
+    public void beginDeleteWithoutPolling(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
         String resourceType,
         String resourceName,
         String apiVersion) {
-        beginDeleteAsync(
+        beginDeleteWithoutPollingAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
                 resourceType,
                 resourceName,
                 apiVersion)
+            .block();
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteWithoutPolling(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        Context context) {
+        beginDeleteWithoutPollingAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                context)
             .block();
     }
 
@@ -2898,7 +4772,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2906,9 +4780,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2948,8 +4824,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             .withContext(
                 context ->
                     service
-                        .beginCreateOrUpdate(
-                            this.client.getHost(),
+                        .beginCreateOrUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -2979,7 +4855,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -2988,9 +4864,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String apiVersion,
         GenericResourceInner parameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3027,8 +4905,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             parameters.validate();
         }
         return service
-            .beginCreateOrUpdate(
-                this.client.getHost(),
+            .beginCreateOrUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3056,7 +4934,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginCreateOrUpdateAsync(
+    public Mono<GenericResourceInner> beginCreateOrUpdateWithoutPollingAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3064,7 +4942,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        return beginCreateOrUpdateWithResponseAsync(
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3073,7 +4951,52 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 apiVersion,
                 parameters)
             .flatMap(
-                (SimpleResponse<GenericResourceInner> res) -> {
+                (Response<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> beginCreateOrUpdateWithoutPollingAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context)
+            .flatMap(
+                (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3098,7 +5021,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginCreateOrUpdate(
+    public GenericResourceInner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3106,7 +5029,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return beginCreateOrUpdateWithoutPollingAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3114,6 +5037,44 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion,
                 parameters)
+            .block();
+    }
+
+    /**
+     * Creates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to create.
+     * @param resourceName The name of the resource to create.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        return beginCreateOrUpdateWithoutPollingAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context)
             .block();
     }
 
@@ -3133,7 +5094,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3141,9 +5102,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3183,8 +5146,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             .withContext(
                 context ->
                     service
-                        .beginUpdate(
-                            this.client.getHost(),
+                        .beginUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             resourceProviderNamespace,
                             parentResourcePath,
@@ -3214,7 +5177,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3223,9 +5186,11 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String apiVersion,
         GenericResourceInner parameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3262,8 +5227,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             parameters.validate();
         }
         return service
-            .beginUpdate(
-                this.client.getHost(),
+            .beginUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3291,7 +5256,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginUpdateAsync(
+    public Mono<GenericResourceInner> beginUpdateWithoutPollingAsync(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3299,7 +5264,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        return beginUpdateWithResponseAsync(
+        return beginUpdateWithoutPollingWithResponseAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3308,7 +5273,52 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 apiVersion,
                 parameters)
             .flatMap(
-                (SimpleResponse<GenericResourceInner> res) -> {
+                (Response<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> beginUpdateWithoutPollingAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        return beginUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context)
+            .flatMap(
+                (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3333,7 +5343,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginUpdate(
+    public GenericResourceInner beginUpdateWithoutPolling(
         String resourceGroupName,
         String resourceProviderNamespace,
         String parentResourcePath,
@@ -3341,7 +5351,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         String resourceName,
         String apiVersion,
         GenericResourceInner parameters) {
-        return beginUpdateAsync(
+        return beginUpdateWithoutPollingAsync(
                 resourceGroupName,
                 resourceProviderNamespace,
                 parentResourcePath,
@@ -3349,6 +5359,44 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
                 resourceName,
                 apiVersion,
                 parameters)
+            .block();
+    }
+
+    /**
+     * Updates a resource.
+     *
+     * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource to update.
+     * @param resourceName The name of the resource to update.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner beginUpdateWithoutPolling(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters,
+        Context context) {
+        return beginUpdateWithoutPollingAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters,
+                context)
             .block();
     }
 
@@ -3365,10 +5413,12 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteByIdWithResponseAsync(String resourceId, String apiVersion) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Void>> beginDeleteByIdWithoutPollingWithResponseAsync(String resourceId, String apiVersion) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -3377,7 +5427,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.beginDeleteById(this.client.getHost(), resourceId, apiVersion, context))
+            .withContext(
+                context ->
+                    service.beginDeleteByIdWithoutPolling(this.client.getEndpoint(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -3395,11 +5447,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteByIdWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteByIdWithoutPollingWithResponseAsync(
         String resourceId, String apiVersion, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -3407,7 +5461,7 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         if (apiVersion == null) {
             return Mono.error(new IllegalArgumentException("Parameter apiVersion is required and cannot be null."));
         }
-        return service.beginDeleteById(this.client.getHost(), resourceId, apiVersion, context);
+        return service.beginDeleteByIdWithoutPolling(this.client.getEndpoint(), resourceId, apiVersion, context);
     }
 
     /**
@@ -3423,8 +5477,28 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
-        return beginDeleteByIdWithResponseAsync(resourceId, apiVersion).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> beginDeleteByIdWithoutPollingAsync(String resourceId, String apiVersion) {
+        return beginDeleteByIdWithoutPollingWithResponseAsync(resourceId, apiVersion)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteByIdWithoutPollingAsync(String resourceId, String apiVersion, Context context) {
+        return beginDeleteByIdWithoutPollingWithResponseAsync(resourceId, apiVersion, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -3439,8 +5513,25 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteById(String resourceId, String apiVersion) {
-        beginDeleteByIdAsync(resourceId, apiVersion).block();
+    public void beginDeleteByIdWithoutPolling(String resourceId, String apiVersion) {
+        beginDeleteByIdWithoutPollingAsync(resourceId, apiVersion).block();
+    }
+
+    /**
+     * Deletes a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteByIdWithoutPolling(String resourceId, String apiVersion, Context context) {
+        beginDeleteByIdWithoutPollingAsync(resourceId, apiVersion, context).block();
     }
 
     /**
@@ -3457,11 +5548,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateByIdWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginCreateOrUpdateByIdWithoutPollingWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -3477,7 +5570,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         return FluxUtil
             .withContext(
                 context ->
-                    service.beginCreateOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+                    service
+                        .beginCreateOrUpdateByIdWithoutPolling(
+                            this.client.getEndpoint(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -3496,11 +5591,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateByIdWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginCreateOrUpdateByIdWithoutPollingWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -3513,7 +5610,9 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
-        return service.beginCreateOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context);
+        return service
+            .beginCreateOrUpdateByIdWithoutPolling(
+                this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
     }
 
     /**
@@ -3530,11 +5629,39 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginCreateOrUpdateByIdAsync(
+    public Mono<GenericResourceInner> beginCreateOrUpdateByIdWithoutPollingAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters)
+        return beginCreateOrUpdateByIdWithoutPollingWithResponseAsync(resourceId, apiVersion, parameters)
             .flatMap(
-                (SimpleResponse<GenericResourceInner> res) -> {
+                (Response<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> beginCreateOrUpdateByIdWithoutPollingAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        return beginCreateOrUpdateByIdWithoutPollingWithResponseAsync(resourceId, apiVersion, parameters, context)
+            .flatMap(
+                (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3557,9 +5684,29 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginCreateOrUpdateById(
+    public GenericResourceInner beginCreateOrUpdateByIdWithoutPolling(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters).block();
+        return beginCreateOrUpdateByIdWithoutPollingAsync(resourceId, apiVersion, parameters).block();
+    }
+
+    /**
+     * Create a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner beginCreateOrUpdateByIdWithoutPolling(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        return beginCreateOrUpdateByIdWithoutPollingAsync(resourceId, apiVersion, parameters, context).block();
     }
 
     /**
@@ -3576,11 +5723,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateByIdWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginUpdateByIdWithoutPollingWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -3595,7 +5744,10 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         }
         return FluxUtil
             .withContext(
-                context -> service.beginUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+                context ->
+                    service
+                        .beginUpdateByIdWithoutPolling(
+                            this.client.getEndpoint(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -3614,11 +5766,13 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateByIdWithResponseAsync(
+    public Mono<Response<GenericResourceInner>> beginUpdateByIdWithoutPollingWithResponseAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -3631,7 +5785,8 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
         } else {
             parameters.validate();
         }
-        return service.beginUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context);
+        return service
+            .beginUpdateByIdWithoutPolling(this.client.getEndpoint(), resourceId, apiVersion, parameters, context);
     }
 
     /**
@@ -3648,11 +5803,39 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginUpdateByIdAsync(
+    public Mono<GenericResourceInner> beginUpdateByIdWithoutPollingAsync(
         String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters)
+        return beginUpdateByIdWithoutPollingWithResponseAsync(resourceId, apiVersion, parameters)
             .flatMap(
-                (SimpleResponse<GenericResourceInner> res) -> {
+                (Response<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GenericResourceInner> beginUpdateByIdWithoutPollingAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        return beginUpdateByIdWithoutPollingWithResponseAsync(resourceId, apiVersion, parameters, context)
+            .flatMap(
+                (Response<GenericResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3675,8 +5858,29 @@ public final class ResourcesClient implements InnerSupportsListing<GenericResour
      * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return beginUpdateByIdAsync(resourceId, apiVersion, parameters).block();
+    public GenericResourceInner beginUpdateByIdWithoutPolling(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return beginUpdateByIdWithoutPollingAsync(resourceId, apiVersion, parameters).block();
+    }
+
+    /**
+     * Updates a resource by ID.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format,
+     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     * @param apiVersion The API version to use for the operation.
+     * @param parameters Resource information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GenericResourceInner beginUpdateByIdWithoutPolling(
+        String resourceId, String apiVersion, GenericResourceInner parameters, Context context) {
+        return beginUpdateByIdWithoutPollingAsync(resourceId, apiVersion, parameters, context).block();
     }
 
     /**

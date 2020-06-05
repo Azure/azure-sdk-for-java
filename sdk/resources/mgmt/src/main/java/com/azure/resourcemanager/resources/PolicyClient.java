@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.resources;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.management.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionsClient;
 
-/** Initializes a new instance of the PolicyClientImpl type. */
+/** Initializes a new instance of the PolicyClient type. */
+@ServiceClient(builder = PolicyClientBuilder.class)
 public final class PolicyClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(PolicyClient.class);
 
     /** The ID of the target subscription. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
@@ -32,42 +30,20 @@ public final class PolicyClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public PolicyClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public PolicyClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -76,17 +52,6 @@ public final class PolicyClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public PolicyClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -101,56 +66,40 @@ public final class PolicyClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The PolicyAssignmentsInner object to access its operations. */
+    /** The PolicyAssignmentsClient object to access its operations. */
     private final PolicyAssignmentsClient policyAssignments;
 
     /**
-     * Gets the PolicyAssignmentsInner object to access its operations.
+     * Gets the PolicyAssignmentsClient object to access its operations.
      *
-     * @return the PolicyAssignmentsInner object.
+     * @return the PolicyAssignmentsClient object.
      */
-    public PolicyAssignmentsClient policyAssignments() {
+    public PolicyAssignmentsClient getPolicyAssignments() {
         return this.policyAssignments;
     }
 
-    /** The PolicyDefinitionsInner object to access its operations. */
+    /** The PolicyDefinitionsClient object to access its operations. */
     private final PolicyDefinitionsClient policyDefinitions;
 
     /**
-     * Gets the PolicyDefinitionsInner object to access its operations.
+     * Gets the PolicyDefinitionsClient object to access its operations.
      *
-     * @return the PolicyDefinitionsInner object.
+     * @return the PolicyDefinitionsClient object.
      */
-    public PolicyDefinitionsClient policyDefinitions() {
+    public PolicyDefinitionsClient getPolicyDefinitions() {
         return this.policyDefinitions;
     }
 
-    /** The PolicySetDefinitionsInner object to access its operations. */
+    /** The PolicySetDefinitionsClient object to access its operations. */
     private final PolicySetDefinitionsClient policySetDefinitions;
 
     /**
-     * Gets the PolicySetDefinitionsInner object to access its operations.
+     * Gets the PolicySetDefinitionsClient object to access its operations.
      *
-     * @return the PolicySetDefinitionsInner object.
+     * @return the PolicySetDefinitionsClient object.
      */
-    public PolicySetDefinitionsClient policySetDefinitions() {
+    public PolicySetDefinitionsClient getPolicySetDefinitions() {
         return this.policySetDefinitions;
-    }
-
-    /** Initializes an instance of PolicyClient client. */
-    public PolicyClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of PolicyClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public PolicyClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -159,9 +108,12 @@ public final class PolicyClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public PolicyClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    PolicyClient(HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.apiVersion = "2019-09-01";
         this.policyAssignments = new PolicyAssignmentsClient(this);
         this.policyDefinitions = new PolicyDefinitionsClient(this);
         this.policySetDefinitions = new PolicySetDefinitionsClient(this);

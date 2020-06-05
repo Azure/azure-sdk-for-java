@@ -4,14 +4,11 @@
 
 package com.azure.resourcemanager.resources;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.management.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import com.azure.resourcemanager.resources.fluent.OperationsClient;
@@ -20,12 +17,13 @@ import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
 import com.azure.resourcemanager.resources.fluent.TagsClient;
 
-/** Initializes a new instance of the ResourceManagementClientImpl type. */
+/** Initializes a new instance of the ResourceManagementClient type. */
+@ServiceClient(builder = ResourceManagementClientBuilder.class)
 public final class ResourceManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(ResourceManagementClient.class);
 
     /** The ID of the target subscription. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
@@ -36,42 +34,20 @@ public final class ResourceManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public ResourceManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public ResourceManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -80,17 +56,6 @@ public final class ResourceManagementClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public ResourceManagementClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -105,104 +70,88 @@ public final class ResourceManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The OperationsInner object to access its operations. */
+    /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
     /**
-     * Gets the OperationsInner object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the OperationsInner object.
+     * @return the OperationsClient object.
      */
-    public OperationsClient operations() {
+    public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The DeploymentsInner object to access its operations. */
+    /** The DeploymentsClient object to access its operations. */
     private final DeploymentsClient deployments;
 
     /**
-     * Gets the DeploymentsInner object to access its operations.
+     * Gets the DeploymentsClient object to access its operations.
      *
-     * @return the DeploymentsInner object.
+     * @return the DeploymentsClient object.
      */
-    public DeploymentsClient deployments() {
+    public DeploymentsClient getDeployments() {
         return this.deployments;
     }
 
-    /** The ProvidersInner object to access its operations. */
+    /** The ProvidersClient object to access its operations. */
     private final ProvidersClient providers;
 
     /**
-     * Gets the ProvidersInner object to access its operations.
+     * Gets the ProvidersClient object to access its operations.
      *
-     * @return the ProvidersInner object.
+     * @return the ProvidersClient object.
      */
-    public ProvidersClient providers() {
+    public ProvidersClient getProviders() {
         return this.providers;
     }
 
-    /** The ResourcesInner object to access its operations. */
+    /** The ResourcesClient object to access its operations. */
     private final ResourcesClient resources;
 
     /**
-     * Gets the ResourcesInner object to access its operations.
+     * Gets the ResourcesClient object to access its operations.
      *
-     * @return the ResourcesInner object.
+     * @return the ResourcesClient object.
      */
-    public ResourcesClient resources() {
+    public ResourcesClient getResources() {
         return this.resources;
     }
 
-    /** The ResourceGroupsInner object to access its operations. */
+    /** The ResourceGroupsClient object to access its operations. */
     private final ResourceGroupsClient resourceGroups;
 
     /**
-     * Gets the ResourceGroupsInner object to access its operations.
+     * Gets the ResourceGroupsClient object to access its operations.
      *
-     * @return the ResourceGroupsInner object.
+     * @return the ResourceGroupsClient object.
      */
-    public ResourceGroupsClient resourceGroups() {
+    public ResourceGroupsClient getResourceGroups() {
         return this.resourceGroups;
     }
 
-    /** The TagsInner object to access its operations. */
+    /** The TagsClient object to access its operations. */
     private final TagsClient tags;
 
     /**
-     * Gets the TagsInner object to access its operations.
+     * Gets the TagsClient object to access its operations.
      *
-     * @return the TagsInner object.
+     * @return the TagsClient object.
      */
-    public TagsClient tags() {
+    public TagsClient getTags() {
         return this.tags;
     }
 
-    /** The DeploymentOperationsInner object to access its operations. */
+    /** The DeploymentOperationsClient object to access its operations. */
     private final DeploymentOperationsClient deploymentOperations;
 
     /**
-     * Gets the DeploymentOperationsInner object to access its operations.
+     * Gets the DeploymentOperationsClient object to access its operations.
      *
-     * @return the DeploymentOperationsInner object.
+     * @return the DeploymentOperationsClient object.
      */
-    public DeploymentOperationsClient deploymentOperations() {
+    public DeploymentOperationsClient getDeploymentOperations() {
         return this.deploymentOperations;
-    }
-
-    /** Initializes an instance of ResourceManagementClient client. */
-    public ResourceManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of ResourceManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public ResourceManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -211,9 +160,13 @@ public final class ResourceManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public ResourceManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    ResourceManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.apiVersion = "2019-08-01";
         this.operations = new OperationsClient(this);
         this.deployments = new DeploymentsClient(this);
         this.providers = new ProvidersClient(this);

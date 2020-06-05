@@ -331,7 +331,14 @@ public class PolicyAssignmentInner extends ProxyResource {
             identity().validate();
         }
         if (parameters() != null) {
-            parameters().values().forEach(e -> e.validate());
+            parameters()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

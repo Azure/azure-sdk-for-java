@@ -12,32 +12,30 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.management.AzureServiceClient;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import com.azure.resourcemanager.resources.fluent.inner.OperationInner;
 import com.azure.resourcemanager.resources.fluent.inner.OperationListResultInner;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the FeatureClientImpl type. */
+/** Initializes a new instance of the FeatureClient type. */
+@ServiceClient(builder = FeatureClientBuilder.class)
 public final class FeatureClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(FeatureClient.class);
 
@@ -45,7 +43,7 @@ public final class FeatureClient extends AzureServiceClient {
     private final FeatureClientService service;
 
     /** The ID of the target subscription. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
@@ -56,42 +54,20 @@ public final class FeatureClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public FeatureClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public FeatureClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -100,17 +76,6 @@ public final class FeatureClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public FeatureClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -125,32 +90,16 @@ public final class FeatureClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The FeaturesInner object to access its operations. */
+    /** The FeaturesClient object to access its operations. */
     private final FeaturesClient features;
 
     /**
-     * Gets the FeaturesInner object to access its operations.
+     * Gets the FeaturesClient object to access its operations.
      *
-     * @return the FeaturesInner object.
+     * @return the FeaturesClient object.
      */
-    public FeaturesClient features() {
+    public FeaturesClient getFeatures() {
         return this.features;
-    }
-
-    /** Initializes an instance of FeatureClient client. */
-    public FeatureClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of FeatureClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public FeatureClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -159,9 +108,12 @@ public final class FeatureClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public FeatureClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    FeatureClient(HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.apiVersion = "2015-12-01";
         this.features = new FeaturesClient(this);
         this.service = RestProxy.create(FeatureClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -176,14 +128,14 @@ public final class FeatureClient extends AzureServiceClient {
         @Get("/providers/Microsoft.Features/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<OperationListResultInner>> listOperations(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<OperationListResultInner>> listOperations(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<OperationListResultInner>> listOperationsNext(
+        Mono<Response<OperationListResultInner>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -196,11 +148,12 @@ public final class FeatureClient extends AzureServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
-        if (this.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listOperations(this.getHost(), this.getApiVersion(), context))
+            .withContext(context -> service.listOperations(this.getEndpoint(), this.getApiVersion(), context))
             .<PagedResponse<OperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -224,11 +177,12 @@ public final class FeatureClient extends AzureServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync(Context context) {
-        if (this.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         return service
-            .listOperations(this.getHost(), this.getApiVersion(), context)
+            .listOperations(this.getEndpoint(), this.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -278,6 +232,20 @@ public final class FeatureClient extends AzureServiceClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations() {
         return new PagedIterable<>(listOperationsAsync());
+    }
+
+    /**
+     * Lists all of the available Microsoft.Features REST API operations.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<OperationInner> listOperations(Context context) {
+        return new PagedIterable<>(listOperationsAsync(context));
     }
 
     /**

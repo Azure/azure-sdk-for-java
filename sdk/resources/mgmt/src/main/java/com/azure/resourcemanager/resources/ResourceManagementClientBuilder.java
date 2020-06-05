@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the ResourceManagementClientImpl type. */
+/** A builder for creating a new instance of the ResourceManagementClient type. */
 @ServiceClientBuilder(serviceClients = {ResourceManagementClient.class})
 public final class ResourceManagementClientBuilder {
     /*
@@ -34,32 +34,16 @@ public final class ResourceManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the ResourceManagementClientBuilder.
      */
-    public ResourceManagementClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the ResourceManagementClientBuilder.
-     */
-    public ResourceManagementClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public ResourceManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -96,16 +80,13 @@ public final class ResourceManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of ResourceManagementClientImpl with the provided parameters.
+     * Builds an instance of ResourceManagementClient with the provided parameters.
      *
-     * @return an instance of ResourceManagementClientImpl.
+     * @return an instance of ResourceManagementClient.
      */
     public ResourceManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2019-08-01";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -116,10 +97,7 @@ public final class ResourceManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        ResourceManagementClient client = new ResourceManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        ResourceManagementClient client = new ResourceManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

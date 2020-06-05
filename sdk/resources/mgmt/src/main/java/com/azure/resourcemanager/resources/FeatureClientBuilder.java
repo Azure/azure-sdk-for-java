@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the FeatureClientImpl type. */
+/** A builder for creating a new instance of the FeatureClient type. */
 @ServiceClientBuilder(serviceClients = {FeatureClient.class})
 public final class FeatureClientBuilder {
     /*
@@ -34,32 +34,16 @@ public final class FeatureClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the FeatureClientBuilder.
      */
-    public FeatureClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the FeatureClientBuilder.
-     */
-    public FeatureClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public FeatureClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -96,16 +80,13 @@ public final class FeatureClientBuilder {
     }
 
     /**
-     * Builds an instance of FeatureClientImpl with the provided parameters.
+     * Builds an instance of FeatureClient with the provided parameters.
      *
-     * @return an instance of FeatureClientImpl.
+     * @return an instance of FeatureClient.
      */
     public FeatureClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2015-12-01";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -116,10 +97,7 @@ public final class FeatureClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        FeatureClient client = new FeatureClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        FeatureClient client = new FeatureClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

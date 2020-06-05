@@ -139,7 +139,14 @@ public final class PolicyDefinitionReference {
                         "Missing required property policyDefinitionId in model PolicyDefinitionReference"));
         }
         if (parameters() != null) {
-            parameters().values().forEach(e -> e.validate());
+            parameters()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

@@ -4,46 +4,34 @@
 
 package com.azure.resourcemanager.resources;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.management.AzureServiceClient;
+import com.azure.resourcemanager.resources.fluent.OperationsClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 import com.azure.resourcemanager.resources.fluent.TenantsClient;
 
-/** Initializes a new instance of the SubscriptionClientImpl type. */
+/** Initializes a new instance of the SubscriptionClient type. */
+@ServiceClient(builder = SubscriptionClientBuilder.class)
 public final class SubscriptionClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(SubscriptionClient.class);
 
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public SubscriptionClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -52,17 +40,6 @@ public final class SubscriptionClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public SubscriptionClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -77,44 +54,40 @@ public final class SubscriptionClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The SubscriptionsInner object to access its operations. */
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /** The SubscriptionsClient object to access its operations. */
     private final SubscriptionsClient subscriptions;
 
     /**
-     * Gets the SubscriptionsInner object to access its operations.
+     * Gets the SubscriptionsClient object to access its operations.
      *
-     * @return the SubscriptionsInner object.
+     * @return the SubscriptionsClient object.
      */
-    public SubscriptionsClient subscriptions() {
+    public SubscriptionsClient getSubscriptions() {
         return this.subscriptions;
     }
 
-    /** The TenantsInner object to access its operations. */
+    /** The TenantsClient object to access its operations. */
     private final TenantsClient tenants;
 
     /**
-     * Gets the TenantsInner object to access its operations.
+     * Gets the TenantsClient object to access its operations.
      *
-     * @return the TenantsInner object.
+     * @return the TenantsClient object.
      */
-    public TenantsClient tenants() {
+    public TenantsClient getTenants() {
         return this.tenants;
-    }
-
-    /** Initializes an instance of SubscriptionClient client. */
-    public SubscriptionClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of SubscriptionClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public SubscriptionClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -123,10 +96,12 @@ public final class SubscriptionClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public SubscriptionClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    SubscriptionClient(HttpPipeline httpPipeline, AzureEnvironment environment, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-//        this.operations = new OperationsInner(this);
+        this.endpoint = endpoint;
+        this.apiVersion = "2020-01-01";
+        this.operations = new OperationsClient(this);
         this.subscriptions = new SubscriptionsClient(this);
         this.tenants = new TenantsClient(this);
     }

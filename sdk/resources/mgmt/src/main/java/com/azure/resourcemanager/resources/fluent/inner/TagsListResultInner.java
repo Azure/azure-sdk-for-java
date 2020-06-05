@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.fluent.TagDetailsClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,7 +19,7 @@ public final class TagsListResultInner {
      * An array of tags.
      */
     @JsonProperty(value = "value")
-    private List<TagDetailsClient> value;
+    private List<TagDetailsInner> value;
 
     /*
      * The URL to use for getting the next set of results.
@@ -33,7 +32,7 @@ public final class TagsListResultInner {
      *
      * @return the value value.
      */
-    public List<TagDetailsClient> value() {
+    public List<TagDetailsInner> value() {
         return this.value;
     }
 
@@ -43,7 +42,7 @@ public final class TagsListResultInner {
      * @param value the value value to set.
      * @return the TagsListResultInner object itself.
      */
-    public TagsListResultInner withValue(List<TagDetailsClient> value) {
+    public TagsListResultInner withValue(List<TagDetailsInner> value) {
         this.value = value;
         return this;
     }

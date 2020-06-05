@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the PolicyClientImpl type. */
+/** A builder for creating a new instance of the PolicyClient type. */
 @ServiceClientBuilder(serviceClients = {PolicyClient.class})
 public final class PolicyClientBuilder {
     /*
@@ -34,32 +34,16 @@ public final class PolicyClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the PolicyClientBuilder.
      */
-    public PolicyClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the PolicyClientBuilder.
-     */
-    public PolicyClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public PolicyClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -96,16 +80,13 @@ public final class PolicyClientBuilder {
     }
 
     /**
-     * Builds an instance of PolicyClientImpl with the provided parameters.
+     * Builds an instance of PolicyClient with the provided parameters.
      *
-     * @return an instance of PolicyClientImpl.
+     * @return an instance of PolicyClient.
      */
     public PolicyClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2019-09-01";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -116,10 +97,7 @@ public final class PolicyClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        PolicyClient client = new PolicyClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        PolicyClient client = new PolicyClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

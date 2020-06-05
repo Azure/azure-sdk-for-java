@@ -6,8 +6,8 @@ package com.azure.resourcemanager.resources.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.models.ErrorResponse;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,7 +29,7 @@ public class WhatIfOperationResultInner {
      * Error when What-If operation fails.
      */
     @JsonProperty(value = "error")
-    private ErrorResponse error;
+    private ManagementError error;
 
     /*
      * List of resource changes predicted by What-If operation.
@@ -62,7 +62,7 @@ public class WhatIfOperationResultInner {
      *
      * @return the error value.
      */
-    public ErrorResponse error() {
+    public ManagementError error() {
         return this.error;
     }
 
@@ -72,7 +72,7 @@ public class WhatIfOperationResultInner {
      * @param error the error value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner withError(ErrorResponse error) {
+    public WhatIfOperationResultInner withError(ManagementError error) {
         this.error = error;
         return this;
     }
@@ -103,9 +103,6 @@ public class WhatIfOperationResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
         if (changes() != null) {
             changes().forEach(e -> e.validate());
         }

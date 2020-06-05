@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.resources.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.models.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,7 +25,7 @@ public final class ResourceGroupExportResultInner {
      * The template export error.
      */
     @JsonProperty(value = "error")
-    private ErrorResponse error;
+    private ManagementError error;
 
     /**
      * Get the template property: The template content.
@@ -52,7 +52,7 @@ public final class ResourceGroupExportResultInner {
      *
      * @return the error value.
      */
-    public ErrorResponse error() {
+    public ManagementError error() {
         return this.error;
     }
 
@@ -62,7 +62,7 @@ public final class ResourceGroupExportResultInner {
      * @param error the error value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
-    public ResourceGroupExportResultInner withError(ErrorResponse error) {
+    public ResourceGroupExportResultInner withError(ManagementError error) {
         this.error = error;
         return this;
     }
@@ -73,8 +73,5 @@ public final class ResourceGroupExportResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (error() != null) {
-            error().validate();
-        }
     }
 }

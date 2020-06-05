@@ -12,38 +12,22 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the SubscriptionClientImpl type. */
+/** A builder for creating a new instance of the SubscriptionClient type. */
 @ServiceClientBuilder(serviceClients = {SubscriptionClient.class})
 public final class SubscriptionClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the SubscriptionClientBuilder.
      */
-    public SubscriptionClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the SubscriptionClientBuilder.
-     */
-    public SubscriptionClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public SubscriptionClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -80,16 +64,13 @@ public final class SubscriptionClientBuilder {
     }
 
     /**
-     * Builds an instance of SubscriptionClientImpl with the provided parameters.
+     * Builds an instance of SubscriptionClient with the provided parameters.
      *
-     * @return an instance of SubscriptionClientImpl.
+     * @return an instance of SubscriptionClient.
      */
     public SubscriptionClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2020-01-01";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -100,9 +81,7 @@ public final class SubscriptionClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        SubscriptionClient client = new SubscriptionClient(pipeline, environment);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        SubscriptionClient client = new SubscriptionClient(pipeline, environment, endpoint);
         return client;
     }
 }

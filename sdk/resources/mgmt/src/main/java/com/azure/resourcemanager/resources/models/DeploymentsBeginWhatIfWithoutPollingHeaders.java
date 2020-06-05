@@ -9,11 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentsBeginWhatIfAtSubscriptionScopeHeaders model. */
+/** The DeploymentsBeginWhatIfWithoutPollingHeaders model. */
 @Fluent
-public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeploymentsBeginWhatIfAtSubscriptionScopeHeaders.class);
+public final class DeploymentsBeginWhatIfWithoutPollingHeaders {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentsBeginWhatIfWithoutPollingHeaders.class);
 
     /*
      * The Retry-After property.
@@ -40,9 +39,9 @@ public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
      * Set the retryAfter property: The Retry-After property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the DeploymentsBeginWhatIfAtSubscriptionScopeHeaders object itself.
+     * @return the DeploymentsBeginWhatIfWithoutPollingHeaders object itself.
      */
-    public DeploymentsBeginWhatIfAtSubscriptionScopeHeaders withRetryAfter(String retryAfter) {
+    public DeploymentsBeginWhatIfWithoutPollingHeaders withRetryAfter(String retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -60,9 +59,9 @@ public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the DeploymentsBeginWhatIfAtSubscriptionScopeHeaders object itself.
+     * @return the DeploymentsBeginWhatIfWithoutPollingHeaders object itself.
      */
-    public DeploymentsBeginWhatIfAtSubscriptionScopeHeaders withLocation(String location) {
+    public DeploymentsBeginWhatIfWithoutPollingHeaders withLocation(String location) {
         this.location = location;
         return this;
     }
