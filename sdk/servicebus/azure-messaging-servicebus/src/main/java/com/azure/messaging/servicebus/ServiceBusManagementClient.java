@@ -11,8 +11,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -23,16 +23,14 @@ import java.util.Objects;
 @ServiceClient(builder = ServiceBusManagementClientBuilder.class)
 public class ServiceBusManagementClient {
     private final ServiceBusManagementAsyncClient asyncClient;
-    private final Duration operationTimeout;
 
     /**
      * Creates a new instance with the given client.
      *
      * @param asyncClient Asynchronous client to perform management calls through.
      */
-    ServiceBusManagementClient(ServiceBusManagementAsyncClient asyncClient, Duration operationTimeout) {
+    ServiceBusManagementClient(ServiceBusManagementAsyncClient asyncClient) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
-        this.operationTimeout = Objects.requireNonNull(operationTimeout, "'timeout' cannot be null.");
     }
 
     /**
@@ -47,7 +45,7 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueDescription createQueue(QueueDescription queue) {
-        return asyncClient.createQueue(queue).block(operationTimeout);
+        return asyncClient.createQueue(queue).block();
     }
 
     /**
@@ -63,7 +61,7 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> createQueueWithResponse(QueueDescription queue, Context context) {
-        return asyncClient.createQueueWithResponse(queue, context).block(operationTimeout);
+        return asyncClient.createQueueWithResponse(queue, context).block();
     }
 
     /**
@@ -76,7 +74,7 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteQueue(String queueName) {
-        asyncClient.deleteQueue(queueName).block(operationTimeout);
+        asyncClient.deleteQueue(queueName).block();
     }
 
     /**
@@ -91,7 +89,7 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
-        return asyncClient.deleteQueueWithResponse(queueName, context).block(operationTimeout);
+        return asyncClient.deleteQueueWithResponse(queueName, context).block();
     }
 
     /**
@@ -104,7 +102,7 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueDescription getQueue(String queueName) {
-        return asyncClient.getQueue(queueName).block(operationTimeout);
+        return asyncClient.getQueue(queueName).block();
     }
 
     /**
@@ -118,7 +116,33 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> getQueueWithResponse(String queueName, Context context) {
-        return asyncClient.getQueueWithResponse(queueName, context).block(operationTimeout);
+        return asyncClient.getQueueWithResponse(queueName, context).block();
+    }
+
+    /**
+     * Gets runtime information about the queue.
+     *
+     * @param queueName Name of queue to get information about.
+     *
+     * @return Runtime information about the queue.
+     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueueRuntimeInfo getQueueRuntimeInfo(String queueName) {
+        return asyncClient.getQueueRuntimeInfo(queueName).block();
+    }
+
+    /**
+     * Gets runtime information about the queue along with its HTTP response.
+     *
+     * @param queueName Name of queue to get information about.
+     *
+     * @return Runtime information about the queue and the associated HTTP response.
+     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueueRuntimeInfo> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
+        return asyncClient.getQueueRuntimeInfoWithResponse(queueName, context).block();
     }
 
     /**
@@ -158,7 +182,7 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueDescription updateQueue(QueueDescription queue) {
-        return asyncClient.updateQueue(queue).block(operationTimeout);
+        return asyncClient.updateQueue(queue).block();
     }
 
     /**
@@ -173,6 +197,6 @@ public class ServiceBusManagementClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> updateQueueWithResponse(QueueDescription queue, Context context) {
-        return asyncClient.updateQueueWithResponse(queue, context).block(operationTimeout);
+        return asyncClient.updateQueueWithResponse(queue, context).block();
     }
 }

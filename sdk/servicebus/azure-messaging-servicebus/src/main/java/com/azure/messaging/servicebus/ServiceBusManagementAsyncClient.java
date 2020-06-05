@@ -23,6 +23,7 @@ import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyConte
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.models.QueueDescription;
+import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -158,6 +159,32 @@ public class ServiceBusManagementAsyncClient {
     }
 
     /**
+     * Gets runtime information about the queue.
+     *
+     * @param queueName Name of queue to get information about.
+     *
+     * @return A Mono that completes with runtime information about the queue.
+     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueueRuntimeInfo> getQueueRuntimeInfo(String queueName) {
+        return getQueueWithResponse(queueName).map(response -> new QueueRuntimeInfo(response.getValue()));
+    }
+
+    /**
+     * Gets runtime information about the queue along with its HTTP response.
+     *
+     * @param queueName Name of queue to get information about.
+     *
+     * @return A Mono that completes with runtime information about the queue and the associated HTTP response.
+     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName) {
+        return withContext(context -> getQueueRuntimeInfoWithResponse(queueName, context));
+    }
+
+    /**
      * Fetches all the queues in the Service Bus namespace.
      *
      * @return A Flux of {@link QueueDescription queues} in the Service Bus namespace.
@@ -256,6 +283,41 @@ public class ServiceBusManagementAsyncClient {
                 .map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Package-private method that gets a queue with its context.
+     *
+     * @param queueName Name of queue to fetch information for.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the {@link QueueDescription}.
+     */
+    Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName, Context context) {
+        if (queueName == null) {
+            return monoError(logger, new NullPointerException("'queueName' cannot be null"));
+        } else if (queueName.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'queueName' cannot be empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return queuesClient.getWithResponseAsync(queueName, true, context)
+                .map(response -> {
+                    final Response<QueueDescription> deserializeQueue = deserializeQueue(response, queueName);
+                    final QueueRuntimeInfo runtimeInfo = deserializeQueue.getValue() != null
+                        ? new QueueRuntimeInfo(deserializeQueue.getValue())
+                        : null;
+
+                    return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        runtimeInfo);
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
