@@ -27,7 +27,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/YijunXieMS/azure-sdk-for-python/sb_control_client/sdk/servicebus/azure-servicebus/swagger/servicebus-swagger.json
+input-file: https://raw.githubusercontent.com/azure/azure-sdk-for-python/master/sdk/servicebus/azure-servicebus/swagger/servicebus-swagger.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
