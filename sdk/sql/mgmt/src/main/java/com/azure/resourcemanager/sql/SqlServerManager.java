@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.sql.implementation;
+package com.azure.resourcemanager.sql;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
@@ -11,9 +11,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.sql.implementation.SqlServersImpl;
 import com.azure.resourcemanager.sql.models.SqlServers;
-import com.azure.resourcemanager.sql.SqlManagementClientBuilder;
-import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure SQLServer resource management. */

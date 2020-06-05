@@ -7,6 +7,11 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.fluent.ServersInner;
+import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
+import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
@@ -21,18 +26,15 @@ import com.azure.resourcemanager.sql.models.SqlSubscriptionUsageMetric;
 import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
 import com.azure.resourcemanager.sql.models.SqlSyncMemberOperations;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
-import com.azure.resourcemanager.sql.fluent.ServersInner;
-import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SqlServers and its parent interfaces. */
-class SqlServersImpl
+public class SqlServersImpl
     extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
     implements SqlServers {
 

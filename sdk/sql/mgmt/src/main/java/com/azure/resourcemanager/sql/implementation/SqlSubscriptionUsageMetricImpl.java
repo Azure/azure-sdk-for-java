@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
+import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlSubscriptionUsageMetric;
 import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
 import java.util.Objects;

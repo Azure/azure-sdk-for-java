@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlSyncGroup;
 import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
 import com.azure.resourcemanager.sql.fluent.inner.SyncDatabaseIdPropertiesInner;

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
+import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
 import com.azure.resourcemanager.sql.models.RecommendedElasticPoolMetric;

@@ -34,6 +34,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import java.nio.ByteBuffer;
 
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.sql.fluent.inner.AdministratorListResultInner;
 import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
 import reactor.core.publisher.Flux;

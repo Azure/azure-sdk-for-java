@@ -32,6 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.sql.fluent.inner.WorkloadClassifierInner;
 import com.azure.resourcemanager.sql.fluent.inner.WorkloadClassifierListResultInner;
 import reactor.core.publisher.Flux;

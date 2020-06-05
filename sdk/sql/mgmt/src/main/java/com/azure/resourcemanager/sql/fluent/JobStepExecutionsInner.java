@@ -28,6 +28,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.sql.fluent.inner.JobExecutionInner;
 import com.azure.resourcemanager.sql.fluent.inner.JobExecutionListResultInner;
 import reactor.core.publisher.Mono;

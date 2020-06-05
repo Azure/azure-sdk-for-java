@@ -31,6 +31,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceAdministratorInner;
 import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceAdministratorListResultInner;
 import reactor.core.publisher.Flux;

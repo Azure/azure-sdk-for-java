@@ -25,6 +25,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.sql.fluent.inner.JobExecutionInner;
 import com.azure.resourcemanager.sql.fluent.inner.JobExecutionListResultInner;
 import reactor.core.publisher.Mono;

@@ -29,6 +29,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.UUID;
 
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationInner;
 import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationListResultInner;
 import reactor.core.publisher.Mono;
