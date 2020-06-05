@@ -13,6 +13,7 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -120,10 +121,7 @@ public final class MessageUtils {
         switch (dispositionStatus) {
             case COMPLETED:
                 if (hasTransaction) {
-                    TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    transactionalState.setOutcome(Accepted.getInstance());
-                    state = transactionalState;
+                    state = getTransactionState(transactionContext.getTransactionId(), Accepted.getInstance());
                 } else {
                     state = Accepted.getInstance();
                 }
@@ -145,10 +143,7 @@ public final class MessageUtils {
                 rejected.setError(error);
 
                 if (hasTransaction) {
-                    TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    transactionalState.setOutcome(rejected);
-                    state = transactionalState;
+                    state = getTransactionState(transactionContext.getTransactionId(), rejected);
                 } else {
                     state = rejected;
                 }
@@ -160,10 +155,7 @@ public final class MessageUtils {
                 }
 
                 if (hasTransaction) {
-                    TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    transactionalState.setOutcome(outcome);
-                    state = transactionalState;
+                    state = getTransactionState(transactionContext.getTransactionId(), outcome);
                 } else {
                     state = outcome;
                 }
@@ -176,10 +168,7 @@ public final class MessageUtils {
                 }
 
                 if (hasTransaction) {
-                    TransactionalState transactionalState = new TransactionalState();
-                    transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
-                    transactionalState.setOutcome(deferredOutcome);
-                    state = transactionalState;
+                    state = getTransactionState(transactionContext.getTransactionId(), deferredOutcome);
                 } else {
                     state = deferredOutcome;
                 }
@@ -257,5 +246,12 @@ public final class MessageUtils {
         }
 
         return reorderedBytes;
+    }
+
+    private  static TransactionalState getTransactionState(ByteBuffer transactionId, Outcome outcome) {
+        TransactionalState transactionalState = new TransactionalState();
+        transactionalState.setTxnId(new Binary(transactionId.array()));
+        transactionalState.setOutcome(outcome);
+        return transactionalState;
     }
 }

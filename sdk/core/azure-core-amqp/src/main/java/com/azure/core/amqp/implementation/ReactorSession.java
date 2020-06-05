@@ -67,9 +67,9 @@ public class ReactorSession implements AmqpSession {
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     private final AtomicReference<LinkSubscription<AmqpSendLink>> coordinatorLink = new AtomicReference<>();
+    private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
 
     private AmqpRetryPolicy retryPolicy;
-    private AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -126,10 +126,6 @@ public class ReactorSession implements AmqpSession {
 
     Session session() {
         return this.session;
-    }
-
-    AmqpRetryPolicy getRetryPolicy() {
-        return retryPolicy;
     }
 
     @Override

@@ -267,7 +267,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean useCredentials, boolean isSessionEnabled) {
         setSenderAndReceiver(entityType, useCredentials, isSessionEnabled, null, false);
     }
-    
+
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
      * shared connection as needed.
