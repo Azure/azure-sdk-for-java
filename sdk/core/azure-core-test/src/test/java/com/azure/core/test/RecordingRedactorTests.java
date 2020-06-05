@@ -16,39 +16,39 @@ public class RecordingRedactorTests {
     private static final String DUMMY_SENSITIVE_INFORMATION = "sensitiveInformation";
 
     // Access token value pair at Body
-    private static final String ACCESS_TOKEN_FIRST_PAIR = "\"Response\" : {\n" +
-        "      \"Body\" : \"{\"accessToken\":\"sensitiveData\",\"expirationDateTimeTicks\":637270217074441783}\",\n" +
-        "    },";
-    private static final String EXPECTED_ACCESS_TOKEN_FIRST_PAIR_REDACTED = "\"Response\" : {\n" +
-        "      \"Body\" : \"{\"accessToken\":\"REDACTED\",\"expirationDateTimeTicks\":637270217074441783}\",\n" +
-        "    },";
+    private static final String ACCESS_TOKEN_FIRST_PAIR = "\"Response\" : {\n"
+        + "      \"Body\" : \"{\"accessToken\":\"sensitiveData\",\"expirationDateTimeTicks\":637270217074441783}\",\n"
+        + "    },";
+    private static final String EXPECTED_ACCESS_TOKEN_FIRST_PAIR_REDACTED = "\"Response\" : {\n"
+        + "      \"Body\" : \"{\"accessToken\":\"REDACTED\",\"expirationDateTimeTicks\":637270217074441783}\",\n"
+        + "    },";
 
     // Access token pair at the end of Body
-    private static final String ACCESS_TOKEN_LAST_PAIR = "\"Response\" : {\n" +
-        "      \"Body\" : \"{\"accessToken\":\"sensitiveData\"}\",\n" +
-        "    },";
-    private static final String EXPECTED_ACCESS_TOKEN_LAST_PAIR_REDACTED = "\"Response\" : {\n" +
-        "      \"Body\" : \"{\"accessToken\":\"REDACTED\"}\",\n" +
-        "    },";
+    private static final String ACCESS_TOKEN_LAST_PAIR = "\"Response\" : {\n"
+        + "      \"Body\" : \"{\"accessToken\":\"sensitiveData\"}\",\n"
+        + "    },";
+    private static final String EXPECTED_ACCESS_TOKEN_LAST_PAIR_REDACTED = "\"Response\" : {\n"
+        + "      \"Body\" : \"{\"accessToken\":\"REDACTED\"}\",\n"
+        + "    },";
 
     // User delegation key: <Value> XML tag
-    private static final String USER_DELEGATION_KEY_FOR_VALUE_RESPONSE = "\"Response\" : {\n" +
-        "   \"Body\" : <UserDelegationKey><Value>sensitiveInformation=</Value></UserDelegationKey>\",\n" +
-        "    },";
+    private static final String USER_DELEGATION_KEY_FOR_VALUE_RESPONSE = "\"Response\" : {\n"
+        + "   \"Body\" : <UserDelegationKey><Value>sensitiveInformation=</Value></UserDelegationKey>\",\n"
+        + "    },";
 
-    private static final String EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED = "\"Response\" : {\n" +
-        "   \"Body\" : <UserDelegationKey><Value>UkVEQUNURUQ=</Value></UserDelegationKey>\",\n" +
-        "    },";
+    private static final String EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED = "\"Response\" : {\n"
+        + "   \"Body\" : <UserDelegationKey><Value>UkVEQUNURUQ=</Value></UserDelegationKey>\",\n"
+        + "    },";
 
     // User delegation key: <SignedOid> XML tag
-    private static final String USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE = "\"Response\" : {\n" +
-        "   \"Body\" : <UserDelegationKey><SignedOid>sensitiveInformation=</SignedOid></UserDelegationKey>\",\n" +
-        "    },";
+    private static final String USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE = "\"Response\" : {\n"
+        + "   \"Body\" : <UserDelegationKey><SignedOid>sensitiveInformation=</SignedOid></UserDelegationKey>\",\n"
+        + "    },";
 
     // User delegation key: <SignedTid> XML tag
-    private static final String USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE = "\"Response\" : {\n" +
-        "   \"Body\" : <UserDelegationKey><SignedTid>sensitiveInformation</SignedTid></UserDelegationKey>\",\n" +
-        "    },";
+    private static final String USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE = "\"Response\" : {\n"
+        + "   \"Body\" : <UserDelegationKey><SignedTid>sensitiveInformation</SignedTid></UserDelegationKey>\",\n"
+        + "    },";
 
     /**
      * Verify if the {@code accessToken} pair that is before last pair value is redacted successfully.
