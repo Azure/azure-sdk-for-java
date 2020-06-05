@@ -37,6 +37,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsLi
 import com.azure.resourcemanager.sql.InstancePoolUpdate;
 import java.nio.ByteBuffer;
 import java.util.Map;
+
+import com.azure.resourcemanager.sql.fluent.inner.InstancePoolInner;
+import com.azure.resourcemanager.sql.fluent.inner.InstancePoolListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -34,6 +34,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.sql.SyncGroupsType;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.SyncDatabaseIdListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncDatabaseIdPropertiesInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncFullSchemaPropertiesInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncFullSchemaPropertiesListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncGroupListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncGroupLogListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncGroupLogPropertiesInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.TransparentDataEncryptionActivityStatus;
-import com.azure.resourcemanager.sql.fluent.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
 
 /** Implementation for TransparentDataEncryptionActivity. */
 class TransparentDataEncryptionActivityImpl extends WrapperImpl<TransparentDataEncryptionActivityInner>

@@ -31,6 +31,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.JobTarget;
 import java.util.List;
+
+import com.azure.resourcemanager.sql.fluent.inner.JobTargetGroupInner;
+import com.azure.resourcemanager.sql.fluent.inner.JobTargetGroupListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobTargetGroups. */

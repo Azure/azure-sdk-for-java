@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlRestorableDroppedDatabase;
-import com.azure.resourcemanager.sql.fluent.RestorableDroppedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.sql.implementation.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.RecommendedElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;

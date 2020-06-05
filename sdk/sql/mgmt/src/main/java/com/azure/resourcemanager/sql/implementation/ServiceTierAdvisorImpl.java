@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Refre
 import com.azure.resourcemanager.sql.ServiceLevelObjectiveUsageMetric;
 import com.azure.resourcemanager.sql.ServiceTierAdvisor;
 import com.azure.resourcemanager.sql.SloUsageMetric;
-import com.azure.resourcemanager.sql.fluent.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

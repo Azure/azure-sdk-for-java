@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.SqlServer;
 import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicy;
 import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicyOperations;
-import com.azure.resourcemanager.sql.fluent.ServerSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerSecurityAlertPolicyInner;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

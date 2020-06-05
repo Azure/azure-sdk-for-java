@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.sql.SqlServer;
 import com.azure.resourcemanager.sql.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.fluent.VirtualNetworkRuleInner;
+import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

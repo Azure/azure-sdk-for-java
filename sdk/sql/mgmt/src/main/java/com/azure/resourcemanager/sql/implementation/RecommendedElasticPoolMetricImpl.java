@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.RecommendedElasticPoolMetric;
-import com.azure.resourcemanager.sql.fluent.RecommendedElasticPoolMetricInner;
+import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolMetricInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for RecommendedElasticPoolMetric interface. */

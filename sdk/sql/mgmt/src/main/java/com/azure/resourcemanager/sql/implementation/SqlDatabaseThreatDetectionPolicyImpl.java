@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.SecurityAlertPolicyUseServerDefault;
 import com.azure.resourcemanager.sql.SqlDatabase;
 import com.azure.resourcemanager.sql.SqlDatabaseThreatDetectionPolicy;
-import com.azure.resourcemanager.sql.fluent.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 

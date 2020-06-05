@@ -32,6 +32,9 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import com.azure.resourcemanager.sql.fluent.inner.JobExecutionInner;
+import com.azure.resourcemanager.sql.fluent.inner.JobExecutionListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

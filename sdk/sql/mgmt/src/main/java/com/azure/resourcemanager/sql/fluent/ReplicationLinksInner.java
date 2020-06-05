@@ -32,6 +32,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.sql.UnlinkParameters;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

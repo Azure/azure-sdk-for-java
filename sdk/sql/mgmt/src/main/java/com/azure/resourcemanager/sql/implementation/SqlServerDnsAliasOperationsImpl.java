@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.sql.SqlServer;
 import com.azure.resourcemanager.sql.SqlServerDnsAlias;
 import com.azure.resourcemanager.sql.SqlServerDnsAliasOperations;
-import com.azure.resourcemanager.sql.fluent.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerDnsAliasInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

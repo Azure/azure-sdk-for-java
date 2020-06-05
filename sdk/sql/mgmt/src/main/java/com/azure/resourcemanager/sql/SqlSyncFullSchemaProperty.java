@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.SyncFullSchemaPropertiesInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncFullSchemaPropertiesInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 

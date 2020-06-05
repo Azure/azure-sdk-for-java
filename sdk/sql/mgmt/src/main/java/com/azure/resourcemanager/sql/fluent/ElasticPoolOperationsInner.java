@@ -28,6 +28,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.util.UUID;
+
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationInner;
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolOperationListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ElasticPoolOperations. */

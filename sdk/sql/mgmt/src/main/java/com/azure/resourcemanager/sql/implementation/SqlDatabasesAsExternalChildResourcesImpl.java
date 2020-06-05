@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.sql.SqlDatabase;
 import com.azure.resourcemanager.sql.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.fluent.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

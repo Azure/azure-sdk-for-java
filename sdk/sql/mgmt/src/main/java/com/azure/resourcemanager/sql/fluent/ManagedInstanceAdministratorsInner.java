@@ -31,9 +31,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceAdministratorInner;
+import com.azure.resourcemanager.sql.fluent.inner.ManagedInstanceAdministratorListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /** An instance of this class provides access to all the operations defined in ManagedInstanceAdministrators. */
 public final class ManagedInstanceAdministratorsInner implements InnerSupportsDelete<Void> {

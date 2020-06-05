@@ -10,8 +10,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Refre
 import com.azure.resourcemanager.sql.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.TransparentDataEncryptionActivity;
 import com.azure.resourcemanager.sql.TransparentDataEncryptionStatus;
-import com.azure.resourcemanager.sql.fluent.TransparentDataEncryptionActivityInner;
-import com.azure.resourcemanager.sql.fluent.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

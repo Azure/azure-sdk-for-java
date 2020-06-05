@@ -35,6 +35,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.sql.VirtualClusterUpdate;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.VirtualClusterInner;
+import com.azure.resourcemanager.sql.fluent.inner.VirtualClusterListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

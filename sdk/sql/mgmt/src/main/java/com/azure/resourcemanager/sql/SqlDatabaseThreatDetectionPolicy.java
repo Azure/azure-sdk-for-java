@@ -13,7 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
 
 /** A representation of the Azure SQL Database threat detection policy. */
 @Fluent

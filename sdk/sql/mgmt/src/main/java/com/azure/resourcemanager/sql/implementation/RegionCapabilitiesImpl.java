@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Wrapp
 import com.azure.resourcemanager.sql.CapabilityStatus;
 import com.azure.resourcemanager.sql.RegionCapabilities;
 import com.azure.resourcemanager.sql.ServerVersionCapability;
-import com.azure.resourcemanager.sql.fluent.LocationCapabilitiesInner;
+import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

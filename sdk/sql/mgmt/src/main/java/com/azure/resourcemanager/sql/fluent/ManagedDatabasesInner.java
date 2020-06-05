@@ -35,6 +35,9 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.sql.CompleteDatabaseRestoreDefinition;
 import com.azure.resourcemanager.sql.ManagedDatabaseUpdate;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.ManagedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.ManagedDatabaseListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

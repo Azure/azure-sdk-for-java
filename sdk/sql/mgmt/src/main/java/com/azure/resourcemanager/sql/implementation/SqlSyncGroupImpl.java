@@ -17,7 +17,7 @@ import com.azure.resourcemanager.sql.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.SyncGroupSchema;
 import com.azure.resourcemanager.sql.SyncGroupState;
 import com.azure.resourcemanager.sql.SyncGroupsType;
-import com.azure.resourcemanager.sql.fluent.SyncGroupInner;
+import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;

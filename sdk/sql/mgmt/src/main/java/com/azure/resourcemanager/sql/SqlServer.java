@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.implementation.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.ServerInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
 import java.util.List;
 import java.util.Map;
 

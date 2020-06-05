@@ -38,6 +38,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsLi
 import com.azure.resourcemanager.sql.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.sql.ServerUpdate;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.CheckNameAvailabilityResponseInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

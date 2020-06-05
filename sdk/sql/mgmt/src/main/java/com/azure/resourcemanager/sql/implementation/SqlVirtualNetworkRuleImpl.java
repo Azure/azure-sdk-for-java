@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.sql.SqlServer;
 import com.azure.resourcemanager.sql.SqlVirtualNetworkRule;
 import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.fluent.VirtualNetworkRuleInner;
+import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 

@@ -34,6 +34,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.sql.ElasticPoolUpdate;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

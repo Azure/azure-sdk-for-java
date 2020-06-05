@@ -34,6 +34,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.sql.FailoverGroupUpdate;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
+import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

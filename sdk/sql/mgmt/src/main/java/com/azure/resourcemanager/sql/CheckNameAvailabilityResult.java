@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.CheckNameAvailabilityResponseInner;
+import com.azure.resourcemanager.sql.fluent.inner.CheckNameAvailabilityResponseInner;
 
 /** The result of checking for the SQL server name availability. */
 @Fluent

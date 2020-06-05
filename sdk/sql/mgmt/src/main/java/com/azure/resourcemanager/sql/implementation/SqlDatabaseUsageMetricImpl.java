@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.SqlDatabaseUsageMetric;
-import com.azure.resourcemanager.sql.fluent.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for Azure SQL Database usage. */

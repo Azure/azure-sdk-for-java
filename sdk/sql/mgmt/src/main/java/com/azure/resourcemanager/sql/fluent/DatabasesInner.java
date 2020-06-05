@@ -39,6 +39,14 @@ import com.azure.resourcemanager.sql.ImportRequest;
 import com.azure.resourcemanager.sql.ReplicaType;
 import com.azure.resourcemanager.sql.ResourceMoveDefinition;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.ImportExportResponseInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionListResultInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

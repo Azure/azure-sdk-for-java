@@ -27,6 +27,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import com.azure.resourcemanager.sql.fluent.inner.JobExecutionInner;
+import com.azure.resourcemanager.sql.fluent.inner.JobExecutionListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobStepExecutions. */

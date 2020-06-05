@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import com.azure.resourcemanager.sql.SqlFirewallRule;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.fluent.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
 
 /** Represents a SQL Firewall rules collection associated with an Azure SQL server. */
 public class SqlFirewallRulesAsExternalChildResourcesImpl

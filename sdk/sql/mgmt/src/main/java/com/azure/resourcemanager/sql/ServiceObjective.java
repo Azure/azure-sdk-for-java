@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
 
 /** An immutable client-side representation of an Azure SQL Service Objective. */
 @Fluent

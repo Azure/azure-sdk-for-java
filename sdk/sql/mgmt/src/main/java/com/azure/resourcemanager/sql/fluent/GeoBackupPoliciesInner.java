@@ -28,6 +28,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.GeoBackupPolicyState;
+import com.azure.resourcemanager.sql.fluent.inner.GeoBackupPolicyInner;
+import com.azure.resourcemanager.sql.fluent.inner.GeoBackupPolicyListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GeoBackupPolicies. */

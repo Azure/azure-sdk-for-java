@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.sql.ServerKeyType;
 import com.azure.resourcemanager.sql.SqlEncryptionProtector;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.fluent.EncryptionProtectorInner;
+import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
