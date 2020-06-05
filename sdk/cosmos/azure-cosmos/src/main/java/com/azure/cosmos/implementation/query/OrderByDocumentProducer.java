@@ -77,7 +77,7 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
                 consumeComparer,
                 client,
                 collectionRid,
-            cosmosQueryRequestOptions,
+                cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
                 targetRange,

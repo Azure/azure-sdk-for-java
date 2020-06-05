@@ -229,7 +229,7 @@ class DocumentProducer<T extends Resource> {
         return new DocumentProducer<T>(
                 client,
                 collectionRid,
-            cosmosQueryRequestOptions,
+                cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
                 targetRange,

@@ -66,7 +66,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                 resourceTypeEnum,
                 resourceType,
                 query,
-            cosmosQueryRequestOptions,
+                cosmosQueryRequestOptions,
                 resourceLink,
                 false,
                 correlatedActivityId);
@@ -142,7 +142,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                     partitionKeyRangeCache,
                     PathsHelper.getCollectionPath(super.resourceLink),
                     retryPolicyInstance,
-                cosmosQueryRequestOptions);
+                    cosmosQueryRequestOptions);
         }
 
         final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
