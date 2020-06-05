@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Resource;
@@ -41,14 +41,14 @@ implements IDocumentQueryExecutionContext<T> {
     protected String resourceLink;
     protected IDocumentQueryClient client;
     protected Class<T> resourceType;
-    protected FeedOptions feedOptions;
+    protected QueryRequestOptions queryRequestOptions;
     protected SqlQuerySpec query;
     protected UUID correlatedActivityId;
     protected boolean shouldExecuteQueryRequest;
 
     protected DocumentQueryExecutionContextBase(IDocumentQueryClient client, ResourceType resourceTypeEnum,
-            Class<T> resourceType, SqlQuerySpec query, FeedOptions feedOptions, String resourceLink,
-            boolean getLazyFeedResponse, UUID correlatedActivityId) {
+                                                Class<T> resourceType, SqlQuerySpec query, QueryRequestOptions queryRequestOptions, String resourceLink,
+                                                boolean getLazyFeedResponse, UUID correlatedActivityId) {
 
         // TODO: validate args are not null: client and feedOption should not be null
         this.client = client;
@@ -56,7 +56,7 @@ implements IDocumentQueryExecutionContext<T> {
         this.resourceType = resourceType;
         this.query = query;
         this.shouldExecuteQueryRequest = (query != null);
-        this.feedOptions = feedOptions;
+        this.queryRequestOptions = queryRequestOptions;
         this.resourceLink = resourceLink;
         // this.getLazyFeedResponse = getLazyFeedResponse;
         this.correlatedActivityId = correlatedActivityId;
@@ -113,9 +113,9 @@ implements IDocumentQueryExecutionContext<T> {
         return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, resourceType));
     }
 
-    public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
-        FeedOptions options = new FeedOptions(this.feedOptions);
-        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
+    public QueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
+        QueryRequestOptions options = ModelBridgeInternal.createQueryRequestOptions(this.queryRequestOptions);
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }
 
@@ -123,12 +123,12 @@ implements IDocumentQueryExecutionContext<T> {
         return this.client.executeQueryAsync(request);
     }
 
-    public Map<String, String> createCommonHeadersAsync(FeedOptions feedOptions) {
+    public Map<String, String> createCommonHeadersAsync(QueryRequestOptions queryRequestOptions) {
         Map<String, String> requestHeaders = new HashMap<>();
 
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
         ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
-        if (!Strings.isNullOrEmpty(feedOptions.getSessionToken())
+        if (!Strings.isNullOrEmpty(queryRequestOptions.getSessionToken())
                 && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
             if (defaultConsistencyLevel == ConsistencyLevel.SESSION
                     || (desiredConsistencyLevel == ConsistencyLevel.SESSION)) {
@@ -138,7 +138,7 @@ implements IDocumentQueryExecutionContext<T> {
                 // document and attachment)
                 // don't span across partitions. Hence, session token returned by one partition
                 // should not be used
-                // when quering resources from another partition.
+                // when querying resources from another partition.
                 // Since master resources can span across partitions, don't send session token
                 // to the backend.
                 // As master resources are sync replicated, we should always get consistent
@@ -146,33 +146,34 @@ implements IDocumentQueryExecutionContext<T> {
                 // irrespective of the chosen replica.
                 // For server resources, which don't span partitions, specify the session token
                 // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.getSessionToken());
+                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, queryRequestOptions.getSessionToken());
             }
         }
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.getRequestContinuation());
+        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(queryRequestOptions));
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
         // Flow the pageSize only when we are not doing client eval
-        if (feedOptions.getMaxItemCount() != null && feedOptions.getMaxItemCount() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.getMaxItemCount()));
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(queryRequestOptions);
+        if (maxItemCount != null && maxItemCount > 0) {
+            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(maxItemCount));
         }
 
-        if (feedOptions.getMaxDegreeOfParallelism() != 0) {
+        if (queryRequestOptions.getMaxDegreeOfParallelism() != 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
         }
 
-        if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
+        if (this.queryRequestOptions.setResponseContinuationTokenLimitInKb() > 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(feedOptions.setResponseContinuationTokenLimitInKb()));
+                    Strings.toString(queryRequestOptions.setResponseContinuationTokenLimitInKb()));
         }
 
         if (desiredConsistencyLevel != null) {
             requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
         }
 
-        if(feedOptions.isPopulateQueryMetrics()){
-            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
+        if(queryRequestOptions.isQueryMetricsEnabled()){
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(queryRequestOptions.isQueryMetricsEnabled()));
         }
 
         return requestHeaders;

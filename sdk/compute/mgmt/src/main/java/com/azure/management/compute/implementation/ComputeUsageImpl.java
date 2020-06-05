@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.ComputeUsage;
-import com.azure.management.compute.ComputeUsageUnit;
-import com.azure.management.compute.UsageName;
-import com.azure.management.compute.models.UsageInner;
+import com.azure.management.compute.models.ComputeUsage;
+import com.azure.management.compute.models.ComputeUsageUnit;
+import com.azure.management.compute.models.UsageName;
+import com.azure.management.compute.fluent.inner.UsageInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The implementation of ComputeUsage. */

@@ -16,7 +16,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 public final class ParallelTransferOptions {
 
     private Long blockSize;
-    private Integer numBuffers;
+    private Integer maxConcurrency;
     private ProgressReceiver progressReceiver;
     private Long maxSingleUploadSize;
 
@@ -35,16 +35,16 @@ public final class ParallelTransferOptions {
      * individual call will send more data and will therefore take longer. This parameter also determines the size
      * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
      * be up to blockSize * numBuffers.
-     * @param numBuffers For buffered upload only, the number of buffers is the maximum number of buffers this method
-     * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
-     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
+     * @param maxConcurrency For buffered upload only, the number of buffers is the maximum number of buffers this
+     * method should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger
+     * the number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
      * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
      * @param progressReceiver {@link ProgressReceiver}
      * @deprecated Use fluent interface to set properties instead.
      */
     @Deprecated
-    public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver) {
-        this(blockSize, numBuffers, progressReceiver, null);
+    public ParallelTransferOptions(Integer blockSize, Integer maxConcurrency, ProgressReceiver progressReceiver) {
+        this(blockSize, maxConcurrency, progressReceiver, null);
     }
 
     /**
@@ -55,11 +55,14 @@ public final class ParallelTransferOptions {
      * of requests that need to be made. If block size is large, upload will make fewer network calls, but each
      * individual call will send more data and will therefore take longer. This parameter also determines the size
      * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
-     * be up to blockSize * numBuffers.
-     * @param numBuffers For buffered upload only, the number of buffers is the maximum number of buffers this method
-     * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
-     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
-     * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
+     * be up to blockSize * maxConcurrency.
+     * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
+     * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
+     * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
+     * up to 5 for each of the upload operations. For buffered uploads only, the maximum number of buffers to be
+     * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
+     * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
+     * In general, upload methods which do not accept a length parameter must perform some buffering.
      * @param progressReceiver {@link ProgressReceiver}
      * @param maxSingleUploadSize If the size of the data is less than or equal to this value, it will be uploaded in a
      * single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size will be
@@ -71,10 +74,10 @@ public final class ParallelTransferOptions {
      * @deprecated Use fluent interface to set properties instead.
      */
     @Deprecated
-    public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
+    public ParallelTransferOptions(Integer blockSize, Integer maxConcurrency, ProgressReceiver progressReceiver,
         Integer maxSingleUploadSize) {
         this.setBlockSizeLong(blockSize == null ? null : Long.valueOf(blockSize));
-        this.setNumBuffers(numBuffers);
+        this.setMaxConcurrency(maxConcurrency);
         this.setProgressReceiver(progressReceiver);
         this.setMaxSingleUploadSizeLong(maxSingleUploadSize == null ? null : Long.valueOf(maxSingleUploadSize));
     }
@@ -119,9 +122,11 @@ public final class ParallelTransferOptions {
     /**
      * Gets the number of buffers being used for a transfer operation.
      * @return The number of buffers.
+     * @deprecated Use {@link #getMaxConcurrency()}
      */
+    @Deprecated
     public Integer getNumBuffers() {
-        return this.numBuffers;
+        return this.maxConcurrency;
     }
 
     /**
@@ -132,13 +137,10 @@ public final class ParallelTransferOptions {
      *
      * @param numBuffers The number of buffers.
      * @return The ParallelTransferOptions object itself.
+     * @deprecated Use #se
      */
     public ParallelTransferOptions setNumBuffers(Integer numBuffers) {
-        if (numBuffers != null) {
-            StorageImplUtils.assertInBounds("numBuffers", numBuffers, 2, Integer.MAX_VALUE);
-        }
-        this.numBuffers = numBuffers;
-        return this;
+        return this.setMaxConcurrency(numBuffers);
     }
 
     /**
@@ -196,6 +198,39 @@ public final class ParallelTransferOptions {
                 BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG);
         }
         this.maxSingleUploadSize = maxSingleUploadSize;
+        return this;
+    }
+
+    /**
+     * The maximum number of parallel requests that will be issued at any given time as a part of
+     * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
+     * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
+     * up to 5 for each of the upload operations. For buffered uploads only, the maximum number of buffers to be
+     * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
+     * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
+     * In general, upload methods which do not accept a length parameter must perform some buffering.
+     * @return The ParallelTransferOptions object itself.
+     * @return The max concurrency value.
+     */
+    public Integer getMaxConcurrency() {
+        return this.maxConcurrency;
+    }
+
+    /**
+     * @param maxConcurrency The maximum number of parallel requests that will be issued at any given time as a part of
+     * a single parallel transfer. This value applies per api. For example, if two calls to uploadFromFile are made at
+     * the same time, and each specifies a maxConcurrency of 5, there may be up to 10 outstanding, concurrent requests,
+     * up to 5 for each of the upload operations. For buffered uploads only, the maximum number of buffers to be
+     * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
+     * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
+     * In general, upload methods which do not accept a length parameter must perform some buffering.
+     * @return The ParallelTransferOptions object itself.
+     */
+    public ParallelTransferOptions setMaxConcurrency(Integer maxConcurrency) {
+        if (maxConcurrency != null) {
+            StorageImplUtils.assertInBounds("numBuffers", maxConcurrency, 1, Integer.MAX_VALUE);
+        }
+        this.maxConcurrency= maxConcurrency;
         return this;
     }
 }

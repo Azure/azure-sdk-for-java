@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.ComputeRoles;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.VirtualMachineExtensionImage;
-import com.azure.management.compute.VirtualMachineExtensionImageVersion;
-import com.azure.management.compute.models.VirtualMachineExtensionImageInner;
+import com.azure.management.compute.models.ComputeRoles;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionImageInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The implementation for {@link VirtualMachineExtensionImage}. */

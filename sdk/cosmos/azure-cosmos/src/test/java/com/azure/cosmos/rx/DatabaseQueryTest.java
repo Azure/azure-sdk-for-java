@@ -9,8 +9,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
@@ -42,7 +41,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
     public void queryDatabaseWithFilter() throws Exception {
         String query = String.format("SELECT * from c where c.id = '%s'", databaseId1);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosDatabaseProperties> queryObservable = client.queryDatabases(query, options);
 
@@ -71,7 +70,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
                                      databaseId1,
                                      databaseId2);
 
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosDatabaseProperties> queryObservable = client.queryDatabases(query, options);
 
@@ -96,7 +95,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
     public void queryDatabases_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        FeedOptions options = new FeedOptions();
+        QueryRequestOptions options = new QueryRequestOptions();
         CosmosPagedFlux<CosmosDatabaseProperties> queryObservable = client.queryDatabases(query, options);
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()

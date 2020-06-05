@@ -6,8 +6,9 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -23,7 +24,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     private final DocumentClientRetryPolicy nextRetryPolicy;
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
-    private final FeedOptions feedOptions;
+    private final QueryRequestOptions queryRequestOptions;
     private volatile boolean retried;
     private RxDocumentServiceRequest request;
 
@@ -32,12 +33,12 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
             IPartitionKeyRangeCache partitionKeyRangeCache,
             String collectionLink,
             DocumentClientRetryPolicy nextRetryPolicy,
-            FeedOptions feedOptions) {
+            QueryRequestOptions queryRequestOptions) {
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.collectionLink = collectionLink;
         this.nextRetryPolicy = nextRetryPolicy;
-        this.feedOptions = feedOptions;
+        this.queryRequestOptions = queryRequestOptions;
         this.request = null;
     }
 
@@ -48,7 +49,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     /// <param name="cancellationToken"></param>
     /// <returns>True indicates caller should retry, False otherwise</returns>
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
-        CosmosClientException clientException = Utils.as(exception, CosmosClientException.class);
+        CosmosException clientException = Utils.as(exception, CosmosException.class);
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
@@ -64,17 +65,17 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                     null
                     // AuthorizationTokenType.PrimaryMasterKey)
                     );
-            if (this.feedOptions != null) {
-                request.properties = this.feedOptions.getProperties();
+            if (this.queryRequestOptions != null) {
+                request.properties = ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.queryRequestOptions);
             }
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
-                BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                 request);
 
             return collectionObs.flatMap(collectionValueHolder -> {
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
-                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
                     request.properties);

@@ -48,9 +48,9 @@ public class ModelHelper {
             blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
-        Integer numBuffers = other.getNumBuffers();
-        if (numBuffers == null) {
-            numBuffers = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+        Integer maxConcurrency = other.getMaxConcurrency();
+        if (maxConcurrency == null) {
+            maxConcurrency = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
         }
 
         Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
@@ -60,7 +60,7 @@ public class ModelHelper {
 
         return new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers)
+            .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(other.getProgressReceiver())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }
@@ -73,7 +73,7 @@ public class ModelHelper {
     public static com.azure.storage.common.ParallelTransferOptions wrapBlobOptions(
         ParallelTransferOptions blobOptions) {
         Long blockSize = blobOptions.getBlockSizeLong();
-        Integer numBuffers = blobOptions.getNumBuffers();
+        Integer maxConcurrency = blobOptions.getMaxConcurrency();
         com.azure.storage.common.ProgressReceiver wrappedReceiver = blobOptions.getProgressReceiver() == null
             ? null
             : blobOptions.getProgressReceiver()::reportProgress;
@@ -81,7 +81,7 @@ public class ModelHelper {
 
         return new com.azure.storage.common.ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers)
+            .setNumBuffers(maxConcurrency)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }

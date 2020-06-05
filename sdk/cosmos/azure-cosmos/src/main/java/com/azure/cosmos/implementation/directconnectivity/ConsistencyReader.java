@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -189,8 +189,8 @@ public class ConsistencyReader {
             entity.requestContext.requestChargeTracker = new RequestChargeTracker();
         }
 
-        if(entity.requestContext.cosmosResponseDiagnostics == null) {
-            entity.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+        if(entity.requestContext.cosmosDiagnostics == null) {
+            entity.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
         }
 
         entity.requestContext.forceRefreshAddressCache = forceRefresh;
@@ -200,7 +200,7 @@ public class ConsistencyReader {
         ReadMode desiredReadMode;
         try {
             desiredReadMode = this.deduceReadMode(entity, targetConsistencyLevel, useSessionToken);
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             return Mono.error(e);
         }
         int maxReplicaCount = this.getMaxReplicaSetSize(entity);
@@ -251,7 +251,7 @@ public class ConsistencyReader {
         return responseObs.flatMap(response -> {
             try {
                 return Mono.just(response.toResponse());
-            } catch (CosmosClientException e) {
+            } catch (CosmosException e) {
                 return Mono.error(e);
             }
         });
@@ -275,7 +275,7 @@ public class ConsistencyReader {
 
             try {
                         return Mono.just(responses.get(0).toResponse());
-            } catch (CosmosClientException e) {
+            } catch (CosmosException e) {
                 return Mono.error(e);
             }
                 }
@@ -313,10 +313,10 @@ public class ConsistencyReader {
                             notFoundException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
                         }
                         return Mono.error(notFoundException);
-                    } catch (CosmosClientException e) {
+                    } catch (CosmosException e) {
                         return Mono.error(e);
                     }
-                } catch (CosmosClientException dce) {
+                } catch (CosmosException dce) {
                     return Mono.error(dce);
                 }
 
@@ -333,7 +333,7 @@ public class ConsistencyReader {
 
     ReadMode deduceReadMode(RxDocumentServiceRequest request,
                             ValueHolder<ConsistencyLevel> targetConsistencyLevel,
-                            ValueHolder<Boolean> useSessionToken) throws CosmosClientException {
+                            ValueHolder<Boolean> useSessionToken) {
         targetConsistencyLevel.v = RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request);
         useSessionToken.v = (targetConsistencyLevel.v == ConsistencyLevel.SESSION);
 

@@ -12,6 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.keyvault.Key;
 import com.azure.management.keyvault.KeyPermissions;
+import com.azure.management.keyvault.SkuName;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -80,14 +81,17 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                     .forServicePrincipal(objectId)
                     .allowKeyAllPermissions()
                     .attach()
+                .withSku(SkuName.PREMIUM)
                 .withSoftDeleteEnabled()
                 .create();
 
             SdkContext.sleep(3 * 60 * 1000);
 
+            List<KeyOperation> keyOperations = new ArrayList<>(KeyOperation.values());
+            keyOperations.remove(KeyOperation.IMPORT);
             Key keyBundle = vault.keys().define(keyName)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeyOperations(new ArrayList<>(KeyOperation.values()))
+                .withKeyTypeToCreate(KeyType.RSA_HSM)
+                .withKeyOperations(keyOperations)
                 .create();
 
             // ============================================================
@@ -155,7 +159,7 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

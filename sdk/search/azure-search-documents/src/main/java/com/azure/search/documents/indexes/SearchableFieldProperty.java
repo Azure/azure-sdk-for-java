@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.models.AnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -55,26 +55,31 @@ public @interface SearchableFieldProperty {
     /**
      * Optional arguments defines the name of the analyzer used for the field.
      *
-     * @return {@link AnalyzerName} String value. Or default to "null" String type.
+     * @return {@link LexicalAnalyzerName} String value. Or default to "null" String type.
      */
     String analyzer() default "";
 
     /**
      * Optional arguments defines the name of the search analyzer used for the field.
      *
-     * @return {@link AnalyzerName} String value. Or default to an empty String.
+     * @return {@link LexicalAnalyzerName} String value. Or default to an empty String.
      */
     String searchAnalyzer() default "";
 
     /**
      * Optional arguments defines the name of the analyzer used for the field.
      *
-     * @return {@link AnalyzerName} String value. Or default to an empty String.
+     * @return {@link LexicalAnalyzerName} String value. Or default to an empty String.
      */
     String indexAnalyzer() default "";
 
     /**
      * Optional arguments defines the array of synonymMaps used for the field.
+     * This option can be used only with searchable fields. Currently only one
+     * synonym map per field is supported. Assigning a synonym map to a field
+     * ensures that query terms targeting that field are expanded at query-time
+     * using the rules in the synonym map. This attribute can be changed on
+     * existing fields.
      *
      * @return An array of synonym map values. Or default to empty string array.
      */

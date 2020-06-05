@@ -6,57 +6,37 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**
- * Encapsulates options that can be specified for a request issued to cosmos container.
+ * Encapsulates options that can be specified for a request issued to Cosmos container.
  */
 public final class CosmosContainerRequestOptions {
-    private Integer offerThroughput;
-    private boolean populateQuotaInfo;
+    private boolean quotaInfoEnabled;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
-    private AccessCondition accessCondition;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
 
     /**
-     * Gets the throughput in the form of Request Units per second when creating a cosmos container.
+     * Gets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for item
+     * container read requests.
      *
-     * @return the throughput value.
+     * @return true if quotaInfoEnabled is enabled
      */
-    Integer getOfferThroughput() {
-        return offerThroughput;
+    public boolean isQuotaInfoEnabled() {
+        return quotaInfoEnabled;
     }
 
     /**
-     * Sets the throughput in the form of Request Units per second when creating a cosmos container.
+     * Sets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
+     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for item
+     * container read requests.
      *
-     * @param offerThroughput the throughput value.
+     * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      * @return the current request options
      */
-    CosmosContainerRequestOptions setOfferThroughput(Integer offerThroughput) {
-        this.offerThroughput = offerThroughput;
-        return this;
-    }
-
-    /**
-     * Gets the PopulateQuotaInfo setting for cosmos container read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting cosmos container quota related stats for document
-     * collection read requests.
-     *
-     * @return true if PopulateQuotaInfo is enabled
-     */
-    public boolean isQuotaInfoPopulated() {
-        return populateQuotaInfo;
-    }
-
-    /**
-     * Sets the PopulateQuotaInfo setting for cosmos container read requests in the Azure Cosmos DB database service.
-     * PopulateQuotaInfo is used to enable/disable getting cosmos container quota related stats for document
-     * collection read requests.
-     *
-     * @param populateQuotaInfo a boolean value indicating whether PopulateQuotaInfo is enabled or not
-     * @return the current request options
-     */
-    public CosmosContainerRequestOptions setQuotaInfoPopulated(boolean populateQuotaInfo) {
-        this.populateQuotaInfo = populateQuotaInfo;
+    public CosmosContainerRequestOptions setQuotaInfoEnabled(boolean quotaInfoEnabled) {
+        this.quotaInfoEnabled = quotaInfoEnabled;
         return this;
     }
 
@@ -65,7 +45,7 @@ public final class CosmosContainerRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -75,7 +55,7 @@ public final class CosmosContainerRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }
@@ -101,22 +81,42 @@ public final class CosmosContainerRequestOptions {
     }
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosContainerRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     * @return the current request options
+     */
+    public CosmosContainerRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
@@ -127,9 +127,9 @@ public final class CosmosContainerRequestOptions {
 
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(accessCondition);
-        options.setOfferThroughput(offerThroughput);
-        options.setPopulateQuotaInfo(populateQuotaInfo);
+        options.setIfMatchETag(getIfMatchETag());
+        options.setIfNoneMatchETag(getIfNoneMatchETag());
+        options.setQuotaInfoEnabled(quotaInfoEnabled);
         options.setSessionToken(sessionToken);
         options.setConsistencyLevel(consistencyLevel);
         options.setThroughputProperties(this.throughputProperties);

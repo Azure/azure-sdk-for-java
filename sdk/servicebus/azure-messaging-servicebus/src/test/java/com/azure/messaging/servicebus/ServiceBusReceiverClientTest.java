@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +49,8 @@ class ServiceBusReceiverClientTest {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
+
+    private Duration maxAutoLockRenewalDuration;
     private ServiceBusReceiverClient client;
 
     @Mock
@@ -65,7 +66,8 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
+            maxAutoLockRenewalDuration));
 
         when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
@@ -212,10 +214,10 @@ class ServiceBusReceiverClientTest {
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peek()).thenReturn(Mono.just(message));
+        when(asyncClient.browse()).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peek();
+        final ServiceBusReceivedMessage actual = client.browse();
 
         // Assert
         assertEquals(message, actual);
@@ -226,10 +228,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peekAt(sequenceNumber)).thenReturn(Mono.just(message));
+        when(asyncClient.browseAt(sequenceNumber)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.browseAt(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -265,10 +267,10 @@ class ServiceBusReceiverClientTest {
                 }
             });
         });
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.browseBatch(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -309,10 +311,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.browseBatch(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -338,10 +340,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.peekBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
+        when(asyncClient.browseBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatchAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatchAt(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);
@@ -411,7 +413,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages, receiveTimeout);
@@ -457,7 +459,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
@@ -503,7 +505,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);

@@ -8,9 +8,10 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -26,8 +27,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -64,7 +64,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                               .map(Utils.ValueHolder::new)
                               .onErrorResume(err -> {
                                   logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
-                                  CosmosClientException dce = Utils.as(err, CosmosClientException.class);
+                                  CosmosException dce = Utils.as(err, CosmosException.class);
                                   if (dce != null && Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND)) {
                                       return Mono.just(new Utils.ValueHolder<>(null));
                                   }
@@ -153,7 +153,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
-                    CosmosClientException dce = Utils.as(err, CosmosClientException.class);
+                    CosmosException dce = Utils.as(err, CosmosException.class);
                     logger.debug("tryGetRangeByPartitionKeyRangeId on collectionRid {} and partitionKeyRangeId {} encountered failure",
                             collectionRid, partitionKeyRangeId, err);
 
@@ -223,16 +223,16 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return collectionObs.flatMap(coll -> {
 
-            FeedOptions feedOptions = new FeedOptions();
+            QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
             if (properties != null) {
-                feedOptions.setProperties(properties);
+                ModelBridgeInternal.setQueryRequestOptionsProperties(queryRequestOptions, properties);
             }
-            ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-            return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
+            Instant addressCallStartTime = Instant.now();
+            return client.readPartitionKeyRanges(coll.getSelfLink(), queryRequestOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {
-                            ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                            Instant addressCallEndTime = Instant.now();
                             MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                                 addressCallEndTime,
                                 MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);

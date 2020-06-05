@@ -5,8 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.Hotel;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class IndexContentManagementExample {
      * type directly from the index client
      */
     private static void basicIndexing() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
@@ -59,7 +59,7 @@ public class IndexContentManagementExample {
      * Advanced usage that includes different types of operations in a single batch
      */
     private static void advancedIndexing() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)

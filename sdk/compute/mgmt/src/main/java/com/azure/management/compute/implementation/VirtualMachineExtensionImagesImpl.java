@@ -4,19 +4,19 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.VirtualMachineExtensionImage;
-import com.azure.management.compute.VirtualMachineExtensionImageVersion;
-import com.azure.management.compute.VirtualMachineExtensionImages;
-import com.azure.management.compute.VirtualMachinePublishers;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.models.VirtualMachineExtensionImages;
+import com.azure.management.compute.models.VirtualMachinePublishers;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation for {@link VirtualMachineExtensionImages}. */
-class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensionImages {
+public class VirtualMachineExtensionImagesImpl implements VirtualMachineExtensionImages {
     private final VirtualMachinePublishers publishers;
 
-    VirtualMachineExtensionImagesImpl(VirtualMachinePublishers publishers) {
+    public VirtualMachineExtensionImagesImpl(VirtualMachinePublishers publishers) {
         this.publishers = publishers;
     }
 

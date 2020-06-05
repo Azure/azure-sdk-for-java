@@ -52,7 +52,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();

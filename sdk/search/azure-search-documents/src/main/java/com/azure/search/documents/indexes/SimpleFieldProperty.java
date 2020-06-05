@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.models.SearchField;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation is to indicate whether the field is a simple field. This annotation can only set boolean field of
- * {@link Field}. {@code isSearchable} will set to {@code false}.
+ * {@link SearchField}. {@code isSearchable} will set to {@code false}.
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

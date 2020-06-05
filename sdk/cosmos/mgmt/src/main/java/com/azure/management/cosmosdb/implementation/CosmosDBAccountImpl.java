@@ -25,6 +25,8 @@ import com.azure.management.cosmosdb.VirtualNetworkRule;
 import com.azure.management.cosmosdb.models.DatabaseAccountGetResultsInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.management.resources.fluentcore.utils.SdkContext;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -35,10 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.function.Function;
-
-import com.azure.management.resources.fluentcore.utils.SdkContext;
-import reactor.core.publisher.Mono;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /** The implementation for CosmosDBAccount. */
 class CosmosDBAccountImpl
@@ -388,8 +388,7 @@ class CosmosDBAccountImpl
         this.ensureFailoverIsInitialized();
         for (int i = 1; i < this.failoverPolicies.size(); i++) {
             if (this.failoverPolicies.get(i).locationName() != null) {
-                String locName = this.failoverPolicies.get(i).locationName().replace(" ", "")
-                    .toLowerCase(Locale.ROOT);
+                String locName = this.formatLocationName(this.failoverPolicies.get(i).locationName());
                 if (locName.equals(region.name())) {
                     this.failoverPolicies.remove(i);
                 }
@@ -536,6 +535,10 @@ class CosmosDBAccountImpl
         locationParameters.withLocations(locations);
     }
 
+    private static String formatLocationName(String locationName) {
+        return locationName.replace(" ", "").toLowerCase(Locale.ROOT);
+    }
+
     private Mono<CosmosDBAccount> doDatabaseUpdateCreate() {
         final CosmosDBAccountImpl self = this;
         final List<Integer> data = new ArrayList<Integer>();
@@ -565,49 +568,51 @@ class CosmosDBAccountImpl
             locationParameters = new UpdateLocationParameters(updateParametersInner);
         }
 
-        final HasLocations finalLocationParameters = locationParameters;
+        Set<String> locations = locationParameters.locations().stream()
+            .map(location -> formatLocationName(location.locationName()))
+            .collect(Collectors.toSet());
         return request
             .flatMap(
-                new Function<DatabaseAccountGetResultsInner, Mono<? extends CosmosDBAccount>>() {
-                    @Override
-                    public Mono<? extends CosmosDBAccount> apply(DatabaseAccountGetResultsInner databaseAccountInner) {
-                        self.failoverPolicies.clear();
-                        self.hasFailoverPolicyChanges = false;
-                        return manager()
-                            .databaseAccounts()
-                            .getByResourceGroupAsync(resourceGroupName(), name())
-                            .flatMap(
-                                databaseAccount -> {
-                                    if (MAX_DELAY_DUE_TO_MISSING_FAILOVERS > data.get(0)
-                                        && (databaseAccount.id() == null
-                                            || databaseAccount.id().length() == 0
-                                            || finalLocationParameters.locations().size()
-                                                > databaseAccount.inner().failoverPolicies().size())) {
-                                        return Mono.empty();
-                                    }
+                databaseAccountInner -> {
+                    self.failoverPolicies.clear();
+                    self.hasFailoverPolicyChanges = false;
+                    return manager()
+                        .databaseAccounts()
+                        .getByResourceGroupAsync(resourceGroupName(), name())
+                        .flatMap(
+                            databaseAccount -> {
+                                if (MAX_DELAY_DUE_TO_MISSING_FAILOVERS > data.get(0)
+                                    && (databaseAccount.id() == null
+                                        || databaseAccount.id().length() == 0
+                                        || locations.size()
+                                            != databaseAccount.inner().failoverPolicies().size())) {
+                                    return Mono.empty();
+                                }
 
-                                    if (isAFinalProvisioningState(databaseAccount.inner().provisioningState())) {
-                                        for (Location location : databaseAccount.readableReplications()) {
-                                            if (!isAFinalProvisioningState(location.provisioningState())) {
-                                                return Mono.empty();
-                                            }
+                                if (isAFinalProvisioningState(databaseAccount.inner().provisioningState())) {
+                                    for (Location location : databaseAccount.readableReplications()) {
+                                        if (!isAFinalProvisioningState(location.provisioningState())) {
+                                            return Mono.empty();
                                         }
-                                    } else {
-                                        return Mono.empty();
+                                        if (!locations.contains(formatLocationName(location.locationName()))) {
+                                            return Mono.empty();
+                                        }
                                     }
+                                } else {
+                                    return Mono.empty();
+                                }
 
-                                    self.setInner(databaseAccount.inner());
-                                    return Mono.just(databaseAccount);
-                                })
-                            .repeatWhenEmpty(
-                                longFlux ->
-                                    longFlux
-                                        .flatMap(
-                                            index -> {
-                                                data.set(0, data.get(0) + 30);
-                                                return Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)));
-                                            }));
-                    }
+                                self.setInner(databaseAccount.inner());
+                                return Mono.just(databaseAccount);
+                            })
+                        .repeatWhenEmpty(
+                            longFlux ->
+                                longFlux
+                                    .flatMap(
+                                        index -> {
+                                            data.set(0, data.get(0) + 30);
+                                            return Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(30)));
+                                        }));
                 });
     }
 

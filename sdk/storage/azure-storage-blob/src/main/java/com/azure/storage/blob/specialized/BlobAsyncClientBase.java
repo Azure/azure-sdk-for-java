@@ -69,6 +69,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
@@ -176,11 +177,18 @@ public class BlobAsyncClientBase {
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-                                  String accountName, String containerName, String blobName, String snapshot,
-                                  CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId) {
         if (snapshot != null && versionId != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(url);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
         }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
@@ -1038,7 +1046,7 @@ public class BlobAsyncClientBase {
                             .flatMap(response ->
                                 writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
                                     totalProgress));
-                    })
+                    }, finalParallelTransferOptions.getMaxConcurrency())
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });

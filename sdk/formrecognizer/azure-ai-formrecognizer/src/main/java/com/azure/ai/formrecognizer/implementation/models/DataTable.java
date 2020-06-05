@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DataTable model.
- */
+/** The DataTable model. */
 @Fluent
 public final class DataTable {
     /*
@@ -33,7 +31,7 @@ public final class DataTable {
 
     /**
      * Get the rows property: Number of rows.
-     * 
+     *
      * @return the rows value.
      */
     public int getRows() {
@@ -42,7 +40,7 @@ public final class DataTable {
 
     /**
      * Set the rows property: Number of rows.
-     * 
+     *
      * @param rows the rows value to set.
      * @return the DataTable object itself.
      */
@@ -53,7 +51,7 @@ public final class DataTable {
 
     /**
      * Get the columns property: Number of columns.
-     * 
+     *
      * @return the columns value.
      */
     public int getColumns() {
@@ -62,7 +60,7 @@ public final class DataTable {
 
     /**
      * Set the columns property: Number of columns.
-     * 
+     *
      * @param columns the columns value to set.
      * @return the DataTable object itself.
      */
@@ -73,7 +71,7 @@ public final class DataTable {
 
     /**
      * Get the cells property: List of cells contained in the table.
-     * 
+     *
      * @return the cells value.
      */
     public List<DataTableCell> getCells() {
@@ -82,7 +80,7 @@ public final class DataTable {
 
     /**
      * Set the cells property: List of cells contained in the table.
-     * 
+     *
      * @param cells the cells value to set.
      * @return the DataTable object itself.
      */

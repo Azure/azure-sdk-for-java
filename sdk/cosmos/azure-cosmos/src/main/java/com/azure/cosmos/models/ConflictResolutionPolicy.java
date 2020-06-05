@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
@@ -15,49 +14,52 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents the conflict resolution policy configuration for specifying how to resolve conflicts
- * in case writes from different regions result in conflicts on documents in the collection in the Azure Cosmos DB
+ * in case writes from different regions result in conflicts on items in the container in the Azure Cosmos DB
  * service.
+ *
+ * Refer to: https://docs.microsoft.com/en-us/azure/cosmos-db/conflict-resolution-policies
+ *
  * <p>
- * A collection with custom conflict resolution with no user-registered stored procedure.
+ * A container with custom conflict resolution with no user-registered stored procedure.
  * <pre>{@code
- * DocumentCollection collectionSpec = new DocumentCollection();
- * collectionSpec.getId("Multi-master collection");
  *
- * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy();
- * collectionSpec.getConflictResolutionPolicy(policy);
+ * CosmosContainerProperties containerProperties =
+ *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
+ * containerProperties.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy());
  *
- * DocumentCollection collection = client.createCollection(databaseLink, collectionSpec, null)
- *         .toBlocking().single().getResource();
+ * CosmosAsyncDatabase database = client.createDatabase(databaseProperties).block().getDatabase();
+ * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
  *
  * }
  * </pre>
  * <p>
- * A collection with custom conflict resolution with a user-registered stored procedure.
+ * A container with custom conflict resolution with a user-registered stored procedure.
  * <pre>{@code
- * DocumentCollection collectionSpec = new DocumentCollection();
- * collectionSpec.getId("Multi-master collection");
+ *
+ * CosmosContainerProperties containerProperties =
+ *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
  *
  * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy(conflictResolutionSprocName);
- * collectionSpec.getConflictResolutionPolicy(policy);
+ * containerProperties.setConflictResolutionPolicy(policy);
  *
- * DocumentCollection collection = client.createCollection(databaseLink, collectionSpec, null)
- *         .toBlocking().single().getResource();
+ * CosmosAsyncDatabase database = client.createDatabase(databaseProperties).block().getDatabase();
+ * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
  *
  * }
  * </pre>
  * <p>
- * A collection with last writer wins conflict resolution, based on a path in the conflicting documents.
- * A collection with custom conflict resolution with a user-registered stored procedure.
+ * A container with last writer wins conflict resolution, based on a path in the conflicting items.
+ * A container with custom conflict resolution with a user-registered stored procedure.
  * <pre>{@code
- * DocumentCollection collectionSpec = new DocumentCollection();
- * collectionSpec.getId("Multi-master collection");
  *
- * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy
- * ("/path/for/conflict/resolution");
- * collectionSpec.getConflictResolutionPolicy(policy);
+ * CosmosContainerProperties containerProperties =
+ *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
  *
- * DocumentCollection collection = client.createCollection(databaseLink, collectionSpec, null)
- *         .toBlocking().single().getResource();
+ * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy("/path/for/conflict/resolution");
+ * containerProperties.setConflictResolutionPolicy(policy);
+ *
+ * CosmosAsyncDatabase database = client.createDatabase(databaseProperties).block().getDatabase();
+ * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
  *
  * }
  * </pre>
@@ -69,7 +71,7 @@ public final class ConflictResolutionPolicy {
     /**
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.
      * <p>
-     * In case of a conflict occurring on a document, the document with the higher integer value in the default path
+     * In case of a conflict occurring on an item, the item with the higher integer value in the default path
      * {@link Resource#getTimestamp()} ()}, i.e., "/_ts" will be used.
      * {@link Resource#getTimestamp()}, i.e., "/_ts" will be used.
      *
@@ -84,12 +86,12 @@ public final class ConflictResolutionPolicy {
     /**
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with path as the resolution path.
      * <p>
-     * The specified path must be present in each document and must be an integer value.
-     * In case of a conflict occurring on a document, the document with the higher integer value in the specified path
+     * The specified path must be present in each item and must be an integer value.
+     * In case of a conflict occurring on an item, the item with the higher integer value in the specified path
      * will be picked.
      *
      * @param conflictResolutionPath The path to check values for last-writer wins conflict resolution.
-     * That path is a rooted path of the property in the document, such as "/name/first".
+     * That path is a rooted path of the property in the item, such as "/name/first".
      * @return ConflictResolutionPolicy.
      */
     public static ConflictResolutionPolicy createLastWriterWinsPolicy(String conflictResolutionPath) {
@@ -105,7 +107,7 @@ public final class ConflictResolutionPolicy {
      * Creates a CUSTOM {@link ConflictResolutionPolicy} which uses the specified stored procedure
      * to perform conflict resolution
      * <p>
-     * This stored procedure may be created after the {@link DocumentCollection} is created and can be changed as
+     * This stored procedure may be created after the {@link CosmosContainerProperties} is created and can be changed as
      * required.
      *
      * <ul>
@@ -152,7 +154,7 @@ public final class ConflictResolutionPolicy {
      *
      * @param jsonString the json string
      */
-    public ConflictResolutionPolicy(String jsonString) {
+    ConflictResolutionPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
@@ -201,34 +203,34 @@ public final class ConflictResolutionPolicy {
     }
 
     /**
-     * Gets the path which is present in each document in the Azure Cosmos DB service for last writer wins
+     * Gets the path which is present in each item in the Azure Cosmos DB service for last writer wins
      * conflict-resolution.
-     * This path must be present in each document and must be an integer value.
-     * In case of a conflict occurring on a document, the document with the higher integer value in the specified
+     * This path must be present in each item and must be an integer value.
+     * In case of a conflict occurring on an item, the item with the higher integer value in the specified
      * path will be picked.
      * If the path is unspecified, by default the {@link Resource#getTimestamp()} ()} path will be used.
      * <p>
      * This value should only be set when using {@link ConflictResolutionMode#LAST_WRITER_WINS}
      *
      * @return The path to check values for last-writer wins conflict resolution.
-     * That path is a rooted path of the property in the document, such as "/name/first".
+     * That path is a rooted path of the property in the item, such as "/name/first".
      */
     public String getConflictResolutionPath() {
         return this.jsonSerializable.getString(Constants.Properties.CONFLICT_RESOLUTION_PATH);
     }
 
     /**
-     * Sets the path which is present in each document in the Azure Cosmos DB service for last writer wins
+     * Sets the path which is present in each item in the Azure Cosmos DB service for last writer wins
      * conflict-resolution.
-     * This path must be present in each document and must be an integer value.
-     * In case of a conflict occurring on a document, the document with the higher integer value in the specified
+     * This path must be present in each item and must be an integer value.
+     * In case of a conflict occurring on an item, the item with the higher integer value in the specified
      * path will be picked.
      * If the path is unspecified, by default the {@link Resource#getTimestamp()} ()} path will be used.
      * <p>
      * This value should only be set when using {@link ConflictResolutionMode#LAST_WRITER_WINS}
      *
      * @param value The path to check values for last-writer wins conflict resolution.
-     * That path is a rooted path of the property in the document, such as "/name/first".
+     * That path is a rooted path of the property in the item, such as "/name/first".
      */
     ConflictResolutionPolicy setConflictResolutionPath(String value) {
         this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PATH, value);
@@ -237,7 +239,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Gets the {@link StoredProcedure} which is used for conflict resolution in the Azure Cosmos DB service.
-     * This stored procedure may be created after the {@link DocumentCollection} is created and can be changed as
+     * This stored procedure may be created after the {@link CosmosContainerProperties} is created and can be changed as
      * required.
      *
      * <ul>

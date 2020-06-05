@@ -3,20 +3,21 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.AccessLevel;
-import com.azure.management.compute.CreationData;
-import com.azure.management.compute.CreationSource;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskCreateOption;
-import com.azure.management.compute.DiskSkuTypes;
-import com.azure.management.compute.DiskStorageAccountTypes;
-import com.azure.management.compute.GrantAccessData;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.Snapshot;
-import com.azure.management.compute.SnapshotSku;
-import com.azure.management.compute.SnapshotSkuType;
-import com.azure.management.compute.SnapshotStorageAccountTypes;
-import com.azure.management.compute.models.SnapshotInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AccessLevel;
+import com.azure.management.compute.models.CreationData;
+import com.azure.management.compute.models.CreationSource;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskCreateOption;
+import com.azure.management.compute.models.DiskSkuTypes;
+import com.azure.management.compute.models.DiskStorageAccountTypes;
+import com.azure.management.compute.models.GrantAccessData;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.Snapshot;
+import com.azure.management.compute.models.SnapshotSku;
+import com.azure.management.compute.models.SnapshotSkuType;
+import com.azure.management.compute.models.SnapshotStorageAccountTypes;
+import com.azure.management.compute.fluent.inner.SnapshotInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
@@ -84,7 +85,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         grantAccessDataInner.withAccess(AccessLevel.READ).withDurationInSeconds(accessDurationInSeconds);
         return manager()
             .inner()
-            .snapshots()
+            .getSnapshots()
             .grantAccessAsync(resourceGroupName(), name(), grantAccessDataInner)
             .onErrorResume(e -> Mono.empty())
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -97,7 +98,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public Mono<Void> revokeAccessAsync() {
-        return this.manager().inner().snapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getSnapshots().revokeAccessAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -292,13 +293,13 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         return this
             .manager()
             .inner()
-            .snapshots()
+            .getSnapshots()
             .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<SnapshotInner> getInnerAsync() {
-        return this.manager().inner().snapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getSnapshots().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 }

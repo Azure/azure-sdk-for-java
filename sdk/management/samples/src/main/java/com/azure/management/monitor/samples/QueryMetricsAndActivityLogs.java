@@ -21,9 +21,9 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.AccessTier;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountKey;
+import com.azure.management.storage.models.AccessTier;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccountKey;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
@@ -177,7 +177,7 @@ public final class QueryMetricsAndActivityLogs {
     public static void main(String[] args) {
         try {
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

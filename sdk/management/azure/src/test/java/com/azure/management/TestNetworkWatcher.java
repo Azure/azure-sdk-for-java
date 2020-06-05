@@ -3,10 +3,10 @@
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkInterfaces;
@@ -18,8 +18,8 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccounts;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccounts;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -40,7 +40,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
     @Override
     public NetworkWatcher createResource(NetworkWatchers networkWatchers) throws Exception {
         // Network Watcher should be in the same region as monitored resources
-        initializeResourceNames(networkWatchers.manager().getSdkContext());
+        initializeResourceNames(networkWatchers.manager().sdkContext());
 
         // make sure Network Watcher is disabled in current subscription and region as only one can exist
         PagedIterable<NetworkWatcher> nwList = networkWatchers.list();
@@ -113,7 +113,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
 
         Creatable<VirtualMachine> vm1 =
             vms
-                .define(networks.manager().getSdkContext().randomResourceName("vm", 15))
+                .define(networks.manager().sdkContext().randomResourceName("vm", 15))
                 .withRegion(REGION)
                 .withExistingResourceGroup(groupName)
                 .withExistingPrimaryNetworkInterface(nic)
@@ -128,7 +128,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withMinorVersionAutoUpgrade()
                 .attach();
 
-        String vmName = networks.manager().getSdkContext().randomResourceName("vm", 15);
+        String vmName = networks.manager().sdkContext().randomResourceName("vm", 15);
 
         Creatable<VirtualMachine> vm2 =
             vms
