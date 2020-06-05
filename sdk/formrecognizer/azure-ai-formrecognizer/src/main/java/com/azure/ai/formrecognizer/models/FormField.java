@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * The FormField model.
- *
  */
 @Immutable
 public final class FormField {
@@ -39,7 +38,8 @@ public final class FormField {
 
     /**
      * Constructs a FormField object.
-     *  @param confidence The confidence of the recognized field.
+     *
+     * @param confidence The confidence of the recognized field.
      * @param labelText The label text value for the field.
      * @param name The name the field.
      * @param fieldValue The value of the field.
