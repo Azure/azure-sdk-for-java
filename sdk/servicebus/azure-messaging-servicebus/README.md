@@ -177,8 +177,8 @@ You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceB
 either a queue or a topic subscription.
 
 By default, the receive mode is [`ReceiveMode.PEEK_LOCK`][ReceiveMode]. This tells the broker that the receiving client
-wants to settle received messages explicitly. The message is made available for the receiver to process, while held
-under an exclusive lock in the service so that other, competing receivers cannot see it.
+wants to manage settlement of received messages explicitly. The message is made available for the receiver to process,
+while held under an exclusive lock in the service so that other, competing receivers cannot see it.
 `ServiceBusReceivedMessage.getLockedUntil()` indicates when the lock expires and can be extended by the client using
 `receiver.renewMessageLock()`.
 
@@ -214,7 +214,7 @@ receiver.close();
 The asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] continuously fetches messages until
 the `subscription` is disposed.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L108-L129 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L108-L130 -->
 ```java
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -223,6 +223,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 
 // receive() operation continuously fetches messages until the subscription is disposed.
+// The stream is infinite, and completes when the subscription or receiver is closed.
 Disposable subscription = receiver.receive().subscribe(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
     System.out.printf("Id: %s%n", message.getMessageId());
@@ -246,7 +247,7 @@ When a message is received, it can be settled using any of the `complete()`, `ab
 overloads. The sample below completes a received message from synchronous
 [`ServiceBusReceiverClient`][ServiceBusReceiverClient].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L144-L150 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L145-L151 -->
 ```java
 // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
 receiver.receive(10).forEach(context -> {
@@ -286,7 +287,7 @@ Create a [`ServiceBusSenderClient`][ServiceBusSenderClient] for a session enable
 `ServiceBusMessage.setSessionId(String)` on a `ServiceBusMessage` will publish the message to that session. If the
 session does not exist, it is created.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L163-L167 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L164-L168 -->
 ```java
 // Setting sessionId publishes that message to a specific session, in this case, "greeting".
 ServiceBusMessage message = new ServiceBusMessage("Hello world")
@@ -299,7 +300,7 @@ sender.send(message);
 
 Receivers can fetch messages from a specific session or the first available, unlocked session.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L174-L180 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L175-L181 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the session "greetings".
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
@@ -310,7 +311,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L187-L192 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L188-L193 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the first available session.
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()

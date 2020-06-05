@@ -112,6 +112,7 @@ public class ReadmeSamples {
             .buildAsyncClient();
 
         // receive() operation continuously fetches messages until the subscription is disposed.
+        // The stream is infinite, and completes when the subscription or receiver is closed.
         Disposable subscription = receiver.receive().subscribe(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Id: %s%n", message.getMessageId());
