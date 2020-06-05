@@ -49,6 +49,7 @@ public class JsonNodeUtilsTests {
         JsonPrimitive longNode = new JsonPrimitive(42L);
         JsonPrimitive shortNode = new JsonPrimitive((short) 42);
         JsonPrimitive textNode = new JsonPrimitive("42");
+        JsonPrimitive utf8TextNode = new JsonPrimitive("\uD83D\uDE03");
 
         return Stream.of(
             Arguments.of(new GsonJsonArray(jsonArray), jsonArray),
@@ -69,7 +70,9 @@ public class JsonNodeUtilsTests {
             Arguments.of(new GsonJsonPrimitive(shortNode), shortNode),
             Arguments.of(new GsonJsonPrimitive((short) 42), shortNode),
             Arguments.of(new GsonJsonPrimitive(textNode), textNode),
-            Arguments.of(new GsonJsonPrimitive("42"), textNode)
+            Arguments.of(new GsonJsonPrimitive("42"), textNode),
+            Arguments.of(new GsonJsonPrimitive(utf8TextNode), utf8TextNode),
+            Arguments.of(new GsonJsonPrimitive("\uD83D\uDE03"), utf8TextNode)
         );
     }
 
@@ -141,6 +144,7 @@ public class JsonNodeUtilsTests {
         JsonPrimitive longNode = new JsonPrimitive(42L);
         JsonPrimitive shortNode = new JsonPrimitive((short) 42);
         JsonPrimitive textNode = new JsonPrimitive("42");
+        JsonPrimitive utf8TextNode = new JsonPrimitive("\uD83D\uDE03");
 
         return Stream.of(
             Arguments.of(jsonArray, new GsonJsonArray(jsonArray)),
@@ -152,7 +156,8 @@ public class JsonNodeUtilsTests {
             Arguments.of(intNode, new GsonJsonPrimitive(intNode)),
             Arguments.of(longNode, new GsonJsonPrimitive(longNode)),
             Arguments.of(shortNode, new GsonJsonPrimitive(shortNode)),
-            Arguments.of(textNode, new GsonJsonPrimitive(textNode))
+            Arguments.of(textNode, new GsonJsonPrimitive(textNode)),
+            Arguments.of(utf8TextNode, new GsonJsonPrimitive(utf8TextNode))
         );
     }
 

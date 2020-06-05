@@ -55,6 +55,7 @@ public class JsonNodeUtilsTests {
         LongNode longNode = new LongNode(42L);
         ShortNode shortNode = new ShortNode((short) 42);
         TextNode textNode = new TextNode("42");
+        TextNode utf8TextNode = new TextNode("\uD83D\uDE03");
 
         return Stream.of(
             Arguments.of(new JacksonJsonArray(arrayNode), arrayNode),
@@ -75,7 +76,9 @@ public class JsonNodeUtilsTests {
             Arguments.of(new JacksonJsonPrimitive(shortNode), shortNode),
             Arguments.of(new JacksonJsonPrimitive((short) 42), shortNode),
             Arguments.of(new JacksonJsonPrimitive(textNode), textNode),
-            Arguments.of(new JacksonJsonPrimitive("42"), textNode)
+            Arguments.of(new JacksonJsonPrimitive("42"), textNode),
+            Arguments.of(new JacksonJsonPrimitive(utf8TextNode), utf8TextNode),
+            Arguments.of(new JacksonJsonPrimitive("\uD83D\uDE03"), utf8TextNode)
         );
     }
 
@@ -147,6 +150,7 @@ public class JsonNodeUtilsTests {
         LongNode longNode = new LongNode(42L);
         ShortNode shortNode = new ShortNode((short) 42);
         TextNode textNode = new TextNode("42");
+        TextNode utf8TextNode = new TextNode("\uD83D\uDE03");
 
         return Stream.of(
             Arguments.of(arrayNode, new JacksonJsonArray(arrayNode)),
@@ -158,7 +162,8 @@ public class JsonNodeUtilsTests {
             Arguments.of(intNode, new JacksonJsonPrimitive(intNode)),
             Arguments.of(longNode, new JacksonJsonPrimitive(longNode)),
             Arguments.of(shortNode, new JacksonJsonPrimitive(shortNode)),
-            Arguments.of(textNode, new JacksonJsonPrimitive(textNode))
+            Arguments.of(textNode, new JacksonJsonPrimitive(textNode)),
+            Arguments.of(utf8TextNode, new JacksonJsonPrimitive(utf8TextNode))
         );
     }
 
