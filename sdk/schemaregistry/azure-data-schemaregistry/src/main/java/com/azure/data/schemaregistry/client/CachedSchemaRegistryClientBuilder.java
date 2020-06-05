@@ -6,9 +6,11 @@ package com.azure.data.schemaregistry.client;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -42,7 +44,7 @@ import java.util.function.Function;
 public class CachedSchemaRegistryClientBuilder {
     private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClientBuilder.class);
 
-    private static final String DEFAULT_SCOPE = "https://eventhubs.azure.com/.default";
+    private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
     private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry-client.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
@@ -73,6 +75,10 @@ public class CachedSchemaRegistryClientBuilder {
         this.httpClient = null;
         this.credential = null;
         this.retryPolicy = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.put("api-version", "2017-04");
+        policies.add(new AddHeadersPolicy(headers));
 
         Map<String, String> properties = CoreUtils.getProperties(CLIENT_PROPERTIES);
         clientName = properties.getOrDefault(NAME, "UnknownName");
