@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Location;
-import com.azure.resourcemanager.resources.Subscription;
-import com.azure.resourcemanager.resources.SubscriptionPolicies;
-import com.azure.resourcemanager.resources.SubscriptionState;
+import com.azure.resourcemanager.resources.models.Location;
+import com.azure.resourcemanager.resources.models.Subscription;
+import com.azure.resourcemanager.resources.models.SubscriptionPolicies;
+import com.azure.resourcemanager.resources.models.SubscriptionState;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.azure.resourcemanager.resources.models.SubscriptionInner;
-import com.azure.resourcemanager.resources.models.SubscriptionsInner;
+import com.azure.resourcemanager.resources.fluent.inner.SubscriptionInner;
+import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
 
 /**
  * The implementation of {@link Subscription}.
@@ -21,9 +21,9 @@ final class SubscriptionImpl extends
         implements
         Subscription  {
 
-    private final SubscriptionsInner client;
+    private final SubscriptionsClient client;
 
-    SubscriptionImpl(SubscriptionInner innerModel, final SubscriptionsInner client) {
+    SubscriptionImpl(SubscriptionInner innerModel, final SubscriptionsClient client) {
         super(innerModel);
         this.client = client;
     }

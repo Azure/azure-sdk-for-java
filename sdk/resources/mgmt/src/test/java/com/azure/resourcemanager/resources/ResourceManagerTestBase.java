@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
 
 /**
  * The base for resource manager tests.

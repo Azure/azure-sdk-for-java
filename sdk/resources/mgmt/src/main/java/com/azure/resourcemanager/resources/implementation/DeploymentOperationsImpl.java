@@ -5,12 +5,12 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Deployment;
-import com.azure.resourcemanager.resources.DeploymentOperation;
-import com.azure.resourcemanager.resources.DeploymentOperations;
+import com.azure.resourcemanager.resources.models.Deployment;
+import com.azure.resourcemanager.resources.models.DeploymentOperation;
+import com.azure.resourcemanager.resources.models.DeploymentOperations;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.models.DeploymentOperationInner;
-import com.azure.resourcemanager.resources.models.DeploymentOperationsInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
+import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import reactor.core.publisher.Mono;
 
 /**
@@ -19,10 +19,10 @@ import reactor.core.publisher.Mono;
 final class DeploymentOperationsImpl
         extends ReadableWrappersImpl<DeploymentOperation, DeploymentOperationImpl, DeploymentOperationInner>
         implements DeploymentOperations {
-    private final DeploymentOperationsInner client;
+    private final DeploymentOperationsClient client;
     private final Deployment deployment;
 
-    DeploymentOperationsImpl(final DeploymentOperationsInner client,
+    DeploymentOperationsImpl(final DeploymentOperationsClient client,
                              final Deployment deployment) {
         this.client = client;
         this.deployment = deployment;

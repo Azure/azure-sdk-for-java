@@ -27,7 +27,7 @@ import com.azure.resourcemanager.network.NicIpConfiguration;
 import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

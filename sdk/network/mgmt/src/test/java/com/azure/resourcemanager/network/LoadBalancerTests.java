@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

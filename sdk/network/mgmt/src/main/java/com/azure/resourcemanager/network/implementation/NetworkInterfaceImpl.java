@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsI
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

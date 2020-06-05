@@ -5,29 +5,29 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.PolicyDefinition;
-import com.azure.resourcemanager.resources.PolicyDefinitions;
-import com.azure.resourcemanager.resources.PolicyType;
-import com.azure.resourcemanager.resources.ResourceGroups;
+import com.azure.resourcemanager.resources.models.PolicyDefinition;
+import com.azure.resourcemanager.resources.models.PolicyDefinitions;
+import com.azure.resourcemanager.resources.models.PolicyType;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.models.PolicyDefinitionInner;
-import com.azure.resourcemanager.resources.models.PolicyDefinitionsInner;
+import com.azure.resourcemanager.resources.fluent.inner.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
-final class PolicyDefinitionsImpl
+public final class PolicyDefinitionsImpl
         extends ReadableWrappersImpl<PolicyDefinition, PolicyDefinitionImpl, PolicyDefinitionInner>
         implements PolicyDefinitions {
-    private final PolicyDefinitionsInner client;
+    private final PolicyDefinitionsClient client;
 
     /**
      * Creates an instance of the implementation.
      *
      * @param innerClient the inner policies client
      */
-    PolicyDefinitionsImpl(final PolicyDefinitionsInner innerClient) {
+    PolicyDefinitionsImpl(final PolicyDefinitionsClient innerClient) {
         this.client = innerClient;
     }
 

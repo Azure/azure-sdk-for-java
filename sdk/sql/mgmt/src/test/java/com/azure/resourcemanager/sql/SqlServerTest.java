@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.sql.implementation.SqlServerManager;
 import com.azure.resourcemanager.storage.StorageManager;
 

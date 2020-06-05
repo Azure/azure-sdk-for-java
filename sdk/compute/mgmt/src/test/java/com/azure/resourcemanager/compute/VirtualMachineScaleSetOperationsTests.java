@@ -44,7 +44,7 @@ import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;

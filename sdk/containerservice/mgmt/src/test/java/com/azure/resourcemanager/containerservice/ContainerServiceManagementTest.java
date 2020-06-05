@@ -8,7 +8,7 @@ import com.azure.resourcemanager.containerservice.implementation.ContainerServic
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
+import com.azure.resourcemanager.resources.ResourceManager;
 
 public class ContainerServiceManagementTest extends TestBase {
     protected ResourceManager resourceManager;

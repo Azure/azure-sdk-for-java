@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.network;
 
-import com.azure.resourcemanager.resources.ResourceGroup;
-import com.azure.resourcemanager.resources.ResourceGroups;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;

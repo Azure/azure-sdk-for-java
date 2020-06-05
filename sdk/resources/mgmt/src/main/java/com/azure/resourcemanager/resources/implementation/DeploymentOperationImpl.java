@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
-import com.azure.resourcemanager.resources.DeploymentOperation;
-import com.azure.resourcemanager.resources.TargetResource;
+import com.azure.resourcemanager.resources.models.DeploymentOperation;
+import com.azure.resourcemanager.resources.models.TargetResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
-import com.azure.resourcemanager.resources.models.DeploymentOperationInner;
-import com.azure.resourcemanager.resources.models.DeploymentOperationsInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
+import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -23,9 +23,9 @@ final class DeploymentOperationImpl extends
     private String resourceGroupName;
     private String deploymentName;
 
-    private final DeploymentOperationsInner client;
+    private final DeploymentOperationsClient client;
 
-    DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsInner client) {
+    DeploymentOperationImpl(DeploymentOperationInner innerModel, final DeploymentOperationsClient client) {
         super(innerModel);
         this.client = client;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());

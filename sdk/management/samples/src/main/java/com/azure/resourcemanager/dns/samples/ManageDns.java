@@ -20,7 +20,7 @@ import com.azure.resourcemanager.dns.CNameRecordSet;
 import com.azure.resourcemanager.dns.DnsRecordSet;
 import com.azure.resourcemanager.dns.DnsZone;
 import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

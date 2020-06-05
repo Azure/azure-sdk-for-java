@@ -5,22 +5,22 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Provider;
-import com.azure.resourcemanager.resources.Providers;
+import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.models.Providers;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.models.ProviderInner;
-import com.azure.resourcemanager.resources.models.ProvidersInner;
+import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
+import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation for {@link Providers}.
  */
-final class ProvidersImpl
+public final class ProvidersImpl
         extends ReadableWrappersImpl<Provider, ProviderImpl, ProviderInner>
         implements Providers {
-    private final ProvidersInner client;
+    private final ProvidersClient client;
 
-    ProvidersImpl(final ProvidersInner client) {
+    ProvidersImpl(final ProvidersClient client) {
         this.client = client;
     }
 

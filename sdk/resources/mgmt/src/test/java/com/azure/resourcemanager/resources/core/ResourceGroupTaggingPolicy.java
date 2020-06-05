@@ -10,7 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.models.ResourceGroupInner;
+import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

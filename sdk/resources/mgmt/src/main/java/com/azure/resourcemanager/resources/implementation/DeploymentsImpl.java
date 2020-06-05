@@ -5,20 +5,21 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Deployment;
-import com.azure.resourcemanager.resources.Deployments;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.Deployment;
+import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.resources.models.DeploymentExtendedInner;
-import com.azure.resourcemanager.resources.models.DeploymentsInner;
+import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
+import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation for {@link Deployments}.
  */
-final class DeploymentsImpl
+public final class DeploymentsImpl
         extends SupportsGettingByResourceGroupImpl<Deployment>
         implements Deployments,
         HasManager<ResourceManager> {
@@ -126,7 +127,7 @@ final class DeploymentsImpl
 
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
-        final DeploymentsInner client = this.manager().inner().deployments();
+        final DeploymentsClient client = this.manager().inner().deployments();
         return client.listByResourceGroupAsync(resourceGroupName)
             .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }

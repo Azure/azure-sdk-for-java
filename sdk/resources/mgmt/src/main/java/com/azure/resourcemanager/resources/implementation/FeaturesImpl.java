@@ -5,22 +5,22 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.Feature;
-import com.azure.resourcemanager.resources.Features;
+import com.azure.resourcemanager.resources.models.Feature;
+import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.models.FeatureResultInner;
-import com.azure.resourcemanager.resources.models.FeaturesInner;
+import com.azure.resourcemanager.resources.fluent.inner.FeatureResultInner;
+import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import reactor.core.publisher.Mono;
 
 /**
  * The implementation of {@link Features}.
  */
-final class FeaturesImpl
+public final class FeaturesImpl
         extends ReadableWrappersImpl<Feature, FeatureImpl, FeatureResultInner>
         implements Features {
-    private final FeaturesInner client;
+    private final FeaturesClient client;
 
-    FeaturesImpl(final FeaturesInner client) {
+    FeaturesImpl(final FeaturesClient client) {
         this.client = client;
     }
 

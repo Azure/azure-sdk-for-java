@@ -8,8 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.implementation.ResourceManager;
-import com.azure.resourcemanager.resources.models.TenantIdDescriptionInner;
+import com.azure.resourcemanager.resources.fluent.inner.TenantIdDescriptionInner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

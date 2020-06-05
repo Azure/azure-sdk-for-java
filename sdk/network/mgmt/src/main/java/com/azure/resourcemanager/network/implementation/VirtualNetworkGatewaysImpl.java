@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.VirtualNetworkGateways;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaysInner;
-import com.azure.resourcemanager.resources.ResourceGroup;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import java.util.Iterator;
 import java.util.function.Function;
