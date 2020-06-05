@@ -58,7 +58,7 @@ public class VirtualMachineImagesInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineImages list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
-        Observable<Response<ResponseBody>> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("location") String location, @Path("publisherName") String publisherName, @Path("offer") String offer, @Path("skus") String skus, @Path("subscriptionId") String subscriptionId, @Query("$expand") String expand, @Query("$top") Integer top, @Query("$orderby") String orderby, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineImages listOffers" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers/{publisherName}/artifacttypes/vmimage/offers")
@@ -260,10 +260,10 @@ public class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String filter = null;
+        final String expand = null;
         final Integer top = null;
         final String orderby = null;
-        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), expand, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {
@@ -284,7 +284,7 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
-     * @param filter The filter to apply on the operation.
+     * @param expand The expand expression to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -292,8 +292,8 @@ public class VirtualMachineImagesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VirtualMachineImageResourceInner&gt; object if successful.
      */
-    public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
-        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).toBlocking().single().body();
+    public List<VirtualMachineImageResourceInner> list(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby) {
+        return listWithServiceResponseAsync(location, publisherName, offer, skus, expand, top, orderby).toBlocking().single().body();
     }
 
     /**
@@ -303,15 +303,15 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
-     * @param filter The filter to apply on the operation.
+     * @param expand The expand expression to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby), serviceCallback);
+    public ServiceFuture<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby, final ServiceCallback<List<VirtualMachineImageResourceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(location, publisherName, offer, skus, expand, top, orderby), serviceCallback);
     }
 
     /**
@@ -321,14 +321,14 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
-     * @param filter The filter to apply on the operation.
+     * @param expand The expand expression to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
-        return listWithServiceResponseAsync(location, publisherName, offer, skus, filter, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
+    public Observable<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby) {
+        return listWithServiceResponseAsync(location, publisherName, offer, skus, expand, top, orderby).map(new Func1<ServiceResponse<List<VirtualMachineImageResourceInner>>, List<VirtualMachineImageResourceInner>>() {
             @Override
             public List<VirtualMachineImageResourceInner> call(ServiceResponse<List<VirtualMachineImageResourceInner>> response) {
                 return response.body();
@@ -343,13 +343,13 @@ public class VirtualMachineImagesInner {
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
      * @param skus A valid image SKU.
-     * @param filter The filter to apply on the operation.
+     * @param expand The expand expression to apply on the operation.
      * @param top the Integer value
      * @param orderby the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineImageResourceInner&gt; object
      */
-    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String filter, Integer top, String orderby) {
+    public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> listWithServiceResponseAsync(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby) {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
@@ -368,7 +368,7 @@ public class VirtualMachineImagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), filter, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(location, publisherName, offer, skus, this.client.subscriptionId(), expand, top, orderby, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VirtualMachineImageResourceInner>>> call(Response<ResponseBody> response) {

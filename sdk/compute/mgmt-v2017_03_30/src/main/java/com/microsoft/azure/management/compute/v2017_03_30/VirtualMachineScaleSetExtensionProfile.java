@@ -23,7 +23,7 @@ public class VirtualMachineScaleSetExtensionProfile {
     private List<VirtualMachineScaleSetExtensionInner> extensions;
 
     /**
-     * Get the extensions value.
+     * Get the virtual machine scale set child extension resources.
      *
      * @return the extensions value
      */
@@ -32,7 +32,7 @@ public class VirtualMachineScaleSetExtensionProfile {
     }
 
     /**
-     * Set the extensions value.
+     * Set the virtual machine scale set child extension resources.
      *
      * @param extensions the extensions value to set
      * @return the VirtualMachineScaleSetExtensionProfile object itself.
