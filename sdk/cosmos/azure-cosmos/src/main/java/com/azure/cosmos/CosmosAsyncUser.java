@@ -101,7 +101,7 @@ public class CosmosAsyncUser {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionProperties);
+        Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         return database.getDocClientWrapper()
                    .createPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
@@ -122,7 +122,7 @@ public class CosmosAsyncUser {
     public Mono<CosmosPermissionResponse> upsertPermission(
         CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionProperties);
+        Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
@@ -164,7 +164,7 @@ public class CosmosAsyncUser {
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -202,7 +202,7 @@ public class CosmosAsyncUser {
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
     }

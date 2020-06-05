@@ -196,6 +196,7 @@ public class ReactorSession implements AmqpSession {
                                     return existingLink;
                                 }
 
+                                logger.info("Creating a new sender link with linkName {}", linkName);
                                 return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager);
                             });
 
@@ -293,6 +294,7 @@ public class ReactorSession implements AmqpSession {
                                     return existing;
                                 }
 
+                                logger.info("Creating a new receiver link with linkName {}", linkName);
                                 return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
                                     receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
                             });

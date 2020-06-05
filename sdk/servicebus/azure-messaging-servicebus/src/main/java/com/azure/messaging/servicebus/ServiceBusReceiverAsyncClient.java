@@ -460,8 +460,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> browse() {
-        return browse(receiverOptions.getSessionId());
+    public Mono<ServiceBusReceivedMessage> peek() {
+        return peek(receiverOptions.getSessionId());
     }
 
     /**
@@ -474,7 +474,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> browse(String sessionId) {
+    public Mono<ServiceBusReceivedMessage> peek(String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
@@ -506,8 +506,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> browseAt(long sequenceNumber) {
-        return browseAt(sequenceNumber, receiverOptions.getSessionId());
+    public Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber) {
+        return peekAt(sequenceNumber, receiverOptions.getSessionId());
     }
 
     /**
@@ -520,7 +520,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> browseAt(long sequenceNumber, String sessionId) {
+    public Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
@@ -540,8 +540,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> browseBatch(int maxMessages) {
-        return browseBatch(maxMessages, receiverOptions.getSessionId());
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
+        return peekBatch(maxMessages, receiverOptions.getSessionId());
     }
 
     /**
@@ -554,7 +554,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> browseBatch(int maxMessages, String sessionId) {
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatch")));
@@ -601,8 +601,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> browseBatchAt(int maxMessages, long sequenceNumber) {
-        return browseBatchAt(maxMessages, sequenceNumber, receiverOptions.getSessionId());
+    public Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber) {
+        return peekBatchAt(maxMessages, sequenceNumber, receiverOptions.getSessionId());
     }
 
     /**
@@ -617,7 +617,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> browseBatchAt(int maxMessages, long sequenceNumber, String sessionId) {
+    public Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatchAt")));

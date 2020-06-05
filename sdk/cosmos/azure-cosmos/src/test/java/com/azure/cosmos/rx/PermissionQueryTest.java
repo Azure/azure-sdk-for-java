@@ -148,7 +148,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         CosmosPermissionProperties cosmosPermissionProperties = new CosmosPermissionProperties();
         cosmosPermissionProperties.setId(UUID.randomUUID().toString());
         cosmosPermissionProperties.setPermissionMode(PermissionMode.READ);
-        cosmosPermissionProperties.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + index + "=");
+        cosmosPermissionProperties.setContainerName("myContainer" + index + "=");
 
         return createdUser.createPermission(cosmosPermissionProperties, null).single().block().getProperties();
     }

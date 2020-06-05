@@ -1,6 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
+- `USReceipt`, `USReceiptItem`, `USReceiptType` and `FormField{T}` types removed. Information about a `RecognizedReceipt` 
+must now be extracted from its `RecognizedForm`.
 - Rename parameters data and sourceUrl parameters found on methods for FormRecognizerClient to form and formUrl, respectively.
 - Rename parameters for receipt API methods to receipt and receiptUrl.
 - Raise `FormRecognizerException` when a model with `ModelStatus.Invalid` is returned from the `beginTraining()` API's
