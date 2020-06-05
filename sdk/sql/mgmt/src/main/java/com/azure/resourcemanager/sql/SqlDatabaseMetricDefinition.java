@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.models.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.MetricDefinitionInner;
 import java.util.List;
 
 /** Response containing the Azure SQL Database metric definition. */

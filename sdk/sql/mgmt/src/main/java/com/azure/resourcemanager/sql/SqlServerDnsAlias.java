@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.models.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.fluent.ServerDnsAliasInner;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server DNS alias. */

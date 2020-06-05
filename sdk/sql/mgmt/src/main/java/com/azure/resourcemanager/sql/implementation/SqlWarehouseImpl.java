@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.sql.SqlWarehouse;
-import com.azure.resourcemanager.sql.models.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.DatabaseInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation for SqlWarehouse and its parent interfaces. */

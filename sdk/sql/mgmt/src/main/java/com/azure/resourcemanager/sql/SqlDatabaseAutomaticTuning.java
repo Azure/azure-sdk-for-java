@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.models.DatabaseAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.DatabaseAutomaticTuningInner;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL database automatic tuning object. */

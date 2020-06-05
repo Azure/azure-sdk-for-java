@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.sql.SqlFirewallRule;
 import com.azure.resourcemanager.sql.SqlFirewallRuleOperations;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.FirewallRuleInner;
+import com.azure.resourcemanager.sql.fluent.FirewallRuleInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

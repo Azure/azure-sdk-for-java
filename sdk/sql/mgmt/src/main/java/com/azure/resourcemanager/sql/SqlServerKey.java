@@ -12,7 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.models.ServerKeyInner;
+import com.azure.resourcemanager.sql.fluent.ServerKeyInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 

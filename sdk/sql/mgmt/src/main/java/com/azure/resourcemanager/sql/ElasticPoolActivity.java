@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.models.ElasticPoolActivityInner;
+import com.azure.resourcemanager.sql.fluent.ElasticPoolActivityInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL ElasticPool's Activity. */

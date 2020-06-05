@@ -4,7 +4,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlSubscriptionUsageMetric;
-import com.azure.resourcemanager.sql.models.SubscriptionUsageInner;
+import com.azure.resourcemanager.sql.fluent.SubscriptionUsageInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 

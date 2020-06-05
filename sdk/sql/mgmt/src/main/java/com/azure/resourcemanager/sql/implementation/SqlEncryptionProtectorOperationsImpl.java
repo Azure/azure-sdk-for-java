@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.sql.SqlEncryptionProtector;
 import com.azure.resourcemanager.sql.SqlEncryptionProtectorOperations;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.EncryptionProtectorInner;
+import com.azure.resourcemanager.sql.fluent.EncryptionProtectorInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.models.RestorableDroppedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.RestorableDroppedDatabaseInner;
 import java.time.OffsetDateTime;
 
 /** Response containing Azure SQL restorable dropped database. */

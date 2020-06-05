@@ -11,7 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.models.EncryptionProtectorInner;
+import com.azure.resourcemanager.sql.fluent.EncryptionProtectorInner;
 
 /** An immutable client-side representation of an Azure SQL Encryption Protector. */
 @Fluent

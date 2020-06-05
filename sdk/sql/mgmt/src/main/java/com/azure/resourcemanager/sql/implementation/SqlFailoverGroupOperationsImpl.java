@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.sql.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.SqlFailoverGroupOperations;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.FailoverGroupInner;
+import com.azure.resourcemanager.sql.fluent.FailoverGroupInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

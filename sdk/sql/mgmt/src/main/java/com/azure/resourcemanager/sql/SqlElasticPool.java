@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.models.ElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.ElasticPoolInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 import reactor.core.publisher.Mono;

@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.sql.SqlDatabase;
 import com.azure.resourcemanager.sql.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.DatabaseInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

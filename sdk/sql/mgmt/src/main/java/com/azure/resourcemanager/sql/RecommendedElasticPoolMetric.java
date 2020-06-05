@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.models.RecommendedElasticPoolMetricInner;
+import com.azure.resourcemanager.sql.fluent.RecommendedElasticPoolMetricInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL Replication link. */

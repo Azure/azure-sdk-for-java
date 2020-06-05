@@ -5,7 +5,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.ServiceObjective;
-import com.azure.resourcemanager.sql.models.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.fluent.ServiceObjectiveInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation for Azure SQL Server's Service Objective. */

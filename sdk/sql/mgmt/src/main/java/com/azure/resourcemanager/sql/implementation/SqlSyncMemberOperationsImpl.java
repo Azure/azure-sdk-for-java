@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlSyncMember;
 import com.azure.resourcemanager.sql.SqlSyncMemberOperations;
-import com.azure.resourcemanager.sql.models.SyncMemberInner;
+import com.azure.resourcemanager.sql.fluent.SyncMemberInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

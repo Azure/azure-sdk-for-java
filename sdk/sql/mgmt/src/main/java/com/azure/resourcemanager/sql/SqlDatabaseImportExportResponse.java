@@ -7,7 +7,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.sql.models.ImportExportResponseInner;
+import com.azure.resourcemanager.sql.fluent.ImportExportResponseInner;
 
 /** Response containing result of the Azure SQL Database import or export operation. */
 @Fluent

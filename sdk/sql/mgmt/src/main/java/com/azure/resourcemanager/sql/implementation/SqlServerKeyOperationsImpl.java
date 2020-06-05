@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.sql.SqlServer;
 import com.azure.resourcemanager.sql.SqlServerKey;
 import com.azure.resourcemanager.sql.SqlServerKeyOperations;
-import com.azure.resourcemanager.sql.models.ServerKeyInner;
+import com.azure.resourcemanager.sql.fluent.ServerKeyInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
