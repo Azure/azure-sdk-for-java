@@ -22,7 +22,7 @@ import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.tcp.ProxyProvider;
 
 import java.nio.charset.Charset;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
@@ -70,7 +70,7 @@ class ReactorNettyClient implements HttpClient {
 
             if (this.httpClientConfig.getProxy() != null) {
                 tcpClient =
-                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy()));
+                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy().getAddress()));
             }
             tcpClient =
                 tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()));
@@ -98,13 +98,13 @@ class ReactorNettyClient implements HttpClient {
         Objects.requireNonNull(this.httpClientConfig);
         if(request.getReactorNettyRequestRecord() == null) {
             ReactorNettyRequestRecord reactorNettyRequestRecord = new ReactorNettyRequestRecord();
-            reactorNettyRequestRecord.setTimeCreated(OffsetDateTime.now());
+            reactorNettyRequestRecord.setTimeCreated(Instant.now());
             request.setReactorNettyRequestRecord(reactorNettyRequestRecord);
         }
 
         return this.httpClient
             .observe((connection, state) -> {
-                OffsetDateTime time = OffsetDateTime.now();
+                Instant time = Instant.now();
                 if(state.equals(HttpClientState.CONNECTED) || state.equals(HttpClientState.ACQUIRED)){
                     request.getReactorNettyRequestRecord().setTimeConnected(time);
                 } else if(state.equals(HttpClientState.CONFIGURED)){

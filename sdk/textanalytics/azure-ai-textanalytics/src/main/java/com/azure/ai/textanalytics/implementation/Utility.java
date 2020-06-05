@@ -210,7 +210,7 @@ public final class Utility {
      */
     public static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        return new TextAnalyticsException(error.getMessage(), error.getErrorCode().toString(), error.getTarget());
+        return new TextAnalyticsException(error.getMessage(), error.getErrorCode(), error.getTarget());
     }
 
     /**

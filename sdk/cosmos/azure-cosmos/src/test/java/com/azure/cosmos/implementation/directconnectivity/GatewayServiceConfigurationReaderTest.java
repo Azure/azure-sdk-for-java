@@ -95,7 +95,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
 
         //Testing scenario of scheduled cache refresh with error
-        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.FORBIDDEN)));
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.FORBIDDEN)));
         Thread.sleep(2000);
         assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
         assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();

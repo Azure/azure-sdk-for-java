@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -71,7 +71,7 @@ public interface AsyncDocumentClient {
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-        CosmosKeyCredential cosmosKeyCredential;
+        AzureKeyCredential credential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
@@ -148,11 +148,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
-            if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
+        public Builder withCredential(AzureKeyCredential credential) {
+            if (credential != null && StringUtils.isEmpty(credential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
             }
-            this.cosmosKeyCredential = cosmosKeyCredential;
+            this.credential = credential;
             return this;
         }
 
@@ -183,10 +183,10 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosKeyCredential == null,
+                        && this.credential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed and cosmos key credential");
-            ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
+                        "resource token, permissionFeed and azure key credential");
+            ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
@@ -196,7 +196,7 @@ public interface AsyncDocumentClient {
                 desiredConsistencyLevel,
                 configs,
                 cosmosAuthorizationTokenResolver,
-                cosmosKeyCredential,
+                credential,
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
@@ -260,8 +260,8 @@ public interface AsyncDocumentClient {
             this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         }
 
-        public CosmosKeyCredential getCosmosKeyCredential() {
-            return cosmosKeyCredential;
+        public AzureKeyCredential getCredential() {
+            return credential;
         }
     }
 
@@ -285,6 +285,27 @@ public interface AsyncDocumentClient {
      * @return the read endpoint URI
      */
     URI getReadEndpoint();
+
+    /**
+     * Gets the desired consistency level
+     *
+     * @return the consistency level
+     */
+    ConsistencyLevel getConsistencyLevel();
+
+    /**
+     * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false (which is by default), this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it
+     * on the client.
+     *
+     * By-default, this is false.
+     *
+     * @return a boolean indicating whether resource will be included in the response or not.
+     */
+    boolean isContentResponseOnWriteEnabled();
 
     /**
      * Gets the connection policy
@@ -339,10 +360,10 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response of the read databases.
      * In case of failure the {@link Flux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    Flux<FeedResponse<Database>> readDatabases(FeedOptions options);
+    Flux<FeedResponse<Database>> readDatabases(CosmosQueryRequestOptions options);
 
     /**
      * Query for databases.
@@ -352,10 +373,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param query   the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of read databases or an error.
      */
-    Flux<FeedResponse<Database>> queryDatabases(String query, FeedOptions options);
+    Flux<FeedResponse<Database>> queryDatabases(String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for databases.
@@ -365,10 +386,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options   the feed options.
+     * @param options   the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained databases or an error.
      */
-    Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Database>> queryDatabases(SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Creates a document collection.
@@ -399,7 +420,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection, RequestOptions options);
 
     /**
-     * Deletes a document collection by the collection link.
+     * Deletes a document collection
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted database.
@@ -412,7 +433,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
 
     /**
-     * Reads a document collection by the collection link.
+     * Reads a document collection
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read collection.
@@ -432,10 +453,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param databaseLink the database link.
-     * @param options      the fee options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read collections or an error.
      */
-    Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options);
+    Flux<FeedResponse<DocumentCollection>> readCollections(String databaseLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for document collections in a database.
@@ -446,10 +467,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param query        the query.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained collections or an error.
      */
-    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query, FeedOptions options);
+    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for document collections in a database.
@@ -460,10 +481,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained collections or an error.
      */
-    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<DocumentCollection>> queryCollections(String databaseLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Creates a document.
@@ -525,7 +546,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
 
     /**
-     * Deletes a document by the document link.
+     * Deletes a document
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted document.
@@ -538,7 +559,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options);
 
     /**
-     * Reads a document by the document link.
+     * Reads a document
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read document.
@@ -558,10 +579,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read documents or an error.
      */
-    Flux<FeedResponse<Document>> readDocuments(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<Document>> readDocuments(String collectionLink, CosmosQueryRequestOptions options);
 
 
     /**
@@ -573,10 +594,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the link to the parent document collection.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained document or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for documents in a document collection.
@@ -587,10 +608,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the link to the parent document collection.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Query for documents change feed in a document collection.
@@ -612,10 +633,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the link to the parent document collection.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
-    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options);
 
     /**
      * Creates a stored procedure.
@@ -661,7 +682,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure, RequestOptions options);
 
     /**
-     * Deletes a stored procedure by the stored procedure link.
+     * Deletes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored procedure.
@@ -674,7 +695,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink, RequestOptions options);
 
     /**
-     * READ a stored procedure by the stored procedure link.
+     * READ a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored procedure.
@@ -694,10 +715,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read stored procedures or an error.
      */
-    Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<StoredProcedure>> readStoredProcedures(String collectionLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for stored procedures in a document collection.
@@ -708,10 +729,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
      */
-    Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for stored procedures in a document collection.
@@ -722,14 +743,14 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained stored procedures or an error.
      */
     Flux<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, SqlQuerySpec querySpec,
-                                                                    FeedOptions options);
+                                                                    CosmosQueryRequestOptions options);
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
@@ -742,7 +763,7 @@ public interface AsyncDocumentClient {
     Mono<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, List<Object> procedureParams);
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure response.
@@ -811,7 +832,7 @@ public interface AsyncDocumentClient {
     Mono<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options);
 
     /**
-     * Reads a trigger by the trigger link.
+     * Reads a trigger
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.
@@ -831,10 +852,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read triggers or an error.
      */
-    Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<Trigger>> readTriggers(String collectionLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for triggers.
@@ -845,10 +866,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
-    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for triggers.
@@ -859,10 +880,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained triggers or an error.
      */
-    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Trigger>> queryTriggers(String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Creates a user defined function.
@@ -941,10 +962,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read user defined functions or an error.
      */
-    Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<UserDefinedFunction>> readUserDefinedFunctions(String collectionLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for user defined functions.
@@ -955,11 +976,11 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, String query,
-                                                                            FeedOptions options);
+                                                                      CosmosQueryRequestOptions options);
 
     /**
      * Query for user defined functions.
@@ -970,11 +991,11 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Flux<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, SqlQuerySpec querySpec,
-                                                                            FeedOptions options);
+                                                                      CosmosQueryRequestOptions options);
 
     /**
      * Reads a conflict.
@@ -997,10 +1018,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink the collection link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read conflicts or an error.
      */
-    Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, FeedOptions options);
+    Flux<FeedResponse<Conflict>> readConflicts(String collectionLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for conflicts.
@@ -1011,10 +1032,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
      */
-    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for conflicts.
@@ -1025,10 +1046,10 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained conflicts or an error.
      */
-    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Conflict>> queryConflicts(String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Deletes a conflict.
@@ -1118,10 +1139,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param databaseLink the database link.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read users or an error.
      */
-    Flux<FeedResponse<User>> readUsers(String databaseLink, FeedOptions options);
+    Flux<FeedResponse<User>> readUsers(String databaseLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for users.
@@ -1132,10 +1153,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param query        the query.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
-    Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, FeedOptions options);
+    Flux<FeedResponse<User>> queryUsers(String databaseLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for users.
@@ -1146,10 +1167,10 @@ public interface AsyncDocumentClient {
      *
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
-     * @param options      the feed options.
+     * @param options      the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained users or an error.
      */
-    Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<User>> queryUsers(String databaseLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Creates a permission.
@@ -1226,10 +1247,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param permissionLink the permission link.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read permissions or an error.
      */
-    Flux<FeedResponse<Permission>> readPermissions(String permissionLink, FeedOptions options);
+    Flux<FeedResponse<Permission>> readPermissions(String permissionLink, CosmosQueryRequestOptions options);
 
     /**
      * Query for permissions.
@@ -1240,10 +1261,10 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param query          the query.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, String query, FeedOptions options);
+    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for permissions.
@@ -1254,10 +1275,10 @@ public interface AsyncDocumentClient {
      *
      * @param permissionLink the permission link.
      * @param querySpec      the SQL query specification.
-     * @param options        the feed options.
+     * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained permissions or an error.
      */
-    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Permission>> queryPermissions(String permissionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Replaces an offer.
@@ -1290,10 +1311,10 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the read offers.
      * In case of failure the {@link Flux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the read offers or an error.
      */
-    Flux<FeedResponse<Offer>> readOffers(FeedOptions options);
+    Flux<FeedResponse<Offer>> readOffers(CosmosQueryRequestOptions options);
 
     /**
      * Query for offers in a database.
@@ -1303,10 +1324,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param query   the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained offers or an error.
      */
-    Flux<FeedResponse<Offer>> queryOffers(String query, FeedOptions options);
+    Flux<FeedResponse<Offer>> queryOffers(String query, CosmosQueryRequestOptions options);
 
     /**
      * Query for offers in a database.
@@ -1316,10 +1337,10 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param querySpec the query specification.
-     * @param options   the feed options.
+     * @param options   the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained offers or an error.
      */
-    Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, FeedOptions options);
+    Flux<FeedResponse<Offer>> queryOffers(SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
 
     /**
      * Gets database account information.
@@ -1336,14 +1357,14 @@ public interface AsyncDocumentClient {
      * Reads many documents at once
      * @param itemKeyList document id and partition key pair that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
-     * @param options the feed options
+     * @param options the query request options
      * @param klass class type
      * @return a Mono with feed response of documents
      */
     <T> Mono<FeedResponse<T>> readMany(
         List<Pair<String, PartitionKey>> itemKeyList,
         String collectionLink,
-        FeedOptions options,
+        CosmosQueryRequestOptions options,
         Class<T> klass);
 
     /**

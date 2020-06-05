@@ -10,7 +10,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
-import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
@@ -69,7 +69,7 @@ final class CustomModelTransforms {
             modelErrors = transformTrainingErrors(modelResponse.getTrainResult().getErrors());
         }
 
-        List<CustomFormSubModel> subModelList = new ArrayList<>();
+        List<CustomFormSubmodel> subModelList = new ArrayList<>();
         String formType = "form-";
         // unlabeled model
         if (modelResponse.getKeys() != null) {
@@ -79,7 +79,7 @@ final class CustomModelTransforms {
                     String fieldName = "field-" + index;
                     fieldMap.put(fieldName, new CustomFormModelField(eachField, fieldName, null));
                 });
-                subModelList.add(new CustomFormSubModel(
+                subModelList.add(new CustomFormSubmodel(
                     null,
                     fieldMap,
                     formType + clusterKey));
@@ -91,7 +91,7 @@ final class CustomModelTransforms {
                 .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
                     new CustomFormModelField(null, formFieldsReport.getFieldName(),
                         formFieldsReport.getAccuracy())));
-            subModelList.add(new CustomFormSubModel(
+            subModelList.add(new CustomFormSubmodel(
                 modelResponse.getTrainResult().getAverageModelAccuracy(),
                 fieldMap,
                 formType + modelInfo.getModelId()));

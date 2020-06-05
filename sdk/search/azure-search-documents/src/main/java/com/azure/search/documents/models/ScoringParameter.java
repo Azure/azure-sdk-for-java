@@ -26,6 +26,23 @@ public final class ScoringParameter {
     private static final String DASH = "-";
     private static final String COMMA = ",";
     private static final String SINGLE_QUOTE = "'";
+
+    /**
+     * Constructor to take name value pair string of ScoringParameter. Name and values are separated by dash, and
+     * values are separared by comma.
+     *
+     * @param nameValuePair The dash separated name value pairs.
+     */
+    public ScoringParameter(String nameValuePair) {
+        Objects.requireNonNull(nameValuePair);
+        if (!nameValuePair.contains(DASH)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("The name and value string: %s is invalid.", nameValuePair)));
+        }
+        this.name = nameValuePair.split(DASH)[0];
+        this.values = Arrays.asList(nameValuePair.split(DASH)[1].split(COMMA));
+    }
+
     /**
      * Initializes a new instance of the ScoringParameter class with the given name and string values.
      *

@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -89,7 +89,7 @@ public class StoreClient implements IStoreClient {
         storeResponse = storeResponse.doOnError(e -> {
                 try {
                     Throwable unwrappedException = reactor.core.Exceptions.unwrap(e);
-                    CosmosClientException exception = Utils.as(unwrappedException, CosmosClientException.class);
+                    CosmosException exception = Utils.as(unwrappedException, CosmosException.class);
 
                     if (exception == null) {
                         return;
@@ -115,7 +115,7 @@ public class StoreClient implements IStoreClient {
         });
     }
 
-    private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosClientException exception) {
+    private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {
         this.updateResponseHeader(request, exception.getResponseHeaders());
         if ((!ReplicatedResourceClient.isMasterResource(request.getResourceType())) &&
                 (Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.PRECONDITION_FAILED) || Exceptions.isStatusCode(exception, HttpConstants.StatusCodes.CONFLICT) ||

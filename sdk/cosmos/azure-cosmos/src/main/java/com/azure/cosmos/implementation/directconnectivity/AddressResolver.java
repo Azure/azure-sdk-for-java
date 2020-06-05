@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -134,7 +134,7 @@ public class AddressResolver implements IAddressResolver {
      * @param request     Request in progress
      * @param targetRange Target partition key range determined by address resolver
      * @*/
-    private void throwIfTargetChanged(RxDocumentServiceRequest request, PartitionKeyRange targetRange) throws CosmosClientException {
+    private void throwIfTargetChanged(RxDocumentServiceRequest request, PartitionKeyRange targetRange) {
         // If new range is child of previous range, we don't need to throw any exceptions
         // as LSNs are continued on child ranges.
         if (request.requestContext.resolvedPartitionKeyRange != null &&
@@ -155,7 +155,7 @@ public class AddressResolver implements IAddressResolver {
     private static void ensureRoutingMapPresent(
         RxDocumentServiceRequest request,
         CollectionRoutingMap routingMap,
-        DocumentCollection collection) throws CosmosClientException {
+        DocumentCollection collection) {
         if (routingMap == null && request.getIsNameBased() && request.getPartitionKeyRangeIdentity() != null
             && request.getPartitionKeyRangeIdentity().getCollectionRid() != null) {
             // By design, if partitionkeyrangeid header is present and it contains collectionrid for collection
@@ -266,7 +266,7 @@ public class AddressResolver implements IAddressResolver {
     private PartitionKeyRange tryResolveSinglePartitionCollection(
         RxDocumentServiceRequest request,
         CollectionRoutingMap routingMap,
-        boolean collectionCacheIsUptoDate) throws CosmosClientException {
+        boolean collectionCacheIsUptoDate) {
         // Neither partitionkey nor partitionkeyrangeid is specified.
         // Three options here:
         //    * This is non-partitioned collection and old client SDK which doesn't send partition key. In
@@ -552,7 +552,7 @@ public class AddressResolver implements IAddressResolver {
         RxDocumentServiceRequest request,
         boolean collectionCacheIsUpToDate,
         boolean routingMapCacheIsUpToDate,
-        CollectionRoutingMap routingMap) throws CosmosClientException {
+        CollectionRoutingMap routingMap) {
         // Optimization to not refresh routing map unnecessary. As we keep track of parent child relationships,
         // we can determine that a range is gone just by looking up in the routing map.
         if (collectionCacheIsUpToDate && routingMapCacheIsUpToDate ||
@@ -603,7 +603,7 @@ public class AddressResolver implements IAddressResolver {
                 }
                 try {
                     return Mono.just(new Utils.ValueHolder<>(this.handleRangeAddressResolutionFailure(request, collectionCacheIsUpToDate, routingMapCacheIsUpToDate, routingMap)));
-                } catch (CosmosClientException e) {
+                } catch (CosmosException e) {
                     return Mono.error(e);
                 }
             }
@@ -616,7 +616,7 @@ public class AddressResolver implements IAddressResolver {
         PartitionKeyInternal partitionKey,
         boolean collectionCacheUptoDate,
         DocumentCollection collection,
-        CollectionRoutingMap routingMap) throws CosmosClientException {
+        CollectionRoutingMap routingMap) {
         if (request == null) {
             throw new NullPointerException("request");
         }
@@ -651,7 +651,7 @@ public class AddressResolver implements IAddressResolver {
             throw new InternalServerErrorException(String.format("partition key is null"));
         }
 
-        if (partitionKey.equals(PartitionKeyInternal.Empty) || partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
+        if (partitionKey.equals(PartitionKeyInternal.Empty) || Utils.getCollectionSize(partitionKey.getComponents()) == collection.getPartitionKey().getPaths().size()) {
             // Although we can compute effective partition getKey here, in general case this GATEWAY can have outdated
             // partition getKey definition cached - like if collection with same getName but with RANGE partitioning is created.
             // In this case server will not pass x-ms-documentdb-collection-rid check and will return back InvalidPartitionException.
@@ -685,7 +685,7 @@ public class AddressResolver implements IAddressResolver {
             logger.debug(
                 "Cannot compute effective partition getKey. Definition has '{}' getPaths, values supplied has '{}' getPaths. Will refresh cache and retry.",
                 collection.getPartitionKey().getPaths().size(),
-                partitionKey.getComponents().size());
+                Utils.getCollectionSize(partitionKey.getComponents()));
         }
 
         return null;

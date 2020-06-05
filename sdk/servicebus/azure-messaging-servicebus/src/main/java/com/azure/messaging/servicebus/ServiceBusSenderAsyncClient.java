@@ -189,9 +189,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Sends a set of messages to a Service Bus queue or topic using a batched approach. If the size of messages
-     * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
-     * By default, the message size is the max amount allowed on the link.
+     * Sends a set of messages to a Service Bus queue or topic using a batched approach. If the size of messages exceed
+     * the maximum size of a single batch, an exception will be triggered and the send will fail. By default, the
+     * message size is the max amount allowed on the link.
      *
      * @param messages Messages to be sent to Service Bus queue or topic.
      *
@@ -252,6 +252,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Creates an {@link ServiceBusMessageBatch} configured with the options specified.
      *
      * @param options A set of options used to configure the {@link ServiceBusMessageBatch}.
+     *
      * @return A new {@link ServiceBusMessageBatch} configured with the given options.
      * @throws NullPointerException if {@code options} is null.
      */
@@ -269,8 +270,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
             if (maxSize > maximumLinkSize) {
                 return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
-                        "CreateBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
-                            + " (%s bytes).", maxSize, maximumLinkSize)));
+                    "CreateBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
+                        + " (%s bytes).", maxSize, maximumLinkSize)));
             }
 
             final int batchSize = maxSize > 0

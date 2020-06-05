@@ -47,7 +47,7 @@ public class UsernamePasswordCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithUsernamePassword(request1, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        when(identityClient.authenticateWithMsalAccount(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
@@ -83,7 +83,7 @@ public class UsernamePasswordCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithUsernamePassword(request, username, badPassword)).thenThrow(new MsalServiceException("bad credential", "BadCredential"));
-        when(identityClient.authenticateWithMsalAccount(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
@@ -107,7 +107,7 @@ public class UsernamePasswordCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithUsernamePassword(request, username, password)).thenReturn(TestUtils.getMockMsalToken(token1, expiresOn));
-        when(identityClient.authenticateWithMsalAccount(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> Mono.error(new UnsupportedOperationException("nothing cached")));
         PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
 
