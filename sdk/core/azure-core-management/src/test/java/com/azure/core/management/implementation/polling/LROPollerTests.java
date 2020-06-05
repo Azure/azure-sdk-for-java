@@ -90,16 +90,13 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
-                lroInitFunction = newLroInitFunction(client, FooWithProvisioningState.class);
-
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
                 new HttpPipelineBuilder().build(),
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, FooWithProvisioningState.class));
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -171,16 +168,13 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<Resource>>, Mono<PollResult<Resource>>>
-                lroInitFunction = newLroInitFunction(client, Resource.class);
-
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
                 new HttpPipelineBuilder().build(),
                 Resource.class,
                 Resource.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, Resource.class));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -251,16 +245,13 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
-                lroInitFunction = newLroInitFunction(client, FooWithProvisioningState.class);
-
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
                 new HttpPipelineBuilder().build(),
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, FooWithProvisioningState.class));
 
             Mono<FooWithProvisioningState> resultMonoWithTimeout = lroFlux.last()
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -290,8 +281,8 @@ public class LROPollerTests {
     @Test
     public void lroRetryAfter() {
         ServerConfigure configure = new ServerConfigure();
-        Duration expectedPollingDuration = Duration.ofSeconds(5);
-        configure.pollingCountTillSuccess = 5;
+        Duration expectedPollingDuration = Duration.ofSeconds(3);
+        configure.pollingCountTillSuccess = 3;
         configure.additionalHeaders = new HttpHeaders(new HttpHeader("Retry-After", "1"));  // 1 second
         WireMockServer lroServer = startServer(configure);
         lroServer.start();
@@ -301,16 +292,13 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
-                lroInitFunction = newLroInitFunction(client, FooWithProvisioningState.class);
-
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
                 new HttpPipelineBuilder().build(),
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, FooWithProvisioningState.class));
 
             long nanoTime = System.nanoTime();
 
@@ -423,25 +411,9 @@ public class LROPollerTests {
             .build();
     }
 
-    private static <T> Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> newLroInitFunction(ProvisioningStateLroServiceClient client, Type type) {
-        return context -> client.startLro()
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .map(bytes -> {
-                    String content = new String(bytes, StandardCharsets.UTF_8);
-                    //
-                    PollingState state = PollingState.create(SERIALIZER,
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        content);
-                    state.store(context);
-                    //
-                    T entity
-                        = fromJson(content, type);
-                    return new PollResult<>(entity);
-                }));
+    private Mono<Response<Flux<ByteBuffer>>> newLroInitFunction(ProvisioningStateLroServiceClient client, Type type) {
+        return client.startLro();
     }
-
 
     private static String toJson(Object object) {
         try {

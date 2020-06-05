@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -63,14 +64,16 @@ public final class PollOperation {
                     return pollResponseMono(serializerAdapter,
                         pollingState.getOperationStatus(),
                         pollingState.getLastResponseBody(),
-                        pollResultType);
+                        pollResultType,
+                        pollingState.getPollDelay());
                 }
             } else {
                 // InProgress|NonTerminal-Status
                 Mono<PollResponse<PollResult<T>>> pollResponse = pollResponseMono(serializerAdapter,
                     pollingState.getOperationStatus(),
                     pollingState.getLastResponseBody(),
-                    pollResultType);
+                    pollResultType,
+                    pollingState.getPollDelay());
                 return doSinglePoll(pipeline, pollingState)
                     .doOnNext(updatedState -> updatedState.store(context))
                     .then(pollResponse);
@@ -160,9 +163,10 @@ public final class PollOperation {
     private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMono(SerializerAdapter serializerAdapter,
                                                                           LongRunningOperationStatus opStatus,
                                                                           String pollResponseBody,
-                                                                          Type pollResultType) {
+                                                                          Type pollResultType,
+                                                                          Duration pollDelay) {
         T result = deserialize(serializerAdapter, pollResponseBody, pollResultType);
-        return Mono.just(new PollResponse<>(opStatus, new PollResult<T>(result)));
+        return Mono.just(new PollResponse<>(opStatus, new PollResult<T>(result), pollDelay));
     }
 
     /**
