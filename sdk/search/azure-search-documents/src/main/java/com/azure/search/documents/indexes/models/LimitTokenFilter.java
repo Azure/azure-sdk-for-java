@@ -27,7 +27,7 @@ public final class LimitTokenFilter extends TokenFilter {
      * even if maxTokenCount is reached. Default is false.
      */
     @JsonProperty(value = "consumeAllTokens")
-    private Boolean consumeAllTokens;
+    private Boolean allTokensConsumed;
 
     /**
      * Get the maxTokenCount property: The maximum number of tokens to produce.
@@ -58,8 +58,8 @@ public final class LimitTokenFilter extends TokenFilter {
      *
      * @return the consumeAllTokens value.
      */
-    public Boolean isConsumeAllTokens() {
-        return this.consumeAllTokens;
+    public Boolean areAllTokensConsumed() {
+        return this.allTokensConsumed;
     }
 
     /**
@@ -67,11 +67,11 @@ public final class LimitTokenFilter extends TokenFilter {
      * from the input must be consumed even if maxTokenCount is reached.
      * Default is false.
      *
-     * @param consumeAllTokens the consumeAllTokens value to set.
+     * @param allTokensConsumed the consumeAllTokens value to set.
      * @return the LimitTokenFilter object itself.
      */
-    public LimitTokenFilter setConsumeAllTokens(Boolean consumeAllTokens) {
-        this.consumeAllTokens = consumeAllTokens;
+    public LimitTokenFilter setAllTokensConsumed(Boolean allTokensConsumed) {
+        this.allTokensConsumed = allTokensConsumed;
         return this;
     }
 }

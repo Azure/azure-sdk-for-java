@@ -69,9 +69,9 @@ public final class ManageFunctionAppLogs {
 
             System.out.println("Deploying a function app to " + appName + " through FTP...");
 
-            Utils.uploadFileToFunctionApp(app.getPublishingProfile(), "host.json", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/host.json"));
-            Utils.uploadFileToFunctionApp(app.getPublishingProfile(), "square/function.json", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/function.json"));
-            Utils.uploadFileToFunctionApp(app.getPublishingProfile(), "square/index.js", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/index.js"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "host.json", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/host.json"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "square/function.json", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/function.json"));
+            Utils.uploadFileViaFtp(app.getPublishingProfile(), "square/index.js", ManageFunctionAppLogs.class.getResourceAsStream("/square-function-app/square/index.js"));
 
             // sync triggers
             app.syncTriggers();

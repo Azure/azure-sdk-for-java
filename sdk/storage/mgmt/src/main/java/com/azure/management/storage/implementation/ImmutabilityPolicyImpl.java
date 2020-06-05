@@ -5,10 +5,11 @@ package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.ETagState;
-import com.azure.management.storage.ImmutabilityPolicy;
-import com.azure.management.storage.ImmutabilityPolicyState;
-import com.azure.management.storage.models.BlobContainersInner;
-import com.azure.management.storage.models.ImmutabilityPolicyInner;
+import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.BlobContainersClient;
+import com.azure.management.storage.models.ImmutabilityPolicy;
+import com.azure.management.storage.models.ImmutabilityPolicyState;
+import com.azure.management.storage.fluent.inner.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl
@@ -49,7 +50,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -63,7 +64,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -82,7 +83,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
     }
 

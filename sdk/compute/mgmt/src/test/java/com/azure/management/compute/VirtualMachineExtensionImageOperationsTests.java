@@ -4,6 +4,13 @@
 package com.azure.management.compute;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineExtensionImageType;
+import com.azure.management.compute.models.VirtualMachineExtensionImageTypes;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersions;
+import com.azure.management.compute.models.VirtualMachinePublisher;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;

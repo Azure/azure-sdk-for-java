@@ -3,13 +3,13 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.DiskEncryptionSettings;
-import com.azure.management.compute.DiskVolumeEncryptionMonitor;
-import com.azure.management.compute.DiskVolumeType;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineEncryptionConfiguration;
-import com.azure.management.compute.VirtualMachineExtension;
+import com.azure.management.compute.models.DiskEncryptionSettings;
+import com.azure.management.compute.models.DiskVolumeEncryptionMonitor;
+import com.azure.management.compute.models.DiskVolumeType;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineEncryptionConfiguration;
+import com.azure.management.compute.models.VirtualMachineExtension;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

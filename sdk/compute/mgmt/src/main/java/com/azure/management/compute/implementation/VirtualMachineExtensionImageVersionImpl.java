@@ -2,22 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.VirtualMachineExtensionImage;
-import com.azure.management.compute.VirtualMachineExtensionImageType;
-import com.azure.management.compute.VirtualMachineExtensionImageVersion;
-import com.azure.management.compute.models.VirtualMachineExtensionImageInner;
-import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineExtensionImageType;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.management.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachineExtensionImageVersion. */
 class VirtualMachineExtensionImageVersionImpl extends WrapperImpl<VirtualMachineExtensionImageInner>
     implements VirtualMachineExtensionImageVersion {
-    private final VirtualMachineExtensionImagesInner client;
+    private final VirtualMachineExtensionImagesClient client;
     private final VirtualMachineExtensionImageType type;
 
     VirtualMachineExtensionImageVersionImpl(
-        VirtualMachineExtensionImagesInner client,
+        VirtualMachineExtensionImagesClient client,
         VirtualMachineExtensionImageType extensionImageType,
         VirtualMachineExtensionImageInner inner) {
         super(inner);

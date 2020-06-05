@@ -4,11 +4,12 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.VirtualMachineScaleSetVM;
-import com.azure.management.compute.VirtualMachineScaleSetVMs;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMsInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetsInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.VirtualMachineScaleSetVM;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMs;
+import com.azure.management.compute.fluent.inner.VirtualMachineScaleSetVMInner;
+import com.azure.management.compute.fluent.VirtualMachineScaleSetVMsClient;
+import com.azure.management.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,11 +23,11 @@ class VirtualMachineScaleSetVMsImpl
     implements VirtualMachineScaleSetVMs {
 
     private final VirtualMachineScaleSetImpl scaleSet;
-    private final VirtualMachineScaleSetVMsInner client;
+    private final VirtualMachineScaleSetVMsClient client;
     private final ComputeManager computeManager;
 
     VirtualMachineScaleSetVMsImpl(
-        VirtualMachineScaleSetImpl scaleSet, VirtualMachineScaleSetVMsInner client, ComputeManager computeManager) {
+        VirtualMachineScaleSetImpl scaleSet, VirtualMachineScaleSetVMsClient client, ComputeManager computeManager) {
         this.scaleSet = scaleSet;
         this.client = client;
         this.computeManager = computeManager;
@@ -46,7 +47,7 @@ class VirtualMachineScaleSetVMsImpl
     }
 
     @Override
-    public VirtualMachineScaleSetVMsInner inner() {
+    public VirtualMachineScaleSetVMsClient inner() {
         return this.client;
     }
 
@@ -64,7 +65,7 @@ class VirtualMachineScaleSetVMsImpl
         for (String instanceId : instanceIds) {
             instanceIdList.add(instanceId);
         }
-        VirtualMachineScaleSetsInner scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
+        VirtualMachineScaleSetsClient scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
         return scaleSetInnerManager
             .deleteInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
     }
@@ -101,7 +102,7 @@ class VirtualMachineScaleSetVMsImpl
         for (String instanceId : instanceIds) {
             instanceIdList.add(instanceId);
         }
-        VirtualMachineScaleSetsInner scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
+        VirtualMachineScaleSetsClient scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
         return scaleSetInnerManager
             .updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIdList);
     }

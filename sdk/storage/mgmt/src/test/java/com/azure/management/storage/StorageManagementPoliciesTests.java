@@ -10,6 +10,12 @@ import java.util.Collections;
 import java.util.List;
 
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.storage.models.AccessTier;
+import com.azure.management.storage.models.BlobTypes;
+import com.azure.management.storage.models.ManagementPolicies;
+import com.azure.management.storage.models.ManagementPolicy;
+import com.azure.management.storage.models.PolicyRule;
+import com.azure.management.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

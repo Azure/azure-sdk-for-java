@@ -3,13 +3,14 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.DiskEncryptionSettings;
-import com.azure.management.compute.DiskVolumeEncryptionMonitor;
-import com.azure.management.compute.EncryptionStatus;
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.DiskEncryptionSettings;
+import com.azure.management.compute.models.DiskVolumeEncryptionMonitor;
+import com.azure.management.compute.models.EncryptionStatus;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import java.util.HashMap;
@@ -150,7 +151,7 @@ class WindowsVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryptionMo
         return this
             .computeManager
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName)
             .onErrorResume(
                 e ->

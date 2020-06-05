@@ -6,58 +6,60 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.compute.AvailabilitySet;
-import com.azure.management.compute.AvailabilitySetSkuTypes;
-import com.azure.management.compute.BillingProfile;
-import com.azure.management.compute.BootDiagnostics;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.DiagnosticsProfile;
-import com.azure.management.compute.Disk;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.DiskEncryptionSettings;
-import com.azure.management.compute.HardwareProfile;
-import com.azure.management.compute.ImageReference;
-import com.azure.management.compute.InstanceViewTypes;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.LinuxConfiguration;
-import com.azure.management.compute.ManagedDiskParameters;
-import com.azure.management.compute.NetworkInterfaceReference;
-import com.azure.management.compute.OSDisk;
-import com.azure.management.compute.OSProfile;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.Plan;
-import com.azure.management.compute.PowerState;
-import com.azure.management.compute.ProximityPlacementGroup;
-import com.azure.management.compute.ProximityPlacementGroupType;
-import com.azure.management.compute.PurchasePlan;
-import com.azure.management.compute.ResourceIdentityType;
-import com.azure.management.compute.RunCommandInput;
-import com.azure.management.compute.RunCommandInputParameter;
-import com.azure.management.compute.RunCommandResult;
-import com.azure.management.compute.SshConfiguration;
-import com.azure.management.compute.SshPublicKey;
-import com.azure.management.compute.StorageAccountTypes;
-import com.azure.management.compute.StorageProfile;
-import com.azure.management.compute.VirtualHardDisk;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineCaptureParameters;
-import com.azure.management.compute.VirtualMachineDataDisk;
-import com.azure.management.compute.VirtualMachineEncryption;
-import com.azure.management.compute.VirtualMachineEvictionPolicyTypes;
-import com.azure.management.compute.VirtualMachineExtension;
-import com.azure.management.compute.VirtualMachineInstanceView;
-import com.azure.management.compute.VirtualMachinePriorityTypes;
-import com.azure.management.compute.VirtualMachineSize;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
-import com.azure.management.compute.WinRMConfiguration;
-import com.azure.management.compute.WinRMListener;
-import com.azure.management.compute.WindowsConfiguration;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
-import com.azure.management.compute.models.VirtualMachineInner;
-import com.azure.management.compute.models.VirtualMachineUpdateInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.AvailabilitySet;
+import com.azure.management.compute.models.AvailabilitySetSkuTypes;
+import com.azure.management.compute.models.BillingProfile;
+import com.azure.management.compute.models.BootDiagnostics;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.DiagnosticsProfile;
+import com.azure.management.compute.models.Disk;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.DiskEncryptionSettings;
+import com.azure.management.compute.models.HardwareProfile;
+import com.azure.management.compute.models.ImageReference;
+import com.azure.management.compute.models.InstanceViewTypes;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.LinuxConfiguration;
+import com.azure.management.compute.models.ManagedDiskParameters;
+import com.azure.management.compute.models.NetworkInterfaceReference;
+import com.azure.management.compute.models.OSDisk;
+import com.azure.management.compute.models.OSProfile;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.models.Plan;
+import com.azure.management.compute.models.PowerState;
+import com.azure.management.compute.models.ProximityPlacementGroup;
+import com.azure.management.compute.models.ProximityPlacementGroupType;
+import com.azure.management.compute.models.PurchasePlan;
+import com.azure.management.compute.models.ResourceIdentityType;
+import com.azure.management.compute.models.RunCommandInput;
+import com.azure.management.compute.models.RunCommandInputParameter;
+import com.azure.management.compute.models.RunCommandResult;
+import com.azure.management.compute.models.SshConfiguration;
+import com.azure.management.compute.models.SshPublicKey;
+import com.azure.management.compute.models.StorageAccountTypes;
+import com.azure.management.compute.models.StorageProfile;
+import com.azure.management.compute.models.VirtualHardDisk;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineCaptureParameters;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
+import com.azure.management.compute.models.VirtualMachineEncryption;
+import com.azure.management.compute.models.VirtualMachineEvictionPolicyTypes;
+import com.azure.management.compute.models.VirtualMachineExtension;
+import com.azure.management.compute.models.VirtualMachineInstanceView;
+import com.azure.management.compute.models.VirtualMachineCustomImage;
+import com.azure.management.compute.models.VirtualMachinePriorityTypes;
+import com.azure.management.compute.models.VirtualMachineSize;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.compute.models.WinRMConfiguration;
+import com.azure.management.compute.models.WinRMListener;
+import com.azure.management.compute.models.WindowsConfiguration;
+import com.azure.management.compute.fluent.inner.ProximityPlacementGroupInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
+import com.azure.management.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
@@ -73,8 +75,8 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.implementation.StorageManager;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.StorageManager;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -188,7 +190,7 @@ class VirtualMachineImpl
         this.creatableSecondaryNetworkInterfaceKeys = new ArrayList<>();
         this.existingSecondaryNetworkInterfacesToAssociate = new ArrayList<>();
         this.virtualMachineExtensions =
-            new VirtualMachineExtensionsImpl(computeManager.inner().virtualMachineExtensions(), this);
+            new VirtualMachineExtensionsImpl(computeManager.inner().getVirtualMachineExtensions(), this);
 
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
@@ -216,7 +218,8 @@ class VirtualMachineImpl
 
     @Override
     protected Mono<VirtualMachineInner> getInnerAsync() {
-        return this.manager().inner().virtualMachines().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getVirtualMachines()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -229,7 +232,7 @@ class VirtualMachineImpl
         return this
             .manager()
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .deallocateAsync(this.resourceGroupName(), this.name())
             // Refresh after deallocate to ensure the inner is updatable (due to a change in behavior in Managed Disks)
             .map(aVoid -> this.refreshAsync())
@@ -243,7 +246,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> generalizeAsync() {
-        return this.manager().inner().virtualMachines().generalizeAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getVirtualMachines().generalizeAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -253,7 +256,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.manager().inner().virtualMachines().powerOffAsync(this.resourceGroupName(), this.name(), null);
+        return this.manager().inner().getVirtualMachines().powerOffAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -263,7 +266,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> restartAsync() {
-        return this.manager().inner().virtualMachines().restartAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getVirtualMachines().restartAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -273,7 +276,7 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.manager().inner().virtualMachines().startAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getVirtualMachines().startAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -283,12 +286,12 @@ class VirtualMachineImpl
 
     @Override
     public Mono<Void> redeployAsync() {
-        return this.manager().inner().virtualMachines().redeployAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getVirtualMachines().redeployAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public void convertToManaged() {
-        this.manager().inner().virtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
+        this.manager().inner().getVirtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();
     }
 
@@ -297,7 +300,7 @@ class VirtualMachineImpl
         return this
             .manager()
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .convertToManagedDisksAsync(this.resourceGroupName(), this.name())
             .flatMap(aVoid -> refreshAsync())
             .then();
@@ -313,7 +316,7 @@ class VirtualMachineImpl
         return this
             .manager()
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .listAvailableSizes(this.resourceGroupName(), this.name())
             .mapPage(VirtualMachineSizeImpl::new);
     }
@@ -332,7 +335,7 @@ class VirtualMachineImpl
         return this
             .manager()
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .captureAsync(this.resourceGroupName(), this.name(), parameters)
             .map(
                 captureResultInner -> {
@@ -354,7 +357,7 @@ class VirtualMachineImpl
         return this
             .manager()
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), InstanceViewTypes.INSTANCE_VIEW)
             .map(
                 inner -> {
@@ -421,21 +424,24 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(Creatable<Network> creatable) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20)).withNewPrimaryNetwork(creatable);
+            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+                .withNewPrimaryNetwork(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withNewPrimaryNetwork(String addressSpace) {
         this.nicDefinitionWithPrivateIp =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20)).withNewPrimaryNetwork(addressSpace);
+            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+                .withNewPrimaryNetwork(addressSpace);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withExistingPrimaryNetwork(Network network) {
         this.nicDefinitionWithSubnet =
-            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20)).withExistingPrimaryNetwork(network);
+            this.preparePrimaryNetworkInterface(this.namer.randomName("nic", 20))
+                .withExistingPrimaryNetwork(network);
         return this;
     }
 
@@ -1503,7 +1509,7 @@ class VirtualMachineImpl
     public ProximityPlacementGroup proximityPlacementGroup() {
         ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
         ProximityPlacementGroupInner plgInner =
-            manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+            manager().inner().getProximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
             return null;
         } else {
@@ -1691,7 +1697,7 @@ class VirtualMachineImpl
                     return this
                         .manager()
                         .inner()
-                        .virtualMachines()
+                        .getVirtualMachines()
                         .createOrUpdateAsync(resourceGroupName(), vmName, inner())
                         .map(
                             virtualMachineInner -> {
@@ -1734,7 +1740,7 @@ class VirtualMachineImpl
         return this
             .manager()
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .updateAsync(resourceGroupName(), vmName, updateParameter)
             .map(
                 virtualMachineInner -> {
@@ -1951,7 +1957,7 @@ class VirtualMachineImpl
                 return this
                     .manager()
                     .inner()
-                    .proximityPlacementGroups()
+                    .getProximityPlacementGroups()
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
@@ -2120,7 +2126,7 @@ class VirtualMachineImpl
     /**
      * Checks whether the OS disk is based on a CustomImage.
      *
-     * <p>A custom image is represented by {@link com.azure.management.compute.VirtualMachineCustomImage}.
+     * <p>A custom image is represented by {@link VirtualMachineCustomImage}.
      *
      * @param storageProfile the storage profile
      * @return true if the OS disk is configured to be based on custom image.

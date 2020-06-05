@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
 import com.azure.search.documents.indexes.models.CharFilter;
@@ -204,7 +204,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        AnalyzeRequest request = new AnalyzeRequest()
+        AnalyzeTextOptions request = new AnalyzeTextOptions()
             .setText("One two")
             .setAnalyzer(LexicalAnalyzerName.WHITESPACE);
         PagedIterable<AnalyzedTokenInfo> results = searchIndexClient.analyzeText(index.getName(), request);
@@ -213,7 +213,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertTokenInfoEqual("two", 4, 7, 1, iterator.next());
         assertFalse(iterator.hasNext());
 
-        request = new AnalyzeRequest()
+        request = new AnalyzeTextOptions()
             .setText("One's <two/>")
             .setTokenizer(LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(Collections.singletonList(TokenFilterName.APOSTROPHE))
@@ -239,19 +239,19 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
         LexicalAnalyzerName.values()
             .stream()
-            .map(an -> new AnalyzeRequest()
+            .map(an -> new AnalyzeTextOptions()
                 .setText("One two")
                 .setAnalyzer(an))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
         LexicalTokenizerName.values()
             .stream()
-            .map(tn -> new AnalyzeRequest()
+            .map(tn -> new AnalyzeTextOptions()
                 .setText("One two")
                 .setTokenizer(tn))
             .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
 
-        AnalyzeRequest request = new AnalyzeRequest()
+        AnalyzeTextOptions request = new AnalyzeTextOptions()
             .setText("One two")
             .setTokenizer(LexicalTokenizerName.WHITESPACE)
             .setTokenFilters(new ArrayList<>(TokenFilterName.values()))
@@ -715,7 +715,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             Arrays.stream(MicrosoftStemmingTokenizerLanguage.values())
                 .map(mtl -> new MicrosoftLanguageStemmingTokenizer()
                     .setMaxTokenLength(200)
-                    .setIsSearchTokenizer(false)
+                    .setIsSearchTokenizerUsed(false)
                     .setLanguage(mtl)
                     .setName(generateName())
                 )
@@ -743,7 +743,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             Arrays.stream(PhoneticEncoder.values())
                 .map(pe -> new PhoneticTokenFilter()
                     .setEncoder(pe)
-                    .setReplaceOriginalTokens(false)
+                    .setOriginalTokensReplaced(false)
                     .setName(generateName())
                 )
                 .collect(Collectors.toList())
@@ -768,8 +768,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             Arrays.stream(StopwordsList.values())
                 .map(l -> new StopwordsTokenFilter()
                     .setStopwordsList(l)
-                    .setIgnoreCase(false)
-                    .setRemoveTrailingStopWords(true)
+                    .setCaseIgnored(false)
+                    .setTrailingStopWordsRemoved(true)
                     .setName(generateName())
                 )
                 .collect(Collectors.toList())
@@ -957,7 +957,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateName()),
                 new MicrosoftLanguageStemmingTokenizer()
                     .setMaxTokenLength(100)
-                    .setIsSearchTokenizer(true)
+                    .setIsSearchTokenizerUsed(true)
                     .setLanguage(MicrosoftStemmingTokenizerLanguage.CROATIAN)
                     .setName(generateName()),
                 new MicrosoftLanguageTokenizer()
@@ -969,7 +969,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setDelimiter(":")
                     .setReplacement("_")
                     .setMaxTokenLength(300)
-                    .setReverseTokenOrder(true)
+                    .setTokenOrderReversed(true)
                     .setNumberOfTokensToSkip(2)
                     .setName(generateName()),
                 new PatternTokenizer()
@@ -1000,8 +1000,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateName()),
                 new CommonGramTokenFilter()
                     .setCommonWords(Arrays.asList("hello", "goodbye"))
-                    .setIgnoreCase(true)
-                    .setUseQueryMode(true)
+                    .setCaseIgnored(true)
+                    .setQueryModeUsed(true)
                     .setName(generateName()),
                 new CommonGramTokenFilter()
                     .setCommonWords(Collections.singletonList("at"))
@@ -1011,7 +1011,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setMinWordSize(10)
                     .setMinSubwordSize(5)
                     .setMaxSubwordSize(13)
-                    .setOnlyLongestMatch(true)
+                    .setOnlyLongestMatched(true)
                     .setName(generateName()),
                 new EdgeNGramTokenFilter()
                     .setMinGram(2)
@@ -1041,7 +1041,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateName()),
                 new LimitTokenFilter()
                     .setMaxTokenCount(10)
-                    .setConsumeAllTokens(true)
+                    .setAllTokensConsumed(true)
                     .setName(generateName()),
                 new NGramTokenFilter()
                     .setMinGram(2)
@@ -1057,7 +1057,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateName()),
                 new PhoneticTokenFilter()
                     .setEncoder(PhoneticEncoder.SOUNDEX)
-                    .setReplaceOriginalTokens(false)
+                    .setOriginalTokensReplaced(false)
                     .setName(generateName()),
                 new ShingleTokenFilter()
                     .setMaxShingleSize(10)
@@ -1078,17 +1078,17 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateName()),
                 new StopwordsTokenFilter()
                     .setStopwords(Arrays.asList("a", "the"))
-                    .setIgnoreCase(true)
-                    .setRemoveTrailingStopWords(false)
+                    .setCaseIgnored(true)
+                    .setTrailingStopWordsRemoved(false)
                     .setName(generateName()),
                 new StopwordsTokenFilter()
                     .setStopwordsList(StopwordsList.ITALIAN)
-                    .setIgnoreCase(true)
-                    .setRemoveTrailingStopWords(false)
+                    .setCaseIgnored(true)
+                    .setTrailingStopWordsRemoved(false)
                     .setName(generateName()),
                 new SynonymTokenFilter()
                     .setSynonyms(Collections.singletonList("great, good"))
-                    .setIgnoreCase(true)
+                    .setCaseIgnored(true)
                     .setExpand(false)
                     .setName(generateName()),
                 new TruncateTokenFilter()
@@ -1102,8 +1102,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 new WordDelimiterTokenFilter()
                     .setGenerateWordParts(false)
                     .setGenerateNumberParts(false)
-                    .setCatenateWords(true)
-                    .setCatenateNumbers(true)
+                    .setWordsCatenated(true)
+                    .setNumbersCatenated(true)
                     .setCatenateAll(true)
                     .setSplitOnCaseChange(false)
                     .setPreserveOriginal(true)
@@ -1220,7 +1220,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateSimpleName(i++)),
                 new MicrosoftLanguageStemmingTokenizer()
                     .setMaxTokenLength(255)
-                    .setIsSearchTokenizer(false)
+                    .setIsSearchTokenizerUsed(false)
                     .setLanguage(MicrosoftStemmingTokenizerLanguage.ENGLISH)
                     .setName(generateSimpleName(i++)),
                 new MicrosoftLanguageTokenizer()
@@ -1272,7 +1272,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateSimpleName(i++)),
                 new PhoneticTokenFilter()
                     .setEncoder(PhoneticEncoder.METAPHONE)
-                    .setReplaceOriginalTokens(true)
+                    .setOriginalTokensReplaced(true)
                     .setName(generateSimpleName(i++)),
                 new ShingleTokenFilter()
                     .setMaxShingleSize(2)
@@ -1283,7 +1283,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setName(generateSimpleName(i++)),
                 new StopwordsTokenFilter()
                     .setStopwordsList(StopwordsList.ENGLISH)
-                    .setRemoveTrailingStopWords(true)
+                    .setTrailingStopWordsRemoved(true)
                     .setName(generateSimpleName(i++)),
                 new SynonymTokenFilter()
                     .setExpand(true)

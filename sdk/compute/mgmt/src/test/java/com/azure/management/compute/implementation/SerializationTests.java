@@ -4,9 +4,9 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.compute.VirtualMachineIdentity;
-import com.azure.management.compute.VirtualMachineIdentityUserAssignedIdentities;
-import com.azure.management.compute.models.VirtualMachineInner;
+import com.azure.management.compute.models.VirtualMachineIdentity;
+import com.azure.management.compute.models.VirtualMachineIdentityUserAssignedIdentities;
+import com.azure.management.compute.fluent.inner.VirtualMachineInner;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

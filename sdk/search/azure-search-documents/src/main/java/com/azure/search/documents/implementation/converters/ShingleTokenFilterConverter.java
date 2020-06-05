@@ -60,13 +60,13 @@ public final class ShingleTokenFilterConverter {
         Integer minShingleSize = obj.getMinShingleSize();
         shingleTokenFilter.setMinShingleSize(minShingleSize);
 
-        Boolean outputUnigrams = obj.isOutputUnigrams();
+        Boolean outputUnigrams = obj.areOutputUnigrams();
         shingleTokenFilter.setOutputUnigrams(outputUnigrams);
 
         String filterToken = obj.getFilterToken();
         shingleTokenFilter.setFilterToken(filterToken);
 
-        Boolean outputUnigramsIfNoShingles = obj.isOutputUnigramsIfNoShingles();
+        Boolean outputUnigramsIfNoShingles = obj.areOutputUnigramsIfNoShingles();
         shingleTokenFilter.setOutputUnigramsIfNoShingles(outputUnigramsIfNoShingles);
 
         Integer maxShingleSize = obj.getMaxShingleSize();
