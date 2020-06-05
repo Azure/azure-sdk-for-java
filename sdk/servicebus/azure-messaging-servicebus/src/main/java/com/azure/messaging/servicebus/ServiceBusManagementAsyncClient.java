@@ -48,7 +48,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * @see ServiceBusManagementClient ServiceBusManagementClient for a synchronous client.
  */
 @ServiceClient(builder = ServiceBusManagementClientBuilder.class, isAsync = true)
-public class ServiceBusManagementAsyncClient {
+public final class ServiceBusManagementAsyncClient {
     // See https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
     private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";

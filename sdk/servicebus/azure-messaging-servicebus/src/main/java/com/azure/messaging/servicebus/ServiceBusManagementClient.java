@@ -21,7 +21,7 @@ import java.util.Objects;
  * @see ServiceBusManagementAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusManagementClientBuilder.class)
-public class ServiceBusManagementClient {
+public final class ServiceBusManagementClient {
     private final ServiceBusManagementAsyncClient asyncClient;
 
     /**
