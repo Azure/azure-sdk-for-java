@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appservice.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.PricingTier;
 import com.azure.resourcemanager.appservice.RuntimeStack;
 import com.azure.resourcemanager.appservice.WebApp;
+import com.azure.resourcemanager.dns.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -85,6 +86,11 @@ public final class ManageLinuxWebAppWithDomainSsl {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
+            // TODO: remove after appservice fix
+            DnsZone dnsZone = azure.dnsZones().define(domainName)
+                .withExistingResourceGroup(rgName)
+                .create();
+
             AppServiceDomain domain = azure.appServiceDomains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
@@ -102,6 +108,11 @@ public final class ManageLinuxWebAppWithDomainSsl {
                     .withDomainPrivacyEnabled(true)
                     .withAutoRenewEnabled(false)
                     .create();
+
+            // TODO: remove after appservice fix
+            domain.inner().withDnsZoneId(dnsZone.id());
+            domain.update().apply();
+
             System.out.println("Purchased domain " + domain.name());
             Utils.print(domain);
 

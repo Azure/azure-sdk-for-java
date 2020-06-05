@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.appservice.samples;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.Azure;
@@ -12,12 +13,12 @@ import com.azure.resourcemanager.appservice.AppServicePlan;
 import com.azure.resourcemanager.appservice.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.PricingTier;
 import com.azure.resourcemanager.appservice.WebApp;
+import com.azure.resourcemanager.dns.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
 import java.util.Locale;
@@ -82,6 +83,11 @@ public final class ManageWebAppWithDomainSsl {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
+            // TODO: remove after appservice fix
+            DnsZone dnsZone = azure.dnsZones().define(domainName)
+                .withExistingResourceGroup(rgName)
+                .create();
+
             AppServiceDomain domain = azure.appServiceDomains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
@@ -99,6 +105,11 @@ public final class ManageWebAppWithDomainSsl {
                     .withDomainPrivacyEnabled(true)
                     .withAutoRenewEnabled(false)
                     .create();
+
+            // TODO: remove after appservice fix
+            domain.inner().withDnsZoneId(dnsZone.id());
+            domain.update().apply();
+
             System.out.println("Purchased domain " + domain.name());
             Utils.print(domain);
 
