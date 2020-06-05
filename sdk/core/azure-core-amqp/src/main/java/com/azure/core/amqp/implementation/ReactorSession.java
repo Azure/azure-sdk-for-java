@@ -289,7 +289,7 @@ public class ReactorSession implements AmqpSession {
             .map(sendLink -> {
                 TransactionCoordinator newCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
                 if (transactionCoordinator.compareAndSet(null, newCoordinator)) {
-                    logger.info("Coordinator[{}]: Creating transaction coordinator.", TRANSACTION_LINK_NAME);
+                    logger.info("Coordinator[{}]: Created transaction coordinator.", TRANSACTION_LINK_NAME);
                 } else {
                     logger.info("linkName[{}]: Another transaction coordinator exists.", TRANSACTION_LINK_NAME);
                 }
