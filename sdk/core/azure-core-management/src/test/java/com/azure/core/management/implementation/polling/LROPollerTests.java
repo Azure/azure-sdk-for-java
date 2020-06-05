@@ -50,12 +50,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unchecked")
 public class LROPollerTests {
+
     private static final SerializerAdapter SERIALIZER = new AzureJacksonAdapter();
 
     private static final Duration POLLING_DURATION = Duration.ofMillis(100);
@@ -298,7 +300,12 @@ public class LROPollerTests {
 
             long nanoTime = System.nanoTime();
 
-            FooWithProvisioningState result = lroFlux.blockLast().getFinalResult().block();
+            FooWithProvisioningState result = lroFlux
+                .doOnNext(response -> {
+                    System.out.println(String.format("[%s] status %s",
+                        OffsetDateTime.now().toString(), response.getStatus().toString()));
+                }).blockLast()
+                .getFinalResult().block();
             Assertions.assertNotNull(result);
 
             Duration pollingDuration = Duration.ofNanos(System.nanoTime() - nanoTime);
