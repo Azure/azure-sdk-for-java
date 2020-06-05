@@ -1,5 +1,8 @@
 # Release History
 
+## 12.7.0-beta.2 (Unreleased)
+
+
 ## 12.7.0-beta.1 (Unreleased)
 - Added a maxConcurrency option on ParallelTransferOptions that allows the customer to limit how many concurrent network requests will be outstanding per api request at once. 
 - Added an overload to BlobClient.upload which returns a BlockBlobItem containing the properties returned by the service upon blob creation.
