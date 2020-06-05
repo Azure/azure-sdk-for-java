@@ -17,12 +17,6 @@ import java.util.concurrent.ForkJoinPool;
  * @see DefaultAzureCredential
  */
 public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<DefaultAzureCredentialBuilder> {
-    private boolean excludeEnvironmentCredential;
-    private boolean excludeManagedIdentityCredential;
-    private boolean excludeSharedTokenCacheCredential;
-    private boolean excludeAzureCliCredential;
-    private boolean excludeIntelliJCredential;
-    private boolean excludeVsCodeCredential;
     private String tenantId;
     private final ClientLogger logger = new ClientLogger(DefaultAzureCredentialBuilder.class);
 
@@ -75,71 +69,6 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
 
     /**
-     * Excludes the {@link EnvironmentCredential} from the {@link DefaultAzureCredential}
-     * authentication flow and disables reading authentication details from the process' environment
-     * variables.
-     *
-     * @return An updated instance of this builder with the Environment credential exclusion set as specified.
-     */
-    public DefaultAzureCredentialBuilder excludeEnvironmentCredential() {
-        excludeEnvironmentCredential = true;
-        return this;
-    }
-
-    /**
-     * Excludes the {@link ManagedIdentityCredential} from the {@link DefaultAzureCredential}
-     * authentication flow and disables authenticating with managed identity endpoints.
-     *
-     * @return An updated instance of this builder with the Managed Identity credential exclusion set as specified.
-     */
-    public DefaultAzureCredentialBuilder excludeManagedIdentityCredential() {
-        excludeManagedIdentityCredential = true;
-        return this;
-    }
-
-    /**
-     * Excludes the {@link SharedTokenCacheCredential} from the {@link DefaultAzureCredential}
-     * authentication flow and disables single sign on authentication with development tools which write
-     * to the shared token cache.
-     *
-     * @return An updated instance of this builder with the Shared Token Cache credential exclusion set as specified.
-     */
-    public DefaultAzureCredentialBuilder excludeSharedTokenCacheCredential() {
-        excludeSharedTokenCacheCredential = true;
-        return this;
-    }
-
-    /**
-     * Excludes the {@link AzureCliCredential} from the {@link DefaultAzureCredential} authentication flow.
-     *
-     * @return An updated instance of this builder with the Azure Cli credential exclusion set as specified.
-     */
-    public DefaultAzureCredentialBuilder excludeAzureCliCredential() {
-        excludeAzureCliCredential = true;
-        return this;
-    }
-
-    /**
-     * Excludes the {@link IntelliJCredential} from the {@link DefaultAzureCredential} authentication flow.
-     *
-     * @return An updated instance of this builder with the IntelliJ credential exclusion set as specified.
-     */
-    public DefaultAzureCredentialBuilder excludeIntelliJCredential() {
-        excludeIntelliJCredential = true;
-        return this;
-    }
-
-    /**
-     * Excludes the {@link VisualStudioCodeCredential} from the {@link DefaultAzureCredential} authentication flow.
-     *
-     * @return An updated instance of this builder with the Visual Studio Code credential exclusion set as specified.
-     */
-    public DefaultAzureCredentialBuilder excludeVSCodeCredential() {
-        excludeVsCodeCredential = true;
-        return this;
-    }
-
-    /**
      * Specifies the ExecutorService to be used to execute the authentication requests.
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
@@ -171,35 +100,13 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
     private ArrayDeque<TokenCredential> getCredentialsChain() {
         ArrayDeque<TokenCredential> output = new ArrayDeque<>(6);
-        if (!excludeEnvironmentCredential) {
             output.add(new EnvironmentCredential(identityClientOptions));
-        }
-
-        if (!excludeManagedIdentityCredential) {
             output.add(new ManagedIdentityCredential(null, identityClientOptions));
-        }
-
-        if (!excludeSharedTokenCacheCredential) {
             output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
                 null, identityClientOptions));
-        }
-
-        if (!excludeIntelliJCredential) {
             output.add(new IntelliJCredential(tenantId, identityClientOptions));
-        }
-
-        if (!excludeVsCodeCredential) {
             output.add(new VisualStudioCodeCredential(tenantId, identityClientOptions));
-        }
-
-        if (!excludeAzureCliCredential) {
             output.add(new AzureCliCredential(identityClientOptions));
-        }
-
-        if (output.size() == 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("At least one credential type must be"
-                                                                         + " included in the authentication flow."));
-        }
         return output;
     }
 }
