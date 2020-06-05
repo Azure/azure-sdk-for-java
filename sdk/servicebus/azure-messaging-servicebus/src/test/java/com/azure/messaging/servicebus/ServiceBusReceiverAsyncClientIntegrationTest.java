@@ -643,6 +643,46 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
     }
 
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void receivesByNumber(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final byte[] contents = "Hello world".getBytes();
+        final int number = 10;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, contents);
+
+        sendMessage(messages).block(Duration.ofSeconds(10));
+
+        // Act & Assert
+        StepVerifier.create(receiveAndDeleteReceiver.receive(messages.size(), Duration.ofSeconds(15))
+            .doOnNext(next -> messagesPending.decrementAndGet()))
+            .expectNextCount(number)
+            .verifyComplete();
+    }
+
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void receivesByTime(MessagingEntityType entityType) {
+        // Arrange
+        setSenderAndReceiver(entityType, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final byte[] contents = "Hello world".getBytes();
+        final int number = 10;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, contents);
+
+        sendMessage(messages).block(Duration.ofSeconds(15));
+
+        // Act & Assert
+        StepVerifier.create(receiveAndDeleteReceiver.receive(number + 10, Duration.ofSeconds(15))
+            .doOnNext(next -> messagesPending.decrementAndGet()))
+            .expectNextCount(number)
+            .verifyComplete();
+    }
+
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
