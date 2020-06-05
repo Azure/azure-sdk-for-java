@@ -12,8 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.sql.models.SqlServers;
-import com.azure.resourcemanager.sql.fluent.SqlManagementClientBuilder;
-import com.azure.resourcemanager.sql.fluent.SqlManagementClientImpl;
+import com.azure.resourcemanager.sql.SqlManagementClientBuilder;
+import com.azure.resourcemanager.sql.SqlManagementClientImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure SQLServer resource management. */
@@ -21,7 +21,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     private SqlServers sqlServers;
     private final String tenantId;
 
-    StorageManager storageManager;
+    private StorageManager storageManager;
 
     protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
@@ -35,6 +35,11 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
             sdkContext);
         this.storageManager = StorageManager.authenticate(httpPipeline, profile);
         this.tenantId = profile.tenantId();
+    }
+
+    /** @return the storage manager in sql manager*/
+    public StorageManager storageManager() {
+        return storageManager;
     }
 
     /**
