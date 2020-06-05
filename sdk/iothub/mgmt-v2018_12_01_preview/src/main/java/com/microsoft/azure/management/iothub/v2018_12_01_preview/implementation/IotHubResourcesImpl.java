@@ -32,14 +32,14 @@ import com.microsoft.azure.management.iothub.v2018_12_01_preview.TestAllRoutesIn
 import com.microsoft.azure.management.iothub.v2018_12_01_preview.TestRouteInput;
 
 class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements IotHubResources {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    IotHubResourcesImpl(IoTHubManager manager) {
+    IotHubResourcesImpl(DevicesManager manager) {
         super(manager.inner().iotHubResources());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
@@ -105,10 +105,14 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
 
     @Override
     public Observable<IotHubDescription> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getIotHubDescriptionInnerUsingIotHubResourcesInnerAsync(resourceGroupName, name).map(new Func1<IotHubDescriptionInner, IotHubDescription> () {
+        return this.getIotHubDescriptionInnerUsingIotHubResourcesInnerAsync(resourceGroupName, name).flatMap(new Func1<IotHubDescriptionInner, Observable<IotHubDescription>> () {
             @Override
-            public IotHubDescription call(IotHubDescriptionInner inner) {
-                return wrapIotHubDescriptionModel(inner);
+            public Observable<IotHubDescription> call(IotHubDescriptionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return  Observable.just((IotHubDescription)wrapIotHubDescriptionModel(inner));
+                }
             }
         });
     }
@@ -260,10 +264,14 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
     public Observable<EventHubConsumerGroupInfo> getEventHubConsumerGroupAsync(String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
         IotHubResourcesInner client = this.inner();
         return client.getEventHubConsumerGroupAsync(resourceGroupName, resourceName, eventHubEndpointName, name)
-        .map(new Func1<EventHubConsumerGroupInfoInner, EventHubConsumerGroupInfo>() {
+        .flatMap(new Func1<EventHubConsumerGroupInfoInner, Observable<EventHubConsumerGroupInfo>>() {
             @Override
-            public EventHubConsumerGroupInfo call(EventHubConsumerGroupInfoInner inner) {
-                return wrapEventHubConsumerGroupInfoModel(inner);
+            public Observable<EventHubConsumerGroupInfo> call(EventHubConsumerGroupInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((EventHubConsumerGroupInfo)wrapEventHubConsumerGroupInfoModel(inner));
+                }
             }
        });
     }
@@ -296,10 +304,14 @@ class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements I
     public Observable<JobResponse> getJobAsync(String resourceGroupName, String resourceName, String jobId) {
         IotHubResourcesInner client = this.inner();
         return client.getJobAsync(resourceGroupName, resourceName, jobId)
-        .map(new Func1<JobResponseInner, JobResponse>() {
+        .flatMap(new Func1<JobResponseInner, Observable<JobResponse>>() {
             @Override
-            public JobResponse call(JobResponseInner inner) {
-                return wrapJobResponseModel(inner);
+            public Observable<JobResponse> call(JobResponseInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((JobResponse)wrapJobResponseModel(inner));
+                }
             }
        });
     }

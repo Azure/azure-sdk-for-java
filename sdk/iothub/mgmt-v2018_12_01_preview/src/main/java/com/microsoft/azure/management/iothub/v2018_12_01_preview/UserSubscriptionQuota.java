@@ -10,13 +10,13 @@ package com.microsoft.azure.management.iothub.v2018_12_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.UserSubscriptionQuotaInner;
 
 /**
  * Type representing UserSubscriptionQuota.
  */
-public interface UserSubscriptionQuota extends HasInner<UserSubscriptionQuotaInner>, HasManager<IoTHubManager> {
+public interface UserSubscriptionQuota extends HasInner<UserSubscriptionQuotaInner>, HasManager<DevicesManager> {
     /**
      * @return the currentValue value.
      */
