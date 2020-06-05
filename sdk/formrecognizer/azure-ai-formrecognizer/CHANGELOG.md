@@ -5,7 +5,7 @@
 - Support to copy a custom model from one Form Recognizer resource to another
 - Added support for AAD Authentication.
 - Raise `FormRecognizerException` when a model with `ModelStatus.Invalid` is returned from the `beginTraining()` API's
-- Raise `FormRecognizerException` when invalid analyze status returned from service for recognize API's
+- Raise `FormRecognizerException` when an invalid analyze status is returned from the service for recognize API's
 - Add `pageNumber` property to `FormPage` and `FormTable` model
 - Update FormRecognizer API calls to return a `List` instead of `IterableStream`.
 - Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
