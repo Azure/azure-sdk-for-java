@@ -14,7 +14,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -190,7 +190,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocumentsWithMultiOrder() throws InterruptedException {
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
 
         boolean[] booleanValues = new boolean[] {true, false};
@@ -247,7 +247,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                         List<CosmosItemProperties> expectedOrderedList = top(sort(filter(this.documents, hasFilter), compositeIndex, invert), hasTop, topCount) ;
 
-                        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, queryRequestOptions, CosmosItemProperties.class);
+                        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, cosmosQueryRequestOptions, CosmosItemProperties.class);
 
                         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator
                                 .Builder<CosmosItemProperties>()
@@ -266,7 +266,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         BridgeInternal.remove(documentWithEmptyField, NUMBER_FIELD);
         documentCollection.createItem(documentWithEmptyField, new CosmosItemRequestOptions()).block();
         String query = "SELECT [root." + NUMBER_FIELD + ",root." + STRING_FIELD + "] FROM root ORDER BY root." + NUMBER_FIELD + " ASC ,root." + STRING_FIELD + " DESC";
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, queryRequestOptions, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryObservable = documentCollection.queryItems(query, cosmosQueryRequestOptions, CosmosItemProperties.class);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(UnsupportedOperationException.class)

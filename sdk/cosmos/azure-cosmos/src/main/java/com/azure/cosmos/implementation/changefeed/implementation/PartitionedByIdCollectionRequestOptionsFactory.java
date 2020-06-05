@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 
@@ -17,7 +17,7 @@ class PartitionedByIdCollectionRequestOptionsFactory implements RequestOptionsFa
     }
 
     @Override
-    public QueryRequestOptions createQueryRequestOptions() {
-        return new QueryRequestOptions();
+    public CosmosQueryRequestOptions createQueryRequestOptions() {
+        return new CosmosQueryRequestOptions();
     }
 }

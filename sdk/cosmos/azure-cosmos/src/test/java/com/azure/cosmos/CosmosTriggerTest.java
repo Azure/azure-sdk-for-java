@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosTriggerProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
@@ -92,10 +92,10 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator3 =
-                container.getScripts().readAllTriggers(queryRequestOptions);
+                container.getScripts().readAllTriggers(cosmosQueryRequestOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -115,15 +115,15 @@ public class CosmosTriggerTest extends TestSuiteBase {
         CosmosTriggerProperties properties = getCosmosTriggerProperties();
         container.getScripts().createTrigger(properties);
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator1 =
-                container.getScripts().queryTriggers(query, queryRequestOptions);
+                container.getScripts().queryTriggers(query, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator2 =
-                container.getScripts().queryTriggers(query, queryRequestOptions);
+                container.getScripts().queryTriggers(query, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 

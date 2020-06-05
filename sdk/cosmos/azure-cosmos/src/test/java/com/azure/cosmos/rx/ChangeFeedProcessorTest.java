@@ -14,7 +14,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -347,24 +347,24 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         SqlQuerySpec querySpec = new SqlQuerySpec(
                             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
-                        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+                        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-                        createdLeaseCollection.queryItems(querySpec, queryRequestOptions, CosmosItemProperties.class).byPage()
-                            .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
-                            .flatMap(doc -> {
+                        createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, CosmosItemProperties.class).byPage()
+                                              .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
+                                              .flatMap(doc -> {
                                 ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
                                 leaseDocument.setOwner("TEMP_OWNER");
                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                                 return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
                                     .map(itemResponse -> BridgeInternal.getProperties(itemResponse));
                             })
-                            .map(ServiceItemLease::fromDocument)
-                            .map(leaseDocument -> {
+                                              .map(ServiceItemLease::fromDocument)
+                                              .map(leaseDocument -> {
                                 ChangeFeedProcessorTest.log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
                                 return leaseDocument;
                             })
-                            .last()
-                            .flatMap(leaseDocument -> {
+                                              .last()
+                                              .flatMap(leaseDocument -> {
                                 ChangeFeedProcessorTest.log.info("Start creating documents");
                                 List<CosmosItemProperties> docDefList = new ArrayList<>();
 
@@ -381,7 +381,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                                     });
                             })
-                            .subscribe();
+                                              .subscribe();
                     })
                     .subscribe();
             } catch (Exception ex) {

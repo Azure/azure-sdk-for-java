@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
@@ -48,11 +47,17 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * <p><strong>Create an instance of receiver</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation}
  *
- * <p><strong>Create an instance of sender using default credential</strong></p>
+ * <p><strong>Create an instance of receiver using default credential</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
+ * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed or
+ * other terminal scenarios. See {@link #receive()} for more information.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
+ *
+ * <p><strong>Receive a maximum number of messages or until max a Duration</strong></p>
+ * <p>This receives at most 15 messages, or until a duration of 30 seconds elapses. Whichever occurs first.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#int-duration}
  *
  * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
@@ -629,27 +634,49 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity and completes them
-     * when they are finished processing.
+     * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus
+     * entity. This Flux continuously receives messages from a Service Bus entity until either:
      *
-     * <p>
-     * By default, each successfully consumed message is {@link #complete(MessageLockToken) auto-completed} and {@link
-     * #renewMessageLock(MessageLockToken) auto-renewed}. When downstream consumers throw an exception, the
-     * auto-completion feature will {@link #abandon(MessageLockToken) abandon} the message. {@link
-     * #renewMessageLock(MessageLockToken) Auto-renewal} occurs until the {@link AmqpRetryOptions#getTryTimeout()
-     * operation timeout} has elapsed.
-     * </p>
+     * <ul>
+     *     <li>The receiver is closed.</li>
+     *     <li>The subscription to the Flux is disposed.</li>
+     *     <li>A terminal signal from a downstream subscriber is propagated upstream (ie. {@link Flux#take(long)} or
+     *     {@link Flux#take(Duration)}).</li>
+     *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
+     * </ul>
      *
-     * @return A stream of messages from the Service Bus entity.
-     * @throws AmqpException if {@link AmqpRetryOptions#getTryTimeout() operation timeout} has elapsed and
-     *     downstream consumers are still processing the message.
+     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessageContext> receive() {
         if (unnamedSessionManager != null) {
             return unnamedSessionManager.receive();
         } else {
-            return getOrCreateConsumer().receive().map(message -> new ServiceBusReceivedMessageContext(message));
+            return getOrCreateConsumer().receive().map(ServiceBusReceivedMessageContext::new);
         }
+    }
+
+    /**
+     * Receives a bounded stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. This stream
+     * receives either {@code maxNumberOfMessages} are received or the {@code maxWaitTime} has elapsed.
+     *
+     * @param maxNumberOfMessages Maximum number of messages to receive.
+     * @param maxWaitTime Maximum time to wait.
+     *
+     * @return A bounded {@link Flux} of messages.
+     * @throws NullPointerException if {@code maxWaitTime} is null.
+     * @throws IllegalArgumentException if {@code maxNumberOfMessages} is less than 1. {@code maxWaitTime} is zero
+     *     or a negative duration.
+     */
+    public Flux<ServiceBusReceivedMessageContext> receive(int maxNumberOfMessages, Duration maxWaitTime) {
+        if (maxNumberOfMessages < 1) {
+            return fluxError(logger, new IllegalArgumentException("'maxNumberOfMessages' cannot be less than 1."));
+        } else if (maxWaitTime == null) {
+            return fluxError(logger, new NullPointerException("'maxWaitTime' cannot be null."));
+        } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
+            return fluxError(logger, new NullPointerException("'maxWaitTime' cannot be negative or zero."));
+        }
+
+        return receive().take(maxNumberOfMessages).take(maxWaitTime);
     }
 
     /**
