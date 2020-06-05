@@ -4,8 +4,6 @@ package com.azure.search.documents.test.environment.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 public class HotelRoom {
     @JsonProperty(value = "Description")
     private String description;
@@ -29,7 +27,7 @@ public class HotelRoom {
     private Boolean smokingAllowed;
 
     @JsonProperty(value = "Tags")
-    private List<String> tags;
+    private String[] tags;
 
 
     public String description() {
@@ -95,11 +93,11 @@ public class HotelRoom {
         return this;
     }
 
-    public List<String> tags() {
+    public String[] tags() {
         return this.tags;
     }
 
-    public HotelRoom tags(List<String> tags) {
+    public HotelRoom tags(String[] tags) {
         this.tags = tags;
         return this;
     }

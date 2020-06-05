@@ -12,6 +12,9 @@ public final class IdentityClientBuilder {
     private IdentityClientOptions identityClientOptions;
     private String tenantId;
     private String clientId;
+    private String clientSecret;
+    private String certificatePath;
+    private String certificatePassword;
 
     /**
      * Sets the tenant ID for the client.
@@ -34,6 +37,39 @@ public final class IdentityClientBuilder {
     }
 
     /**
+     * Sets the client secret for the client.
+     * @param clientSecret the secret value of the AAD application.
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder clientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for the client.
+     *
+     * @param certificatePath the PEM/PFX file containing the certificate
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder certificatePath(String certificatePath) {
+        this.certificatePath = certificatePath;
+        return this;
+    }
+
+    /**
+     * Sets the client certificate for the client.
+     *
+     * @param certificatePassword the password protecting the PFX file
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder certificatePassword(String certificatePassword) {
+        this.certificatePassword = certificatePassword;
+        return this;
+    }
+
+
+    /**
      * Sets the options for the client.
      * @param identityClientOptions the options for the client.
      * @return the IdentityClientBuilder itself
@@ -47,6 +83,7 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, identityClientOptions);
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath,
+            certificatePassword, identityClientOptions);
     }
 }

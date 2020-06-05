@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,10 +18,17 @@ public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    private static final String USER_AGENT = Utils.getUserAgent();
+
     private ClientSideRequestStatistics clientSideRequestStatistics;
+    private FeedResponseDiagnostics feedResponseDiagnostics;
 
     CosmosDiagnostics() {
         this.clientSideRequestStatistics = new ClientSideRequestStatistics();
+    }
+
+    CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+        this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
 
     ClientSideRequestStatistics clientSideRequestStatistics() {
@@ -39,21 +47,32 @@ public final class CosmosDiagnostics {
      */
     @Override
     public String toString() {
-        try {
-            return OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics);
-        } catch (JsonProcessingException e) {
-            LOGGER.error("Error while parsing diagnostics " + e);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
+        if (this.feedResponseDiagnostics != null) {
+            stringBuilder.append(feedResponseDiagnostics);
+        } else {
+            try {
+                stringBuilder.append(OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics));
+            } catch (JsonProcessingException e) {
+                LOGGER.error("Error while parsing diagnostics " + e);
+            }
         }
-        return StringUtils.EMPTY;
+        return stringBuilder.toString();
     }
 
     /**
-     * Retrieves duration related to the completion of the request
-     * This represents end to end duration of an operation including all the retries
+     * Retrieves duration related to the completion of the request.
+     * This represents end to end duration of an operation including all the retries.
+     * This is meant for point operation only, for query please use toString() to get full query diagnostics.
      *
      * @return request completion duration
      */
     public Duration getDuration() {
+        if (this.feedResponseDiagnostics != null) {
+            return null;
+        }
+
         return this.clientSideRequestStatistics.getDuration();
     }
 }

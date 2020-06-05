@@ -5,6 +5,7 @@ package com.azure.storage.common;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -152,6 +153,24 @@ public final class Utility {
         } catch (UnsupportedEncodingException ex) {
             throw new RuntimeException(ex);
         }
+    }
+
+    /**
+     * Performs a safe encoding of a url string, only encoding the path.
+     *
+     * @param url The url to encode.
+     * @return The encoded url.
+     */
+    public static String encodeUrlPath(String url) {
+        /* Deconstruct the URL and reconstruct it making sure the path is encoded. */
+        UrlBuilder builder = UrlBuilder.parse(url);
+        String path = builder.getPath();
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        path = Utility.urlEncode(Utility.urlDecode(path));
+        builder.setPath(path);
+        return builder.toString();
     }
 
     /**

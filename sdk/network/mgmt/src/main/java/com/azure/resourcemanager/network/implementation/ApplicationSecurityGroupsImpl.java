@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.resourcemanager.network.implementation;
+
+import com.azure.resourcemanager.network.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.ApplicationSecurityGroups;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroupsInner;
+import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+
+/** Implementation for ApplicationSecurityGroups. */
+class ApplicationSecurityGroupsImpl
+    extends TopLevelModifiableResourcesImpl<
+        ApplicationSecurityGroup,
+        ApplicationSecurityGroupImpl,
+        ApplicationSecurityGroupInner,
+        ApplicationSecurityGroupsInner,
+        NetworkManager>
+    implements ApplicationSecurityGroups {
+
+    ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().applicationSecurityGroups(), networkManager);
+    }
+
+    @Override
+    public ApplicationSecurityGroupImpl define(String name) {
+        return wrapModel(name);
+    }
+
+    @Override
+    protected ApplicationSecurityGroupImpl wrapModel(String name) {
+        ApplicationSecurityGroupInner inner = new ApplicationSecurityGroupInner();
+        return new ApplicationSecurityGroupImpl(name, inner, super.manager());
+    }
+
+    @Override
+    protected ApplicationSecurityGroupImpl wrapModel(ApplicationSecurityGroupInner inner) {
+        if (inner == null) {
+            return null;
+        }
+        return new ApplicationSecurityGroupImpl(inner.name(), inner, this.manager());
+    }
+}

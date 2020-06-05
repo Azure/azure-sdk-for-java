@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -15,6 +16,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -43,7 +45,8 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #credential(AzureKeyCredential)} gives the builder access credential.
+ * {@link #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} gives
+ * the builder access credential.
  * </p>
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
@@ -77,6 +80,7 @@ public final class FormRecognizerClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
     private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -91,6 +95,7 @@ public final class FormRecognizerClientBuilder {
     private HttpPipeline httpPipeline;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
 
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -164,7 +169,7 @@ public final class FormRecognizerClientBuilder {
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
-            .build();
+            .buildClient();
 
         return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
     }
@@ -182,7 +187,9 @@ public final class FormRecognizerClientBuilder {
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
         policies.add(new AddDatePolicy());
         // Authentications
-        if (credential != null) {
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (credential != null) {
             policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
@@ -238,6 +245,18 @@ public final class FormRecognizerClientBuilder {
      */
     public FormRecognizerClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated {@link FormRecognizerClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    public FormRecognizerClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 

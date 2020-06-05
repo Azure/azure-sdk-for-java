@@ -105,7 +105,7 @@ var handleInput = function(projects, cb) {
     }
 }
 
-var codegen = function(project, cb) {
+var codegen = async function(project, cb) {
     if (!args['preserve']) {
         deleteMgmtFolders(project);
     }
@@ -157,7 +157,10 @@ var codegen = function(project, cb) {
     }
 
     console.log('Command: ' + cmd);
-    return execa(cmd, [], { shell: true, stdio: "inherit" });
+    await execa(cmd, [], { shell: true, stdio: "inherit" });
+    if (cmd.includes('--multiapi')) {
+        changePom(project);
+    }
 };
 
 var deleteMgmtFolders = function(project) {
@@ -201,6 +204,54 @@ var deleteFolderRecursive = function(folder) {
         });
     }
 };
+
+var changePom = function(project) {
+    var modules = []
+
+    project = project.split('/')[0]
+    var projectRoot = path.join(sdkRoot, 'sdk', project);
+    var projectPom = path.join(projectRoot, mgmtPomFilename);
+
+    // search modules
+    fs.readdirSync(projectRoot).forEach(function(folder, index) {
+        if (fs.lstatSync(path.join(projectRoot, folder)).isDirectory()) {
+            if (folder.startsWith('mgmt-')) {
+                modules.push(folder);
+            }
+        }
+    })
+
+    pomHeader = 
+`<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">`;
+     pomVersion = '<version>1.0.0</version>  <!-- Need not change for every release-->'
+
+    // add all modules to pom
+    if(fs.existsSync(projectPom)) {
+        var xmlContent = fs.readFileSync(projectPom, {encoding: 'utf-8'});
+        var xml = xmlparser.parse(xmlContent);
+        xml.project.modules.module = modules;
+        xmlContent = new xmlparser.j2xParser({format: true, indentBy: "  "}).parse(xml);
+        xmlContent = xmlContent.replace('<project>', pomHeader);
+        xmlContent = xmlContent.replace('<version>1.0.0</version>', pomVersion);
+
+        fs.writeFileSync(projectPom, xmlContent, {encoding: 'utf-8'})
+    }
+    
+    // change all module pom.xml
+    modules.forEach(function(mod, index) {
+        var modulePom = path.join(projectRoot, mod, 'pom.xml');
+        if (fs.existsSync(modulePom)) {
+            var pomContent = fs.readFileSync(modulePom, {encoding: 'utf-8'});
+            pomContent = pomContent.replace('<version>1.1.0</version>', '<version>1.3.1</version>');
+            pomContent = pomContent.replace('<relativePath>../../../pom.management.xml</relativePath>', '<relativePath>../../parents/azure-arm-parent/pom.xml</relativePath>');
+            fs.writeFileSync(modulePom, pomContent, {encoding: 'utf-8'});
+        }
+    });
+}
 
 gulp.task('java:build', shell.task('mvn package javadoc:aggregate -DskipTests=true -q'));
 gulp.task('java:stage', ['java:build'], function(){
