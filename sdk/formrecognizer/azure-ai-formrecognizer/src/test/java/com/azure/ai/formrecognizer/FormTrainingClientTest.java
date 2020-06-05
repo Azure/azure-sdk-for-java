@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.exception.HttpResponseException;
@@ -318,19 +319,19 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     }
 
     /**
-     * Verifies the training operation throws HttpResponseException when an invalid status model is returned.
+     * Verifies the training operation throws FormRecognizerException when an invalid status model is returned.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormTrainingClient(httpClient, serviceVersion);
         beginTrainingInvalidModelStatusRunner((invalidTrainingFilesUrl, useTrainingLabels) -> {
-            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+            FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                 () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getFinalResult());
-            ErrorInformation errorInformation = (ErrorInformation) ((List) httpResponseException.getValue()).get(0);
-            assertTrue(httpResponseException.getMessage().contains(EXPECTED_INVALID_MODEL_STATUS_MESSAGE));
+            ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
-            assertEquals(EXPECTED_INVALID_STATUS_ERROR_INFORMATION, errorInformation.getMessage());
+            assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
+            assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE));
         });
     }
 }

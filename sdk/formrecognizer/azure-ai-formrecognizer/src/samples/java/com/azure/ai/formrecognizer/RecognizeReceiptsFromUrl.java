@@ -3,13 +3,15 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FieldValueType;
+import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Sample for recognizing US receipt information using file source URL.
@@ -35,40 +37,73 @@ public class RecognizeReceiptsFromUrl {
         List<RecognizedReceipt> receiptPageResults = recognizeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
-            final RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-            System.out.printf("----------- Recognized Receipt page %s -----------", i);
-            USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-            System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getFieldValue(),
-                usReceipt.getMerchantName().getConfidence());
-            System.out.printf("Merchant Address: %s, confidence: %.2f%n", usReceipt.getMerchantAddress().getName(),
-                usReceipt.getMerchantAddress().getConfidence());
-            System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
-                usReceipt.getMerchantPhoneNumber().getFieldValue(), usReceipt.getMerchantPhoneNumber().getConfidence());
-            System.out.printf("Total: %s confidence: %.2f%n", usReceipt.getTotal().getName(),
-                usReceipt.getTotal().getConfidence());
-            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                usReceipt.getTransactionDate().getFieldValue(), usReceipt.getTransactionDate().getConfidence());
-            System.out.printf("Transaction Time: %s, confidence: %.2f%n",
-                usReceipt.getTransactionTime().getName(), usReceipt.getTransactionTime().getConfidence());
-            System.out.printf("Receipt Items: %n");
-            usReceipt.getReceiptItems().forEach(receiptItem -> {
-                if (receiptItem.getName() != null) {
-                    System.out.printf("Name: %s, confidence: %.2f%n", receiptItem.getName().getFieldValue(),
-                        receiptItem.getName().getConfidence());
+            RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
+            Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+            System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+            FormField merchantNameField = recognizedFields.get("MerchantName");
+            if (merchantNameField != null) {
+                if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                        merchantNameField.getFieldValue().asString(),
+                        merchantNameField.getConfidence());
                 }
-                if (receiptItem.getQuantity() != null) {
-                    System.out.printf("Quantity: %s, confidence: %.2f%n", receiptItem.getQuantity().getFieldValue(),
-                        receiptItem.getQuantity().getConfidence());
+            }
+            FormField merchantAddressField = recognizedFields.get("MerchantAddress");
+            if (merchantAddressField != null) {
+                if (merchantAddressField.getFieldValue().getType() == FieldValueType.STRING) {
+                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
+                        merchantAddressField.getFieldValue().asString(),
+                        merchantAddressField.getConfidence());
                 }
-                if (receiptItem.getPrice() != null) {
-                    System.out.printf("Price: %s, confidence: %.2f%n", receiptItem.getPrice().getFieldValue(),
-                        receiptItem.getPrice().getConfidence());
+            }
+            FormField transactionDateField = recognizedFields.get("TransactionDate");
+            if (transactionDateField != null) {
+                if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                        transactionDateField.getFieldValue().asDate(),
+                        transactionDateField.getConfidence());
                 }
-                if (receiptItem.getTotalPrice() != null) {
-                    System.out.printf("Total Price: %s, confidence: %.2f%n",
-                        receiptItem.getTotalPrice().getFieldValue(), receiptItem.getTotalPrice().getConfidence());
+            }
+            FormField receiptItemsField = recognizedFields.get("Items");
+            if (receiptItemsField != null) {
+                System.out.printf("Receipt Items: %n");
+                if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
+                    List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                    receiptItems.forEach(receiptItem -> {
+                        if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
+                            receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
+                                if (key.equals("Name")) {
+                                    if (formField.getFieldValue().getType() == FieldValueType.STRING) {
+                                        System.out.printf("Name: %s, confidence: %.2fs%n",
+                                            formField.getFieldValue().asString(),
+                                            formField.getConfidence());
+                                    }
+                                }
+                                if (key.equals("Quantity")) {
+                                    if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                                        System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                            formField.getFieldValue().asInteger(), formField.getConfidence());
+                                    }
+                                }
+                                if (key.equals("Price")) {
+                                    if (formField.getFieldValue().getType() == FieldValueType.FLOAT) {
+                                        System.out.printf("Price: %s, confidence: %.2f%n",
+                                            formField.getFieldValue().asFloat(),
+                                            formField.getConfidence());
+                                    }
+                                }
+                                if (key.equals("TotalPrice")) {
+                                    if (formField.getFieldValue().getType() == FieldValueType.FLOAT) {
+                                        System.out.printf("Total Price: %s, confidence: %.2f%n",
+                                            formField.getFieldValue().asFloat(),
+                                            formField.getConfidence());
+                                    }
+                                }
+                            });
+                        }
+                    });
                 }
-            });
+            }
             System.out.print("-----------------------------------");
         }
     }

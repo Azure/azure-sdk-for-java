@@ -192,27 +192,27 @@ public final class FieldBuilder {
                 .setFacetable(searchableFieldPropertyAnnotation.isFacetable())
                 .setKey(searchableFieldPropertyAnnotation.isKey())
                 .setHidden(searchableFieldPropertyAnnotation.isHidden());
-            String analyzer = searchableFieldPropertyAnnotation.analyzer();
-            String searchAnalyzer = searchableFieldPropertyAnnotation.searchAnalyzer();
+            String analyzer = searchableFieldPropertyAnnotation.analyzerName();
+            String searchAnalyzer = searchableFieldPropertyAnnotation.searchAnalyzerName();
             String indexAnalyzer = searchableFieldPropertyAnnotation.indexAnalyzer();
             if (!analyzer.isEmpty() && (!searchAnalyzer.isEmpty() || !indexAnalyzer.isEmpty())) {
                 throw logger.logExceptionAsError(new RuntimeException(
                     "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
             }
-            if (!searchableFieldPropertyAnnotation.analyzer().isEmpty()) {
+            if (!searchableFieldPropertyAnnotation.analyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldPropertyAnnotation.analyzer()));
+                    searchableFieldPropertyAnnotation.analyzerName()));
             }
-            if (!searchableFieldPropertyAnnotation.searchAnalyzer().isEmpty()) {
+            if (!searchableFieldPropertyAnnotation.searchAnalyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldPropertyAnnotation.searchAnalyzer()));
+                    searchableFieldPropertyAnnotation.searchAnalyzerName()));
             }
             if (!searchableFieldPropertyAnnotation.indexAnalyzer().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
                     searchableFieldPropertyAnnotation.indexAnalyzer()));
             }
-            if (searchableFieldPropertyAnnotation.synonymMaps().length != 0) {
-                List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMaps())
+            if (searchableFieldPropertyAnnotation.synonymMapNames().length != 0) {
+                List<String> synonymMaps = Arrays.stream(searchableFieldPropertyAnnotation.synonymMapNames())
                     .filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
                 searchField.setSynonymMapNames(synonymMaps);
             }

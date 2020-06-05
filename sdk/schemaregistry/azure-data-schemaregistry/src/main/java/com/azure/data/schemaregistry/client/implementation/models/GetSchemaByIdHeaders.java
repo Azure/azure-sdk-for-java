@@ -6,7 +6,6 @@ package com.azure.data.schemaregistry.client.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.net.URL;
-import java.util.UUID;
 
 /** The GetSchemaByIdHeaders model. */
 @Fluent
@@ -27,7 +26,7 @@ public final class GetSchemaByIdHeaders {
      * The X-Schema-Id property.
      */
     @JsonProperty(value = "X-Schema-Id")
-    private UUID xSchemaId;
+    private String xSchemaId;
 
     /*
      * The X-Schema-Id-Location property.
@@ -86,7 +85,7 @@ public final class GetSchemaByIdHeaders {
      *
      * @return the xSchemaId value.
      */
-    public UUID getXSchemaId() {
+    public String getXSchemaId() {
         return this.xSchemaId;
     }
 
@@ -96,7 +95,7 @@ public final class GetSchemaByIdHeaders {
      * @param xSchemaId the xSchemaId value to set.
      * @return the GetSchemaByIdHeaders object itself.
      */
-    public GetSchemaByIdHeaders setXSchemaId(UUID xSchemaId) {
+    public GetSchemaByIdHeaders setXSchemaId(String xSchemaId) {
         this.xSchemaId = xSchemaId;
         return this;
     }

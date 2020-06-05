@@ -451,7 +451,7 @@ public abstract class SearchTestBase extends TestBase {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSearchSuggesters(Collections.singletonList(new SearchSuggester()
+            .setSuggesters(Collections.singletonList(new SearchSuggester()
                 .setName("FancySuggester")
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }

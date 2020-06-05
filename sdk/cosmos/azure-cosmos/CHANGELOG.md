@@ -1,6 +1,8 @@
 # Release History
 
-## 4.0.1-beta.4 (Unreleased)
+## 4.0.1-beta.5 (Unreleased)
+
+## 4.0.1-beta.4 (2020-06-03)
 ### New Features
 * Added more samples & enriched docs to `CosmosClientBuilder`. 
 * Updated `CosmosDatabase` & `CosmosContainer` APIs with throughputProperties for autoscale/autopilot support. 
