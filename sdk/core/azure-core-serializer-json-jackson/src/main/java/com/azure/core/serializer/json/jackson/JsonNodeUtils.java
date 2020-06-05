@@ -52,7 +52,7 @@ final class JsonNodeUtils {
             }
 
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("JsonNode is a value but isn't JacksonJsonValue."));
+                new IllegalArgumentException("JsonNode is a value but isn't JacksonJsonPrimitive."));
         }
 
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown JsonNode type."));

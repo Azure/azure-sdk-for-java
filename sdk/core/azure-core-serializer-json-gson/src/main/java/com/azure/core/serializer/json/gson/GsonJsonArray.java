@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.gson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonArray;
 import com.azure.core.util.serializer.JsonNode;
 import com.google.gson.JsonElement;
@@ -17,6 +18,8 @@ import java.util.stream.StreamSupport;
  * GSON specific implementation of {@link JsonArray}.
  */
 public final class GsonJsonArray implements JsonArray {
+    private final ClientLogger logger = new ClientLogger(GsonJsonArray.class);
+
     private final com.google.gson.JsonArray jsonArray;
 
     /**
@@ -30,9 +33,10 @@ public final class GsonJsonArray implements JsonArray {
      * Constructs a {@link JsonArray} backed by the passed GSON {@link com.google.gson.JsonArray}.
      *
      * @param jsonArray The backing GSON {@link com.google.gson.JsonArray}.
+     * @throws NullPointerException If {@code jsonArray} is {@code null}.
      */
     public GsonJsonArray(com.google.gson.JsonArray jsonArray) {
-        this.jsonArray = jsonArray;
+        this.jsonArray = Objects.requireNonNull(jsonArray, "'jsonArray' cannot be null.");
     }
 
     com.google.gson.JsonArray getJsonArray() {
@@ -47,7 +51,8 @@ public final class GsonJsonArray implements JsonArray {
 
     @Override
     public JsonArray clear() {
-        for (int i = 0; i < jsonArray.size(); i++) {
+        int size = jsonArray.size();
+        for (int i = 0; i < size; i++) {
             jsonArray.remove(0);
         }
 
@@ -64,12 +69,15 @@ public final class GsonJsonArray implements JsonArray {
 
     @Override
     public JsonNode get(int index) {
-        return JsonNodeUtils.fromGsonElement(jsonArray.get(index));
+        checkBounds(index);
+
+        JsonElement jsonElement = jsonArray.get(index);
+        return (jsonElement == null) ? null :  JsonNodeUtils.fromGsonElement(jsonElement);
     }
 
     @Override
     public boolean has(int index) {
-        if (index < 0 || index > jsonArray.size()) {
+        if (index < 0 || index >= jsonArray.size()) {
             return false;
         }
 
@@ -78,12 +86,18 @@ public final class GsonJsonArray implements JsonArray {
 
     @Override
     public JsonNode remove(int index) {
-        return JsonNodeUtils.fromGsonElement(jsonArray.remove(index));
+        checkBounds(index);
+
+        JsonElement jsonElement = jsonArray.remove(index);
+        return (jsonElement == null) ? null : JsonNodeUtils.fromGsonElement(jsonElement);
     }
 
     @Override
     public JsonNode set(int index, JsonNode jsonNode) {
-        return JsonNodeUtils.fromGsonElement(jsonArray.set(index, JsonNodeUtils.toGsonElement(jsonNode)));
+        checkBounds(index);
+
+        JsonElement jsonElement = jsonArray.set(index, JsonNodeUtils.toGsonElement(jsonNode));
+        return (jsonElement == null) ? null : JsonNodeUtils.fromGsonElement(jsonElement);
     }
 
     @Override
@@ -107,5 +121,11 @@ public final class GsonJsonArray implements JsonArray {
     @Override
     public int hashCode() {
         return jsonArray.hashCode();
+    }
+
+    private void checkBounds(int index) {
+        if (index < 0 || index >= size()) {
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'index' must be between 0 and size()."));
+        }
     }
 }

@@ -48,7 +48,7 @@ final class JsonNodeUtils {
             }
 
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("JsonNode is a value but isn't GsonJsonValue."));
+                new IllegalArgumentException("JsonNode is a value but isn't GsonJsonPrimitive."));
         }
 
         throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown JsonNode type."));

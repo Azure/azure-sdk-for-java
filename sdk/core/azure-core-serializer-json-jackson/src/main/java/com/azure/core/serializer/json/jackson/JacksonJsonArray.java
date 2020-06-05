@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonArray;
 import com.azure.core.util.serializer.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -18,6 +19,8 @@ import java.util.stream.StreamSupport;
  * Jackson specific implementation of  {@link JsonArray}.
  */
 public final class JacksonJsonArray implements JsonArray {
+    private final ClientLogger logger = new ClientLogger(JacksonJsonArray.class);
+
     private final ArrayNode arrayNode;
 
     /**
@@ -31,9 +34,10 @@ public final class JacksonJsonArray implements JsonArray {
      * Constructs a {@link JsonArray} backed by the passed Jackson {@link ArrayNode}.
      *
      * @param arrayNode The backing Jackson {@link ArrayNode}.
+     * @throws NullPointerException If {@code arrayNode} is {@code null}.
      */
     public JacksonJsonArray(ArrayNode arrayNode) {
-        this.arrayNode = arrayNode;
+        this.arrayNode = Objects.requireNonNull(arrayNode, "'arrayNode' cannot be null.");
     }
 
     ArrayNode getArrayNode() {
@@ -61,22 +65,35 @@ public final class JacksonJsonArray implements JsonArray {
 
     @Override
     public JsonNode get(int index) {
-        return JsonNodeUtils.fromJacksonNode(arrayNode.get(index));
+        checkBounds(index);
+
+        com.fasterxml.jackson.databind.JsonNode jsonNode = arrayNode.get(index);
+        return (jsonNode == null) ? null : JsonNodeUtils.fromJacksonNode(jsonNode);
     }
 
     @Override
     public boolean has(int index) {
+        if (index < 0 || index >= size()) {
+            return false;
+        }
+
         return arrayNode.has(index);
     }
 
     @Override
     public JsonNode remove(int index) {
-        return JsonNodeUtils.fromJacksonNode(arrayNode.remove(index));
+        checkBounds(index);
+
+        com.fasterxml.jackson.databind.JsonNode jsonNode = arrayNode.remove(index);
+        return (jsonNode == null) ? null : JsonNodeUtils.fromJacksonNode(jsonNode);
     }
 
     @Override
     public JsonNode set(int index, JsonNode jsonNode) {
-        return JsonNodeUtils.fromJacksonNode(arrayNode.set(index, JsonNodeUtils.toJacksonNode(jsonNode)));
+        checkBounds(index);
+
+        com.fasterxml.jackson.databind.JsonNode oldNode = arrayNode.set(index, JsonNodeUtils.toJacksonNode(jsonNode));
+        return (oldNode == null) ? null : JsonNodeUtils.fromJacksonNode(oldNode);
     }
 
     @Override
@@ -100,5 +117,11 @@ public final class JacksonJsonArray implements JsonArray {
     @Override
     public int hashCode() {
         return arrayNode.hashCode();
+    }
+
+    private void checkBounds(int index) {
+        if (index < 0 || index >= size()) {
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException("'index' must be between 0 and size()."));
+        }
     }
 }

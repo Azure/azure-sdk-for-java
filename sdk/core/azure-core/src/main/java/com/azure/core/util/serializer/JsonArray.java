@@ -38,12 +38,15 @@ public interface JsonArray extends JsonNode {
      * Gets the {@link JsonNode} at the given index of the array.
      *
      * @param index Index of the array.
-     * @return The {@link JsonNode} at the given index of the array.
+     * @return The {@link JsonNode} at the given index of the array if set, otherwise {@code null}.
+     * @throws IndexOutOfBoundsException If {@code index} is less than {@code 0} or greater than {@link #size()}.
      */
     JsonNode get(int index);
 
     /**
      * Determines if the array contains a value for the given index.
+     * <p>
+     * If {@code index} is less than {@code 0} or greater than equal to {@link #size()} {@code false} is returned.
      *
      * @param index Index of the array.
      * @return Whether the array contains a value for the index.
@@ -55,6 +58,7 @@ public interface JsonArray extends JsonNode {
      *
      * @param index Index of the array.
      * @return The {@link JsonNode} at the given index of the array.
+     * @throws IndexOutOfBoundsException If {@code index} is less than {@code 0} or greater than {@link #size()}.
      */
     JsonNode remove(int index);
 
@@ -64,6 +68,7 @@ public interface JsonArray extends JsonNode {
      * @param index Index of the array.
      * @param jsonNode The new {@link JsonNode} value to set.
      * @return The old {@link JsonNode} value at the given index of the array.
+     * @throws IndexOutOfBoundsException If {@code index} is less than {@code 0} or greater than {@link #size()}.
      */
     JsonNode set(int index, JsonNode jsonNode);
 
