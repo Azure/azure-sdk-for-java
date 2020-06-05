@@ -141,6 +141,7 @@ public class ReadmeSamples {
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .buildClient();
 
+        // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
         receiver.receive(10).forEach(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
 
@@ -160,7 +161,7 @@ public class ReadmeSamples {
             .buildClient();
 
         // Setting sessionId publishes that message to a specific session, in this case, "greeting".
-        ServiceBusMessage message = new ServiceBusMessage("Hello world".getBytes())
+        ServiceBusMessage message = new ServiceBusMessage("Hello world")
             .setSessionId("greetings");
 
         sender.send(message);

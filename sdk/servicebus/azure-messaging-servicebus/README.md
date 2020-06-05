@@ -246,7 +246,7 @@ When a message is received, it can be settled using any of the `complete()`, `ab
 overloads. The sample below completes a received message from synchronous
 [`ServiceBusReceiverClient`][ServiceBusReceiverClient].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L144-L148 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L144-L150 -->
 ```java
 // This fetches a batch of 10 messages or until the default operation timeout has elapsed.
 receiver.receive(10).forEach(context -> {
@@ -286,7 +286,7 @@ Create a [`ServiceBusSenderClient`][ServiceBusSenderClient] for a session enable
 `ServiceBusMessage.setSessionId(String)` on a `ServiceBusMessage` will publish the message to that session. If the
 session does not exist, it is created.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L162-L166 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L163-L167 -->
 ```java
 // Setting sessionId publishes that message to a specific session, in this case, "greeting".
 ServiceBusMessage message = new ServiceBusMessage("Hello world")
@@ -299,7 +299,7 @@ sender.send(message);
 
 Receivers can fetch messages from a specific session or the first available, unlocked session.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L173-L179 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L174-L180 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the session "greetings".
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
@@ -310,7 +310,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L186-L191 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L187-L192 -->
 ```java
 // Creates a session-enabled receiver that gets messages from the first available session.
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
