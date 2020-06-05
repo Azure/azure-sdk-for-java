@@ -103,7 +103,7 @@ public class ResourceSkuInner {
     private List<ResourceSkuRestrictions> restrictions;
 
     /**
-     * Get the resourceType value.
+     * Get the type of resource the SKU applies to.
      *
      * @return the resourceType value
      */
@@ -112,7 +112,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of SKU.
      *
      * @return the name value
      */
@@ -121,7 +121,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the tier value.
+     * Get specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @return the tier value
      */
@@ -130,7 +130,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the size value.
+     * Get the Size of the SKU.
      *
      * @return the size value
      */
@@ -139,7 +139,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the family value.
+     * Get the Family of this particular SKU.
      *
      * @return the family value
      */
@@ -148,7 +148,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the kind value.
+     * Get the Kind of resources that are supported in this SKU.
      *
      * @return the kind value
      */
@@ -157,7 +157,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the capacity value.
+     * Get specifies the number of virtual machines in the scale set.
      *
      * @return the capacity value
      */
@@ -166,7 +166,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the locations value.
+     * Get the set of locations that the SKU is available.
      *
      * @return the locations value
      */
@@ -175,7 +175,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the locationInfo value.
+     * Get a list of locations and availability zones in those locations where the SKU is available.
      *
      * @return the locationInfo value
      */
@@ -184,7 +184,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the apiVersions value.
+     * Get the api versions that support this SKU.
      *
      * @return the apiVersions value
      */
@@ -193,7 +193,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the costs value.
+     * Get metadata for retrieving price info.
      *
      * @return the costs value
      */
@@ -202,7 +202,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the capabilities value.
+     * Get a name value pair to describe the capability.
      *
      * @return the capabilities value
      */
@@ -211,7 +211,7 @@ public class ResourceSkuInner {
     }
 
     /**
-     * Get the restrictions value.
+     * Get the restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      *
      * @return the restrictions value
      */

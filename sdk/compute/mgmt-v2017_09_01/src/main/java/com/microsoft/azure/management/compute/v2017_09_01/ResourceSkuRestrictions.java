@@ -42,7 +42,7 @@ public class ResourceSkuRestrictions {
     private ResourceSkuRestrictionsReasonCode reasonCode;
 
     /**
-     * Get the type value.
+     * Get the type of restrictions. Possible values include: 'Location', 'Zone'.
      *
      * @return the type value
      */
@@ -51,7 +51,7 @@ public class ResourceSkuRestrictions {
     }
 
     /**
-     * Get the values value.
+     * Get the value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
      *
      * @return the values value
      */
@@ -60,7 +60,7 @@ public class ResourceSkuRestrictions {
     }
 
     /**
-     * Get the restrictionInfo value.
+     * Get the information about the restriction where the SKU cannot be used.
      *
      * @return the restrictionInfo value
      */
@@ -69,7 +69,7 @@ public class ResourceSkuRestrictions {
     }
 
     /**
-     * Get the reasonCode value.
+     * Get the reason for restriction. Possible values include: 'QuotaId', 'NotAvailableForSubscription'.
      *
      * @return the reasonCode value
      */
