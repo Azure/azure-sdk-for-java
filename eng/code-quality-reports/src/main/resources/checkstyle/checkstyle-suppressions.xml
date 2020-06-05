@@ -236,10 +236,11 @@
 
   <!-- Use the logger in Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.Utility.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.common.implementation.StorageImplUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.gson.JsonNodeUtils.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.serializer.json.jackson.JsonNodeUtils.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>

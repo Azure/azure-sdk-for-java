@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.NullNode;
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.databind.node.ValueNode;
  * Helper methods for converting between Azure Core and Jackson types.
  */
 final class JsonNodeUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(ClientLogger.class);
 
     /**
      * Converts an Azure Core {@link JsonNode} into a Jackson {@link com.fasterxml.jackson.databind.JsonNode}.
@@ -28,28 +30,32 @@ final class JsonNodeUtils {
                 return ((JacksonJsonArray) jsonNode).getArrayNode();
             }
 
-            throw new IllegalArgumentException("JsonNode is an array but isn't JacksonJsonArray.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is an array but isn't JacksonJsonArray."));
         } else if (jsonNode.isNull()) {
             if (jsonNode instanceof JacksonJsonNull) {
                 return ((JacksonJsonNull) jsonNode).getNullNode();
             }
 
-            throw new IllegalArgumentException("JsonNode is a null but isn't JacksonJsonNull.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is a null but isn't JacksonJsonNull."));
         } else if (jsonNode.isObject()) {
             if (jsonNode instanceof JacksonJsonObject) {
                 return ((JacksonJsonObject) jsonNode).getObjectNode();
             }
 
-            throw new IllegalArgumentException("JsonNode is an array but isn't JacksonJsonObject.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is an array but isn't JacksonJsonObject."));
         } else if (jsonNode.isValue()) {
-            if (jsonNode instanceof JacksonJsonValue) {
-                return ((JacksonJsonValue) jsonNode).getValueNode();
+            if (jsonNode instanceof JacksonJsonPrimitive) {
+                return ((JacksonJsonPrimitive) jsonNode).getValueNode();
             }
 
-            throw new IllegalArgumentException("JsonNode is a value but isn't JacksonJsonValue.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is a value but isn't JacksonJsonValue."));
         }
 
-        throw new IllegalArgumentException("Unknown JsonNode type.");
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown JsonNode type."));
     }
 
     /**
@@ -64,14 +70,14 @@ final class JsonNodeUtils {
         if (jsonNode.isArray() && jsonNode instanceof ArrayNode) {
             return new JacksonJsonArray((ArrayNode) jsonNode);
         } else if (jsonNode.isNull() && jsonNode instanceof NullNode) {
-            return new JacksonJsonNull((NullNode) jsonNode);
+            return JacksonJsonNull.INSTANCE;
         } else if (jsonNode.isObject() && jsonNode instanceof ObjectNode) {
             return new JacksonJsonObject((ObjectNode) jsonNode);
         } else if (jsonNode.isValueNode() && jsonNode instanceof ValueNode) {
-            return new JacksonJsonValue((ValueNode) jsonNode);
+            return new JacksonJsonPrimitive((ValueNode) jsonNode);
         }
 
-        throw new IllegalArgumentException("Unknown JsonNode type.");
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown JsonNode type."));
     }
 }
 

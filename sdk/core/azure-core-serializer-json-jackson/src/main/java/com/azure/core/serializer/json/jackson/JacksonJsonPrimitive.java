@@ -3,7 +3,7 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.util.serializer.JsonValue;
+import com.azure.core.util.serializer.JsonPrimitive;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.DoubleNode;
 import com.fasterxml.jackson.databind.node.FloatNode;
@@ -16,80 +16,80 @@ import com.fasterxml.jackson.databind.node.ValueNode;
 import java.util.Objects;
 
 /**
- * Jackson specific implementation of {@link JsonValue}.
+ * Jackson specific implementation of {@link JsonPrimitive}.
  */
-public final class JacksonJsonValue implements JsonValue {
+public final class JacksonJsonPrimitive implements JsonPrimitive {
     private final ValueNode valueNode;
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed boolean.
+     * Constructs a {@link JsonPrimitive} wrapping the passed boolean.
      *
      * @param value Boolean value to wrap.
      */
-    public JacksonJsonValue(boolean value) {
+    public JacksonJsonPrimitive(boolean value) {
         this.valueNode = (value) ? BooleanNode.TRUE : BooleanNode.FALSE;
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed double.
+     * Constructs a {@link JsonPrimitive} wrapping the passed double.
      *
      * @param value Double value to wrap.
      */
-    public JacksonJsonValue(double value) {
+    public JacksonJsonPrimitive(double value) {
         this.valueNode = new DoubleNode(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed float.
+     * Constructs a {@link JsonPrimitive} wrapping the passed float.
      *
      * @param value Float value to wrap.
      */
-    public JacksonJsonValue(float value) {
+    public JacksonJsonPrimitive(float value) {
         this.valueNode = new FloatNode(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed int.
+     * Constructs a {@link JsonPrimitive} wrapping the passed int.
      *
      * @param value Int value to wrap.
      */
-    public JacksonJsonValue(int value) {
+    public JacksonJsonPrimitive(int value) {
         this.valueNode = new IntNode(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed long.
+     * Constructs a {@link JsonPrimitive} wrapping the passed long.
      *
      * @param value Long value to wrap.
      */
-    public JacksonJsonValue(long value) {
+    public JacksonJsonPrimitive(long value) {
         this.valueNode = new LongNode(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed short.
+     * Constructs a {@link JsonPrimitive} wrapping the passed short.
      *
      * @param value Short value to wrap.
      */
-    public JacksonJsonValue(short value) {
+    public JacksonJsonPrimitive(short value) {
         this.valueNode = new ShortNode(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed string.
+     * Constructs a {@link JsonPrimitive} wrapping the passed string.
      *
      * @param value String value to wrap.
      */
-    public JacksonJsonValue(String value) {
+    public JacksonJsonPrimitive(String value) {
         this.valueNode = new TextNode(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} backed by the passed Jackson {@link ValueNode}.
+     * Constructs a {@link JsonPrimitive} backed by the passed Jackson {@link ValueNode}.
      *
      * @param valueNode The backing Jackson {@link ValueNode}.
      */
-    public JacksonJsonValue(ValueNode valueNode) {
+    public JacksonJsonPrimitive(ValueNode valueNode) {
         this.valueNode = valueNode;
     }
 
@@ -153,11 +153,11 @@ public final class JacksonJsonValue implements JsonValue {
             return true;
         }
 
-        if (!(obj instanceof JacksonJsonValue)) {
+        if (!(obj instanceof JacksonJsonPrimitive)) {
             return false;
         }
 
-        return Objects.equals(valueNode, ((JacksonJsonValue) obj).valueNode);
+        return Objects.equals(valueNode, ((JacksonJsonPrimitive) obj).valueNode);
     }
 
     @Override

@@ -59,24 +59,23 @@ public class JsonNodeUtilsTests {
         return Stream.of(
             Arguments.of(new JacksonJsonArray(arrayNode), arrayNode),
             Arguments.of(new JacksonJsonArray(), arrayNode),
-            Arguments.of(new JacksonJsonNull(nullNode), nullNode),
-            Arguments.of(new JacksonJsonNull(), nullNode),
+            Arguments.of(JacksonJsonNull.INSTANCE, nullNode),
             Arguments.of(new JacksonJsonObject(objectNode), objectNode),
             Arguments.of(new JacksonJsonObject(), objectNode),
-            Arguments.of(new JacksonJsonValue(booleanNode), booleanNode),
-            Arguments.of(new JacksonJsonValue(true), booleanNode),
-            Arguments.of(new JacksonJsonValue(doubleNode), doubleNode),
-            Arguments.of(new JacksonJsonValue(42D), doubleNode),
-            Arguments.of(new JacksonJsonValue(floatNode), floatNode),
-            Arguments.of(new JacksonJsonValue(42F), floatNode),
-            Arguments.of(new JacksonJsonValue(intNode), intNode),
-            Arguments.of(new JacksonJsonValue(42), intNode),
-            Arguments.of(new JacksonJsonValue(longNode), longNode),
-            Arguments.of(new JacksonJsonValue(42L), longNode),
-            Arguments.of(new JacksonJsonValue(shortNode), shortNode),
-            Arguments.of(new JacksonJsonValue((short) 42), shortNode),
-            Arguments.of(new JacksonJsonValue(textNode), textNode),
-            Arguments.of(new JacksonJsonValue("42"), textNode)
+            Arguments.of(new JacksonJsonPrimitive(booleanNode), booleanNode),
+            Arguments.of(new JacksonJsonPrimitive(true), booleanNode),
+            Arguments.of(new JacksonJsonPrimitive(doubleNode), doubleNode),
+            Arguments.of(new JacksonJsonPrimitive(42D), doubleNode),
+            Arguments.of(new JacksonJsonPrimitive(floatNode), floatNode),
+            Arguments.of(new JacksonJsonPrimitive(42F), floatNode),
+            Arguments.of(new JacksonJsonPrimitive(intNode), intNode),
+            Arguments.of(new JacksonJsonPrimitive(42), intNode),
+            Arguments.of(new JacksonJsonPrimitive(longNode), longNode),
+            Arguments.of(new JacksonJsonPrimitive(42L), longNode),
+            Arguments.of(new JacksonJsonPrimitive(shortNode), shortNode),
+            Arguments.of(new JacksonJsonPrimitive((short) 42), shortNode),
+            Arguments.of(new JacksonJsonPrimitive(textNode), textNode),
+            Arguments.of(new JacksonJsonPrimitive("42"), textNode)
         );
     }
 
@@ -151,15 +150,15 @@ public class JsonNodeUtilsTests {
 
         return Stream.of(
             Arguments.of(arrayNode, new JacksonJsonArray(arrayNode)),
-            Arguments.of(nullNode, new JacksonJsonNull(nullNode)),
+            Arguments.of(nullNode, JacksonJsonNull.INSTANCE),
             Arguments.of(objectNode, new JacksonJsonObject(objectNode)),
-            Arguments.of(booleanNode, new JacksonJsonValue(booleanNode)),
-            Arguments.of(doubleNode, new JacksonJsonValue(doubleNode)),
-            Arguments.of(floatNode, new JacksonJsonValue(floatNode)),
-            Arguments.of(intNode, new JacksonJsonValue(intNode)),
-            Arguments.of(longNode, new JacksonJsonValue(longNode)),
-            Arguments.of(shortNode, new JacksonJsonValue(shortNode)),
-            Arguments.of(textNode, new JacksonJsonValue(textNode))
+            Arguments.of(booleanNode, new JacksonJsonPrimitive(booleanNode)),
+            Arguments.of(doubleNode, new JacksonJsonPrimitive(doubleNode)),
+            Arguments.of(floatNode, new JacksonJsonPrimitive(floatNode)),
+            Arguments.of(intNode, new JacksonJsonPrimitive(intNode)),
+            Arguments.of(longNode, new JacksonJsonPrimitive(longNode)),
+            Arguments.of(shortNode, new JacksonJsonPrimitive(shortNode)),
+            Arguments.of(textNode, new JacksonJsonPrimitive(textNode))
         );
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.core.util.serializer;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -17,12 +16,12 @@ public interface JsonObject extends JsonNode {
     }
 
     /**
-     * @return {@link Iterator} for all fields in the object.
+     * @return {@link Stream} for all fields in the object.
      */
     Stream<Map.Entry<String, JsonNode>> fields();
 
     /**
-     * @return {@link Iterator} for all field names in the object.
+     * @return {@link Stream} for all field names in the object.
      */
     Stream<String> fieldNames();
 

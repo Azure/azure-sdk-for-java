@@ -29,7 +29,7 @@ public interface JsonNode {
     }
 
     /**
-     * @return True if this {@link JsonNode} is an instance of {@link JsonValue}.
+     * @return True if this {@link JsonNode} is an instance of {@link JsonPrimitive}.
      */
     default boolean isValue() {
         return false;

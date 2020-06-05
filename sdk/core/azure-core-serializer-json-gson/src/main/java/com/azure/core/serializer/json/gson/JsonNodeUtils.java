@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.gson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonNode;
 import com.google.gson.JsonElement;
 
@@ -10,6 +11,7 @@ import com.google.gson.JsonElement;
  * Helper methods for converting between Azure Core and GSON types.
  */
 final class JsonNodeUtils {
+    private static final ClientLogger LOGGER = new ClientLogger(JsonNodeUtils.class);
 
     /**
      * Converts an Azure Core {@link JsonNode} into a GSON {@link JsonElement}.
@@ -24,28 +26,32 @@ final class JsonNodeUtils {
                 return ((GsonJsonArray) jsonNode).getJsonArray();
             }
 
-            throw new IllegalArgumentException("JsonNode is an array but isn't GsonJsonArray.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is an array but isn't GsonJsonArray."));
         } else if (jsonNode.isNull()) {
             if (jsonNode instanceof GsonJsonNull) {
                 return ((GsonJsonNull) jsonNode).getJsonNull();
             }
 
-            throw new IllegalArgumentException("JsonNode is a null but isn't GsonJsonNull.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is a null but isn't GsonJsonNull."));
         } else if (jsonNode.isObject()) {
             if (jsonNode instanceof GsonJsonObject) {
                 return ((GsonJsonObject) jsonNode).getJsonObject();
             }
 
-            throw new IllegalArgumentException("JsonNode is an array but isn't GsonJsonObject.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is an array but isn't GsonJsonObject."));
         } else if (jsonNode.isValue()) {
-            if (jsonNode instanceof GsonJsonValue) {
-                return ((GsonJsonValue) jsonNode).getJsonPrimitive();
+            if (jsonNode instanceof GsonJsonPrimitive) {
+                return ((GsonJsonPrimitive) jsonNode).getJsonPrimitive();
             }
 
-            throw new IllegalArgumentException("JsonNode is a value but isn't GsonJsonValue.");
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("JsonNode is a value but isn't GsonJsonValue."));
         }
 
-        throw new IllegalArgumentException("Unknown JsonNode type.");
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown JsonNode type."));
     }
 
     /**
@@ -59,13 +65,13 @@ final class JsonNodeUtils {
         if (jsonElement.isJsonArray()) {
             return new GsonJsonArray(jsonElement.getAsJsonArray());
         } else if (jsonElement.isJsonNull()) {
-            return new GsonJsonNull(jsonElement.getAsJsonNull());
+            return GsonJsonNull.INSTANCE;
         } else if (jsonElement.isJsonObject()) {
             return new GsonJsonObject(jsonElement.getAsJsonObject());
         } else if (jsonElement.isJsonPrimitive()) {
-            return new GsonJsonValue(jsonElement.getAsJsonPrimitive());
+            return new GsonJsonPrimitive(jsonElement.getAsJsonPrimitive());
         }
 
-        throw new IllegalArgumentException("Unknown JsonElement type.");
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown JsonElement type."));
     }
 }

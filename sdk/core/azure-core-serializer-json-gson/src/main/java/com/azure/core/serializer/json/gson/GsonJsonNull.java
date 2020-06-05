@@ -14,19 +14,15 @@ public final class GsonJsonNull implements JsonNull {
     private final com.google.gson.JsonNull jsonNull;
 
     /**
-     * Constructs a {@link JsonNull} backed by GSON {@link com.google.gson.JsonNull#INSTANCE}
+     * Constant instance of {@link JsonNull}.
      */
-    public GsonJsonNull() {
-        this.jsonNull = com.google.gson.JsonNull.INSTANCE;
-    }
+    public static final GsonJsonNull INSTANCE = new GsonJsonNull();
 
     /**
-     * Constructs a {@link JsonNull} backed by the passed GSON {@link com.google.gson.JsonNull}.
-     *
-     * @param jsonNull The backing GSON {@link com.google.gson.JsonNull}.
+     * Constructs a {@link JsonNull} backed by GSON {@link com.google.gson.JsonNull#INSTANCE}
      */
-    public GsonJsonNull(com.google.gson.JsonNull jsonNull) {
-        this.jsonNull = jsonNull;
+    private GsonJsonNull() {
+        this.jsonNull = com.google.gson.JsonNull.INSTANCE;
     }
 
     com.google.gson.JsonNull getJsonNull() {

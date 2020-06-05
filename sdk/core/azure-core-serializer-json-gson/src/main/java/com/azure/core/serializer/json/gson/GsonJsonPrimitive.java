@@ -3,94 +3,93 @@
 
 package com.azure.core.serializer.json.gson;
 
-import com.azure.core.util.serializer.JsonValue;
-import com.google.gson.JsonPrimitive;
+import com.azure.core.util.serializer.JsonPrimitive;
 
 import java.util.Objects;
 
 /**
- * GSON specific implementation of {@link JsonValue}.
+ * GSON specific implementation of {@link JsonPrimitive}.
  */
-public final class GsonJsonValue implements JsonValue {
-    private final JsonPrimitive jsonPrimitive;
+public final class GsonJsonPrimitive implements JsonPrimitive {
+    private final com.google.gson.JsonPrimitive jsonPrimitive;
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed boolean.
+     * Constructs a {@link JsonPrimitive} wrapping the passed boolean.
      *
      * @param value Boolean value to wrap.
      */
-    public GsonJsonValue(boolean value) {
-        this.jsonPrimitive = new JsonPrimitive(value);
+    public GsonJsonPrimitive(boolean value) {
+        this.jsonPrimitive = new com.google.gson.JsonPrimitive(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed double.
+     * Constructs a {@link JsonPrimitive} wrapping the passed double.
      *
      * @param value Double value to wrap.
      */
-    public GsonJsonValue(double value) {
+    public GsonJsonPrimitive(double value) {
         this((Number) value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed float.
+     * Constructs a {@link JsonPrimitive} wrapping the passed float.
      *
      * @param value Float value to wrap.
      */
-    public GsonJsonValue(float value) {
+    public GsonJsonPrimitive(float value) {
         this((Number) value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed int.
+     * Constructs a {@link JsonPrimitive} wrapping the passed int.
      *
      * @param value Int value to wrap.
      */
-    public GsonJsonValue(int value) {
+    public GsonJsonPrimitive(int value) {
         this((Number) value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed long.
+     * Constructs a {@link JsonPrimitive} wrapping the passed long.
      *
      * @param value Long value to wrap.
      */
-    public GsonJsonValue(long value) {
+    public GsonJsonPrimitive(long value) {
         this((Number) value);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed short.
+     * Constructs a {@link JsonPrimitive} wrapping the passed short.
      *
      * @param value Short value to wrap.
      */
-    public GsonJsonValue(short value) {
+    public GsonJsonPrimitive(short value) {
         this((Number) value);
     }
 
-    private GsonJsonValue(Number number) {
-        this.jsonPrimitive = new JsonPrimitive(number);
+    private GsonJsonPrimitive(Number number) {
+        this.jsonPrimitive = new com.google.gson.JsonPrimitive(number);
     }
 
     /**
-     * Constructs a {@link JsonValue} wrapping the passed string.
+     * Constructs a {@link JsonPrimitive} wrapping the passed string.
      *
      * @param value String value to wrap.
      */
-    public GsonJsonValue(String value) {
-        this.jsonPrimitive = new JsonPrimitive(value);
+    public GsonJsonPrimitive(String value) {
+        this.jsonPrimitive = new com.google.gson.JsonPrimitive(value);
     }
 
     /**
-     * Constructs a {@link JsonValue} backed by the passed GSON {@link JsonPrimitive}.
+     * Constructs a {@link JsonPrimitive} backed by the passed GSON {@link com.google.gson.JsonPrimitive}.
      *
-     * @param jsonPrimitive The backing GSON {@link JsonPrimitive}.
+     * @param jsonPrimitive The backing GSON {@link com.google.gson.JsonPrimitive}.
      */
-    public GsonJsonValue(JsonPrimitive jsonPrimitive) {
+    public GsonJsonPrimitive(com.google.gson.JsonPrimitive jsonPrimitive) {
         this.jsonPrimitive = jsonPrimitive;
     }
 
-    JsonPrimitive getJsonPrimitive() {
+    com.google.gson.JsonPrimitive getJsonPrimitive() {
         return jsonPrimitive;
     }
 
@@ -150,11 +149,11 @@ public final class GsonJsonValue implements JsonValue {
             return true;
         }
 
-        if (!(obj instanceof GsonJsonValue)) {
+        if (!(obj instanceof GsonJsonPrimitive)) {
             return false;
         }
 
-        return Objects.equals(jsonPrimitive, ((GsonJsonValue) obj).jsonPrimitive);
+        return Objects.equals(jsonPrimitive, ((GsonJsonPrimitive) obj).jsonPrimitive);
     }
 
     @Override

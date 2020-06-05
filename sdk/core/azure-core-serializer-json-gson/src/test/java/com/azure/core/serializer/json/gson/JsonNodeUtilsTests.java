@@ -53,24 +53,23 @@ public class JsonNodeUtilsTests {
         return Stream.of(
             Arguments.of(new GsonJsonArray(jsonArray), jsonArray),
             Arguments.of(new GsonJsonArray(), jsonArray),
-            Arguments.of(new GsonJsonNull(jsonNull), jsonNull),
-            Arguments.of(new GsonJsonNull(), jsonNull),
+            Arguments.of(GsonJsonNull.INSTANCE, jsonNull),
             Arguments.of(new GsonJsonObject(jsonObject), jsonObject),
             Arguments.of(new GsonJsonObject(), jsonObject),
-            Arguments.of(new GsonJsonValue(booleanNode), booleanNode),
-            Arguments.of(new GsonJsonValue(true), booleanNode),
-            Arguments.of(new GsonJsonValue(doubleNode), doubleNode),
-            Arguments.of(new GsonJsonValue(42D), doubleNode),
-            Arguments.of(new GsonJsonValue(floatNode), floatNode),
-            Arguments.of(new GsonJsonValue(42F), floatNode),
-            Arguments.of(new GsonJsonValue(intNode), intNode),
-            Arguments.of(new GsonJsonValue(42), intNode),
-            Arguments.of(new GsonJsonValue(longNode), longNode),
-            Arguments.of(new GsonJsonValue(42L), longNode),
-            Arguments.of(new GsonJsonValue(shortNode), shortNode),
-            Arguments.of(new GsonJsonValue((short) 42), shortNode),
-            Arguments.of(new GsonJsonValue(textNode), textNode),
-            Arguments.of(new GsonJsonValue("42"), textNode)
+            Arguments.of(new GsonJsonPrimitive(booleanNode), booleanNode),
+            Arguments.of(new GsonJsonPrimitive(true), booleanNode),
+            Arguments.of(new GsonJsonPrimitive(doubleNode), doubleNode),
+            Arguments.of(new GsonJsonPrimitive(42D), doubleNode),
+            Arguments.of(new GsonJsonPrimitive(floatNode), floatNode),
+            Arguments.of(new GsonJsonPrimitive(42F), floatNode),
+            Arguments.of(new GsonJsonPrimitive(intNode), intNode),
+            Arguments.of(new GsonJsonPrimitive(42), intNode),
+            Arguments.of(new GsonJsonPrimitive(longNode), longNode),
+            Arguments.of(new GsonJsonPrimitive(42L), longNode),
+            Arguments.of(new GsonJsonPrimitive(shortNode), shortNode),
+            Arguments.of(new GsonJsonPrimitive((short) 42), shortNode),
+            Arguments.of(new GsonJsonPrimitive(textNode), textNode),
+            Arguments.of(new GsonJsonPrimitive("42"), textNode)
         );
     }
 
@@ -145,15 +144,15 @@ public class JsonNodeUtilsTests {
 
         return Stream.of(
             Arguments.of(jsonArray, new GsonJsonArray(jsonArray)),
-            Arguments.of(jsonNull, new GsonJsonNull(jsonNull)),
+            Arguments.of(jsonNull, GsonJsonNull.INSTANCE),
             Arguments.of(jsonObject, new GsonJsonObject(jsonObject)),
-            Arguments.of(booleanNode, new GsonJsonValue(booleanNode)),
-            Arguments.of(doubleNode, new GsonJsonValue(doubleNode)),
-            Arguments.of(floatNode, new GsonJsonValue(floatNode)),
-            Arguments.of(intNode, new GsonJsonValue(intNode)),
-            Arguments.of(longNode, new GsonJsonValue(longNode)),
-            Arguments.of(shortNode, new GsonJsonValue(shortNode)),
-            Arguments.of(textNode, new GsonJsonValue(textNode))
+            Arguments.of(booleanNode, new GsonJsonPrimitive(booleanNode)),
+            Arguments.of(doubleNode, new GsonJsonPrimitive(doubleNode)),
+            Arguments.of(floatNode, new GsonJsonPrimitive(floatNode)),
+            Arguments.of(intNode, new GsonJsonPrimitive(intNode)),
+            Arguments.of(longNode, new GsonJsonPrimitive(longNode)),
+            Arguments.of(shortNode, new GsonJsonPrimitive(shortNode)),
+            Arguments.of(textNode, new GsonJsonPrimitive(textNode))
         );
     }
 

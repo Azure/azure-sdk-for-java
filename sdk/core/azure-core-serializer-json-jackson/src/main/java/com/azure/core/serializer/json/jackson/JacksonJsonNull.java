@@ -15,19 +15,15 @@ public final class JacksonJsonNull implements JsonNull {
     private final NullNode nullNode;
 
     /**
-     * Constructs a {@link JsonNull} backed by Jackson {@link NullNode#getInstance()}.
+     * Constant instance of {@link JsonNull}.
      */
-    public JacksonJsonNull() {
-        this.nullNode = NullNode.getInstance();
-    }
+    public static final JacksonJsonNull INSTANCE = new JacksonJsonNull();
 
     /**
-     * Constructs a {@link JsonNull} backed by the passed Jackson {@link NullNode}.
-     *
-     * @param nullNode The backing Jackson {@link NullNode}.
+     * Constructs a {@link JsonNull} backed by Jackson {@link NullNode#getInstance()}.
      */
-    public JacksonJsonNull(NullNode nullNode) {
-        this.nullNode = nullNode;
+    private JacksonJsonNull() {
+        this.nullNode = NullNode.getInstance();
     }
 
     NullNode getNullNode() {

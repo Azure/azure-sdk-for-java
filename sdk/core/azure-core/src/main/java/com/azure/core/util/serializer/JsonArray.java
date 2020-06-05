@@ -3,7 +3,6 @@
 
 package com.azure.core.util.serializer;
 
-import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
@@ -31,7 +30,7 @@ public interface JsonArray extends JsonNode {
     JsonArray clear();
 
     /**
-     * @return {@link Iterator} for all elements in the array.
+     * @return {@link Stream} for all elements in the array.
      */
     Stream<JsonNode> elements();
 
