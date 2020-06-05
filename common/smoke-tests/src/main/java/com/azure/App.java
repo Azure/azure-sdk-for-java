@@ -15,8 +15,8 @@ public class App {
         LOGGER.info("================================");
 
         KeyVaultSecrets.main(null);
-        StorageBlob.main(null);
-        EventHubs.main(null);
+        // StorageBlob.main(null);
+        // EventHubs.main(null);
         // Disabling until cosmos ships from master
         // CosmosDB.main(null);
 

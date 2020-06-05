@@ -50,6 +50,14 @@ public class KeyVaultSecrets {
         LOGGER.info("\tDONE: deleted.");
     }
 
+    private static String getAuthorityHost() {
+        String authorityHostOverride = System.getenv("AZURE_AUTHORITY_HOST");
+        return authorityHostOverride != null
+            ? authorityHostOverride
+            : AUTHORITY_HOST_MAP.getOrDefault(
+                System.getenv("AZURE_CLOUD"), KnownAuthorityHosts.AZURE_CLOUD);
+    }
+
     public static void main(String[] args) {
         LOGGER.info("---------------------");
         LOGGER.info("KEY VAULT - SECRETS");
@@ -57,9 +65,7 @@ public class KeyVaultSecrets {
         LOGGER.info("---------------------");
 
         // Configure authority host from AZURE_CLOUD
-        String azureCloud = System.getenv("AZURE_CLOUD");
-        String authorityHost = AUTHORITY_HOST_MAP.getOrDefault(
-            azureCloud, KnownAuthorityHosts.AZURE_CLOUD);
+        String authorityHost = getAuthorityHost();
 
 
         /* DefaultAzureCredentialBuilder() is expecting the following environment variables:
