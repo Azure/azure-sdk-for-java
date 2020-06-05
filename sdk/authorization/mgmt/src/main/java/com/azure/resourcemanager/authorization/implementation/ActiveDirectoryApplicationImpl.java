@@ -3,14 +3,15 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.ActiveDirectoryApplication;
-import com.azure.resourcemanager.authorization.ApplicationCreateParameters;
-import com.azure.resourcemanager.authorization.ApplicationUpdateParameters;
-import com.azure.resourcemanager.authorization.CertificateCredential;
-import com.azure.resourcemanager.authorization.PasswordCredential;
-import com.azure.resourcemanager.authorization.models.ApplicationInner;
-import com.azure.resourcemanager.authorization.models.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.models.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
+import com.azure.resourcemanager.authorization.models.ApplicationCreateParameters;
+import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
+import com.azure.resourcemanager.authorization.models.CertificateCredential;
+import com.azure.resourcemanager.authorization.models.PasswordCredential;
+import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.net.MalformedURLException;
 import java.net.URL;

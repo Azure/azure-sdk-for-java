@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;

@@ -5,18 +5,19 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUsers;
-import com.azure.resourcemanager.authorization.GraphErrorException;
-import com.azure.resourcemanager.authorization.models.UserInner;
-import com.azure.resourcemanager.authorization.models.UsersInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.UsersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
 class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
-    implements ActiveDirectoryUsers, HasInner<UsersInner> {
+    implements ActiveDirectoryUsers, HasInner<UsersClient> {
     private final GraphRbacManager manager;
 
     ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
@@ -111,7 +112,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
     }
 
     @Override
-    public UsersInner inner() {
+    public UsersClient inner() {
         return manager().inner().users();
     }
 }

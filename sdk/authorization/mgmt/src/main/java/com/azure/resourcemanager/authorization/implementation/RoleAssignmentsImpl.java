@@ -6,17 +6,18 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.RoleAssignment;
-import com.azure.resourcemanager.authorization.RoleAssignments;
-import com.azure.resourcemanager.authorization.models.RoleAssignmentInner;
-import com.azure.resourcemanager.authorization.models.RoleAssignmentsInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.RoleAssignments;
+import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
+import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
 class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
-    implements RoleAssignments, HasInner<RoleAssignmentsInner> {
+    implements RoleAssignments, HasInner<RoleAssignmentsClient> {
     private final GraphRbacManager manager;
 
     RoleAssignmentsImpl(final GraphRbacManager manager) {
@@ -97,7 +98,7 @@ class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAss
     }
 
     @Override
-    public RoleAssignmentsInner inner() {
+    public RoleAssignmentsClient inner() {
         return manager().roleInner().roleAssignments();
     }
 }

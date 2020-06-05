@@ -3,16 +3,17 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.ActiveDirectoryApplication;
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.CertificateCredential;
-import com.azure.resourcemanager.authorization.PasswordCredential;
-import com.azure.resourcemanager.authorization.RoleAssignment;
-import com.azure.resourcemanager.authorization.ServicePrincipal;
-import com.azure.resourcemanager.authorization.ServicePrincipalCreateParameters;
-import com.azure.resourcemanager.authorization.models.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.models.PasswordCredentialInner;
-import com.azure.resourcemanager.authorization.models.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.CertificateCredential;
+import com.azure.resourcemanager.authorization.models.PasswordCredential;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
+import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
+import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;

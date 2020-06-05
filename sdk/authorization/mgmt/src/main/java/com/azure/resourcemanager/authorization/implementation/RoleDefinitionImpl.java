@@ -3,10 +3,11 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.Permission;
-import com.azure.resourcemanager.authorization.RoleDefinition;
-import com.azure.resourcemanager.authorization.models.PermissionInner;
-import com.azure.resourcemanager.authorization.models.RoleDefinitionInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.Permission;
+import com.azure.resourcemanager.authorization.models.RoleDefinition;
+import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
+import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.Collections;
 import java.util.HashSet;

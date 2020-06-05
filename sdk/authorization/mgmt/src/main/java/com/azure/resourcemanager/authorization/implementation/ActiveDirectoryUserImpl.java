@@ -3,11 +3,12 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.PasswordProfile;
-import com.azure.resourcemanager.authorization.UserCreateParameters;
-import com.azure.resourcemanager.authorization.UserUpdateParameters;
-import com.azure.resourcemanager.authorization.models.UserInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.PasswordProfile;
+import com.azure.resourcemanager.authorization.models.UserCreateParameters;
+import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
+import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
