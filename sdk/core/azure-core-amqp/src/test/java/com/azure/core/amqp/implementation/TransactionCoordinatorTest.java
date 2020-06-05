@@ -13,7 +13,6 @@ import static org.mockito.Mockito.verify;
 
 import com.azure.core.amqp.AmqpTransaction;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -95,7 +94,6 @@ public class TransactionCoordinatorTest {
 
     @Test
     public void testCreateTransaction() {
-        final Duration shortTimeout = Duration.ofSeconds(5);
         final byte[] transactionId = "1".getBytes();
         Declared transactionState = new Declared();
         transactionState.setTxnId(Binary.create(ByteBuffer.wrap(transactionId)));
@@ -109,7 +107,7 @@ public class TransactionCoordinatorTest {
                 Assertions.assertNotNull(actual);
                 Assertions.assertArrayEquals(transactionId, actual.getTransactionId().array());
             })
-        .verifyComplete();
+            .verifyComplete();
 
         verify(sendLink).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), isNull());
     }
