@@ -21,7 +21,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER
 /**
  * Encapsulates transaction functions.
  */
-public class TransactionCoordinator {
+final class TransactionCoordinator {
 
     private final ClientLogger logger = new ClientLogger(TransactionCoordinator.class);
 

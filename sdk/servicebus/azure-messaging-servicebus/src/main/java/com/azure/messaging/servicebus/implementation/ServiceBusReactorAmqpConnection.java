@@ -45,7 +45,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, ServiceBusManagementNode> managementNodes = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<String, TransactionManager> transactionManagers = new ConcurrentHashMap<>();
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -196,35 +195,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
                     retryPolicy, receiveMode, sessionId);
             });
-    }
-
-    @Override
-    public Mono<TransactionManager> getTransactionManager() {
-        final String linkName = "coordinator";
-        if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "connectionId[%s]: Connection is disposed. Cannot get transaction coordinator instance for '%s'",
-                connectionId, linkName))));
-        }
-
-
-        final TransactionManager existing = transactionManagers.get(linkName);
-        if (existing != null) {
-            return Mono.just(existing);
-        }
-
-        return getReactorConnection().then(
-            Mono.defer(() -> Mono.just(transactionManagers.compute(linkName, (key, current) -> {
-                if (current != null) {
-                    logger.info("A transaction manager exists already, returning it.");
-
-                    return current;
-                }
-
-                logger.info("Creating transaction manager. linkName: [{}]",
-                    linkName);
-                return  new TransactionManager(createSession(linkName), fullyQualifiedNamespace, linkName);
-            }))));
     }
 
     @Override

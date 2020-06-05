@@ -69,6 +69,8 @@ public class ReactorSenderTest {
     private Selectable selectable;
     @Mock
     private MessageSerializer messageSerializer;
+    @Mock
+    private TransactionalState transactionalState;
 
     @BeforeEach
     public void setup() throws IOException {
@@ -124,36 +126,55 @@ public class ReactorSenderTest {
         verify(sender, times(1)).getRemoteMaxMessageSize();
     }
 
+    @Test
+    public void testSendWithTransactionFailed() {
+        // Arrange
+        Message message = Proton.message();
+        message.setMessageId("id");
+        message.setBody(new AmqpValue("hello"));
+        final String exceptionString = "fake  exception";
+
+        ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
+            messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
+        ReactorSender spyReactorSender = spy(reactorSender);
+
+        Throwable exception = new RuntimeException(exceptionString);
+        doReturn(Mono.error(exception)).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
+
+        // Act
+        StepVerifier.create(spyReactorSender.send(message, transactionalState))
+            .verifyErrorMessage(exceptionString);
+        // Assert
+        verify(sender, times(1)).getRemoteMaxMessageSize();
+        verify(spyReactorSender).send(any(byte[].class), anyInt(), eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), eq(transactionalState));
+    }
+
     /**
      * Testing that we can send message with transaction.
      */
     @Test
     public void testSendWithTransaction() {
         // Arrange
-        final String transactionId = "1";
         Message message = Proton.message();
         message.setMessageId("id");
         message.setBody(new AmqpValue("hello"));
-
-        DeliveryState transactionDeliveryState = getAmqpTransactionState(transactionId);
-
 
         ReactorSender reactorSender = new ReactorSender(entityPath, sender, handler, reactorProvider, tokenManager,
             messageSerializer, Duration.ofSeconds(1), new ExponentialAmqpRetryPolicy(new AmqpRetryOptions()));
         ReactorSender spyReactorSender = spy(reactorSender);
 
-        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), any(TransactionalState.class));
+        doReturn(Mono.empty()).when(spyReactorSender).send(any(byte[].class), anyInt(), anyInt(), eq(transactionalState));
 
         // Act
-        StepVerifier.create(spyReactorSender.send(message, transactionDeliveryState))
+        StepVerifier.create(spyReactorSender.send(message, transactionalState))
             .verifyComplete();
-        StepVerifier.create(spyReactorSender.send(message, transactionDeliveryState))
+        StepVerifier.create(spyReactorSender.send(message, transactionalState))
             .verifyComplete();
 
         // Assert
         verify(sender, times(1)).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(2)).send(any(byte[].class), anyInt(),
-            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), any(TransactionalState.class));
+            eq(DeliveryImpl.DEFAULT_MESSAGE_FORMAT), eq(transactionalState));
     }
 
     @Test
@@ -218,11 +239,4 @@ public class ReactorSenderTest {
         verify(sender, times(1)).getRemoteMaxMessageSize();
         verify(spyReactorSender, times(0)).send(any(byte[].class), anyInt(), anyInt(), isNull());
     }
-
-    private DeliveryState getAmqpTransactionState(String transactionId) {
-        TransactionalState transactionalState = new TransactionalState();
-        transactionalState.setTxnId(new Binary(transactionId.getBytes()));
-        return transactionalState;
-    }
-
 }

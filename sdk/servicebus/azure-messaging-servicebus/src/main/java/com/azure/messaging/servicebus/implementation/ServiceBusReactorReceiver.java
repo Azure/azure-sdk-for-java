@@ -343,11 +343,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error) {
-        boolean isSettled = delivery != null && delivery.remotelySettled();
-        /*if (workItem.getDeliveryState() instanceof  TransactionalState){
-            workCompleted = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
-        }*/
-
+        final boolean isSettled = delivery != null && delivery.remotelySettled();
         if (isSettled) {
             delivery.settle();
         }
@@ -365,7 +361,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             pendingUpdates.remove(lockToken);
             unsettledDeliveries.remove(lockToken);
         }
-
     }
 
     private static final class UpdateDispositionWorkItem {

@@ -180,6 +180,97 @@ public class ReactorSession implements AmqpSession {
         return openTimeout;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpTransaction> createTransaction() {
+        return createTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.createTransaction());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> commitTransaction(AmqpTransaction transaction) {
+        return createTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.completeTransaction(transaction, true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
+        return createTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.completeTransaction(transaction, false));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+        }
+
+        final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
+        if (existing != null) {
+            logger.verbose("linkName[{}]: Returning existing send link.", linkName);
+            return Mono.just(existing.getLink());
+        }
+
+        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
+        return RetryUtil.withRetry(
+            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+            timeout, retry)
+            .then(tokenManager.authorize().then(Mono.<AmqpLink>create(sink -> {
+                try {
+                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
+                    // sender because the link names are not unique. Link name == entity path.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
+                            (linkNameKey, existingLink) -> {
+                                if (existingLink != null) {
+                                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
+                                        linkName);
+                                    tokenManager.close();
+                                    return existingLink;
+                                }
+
+                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager);
+                            });
+
+                        sink.success(computed.getLink());
+                    });
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            })));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        return createConsumer(linkName, entityPath, timeout, retry, null, null, null,
+            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND)
+            .cast(AmqpLink.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean removeLink(String linkName) {
+        return removeLink(openSendLinks, linkName) || removeLink(openReceiveLinks, linkName);
+    }
+
     /**
      *
      * @return {@link Mono} of {@link TransactionCoordinator}
@@ -199,7 +290,7 @@ public class ReactorSession implements AmqpSession {
             return createCoordinatorSendLink(openTimeout, retryPolicy)
                 .handle((amqpLink, sink) -> {
                     logger.info("Coordinator[{}]: Creating transaction coordinator.", TRANSACTION_LINK_NAME);
-                    final TransactionCoordinator transactionCoordinator = new TransactionCoordinator(amqpLink,
+                    transactionCoordinator = new TransactionCoordinator(amqpLink,
                         messageSerializer);
                     sink.next(transactionCoordinator);
                 });
@@ -275,84 +366,6 @@ public class ReactorSession implements AmqpSession {
                 removeLink(openSendLinks, linkName);
             });
         return new LinkSubscription<>(coordinator, subscription);
-    }
-
-    public Mono<AmqpTransaction> createTransaction() {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.createTransaction());
-    }
-
-    public Mono<Void> commitTransaction(AmqpTransaction transaction) {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.completeTransaction(transaction, true));
-    }
-
-    public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
-        return createTransactionCoordinator()
-            .flatMap(coordinator -> coordinator.completeTransaction(transaction, false));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
-        }
-
-        final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
-        if (existing != null) {
-            logger.verbose("linkName[{}]: Returning existing send link.", linkName);
-            return Mono.just(existing.getLink());
-        }
-
-        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
-        return RetryUtil.withRetry(
-            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-            timeout, retry)
-            .then(tokenManager.authorize().then(Mono.<AmqpLink>create(sink -> {
-                try {
-                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
-                    // sender because the link names are not unique. Link name == entity path.
-                    provider.getReactorDispatcher().invoke(() -> {
-                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
-                            (linkNameKey, existingLink) -> {
-                                if (existingLink != null) {
-                                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
-                                        linkName);
-                                    tokenManager.close();
-                                    return existingLink;
-                                }
-
-                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager);
-                            });
-
-                        sink.success(computed.getLink());
-                    });
-                } catch (IOException e) {
-                    sink.error(e);
-                }
-            })));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        return createConsumer(linkName, entityPath, timeout, retry, null, null, null,
-            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND)
-            .cast(AmqpLink.class);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean removeLink(String linkName) {
-        return removeLink(openSendLinks, linkName) || removeLink(openReceiveLinks, linkName);
     }
 
     private <T extends AmqpLink> boolean removeLink(ConcurrentMap<String, LinkSubscription<T>> openLinks, String key) {

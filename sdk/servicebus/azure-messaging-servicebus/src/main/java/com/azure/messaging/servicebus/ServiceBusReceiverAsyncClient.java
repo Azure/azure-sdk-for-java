@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -85,6 +86,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
+    private static final String TRANSACTION_LINK_NAME = "coordinator";
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final MessageLockContainer managementNodeLocks;
@@ -1283,10 +1285,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-
-            .flatMap(transactionManager -> transactionManager.createTransaction())
-            .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
+            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+            .flatMap(transactionSession -> transactionSession.createTransaction())
+            .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId()));
     }
 
     /**
@@ -1311,8 +1312,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.commitTransaction(transactionContext));
+            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+            .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
+                transactionContext.getTransactionId())));
     }
 
     /**
@@ -1337,7 +1339,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager())
-            .flatMap(transactionManager -> transactionManager.rollbackTransaction(transactionContext));
+            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+            .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
+                transactionContext.getTransactionId())));
     }
 }
