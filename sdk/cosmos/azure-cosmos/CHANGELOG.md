@@ -1,6 +1,12 @@
 # Release History
 
 ## 4.0.1-beta.5 (Unreleased)
+### New Features
+* Renamed `QueryRequestOptions` to `CosmosQueryRequestOptions`.
+* Updated `ChangeFeedProcessorBuilder` to builder pattern.
+* Updated `CosmosPermissionProperties` with new container name and child resources APIs.
+### Key Bug Fixes
+* Fixed ConnectionPolicy `toString()` Null Pointer Exception.
 
 ## 4.0.1-beta.4 (2020-06-03)
 ### New Features
@@ -20,7 +26,10 @@
 * Added `getETag()` & `getTimestamp()` APIs to `Cosmos*Properties` types. 
 * Added `userAgent` information in `CosmosException` & `CosmosDiagnostics`. 
 * Updated new line character in `Diagnostics` to System new line character. 
+* Removed `readAll*` APIs, use query select all APIs instead.
+* Added `ChangeFeedProcessor` estimate lag API.   
 ### Key Bug Fixes
+* Fixed issue with parsing of query results in case of Value order by queries. 
 
 ## 4.0.1-beta.3 (2020-05-15)
 ### New Features
@@ -49,7 +58,7 @@
 * Moved `CosmosPagedFlux` & `CosmosPagedIterable` to `utils` package. 
 * Updated netty to 4.1.45.Final & project reactor to 3.3.3 version.
 * Updated public rest contracts to `Final` classes.
-* Added support for advanced Diagnostics.
+* Added support for advanced Diagnostics for point operations.
 ### Key Bug Fixes
 * `ChangeFeedProcessor` bug fix for handling partition splits & when partition not found.
 * `ChangeFeedProcessor` bug fix when synchronizing lease updates across different threads.
@@ -64,5 +73,8 @@
 * `RetryOptions` renamed to `ThrottlingRetryOptions`.
 * Added `CosmosPagedFlux` & `CosmosPagedIterable` pagination types for query APIs. 
 * Added support for sharing TransportClient across multiple instances of CosmosClients using a new API in the `CosmosClientBuilder#connectionSharingAcrossClientsEnabled(true)`
+* Query Optimizations by removing double serialization / deserialization. 
+* Response Headers optimizations by removing unnecessary copying back and forth. 
+* Optimized `ByteBuffer` serialization / deserialization by removing intermediate String instantiations.
 ### Key Bug Fixes
 * Fixed race condition causing `ArrayIndexOutOfBound` exception in StoreReader
