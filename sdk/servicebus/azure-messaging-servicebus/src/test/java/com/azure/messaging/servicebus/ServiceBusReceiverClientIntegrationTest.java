@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -302,6 +303,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
+    @Disabled
     void transactionMessageAndSettle(MessagingEntityType entityType, boolean commitTransaction,
         DispositionStatus dispositionStatus) {
 
@@ -360,6 +362,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
+    @Disabled
     void transactionMessageAndSettleOnSessionEntity(MessagingEntityType entityType, boolean commitTransaction,
         DispositionStatus dispositionStatus) {
 
