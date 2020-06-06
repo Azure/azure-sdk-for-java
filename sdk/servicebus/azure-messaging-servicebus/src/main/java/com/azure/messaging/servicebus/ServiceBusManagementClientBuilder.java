@@ -138,15 +138,18 @@ public class ServiceBusManagementClientBuilder {
      * @param endpoint The URL of the Service Bus namespace.
      *
      * @return The updated {@link ServiceBusManagementClientBuilder} object.
-     * @throws IllegalArgumentException if {@code endpoint} is null or it cannot be parsed into a valid URL.
+     * @throws NullPointerException if {@code endpoint} is null.
+     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
     public ServiceBusManagementClientBuilder endpoint(String endpoint) {
+        final URL url;
         try {
-            new URL(endpoint);
+            url = new URL(Objects.requireNonNull(endpoint, "'endpoint' cannot be null."));
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL"));
         }
-        this.endpoint = endpoint;
+
+        this.endpoint = url.getHost();
         return this;
     }
 

@@ -228,7 +228,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that creates a queue with its context.
+     * Creates a queue with its context.
      *
      * @param queue Queue to create.
      * @param context Context to pass into request.
@@ -261,7 +261,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that deletes a queue with its context.
+     * Deletes a queue with its context.
      *
      * @param queueName Name of queue to delete.
      * @param context Context to pass into request.
@@ -291,7 +291,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that gets a queue with its context.
+     * Gets a queue with its context.
      *
      * @param queueName Name of queue to fetch information for.
      * @param context Context to pass into request.
@@ -326,7 +326,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that gets a queue with its context.
+     * Gets a queue with its context.
      *
      * @param queueName Name of queue to fetch information for.
      * @param context Context to pass into request.
@@ -353,7 +353,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that gets the first page of queues with context.
+     * Gets the first page of queues with context.
      *
      * @param context Context to pass into request.
      *
@@ -368,7 +368,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that gets the next page of queues with context.
+     * Gets the next page of queues with context.
      *
      * @param continuationToken Number of items to skip in feed.
      * @param context Context to pass into request.
@@ -389,7 +389,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Package-private method that updates a queue with its context.
+     * Updates a queue with its context.
      *
      * @param queue Queue to update
      * @param context Context to pass into request.
@@ -501,7 +501,7 @@ public final class ServiceBusManagementAsyncClient {
             .filter(link -> link.getRel().equalsIgnoreCase("next"))
             .findFirst();
 
-        if (nextLink.isEmpty()) {
+        if (!nextLink.isPresent()) {
             return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
 
@@ -513,12 +513,12 @@ public final class ServiceBusManagementAsyncClient {
             .map(parts -> Integer.valueOf(parts[1]))
             .findFirst();
 
-        if (skipParameter.isEmpty()) {
-            logger.warning("There should have been a skip parameter for the next page.");
-            return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
-        } else {
+        if (skipParameter.isPresent()) {
             return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities,
                 skipParameter.get());
+        } else {
+            logger.warning("There should have been a skip parameter for the next page.");
+            return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
     }
 
