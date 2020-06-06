@@ -89,7 +89,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
      * Verifies we can get queue information.
      */
     @Test
-    void getQueue() {
+    void getQueueImplementation() {
         // Arrange
         String queueName = TestUtils.getQueueName();
 
@@ -111,7 +111,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
      * Verifies we can create a queue.
      */
     @Test
-    void createQueue() {
+    void createQueueImplementation() {
         // Arrange
         String queueName = testResourceNamer.randomName("test", 7);
         QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
@@ -144,7 +144,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
      * Verifies we can delete a queue.
      */
     @Test
-    void deleteQueue() {
+    void deleteQueueImplementation() {
         // Arrange
         String queueName = testResourceNamer.randomName("test", 7);
         QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
@@ -173,7 +173,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
      * Verifies that we can edit properties on an existing queue.
      */
     @Test
-    void editQueue() {
+    void editQueueImplementation() {
         // Arrange
         final String queueName = "q-5";
         final Response<Object> response = queuesClient.getWithResponseAsync(queueName, true, Context.NONE)
@@ -208,7 +208,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
      * Verifies we can list queues.
      */
     @Test
-    void listQueues() {
+    void listQueuesImplementation() {
         // Arrange
         String entityType = "queues";
 
