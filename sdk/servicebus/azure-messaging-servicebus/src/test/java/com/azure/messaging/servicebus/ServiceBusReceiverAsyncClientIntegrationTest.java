@@ -10,6 +10,7 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -75,36 +76,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
             } else {
-                receiveAndDeleteReceiver.receive()
+                /*receiveAndDeleteReceiver.receive()
                     .take(pending)
                     .map(message -> {
                         logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                         return message;
                     })
                     .timeout(Duration.ofSeconds(5), Mono.empty())
-                    .blockLast();
+                    .blockLast();*/
             }
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
-
     }
 
-    /**
-     * Verifies that we can create transaction.
-     */
-    @Test
-    void createTransactionTest() {
-        // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
-
-        // Assert & Act
-        StepVerifier.create(receiver.createTransaction())
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
-    }
     /**
      * Verifies that we can create multiple transaction using sender and receiver.
      */
@@ -119,10 +106,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         StepVerifier.create(receiver.createTransaction())
-            .assertNext(Assertions::assertNotNull)
-            .verifyComplete();
-
-        StepVerifier.create(sender.createTransaction())
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
@@ -169,27 +152,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertMessageEquals(received, messageId, isSessionEnabled);
 
         messagesPending.decrementAndGet();
-    }
-
-    /**
-     * Verifies that we can create transaction and commit/rollback.
-     */
-    @Test
-    void createAndCompleteTansactionTest() {
-        // Arrange
-        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(receiver.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-
-        StepVerifier.create(receiver.commitTransaction(transaction.get()))
-            .verifyComplete();
     }
 
     /**
@@ -763,6 +725,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
+    @Disabled
     void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
 //        setSenderAndReceiver(entityType, isSessionEnabled,
@@ -781,7 +744,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(received -> {
                 assertNotNull(received.getLockedUntil());
                 assertNotNull(received.getLockToken());
-
                 logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
                     received.getLockToken(), received.getLockedUntil(), Instant.now());
 
@@ -792,14 +754,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 // Simulate some sort of long processing.
                 final AtomicInteger iteration = new AtomicInteger();
                 while (Instant.now().isBefore(timeToStop)) {
-                    logger.info("Iteration {}: {}", iteration.incrementAndGet(), Instant.now());
+                    logger.info("Iteration {}: Now:{} TimeToStop:{}.", iteration.incrementAndGet(), Instant.now(), timeToStop);
 
                     try {
                         TimeUnit.SECONDS.sleep(15);
                     } catch (InterruptedException error) {
                         logger.error("Error occurred while sleeping: " + error);
                     }
-
                     assertNotNull(received.getLockedUntil());
                     latest = received.getLockedUntil();
                 }
