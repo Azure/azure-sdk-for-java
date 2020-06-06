@@ -20,7 +20,7 @@ public interface JsonPrimitive extends JsonNode {
     /**
      * @return The boolean value contained in the {@link JsonPrimitive}.
      */
-    boolean getBoolean();
+    boolean getAsBoolean();
 
     /**
      * @return Whether the {@link JsonPrimitive} represents a number.
@@ -30,27 +30,27 @@ public interface JsonPrimitive extends JsonNode {
     /**
      * @return The double value contained in the {@link JsonPrimitive}.
      */
-    double getDouble();
+    double getAsDouble();
 
     /**
      * @return The float value contained in the {@link JsonPrimitive}.
      */
-    float getFloat();
+    float getAsFloat();
 
     /**
      * @return The int value contained in the {@link JsonPrimitive}.
      */
-    int getInteger();
+    int getAsInt();
 
     /**
      * @return The long value contained in the {@link JsonPrimitive}.
      */
-    long getLong();
+    long getAsLong();
 
     /**
      * @return The short value contained in the {@link JsonPrimitive}.
      */
-    short getShort();
+    short getAsShort();
 
     /**
      * @return Whether the {@link JsonPrimitive} represents a number.
@@ -60,5 +60,5 @@ public interface JsonPrimitive extends JsonNode {
     /**
      * @return The String value contained in the {@link JsonPrimitive}.
      */
-    String getString();
+    String getAsString();
 }

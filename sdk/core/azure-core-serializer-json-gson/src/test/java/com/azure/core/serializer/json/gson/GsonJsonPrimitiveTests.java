@@ -113,7 +113,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsBooleanSupplier")
     public void getAsBoolean(GsonJsonPrimitive gsonJsonPrimitive, boolean expected) {
-        assertEquals(expected, gsonJsonPrimitive.getBoolean());
+        assertEquals(expected, gsonJsonPrimitive.getAsBoolean());
     }
 
     private static Stream<Arguments> getAsBooleanSupplier() {
@@ -129,7 +129,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsDoubleSupplier")
     public void getAsDouble(GsonJsonPrimitive gsonJsonPrimitive, Number expected) {
-        assertEquals(expected, gsonJsonPrimitive.getDouble());
+        assertEquals(expected, gsonJsonPrimitive.getAsDouble());
     }
 
     private static Stream<Arguments> getAsDoubleSupplier() {
@@ -139,7 +139,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsFloatSupplier")
     public void getAsFloat(GsonJsonPrimitive gsonJsonPrimitive, Number expected) {
-        assertEquals(expected, gsonJsonPrimitive.getFloat());
+        assertEquals(expected, gsonJsonPrimitive.getAsFloat());
     }
 
     private static Stream<Arguments> getAsFloatSupplier() {
@@ -149,7 +149,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsIntSupplier")
     public void getAsInt(GsonJsonPrimitive gsonJsonPrimitive, Number expected) {
-        assertEquals(expected, gsonJsonPrimitive.getInteger());
+        assertEquals(expected, gsonJsonPrimitive.getAsInt());
     }
 
     private static Stream<Arguments> getAsIntSupplier() {
@@ -159,7 +159,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsLongSupplier")
     public void getAsLong(GsonJsonPrimitive gsonJsonPrimitive, Number expected) {
-        assertEquals(expected, gsonJsonPrimitive.getLong());
+        assertEquals(expected, gsonJsonPrimitive.getAsLong());
     }
 
     private static Stream<Arguments> getAsLongSupplier() {
@@ -169,7 +169,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsShortSupplier")
     public void getAsShort(GsonJsonPrimitive gsonJsonPrimitive, Number expected) {
-        assertEquals(expected, gsonJsonPrimitive.getShort());
+        assertEquals(expected, gsonJsonPrimitive.getAsShort());
     }
 
     private static Stream<Arguments> getAsShortSupplier() {
@@ -190,7 +190,7 @@ public class GsonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsStringSupplier")
     public void getAsString(GsonJsonPrimitive gsonJsonPrimitive, String expected) {
-        assertEquals(expected, gsonJsonPrimitive.getString());
+        assertEquals(expected, gsonJsonPrimitive.getAsString());
     }
 
     private static Stream<Arguments> getAsStringSupplier() {

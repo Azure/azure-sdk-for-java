@@ -115,7 +115,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsBooleanSupplier")
     public void getAsBoolean(JacksonJsonPrimitive jsonPrimitive, boolean expected) {
-        assertEquals(expected, jsonPrimitive.getBoolean());
+        assertEquals(expected, jsonPrimitive.getAsBoolean());
     }
 
     private static Stream<Arguments> getAsBooleanSupplier() {
@@ -131,7 +131,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsDoubleSupplier")
     public void getAsDouble(JacksonJsonPrimitive jsonPrimitive, Number expected) {
-        assertEquals(expected, jsonPrimitive.getDouble());
+        assertEquals(expected, jsonPrimitive.getAsDouble());
     }
 
     private static Stream<Arguments> getAsDoubleSupplier() {
@@ -141,7 +141,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsFloatSupplier")
     public void getAsFloat(JacksonJsonPrimitive jsonPrimitive, Number expected) {
-        assertEquals(expected, jsonPrimitive.getFloat());
+        assertEquals(expected, jsonPrimitive.getAsFloat());
     }
 
     private static Stream<Arguments> getAsFloatSupplier() {
@@ -151,7 +151,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsIntSupplier")
     public void getAsInt(JacksonJsonPrimitive jsonPrimitive, Number expected) {
-        assertEquals(expected, jsonPrimitive.getInteger());
+        assertEquals(expected, jsonPrimitive.getAsInt());
     }
 
     private static Stream<Arguments> getAsIntSupplier() {
@@ -161,7 +161,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsLongSupplier")
     public void getAsLong(JacksonJsonPrimitive jsonPrimitive, Number expected) {
-        assertEquals(expected, jsonPrimitive.getLong());
+        assertEquals(expected, jsonPrimitive.getAsLong());
     }
 
     private static Stream<Arguments> getAsLongSupplier() {
@@ -171,7 +171,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsShortSupplier")
     public void getAsShort(JacksonJsonPrimitive jsonPrimitive, Number expected) {
-        assertEquals(expected, jsonPrimitive.getShort());
+        assertEquals(expected, jsonPrimitive.getAsShort());
     }
 
     private static Stream<Arguments> getAsShortSupplier() {
@@ -192,7 +192,7 @@ public class JacksonJsonPrimitiveTests {
     @ParameterizedTest
     @MethodSource("getAsStringSupplier")
     public void getAsString(JacksonJsonPrimitive jsonPrimitive, String expected) {
-        assertEquals(expected, jsonPrimitive.getString());
+        assertEquals(expected, jsonPrimitive.getAsString());
     }
 
     private static Stream<Arguments> getAsStringSupplier() {

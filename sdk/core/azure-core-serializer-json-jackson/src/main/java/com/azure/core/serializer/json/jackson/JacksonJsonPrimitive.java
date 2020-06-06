@@ -104,8 +104,8 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
     }
 
     @Override
-    public boolean getBoolean() {
-        return isBoolean() ? valueNode.asBoolean() : Boolean.parseBoolean(getString());
+    public boolean getAsBoolean() {
+        return isBoolean() ? valueNode.asBoolean() : Boolean.parseBoolean(getAsString());
     }
 
     @Override
@@ -114,27 +114,27 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
     }
 
     @Override
-    public double getDouble() {
+    public double getAsDouble() {
         return valueNode.asDouble();
     }
 
     @Override
-    public float getFloat() {
+    public float getAsFloat() {
         return (float) valueNode.asDouble();
     }
 
     @Override
-    public int getInteger() {
+    public int getAsInt() {
         return valueNode.asInt();
     }
 
     @Override
-    public long getLong() {
+    public long getAsLong() {
         return valueNode.asLong();
     }
 
     @Override
-    public short getShort() {
+    public short getAsShort() {
         return (short) valueNode.asInt();
     }
 
@@ -144,7 +144,7 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
     }
 
     @Override
-    public String getString() {
+    public String getAsString() {
         return valueNode.asText();
     }
 

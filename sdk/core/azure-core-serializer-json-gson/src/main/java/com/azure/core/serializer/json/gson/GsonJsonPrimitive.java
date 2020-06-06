@@ -100,7 +100,7 @@ public final class GsonJsonPrimitive implements JsonPrimitive {
     }
 
     @Override
-    public boolean getBoolean() {
+    public boolean getAsBoolean() {
         return jsonPrimitive.getAsBoolean();
     }
 
@@ -110,27 +110,27 @@ public final class GsonJsonPrimitive implements JsonPrimitive {
     }
 
     @Override
-    public double getDouble() {
+    public double getAsDouble() {
         return jsonPrimitive.getAsDouble();
     }
 
     @Override
-    public float getFloat() {
+    public float getAsFloat() {
         return jsonPrimitive.getAsFloat();
     }
 
     @Override
-    public int getInteger() {
+    public int getAsInt() {
         return jsonPrimitive.getAsInt();
     }
 
     @Override
-    public long getLong() {
+    public long getAsLong() {
         return jsonPrimitive.getAsLong();
     }
 
     @Override
-    public short getShort() {
+    public short getAsShort() {
         return jsonPrimitive.getAsShort();
     }
 
@@ -140,7 +140,7 @@ public final class GsonJsonPrimitive implements JsonPrimitive {
     }
 
     @Override
-    public String getString() {
+    public String getAsString() {
         return jsonPrimitive.getAsString();
     }
 
