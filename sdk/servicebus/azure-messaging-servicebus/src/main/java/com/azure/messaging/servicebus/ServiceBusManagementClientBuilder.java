@@ -10,14 +10,12 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
@@ -51,7 +49,7 @@ public class ServiceBusManagementClientBuilder {
     private static final String API_VERSION = "2017-04";
     private final ClientLogger logger = new ClientLogger(ServiceBusManagementClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
-    private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> userPolicies = new ArrayList<>();
     private final Map<String, String> properties =
         CoreUtils.getProperties("azure-messaging-servicebus.properties");
 
@@ -128,7 +126,7 @@ public class ServiceBusManagementClientBuilder {
      */
     public ServiceBusManagementClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy);
-        policies.add(policy);
+        userPolicies.add(policy);
         return this;
     }
 
@@ -307,22 +305,19 @@ public class ServiceBusManagementClientBuilder {
 
         httpPolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
-        httpPolicies.add(new RequestIdPolicy());
+        httpPolicies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
         httpPolicies.add(new AddHeadersFromContextPolicy());
 
         HttpPolicyProviders.addBeforeRetryPolicies(httpPolicies);
 
         httpPolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        httpPolicies.add(new AddDatePolicy());
-        httpPolicies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
-
-        httpPolicies.addAll(policies);
+        httpPolicies.addAll(userPolicies);
+        httpPolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPolicies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .policies(httpPolicies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
