@@ -88,9 +88,10 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
      * Constructs a {@link JsonPrimitive} backed by the passed Jackson {@link ValueNode}.
      *
      * @param valueNode The backing Jackson {@link ValueNode}.
+     * @throws NullPointerException If {@code valueNode} is {@code null}.
      */
     public JacksonJsonPrimitive(ValueNode valueNode) {
-        this.valueNode = valueNode;
+        this.valueNode = Objects.requireNonNull(valueNode, "'valueNode' cannot be null.");
     }
 
     ValueNode getValueNode() {
@@ -104,7 +105,7 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
 
     @Override
     public boolean getBoolean() {
-        return valueNode.asBoolean();
+        return isBoolean() ? valueNode.asBoolean() : Boolean.parseBoolean(getString());
     }
 
     @Override
@@ -119,7 +120,7 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
 
     @Override
     public float getFloat() {
-        return valueNode.floatValue();
+        return (float) valueNode.asDouble();
     }
 
     @Override
@@ -134,7 +135,7 @@ public final class JacksonJsonPrimitive implements JsonPrimitive {
 
     @Override
     public short getShort() {
-        return valueNode.shortValue();
+        return (short) valueNode.asInt();
     }
 
     @Override

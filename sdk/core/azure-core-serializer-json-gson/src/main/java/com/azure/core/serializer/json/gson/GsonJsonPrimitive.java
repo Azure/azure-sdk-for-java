@@ -84,9 +84,10 @@ public final class GsonJsonPrimitive implements JsonPrimitive {
      * Constructs a {@link JsonPrimitive} backed by the passed GSON {@link com.google.gson.JsonPrimitive}.
      *
      * @param jsonPrimitive The backing GSON {@link com.google.gson.JsonPrimitive}.
+     * @throws NullPointerException If {@code jsonPrimitive} is {@code null}.
      */
     public GsonJsonPrimitive(com.google.gson.JsonPrimitive jsonPrimitive) {
-        this.jsonPrimitive = jsonPrimitive;
+        this.jsonPrimitive = Objects.requireNonNull(jsonPrimitive, "'jsonPrimitive' cannot be null.");
     }
 
     com.google.gson.JsonPrimitive getJsonPrimitive() {
@@ -100,7 +101,7 @@ public final class GsonJsonPrimitive implements JsonPrimitive {
 
     @Override
     public boolean getBoolean() {
-        return jsonPrimitive.isBoolean();
+        return jsonPrimitive.getAsBoolean();
     }
 
     @Override
