@@ -1,7 +1,7 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
-
+## 1.0.0 (2020-06-09)
+- First stable release of `azure-ai-textanalytics`.
 
 ## 1.0.0-beta.5 (2020-05-27)
 **New features**
