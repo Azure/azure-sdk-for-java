@@ -69,7 +69,6 @@ public enum SerializerEncoding {
             return DEFAULT_ENCODING;
         }
 
-
         // Check the suffix if it does not match the full types.
         final String subtype = mimeTypeParts[1];
         final int lastIndex = subtype.lastIndexOf("+");
