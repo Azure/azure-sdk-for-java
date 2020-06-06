@@ -1,6 +1,6 @@
 ## Microsoft Azure Text Analytics Client SDK library for Java
 
-**NOTE:** This is a legacy version that works with the V2.0 version of the service API. For the new set of libraries 
+**NOTE:** This is a legacy version that works with the V2.1 version of the service API. For the new set of libraries 
 that support newer service versions please see
 [azure-ai-textanalytics](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/textanalytics/azure-ai-textanalytics).
 
