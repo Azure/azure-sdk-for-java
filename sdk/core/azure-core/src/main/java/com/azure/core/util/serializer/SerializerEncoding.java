@@ -56,18 +56,19 @@ public enum SerializerEncoding {
             return DEFAULT_ENCODING;
         }
 
-        final SerializerEncoding encoding = SUPPORTED_MIME_TYPES.get(mimeContentType);
+        final String[] parts = mimeContentType.split(";");
+        final SerializerEncoding encoding = SUPPORTED_MIME_TYPES.get(parts[0]);
         if (encoding != null) {
             return encoding;
         }
 
-        final String[] parts = mimeContentType.split(";");
         final String[] mimeTypeParts = parts[0].split("/");
         if (mimeTypeParts.length != 2) {
             LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
                 + "Returning default: {}", parts[0], DEFAULT_ENCODING);
             return DEFAULT_ENCODING;
         }
+
 
         // Check the suffix if it does not match the full types.
         final String subtype = mimeTypeParts[1];
