@@ -27,6 +27,7 @@ import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -496,7 +497,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     private <TResult, TFeed> FeedPage<TResult> extractPage(Response<TFeed> response, List<TResult> entities,
         List<ResponseLink> responseLinks)
-        throws MalformedURLException {
+        throws MalformedURLException, UnsupportedEncodingException {
         final Optional<ResponseLink> nextLink = responseLinks.stream()
             .filter(link -> link.getRel().equalsIgnoreCase("next"))
             .findFirst();
@@ -506,7 +507,7 @@ public final class ServiceBusManagementAsyncClient {
         }
 
         final URL url = new URL(nextLink.get().getHref());
-        final String decode = URLDecoder.decode(url.getQuery(), StandardCharsets.UTF_8);
+        final String decode = URLDecoder.decode(url.getQuery(), StandardCharsets.UTF_8.name());
         final Optional<Integer> skipParameter = Arrays.stream(decode.split("&amp;|&"))
             .map(part -> part.split("=", 2))
             .filter(parts -> parts[0].equalsIgnoreCase("$skip") && parts.length == 2)
@@ -547,7 +548,7 @@ public final class ServiceBusManagementAsyncClient {
                     .collect(Collectors.toList());
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
-                } catch (MalformedURLException error) {
+                } catch (MalformedURLException | UnsupportedEncodingException error) {
                     return Mono.error(new RuntimeException("Could not parse response into FeedPage<QueueDescription>",
                         error));
                 }
