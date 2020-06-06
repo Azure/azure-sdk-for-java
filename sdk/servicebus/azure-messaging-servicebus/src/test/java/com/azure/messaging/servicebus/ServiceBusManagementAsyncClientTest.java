@@ -73,7 +73,7 @@ class ServiceBusManagementAsyncClientTest {
 
     private ServiceBusManagementAsyncClient client;
 
-    public ServiceBusManagementAsyncClientTest() {
+    ServiceBusManagementAsyncClientTest() {
         try {
             httpRequest = new HttpRequest(HttpMethod.TRACE, new URL("https://something.com"));
         } catch (MalformedURLException e) {
@@ -287,7 +287,7 @@ class ServiceBusManagementAsyncClientTest {
         final List<ResponseLink> links = Arrays.asList(
             new ResponseLink().setRel("self").setHref("foo"),
             new ResponseLink().setRel("bar").setHref("baz"),
-            new ResponseLink().setRel("next").setHref("https://foo.bar.net?api-version=2017-04&$skip="+ firstEntities)
+            new ResponseLink().setRel("next").setHref("https://foo.bar.net?api-version=2017-04&$skip=" + firstEntities)
         );
         final QueueDescriptionFeed firstFeed = new QueueDescriptionFeed()
             .setLink(links)

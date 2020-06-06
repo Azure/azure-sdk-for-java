@@ -240,7 +240,7 @@ class ServiceBusManagementClientTest {
 
         // Assert
         final long size = queueDescriptions.stream().count();
-        final long expectedSize = firstPage.size() + secondPage.size();listQueues();
+        final long expectedSize = firstPage.size() + secondPage.size();
 
         assertEquals(expectedSize, size);
     }

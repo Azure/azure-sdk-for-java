@@ -84,10 +84,10 @@ public class ServiceBusManagementClientBuilder {
      */
     public ServiceBusManagementAsyncClient buildAsyncClient() {
         if (endpoint == null) {
-            throw new NullPointerException("'endpoint' cannot be null.");
+            throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
 
-        final HttpPipeline httpPipeline = buildPipeline();
+        final HttpPipeline httpPipeline = createPipeline();
         final ServiceBusManagementClientImpl client = new ServiceBusManagementClientImplBuilder()
             .pipeline(httpPipeline)
             .serializer(serializer)
@@ -191,8 +191,8 @@ public class ServiceBusManagementClientBuilder {
 
         this.endpoint = properties.getEndpoint().getHost();
         if (properties.getEntityPath() != null && !properties.getEntityPath().isEmpty()) {
-            throw new IllegalArgumentException("'connectionString' cannot contain an EntityPath. It should be a "
-                + "namespace connection string.");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'connectionString' cannot contain an EntityPath. It should be a namespace connection string."));
         }
 
         return credential(properties.getEndpoint().getHost(), tokenCredential);
@@ -272,7 +272,7 @@ public class ServiceBusManagementClientBuilder {
     /**
      * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
      *
-     * The default retry policy will be used if not provided {@link ServiceBusManagementClientBuilder#buildAsyncClient()}
+     * The default retry policy will be used if not provided {@link #buildAsyncClient()}
      * to build {@link ServiceBusManagementClient} or {@link ServiceBusManagementAsyncClient}.
      *
      * @param retryPolicy user's retry policy applied to each request.
@@ -289,7 +289,7 @@ public class ServiceBusManagementClientBuilder {
      *
      * @return A new HTTP pipeline or the user-defined one from {@link #pipeline(HttpPipeline)}.
      */
-    private HttpPipeline buildPipeline() {
+    private HttpPipeline createPipeline() {
         if (pipeline != null) {
             return pipeline;
         }
