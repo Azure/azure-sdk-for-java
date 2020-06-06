@@ -32,6 +32,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -199,9 +200,28 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a queue the {@link QueueDescription}.
+     * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
+     * all of the properties are replaced.
      *
-     * @param queue Information about the queue to create.
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getQueue(String) Get queue description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link QueueDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
+     * @param queue Information about the queue to update.
      *
      * @return A Mono that completes with information about the created queue.
      * @throws NullPointerException if {@code queue} is null.
@@ -214,11 +234,30 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a queue and returns the created queue in addition to the HTTP response.
+     * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
+     * all of the properties are replaced.
      *
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getQueue(String) Get queue description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
+     *
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link QueueDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      * @param queue The queue to create.
      *
-     * @return A Mono that returns the created queue in addition to the HTTP response.
+     * @return A Mono that returns the updated queue in addition to the HTTP response.
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.

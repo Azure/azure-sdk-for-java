@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 
+import java.time.Duration;
 import java.util.Objects;
 
 /**
@@ -111,7 +112,7 @@ public final class ServiceBusManagementClient {
      * @param queueName Name of queue to get information about.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
-     * @return A Mono that completes with information about the queue and the associated HTTP response.
+     * @return Information about the queue and the associated HTTP response.
      * @throws NullPointerException if {@code queueName} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -136,6 +137,7 @@ public final class ServiceBusManagementClient {
      * Gets runtime information about the queue along with its HTTP response.
      *
      * @param queueName Name of queue to get information about.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return Runtime information about the queue and the associated HTTP response.
      * @throws NullPointerException if {@code queueName} is null or an empty string.
@@ -171,11 +173,30 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Creates a queue the {@link QueueDescription}.
+     * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
+     * all of the properties are replaced.
      *
-     * @param queue Information about the queue to create.
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getQueue(String) Get queue description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
      *
-     * @return A Mono that completes with information about the created queue.
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link QueueDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
+     * @param queue Information about the queue to update.
+     *
+     * @return The updated queue.
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
@@ -186,11 +207,31 @@ public final class ServiceBusManagementClient {
     }
 
     /**
-     * Creates a queue and returns the created queue in addition to the HTTP response.
+     * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
+     * all of the properties are replaced.
      *
-     * @param queue The queue to create.
+     * The suggested flow is:
+     * <ol>
+     *     <li>{@link #getQueue(String) Get queue description.}</li>
+     *     <li>Update the required elements.</li>
+     *     <li>Pass the updated description into this method.</li>
+     * </ol>
      *
-     * @return A Mono that returns the created queue in addition to the HTTP response.
+     * <p>
+     * There are a subset of properties that can be updated. They are:
+     * <ul>
+     * <li>{@link QueueDescription#setDefaultMessageTimeToLive(Duration) DefaultMessageTimeToLive}</li>
+     * <li>{@link QueueDescription#setLockDuration(Duration) LockDuration}</li>
+     * <li>{@link QueueDescription#setDuplicateDetectionHistoryTimeWindow(Duration) DuplicateDetectionHistoryTimeWindow}
+     * </li>
+     * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
+     * </ul>
+     *
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
+     * @param queue The queue to update.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
+     * @return The updated queue with its HTTP response.
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
