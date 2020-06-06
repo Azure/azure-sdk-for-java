@@ -290,10 +290,10 @@ public final class ServiceBusManagementAsyncClient {
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
 
-        context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.putWithResponseAsync(queue.getName(), createEntity, null, context)
+            return queuesClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
                 .map(response -> deserializeQueue(response, queue.getName()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -317,10 +317,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.deleteWithResponseAsync(queueName, context)
+            return queuesClient.deleteWithResponseAsync(queueName, withTracing)
                 .map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
@@ -347,10 +347,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.getWithResponseAsync(queueName, true, context)
+            return queuesClient.getWithResponseAsync(queueName, true, withTracing)
                 .map(response -> {
                     final Response<QueueDescription> deserializeQueue = deserializeQueue(response, queueName);
                     final QueueRuntimeInfo runtimeInfo = deserializeQueue.getValue() != null
@@ -382,10 +382,10 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
-            return queuesClient.getWithResponseAsync(queueName, true, context)
+            return queuesClient.getWithResponseAsync(queueName, true, withTracing)
                 .map(response -> deserializeQueue(response, queueName));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -400,8 +400,10 @@ public final class ServiceBusManagementAsyncClient {
      * @return A Mono that completes with a page of queues.
      */
     Mono<PagedResponse<QueueDescription>> listQueuesFirstPage(Context context) {
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
         try {
-            return listQueues(0, NUMBER_OF_ELEMENTS, context);
+            return listQueues(0, NUMBER_OF_ELEMENTS, withTracing);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -421,8 +423,10 @@ public final class ServiceBusManagementAsyncClient {
         }
 
         try {
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
-            return listQueues(skip, NUMBER_OF_ELEMENTS, context);
+
+            return listQueues(skip, NUMBER_OF_ELEMENTS, withTracing);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -450,12 +454,11 @@ public final class ServiceBusManagementAsyncClient {
             .setQueueDescription(queue);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
-
-        context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-            return queuesClient.putWithResponseAsync(queue.getName(), createEntity, "*", context)
+            return queuesClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
                 .map(response -> deserializeQueue(response, queue.getName()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -478,7 +481,7 @@ public final class ServiceBusManagementAsyncClient {
         }
 
         final String contents = String.valueOf(body);
-        if (contents == null || contents.isEmpty()) {
+        if (contents.isEmpty()) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
