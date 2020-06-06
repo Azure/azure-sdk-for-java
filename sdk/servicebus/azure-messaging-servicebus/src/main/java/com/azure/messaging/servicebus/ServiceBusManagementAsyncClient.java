@@ -24,7 +24,6 @@ import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -52,6 +51,8 @@ public final class ServiceBusManagementAsyncClient {
     // See https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
     private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
+    private static final String CONTENT_TYPE = "application/xml";
+
     // Name of the entity type when listing queues.
     private static final String QUEUES_ENTITY_TYPE = "queues";
     private static final int NUMBER_OF_ELEMENTS = 10;
@@ -244,7 +245,7 @@ public final class ServiceBusManagementAsyncClient {
         }
 
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
-            .setType("application/xml")
+            .setType(CONTENT_TYPE)
             .setQueueDescription(queue);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
@@ -405,7 +406,7 @@ public final class ServiceBusManagementAsyncClient {
         }
 
         final CreateQueueBodyContent content = new CreateQueueBodyContent()
-            .setType("application/xml")
+            .setType(CONTENT_TYPE)
             .setQueueDescription(queue);
         final CreateQueueBody createEntity = new CreateQueueBody()
             .setContent(content);
@@ -532,18 +533,23 @@ public final class ServiceBusManagementAsyncClient {
      */
     private Mono<PagedResponse<QueueDescription>> listQueues(int skip, int top, Context context) {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, top, context)
-            .map(response -> {
+            .flatMap(response -> {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
+                if (feed == null) {
+                    logger.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip, top);
+                    return Mono.empty();
+                }
+
                 final List<QueueDescription> entities = feed.getEntry().stream()
                     .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
                     .map(e -> e.getContent().getQueueDescription())
                     .collect(Collectors.toList());
                 try {
-                    return extractPage(feedResponse, entities, feed.getLink());
+                    return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
                 } catch (MalformedURLException error) {
-                    throw Exceptions.propagate(
-                        new RuntimeException("Could not parse response into FeedPage<QueueDescription>", error));
+                    return Mono.error(new RuntimeException("Could not parse response into FeedPage<QueueDescription>",
+                        error));
                 }
             });
     }
