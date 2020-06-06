@@ -14,6 +14,20 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
  */
 public class IdentifyOptionalParameter {
     /**
+     * PersonGroupId of the target person group, created by PersonGroup -
+     * Create. Parameter personGroupId and largePersonGroupId should not be
+     * provided at the same time.
+     */
+    private String personGroupId;
+
+    /**
+     * LargePersonGroupId of the target large person group, created by
+     * LargePersonGroup - Create. Parameter personGroupId and
+     * largePersonGroupId should not be provided at the same time.
+     */
+    private String largePersonGroupId;
+
+    /**
      * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is
      * 1).
      */
@@ -30,6 +44,46 @@ public class IdentifyOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
+
+    /**
+     * Get the personGroupId value.
+     *
+     * @return the personGroupId value
+     */
+    public String personGroupId() {
+        return this.personGroupId;
+    }
+
+    /**
+     * Set the personGroupId value.
+     *
+     * @param personGroupId the personGroupId value to set
+     * @return the IdentifyOptionalParameter object itself.
+     */
+    public IdentifyOptionalParameter withPersonGroupId(String personGroupId) {
+        this.personGroupId = personGroupId;
+        return this;
+    }
+
+    /**
+     * Get the largePersonGroupId value.
+     *
+     * @return the largePersonGroupId value
+     */
+    public String largePersonGroupId() {
+        return this.largePersonGroupId;
+    }
+
+    /**
+     * Set the largePersonGroupId value.
+     *
+     * @param largePersonGroupId the largePersonGroupId value to set
+     * @return the IdentifyOptionalParameter object itself.
+     */
+    public IdentifyOptionalParameter withLargePersonGroupId(String largePersonGroupId) {
+        this.largePersonGroupId = largePersonGroupId;
+        return this;
+    }
 
     /**
      * Get the maxNumOfCandidatesReturned value.

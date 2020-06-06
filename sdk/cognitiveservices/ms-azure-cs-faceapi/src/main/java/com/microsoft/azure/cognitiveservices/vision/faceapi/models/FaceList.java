@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Face list object.
  */
-public class FaceList extends NameAndUserDataContract {
+public class FaceList extends MetaDataContract {
     /**
      * FaceListId of the target face list.
      */

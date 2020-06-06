@@ -9,23 +9,29 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreateFaceListsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.GetFaceListsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceListsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListFaceListsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlFaceListsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamFaceListsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.FaceList;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ImageUrl;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.MetaDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -74,11 +80,11 @@ public class FaceListsImpl implements FaceLists {
     interface FaceListsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists create" })
         @PUT("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> create(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Body MetaDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists get" })
         @GET("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> get(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("faceListId") String faceListId, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists update" })
         @PATCH("facelists/{faceListId}")
@@ -90,25 +96,32 @@ public class FaceListsImpl implements FaceLists {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists list" })
         @GET("facelists")
-        Observable<Response<ResponseBody>> list(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists deleteFace" })
-        @HTTP(path = "facelists/{faceListId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
+        @HTTP(path = "facelists/{faceListId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFace(@Path("faceListId") String faceListId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists addFaceFromUrl" })
-        @POST("facelists/{faceListId}/persistedFaces")
-        Observable<Response<ResponseBody>> addFaceFromUrl(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @POST("facelists/{faceListId}/persistedfaces")
+        Observable<Response<ResponseBody>> addFaceFromUrl(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Query("detectionModel") DetectionModel detectionModel1, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists addFaceFromStream" })
-        @POST("facelists/{faceListId}/persistedFaces")
-        Observable<Response<ResponseBody>> addFaceFromStream(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @POST("facelists/{faceListId}/persistedfaces")
+        Observable<Response<ResponseBody>> addFaceFromStream(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Query("detectionModel") DetectionModel detectionModel1, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup) / [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup) and [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; Please consider [LargeFaceList](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -121,7 +134,14 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup) / [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup) and [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; Please consider [LargeFaceList](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -134,7 +154,14 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup) / [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup) and [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; Please consider [LargeFaceList](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -151,7 +178,14 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup) / [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup) and [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; Please consider [LargeFaceList](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -159,38 +193,48 @@ public class FaceListsImpl implements FaceLists {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, CreateFaceListsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
         final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
         final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
+        final RecognitionModel recognitionModel = createOptionalParameter != null ? createOptionalParameter.recognitionModel() : null;
 
-        return createWithServiceResponseAsync(faceListId, name, userData);
+        return createWithServiceResponseAsync(faceListId, name, userData, recognitionModel);
     }
 
     /**
-     * Create an empty face list. Up to 64 face lists are allowed to exist in one subscription.
+     * Create an empty face list with user-specified faceListId, name, an optional userData and recognitionModel. Up to 64 face lists are allowed in one subscription.
+     &lt;br /&gt; Face list is a list of faces, up to 1,000 faces, and used by [Face - Find Similar](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/findsimilar).
+     &lt;br /&gt; After creation, user should use [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl) to import the faces. No image will be stored. Only the extracted face features are stored on server until [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Find Similar is used for scenario like finding celebrity-like faces, similar face filtering, or as a light way face identification. But if the actual use is to identify person, please use [PersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup) / [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup) and [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; Please consider [LargeFaceList](https://docs.microsoft.com/rest/api/cognitiveservices/face/largefacelist) when the face number is large. It can support up to 1,000,000 faces.
+     &lt;br /&gt;'recognitionModel' should be specified to associate with this face list. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing face list will use the recognition model that's already associated with the collection. Existing face features in a face list can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [FaceList- Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/create). All those face lists created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
      *
      * @param faceListId Id referencing a particular face list.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String faceListId, String name, String userData, RecognitionModel recognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
+        MetaDataContract bodyParameter = new MetaDataContract();
         bodyParameter.withName(name);
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        bodyParameter.withRecognitionModel(recognitionModel);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.create(faceListId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -225,6 +269,7 @@ public class FaceListsImpl implements FaceLists {
         private String faceListId;
         private String name;
         private String userData;
+        private RecognitionModel recognitionModel;
 
         /**
          * Constructor.
@@ -253,13 +298,19 @@ public class FaceListsImpl implements FaceLists {
         }
 
         @Override
+        public FaceListsCreateParameters withRecognitionModel(RecognitionModel recognitionModel) {
+            this.recognitionModel = recognitionModel;
+            return this;
+        }
+
+        @Override
         public void execute() {
-        createWithServiceResponseAsync(faceListId, name, userData).toBlocking().single().body();
+        createWithServiceResponseAsync(faceListId, name, userData, recognitionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<Void> executeAsync() {
-            return createWithServiceResponseAsync(faceListId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+            return createWithServiceResponseAsync(faceListId, name, userData, recognitionModel).map(new Func1<ServiceResponse<Void>, Void>() {
                 @Override
                 public Void call(ServiceResponse<Void> response) {
                     return response.body();
@@ -268,40 +319,44 @@ public class FaceListsImpl implements FaceLists {
         }
     }
 
+
     /**
-     * Retrieve a face list's information.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FaceList object if successful.
      */
-    public FaceList get(String faceListId) {
-        return getWithServiceResponseAsync(faceListId).toBlocking().single().body();
+    public FaceList get(String faceListId, GetFaceListsOptionalParameter getOptionalParameter) {
+        return getWithServiceResponseAsync(faceListId, getOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Retrieve a face list's information.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FaceList> getAsync(String faceListId, final ServiceCallback<FaceList> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(faceListId), serviceCallback);
+    public ServiceFuture<FaceList> getAsync(String faceListId, GetFaceListsOptionalParameter getOptionalParameter, final ServiceCallback<FaceList> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(faceListId, getOptionalParameter), serviceCallback);
     }
 
     /**
-     * Retrieve a face list's information.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FaceList object
      */
-    public Observable<FaceList> getAsync(String faceListId) {
-        return getWithServiceResponseAsync(faceListId).map(new Func1<ServiceResponse<FaceList>, FaceList>() {
+    public Observable<FaceList> getAsync(String faceListId, GetFaceListsOptionalParameter getOptionalParameter) {
+        return getWithServiceResponseAsync(faceListId, getOptionalParameter).map(new Func1<ServiceResponse<FaceList>, FaceList>() {
             @Override
             public FaceList call(ServiceResponse<FaceList> response) {
                 return response.body();
@@ -310,21 +365,42 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Retrieve a face list's information.
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
      *
      * @param faceListId Id referencing a particular face list.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FaceList object
      */
-    public Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId, GetFaceListsOptionalParameter getOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.get(faceListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        final Boolean returnRecognitionModel = getOptionalParameter != null ? getOptionalParameter.returnRecognitionModel() : null;
+
+        return getWithServiceResponseAsync(faceListId, returnRecognitionModel);
+    }
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    public Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (faceListId == null) {
+            throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(faceListId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FaceList>>>() {
                 @Override
                 public Observable<ServiceResponse<FaceList>> call(Response<ResponseBody> response) {
@@ -343,6 +419,55 @@ public class FaceListsImpl implements FaceLists {
                 .register(200, new TypeToken<FaceList>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public FaceListsGetParameters get() {
+        return new FaceListsGetParameters(this);
+    }
+
+    /**
+     * Internal class implementing FaceListsGetDefinition.
+     */
+    class FaceListsGetParameters implements FaceListsGetDefinition {
+        private FaceListsImpl parent;
+        private String faceListId;
+        private Boolean returnRecognitionModel;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsGetParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsGetParameters withFaceListId(String faceListId) {
+            this.faceListId = faceListId;
+            return this;
+        }
+
+        @Override
+        public FaceListsGetParameters withReturnRecognitionModel(Boolean returnRecognitionModel) {
+            this.returnRecognitionModel = returnRecognitionModel;
+            return this;
+        }
+
+        @Override
+        public FaceList execute() {
+        return getWithServiceResponseAsync(faceListId, returnRecognitionModel).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<FaceList> executeAsync() {
+            return getWithServiceResponseAsync(faceListId, returnRecognitionModel).map(new Func1<ServiceResponse<FaceList>, FaceList>() {
+                @Override
+                public FaceList call(ServiceResponse<FaceList> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -398,8 +523,8 @@ public class FaceListsImpl implements FaceLists {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, UpdateFaceListsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -420,8 +545,8 @@ public class FaceListsImpl implements FaceLists {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String faceListId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -429,7 +554,7 @@ public class FaceListsImpl implements FaceLists {
         NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
         bodyParameter.withName(name);
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.update(faceListId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -508,7 +633,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
+     * Delete a specified face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -520,7 +645,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
+     * Delete a specified face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -532,7 +657,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
+     * Delete a specified face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -548,20 +673,20 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face list according to faceListId. Persisted face images in the face list will also be deleted.
+     * Delete a specified face list.
      *
      * @param faceListId Id referencing a particular face list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String faceListId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(faceListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -583,37 +708,44 @@ public class FaceListsImpl implements FaceLists {
                 .build(response);
     }
 
+
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/get).
      *
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;FaceList&gt; object if successful.
      */
-    public List<FaceList> list() {
-        return listWithServiceResponseAsync().toBlocking().single().body();
+    public List<FaceList> list(ListFaceListsOptionalParameter listOptionalParameter) {
+        return listWithServiceResponseAsync(listOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/get).
      *
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<FaceList>> listAsync(final ServiceCallback<List<FaceList>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<FaceList>> listAsync(ListFaceListsOptionalParameter listOptionalParameter, final ServiceCallback<List<FaceList>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(listOptionalParameter), serviceCallback);
     }
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/get).
      *
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;FaceList&gt; object
      */
-    public Observable<List<FaceList>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<FaceList>>, List<FaceList>>() {
+    public Observable<List<FaceList>> listAsync(ListFaceListsOptionalParameter listOptionalParameter) {
+        return listWithServiceResponseAsync(listOptionalParameter).map(new Func1<ServiceResponse<List<FaceList>>, List<FaceList>>() {
             @Override
             public List<FaceList> call(ServiceResponse<List<FaceList>> response) {
                 return response.body();
@@ -622,17 +754,36 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Retrieve information about all existing face lists. Only faceListId, name and userData will be returned.
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/get).
      *
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;FaceList&gt; object
      */
-    public Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync(ListFaceListsOptionalParameter listOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        final Boolean returnRecognitionModel = listOptionalParameter != null ? listOptionalParameter.returnRecognitionModel() : null;
+
+        return listWithServiceResponseAsync(returnRecognitionModel);
+    }
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/get).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    public Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync(Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FaceList>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<FaceList>>> call(Response<ResponseBody> response) {
@@ -653,8 +804,51 @@ public class FaceListsImpl implements FaceLists {
                 .build(response);
     }
 
+    @Override
+    public FaceListsListParameters list() {
+        return new FaceListsListParameters(this);
+    }
+
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Internal class implementing FaceListsListDefinition.
+     */
+    class FaceListsListParameters implements FaceListsListDefinition {
+        private FaceListsImpl parent;
+        private Boolean returnRecognitionModel;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        FaceListsListParameters(FaceListsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public FaceListsListParameters withReturnRecognitionModel(Boolean returnRecognitionModel) {
+            this.returnRecognitionModel = returnRecognitionModel;
+            return this;
+        }
+
+        @Override
+        public List<FaceList> execute() {
+        return listWithServiceResponseAsync(returnRecognitionModel).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<List<FaceList>> executeAsync() {
+            return listWithServiceResponseAsync(returnRecognitionModel).map(new Func1<ServiceResponse<List<FaceList>>, List<FaceList>>() {
+                @Override
+                public List<FaceList> call(ServiceResponse<List<FaceList>> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -667,7 +861,8 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -680,7 +875,8 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -697,7 +893,8 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete a face from a face list by specified faceListId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -705,8 +902,8 @@ public class FaceListsImpl implements FaceLists {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String faceListId, UUID persistedFaceId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -714,7 +911,7 @@ public class FaceListsImpl implements FaceLists {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteFace(faceListId, persistedFaceId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -738,7 +935,20 @@ public class FaceListsImpl implements FaceLists {
 
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param url Publicly reachable URL of an image
@@ -748,12 +958,25 @@ public class FaceListsImpl implements FaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addFaceFromUrl(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter) {
+    public PersistedFace addFaceFromUrl(String faceListId, String url, AddFaceFromUrlFaceListsOptionalParameter addFaceFromUrlOptionalParameter) {
         return addFaceFromUrlWithServiceResponseAsync(faceListId, url, addFaceFromUrlOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param url Publicly reachable URL of an image
@@ -762,12 +985,25 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
+    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlFaceListsOptionalParameter addFaceFromUrlOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
         return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(faceListId, url, addFaceFromUrlOptionalParameter), serviceCallback);
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param url Publicly reachable URL of an image
@@ -775,7 +1011,7 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter) {
+    public Observable<PersistedFace> addFaceFromUrlAsync(String faceListId, String url, AddFaceFromUrlFaceListsOptionalParameter addFaceFromUrlOptionalParameter) {
         return addFaceFromUrlWithServiceResponseAsync(faceListId, url, addFaceFromUrlOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
@@ -785,7 +1021,20 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param url Publicly reachable URL of an image
@@ -793,9 +1042,9 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, AddFaceFromUrlOptionalParameter addFaceFromUrlOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, AddFaceFromUrlFaceListsOptionalParameter addFaceFromUrlOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -805,23 +1054,38 @@ public class FaceListsImpl implements FaceLists {
         }
         final String userData = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.userData() : null;
         final List<Integer> targetFace = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.targetFace() : null;
+        final DetectionModel detectionModel = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.detectionModel() : null;
 
-        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace);
+        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace, detectionModel);
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param detectionModel Name of detection model. Detection model is used to detect faces in the submitted image. A detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please explicitly specify it. Possible values include: 'detection_01', 'detection_02'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String faceListId, String url, String userData, List<Integer> targetFace, DetectionModel detectionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -832,9 +1096,9 @@ public class FaceListsImpl implements FaceLists {
         Validator.validate(targetFace);
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addFaceFromUrl(faceListId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.addFaceFromUrl(faceListId, userData, targetFaceConverted, detectionModel, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
@@ -869,6 +1133,7 @@ public class FaceListsImpl implements FaceLists {
         private String url;
         private String userData;
         private List<Integer> targetFace;
+        private DetectionModel detectionModel;
 
         /**
          * Constructor.
@@ -903,13 +1168,19 @@ public class FaceListsImpl implements FaceLists {
         }
 
         @Override
+        public FaceListsAddFaceFromUrlParameters withDetectionModel(DetectionModel detectionModel) {
+            this.detectionModel = detectionModel;
+            return this;
+        }
+
+        @Override
         public PersistedFace execute() {
-        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).toBlocking().single().body();
+        return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace, detectionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<PersistedFace> executeAsync() {
-            return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+            return addFaceFromUrlWithServiceResponseAsync(faceListId, url, userData, targetFace, detectionModel).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
                 @Override
                 public PersistedFace call(ServiceResponse<PersistedFace> response) {
                     return response.body();
@@ -920,7 +1191,20 @@ public class FaceListsImpl implements FaceLists {
 
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param image An image stream.
@@ -930,12 +1214,25 @@ public class FaceListsImpl implements FaceLists {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addFaceFromStream(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter) {
+    public PersistedFace addFaceFromStream(String faceListId, byte[] image, AddFaceFromStreamFaceListsOptionalParameter addFaceFromStreamOptionalParameter) {
         return addFaceFromStreamWithServiceResponseAsync(faceListId, image, addFaceFromStreamOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param image An image stream.
@@ -944,12 +1241,25 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
+    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamFaceListsOptionalParameter addFaceFromStreamOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
         return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(faceListId, image, addFaceFromStreamOptionalParameter), serviceCallback);
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param image An image stream.
@@ -957,7 +1267,7 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter) {
+    public Observable<PersistedFace> addFaceFromStreamAsync(String faceListId, byte[] image, AddFaceFromStreamFaceListsOptionalParameter addFaceFromStreamOptionalParameter) {
         return addFaceFromStreamWithServiceResponseAsync(faceListId, image, addFaceFromStreamOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
@@ -967,7 +1277,20 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param image An image stream.
@@ -975,9 +1298,9 @@ public class FaceListsImpl implements FaceLists {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, AddFaceFromStreamOptionalParameter addFaceFromStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, AddFaceFromStreamFaceListsOptionalParameter addFaceFromStreamOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -987,23 +1310,38 @@ public class FaceListsImpl implements FaceLists {
         }
         final String userData = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.userData() : null;
         final List<Integer> targetFace = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.targetFace() : null;
+        final DetectionModel detectionModel = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.detectionModel() : null;
 
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace);
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace, detectionModel);
     }
 
     /**
-     * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
+     * Add a face to a specified face list, up to 1,000 faces.
+     &lt;br /&gt; To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [FaceList - Delete Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/deleteface) or [FaceList - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better detection and recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same face list are processed sequentially and to/from different face lists are in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [FaceList - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/facelist/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param faceListId Id referencing a particular face list.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param detectionModel Name of detection model. Detection model is used to detect faces in the submitted image. A detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please explicitly specify it. Possible values include: 'detection_01', 'detection_02'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace, DetectionModel detectionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
@@ -1012,10 +1350,10 @@ public class FaceListsImpl implements FaceLists {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         Validator.validate(targetFace);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, imageConverted, detectionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
@@ -1050,6 +1388,7 @@ public class FaceListsImpl implements FaceLists {
         private byte[] image;
         private String userData;
         private List<Integer> targetFace;
+        private DetectionModel detectionModel;
 
         /**
          * Constructor.
@@ -1084,13 +1423,19 @@ public class FaceListsImpl implements FaceLists {
         }
 
         @Override
+        public FaceListsAddFaceFromStreamParameters withDetectionModel(DetectionModel detectionModel) {
+            this.detectionModel = detectionModel;
+            return this;
+        }
+
+        @Override
         public PersistedFace execute() {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).toBlocking().single().body();
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace, detectionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<PersistedFace> executeAsync() {
-            return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+            return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace, detectionModel).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
                 @Override
                 public PersistedFace call(ServiceResponse<PersistedFace> response) {
                     return response.body();

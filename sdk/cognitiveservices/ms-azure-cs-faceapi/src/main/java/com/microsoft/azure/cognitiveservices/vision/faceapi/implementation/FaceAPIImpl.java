@@ -13,9 +13,12 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceAPI;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.Faces;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AzureRegions;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPersons;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.Snapshots;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -34,26 +37,26 @@ public class FaceAPIImpl extends AzureServiceClient implements FaceAPI {
         return this.azureClient;
     }
 
-    /** Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'. */
-    private AzureRegions azureRegion;
+    /** Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com). */
+    private String endpoint;
 
     /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      *
-     * @return the azureRegion value.
+     * @return the endpoint value.
      */
-    public AzureRegions azureRegion() {
-        return this.azureRegion;
+    public String endpoint() {
+        return this.endpoint;
     }
 
     /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      *
-     * @param azureRegion the azureRegion value.
+     * @param endpoint the endpoint value.
      * @return the service client itself
      */
-    public FaceAPIImpl withAzureRegion(AzureRegions azureRegion) {
-        this.azureRegion = azureRegion;
+    public FaceAPIImpl withEndpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -179,12 +182,64 @@ public class FaceAPIImpl extends AzureServiceClient implements FaceAPI {
     }
 
     /**
+     * The LargePersonGroupPersons object to access its operations.
+     */
+    private LargePersonGroupPersons largePersonGroupPersons;
+
+    /**
+     * Gets the LargePersonGroupPersons object to access its operations.
+     * @return the LargePersonGroupPersons object.
+     */
+    public LargePersonGroupPersons largePersonGroupPersons() {
+        return this.largePersonGroupPersons;
+    }
+
+    /**
+     * The LargePersonGroups object to access its operations.
+     */
+    private LargePersonGroups largePersonGroups;
+
+    /**
+     * Gets the LargePersonGroups object to access its operations.
+     * @return the LargePersonGroups object.
+     */
+    public LargePersonGroups largePersonGroups() {
+        return this.largePersonGroups;
+    }
+
+    /**
+     * The LargeFaceLists object to access its operations.
+     */
+    private LargeFaceLists largeFaceLists;
+
+    /**
+     * Gets the LargeFaceLists object to access its operations.
+     * @return the LargeFaceLists object.
+     */
+    public LargeFaceLists largeFaceLists() {
+        return this.largeFaceLists;
+    }
+
+    /**
+     * The Snapshots object to access its operations.
+     */
+    private Snapshots snapshots;
+
+    /**
+     * Gets the Snapshots object to access its operations.
+     * @return the Snapshots object.
+     */
+    public Snapshots snapshots() {
+        return this.snapshots;
+    }
+
+    /**
      * Initializes an instance of FaceAPI client.
      *
      * @param credentials the management credentials for Azure
      */
     public FaceAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", credentials);
+        this("https://{Endpoint}/face/v1.0", credentials);
     }
 
     /**
@@ -216,6 +271,10 @@ public class FaceAPIImpl extends AzureServiceClient implements FaceAPI {
         this.personGroupPersons = new PersonGroupPersonsImpl(restClient().retrofit(), this);
         this.personGroups = new PersonGroupsImpl(restClient().retrofit(), this);
         this.faceLists = new FaceListsImpl(restClient().retrofit(), this);
+        this.largePersonGroupPersons = new LargePersonGroupPersonsImpl(restClient().retrofit(), this);
+        this.largePersonGroups = new LargePersonGroupsImpl(restClient().retrofit(), this);
+        this.largeFaceLists = new LargeFaceListsImpl(restClient().retrofit(), this);
+        this.snapshots = new SnapshotsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

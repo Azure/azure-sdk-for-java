@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request to update person face data.
+ * Request to update face data.
  */
-public class UpdatePersonFaceRequest {
+public class UpdateFaceRequest {
     /**
      * User-provided data attached to the face. The size limit is 1KB.
      */
@@ -33,9 +33,9 @@ public class UpdatePersonFaceRequest {
      * Set the userData value.
      *
      * @param userData the userData value to set
-     * @return the UpdatePersonFaceRequest object itself.
+     * @return the UpdateFaceRequest object itself.
      */
-    public UpdatePersonFaceRequest withUserData(String userData) {
+    public UpdateFaceRequest withUserData(String userData) {
         this.userData = userData;
         return this;
     }

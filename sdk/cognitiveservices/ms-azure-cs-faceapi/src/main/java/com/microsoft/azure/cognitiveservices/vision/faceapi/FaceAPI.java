@@ -9,7 +9,6 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
 import com.microsoft.azure.AzureClient;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AzureRegions;
 import com.microsoft.rest.RestClient;
 
 /**
@@ -37,19 +36,19 @@ public interface FaceAPI {
     String userAgent();
 
     /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
      *
-     * @return the azureRegion value.
+     * @return the endpoint value.
      */
-    AzureRegions azureRegion();
+    String endpoint();
 
     /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
      *
-     * @param azureRegion the azureRegion value.
+     * @param endpoint the endpoint value.
      * @return the service client itself
      */
-    FaceAPI withAzureRegion(AzureRegions azureRegion);
+    FaceAPI withEndpoint(String endpoint);
 
     /**
      * Gets Gets or sets the preferred language for the response..
@@ -119,5 +118,29 @@ public interface FaceAPI {
      * @return the FaceLists object.
      */
     FaceLists faceLists();
+
+    /**
+     * Gets the LargePersonGroupPersons object to access its operations.
+     * @return the LargePersonGroupPersons object.
+     */
+    LargePersonGroupPersons largePersonGroupPersons();
+
+    /**
+     * Gets the LargePersonGroups object to access its operations.
+     * @return the LargePersonGroups object.
+     */
+    LargePersonGroups largePersonGroups();
+
+    /**
+     * Gets the LargeFaceLists object to access its operations.
+     * @return the LargeFaceLists object.
+     */
+    LargeFaceLists largeFaceLists();
+
+    /**
+     * Gets the Snapshots object to access its operations.
+     * @return the Snapshots object.
+     */
+    Snapshots snapshots();
 
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request body for verify operation.
+ * Request body for face to face verification.
  */
 public class VerifyFaceToFaceRequest {
     /**

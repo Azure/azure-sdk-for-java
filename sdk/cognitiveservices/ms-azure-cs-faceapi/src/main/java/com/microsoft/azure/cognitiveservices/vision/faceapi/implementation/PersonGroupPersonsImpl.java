@@ -11,24 +11,26 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupPersonsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupPersonsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupPersonsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFacePersonGroupPersonsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlPersonGroupPersonsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamPersonGroupPersonsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ImageUrl;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Person;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonFaceRequest;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceRequest;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -95,24 +97,24 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons deleteFace" })
-        @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
+        @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons getFace" })
-        @GET("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
+        @GET("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
         Observable<Response<ResponseBody>> getFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons updateFace" })
-        @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
-        Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdatePersonFaceRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedfaces/{persistedFaceId}")
+        Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdateFaceRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromUrl" })
-        @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addFaceFromUrl" })
+        @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
+        Observable<Response<ResponseBody>> addFaceFromUrl(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Query("detectionModel") DetectionModel detectionModel1, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addPersonFaceFromStream" })
-        @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons addFaceFromStream" })
+        @POST("persongroups/{personGroupId}/persons/{personId}/persistedfaces")
+        Observable<Response<ResponseBody>> addFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Query("detectionModel") DetectionModel detectionModel1, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -170,8 +172,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the Person object
      */
     public Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -192,8 +194,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the Person object
      */
     public Observable<ServiceResponse<Person>> createWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -201,7 +203,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
         bodyParameter.withName(name);
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.create(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Person>>>() {
                 @Override
@@ -333,8 +335,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the List&lt;Person&gt; object
      */
     public Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -355,13 +357,13 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the List&lt;Person&gt; object
      */
     public Observable<ServiceResponse<List<Person>>> listWithServiceResponseAsync(String personGroupId, String start, Integer top) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(personGroupId, start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<Person>>>>() {
                 @Override
@@ -440,7 +442,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. The persistedFaceId, userData, person name and face feature in the person entry will all be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -453,7 +455,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. The persistedFaceId, userData, person name and face feature in the person entry will all be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -466,7 +468,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. The persistedFaceId, userData, person name and face feature in the person entry will all be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -483,7 +485,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. The persistedFaceId, userData, person name and face feature in the person entry will all be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -491,8 +493,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId, UUID personId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -500,7 +502,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(personGroupId, personId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -575,8 +577,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the Person object
      */
     public Observable<ServiceResponse<Person>> getWithServiceResponseAsync(String personGroupId, UUID personId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -584,7 +586,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.get(personGroupId, personId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Person>>>() {
                 @Override
@@ -663,8 +665,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -689,8 +691,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -701,7 +703,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
         bodyParameter.withName(name);
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.update(personGroupId, personId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -787,7 +789,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person in a person group by specified personGroupId, personId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -801,7 +804,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person in a person group by specified personGroupId, personId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -815,7 +819,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person in a person group by specified personGroupId, personId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -833,7 +838,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person in a person group by specified personGroupId, personId and persistedFaceId.
+     &lt;br /&gt; Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -842,8 +848,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -854,7 +860,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -933,8 +939,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the observable to the PersistedFace object
      */
     public Observable<ServiceResponse<PersistedFace>> getFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -945,7 +951,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
@@ -969,7 +975,14 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
 
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Each person entry can hold up to 248 faces.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -979,12 +992,19 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter) {
+    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFacePersonGroupPersonsOptionalParameter updateFaceOptionalParameter) {
         updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, updateFaceOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Each person entry can hold up to 248 faces.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -994,12 +1014,19 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFacePersonGroupPersonsOptionalParameter updateFaceOptionalParameter, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, updateFaceOptionalParameter), serviceCallback);
     }
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Each person entry can hold up to 248 faces.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -1008,7 +1035,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter) {
+    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFacePersonGroupPersonsOptionalParameter updateFaceOptionalParameter) {
         return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, updateFaceOptionalParameter).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -1018,7 +1045,14 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Each person entry can hold up to 248 faces.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -1027,9 +1061,9 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFacePersonGroupPersonsOptionalParameter updateFaceOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1046,7 +1080,14 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     * Each person entry can hold up to 248 faces.
+     * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -1056,8 +1097,8 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1068,9 +1109,9 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (persistedFaceId == null) {
             throw new IllegalArgumentException("Parameter persistedFaceId is required and cannot be null.");
         }
-        UpdatePersonFaceRequest bodyParameter = new UpdatePersonFaceRequest();
+        UpdateFaceRequest bodyParameter = new UpdateFaceRequest();
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateFace(personGroupId, personId, persistedFaceId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -1157,48 +1198,87 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
 
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addPersonFaceFromUrlOptionalParameter).toBlocking().single().body();
+    public PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url, AddFaceFromUrlPersonGroupPersonsOptionalParameter addFaceFromUrlOptionalParameter) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addFaceFromUrlOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addPersonFaceFromUrlOptionalParameter), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddFaceFromUrlPersonGroupPersonsOptionalParameter addFaceFromUrlOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addFaceFromUrlOptionalParameter), serviceCallback);
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter) {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addPersonFaceFromUrlOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddFaceFromUrlPersonGroupPersonsOptionalParameter addFaceFromUrlOptionalParameter) {
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, addFaceFromUrlOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1207,18 +1287,31 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, AddFaceFromUrlPersonGroupPersonsOptionalParameter addFaceFromUrlOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1229,26 +1322,41 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
-        final String userData = addPersonFaceFromUrlOptionalParameter != null ? addPersonFaceFromUrlOptionalParameter.userData() : null;
-        final List<Integer> targetFace = addPersonFaceFromUrlOptionalParameter != null ? addPersonFaceFromUrlOptionalParameter.targetFace() : null;
+        final String userData = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.userData() : null;
+        final List<Integer> targetFace = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.targetFace() : null;
+        final DetectionModel detectionModel = addFaceFromUrlOptionalParameter != null ? addFaceFromUrlOptionalParameter.detectionModel() : null;
 
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace);
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace, detectionModel);
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param detectionModel Name of detection model. Detection model is used to detect faces in the submitted image. A detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please explicitly specify it. Possible values include: 'detection_01', 'detection_02'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromUrlWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, DetectionModel detectionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1262,14 +1370,14 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         Validator.validate(targetFace);
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addPersonFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.addFaceFromUrl(personGroupId, personId, userData, targetFaceConverted, detectionModel, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromUrlDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromUrlDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1278,7 +1386,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             });
     }
 
-    private ServiceResponse<PersistedFace> addPersonFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PersistedFace> addFaceFromUrlDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
@@ -1286,67 +1394,74 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     @Override
-    public PersonGroupPersonsAddPersonFaceFromUrlParameters addPersonFaceFromUrl() {
-        return new PersonGroupPersonsAddPersonFaceFromUrlParameters(this);
+    public PersonGroupPersonsAddFaceFromUrlParameters addFaceFromUrl() {
+        return new PersonGroupPersonsAddFaceFromUrlParameters(this);
     }
 
     /**
-     * Internal class implementing PersonGroupPersonsAddPersonFaceFromUrlDefinition.
+     * Internal class implementing PersonGroupPersonsAddFaceFromUrlDefinition.
      */
-    class PersonGroupPersonsAddPersonFaceFromUrlParameters implements PersonGroupPersonsAddPersonFaceFromUrlDefinition {
+    class PersonGroupPersonsAddFaceFromUrlParameters implements PersonGroupPersonsAddFaceFromUrlDefinition {
         private PersonGroupPersonsImpl parent;
         private String personGroupId;
         private UUID personId;
         private String url;
         private String userData;
         private List<Integer> targetFace;
+        private DetectionModel detectionModel;
 
         /**
          * Constructor.
          * @param parent the parent object.
          */
-        PersonGroupPersonsAddPersonFaceFromUrlParameters(PersonGroupPersonsImpl parent) {
+        PersonGroupPersonsAddFaceFromUrlParameters(PersonGroupPersonsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withPersonGroupId(String personGroupId) {
+        public PersonGroupPersonsAddFaceFromUrlParameters withPersonGroupId(String personGroupId) {
             this.personGroupId = personGroupId;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withPersonId(UUID personId) {
+        public PersonGroupPersonsAddFaceFromUrlParameters withPersonId(UUID personId) {
             this.personId = personId;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withUrl(String url) {
+        public PersonGroupPersonsAddFaceFromUrlParameters withUrl(String url) {
             this.url = url;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withUserData(String userData) {
+        public PersonGroupPersonsAddFaceFromUrlParameters withUserData(String userData) {
             this.userData = userData;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
+        public PersonGroupPersonsAddFaceFromUrlParameters withTargetFace(List<Integer> targetFace) {
             this.targetFace = targetFace;
             return this;
         }
 
         @Override
+        public PersonGroupPersonsAddFaceFromUrlParameters withDetectionModel(DetectionModel detectionModel) {
+            this.detectionModel = detectionModel;
+            return this;
+        }
+
+        @Override
         public PersistedFace execute() {
-        return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
+        return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace, detectionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<PersistedFace> executeAsync() {
-            return addPersonFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+            return addFaceFromUrlWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace, detectionModel).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
                 @Override
                 public PersistedFace call(ServiceResponse<PersistedFace> response) {
                     return response.body();
@@ -1357,48 +1472,87 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
 
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    public PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addPersonFaceFromStreamOptionalParameter).toBlocking().single().body();
+    public PersistedFace addFaceFromStream(String personGroupId, UUID personId, byte[] image, AddFaceFromStreamPersonGroupPersonsOptionalParameter addFaceFromStreamOptionalParameter) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addFaceFromStreamOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
-        return ServiceFuture.fromResponse(addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addPersonFaceFromStreamOptionalParameter), serviceCallback);
+    public ServiceFuture<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddFaceFromStreamPersonGroupPersonsOptionalParameter addFaceFromStreamOptionalParameter, final ServiceCallback<PersistedFace> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addFaceFromStreamOptionalParameter), serviceCallback);
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter) {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addPersonFaceFromStreamOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+    public Observable<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddFaceFromStreamPersonGroupPersonsOptionalParameter addFaceFromStreamOptionalParameter) {
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, addFaceFromStreamOptionalParameter).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
             @Override
             public PersistedFace call(ServiceResponse<PersistedFace> response) {
                 return response.body();
@@ -1407,18 +1561,31 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, AddFaceFromStreamPersonGroupPersonsOptionalParameter addFaceFromStreamOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1429,26 +1596,41 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        final String userData = addPersonFaceFromStreamOptionalParameter != null ? addPersonFaceFromStreamOptionalParameter.userData() : null;
-        final List<Integer> targetFace = addPersonFaceFromStreamOptionalParameter != null ? addPersonFaceFromStreamOptionalParameter.targetFace() : null;
+        final String userData = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.userData() : null;
+        final List<Integer> targetFace = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.targetFace() : null;
+        final DetectionModel detectionModel = addFaceFromStreamOptionalParameter != null ? addFaceFromStreamOptionalParameter.detectionModel() : null;
 
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace);
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace, detectionModel);
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will be stored on server until [PersonGroup PersonFace - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface), [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   Higher face image quality means better recognition precision. Please consider high-quality faces: frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   Each person entry can hold up to 248 faces.
+     *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If the provided "targetFace" rectangle is not returned from [Face - Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee to detect and add the face successfully.
+     *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause failures.
+     *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from different persons are processed in parallel.
+     * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer to [How to specify a detection model](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+       | Model | Recommended use-case(s) |
+       | ---------- | -------- |
+       | 'detection_01': | The default detection model for [PersonGroup Person - Add Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl). Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces, occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+       | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
      * @param userData User-specified data about the face for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
+     * @param detectionModel Name of detection model. Detection model is used to detect faces in the submitted image. A detection model name can be provided when performing Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add Face. The default value is 'detection_01', if another model is needed, please explicitly specify it. Possible values include: 'detection_01', 'detection_02'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    public Observable<ServiceResponse<PersistedFace>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersistedFace>> addFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, DetectionModel detectionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -1460,15 +1642,15 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         Validator.validate(targetFace);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.addPersonFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.addFaceFromStream(personGroupId, personId, userData, targetFaceConverted, imageConverted, detectionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFace>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFace>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PersistedFace> clientResponse = addPersonFaceFromStreamDelegate(response);
+                        ServiceResponse<PersistedFace> clientResponse = addFaceFromStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1477,7 +1659,7 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
             });
     }
 
-    private ServiceResponse<PersistedFace> addPersonFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PersistedFace> addFaceFromStreamDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersistedFace, APIErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersistedFace>() { }.getType())
                 .registerError(APIErrorException.class)
@@ -1485,67 +1667,74 @@ public class PersonGroupPersonsImpl implements PersonGroupPersons {
     }
 
     @Override
-    public PersonGroupPersonsAddPersonFaceFromStreamParameters addPersonFaceFromStream() {
-        return new PersonGroupPersonsAddPersonFaceFromStreamParameters(this);
+    public PersonGroupPersonsAddFaceFromStreamParameters addFaceFromStream() {
+        return new PersonGroupPersonsAddFaceFromStreamParameters(this);
     }
 
     /**
-     * Internal class implementing PersonGroupPersonsAddPersonFaceFromStreamDefinition.
+     * Internal class implementing PersonGroupPersonsAddFaceFromStreamDefinition.
      */
-    class PersonGroupPersonsAddPersonFaceFromStreamParameters implements PersonGroupPersonsAddPersonFaceFromStreamDefinition {
+    class PersonGroupPersonsAddFaceFromStreamParameters implements PersonGroupPersonsAddFaceFromStreamDefinition {
         private PersonGroupPersonsImpl parent;
         private String personGroupId;
         private UUID personId;
         private byte[] image;
         private String userData;
         private List<Integer> targetFace;
+        private DetectionModel detectionModel;
 
         /**
          * Constructor.
          * @param parent the parent object.
          */
-        PersonGroupPersonsAddPersonFaceFromStreamParameters(PersonGroupPersonsImpl parent) {
+        PersonGroupPersonsAddFaceFromStreamParameters(PersonGroupPersonsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withPersonGroupId(String personGroupId) {
+        public PersonGroupPersonsAddFaceFromStreamParameters withPersonGroupId(String personGroupId) {
             this.personGroupId = personGroupId;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withPersonId(UUID personId) {
+        public PersonGroupPersonsAddFaceFromStreamParameters withPersonId(UUID personId) {
             this.personId = personId;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withImage(byte[] image) {
+        public PersonGroupPersonsAddFaceFromStreamParameters withImage(byte[] image) {
             this.image = image;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withUserData(String userData) {
+        public PersonGroupPersonsAddFaceFromStreamParameters withUserData(String userData) {
             this.userData = userData;
             return this;
         }
 
         @Override
-        public PersonGroupPersonsAddPersonFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
+        public PersonGroupPersonsAddFaceFromStreamParameters withTargetFace(List<Integer> targetFace) {
             this.targetFace = targetFace;
             return this;
         }
 
         @Override
+        public PersonGroupPersonsAddFaceFromStreamParameters withDetectionModel(DetectionModel detectionModel) {
+            this.detectionModel = detectionModel;
+            return this;
+        }
+
+        @Override
         public PersistedFace execute() {
-        return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
+        return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace, detectionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<PersistedFace> executeAsync() {
-            return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
+            return addFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace, detectionModel).map(new Func1<ServiceResponse<PersistedFace>, PersistedFace>() {
                 @Override
                 public PersistedFace call(ServiceResponse<PersistedFace> response) {
                     return response.body();

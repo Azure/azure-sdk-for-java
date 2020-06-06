@@ -36,6 +36,33 @@ public class DetectWithStreamOptionalParameter {
     private List<FaceAttributeType> returnFaceAttributes;
 
     /**
+     * Name of recognition model. Recognition model is used when the face
+     * features are extracted and associated with detected faceIds,
+     * (Large)FaceList or (Large)PersonGroup. A recognition model name can be
+     * provided when performing Face - Detect or (Large)FaceList - Create or
+     * (Large)PersonGroup - Create. The default value is 'recognition_01', if
+     * latest model needed, please explicitly specify the model you need.
+     * Possible values include: 'recognition_01', 'recognition_02'.
+     */
+    private RecognitionModel recognitionModel;
+
+    /**
+     * A value indicating whether the operation should return
+     * 'recognitionModel' in response.
+     */
+    private Boolean returnRecognitionModel;
+
+    /**
+     * Name of detection model. Detection model is used to detect faces in the
+     * submitted image. A detection model name can be provided when performing
+     * Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add
+     * Face. The default value is 'detection_01', if another model is needed,
+     * please explicitly specify it. Possible values include: 'detection_01',
+     * 'detection_02'.
+     */
+    private DetectionModel detectionModel;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -97,6 +124,66 @@ public class DetectWithStreamOptionalParameter {
      */
     public DetectWithStreamOptionalParameter withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes) {
         this.returnFaceAttributes = returnFaceAttributes;
+        return this;
+    }
+
+    /**
+     * Get the recognitionModel value.
+     *
+     * @return the recognitionModel value
+     */
+    public RecognitionModel recognitionModel() {
+        return this.recognitionModel;
+    }
+
+    /**
+     * Set the recognitionModel value.
+     *
+     * @param recognitionModel the recognitionModel value to set
+     * @return the DetectWithStreamOptionalParameter object itself.
+     */
+    public DetectWithStreamOptionalParameter withRecognitionModel(RecognitionModel recognitionModel) {
+        this.recognitionModel = recognitionModel;
+        return this;
+    }
+
+    /**
+     * Get the returnRecognitionModel value.
+     *
+     * @return the returnRecognitionModel value
+     */
+    public Boolean returnRecognitionModel() {
+        return this.returnRecognitionModel;
+    }
+
+    /**
+     * Set the returnRecognitionModel value.
+     *
+     * @param returnRecognitionModel the returnRecognitionModel value to set
+     * @return the DetectWithStreamOptionalParameter object itself.
+     */
+    public DetectWithStreamOptionalParameter withReturnRecognitionModel(Boolean returnRecognitionModel) {
+        this.returnRecognitionModel = returnRecognitionModel;
+        return this;
+    }
+
+    /**
+     * Get the detectionModel value.
+     *
+     * @return the detectionModel value
+     */
+    public DetectionModel detectionModel() {
+        return this.detectionModel;
+    }
+
+    /**
+     * Set the detectionModel value.
+     *
+     * @param detectionModel the detectionModel value to set
+     * @return the DetectWithStreamOptionalParameter object itself.
+     */
+    public DetectWithStreamOptionalParameter withDetectionModel(DetectionModel detectionModel) {
+        this.detectionModel = detectionModel;
         return this;
     }
 

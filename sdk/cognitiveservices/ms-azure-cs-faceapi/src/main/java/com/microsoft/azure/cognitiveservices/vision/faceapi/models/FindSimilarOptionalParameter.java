@@ -18,14 +18,25 @@ public class FindSimilarOptionalParameter {
     /**
      * An existing user-specified unique candidate face list, created in Face
      * List - Create a Face List. Face list contains a set of persistedFaceIds
-     * which are persisted and will never expire. Parameter faceListId and
-     * faceIds should not be provided at the same time.
+     * which are persisted and will never expire. Parameter faceListId,
+     * largeFaceListId and faceIds should not be provided at the same time.
      */
     private String faceListId;
 
     /**
+     * An existing user-specified unique candidate large face list, created in
+     * LargeFaceList - Create. Large face list contains a set of
+     * persistedFaceIds which are persisted and will never expire. Parameter
+     * faceListId, largeFaceListId and faceIds should not be provided at the
+     * same time.
+     */
+    private String largeFaceListId;
+
+    /**
      * An array of candidate faceIds. All of them are created by Face - Detect
-     * and the faceIds will expire 24 hours after the detection call.
+     * and the faceIds will expire 24 hours after the detection call. The
+     * number of faceIds is limited to 1000. Parameter faceListId,
+     * largeFaceListId and faceIds should not be provided at the same time.
      */
     private List<UUID> faceIds;
 
@@ -62,6 +73,26 @@ public class FindSimilarOptionalParameter {
      */
     public FindSimilarOptionalParameter withFaceListId(String faceListId) {
         this.faceListId = faceListId;
+        return this;
+    }
+
+    /**
+     * Get the largeFaceListId value.
+     *
+     * @return the largeFaceListId value
+     */
+    public String largeFaceListId() {
+        return this.largeFaceListId;
+    }
+
+    /**
+     * Set the largeFaceListId value.
+     *
+     * @param largeFaceListId the largeFaceListId value to set
+     * @return the FindSimilarOptionalParameter object itself.
+     */
+    public FindSimilarOptionalParameter withLargeFaceListId(String largeFaceListId) {
+        this.largeFaceListId = largeFaceListId;
         return this;
     }
 

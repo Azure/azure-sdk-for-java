@@ -10,9 +10,9 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
 
 /**
- * The UpdateFaceOptionalParameter model.
+ * The UpdateFaceLargePersonGroupPersonsOptionalParameter model.
  */
-public class UpdateFaceOptionalParameter {
+public class UpdateFaceLargePersonGroupPersonsOptionalParameter {
     /**
      * User-provided data attached to the face. The size limit is 1KB.
      */
@@ -36,9 +36,9 @@ public class UpdateFaceOptionalParameter {
      * Set the userData value.
      *
      * @param userData the userData value to set
-     * @return the UpdateFaceOptionalParameter object itself.
+     * @return the UpdateFaceLargePersonGroupPersonsOptionalParameter object itself.
      */
-    public UpdateFaceOptionalParameter withUserData(String userData) {
+    public UpdateFaceLargePersonGroupPersonsOptionalParameter withUserData(String userData) {
         this.userData = userData;
         return this;
     }
@@ -56,9 +56,9 @@ public class UpdateFaceOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the UpdateFaceOptionalParameter object itself.
+     * @return the UpdateFaceLargePersonGroupPersonsOptionalParameter object itself.
      */
-    public UpdateFaceOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public UpdateFaceLargePersonGroupPersonsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

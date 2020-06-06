@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 import java.util.List;
 
 /**
- * The AddFaceFromUrlOptionalParameter model.
+ * The AddFaceFromStreamPersonGroupPersonsOptionalParameter model.
  */
-public class AddFaceFromUrlOptionalParameter {
+public class AddFaceFromStreamPersonGroupPersonsOptionalParameter {
     /**
      * User-specified data about the face for any purpose. The maximum length
      * is 1KB.
@@ -28,6 +28,16 @@ public class AddFaceFromUrlOptionalParameter {
      * there is only one face detected in the entire image.
      */
     private List<Integer> targetFace;
+
+    /**
+     * Name of detection model. Detection model is used to detect faces in the
+     * submitted image. A detection model name can be provided when performing
+     * Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add
+     * Face. The default value is 'detection_01', if another model is needed,
+     * please explicitly specify it. Possible values include: 'detection_01',
+     * 'detection_02'.
+     */
+    private DetectionModel detectionModel;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -47,9 +57,9 @@ public class AddFaceFromUrlOptionalParameter {
      * Set the userData value.
      *
      * @param userData the userData value to set
-     * @return the AddFaceFromUrlOptionalParameter object itself.
+     * @return the AddFaceFromStreamPersonGroupPersonsOptionalParameter object itself.
      */
-    public AddFaceFromUrlOptionalParameter withUserData(String userData) {
+    public AddFaceFromStreamPersonGroupPersonsOptionalParameter withUserData(String userData) {
         this.userData = userData;
         return this;
     }
@@ -67,10 +77,30 @@ public class AddFaceFromUrlOptionalParameter {
      * Set the targetFace value.
      *
      * @param targetFace the targetFace value to set
-     * @return the AddFaceFromUrlOptionalParameter object itself.
+     * @return the AddFaceFromStreamPersonGroupPersonsOptionalParameter object itself.
      */
-    public AddFaceFromUrlOptionalParameter withTargetFace(List<Integer> targetFace) {
+    public AddFaceFromStreamPersonGroupPersonsOptionalParameter withTargetFace(List<Integer> targetFace) {
         this.targetFace = targetFace;
+        return this;
+    }
+
+    /**
+     * Get the detectionModel value.
+     *
+     * @return the detectionModel value
+     */
+    public DetectionModel detectionModel() {
+        return this.detectionModel;
+    }
+
+    /**
+     * Set the detectionModel value.
+     *
+     * @param detectionModel the detectionModel value to set
+     * @return the AddFaceFromStreamPersonGroupPersonsOptionalParameter object itself.
+     */
+    public AddFaceFromStreamPersonGroupPersonsOptionalParameter withDetectionModel(DetectionModel detectionModel) {
+        this.detectionModel = detectionModel;
         return this;
     }
 
@@ -87,9 +117,9 @@ public class AddFaceFromUrlOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the AddFaceFromUrlOptionalParameter object itself.
+     * @return the AddFaceFromStreamPersonGroupPersonsOptionalParameter object itself.
      */
-    public AddFaceFromUrlOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public AddFaceFromStreamPersonGroupPersonsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

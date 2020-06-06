@@ -22,6 +22,12 @@ public class DetectedFace {
     private UUID faceId;
 
     /**
+     * Possible values include: 'recognition_01', 'recognition_02'.
+     */
+    @JsonProperty(value = "recognitionModel")
+    private RecognitionModel recognitionModel;
+
+    /**
      * The faceRectangle property.
      */
     @JsonProperty(value = "faceRectangle", required = true)
@@ -56,6 +62,26 @@ public class DetectedFace {
      */
     public DetectedFace withFaceId(UUID faceId) {
         this.faceId = faceId;
+        return this;
+    }
+
+    /**
+     * Get the recognitionModel value.
+     *
+     * @return the recognitionModel value
+     */
+    public RecognitionModel recognitionModel() {
+        return this.recognitionModel;
+    }
+
+    /**
+     * Set the recognitionModel value.
+     *
+     * @param recognitionModel the recognitionModel value to set
+     * @return the DetectedFace object itself.
+     */
+    public DetectedFace withRecognitionModel(RecognitionModel recognitionModel) {
+        this.recognitionModel = recognitionModel;
         return this;
     }
 

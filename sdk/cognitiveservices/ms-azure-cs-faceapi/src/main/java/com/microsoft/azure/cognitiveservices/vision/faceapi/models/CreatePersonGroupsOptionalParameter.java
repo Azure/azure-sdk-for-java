@@ -24,6 +24,11 @@ public class CreatePersonGroupsOptionalParameter {
     private String userData;
 
     /**
+     * Possible values include: 'recognition_01', 'recognition_02'.
+     */
+    private RecognitionModel recognitionModel;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -65,6 +70,26 @@ public class CreatePersonGroupsOptionalParameter {
      */
     public CreatePersonGroupsOptionalParameter withUserData(String userData) {
         this.userData = userData;
+        return this;
+    }
+
+    /**
+     * Get the recognitionModel value.
+     *
+     * @return the recognitionModel value
+     */
+    public RecognitionModel recognitionModel() {
+        return this.recognitionModel;
+    }
+
+    /**
+     * Set the recognitionModel value.
+     *
+     * @param recognitionModel the recognitionModel value to set
+     * @return the CreatePersonGroupsOptionalParameter object itself.
+     */
+    public CreatePersonGroupsOptionalParameter withRecognitionModel(RecognitionModel recognitionModel) {
+        this.recognitionModel = recognitionModel;
         return this;
     }
 

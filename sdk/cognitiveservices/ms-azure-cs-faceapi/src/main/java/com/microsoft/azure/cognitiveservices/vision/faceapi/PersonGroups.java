@@ -9,11 +9,14 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.GetPersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
@@ -23,7 +26,33 @@ import rx.Observable;
  */
 public interface PersonGroups {
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     *   &lt;br /&gt; A person group is the container of the uploaded person data, including
+     *   face recognition features.
+     *   &lt;br /&gt; After creation, use [PersonGroup Person -
+     *   Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons
+     *   into the group, and then call [PersonGroup -
+     *   Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready
+     *   for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     *   &lt;br /&gt; No image will be stored. Only the person's extracted face features and
+     *   userData will be stored on server until [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br/&gt;'recognitionModel' should be specified to associate with this person
+     *   group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please
+     *   explicitly specify the model you need in this parameter. New faces that are added to an existing person
+     *   group will use the recognition model that's already associated with the collection. Existing face features
+     *   in a person group can't be updated to features extracted by another version of recognition model.
+     *   * 'recognition_01': The default recognition model for [PersonGroup -
+     *   Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person
+     *   groups created before 2019 March are bonded with this recognition model.
+     *   * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its
+     *   overall accuracy is improved compared with 'recognition_01'.
+     *   Person group quota:
+     *   * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     *   * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     *   * to handle larger scale face identification problem, please consider using
+     *   [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -31,22 +60,72 @@ public interface PersonGroups {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
     void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     *   &lt;br /&gt; A person group is the container of the uploaded person data, including
+     *   face recognition features.
+     *   &lt;br /&gt; After creation, use [PersonGroup Person -
+     *   Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons
+     *   into the group, and then call [PersonGroup -
+     *   Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready
+     *   for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     *   &lt;br /&gt; No image will be stored. Only the person's extracted face features and
+     *   userData will be stored on server until [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br/&gt;'recognitionModel' should be specified to associate with this person
+     *   group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please
+     *   explicitly specify the model you need in this parameter. New faces that are added to an existing person
+     *   group will use the recognition model that's already associated with the collection. Existing face features
+     *   in a person group can't be updated to features extracted by another version of recognition model.
+     *   * 'recognition_01': The default recognition model for [PersonGroup -
+     *   Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person
+     *   groups created before 2019 March are bonded with this recognition model.
+     *   * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its
+     *   overall accuracy is improved compared with 'recognition_01'.
+     *   Person group quota:
+     *   * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     *   * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     *   * to handle larger scale face identification problem, please consider using
+     *   [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    
     Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     *   &lt;br /&gt; A person group is the container of the uploaded person data, including
+     *   face recognition features.
+     *   &lt;br /&gt; After creation, use [PersonGroup Person -
+     *   Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons
+     *   into the group, and then call [PersonGroup -
+     *   Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready
+     *   for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     *   &lt;br /&gt; No image will be stored. Only the person's extracted face features and
+     *   userData will be stored on server until [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br/&gt;'recognitionModel' should be specified to associate with this person
+     *   group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please
+     *   explicitly specify the model you need in this parameter. New faces that are added to an existing person
+     *   group will use the recognition model that's already associated with the collection. Existing face features
+     *   in a person group can't be updated to features extracted by another version of recognition model.
+     *   * 'recognition_01': The default recognition model for [PersonGroup -
+     *   Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person
+     *   groups created before 2019 March are bonded with this recognition model.
+     *   * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its
+     *   overall accuracy is improved compared with 'recognition_01'.
+     *   Person group quota:
+     *   * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     *   * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     *   * to handle larger scale face identification problem, please consider using
+     *   [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @return the first stage of the create call
      */
@@ -86,6 +165,13 @@ public interface PersonGroups {
              */
             PersonGroupsCreateDefinitionStages.WithExecute withUserData(String userData);
 
+            /**
+             * Possible values include: 'recognition_01', 'recognition_02'.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsCreateDefinitionStages.WithExecute withRecognitionModel(RecognitionModel recognitionModel);
+
         }
 
         /**
@@ -117,8 +203,8 @@ public interface PersonGroups {
 
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also
-      *  be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will
+      *  also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -128,8 +214,8 @@ public interface PersonGroups {
     void delete(String personGroupId);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also
-      *  be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will
+      *  also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -138,27 +224,97 @@ public interface PersonGroups {
     Observable<Void> deleteAsync(String personGroupId);
 
 
-
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup,
+     *   use [PersonGroup Person -
+     *   List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersonGroup object if successful.
      */
-    PersonGroup get(String personGroupId);
+    PersonGroup get(String personGroupId, GetPersonGroupsOptionalParameter getOptionalParameter);
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup,
+     *   use [PersonGroup Person -
+     *   List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonGroup object
      */
-    Observable<PersonGroup> getAsync(String personGroupId);
+    Observable<PersonGroup> getAsync(String personGroupId, GetPersonGroupsOptionalParameter getOptionalParameter);
 
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup,
+     *   use [PersonGroup Person -
+     *   List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
+     *
+     * @return the first stage of the get call
+     */
+    PersonGroupsGetDefinitionStages.WithPersonGroupId get();
+
+    /**
+     * Grouping of get definition stages.
+     */
+    interface PersonGroupsGetDefinitionStages {
+        /**
+         * The stage of the definition to be specify personGroupId.
+         */
+        interface WithPersonGroupId {
+            /**
+             * Id referencing a particular person group.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsGetDefinitionStages.WithExecute withPersonGroupId(String personGroupId);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * A value indicating whether the operation should return 'recognitionModel' in response.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsGetDefinitionStages.WithExecute withReturnRecognitionModel(Boolean returnRecognitionModel);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends PersonGroupsGetDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the PersonGroup object if successful.
+             */
+            PersonGroup execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the PersonGroup object
+             */
+            Observable<PersonGroup> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of get definition.
+     */
+    interface PersonGroupsGetDefinition extends
+        PersonGroupsGetDefinitionStages.WithPersonGroupId,
+        PersonGroupsGetDefinitionStages.WithExecute {
+    }
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request
@@ -170,7 +326,6 @@ public interface PersonGroups {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
     void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
     /**
@@ -182,7 +337,6 @@ public interface PersonGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    
     Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
     /**
@@ -279,7 +433,18 @@ public interface PersonGroups {
 
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     *   * Person groups are stored in alphabetical order of personGroupId.
+     *   * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have
+     *   larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     *   * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can
+     *   be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the
+     *   current call.
+     *   &lt;br /&gt;
+     *   For example, total 5 person groups: "group1", ..., "group5".
+     *   &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     *   &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     *   &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -287,21 +452,41 @@ public interface PersonGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    
     List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter);
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     *   * Person groups are stored in alphabetical order of personGroupId.
+     *   * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have
+     *   larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     *   * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can
+     *   be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the
+     *   current call.
+     *   &lt;br /&gt;
+     *   For example, total 5 person groups: "group1", ..., "group5".
+     *   &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     *   &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     *   &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    
     Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter);
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     *   * Person groups are stored in alphabetical order of personGroupId.
+     *   * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have
+     *   larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     *   * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can
+     *   be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the
+     *   current call.
+     *   &lt;br /&gt;
+     *   For example, total 5 person groups: "group1", ..., "group5".
+     *   &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     *   &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     *   &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @return the first stage of the list call
      */
@@ -329,6 +514,13 @@ public interface PersonGroups {
              * @return next definition stage
              */
             PersonGroupsListDefinitionStages.WithExecute withTop(Integer top);
+
+            /**
+             * A value indicating whether the operation should return 'recognitionModel' in response.
+             *
+             * @return next definition stage
+             */
+            PersonGroupsListDefinitionStages.WithExecute withReturnRecognitionModel(Boolean returnRecognitionModel);
 
         }
 

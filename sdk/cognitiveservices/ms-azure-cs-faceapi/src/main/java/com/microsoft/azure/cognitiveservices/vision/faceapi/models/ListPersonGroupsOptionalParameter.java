@@ -25,6 +25,12 @@ public class ListPersonGroupsOptionalParameter {
     private Integer top;
 
     /**
+     * A value indicating whether the operation should return
+     * 'recognitionModel' in response.
+     */
+    private Boolean returnRecognitionModel;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -66,6 +72,26 @@ public class ListPersonGroupsOptionalParameter {
      */
     public ListPersonGroupsOptionalParameter withTop(Integer top) {
         this.top = top;
+        return this;
+    }
+
+    /**
+     * Get the returnRecognitionModel value.
+     *
+     * @return the returnRecognitionModel value
+     */
+    public Boolean returnRecognitionModel() {
+        return this.returnRecognitionModel;
+    }
+
+    /**
+     * Set the returnRecognitionModel value.
+     *
+     * @param returnRecognitionModel the returnRecognitionModel value to set
+     * @return the ListPersonGroupsOptionalParameter object itself.
+     */
+    public ListPersonGroupsOptionalParameter withReturnRecognitionModel(Boolean returnRecognitionModel) {
+        this.returnRecognitionModel = returnRecognitionModel;
         return this;
     }
 

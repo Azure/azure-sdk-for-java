@@ -19,10 +19,7 @@ public enum Gender {
     MALE("male"),
 
     /** Enum value female. */
-    FEMALE("female"),
-
-    /** Enum value genderless. */
-    GENDERLESS("genderless");
+    FEMALE("female");
 
     /** The actual serialized value for a Gender instance. */
     private String value;

@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Person group object.
  */
-public class PersonGroup extends NameAndUserDataContract {
+public class PersonGroup extends MetaDataContract {
     /**
-     * PersonGroupId of the existing person groups.
+     * PersonGroupId of the target person group.
      */
     @JsonProperty(value = "personGroupId", required = true)
     private String personGroupId;

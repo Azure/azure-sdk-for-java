@@ -7,7 +7,6 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
 import com.microsoft.azure.cognitiveservices.vision.faceapi.implementation.FaceAPIImpl;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AzureRegions;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;
@@ -24,13 +23,11 @@ public class FaceAPIManager {
     /**
      * Initializes an instance of Face API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param subscriptionKey the Face API key
      * @return the Face API client
      */
-    public static FaceAPI authenticate(AzureRegions region, String subscriptionKey) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0/", subscriptionKey)
-                .withAzureRegion(region);
+    public static FaceAPI authenticate(String subscriptionKey) {
+        return authenticate("https://{Endpoint}/face/v1.0", subscriptionKey);
     }
 
     /**
@@ -65,13 +62,11 @@ public class FaceAPIManager {
     /**
      * Initializes an instance of Face API client.
      *
-     * @param region Supported Azure regions for Cognitive Services endpoints.
      * @param credentials the management credentials for Azure
      * @return the Face API client
      */
-    public static FaceAPI authenticate(AzureRegions region, ServiceClientCredentials credentials) {
-        return authenticate("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0/", credentials)
-                .withAzureRegion(region);
+    public static FaceAPI authenticate(ServiceClientCredentials credentials) {
+        return authenticate("https://{Endpoint}/face/v1.0", credentials);
     }
 
     /**

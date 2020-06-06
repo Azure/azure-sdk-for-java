@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi.implementation;
 
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.GetPersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
 import retrofit2.Retrofit;
@@ -16,8 +17,10 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.MetaDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.NameAndUserDataContract;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.RecognitionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -67,7 +70,7 @@ public class PersonGroupsImpl implements PersonGroups {
     interface PersonGroupsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups create" })
         @PUT("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body NameAndUserDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Body MetaDataContract bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups delete" })
         @HTTP(path = "persongroups/{personGroupId}", method = "DELETE", hasBody = true)
@@ -75,7 +78,7 @@ public class PersonGroupsImpl implements PersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups get" })
         @GET("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups update" })
         @PATCH("persongroups/{personGroupId}")
@@ -87,7 +90,7 @@ public class PersonGroupsImpl implements PersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups list" })
         @GET("persongroups")
-        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups train" })
         @POST("persongroups/{personGroupId}/train")
@@ -97,7 +100,17 @@ public class PersonGroupsImpl implements PersonGroups {
 
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
+     &lt;br /&gt; After creation, use [PersonGroup Person - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons into the group, and then call [PersonGroup - Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
+     * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * to handle larger scale face identification problem, please consider using [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -110,7 +123,17 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
+     &lt;br /&gt; After creation, use [PersonGroup Person - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons into the group, and then call [PersonGroup - Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
+     * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * to handle larger scale face identification problem, please consider using [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -123,7 +146,17 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
+     &lt;br /&gt; After creation, use [PersonGroup Person - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons into the group, and then call [PersonGroup - Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
+     * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * to handle larger scale face identification problem, please consider using [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -140,7 +173,17 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
+     &lt;br /&gt; After creation, use [PersonGroup Person - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons into the group, and then call [PersonGroup - Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
+     * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * to handle larger scale face identification problem, please consider using [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -148,38 +191,51 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
         final String name = createOptionalParameter != null ? createOptionalParameter.name() : null;
         final String userData = createOptionalParameter != null ? createOptionalParameter.userData() : null;
+        final RecognitionModel recognitionModel = createOptionalParameter != null ? createOptionalParameter.recognitionModel() : null;
 
-        return createWithServiceResponseAsync(personGroupId, name, userData);
+        return createWithServiceResponseAsync(personGroupId, name, userData, recognitionModel);
     }
 
     /**
-     * Create a new person group with specified personGroupId, name and user-provided userData.
+     * Create a new person group with specified personGroupId, name, user-provided userData and recognitionModel.
+     &lt;br /&gt; A person group is the container of the uploaded person data, including face recognition features.
+     &lt;br /&gt; After creation, use [PersonGroup Person - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/create) to add persons into the group, and then call [PersonGroup - Train](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/train) to get this group ready for [Face - Identify](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/identify).
+     &lt;br /&gt; No image will be stored. Only the person's extracted face features and userData will be stored on server until [PersonGroup Person - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     &lt;br/&gt;'recognitionModel' should be specified to associate with this person group. The default value for 'recognitionModel' is 'recognition_01', if the latest model needed, please explicitly specify the model you need in this parameter. New faces that are added to an existing person group will use the recognition model that's already associated with the collection. Existing face features in a person group can't be updated to features extracted by another version of recognition model.
+     * 'recognition_01': The default recognition model for [PersonGroup - Create](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/create). All those person groups created before 2019 March are bonded with this recognition model.
+     * 'recognition_02': Recognition model released in 2019 March. 'recognition_02' is recommended since its overall accuracy is improved compared with 'recognition_01'.
+     Person group quota:
+     * Free-tier subscription quota: 1,000 person groups. Each holds up to 1,000 persons.
+     * S0-tier subscription quota: 1,000,000 person groups. Each holds up to 10,000 persons.
+     * to handle larger scale face identification problem, please consider using [LargePersonGroup](https://docs.microsoft.com/rest/api/cognitiveservices/face/largepersongroup).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param name User defined name, maximum length is 128.
      * @param userData User specified data. Length should not exceed 16KB.
+     * @param recognitionModel Possible values include: 'recognition_01', 'recognition_02'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<Void>> createWithServiceResponseAsync(String personGroupId, String name, String userData, RecognitionModel recognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
+        MetaDataContract bodyParameter = new MetaDataContract();
         bodyParameter.withName(name);
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        bodyParameter.withRecognitionModel(recognitionModel);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.create(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -214,6 +270,7 @@ public class PersonGroupsImpl implements PersonGroups {
         private String personGroupId;
         private String name;
         private String userData;
+        private RecognitionModel recognitionModel;
 
         /**
          * Constructor.
@@ -242,13 +299,19 @@ public class PersonGroupsImpl implements PersonGroups {
         }
 
         @Override
+        public PersonGroupsCreateParameters withRecognitionModel(RecognitionModel recognitionModel) {
+            this.recognitionModel = recognitionModel;
+            return this;
+        }
+
+        @Override
         public void execute() {
-        createWithServiceResponseAsync(personGroupId, name, userData).toBlocking().single().body();
+        createWithServiceResponseAsync(personGroupId, name, userData, recognitionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<Void> executeAsync() {
-            return createWithServiceResponseAsync(personGroupId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
+            return createWithServiceResponseAsync(personGroupId, name, userData, recognitionModel).map(new Func1<ServiceResponse<Void>, Void>() {
                 @Override
                 public Void call(ServiceResponse<Void> response) {
                     return response.body();
@@ -258,7 +321,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -270,7 +333,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -282,7 +345,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -298,20 +361,20 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face features of all people in the person group will also be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -333,40 +396,44 @@ public class PersonGroupsImpl implements PersonGroups {
                 .build(response);
     }
 
+
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersonGroup object if successful.
      */
-    public PersonGroup get(String personGroupId) {
-        return getWithServiceResponseAsync(personGroupId).toBlocking().single().body();
+    public PersonGroup get(String personGroupId, GetPersonGroupsOptionalParameter getOptionalParameter) {
+        return getWithServiceResponseAsync(personGroupId, getOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersonGroup> getAsync(String personGroupId, final ServiceCallback<PersonGroup> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(personGroupId), serviceCallback);
+    public ServiceFuture<PersonGroup> getAsync(String personGroupId, GetPersonGroupsOptionalParameter getOptionalParameter, final ServiceCallback<PersonGroup> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(personGroupId, getOptionalParameter), serviceCallback);
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonGroup object
      */
-    public Observable<PersonGroup> getAsync(String personGroupId) {
-        return getWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<PersonGroup>, PersonGroup>() {
+    public Observable<PersonGroup> getAsync(String personGroupId, GetPersonGroupsOptionalParameter getOptionalParameter) {
+        return getWithServiceResponseAsync(personGroupId, getOptionalParameter).map(new Func1<ServiceResponse<PersonGroup>, PersonGroup>() {
             @Override
             public PersonGroup call(ServiceResponse<PersonGroup> response) {
                 return response.body();
@@ -375,21 +442,42 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * Retrieve the information of a person group, including its name and userData.
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
      *
      * @param personGroupId Id referencing a particular person group.
+     * @param getOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonGroup object
      */
-    public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId, GetPersonGroupsOptionalParameter getOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.get(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        final Boolean returnRecognitionModel = getOptionalParameter != null ? getOptionalParameter.returnRecognitionModel() : null;
+
+        return getWithServiceResponseAsync(personGroupId, returnRecognitionModel);
+    }
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/list).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersonGroup object
+     */
+    public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (personGroupId == null) {
+            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(personGroupId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonGroup>>>() {
                 @Override
                 public Observable<ServiceResponse<PersonGroup>> call(Response<ResponseBody> response) {
@@ -408,6 +496,55 @@ public class PersonGroupsImpl implements PersonGroups {
                 .register(200, new TypeToken<PersonGroup>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
+    }
+
+    @Override
+    public PersonGroupsGetParameters get() {
+        return new PersonGroupsGetParameters(this);
+    }
+
+    /**
+     * Internal class implementing PersonGroupsGetDefinition.
+     */
+    class PersonGroupsGetParameters implements PersonGroupsGetDefinition {
+        private PersonGroupsImpl parent;
+        private String personGroupId;
+        private Boolean returnRecognitionModel;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        PersonGroupsGetParameters(PersonGroupsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public PersonGroupsGetParameters withPersonGroupId(String personGroupId) {
+            this.personGroupId = personGroupId;
+            return this;
+        }
+
+        @Override
+        public PersonGroupsGetParameters withReturnRecognitionModel(Boolean returnRecognitionModel) {
+            this.returnRecognitionModel = returnRecognitionModel;
+            return this;
+        }
+
+        @Override
+        public PersonGroup execute() {
+        return getWithServiceResponseAsync(personGroupId, returnRecognitionModel).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<PersonGroup> executeAsync() {
+            return getWithServiceResponseAsync(personGroupId, returnRecognitionModel).map(new Func1<ServiceResponse<PersonGroup>, PersonGroup>() {
+                @Override
+                public PersonGroup call(ServiceResponse<PersonGroup> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
 
@@ -463,8 +600,8 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -485,8 +622,8 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String name, String userData) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
@@ -494,7 +631,7 @@ public class PersonGroupsImpl implements PersonGroups {
         NameAndUserDataContract bodyParameter = new NameAndUserDataContract();
         bodyParameter.withName(name);
         bodyParameter.withUserData(userData);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.update(personGroupId, this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -621,13 +758,13 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the observable to the TrainingStatus object
      */
     public Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getTrainingStatus(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainingStatus>>>() {
                 @Override
@@ -651,7 +788,15 @@ public class PersonGroupsImpl implements PersonGroups {
 
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * Person groups are stored in alphabetical order of personGroupId.
+     * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 person groups: "group1", ..., "group5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -664,7 +809,15 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * Person groups are stored in alphabetical order of personGroupId.
+     * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 person groups: "group1", ..., "group5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -676,7 +829,15 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * Person groups are stored in alphabetical order of personGroupId.
+     * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 person groups: "group1", ..., "group5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -692,36 +853,54 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * Person groups are stored in alphabetical order of personGroupId.
+     * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 person groups: "group1", ..., "group5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
     public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(ListPersonGroupsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         final String start = listOptionalParameter != null ? listOptionalParameter.start() : null;
         final Integer top = listOptionalParameter != null ? listOptionalParameter.top() : null;
+        final Boolean returnRecognitionModel = listOptionalParameter != null ? listOptionalParameter.returnRecognitionModel() : null;
 
-        return listWithServiceResponseAsync(start, top);
+        return listWithServiceResponseAsync(start, top, returnRecognitionModel);
     }
 
     /**
-     * List person groups and their information.
+     * List person groups’ personGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * Person groups are stored in alphabetical order of personGroupId.
+     * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last returned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 person groups: "group1", ..., "group5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 groups.
+     &lt;br /&gt; "start=&amp;top=2" will return "group1", "group2".
+     &lt;br /&gt; "start=group2&amp;top=3" will return "group3", "group4", "group5".
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(start, top, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {
@@ -754,6 +933,7 @@ public class PersonGroupsImpl implements PersonGroups {
         private PersonGroupsImpl parent;
         private String start;
         private Integer top;
+        private Boolean returnRecognitionModel;
 
         /**
          * Constructor.
@@ -776,13 +956,19 @@ public class PersonGroupsImpl implements PersonGroups {
         }
 
         @Override
+        public PersonGroupsListParameters withReturnRecognitionModel(Boolean returnRecognitionModel) {
+            this.returnRecognitionModel = returnRecognitionModel;
+            return this;
+        }
+
+        @Override
         public List<PersonGroup> execute() {
-        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
+        return listWithServiceResponseAsync(start, top, returnRecognitionModel).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<PersonGroup>> executeAsync() {
-            return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+            return listWithServiceResponseAsync(start, top, returnRecognitionModel).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
                 @Override
                 public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
                     return response.body();
@@ -839,13 +1025,13 @@ public class PersonGroupsImpl implements PersonGroups {
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> trainWithServiceResponseAsync(String personGroupId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.train(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override

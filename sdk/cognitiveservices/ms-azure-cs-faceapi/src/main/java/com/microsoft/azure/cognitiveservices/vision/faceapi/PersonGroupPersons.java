@@ -11,12 +11,14 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupPersonsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupPersonsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupPersonsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromUrlOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFacePersonGroupPersonsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromUrlPersonGroupPersonsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddFaceFromStreamPersonGroupPersonsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.DetectionModel;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersistedFace;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.Person;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -36,7 +38,6 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    
     Person create(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter);
 
     /**
@@ -47,7 +48,6 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    
     Observable<Person> createAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter);
 
     /**
@@ -132,7 +132,6 @@ public interface PersonGroupPersons {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Person&gt; object if successful.
      */
-    
     List<Person> list(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter);
 
     /**
@@ -144,7 +143,6 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    
     Observable<List<Person>> listAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter);
 
     /**
@@ -221,8 +219,8 @@ public interface PersonGroupPersons {
 
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be
-      *  deleted.
+     * Delete an existing person from a person group. The persistedFaceId, userData, person name and face
+      *  feature in the person entry will all be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -233,8 +231,8 @@ public interface PersonGroupPersons {
     void delete(String personGroupId, UUID personId);
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be
-      *  deleted.
+     * Delete an existing person from a person group. The persistedFaceId, userData, person name and face
+      *  feature in the person entry will all be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -278,7 +276,6 @@ public interface PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
     void update(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter);
 
     /**
@@ -290,7 +287,6 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    
     Observable<Void> updateAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter);
 
     /**
@@ -377,7 +373,10 @@ public interface PersonGroupPersons {
 
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person in a person group by specified personGroupId, personId and
+      *  persistedFaceId.
+      *  &lt;br /&gt; Adding/deleting faces to/from a same person will be processed
+      *  sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -389,7 +388,10 @@ public interface PersonGroupPersons {
     void deleteFace(String personGroupId, UUID personId, UUID persistedFaceId);
 
     /**
-     * Delete a face from a person. Relative image for the persisted face will also be deleted.
+     * Delete a face from a person in a person group by specified personGroupId, personId and
+      *  persistedFaceId.
+      *  &lt;br /&gt; Adding/deleting faces to/from a same person will be processed
+      *  sequentially. Adding/deleting faces to/from different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -429,7 +431,29 @@ public interface PersonGroupPersons {
 
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal,
+     *   clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   * Each person entry can hold up to 248 faces.
+     *   * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to
+     *   6MB.
+     *   * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from
+     *   different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -439,11 +463,32 @@ public interface PersonGroupPersons {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    
-    void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter);
+    void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFacePersonGroupPersonsOptionalParameter updateFaceOptionalParameter);
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal,
+     *   clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   * Each person entry can hold up to 248 faces.
+     *   * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to
+     *   6MB.
+     *   * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from
+     *   different persons are processed in parallel.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -452,11 +497,32 @@ public interface PersonGroupPersons {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    
-    Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFaceOptionalParameter updateFaceOptionalParameter);
+    Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, UpdateFacePersonGroupPersonsOptionalParameter updateFaceOptionalParameter);
 
     /**
-     * Update a person persisted face's userData field.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   * Higher face image quality means better recognition precision. Please consider high-quality faces: frontal,
+     *   clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   * Each person entry can hold up to 248 faces.
+     *   * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to
+     *   6MB.
+     *   * "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   * Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   * Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces to/from
+     *   different persons are processed in parallel.
      *
      * @return the first stage of the updateFace call
      */
@@ -543,47 +609,147 @@ public interface PersonGroupPersons {
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a
-     *   targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   *   Higher face image quality means better recognition precision. Please consider high-quality faces:
+     *   frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   *   Each person entry can hold up to 248 faces.
+     *   *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB
+     *   to 6MB.
+     *   *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces
+     *   to/from different persons are processed in parallel.
+     *   * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     *   dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     *   * Different 'detectionModel' values can be provided. To use and compare different detection models, please
+     *   refer to [How to specify a detection
+     mod*   el](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+     *   | Model | Recommended use-case(s) |
+     *   | ---------- | -------- |
+     *   | 'detection_01': | The default detection model for [PersonGroup Person - Add
+     *   Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl).
+     *   Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces,
+     *   occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+     *   | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side
+     *   and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image.
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    
-    PersistedFace addPersonFaceFromUrl(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter);
+    PersistedFace addFaceFromUrl(String personGroupId, UUID personId, String url, AddFaceFromUrlPersonGroupPersonsOptionalParameter addFaceFromUrlOptionalParameter);
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a
-     *   targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   *   Higher face image quality means better recognition precision. Please consider high-quality faces:
+     *   frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   *   Each person entry can hold up to 248 faces.
+     *   *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB
+     *   to 6MB.
+     *   *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces
+     *   to/from different persons are processed in parallel.
+     *   * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     *   dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     *   * Different 'detectionModel' values can be provided. To use and compare different detection models, please
+     *   refer to [How to specify a detection
+     mod*   el](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+     *   | Model | Recommended use-case(s) |
+     *   | ---------- | -------- |
+     *   | 'detection_01': | The default detection model for [PersonGroup Person - Add
+     *   Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl).
+     *   Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces,
+     *   occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+     *   | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side
+     *   and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param url Publicly reachable URL of an image.
-     * @param addPersonFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromUrlOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    
-    Observable<PersistedFace> addPersonFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddPersonFaceFromUrlOptionalParameter addPersonFaceFromUrlOptionalParameter);
+    Observable<PersistedFace> addFaceFromUrlAsync(String personGroupId, UUID personId, String url, AddFaceFromUrlPersonGroupPersonsOptionalParameter addFaceFromUrlOptionalParameter);
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a
-     *   targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   *   Higher face image quality means better recognition precision. Please consider high-quality faces:
+     *   frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   *   Each person entry can hold up to 248 faces.
+     *   *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB
+     *   to 6MB.
+     *   *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces
+     *   to/from different persons are processed in parallel.
+     *   * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     *   dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     *   * Different 'detectionModel' values can be provided. To use and compare different detection models, please
+     *   refer to [How to specify a detection
+     mod*   el](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+     *   | Model | Recommended use-case(s) |
+     *   | ---------- | -------- |
+     *   | 'detection_01': | The default detection model for [PersonGroup Person - Add
+     *   Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl).
+     *   Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces,
+     *   occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+     *   | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side
+     *   and blurry faces. |.
      *
-     * @return the first stage of the addPersonFaceFromUrl call
+     * @return the first stage of the addFaceFromUrl call
      */
-    PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithPersonGroupId addPersonFaceFromUrl();
+    PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithPersonGroupId addFaceFromUrl();
 
     /**
-     * Grouping of addPersonFaceFromUrl definition stages.
+     * Grouping of addFaceFromUrl definition stages.
      */
-    interface PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages {
+    interface PersonGroupPersonsAddFaceFromUrlDefinitionStages {
         /**
          * The stage of the definition to be specify personGroupId.
          */
@@ -615,7 +781,7 @@ public interface PersonGroupPersons {
              *
              * @return next definition stage
              */
-            PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithExecute withUrl(String url);
+            PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithExecute withUrl(String url);
         }
 
         /**
@@ -627,7 +793,7 @@ public interface PersonGroupPersons {
              *
              * @return next definition stage
              */
-            PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithExecute withUserData(String userData);
+            PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithExecute withUserData(String userData);
 
             /**
              * A face rectangle to specify the target face to be added to a person in the format of
@@ -637,14 +803,24 @@ public interface PersonGroupPersons {
              *
              * @return next definition stage
              */
-            PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithExecute withTargetFace(List<Integer> targetFace);
+            PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithExecute withTargetFace(List<Integer> targetFace);
+
+            /**
+             * Name of detection model. Detection model is used to detect faces in the submitted image. A detection model
+             *   name can be provided when performing Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add
+             *   Face. The default value is 'detection_01', if another model is needed, please explicitly specify it.
+             *   Possible values include: 'detection_01', 'detection_02'.
+             *
+             * @return next definition stage
+             */
+            PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithExecute withDetectionModel(DetectionModel detectionModel);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithAllOptions {
+        interface WithExecute extends PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -662,57 +838,157 @@ public interface PersonGroupPersons {
     }
 
     /**
-     * The entirety of addPersonFaceFromUrl definition.
+     * The entirety of addFaceFromUrl definition.
      */
-    interface PersonGroupPersonsAddPersonFaceFromUrlDefinition extends
-        PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithPersonGroupId,
-        PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithPersonId,
-        PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithUrl,
-        PersonGroupPersonsAddPersonFaceFromUrlDefinitionStages.WithExecute {
+    interface PersonGroupPersonsAddFaceFromUrlDefinition extends
+        PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithPersonGroupId,
+        PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithPersonId,
+        PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithUrl,
+        PersonGroupPersonsAddFaceFromUrlDefinitionStages.WithExecute {
     }
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a
-     *   targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   *   Higher face image quality means better recognition precision. Please consider high-quality faces:
+     *   frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   *   Each person entry can hold up to 248 faces.
+     *   *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB
+     *   to 6MB.
+     *   *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces
+     *   to/from different persons are processed in parallel.
+     *   * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     *   dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     *   * Different 'detectionModel' values can be provided. To use and compare different detection models, please
+     *   refer to [How to specify a detection
+     mod*   el](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+     *   | Model | Recommended use-case(s) |
+     *   | ---------- | -------- |
+     *   | 'detection_01': | The default detection model for [PersonGroup Person - Add
+     *   Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl).
+     *   Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces,
+     *   occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+     *   | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side
+     *   and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFace object if successful.
      */
-    
-    PersistedFace addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter);
+    PersistedFace addFaceFromStream(String personGroupId, UUID personId, byte[] image, AddFaceFromStreamPersonGroupPersonsOptionalParameter addFaceFromStreamOptionalParameter);
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a
-     *   targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   *   Higher face image quality means better recognition precision. Please consider high-quality faces:
+     *   frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   *   Each person entry can hold up to 248 faces.
+     *   *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB
+     *   to 6MB.
+     *   *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces
+     *   to/from different persons are processed in parallel.
+     *   * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     *   dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     *   * Different 'detectionModel' values can be provided. To use and compare different detection models, please
+     *   refer to [How to specify a detection
+     mod*   el](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+     *   | Model | Recommended use-case(s) |
+     *   | ---------- | -------- |
+     *   | 'detection_01': | The default detection model for [PersonGroup Person - Add
+     *   Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl).
+     *   Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces,
+     *   occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+     *   | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side
+     *   and blurry faces. |.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
      * @param image An image stream.
-     * @param addPersonFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param addFaceFromStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFace object
      */
-    
-    Observable<PersistedFace> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddPersonFaceFromStreamOptionalParameter addPersonFaceFromStreamOptionalParameter);
+    Observable<PersistedFace> addFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, AddFaceFromStreamPersonGroupPersonsOptionalParameter addFaceFromStreamOptionalParameter);
 
     /**
-     * Add a representative face to a person for identification. The input face is specified as an image with a
-     *   targetFace rectangle.
+     * Add a face to a person into a person group for face identification or verification. To deal with an image
+     *   contains multiple faces, input face can be specified as an image with a targetFace rectangle. It returns a
+     *   persistedFaceId representing the added face. No image will be stored. Only the extracted face feature will
+     *   be stored on server until [PersonGroup PersonFace -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/deleteface),
+     *   [PersonGroup Person -
+     *   Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/delete) or [PersonGroup
+     *   - Delete](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroup/delete) is called.
+     *   &lt;br /&gt; Note persistedFaceId is different from faceId generated by [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl).
+     *   *   Higher face image quality means better recognition precision. Please consider high-quality faces:
+     *   frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
+     *   *   Each person entry can hold up to 248 faces.
+     *   *   JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB
+     *   to 6MB.
+     *   *   "targetFace" rectangle should contain one face. Zero or multiple faces will be regarded as an error. If
+     *   the provided "targetFace" rectangle is not returned from [Face -
+     *   Detect](https://docs.microsoft.com/rest/api/cognitiveservices/face/face/detectwithurl), there’s no guarantee
+     *   to detect and add the face successfully.
+     *   *   Out of detectable face size (36x36 - 4096x4096 pixels), large head-pose, or large occlusions will cause
+     *   failures.
+     *   *   Adding/deleting faces to/from a same person will be processed sequentially. Adding/deleting faces
+     *   to/from different persons are processed in parallel.
+     *   * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     *   dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     *   * Different 'detectionModel' values can be provided. To use and compare different detection models, please
+     *   refer to [How to specify a detection
+     mod*   el](https://docs.microsoft.com/azure/cognitive-services/face/face-api-how-to-topics/specify-detection-model)
+     *   | Model | Recommended use-case(s) |
+     *   | ---------- | -------- |
+     *   | 'detection_01': | The default detection model for [PersonGroup Person - Add
+     *   Face](https://docs.microsoft.com/rest/api/cognitiveservices/face/persongroupperson/addfacefromurl).
+     *   Recommend for near frontal face detection. For scenarios with exceptionally large angle (head-pose) faces,
+     *   occluded faces or wrong image orientation, the faces in such cases may not be detected. |
+     *   | 'detection_02': | Detection model released in 2019 May with improved accuracy especially on small, side
+     *   and blurry faces. |.
      *
-     * @return the first stage of the addPersonFaceFromStream call
+     * @return the first stage of the addFaceFromStream call
      */
-    PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithPersonGroupId addPersonFaceFromStream();
+    PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithPersonGroupId addFaceFromStream();
 
     /**
-     * Grouping of addPersonFaceFromStream definition stages.
+     * Grouping of addFaceFromStream definition stages.
      */
-    interface PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages {
+    interface PersonGroupPersonsAddFaceFromStreamDefinitionStages {
         /**
          * The stage of the definition to be specify personGroupId.
          */
@@ -744,7 +1020,7 @@ public interface PersonGroupPersons {
              *
              * @return next definition stage
              */
-            PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithExecute withImage(byte[] image);
+            PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithExecute withImage(byte[] image);
         }
 
         /**
@@ -756,7 +1032,7 @@ public interface PersonGroupPersons {
              *
              * @return next definition stage
              */
-            PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithExecute withUserData(String userData);
+            PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithExecute withUserData(String userData);
 
             /**
              * A face rectangle to specify the target face to be added to a person in the format of
@@ -766,14 +1042,24 @@ public interface PersonGroupPersons {
              *
              * @return next definition stage
              */
-            PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithExecute withTargetFace(List<Integer> targetFace);
+            PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithExecute withTargetFace(List<Integer> targetFace);
+
+            /**
+             * Name of detection model. Detection model is used to detect faces in the submitted image. A detection model
+             *   name can be provided when performing Face - Detect or (Large)FaceList - Add Face or (Large)PersonGroup - Add
+             *   Face. The default value is 'detection_01', if another model is needed, please explicitly specify it.
+             *   Possible values include: 'detection_01', 'detection_02'.
+             *
+             * @return next definition stage
+             */
+            PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithExecute withDetectionModel(DetectionModel detectionModel);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithAllOptions {
+        interface WithExecute extends PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -791,13 +1077,13 @@ public interface PersonGroupPersons {
     }
 
     /**
-     * The entirety of addPersonFaceFromStream definition.
+     * The entirety of addFaceFromStream definition.
      */
-    interface PersonGroupPersonsAddPersonFaceFromStreamDefinition extends
-        PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithPersonGroupId,
-        PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithPersonId,
-        PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithImage,
-        PersonGroupPersonsAddPersonFaceFromStreamDefinitionStages.WithExecute {
+    interface PersonGroupPersonsAddFaceFromStreamDefinition extends
+        PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithPersonGroupId,
+        PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithPersonId,
+        PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithImage,
+        PersonGroupPersonsAddFaceFromStreamDefinitionStages.WithExecute {
     }
 
 }
