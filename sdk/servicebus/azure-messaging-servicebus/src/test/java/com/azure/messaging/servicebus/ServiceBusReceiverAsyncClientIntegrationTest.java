@@ -76,14 +76,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
             } else {
-                /*receiveAndDeleteReceiver.receive()
+                receiveAndDeleteReceiver.receive()
                     .take(pending)
                     .map(message -> {
                         logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                         return message;
                     })
                     .timeout(Duration.ofSeconds(5), Mono.empty())
-                    .blockLast();*/
+                    .blockLast();
             }
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
