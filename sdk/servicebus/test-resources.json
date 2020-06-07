@@ -113,7 +113,8 @@
       "properties": {
         "maxDeliveryCount": 5,
         "requiresDuplicateDetection": false,
-        "requiresSession": false
+        "requiresSession": false,
+        "lockDuration": "PT15S"
       },
       "copy": {
         "name": "queueCopy",
@@ -129,8 +130,8 @@
       ],
       "properties": {
         "maxDeliveryCount": 5,
-        "requiresDuplicateDetection": false,
-        "requiresSession": false
+        "requiresSession": true,
+        "lockDuration": "PT15S"
       },
       "copy": {
         "name": "queueSessionCopy",
