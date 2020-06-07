@@ -148,14 +148,14 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can do following
      * 1. create transaction
      * 2. send message  with transactionContext
-     * 3. Rollback this transaction.
+     * 3. Rollback/commit this transaction.
      */
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("messagingEntityProviderWithTransaction")
     @ParameterizedTest
-    void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType) {
+    void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
         // Arrange
         setSenderAndReceiver(entityType, false);
-
+        final boolean isSessionEnabled =  false;
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
 
@@ -172,10 +172,19 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message, transaction.get()))
             .verifyComplete();
-
-        StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-            .verifyComplete();
-        messagesPending.decrementAndGet();
+        if (isCommit) {
+            StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+                .verifyComplete();
+            StepVerifier.create(receiveAndDeleteReceiver.receive().next())
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                })
+                .verifyComplete();
+        } else {
+            StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+                .verifyComplete();
+        }
     }
 
     /**
