@@ -6,6 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
@@ -22,6 +27,8 @@ import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import reactor.core.publisher.Mono;
@@ -86,6 +93,11 @@ public final class ServiceBusManagementAsyncClient {
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException if there was an error processing the request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> createQueue(QueueDescription queue) {
@@ -220,13 +232,13 @@ public final class ServiceBusManagementAsyncClient {
      * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      * @param queue Information about the queue to update.
      *
      * @return A Mono that completes with information about the created queue.
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> updateQueue(QueueDescription queue) {
@@ -254,13 +266,13 @@ public final class ServiceBusManagementAsyncClient {
      * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      * @param queue The queue to create.
      *
      * @return A Mono that returns the updated queue in addition to the HTTP response.
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> updateQueueWithResponse(QueueDescription queue) {
@@ -294,6 +306,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> deserializeQueue(response, queue.getName()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -321,6 +334,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.deleteWithResponseAsync(queueName, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
@@ -351,6 +365,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.getWithResponseAsync(queueName, true, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
                     final Response<QueueDescription> deserializeQueue = deserializeQueue(response, queueName);
                     final QueueRuntimeInfo runtimeInfo = deserializeQueue.getValue() != null
@@ -386,6 +401,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.getWithResponseAsync(queueName, true, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> deserializeQueue(response, queueName));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -459,6 +475,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return queuesClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> deserializeQueue(response, queue.getName()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -576,6 +593,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     private Mono<PagedResponse<QueueDescription>> listQueues(int skip, int top, Context context) {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, top, context)
+            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
@@ -595,6 +613,35 @@ public final class ServiceBusManagementAsyncClient {
                         error));
                 }
             });
+    }
+
+    /**
+     * Maps an exception from the ATOM APIs to its associated {@link HttpResponseException}.
+     *
+     * @param exception Exception from the ATOM API.
+     *
+     * @return The corresponding {@link HttpResponseException} or {@code throwable} if it is not an instance of {@link
+     *     ServiceBusManagementErrorException}.
+     */
+    private static Throwable mapException(Throwable exception) {
+        if (!(exception instanceof ServiceBusManagementErrorException)) {
+            return exception;
+        }
+
+        final ServiceBusManagementErrorException managementError = ((ServiceBusManagementErrorException) exception);
+        final ServiceBusManagementError error = managementError.getValue();
+        switch (error.getCode()) {
+            case 401:
+                return new ClientAuthenticationException(error.getDetail(), managementError.getResponse());
+            case 404:
+                return new ResourceNotFoundException(error.getDetail(), managementError.getResponse());
+            case 409:
+                return new ResourceExistsException(error.getDetail(), managementError.getResponse());
+            case 412:
+                return new ResourceModifiedException(error.getDetail(), managementError.getResponse());
+            default:
+                return new HttpResponseException(error.getDetail(), managementError.getResponse(), exception);
+        }
     }
 
     /**
