@@ -659,7 +659,10 @@ public final class ServiceBusManagementAsyncClient {
 
                 final List<QueueDescription> entities = feed.getEntry().stream()
                     .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
-                    .map(e -> e.getContent().getQueueDescription())
+                    .map(e -> {
+                        final String queueName = e.getTitle().getTitle();
+                        return e.getContent().getQueueDescription().setName(queueName);
+                    })
                     .collect(Collectors.toList());
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
