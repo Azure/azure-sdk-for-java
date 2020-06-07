@@ -90,14 +90,18 @@ public final class ServiceBusManagementAsyncClient {
      * @param queue Information about the queue to create.
      *
      * @return A Mono that completes with information about the created queue.
-     * @throws NullPointerException if {@code queue} is null.
-     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
-     *     string.
-     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
-     *     queueName}.
      * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
      *     namespace.
-     * @throws HttpResponseException if there was an error processing the request.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/create-queue>Create Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> createQueue(QueueDescription queue) {
@@ -110,9 +114,18 @@ public final class ServiceBusManagementAsyncClient {
      * @param queue The queue to create.
      *
      * @return A Mono that returns the created queue in addition to the HTTP response.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/create-queue>Create Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue) {
@@ -125,8 +138,15 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to delete.
      *
      * @return A Mono that completes when the queue is deleted.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue>Delete Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueue(String queueName) {
@@ -139,8 +159,15 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to delete.
      *
      * @return A Mono that completes when the queue is deleted and returns the HTTP response.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue>Delete Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {

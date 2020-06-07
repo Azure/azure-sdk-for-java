@@ -6,6 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -40,9 +44,17 @@ public final class ServiceBusManagementClient {
      * @param queue Information about the queue to create.
      *
      * @return The created queue.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName() queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/create-queue>Create Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueDescription createQueue(QueueDescription queue) {
@@ -56,9 +68,17 @@ public final class ServiceBusManagementClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The created queue in addition to the HTTP response.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName() queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/create-queue>Create Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> createQueueWithResponse(QueueDescription queue, Context context) {
@@ -70,8 +90,15 @@ public final class ServiceBusManagementClient {
      *
      * @param queueName Name of queue to delete.
      *
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue>Delete Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteQueue(String queueName) {
@@ -85,8 +112,13 @@ public final class ServiceBusManagementClient {
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
      * @return The HTTP response when the queue is successfully deleted.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue>Delete Queue</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-resource-manager-exceptions>
+     *     Service Bus Resource Manager exceptions</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
@@ -161,6 +193,7 @@ public final class ServiceBusManagementClient {
      * Fetches all the queues in the Service Bus namespace.
      *
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     *
      * @return A PagedIterable of {@link QueueDescription queues} in the Service Bus namespace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -193,13 +226,13 @@ public final class ServiceBusManagementClient {
      * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      * @param queue Information about the queue to update.
      *
      * @return The updated queue.
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueDescription updateQueue(QueueDescription queue) {
@@ -227,7 +260,6 @@ public final class ServiceBusManagementClient {
      * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      * @param queue The queue to update.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      *
@@ -235,6 +267,7 @@ public final class ServiceBusManagementClient {
      * @throws NullPointerException if {@code queue} is null.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> updateQueueWithResponse(QueueDescription queue, Context context) {
