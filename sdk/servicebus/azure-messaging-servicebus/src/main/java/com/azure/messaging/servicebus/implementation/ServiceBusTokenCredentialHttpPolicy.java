@@ -17,10 +17,23 @@ import reactor.core.publisher.Mono;
 public class ServiceBusTokenCredentialHttpPolicy implements HttpPipelinePolicy {
     private final TokenCredential tokenCredential;
 
-    ServiceBusTokenCredentialHttpPolicy(TokenCredential tokenCredential) {
+    /**
+     * Creates an instance that authorizes with the tokenCredential.
+     *
+     * @param tokenCredential Credential to get access token.
+     */
+    public ServiceBusTokenCredentialHttpPolicy(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
     }
 
+    /**
+     * Adds the authorization header to a Service Bus management request.
+     *
+     * @param context HTTP request context.
+     * @param next The next HTTP policy in the pipeline.
+     *
+     * @return A mono that completes with the HTTP response.
+     */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final String url = context.getHttpRequest().getUrl().toString();
