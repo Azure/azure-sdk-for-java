@@ -216,7 +216,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
-        final String messageId1 = UUID.randomUUID().toString();;
+        final String messageId1 = UUID.randomUUID().toString();
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
         final String deadLetterReason = "test reason";
 
@@ -282,7 +282,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionEnabled = true;
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
-        final String messageId1 = UUID.randomUUID().toString();;
+        final String messageId1 = UUID.randomUUID().toString();
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
         sendMessage(message1).block(TIMEOUT);
 
