@@ -146,11 +146,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(5)).block(timeout);
-
+        logger.verbose("!!!! Test rollback done Waiting to receiveAndDeleteReceiver.receive ");
         // read the message back, since it was rolled-back previously.
         final ServiceBusReceivedMessageContext received = receiveAndDeleteReceiver.receive().next().block(OPERATION_TIMEOUT);
         assertMessageEquals(received, messageId, isSessionEnabled);
-
+        logger.verbose("!!!! Test Done  receiveAndDeleteReceiver.receive ");
         messagesPending.decrementAndGet();
     }
 
@@ -222,7 +222,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
-    @Disabled
     void transactionSendReceiveAndSettle(MessagingEntityType entityType,
         boolean commitTransaction, DispositionStatus dispositionStatus) {
 
@@ -971,7 +970,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, false);
 
         final String messageId = UUID.randomUUID().toString();
-        final byte[] contents = "Hello world".getBytes();
+        final byte[] contents = "Some-contents".getBytes();
         final int number = 10;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, contents);
 
