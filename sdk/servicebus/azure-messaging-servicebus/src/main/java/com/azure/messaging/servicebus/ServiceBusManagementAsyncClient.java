@@ -632,13 +632,13 @@ public final class ServiceBusManagementAsyncClient {
         final ServiceBusManagementError error = managementError.getValue();
         switch (error.getCode()) {
             case 401:
-                return new ClientAuthenticationException(error.getDetail(), managementError.getResponse());
+                return new ClientAuthenticationException(error.getDetail(), managementError.getResponse(), exception);
             case 404:
-                return new ResourceNotFoundException(error.getDetail(), managementError.getResponse());
+                return new ResourceNotFoundException(error.getDetail(), managementError.getResponse(), exception);
             case 409:
-                return new ResourceExistsException(error.getDetail(), managementError.getResponse());
+                return new ResourceExistsException(error.getDetail(), managementError.getResponse(), exception);
             case 412:
-                return new ResourceModifiedException(error.getDetail(), managementError.getResponse());
+                return new ResourceModifiedException(error.getDetail(), managementError.getResponse(), exception);
             default:
                 return new HttpResponseException(error.getDetail(), managementError.getResponse(), exception);
         }
