@@ -76,14 +76,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             if (isSessionEnabled) {
                 logger.info("Sessioned receiver. It is probably locked until some time.");
             } else {
-                /*receiveAndDeleteReceiver.receive()
+                receiveAndDeleteReceiver.receive()
                     .take(pending)
                     .map(message -> {
                         logger.info("Message received: {}", message.getMessage().getSequenceNumber());
                         return message;
                     })
                     .timeout(Duration.ofSeconds(5), Mono.empty())
-                    .blockLast();*/
+                    .blockLast();
             }
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
@@ -216,14 +216,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can do following using shared connection and on non session entity.
      * 1. create transaction
-     * 2. send message  with transactionContext
-     * 3. receive and settle with transactionContext.
-     * 4. commit Rollback this transaction.
+     * 2. receive and settle with transactionContext.
+     * 3. commit Rollback this transaction.
      */
-    @MethodSource("messagingEntityTransactionAndDisposition")
+    @MethodSource("messagingEntityAndDisposition")
     @ParameterizedTest
-    void transactionSendReceiveAndSettle(MessagingEntityType entityType,
-        boolean commitTransaction, DispositionStatus dispositionStatus) {
+    void transactionSendReceiveAndCommit(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
 
         // Arrange
         final boolean isSessionEnabled = false;
@@ -231,9 +229,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId1 = "1";
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
-        final String messageId2 = "2";
-        final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
-        final String deadLetterReason = "testing";
+        final String deadLetterReason = "test reason";
+
         sendMessage(message1).block(TIMEOUT);
 
         // Assert & Act
@@ -247,9 +244,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        StepVerifier.create(sender.send(message2, transaction.get()))
-            .verifyComplete();
-
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
 
@@ -260,6 +254,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         switch (dispositionStatus) {
             case COMPLETED:
                 operation = receiver.complete(receivedMessage, transaction.get());
+                messagesPending.decrementAndGet();
                 break;
             case ABANDONED:
                 operation = receiver.abandon(receivedMessage, null, transaction.get());
@@ -267,6 +262,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             case SUSPENDED:
                 DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
                 operation = receiver.deadLetter(receivedMessage, deadLetterOptions, transaction.get());
+                messagesPending.decrementAndGet();
                 break;
             case DEFERRED:
                 operation = receiver.defer(receivedMessage, null, transaction.get());
@@ -279,13 +275,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(operation)
             .verifyComplete();
 
-        if (commitTransaction) {
-            StepVerifier.create(receiver.commitTransaction(transaction.get()))
-                .verifyComplete();
-        } else {
-            StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
-                .verifyComplete();
-        }
+        StepVerifier.create(receiver.commitTransaction(transaction.get()))
+            .verifyComplete();
     }
 
     /**
@@ -295,11 +286,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * 3. receive and settle with transactionContext.
      * 4. commit Rollback this transaction.
      */
-    @MethodSource("messagingEntityTransactionAndDisposition")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    @Disabled
-    void transactionSendReceiveAndSettleOnSessionEntity(MessagingEntityType entityType,
-         boolean commitTransaction, DispositionStatus dispositionStatus) {
+    void transactionReceiveAndcommitOnSessionEntity(MessagingEntityType entityType) {
 
         // Arrange
         final boolean isSessionEnabled = true;
@@ -307,9 +296,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId1 = "1";
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
-        final String messageId2 = "2";
-        final ServiceBusMessage message2 = getMessage(messageId2, isSessionEnabled);
-        final String deadLetterReason = "testing";
         sendMessage(message1).block(TIMEOUT);
 
         // Assert & Act
@@ -323,45 +309,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        StepVerifier.create(sender.send(message2, transaction.get()))
-            .verifyComplete();
-
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
 
         final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
         assertNotNull(receivedMessage);
-        final Mono<Void> operation;
 
-        switch (dispositionStatus) {
-            case COMPLETED:
-                operation = receiver.complete(receivedMessage, sessionId, transaction.get());
-                break;
-            case ABANDONED:
-                operation = receiver.abandon(receivedMessage, null, sessionId, transaction.get());
-                break;
-            case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                operation = receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction.get());
-                break;
-            case DEFERRED:
-                operation = receiver.defer(receivedMessage, null, sessionId, transaction.get());
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        StepVerifier.create(operation)
+        StepVerifier.create(receiver.complete(receivedMessage, sessionId, transaction.get()))
             .verifyComplete();
 
-        if (commitTransaction) {
-            StepVerifier.create(receiver.commitTransaction(transaction.get()))
-                .verifyComplete();
-        } else {
-            StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
-                .verifyComplete();
-        }
+        StepVerifier.create(receiver.commitTransaction(transaction.get()))
+            .verifyComplete();
+        messagesPending.decrementAndGet();
     }
 
     /**

@@ -360,6 +360,21 @@ public abstract class IntegrationTestBase extends TestBase {
         );
     }
 
+    protected static Stream<Arguments> messagingEntityAndDisposition() {
+        return Stream.of(
+            // The data corresponds to :entityType, dispositionStatus
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.DEFERRED),
+
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.DEFERRED)
+        );
+    }
+
     protected static Stream<Arguments> messagingEntityTransactionAndDisposition() {
         return Stream.of(
             // The data corresponds to :entityType, commit, dispositionStatus

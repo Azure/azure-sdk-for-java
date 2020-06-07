@@ -208,17 +208,16 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can create transaction and scheduleMessage.
+     * Verifies that we can create transaction, scheduleMessage and commit.
      */
-    @MethodSource("messagingEntityWithSessionsWithTransaction")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    void createTransactionAndScheduleMessagesTest(MessagingEntityType entityType, boolean isSessionEnabled,
-        boolean commitTransaction) {
+    void transactionScheduleAndCommitTest(MessagingEntityType entityType) {
 
         // Arrange
+        boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, false, isSessionEnabled);
         final Duration scheduleDuration = Duration.ofSeconds(3);
-        final Duration receiveShortTimeout = Duration.ofSeconds(10);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
@@ -237,23 +236,14 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        if (commitTransaction) {
-            StepVerifier.create(sender.commitTransaction(transaction.get()))
-                .verifyComplete();
-            StepVerifier.create(Mono.delay(scheduleDuration).then(receiveAndDeleteReceiver.receive().next()))
-                .assertNext(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    messagesPending.decrementAndGet();
-                })
-                .verifyComplete();
-
-        } else {
-            StepVerifier.create(sender.rollbackTransaction(transaction.get()))
-                .verifyComplete();
-
-            StepVerifier.create(receiveAndDeleteReceiver.receive())
-                .verifyTimeout(receiveShortTimeout);
-        }
+        StepVerifier.create(sender.commitTransaction(transaction.get()))
+            .verifyComplete();
+        StepVerifier.create(Mono.delay(scheduleDuration).then(receiveAndDeleteReceiver.receive().next()))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
     }
 
     /**
