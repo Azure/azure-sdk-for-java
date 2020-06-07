@@ -25,6 +25,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientI
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
@@ -366,7 +367,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return queuesClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> deserializeQueue(response, queue.getName()));
+                .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -426,7 +427,7 @@ public final class ServiceBusManagementAsyncClient {
             return queuesClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
-                    final Response<QueueDescription> deserializeQueue = deserializeQueue(response, queueName);
+                    final Response<QueueDescription> deserializeQueue = deserializeQueue(response);
                     final QueueRuntimeInfo runtimeInfo = deserializeQueue.getValue() != null
                         ? new QueueRuntimeInfo(deserializeQueue.getValue())
                         : null;
@@ -461,7 +462,7 @@ public final class ServiceBusManagementAsyncClient {
         try {
             return queuesClient.getWithResponseAsync(queueName, true, withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> deserializeQueue(response, queueName));
+                .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -536,9 +537,27 @@ public final class ServiceBusManagementAsyncClient {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return queuesClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
                 .onErrorMap(ServiceBusManagementAsyncClient::mapException)
-                .map(response -> deserializeQueue(response, queue.getName()));
+                .map(response -> deserializeQueue(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    private <T> T deserialize(Object object, Class<T> clazz) {
+        if (object == null) {
+            return null;
+        }
+
+        final String contents = String.valueOf(object);
+        if (contents.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return serializer.deserialize(contents, clazz);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(String.format(
+                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
     }
 
@@ -552,56 +571,32 @@ public final class ServiceBusManagementAsyncClient {
      * @return A Response with a strongly typed response value.
      */
     private <T> Response<T> deserialize(Response<Object> response, Class<T> clazz) {
-        final Object body = response.getValue();
-        if (body == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final String contents = String.valueOf(body);
-        if (contents.isEmpty()) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final T responseBody;
-        try {
-            responseBody = serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
-        }
-
-        if (responseBody == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, clazz)));
-        }
+        final T deserialize = deserialize(response.getValue(), clazz);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            responseBody);
+            deserialize);
     }
 
     /**
-     * Helper method that sets the convenience model properties on {@link QueueDescription}.
+     * Converts a Response into its corresponding {@link QueueDescriptionEntry} then mapped into {@link
+     * QueueDescription}.
      *
-     * @param queueName Name of the queue.
      * @param response HTTP Response to deserialize.
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-    private Response<QueueDescription> deserializeQueue(Response<Object> response, String queueName) {
-        final Response<QueueDescription> queueDescription = deserialize(response, QueueDescription.class);
-        final QueueDescription value = queueDescription.getValue();
+    private Response<QueueDescription> deserializeQueue(Response<Object> response) {
+        final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
-        if (value == null) {
-            return queueDescription;
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        // The queue name is a property we artificially added to the REST model.
-        if (value.getName() == null || value.getName().isEmpty()) {
-            value.setName(queueName);
-        }
+        final QueueDescription result = entry.getContent().getQueueDescription()
+            .setName(entry.getTitle().getTitle());
 
-        return queueDescription;
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
 
     /**
