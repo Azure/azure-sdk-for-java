@@ -18,6 +18,7 @@ import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -121,33 +122,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
         }
-
-        final Delivery unsettled = unsettledDeliveries.get(lockToken);
-        if (unsettled == null) {
-            logger.warning("entityPath[{}], linkName[{}], deliveryTag[{}]. Delivery not found to update disposition.",
-                getEntityPath(), getLinkName(), lockToken);
-
-            return monoError(logger, Exceptions.propagate(new IllegalArgumentException(
-                "Delivery not on receive link.")));
-        }
-
-        final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
-        final Mono<Void> result = Mono.create(sink -> {
-            workItem.start(sink);
-            try {
-                provider.getReactorDispatcher().invoke(() -> {
-                    unsettled.disposition(deliveryState);
-                    pendingUpdates.put(lockToken, workItem);
-                });
-            } catch (IOException error) {
-                sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
-                    error, handler.getErrorContext(receiver)));
-            }
-        });
-
-        workItem.setMono(result);
-
-        return result;
+        return updateDispositionInternal(lockToken, deliveryState);
     }
 
     @Override
@@ -177,13 +152,18 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         if (!pendingUpdates.isEmpty()) {
             final List<Mono<Void>> pending = new ArrayList<>();
             final StringJoiner builder = new StringJoiner(", ");
-
             for (UpdateDispositionWorkItem workItem : pendingUpdates.values()) {
+
                 if (workItem.hasTimedout()) {
                     continue;
                 }
 
-                pending.add(workItem.getMono());
+                if (workItem.getDeliveryState() instanceof  TransactionalState) {
+                    pending.add(updateDispositionInternal(workItem.getLockToken(), Released.getInstance()));
+                    //pending.add(workItem.getMono());
+                } else {
+                    pending.add(workItem.getMono());
+                }
                 builder.add(workItem.getLockToken());
             }
 
@@ -235,6 +215,35 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             // to propagate.
             return EMPTY_MESSAGE;
         }
+    }
+
+    private Mono<Void> updateDispositionInternal(String lockToken, DeliveryState deliveryState) {
+        final Delivery unsettled = unsettledDeliveries.get(lockToken);
+        if (unsettled == null) {
+            logger.warning("entityPath[{}], linkName[{}], deliveryTag[{}]. Delivery not found to update disposition.",
+                getEntityPath(), getLinkName(), lockToken);
+
+            return monoError(logger, Exceptions.propagate(new IllegalArgumentException(
+                "Delivery not on receive link.")));
+        }
+
+        final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
+        final Mono<Void> result = Mono.create(sink -> {
+            workItem.start(sink);
+            try {
+                provider.getReactorDispatcher().invoke(() -> {
+                    unsettled.disposition(deliveryState);
+                    pendingUpdates.put(lockToken, workItem);
+                });
+            } catch (IOException error) {
+                sink.error(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
+                    error, handler.getErrorContext(receiver)));
+            }
+        });
+
+        workItem.setMono(result);
+
+        return result;
     }
 
     /**
@@ -365,7 +374,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     private static final class UpdateDispositionWorkItem {
         private final String lockToken;
-        private final DeliveryState state;
+        private DeliveryState state;
         private final Duration timeout;
         private final AtomicInteger retryAttempts = new AtomicInteger();
         private final AtomicBoolean isDisposed = new AtomicBoolean();
