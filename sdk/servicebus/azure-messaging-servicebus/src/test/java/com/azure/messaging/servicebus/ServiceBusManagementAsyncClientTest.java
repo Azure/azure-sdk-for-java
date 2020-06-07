@@ -235,9 +235,9 @@ class ServiceBusManagementAsyncClientTest {
                 assertEquals(expected.getName(), info.getName());
                 assertEquals(Long.valueOf(expected.getMessageCount()), info.getMessageCount());
                 assertEquals(Long.valueOf(expected.getSizeInBytes()), info.getSizeInBytes());
-                assertEquals(expected.getCreatedAt().toInstant(), info.getCreatedAt());
-                assertEquals(expected.getUpdatedAt().toInstant(), info.getUpdatedAt());
-                assertEquals(expected.getAccessedAt().toInstant(), info.getAccessAt());
+                assertEquals(expected.getCreatedAt(), info.getCreatedAt());
+                assertEquals(expected.getUpdatedAt(), info.getUpdatedAt());
+                assertEquals(expected.getAccessedAt(), info.getAccessedAt());
             })
             .verifyComplete();
     }
@@ -267,9 +267,9 @@ class ServiceBusManagementAsyncClientTest {
                 assertEquals(expected.getName(), info.getName());
                 assertEquals(Long.valueOf(expected.getMessageCount()), info.getMessageCount());
                 assertEquals(Long.valueOf(expected.getSizeInBytes()), info.getSizeInBytes());
-                assertEquals(expected.getCreatedAt().toInstant(), info.getCreatedAt());
-                assertEquals(expected.getUpdatedAt().toInstant(), info.getUpdatedAt());
-                assertEquals(expected.getAccessedAt().toInstant(), info.getAccessAt());
+                assertEquals(expected.getCreatedAt(), info.getCreatedAt());
+                assertEquals(expected.getUpdatedAt(), info.getUpdatedAt());
+                assertEquals(expected.getAccessedAt(), info.getAccessedAt());
             })
             .verifyComplete();
     }
