@@ -73,7 +73,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
 
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
@@ -91,7 +91,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
         int count = 4;
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
@@ -110,7 +110,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
@@ -135,7 +135,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, true);
+        setSenderAndReceiver(entityType, 0, true);
 
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
@@ -151,10 +151,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-    void setSenderAndReceiver(MessagingEntityType entityType, boolean useCredentials) {
+    void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials) {
         switch (entityType) {
             case QUEUE:
-                final String queueName = getQueueName();
+                final String queueName = getQueueName(0);
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
@@ -168,7 +168,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
+                final String subscriptionName = getSubscriptionName(entityIndex);
 
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");

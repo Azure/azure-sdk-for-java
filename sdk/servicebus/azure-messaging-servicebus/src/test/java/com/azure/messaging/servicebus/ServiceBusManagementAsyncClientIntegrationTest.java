@@ -45,7 +45,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @Test
     void getQueue() {
         // Arrange
-        String queueName = TestUtils.getQueueName();
+        String queueName = TestUtils.getQueueBaseName();
 
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
@@ -58,7 +58,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @Test
     void createQueueExistingName() {
         // Arrange
-        String queueName = TestUtils.getQueueName();
+        String queueName = TestUtils.getQueueBaseName();
         QueueDescription queueDescription = new QueueDescription().setName(queueName);
 
         // Act & Assert
