@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -151,10 +150,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * 2. send message  with transactionContext
      * 3. Rollback this transaction.
      */
-    @MethodSource("messagingEntityProviderWithTransaction")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    @Disabled
-    void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean commitTransaction) {
+    void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, false);
 
@@ -175,19 +173,15 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(sender.send(message, transaction.get()))
             .verifyComplete();
 
-        if (commitTransaction) {
-            StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-                .verifyComplete();
-        } else {
-            StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
-                .verifyComplete();
-        }
+        StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            .verifyComplete();
+        messagesPending.decrementAndGet();
     }
 
     /**
      * Verifies that we can send using credentials.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange

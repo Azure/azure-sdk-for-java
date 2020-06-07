@@ -10,9 +10,9 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
@@ -301,14 +301,13 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send, receive one message and settle on non session entity.
      */
-    @MethodSource("messagingEntityTransactionAndDisposition")
     @ParameterizedTest
-    @Disabled
-    void transactionMessageAndSettle(MessagingEntityType entityType, boolean commitTransaction,
-        DispositionStatus dispositionStatus) {
+    @EnumSource(DispositionStatus.class)
+    void transactionMessageAndSettle(DispositionStatus dispositionStatus) {
 
         // Arrange
         final boolean isSessionEnabled = false;
+        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         setSenderAndReceiver(entityType, isSessionEnabled);
         int maxMessages = 1;
         final String deadLetterReason = "testing";
@@ -350,27 +349,20 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                     "Disposition status not recognized for this test case: " + dispositionStatus));
         }
 
-        if (commitTransaction) {
-            receiver.commitTransaction(transaction);
-        } else {
-            receiver.rollbackTransaction(transaction);
-        }
+        receiver.commitTransaction(transaction);
     }
 
     /**
      * Verifies that we can send, receive one message and settle on session entity.
      */
-    @MethodSource("messagingEntityTransactionAndDisposition")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    @Disabled
-    void transactionMessageAndSettleOnSessionEntity(MessagingEntityType entityType, boolean commitTransaction,
-        DispositionStatus dispositionStatus) {
+    void transactionReceiveAndCommitOnSessionEntity(MessagingEntityType entityType) {
 
         // Arrange
         boolean isSessionEnabled = true;
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 1;
-        final String deadLetterReason = "testing";
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -388,31 +380,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         ServiceBusReceivedMessage receivedMessage = messageList.get(0);
 
-        switch (dispositionStatus) {
-            case COMPLETED:
-                receiver.complete(receivedMessage, sessionId, transaction);
-                messagesPending.decrementAndGet();
-                break;
-            case ABANDONED:
-                receiver.abandon(receivedMessage, null, sessionId, transaction);
-                break;
-            case SUSPENDED:
-                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
-                receiver.deadLetter(receivedMessage, deadLetterOptions, sessionId, transaction);
-                break;
-            case DEFERRED:
-                receiver.defer(receivedMessage, null, sessionId, transaction);
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Disposition status not recognized for this test case: " + dispositionStatus));
-        }
-
-        if (commitTransaction) {
-            receiver.commitTransaction(transaction);
-        } else {
-            receiver.rollbackTransaction(transaction);
-        }
+        receiver.complete(receivedMessage, sessionId, transaction);
+        receiver.commitTransaction(transaction);
+        messagesPending.decrementAndGet();
     }
 
     /**

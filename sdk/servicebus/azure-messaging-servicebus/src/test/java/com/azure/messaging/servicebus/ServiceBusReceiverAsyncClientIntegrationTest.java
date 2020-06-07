@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -159,12 +160,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * machine to another machine and user just have access to lock token.
      * Verifies that we can complete a message with lock token only with a transaction and rollback.
      */
-    @MethodSource("messagingEntityProvider")
-    @ParameterizedTest
-    @Disabled
-    void transactionWithLockTokenTest(MessagingEntityType entityType) {
+    @Test
+    void transactionWithLockTokenTest() {
 
         // Arrange
+        MessagingEntityType entityType = MessagingEntityType.QUEUE;
         boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, isSessionEnabled);
         ServiceBusReceiverAsyncClient receiverNonConnectionSharing = getReceiverBuilder(false, entityType,
@@ -219,11 +219,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * 2. receive and settle with transactionContext.
      * 3. commit Rollback this transaction.
      */
-    @MethodSource("messagingEntityAndDisposition")
+
     @ParameterizedTest
-    void transactionSendReceiveAndCommit(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
+    @EnumSource(DispositionStatus.class)
+    void transactionSendReceiveAndCommit(DispositionStatus dispositionStatus) {
 
         // Arrange
+        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
@@ -282,9 +284,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can do following using shared connection and on session enabled entity.
      * 1. create transaction
-     * 2. send message  with transactionContext
-     * 3. receive and settle with transactionContext.
-     * 4. commit Rollback this transaction.
+     * 2. receive and settle with transactionContext.
+     * 3. commit Rollback this transaction.
      */
     @MethodSource("messagingEntityProvider")
     @ParameterizedTest
