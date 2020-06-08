@@ -464,6 +464,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
         // the queue or topic contains messages from previous test cases.
+        assertNotNull(message.getMessageId());
         assertEquals(messageId, message.getMessageId());
 
         if (isSessionEnabled) {

@@ -66,7 +66,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final int entityIndex = 0;
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
-        final String contents = "hello world";
+        final String contents = "Some-contents";
         final int numberToSend = 5;
 
         setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
@@ -116,7 +116,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
             logger.info("[{}]: {}", i, sessionIds.get(i));
         }
 
-        final String contents = "hello world";
+        final String contents = "Some-contents";
         final int numberToSend = 3;
         final int maxMessages = numberToSend * sessionIds.size();
         final int maxConcurrency = 2;

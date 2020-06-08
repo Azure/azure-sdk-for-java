@@ -90,7 +90,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
 
         // Assert & Act
         ServiceBusMessageBatch batch = sender.createBatch(options);
@@ -114,7 +114,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, 0);
         int count = 3;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
         sender.send(messages);

@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -282,11 +283,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we do not receive any message in given timeout.
      */
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    @ParameterizedTest
-    void receiveNoMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
+    @Test
+    void receiveNoMessage() {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_NO_MESSAGES, isSessionEnabled);
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_RECEIVE_NO_MESSAGES, isSessionEnabled);
         int howManyMessage = 2;
         long noMessages = 0;
 

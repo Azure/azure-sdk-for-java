@@ -109,7 +109,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, 0, false);
         int count = 4;
 
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
         StepVerifier.create(sender.send(messages).doOnSuccess(aVoid -> {
@@ -129,7 +129,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
 
         // Assert & Act
         StepVerifier.create(sender.createBatch(options)
@@ -196,7 +196,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, 0, true);
 
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId, CONTENTS_BYTES);
 
         // Act & Assert
         StepVerifier.create(sender.createBatch()
@@ -267,7 +267,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
                 .sessionId(sessionId)
                 .buildAsyncClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
