@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -194,7 +195,7 @@ class ServiceBusManagementSerializerTest {
 
         final Path path = Paths.get(resourceFolder.getPath(), fileName);
         try {
-            return Files.readString(path);
+            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
         } catch (IOException e) {
             fail(String.format("Unable to read file: '  %s'. Error: %s", path.getFileName(), e));
             return null;

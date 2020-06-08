@@ -53,7 +53,7 @@ public final class ServiceBusManagementClient {
      * @throws NullPointerException if {@code queue} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
      *     queueName}.
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity>Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueDescription createQueue(QueueDescription queue) {
@@ -76,7 +76,7 @@ public final class ServiceBusManagementClient {
      * @throws NullPointerException if {@code queue} is null.
      * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
      *     queueName}.
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity>Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueDescription> createQueueWithResponse(QueueDescription queue, Context context) {
@@ -94,7 +94,7 @@ public final class ServiceBusManagementClient {
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws NullPointerException if {@code queueName} is null.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue>Delete Queue</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteQueue(String queueName) {
@@ -114,7 +114,7 @@ public final class ServiceBusManagementClient {
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
      * @throws NullPointerException if {@code queueName} is null.
      * @throws ResourceNotFoundException if the {@code queueName} does not exist.
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue>Delete Queue</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Context context) {
