@@ -433,7 +433,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 // Simulate some sort of long processing.
                 final AtomicInteger iteration = new AtomicInteger();
                 while (Instant.now().isBefore(timeToStop)) {
-                    logger.info("Iteration {}: {}", iteration.incrementAndGet(), Instant.now());
+                    logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), Instant.now(), timeToStop);
 
                     try {
                         TimeUnit.SECONDS.sleep(15);
@@ -684,11 +684,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, isSessionEnabled, entityIndex, null);
-    }
-
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled, int entityIndex,
-        Duration autoLockRenewal) {
         this.isSessionEnabled = isSessionEnabled;
         this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled).buildAsyncClient();
 
@@ -696,17 +691,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity())
                 .sessionId(sessionId)
-                .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity())
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
+                Function.identity())
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity())
-                .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity())
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
+                Function.identity())
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
