@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.AccessPolicy;
 import com.azure.resourcemanager.keyvault.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.CreateMode;

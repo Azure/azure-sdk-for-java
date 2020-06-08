@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
-import com.azure.resourcemanager.authorization.ActiveDirectoryGroup;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.ServicePrincipal;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.keyvault.AccessPolicy;
 import com.azure.resourcemanager.keyvault.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.CertificatePermissions;

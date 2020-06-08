@@ -24,7 +24,17 @@ public final class AnalyzeRequestConverter {
         if (obj == null) {
             return null;
         }
-        AnalyzeTextOptions analyzeTextOptions = new AnalyzeTextOptions();
+        AnalyzeTextOptions analyzeTextOptions = null;
+
+        if (obj.getTokenizer() != null) {
+            LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), tokenizer);
+            analyzeTextOptions.setTokenizerName(tokenizer);
+        } else {
+            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), analyzer);
+            analyzeTextOptions.setAnalyzerName(analyzer);
+        }
 
         if (obj.getCharFilters() != null) {
             List<CharFilterName> charFilters =
@@ -32,10 +42,6 @@ public final class AnalyzeRequestConverter {
             analyzeTextOptions.setCharFilters(charFilters);
         }
 
-        if (obj.getAnalyzer() != null) {
-            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            analyzeTextOptions.setAnalyzer(analyzer);
-        }
 
         if (obj.getTokenFilters() != null) {
             List<TokenFilterName> tokenFilters =
@@ -43,13 +49,7 @@ public final class AnalyzeRequestConverter {
             analyzeTextOptions.setTokenFilters(tokenFilters);
         }
 
-        String text = obj.getText();
-        analyzeTextOptions.setText(text);
 
-        if (obj.getTokenizer() != null) {
-            LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
-            analyzeTextOptions.setTokenizer(tokenizer);
-        }
         return analyzeTextOptions;
     }
 
@@ -69,9 +69,9 @@ public final class AnalyzeRequestConverter {
             analyzeRequest.setCharFilters(charFilters);
         }
 
-        if (obj.getAnalyzer() != null) {
+        if (obj.getAnalyzerName() != null) {
             com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName analyzer =
-                LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
+                LexicalAnalyzerNameConverter.map(obj.getAnalyzerName());
             analyzeRequest.setAnalyzer(analyzer);
         }
 
@@ -84,9 +84,9 @@ public final class AnalyzeRequestConverter {
         String text = obj.getText();
         analyzeRequest.setText(text);
 
-        if (obj.getTokenizer() != null) {
+        if (obj.getTokenizerName() != null) {
             com.azure.search.documents.indexes.implementation.models.LexicalTokenizerName tokenizer =
-                LexicalTokenizerNameConverter.map(obj.getTokenizer());
+                LexicalTokenizerNameConverter.map(obj.getTokenizerName());
             analyzeRequest.setTokenizer(tokenizer);
         }
         return analyzeRequest;

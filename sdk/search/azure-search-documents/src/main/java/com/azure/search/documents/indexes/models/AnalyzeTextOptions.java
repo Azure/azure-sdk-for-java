@@ -17,7 +17,7 @@ public final class AnalyzeTextOptions {
      * The text to break into tokens.
      */
     @JsonProperty(value = "text", required = true)
-    private String text;
+    private final String text;
 
     /*
      * The name of the analyzer to use to break the given text. If this
@@ -45,7 +45,7 @@ public final class AnalyzeTextOptions {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "analyzer")
-    private LexicalAnalyzerName analyzer;
+    private LexicalAnalyzerName analyzerName;
 
     /*
      * The name of the tokenizer to use to break the given text. If this
@@ -57,7 +57,7 @@ public final class AnalyzeTextOptions {
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer")
-    private LexicalTokenizerName tokenizer;
+    private LexicalTokenizerName tokenizerName;
 
     /*
      * An optional list of token filters to use when breaking the given text.
@@ -74,23 +74,34 @@ public final class AnalyzeTextOptions {
     private List<CharFilterName> charFilters;
 
     /**
+     * Constructor to {@link AnalyzeTextOptions} which takes analyzerName.
+     *
+     * @param text The text break into tokens.
+     * @param analyzerName The name of the analyze name.
+     */
+    public AnalyzeTextOptions(String text, LexicalAnalyzerName analyzerName) {
+        this.text = text;
+        this.analyzerName = analyzerName;
+    }
+
+    /**
+     * Constructor to {@link AnalyzeTextOptions} which takes tokenizerName.
+     *
+     * @param text The text break into tokens.
+     * @param tokenizerName The name of the tokenizer name.
+     */
+    public AnalyzeTextOptions(String text, LexicalTokenizerName tokenizerName) {
+        this.text = text;
+        this.tokenizerName = tokenizerName;
+    }
+
+    /**
      * Get the text property: The text to break into tokens.
      *
      * @return the text value.
      */
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * Set the text property: The text to break into tokens.
-     *
-     * @param text the text value to set.
-     * @return the AnalyzeRequest object itself.
-     */
-    public AnalyzeTextOptions setText(String text) {
-        this.text = text;
-        return this;
     }
 
     /**
@@ -121,8 +132,8 @@ public final class AnalyzeTextOptions {
      *
      * @return the analyzer value.
      */
-    public LexicalAnalyzerName getAnalyzer() {
-        return this.analyzer;
+    public LexicalAnalyzerName getAnalyzerName() {
+        return this.analyzerName;
     }
 
     /**
@@ -151,11 +162,12 @@ public final class AnalyzeTextOptions {
      * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
      * 'Whitespace'.
      *
-     * @param analyzer the analyzer value to set.
+     * @param analyzerName the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextOptions setAnalyzer(LexicalAnalyzerName analyzer) {
-        this.analyzer = analyzer;
+    public AnalyzeTextOptions setAnalyzerName(LexicalAnalyzerName analyzerName) {
+        this.analyzerName = analyzerName;
+        this.tokenizerName = null;
         return this;
     }
 
@@ -170,8 +182,8 @@ public final class AnalyzeTextOptions {
      *
      * @return the tokenizer value.
      */
-    public LexicalTokenizerName getTokenizer() {
-        return this.tokenizer;
+    public LexicalTokenizerName getTokenizerName() {
+        return this.tokenizerName;
     }
 
     /**
@@ -183,11 +195,12 @@ public final class AnalyzeTextOptions {
      * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      *
-     * @param tokenizer the tokenizer value to set.
+     * @param tokenizerName the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
-    public AnalyzeTextOptions setTokenizer(LexicalTokenizerName tokenizer) {
-        this.tokenizer = tokenizer;
+    public AnalyzeTextOptions setTokenizerName(LexicalTokenizerName tokenizerName) {
+        this.tokenizerName = tokenizerName;
+        this.analyzerName = null;
         return this;
     }
 

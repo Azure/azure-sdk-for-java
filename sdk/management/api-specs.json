@@ -26,7 +26,7 @@
   "authorization": {
     "dir": "../authorization/mgmt",
     "source": "specification/authorization/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.graphrbac",
+    "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=package-2018-01-01-preview --payload-flattening-threshold=1"
   },
   "automation": {
@@ -169,7 +169,7 @@
   "graphrbac": {
     "dir": "../authorization/mgmt",
     "source": "specification/graphrbac/data-plane/readme.md",
-    "package": "com.azure.resourcemanager.graphrbac",
+    "package": "com.azure.resourcemanager.authorization",
     "args": "--payload-flattening-threshold=1 --tag=1.6"
   },
   "iothub": {

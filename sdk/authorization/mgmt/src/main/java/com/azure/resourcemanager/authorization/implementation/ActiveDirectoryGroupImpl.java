@@ -4,15 +4,16 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.authorization.ActiveDirectoryGroup;
-import com.azure.resourcemanager.authorization.ActiveDirectoryObject;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.GroupCreateParameters;
-import com.azure.resourcemanager.authorization.ServicePrincipal;
-import com.azure.resourcemanager.authorization.models.ADGroupInner;
-import com.azure.resourcemanager.authorization.models.ApplicationInner;
-import com.azure.resourcemanager.authorization.models.ServicePrincipalInner;
-import com.azure.resourcemanager.authorization.models.UserInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
+import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
+import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
@@ -63,7 +64,7 @@ class ActiveDirectoryGroupImpl
     public PagedFlux<ActiveDirectoryObject> listMembersAsync() {
         return manager()
             .inner()
-            .groups()
+            .getGroups()
             .getGroupMembersAsync(id())
             .mapPage(
                 directoryObjectInner -> {
@@ -83,7 +84,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     protected Mono<ADGroupInner> getInnerAsync() {
-        return manager().inner().groups().getAsync(id());
+        return manager().inner().getGroups().getAsync(id());
     }
 
     @Override
@@ -95,7 +96,7 @@ class ActiveDirectoryGroupImpl
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
         Mono<?> group = Mono.just(this);
         if (isInCreateMode()) {
-            group = manager().inner().groups().createAsync(createParameters).map(innerToFluentMap(this));
+            group = manager().inner().getGroups().createAsync(createParameters).map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
             group =
@@ -104,7 +105,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToRemove)
-                                .flatMap(s -> manager().inner().groups().removeMemberAsync(id(), s))
+                                .flatMap(s -> manager().inner().getGroups().removeMemberAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToRemove.clear()));
@@ -116,7 +117,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().inner().groups().addMemberAsync(id(), s))
+                                .flatMap(s -> manager().inner().getGroups().addMemberAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(Mono.just(this))
                                 .doFinally(signalType -> membersToAdd.clear()));
@@ -140,7 +141,8 @@ class ActiveDirectoryGroupImpl
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         membersToAdd
             .add(
-                String.format("%s%s/directoryObjects/%s", manager().inner().getHost(), manager().tenantId(), objectId));
+                String.format(
+                    "%s%s/directoryObjects/%s", manager().inner().getEndpoint(), manager().tenantId(), objectId));
         return this;
     }
 

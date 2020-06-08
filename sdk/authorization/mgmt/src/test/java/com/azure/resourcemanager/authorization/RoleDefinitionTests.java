@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.authorization;
 
+import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

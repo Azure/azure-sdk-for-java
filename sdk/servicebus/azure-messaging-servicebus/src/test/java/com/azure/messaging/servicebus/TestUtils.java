@@ -70,7 +70,7 @@ public class TestUtils {
      *
      * @return The Service Bus queue name.
      */
-    public static String getQueueName() {
+    public static String getQueueBaseName() {
         return System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
     }
 
@@ -79,7 +79,7 @@ public class TestUtils {
      *
      * @return The Service Bus queue name.
      */
-    public static String getSessionQueueName() {
+    public static String getSessionQueueBaseName() {
         return System.getenv("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
     }
 
@@ -97,7 +97,7 @@ public class TestUtils {
      *
      * @return The Service Bus subscription name.
      */
-    public static String getSubscriptionName() {
+    public static String getSubscriptionBaseName() {
         return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
     }
 
@@ -106,8 +106,20 @@ public class TestUtils {
      *
      * @return The Service Bus subscription name.
      */
-    public static String getSessionSubscriptionName() {
+    public static String getSessionSubscriptionBaseName() {
         return System.getenv("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
+    }
+
+    /**
+     * Gets the name of an entity based on its base name.
+     *
+     * @param baseName Base of the entity.
+     * @param index Index number.
+     *
+     * @return The entity name.
+     */
+    public static String getEntityName(String baseName, int index) {
+        return String.join("-", baseName, String.valueOf(index));
     }
 
     /**

@@ -12,9 +12,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.google.common.io.ByteStreams;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.RoleAssignment;
-import com.azure.resourcemanager.authorization.ServicePrincipal;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
 
