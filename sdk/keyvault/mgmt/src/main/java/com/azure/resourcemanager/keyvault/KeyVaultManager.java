@@ -97,7 +97,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
             profile,
             new KeyVaultManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);

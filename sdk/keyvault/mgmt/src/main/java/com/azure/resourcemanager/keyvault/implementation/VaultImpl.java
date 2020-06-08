@@ -8,6 +8,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
+import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
 import com.azure.resourcemanager.keyvault.models.AccessPolicy;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
 import com.azure.resourcemanager.keyvault.models.CreateMode;
@@ -23,8 +25,6 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.models.VaultProperties;
 import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
-import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
-import com.azure.resourcemanager.keyvault.fluent.VaultsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -32,11 +32,12 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Vault and its parent interfaces. */
 class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyVaultManager>
@@ -340,7 +341,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     public Mono<Vault> createResourceAsync() {
-        final VaultsInner client = this.manager().inner().vaults();
+        final VaultsClient client = this.manager().inner().getVaults();
         return populateAccessPolicies()
             .then(
                 Mono
@@ -366,7 +367,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     protected Mono<VaultInner> getInnerAsync() {
-        return this.manager().inner().vaults().getByResourceGroupAsync(resourceGroupName(), this.name());
+        return this.manager().inner().getVaults().getByResourceGroupAsync(resourceGroupName(), this.name());
     }
 
     @Override

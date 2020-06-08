@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.keyvault.fluent.VaultsInner;
+import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -29,7 +29,7 @@ public interface Vaults
         SupportsGettingById<Vault>,
         SupportsDeletingByResourceGroup,
         HasManager<KeyVaultManager>,
-        HasInner<VaultsInner> {
+        HasInner<VaultsClient> {
 
     /**
      * Gets information about the deleted vaults in a subscription.
