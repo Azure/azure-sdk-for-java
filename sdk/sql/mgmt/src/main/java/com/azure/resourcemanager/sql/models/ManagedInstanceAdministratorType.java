@@ -7,28 +7,28 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AdministratorType. */
-public enum AdministratorType {
+/** Defines values for ManagedInstanceAdministratorType. */
+public enum ManagedInstanceAdministratorType {
     /** Enum value ActiveDirectory. */
     ACTIVE_DIRECTORY("ActiveDirectory");
 
-    /** The actual serialized value for a AdministratorType instance. */
+    /** The actual serialized value for a ManagedInstanceAdministratorType instance. */
     private final String value;
 
-    AdministratorType(String value) {
+    ManagedInstanceAdministratorType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AdministratorType instance.
+     * Parses a serialized value to a ManagedInstanceAdministratorType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed AdministratorType object, or null if unable to parse.
+     * @return the parsed ManagedInstanceAdministratorType object, or null if unable to parse.
      */
     @JsonCreator
-    public static AdministratorType fromString(String value) {
-        AdministratorType[] items = AdministratorType.values();
-        for (AdministratorType item : items) {
+    public static ManagedInstanceAdministratorType fromString(String value) {
+        ManagedInstanceAdministratorType[] items = ManagedInstanceAdministratorType.values();
+        for (ManagedInstanceAdministratorType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
