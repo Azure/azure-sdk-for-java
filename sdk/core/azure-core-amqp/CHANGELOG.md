@@ -1,5 +1,8 @@
 # Release History
 
+## 1.3.0-beta.1 (Unreleased)
+
+
 ## 1.2.0 (2020-06-08)
 - Fixes bug where receiver would not recover after network connection loss.
 - Fixes bug where multiple retries (the session would retry in addition to the link) were occurring when creating a new AMQP channel.
