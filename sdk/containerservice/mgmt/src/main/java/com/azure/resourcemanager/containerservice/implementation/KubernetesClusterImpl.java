@@ -201,7 +201,7 @@ public class KubernetesClusterImpl
         return this
             .manager()
             .inner()
-            .managedClusters()
+            .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
             .flatMap(
                 managedClusterInner -> Flux.merge(adminConfig, userConfig).last().map(bytes -> managedClusterInner));
@@ -219,7 +219,7 @@ public class KubernetesClusterImpl
         return this
             .manager()
             .inner()
-            .managedClusters()
+            .getManagedClusters()
             .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner())
             .flatMap(
                 inner ->

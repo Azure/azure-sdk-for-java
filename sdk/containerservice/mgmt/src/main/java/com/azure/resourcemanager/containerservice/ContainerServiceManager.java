@@ -90,7 +90,7 @@ public final class ContainerServiceManager
             httpPipeline,
             profile,
             new ContainerServiceManagementClientBuilder()
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
