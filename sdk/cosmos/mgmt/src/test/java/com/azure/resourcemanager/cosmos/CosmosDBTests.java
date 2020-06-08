@@ -5,6 +5,11 @@ package com.azure.resourcemanager.cosmos;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
+import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.PrivateLinkServiceConnectionState;

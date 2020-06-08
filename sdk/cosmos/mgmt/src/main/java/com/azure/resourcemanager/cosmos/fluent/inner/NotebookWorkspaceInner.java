@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cosmos.fluent.inner;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -30,12 +30,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.cosmos.SqlContainerCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.SqlDatabaseCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.SqlStoredProcedureCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.SqlTriggerCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.SqlUserDefinedFunctionCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.ThroughputSettingsUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlContainerCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlDatabaseCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlTriggerCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.cosmos.fluent.inner.SqlContainerGetResultsInner;

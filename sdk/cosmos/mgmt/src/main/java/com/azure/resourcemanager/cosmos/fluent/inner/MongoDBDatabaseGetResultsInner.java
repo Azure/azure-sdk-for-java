@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cosmos.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.ArmResourceProperties;
-import com.azure.resourcemanager.cosmos.MongoDBDatabaseGetPropertiesResource;
+import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

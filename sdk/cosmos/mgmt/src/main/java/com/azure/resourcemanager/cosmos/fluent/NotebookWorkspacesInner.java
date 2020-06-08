@@ -31,7 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.cosmos.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceConnectionInfoResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceListResultInner;

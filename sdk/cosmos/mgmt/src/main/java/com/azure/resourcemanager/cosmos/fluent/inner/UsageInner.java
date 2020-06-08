@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cosmos.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.MetricName;
-import com.azure.resourcemanager.cosmos.UnitType;
+import com.azure.resourcemanager.cosmos.models.MetricName;
+import com.azure.resourcemanager.cosmos.models.UnitType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

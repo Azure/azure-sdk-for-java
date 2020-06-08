@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.cosmos.implementation;
 
-import com.azure.resourcemanager.cosmos.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListReadOnlyKeysResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 

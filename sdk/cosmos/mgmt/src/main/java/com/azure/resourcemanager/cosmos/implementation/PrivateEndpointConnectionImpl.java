@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.cosmos.implementation;
 
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.PrivateEndpointConnection;
-import com.azure.resourcemanager.cosmos.PrivateEndpointProperty;
-import com.azure.resourcemanager.cosmos.PrivateLinkServiceConnectionStateProperty;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;
+import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;

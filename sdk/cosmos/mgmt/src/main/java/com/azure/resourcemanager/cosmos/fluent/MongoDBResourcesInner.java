@@ -30,9 +30,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.cosmos.MongoDBCollectionCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.MongoDBDatabaseCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.ThroughputSettingsUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBCollectionGetResultsInner;
