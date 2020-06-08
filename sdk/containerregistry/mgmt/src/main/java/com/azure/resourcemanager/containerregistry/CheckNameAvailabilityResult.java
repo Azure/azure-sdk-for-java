@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerregistry.fluent.RegistryNameStatusInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryNameStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** The result of checking for container registry name availability. */

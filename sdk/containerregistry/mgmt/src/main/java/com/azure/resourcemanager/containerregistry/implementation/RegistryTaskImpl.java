@@ -35,7 +35,7 @@ import com.azure.resourcemanager.containerregistry.TriggerProperties;
 import com.azure.resourcemanager.containerregistry.TriggerStatus;
 import com.azure.resourcemanager.containerregistry.TriggerUpdateParameters;
 import com.azure.resourcemanager.containerregistry.Variant;
-import com.azure.resourcemanager.containerregistry.fluent.TaskInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.containerregistry.fluent.TasksInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;

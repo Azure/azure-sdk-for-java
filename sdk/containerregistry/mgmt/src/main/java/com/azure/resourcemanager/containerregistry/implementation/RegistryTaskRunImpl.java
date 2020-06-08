@@ -19,7 +19,7 @@ import com.azure.resourcemanager.containerregistry.SetValue;
 import com.azure.resourcemanager.containerregistry.TaskRunRequest;
 import com.azure.resourcemanager.containerregistry.Variant;
 import com.azure.resourcemanager.containerregistry.fluent.RegistriesInner;
-import com.azure.resourcemanager.containerregistry.fluent.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

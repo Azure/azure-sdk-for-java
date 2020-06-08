@@ -35,6 +35,13 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.containerregistry.WebhookCreateParameters;
 import com.azure.resourcemanager.containerregistry.WebhookUpdateParameters;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.containerregistry.fluent.inner.CallbackConfigInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.EventInfoInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.EventInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.EventListResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

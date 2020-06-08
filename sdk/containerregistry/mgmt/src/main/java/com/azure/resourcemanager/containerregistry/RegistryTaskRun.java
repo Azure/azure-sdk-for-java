@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerregistry.fluent.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;

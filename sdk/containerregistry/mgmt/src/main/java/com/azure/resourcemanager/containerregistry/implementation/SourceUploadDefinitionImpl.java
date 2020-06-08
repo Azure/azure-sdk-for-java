@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.resourcemanager.containerregistry.SourceUploadDefinition;
-import com.azure.resourcemanager.containerregistry.fluent.SourceUploadDefinitionInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.SourceUploadDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** Implementation for SourceUploadDefinition. */

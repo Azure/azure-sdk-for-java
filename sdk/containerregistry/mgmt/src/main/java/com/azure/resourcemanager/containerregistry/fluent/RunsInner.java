@@ -31,9 +31,13 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.containerregistry.RunUpdateParameters;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunGetLogResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /** An instance of this class provides access to all the operations defined in Runs. */
 public final class RunsInner {

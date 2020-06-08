@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.resourcemanager.containerregistry.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.containerregistry.fluent.RegistryNameStatusInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryNameStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** Implementation for CheckNameAvailabilityResult. */

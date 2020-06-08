@@ -38,6 +38,14 @@ import com.azure.resourcemanager.containerregistry.RegenerateCredentialParameter
 import com.azure.resourcemanager.containerregistry.RegistryNameCheckRequest;
 import com.azure.resourcemanager.containerregistry.RegistryUpdateParameters;
 import com.azure.resourcemanager.containerregistry.RunRequest;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListCredentialsResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryNameStatusInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryPoliciesInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryUsageListResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.SourceUploadDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
