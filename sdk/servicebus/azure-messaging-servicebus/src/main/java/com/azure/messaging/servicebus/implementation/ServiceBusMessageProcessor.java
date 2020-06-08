@@ -335,7 +335,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                 logger.info("Abandoning message lock: {}", lockToken);
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.ABANDONED,
-                    null, null, null);
+                    null, null, null, null);
 
                 managementOperations.updateDisposition(lockToken, deliveryState)
                     .onErrorContinue((error, item) -> {
@@ -361,7 +361,7 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             logger.info("sequenceNumber[{}]. lock[{}]. Completing message.", sequenceNumber, lockToken);
 
             final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.COMPLETED,
-                null, null, null);
+                null, null, null, null);
 
             managementOperations.updateDisposition(lockToken, deliveryState)
                 .onErrorResume(error -> {

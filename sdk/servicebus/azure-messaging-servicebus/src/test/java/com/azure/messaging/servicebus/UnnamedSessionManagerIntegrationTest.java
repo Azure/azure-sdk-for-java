@@ -66,7 +66,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final int entityIndex = 0;
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
-        final String contents = "hello world";
+        final String contents = "Some-contents";
         final int numberToSend = 5;
 
         setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
@@ -77,6 +77,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
             .flatMap(index -> {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(sessionId);
+                messagesPending.incrementAndGet();
                 return sender.send(message).thenReturn(index);
             }).subscribe(
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
@@ -116,7 +117,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
             logger.info("[{}]: {}", i, sessionIds.get(i));
         }
 
-        final String contents = "hello world";
+        final String contents = "Some-contents";
         final int numberToSend = 3;
         final int maxMessages = numberToSend * sessionIds.size();
         final int maxConcurrency = 2;
@@ -132,6 +133,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 final String id = sessionIds.get(i);
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(id);
+                messagesPending.incrementAndGet();
                 return sender.send(message).thenReturn(
                     String.format("sessionId[%s] sent[%s] Message sent.", id, index));
             }).subscribe(
@@ -182,12 +184,11 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, Duration operationTimeout,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
-        this.sender = getSenderBuilder(false, entityType, entityIndex, true)
+        this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
             .buildAsyncClient();
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
             entityType, entityIndex,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)));
-
+            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
         this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 

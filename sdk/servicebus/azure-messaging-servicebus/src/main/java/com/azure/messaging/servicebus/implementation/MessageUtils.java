@@ -8,10 +8,14 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
@@ -107,11 +111,19 @@ public final class MessageUtils {
      * @return The corresponding DeliveryState, or null if the disposition status is unknown.
      */
     public static DeliveryState getDeliveryState(DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
+
+        boolean hasTransaction = transactionContext != null && transactionContext.getTransactionId() != null;
+
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                state = Accepted.getInstance();
+                if (hasTransaction) {
+                    state = getTransactionState(transactionContext.getTransactionId(), Accepted.getInstance());
+                } else {
+                    state = Accepted.getInstance();
+                }
                 break;
             case SUSPENDED:
                 final Rejected rejected = new Rejected();
@@ -129,7 +141,11 @@ public final class MessageUtils {
                 error.setInfo(errorInfo);
                 rejected.setError(error);
 
-                state = rejected;
+                if (hasTransaction) {
+                    state = getTransactionState(transactionContext.getTransactionId(), rejected);
+                } else {
+                    state = rejected;
+                }
                 break;
             case ABANDONED:
                 final Modified outcome = new Modified();
@@ -137,7 +153,11 @@ public final class MessageUtils {
                     outcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                state = outcome;
+                if (hasTransaction) {
+                    state = getTransactionState(transactionContext.getTransactionId(), outcome);
+                } else {
+                    state = outcome;
+                }
                 break;
             case DEFERRED:
                 final Modified deferredOutcome = new Modified();
@@ -146,7 +166,11 @@ public final class MessageUtils {
                     deferredOutcome.setMessageAnnotations(propertiesToModify);
                 }
 
-                state = deferredOutcome;
+                if (hasTransaction) {
+                    state = getTransactionState(transactionContext.getTransactionId(), deferredOutcome);
+                } else {
+                    state = deferredOutcome;
+                }
                 break;
             default:
                 state = null;
@@ -221,5 +245,12 @@ public final class MessageUtils {
         }
 
         return reorderedBytes;
+    }
+
+    private static TransactionalState getTransactionState(ByteBuffer transactionId, Outcome outcome) {
+        TransactionalState transactionalState = new TransactionalState();
+        transactionalState.setTxnId(new Binary(transactionId.array()));
+        transactionalState.setOutcome(outcome);
+        return transactionalState;
     }
 }

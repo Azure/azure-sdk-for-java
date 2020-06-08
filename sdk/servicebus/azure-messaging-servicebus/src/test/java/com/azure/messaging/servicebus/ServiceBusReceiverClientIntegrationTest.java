@@ -7,10 +7,13 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 
@@ -107,10 +110,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void multipleReceiveByOneSubscriberMessageTimeout(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT, isSessionEnabled);
         final int maxMessages = 2;
         final int totalReceive = 2;
-        final Duration shortTimeOut = Duration.ofSeconds(8);
+        final Duration shortTimeOut = Duration.ofSeconds(7);
         final Duration longTimeOut = Duration.ofSeconds(10);
 
         final String messageId = UUID.randomUUID().toString();
@@ -280,11 +283,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we do not receive any message in given timeout.
      */
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    @ParameterizedTest
-    void receiveNoMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
+    @Test
+    void receiveNoMessage() {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        boolean isSessionEnabled = false;
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_RECEIVE_NO_MESSAGES, isSessionEnabled);
         int howManyMessage = 2;
         long noMessages = 0;
 
@@ -294,6 +297,93 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertEquals(noMessages, messages.stream().count());
+    }
+
+    /**
+     * Verifies that we can send, receive one message and settle on non session entity.
+     */
+    @ParameterizedTest
+    @EnumSource(DispositionStatus.class)
+    void transactionMessageAndSettle(DispositionStatus dispositionStatus) {
+
+        // Arrange
+        final boolean isSessionEnabled = false;
+        final MessagingEntityType entityType = MessagingEntityType.QUEUE;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        int maxMessages = 1;
+        final String deadLetterReason = "testing";
+
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+
+        // Act & Assert
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT)
+            .stream().map(ServiceBusReceivedMessageContext::getMessage);
+
+        final ServiceBusTransactionContext transaction = receiver.createTransaction();
+
+        List<ServiceBusReceivedMessage> messageList = messages.collect(Collectors.toList());
+        assertEquals(maxMessages, messageList.size());
+
+        ServiceBusReceivedMessage receivedMessage = messageList.get(0);
+
+        switch (dispositionStatus) {
+            case COMPLETED:
+                receiver.complete(receivedMessage, transaction);
+                messagesPending.decrementAndGet();
+                break;
+            case ABANDONED:
+                receiver.abandon(receivedMessage, null, transaction);
+                break;
+            case SUSPENDED:
+                DeadLetterOptions deadLetterOptions = new DeadLetterOptions().setDeadLetterReason(deadLetterReason);
+                receiver.deadLetter(receivedMessage, deadLetterOptions, transaction);
+                break;
+            case DEFERRED:
+                receiver.defer(receivedMessage, null, transaction);
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
+
+        receiver.commitTransaction(transaction);
+    }
+
+    /**
+     * Verifies that we can send, receive one message and settle on session entity.
+     */
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void transactionReceiveAndCommitOnSessionEntity(MessagingEntityType entityType) {
+
+        // Arrange
+        boolean isSessionEnabled = true;
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        final int maxMessages = 1;
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message);
+
+        // Act & Assert
+        final Stream<ServiceBusReceivedMessage> messages = receiver.receive(maxMessages, TIMEOUT)
+            .stream().map(ServiceBusReceivedMessageContext::getMessage);
+
+        final ServiceBusTransactionContext transaction = receiver.createTransaction();
+
+        List<ServiceBusReceivedMessage> messageList = messages.collect(Collectors.toList());
+        assertEquals(maxMessages, messageList.size());
+
+        ServiceBusReceivedMessage receivedMessage = messageList.get(0);
+
+        receiver.complete(receivedMessage, sessionId, transaction);
+        receiver.commitTransaction(transaction);
+        messagesPending.decrementAndGet();
     }
 
     /**
@@ -379,6 +469,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Assert
         assertEquals(receivedMessage.getSequenceNumber(), receivedPeekMessage.getSequenceNumber());
         assertMessageEquals(receivedPeekMessage, messageId, isSessionEnabled);
+
+        receiver.complete(receivedMessage);
+        messagesPending.decrementAndGet();
     }
 
     /**
@@ -634,7 +727,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
@@ -693,23 +786,31 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled).buildClient();
+        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled, false);
+    }
+
+    /**
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
+     */
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
+        boolean sharedConnection) {
+        this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity())
+            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
                 .sessionId(sessionId)
                 .buildClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
-                Function.identity())
+                Function.identity(), sharedConnection)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity())
+            this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity(), sharedConnection)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
-                Function.identity())
+                Function.identity(), sharedConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
