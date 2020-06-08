@@ -4,14 +4,15 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerservice.CredentialResult;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.containerservice.KubernetesClusters;
-import com.azure.resourcemanager.containerservice.OrchestratorVersionProfile;
-import com.azure.resourcemanager.containerservice.models.CredentialResultsInner;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterInner;
-import com.azure.resourcemanager.containerservice.models.ManagedClustersInner;
-import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfileListResultInner;
+import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.inner.CredentialResultsInner;
+import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.inner.OrchestratorVersionProfileListResultInner;
+import com.azure.resourcemanager.containerservice.models.CredentialResult;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
+import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
@@ -24,11 +25,11 @@ import java.util.TreeSet;
 /** The implementation for KubernetesClusters. */
 public class KubernetesClustersImpl
     extends GroupableResourcesImpl<
-        KubernetesCluster, KubernetesClusterImpl, ManagedClusterInner, ManagedClustersInner, ContainerServiceManager>
+        KubernetesCluster, KubernetesClusterImpl, ManagedClusterInner, ManagedClustersClient, ContainerServiceManager>
     implements KubernetesClusters {
 
-    KubernetesClustersImpl(final ContainerServiceManager containerServiceManager) {
-        super(containerServiceManager.inner().managedClusters(), containerServiceManager);
+    public KubernetesClustersImpl(final ContainerServiceManager containerServiceManager) {
+        super(containerServiceManager.inner().getManagedClusters(), containerServiceManager);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class KubernetesClustersImpl
     public Set<String> listKubernetesVersions(Region region) {
         TreeSet<String> kubernetesVersions = new TreeSet<>();
         OrchestratorVersionProfileListResultInner inner =
-            this.manager().inner().containerServices().listOrchestrators(region.name());
+            this.manager().inner().getContainerServices().listOrchestrators(region.name());
 
         if (inner != null && inner.orchestrators() != null && inner.orchestrators().size() > 0) {
             for (OrchestratorVersionProfile orchestrator : inner.orchestrators()) {
@@ -106,7 +107,7 @@ public class KubernetesClustersImpl
         return this
             .manager()
             .inner()
-            .containerServices()
+            .getContainerServices()
             .listOrchestratorsAsync(region.name())
             .map(
                 inner -> {
@@ -133,7 +134,7 @@ public class KubernetesClustersImpl
         return this
             .manager()
             .inner()
-            .managedClusters()
+            .getManagedClusters()
             .listClusterAdminCredentialsAsync(resourceGroupName, kubernetesClusterName)
             .map(CredentialResultsInner::kubeconfigs);
     }
@@ -149,7 +150,7 @@ public class KubernetesClustersImpl
         return this
             .manager()
             .inner()
-            .managedClusters()
+            .getManagedClusters()
             .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName)
             .map(CredentialResultsInner::kubeconfigs);
     }
