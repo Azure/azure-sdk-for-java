@@ -149,7 +149,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
         // Arrange
         Duration shortTimeout = Duration.ofSeconds(15);
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_SEND_READ_BACK_MESSAGES, false);
         final boolean isSessionEnabled =  false;
         final String messageId = UUID.randomUUID().toString();
         final int total = 3;
