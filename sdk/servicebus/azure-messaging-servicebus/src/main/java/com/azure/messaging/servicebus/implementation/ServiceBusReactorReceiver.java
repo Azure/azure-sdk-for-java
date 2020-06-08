@@ -76,7 +76,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<Instant> sessionLockedUntil;
 
     public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-                                     TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
+        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
         super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
         this.receiver = receiver;
         this.handler = handler;
@@ -88,7 +88,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
             .flatMap(state -> {
-                @SuppressWarnings("unchecked") final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
+                @SuppressWarnings("unchecked") final Map<Symbol, Object> remoteSource =
+                    ((Source) receiver.getRemoteSource()).getFilter();
                 final Object value = remoteSource.get(SESSION_FILTER);
                 if (value == null) {
                     logger.info("entityPath[{}], linkName[{}]. There is no session id.", entityPath, getLinkName());
