@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.CosmosDBManager;
 import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
@@ -13,9 +13,10 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Cosmos DB. */
 @Fluent

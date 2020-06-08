@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.cosmos.implementation;
+package com.azure.resourcemanager.cosmos;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.cosmos.implementation.CosmosDBAccountsImpl;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
-import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClientBuilder;
-import com.azure.resourcemanager.cosmos.fluent.CosmosDBManagementClientImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -16,7 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure compute resource management. */
-public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBManagementClientImpl> {
+public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBManagementClient> {
     private CosmosDBAccountsImpl databaseAccounts;
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -86,7 +85,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
             httpPipeline,
             profile,
             new CosmosDBManagementClientBuilder()
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),

@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
-import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsInner;
+import com.azure.resourcemanager.cosmos.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -15,15 +15,16 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import java.util.List;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /** Entry point to Cosmos DB management API. */
 @Fluent
 public interface CosmosDBAccounts
     extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
         HasManager<CosmosDBManager>,
-        HasInner<DatabaseAccountsInner>,
+        HasInner<DatabaseAccountsClient>,
         SupportsBatchCreation<CosmosDBAccount>,
         SupportsGettingById<CosmosDBAccount>,
         SupportsDeletingById,
