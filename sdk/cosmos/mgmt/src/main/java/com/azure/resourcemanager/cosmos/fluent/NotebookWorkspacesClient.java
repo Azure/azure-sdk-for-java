@@ -37,10 +37,12 @@ import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceConnection
 import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.NotebookWorkspaceListResultInner;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
+import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceCreateUpdateParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /** An instance of this class provides access to all the operations defined in NotebookWorkspaces. */
 public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void> {
@@ -112,7 +114,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") String notebookWorkspaceName,
-            @BodyParam("application/json") ArmProxyResource notebookCreateUpdateParameters,
+            @BodyParam("application/json") NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -577,6 +579,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -584,7 +587,8 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -627,6 +631,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -635,7 +640,8 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -674,6 +680,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -681,8 +688,10 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName);
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters);
         return this
             .client
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
@@ -694,6 +703,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -702,9 +712,10 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<NotebookWorkspaceInner>, NotebookWorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, Context context) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters, context);
         return this
             .client
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
@@ -716,14 +727,17 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName);
+    public Mono<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters);
         return this
             .client
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
@@ -737,6 +751,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -745,9 +760,10 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, Context context) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, notebookCreateUpdateParameters, context);
         return this
             .client
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
@@ -767,8 +783,9 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName) {
-        return createOrUpdateAsync(resourceGroupName, accountName).block();
+    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+        return createOrUpdateAsync(resourceGroupName, accountName, notebookCreateUpdateParameters).block();
     }
 
     /**
@@ -776,6 +793,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -783,8 +801,9 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName, Context context) {
-        return createOrUpdateAsync(resourceGroupName, accountName, context).block();
+    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, accountName, notebookCreateUpdateParameters, context).block();
     }
 
     /**
@@ -1565,6 +1584,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1572,7 +1592,8 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookWorkspaceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1615,6 +1636,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1623,7 +1645,8 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NotebookWorkspaceInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1662,6 +1685,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1669,8 +1693,10 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String accountName) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, accountName)
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
+            resourceGroupName, accountName, notebookCreateUpdateParameters)
             .flatMap(
                 (Response<NotebookWorkspaceInner> res) -> {
                     if (res.getValue() != null) {
@@ -1686,6 +1712,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1694,8 +1721,10 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NotebookWorkspaceInner> beginCreateOrUpdateWithoutPollingAsync(
-        String resourceGroupName, String accountName, Context context) {
-        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, accountName, context)
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
+            resourceGroupName, accountName, notebookCreateUpdateParameters, context)
             .flatMap(
                 (Response<NotebookWorkspaceInner> res) -> {
                     if (res.getValue() != null) {
@@ -1711,14 +1740,18 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceInner beginCreateOrUpdateWithoutPolling(String resourceGroupName, String accountName) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, accountName).block();
+    public NotebookWorkspaceInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
+        return beginCreateOrUpdateWithoutPollingAsync(
+            resourceGroupName, accountName, notebookCreateUpdateParameters).block();
     }
 
     /**
@@ -1726,6 +1759,7 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters The notebook workspace to create for the current database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1734,8 +1768,10 @@ public final class NotebookWorkspacesClient implements InnerSupportsDelete<Void>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NotebookWorkspaceInner beginCreateOrUpdateWithoutPolling(
-        String resourceGroupName, String accountName, Context context) {
-        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, accountName, context).block();
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters, Context context) {
+        return beginCreateOrUpdateWithoutPollingAsync(
+            resourceGroupName, accountName, notebookCreateUpdateParameters, context).block();
     }
 
     /**
