@@ -72,10 +72,12 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         // Arrange
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
         final QueuesImpl queuesClient = managementClient.getQueues();
-        final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 4);
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-0"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
 
         // Act & Assert
-        StepVerifier.create(queuesClient.getWithResponseAsync("q-0", true, Context.NONE))
+        StepVerifier.create(queuesClient.getWithResponseAsync(queueName, true, Context.NONE))
             .assertNext(response -> {
                 final QueueDescriptionEntry deserialize = deserialize(response, QueueDescriptionEntry.class);
                 assertNotNull(deserialize);
@@ -168,7 +170,9 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
         final QueuesImpl queuesClient = managementClient.getQueues();
 
-        final String queueName = "q-5";
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final Response<Object> response = queuesClient.getWithResponseAsync(queueName, true, Context.NONE)
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
