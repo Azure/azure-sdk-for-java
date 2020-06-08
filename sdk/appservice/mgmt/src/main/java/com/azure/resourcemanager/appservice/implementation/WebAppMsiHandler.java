@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appservice.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appservice.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.appservice.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.SitePatchResourceInner;
-import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;

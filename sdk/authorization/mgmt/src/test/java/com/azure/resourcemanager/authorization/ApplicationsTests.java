@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.authorization;
 
 import java.time.Duration;
+
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

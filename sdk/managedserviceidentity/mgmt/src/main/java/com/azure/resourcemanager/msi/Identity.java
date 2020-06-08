@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.msi;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.implementation.MSIManager;
 import com.azure.resourcemanager.msi.models.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;

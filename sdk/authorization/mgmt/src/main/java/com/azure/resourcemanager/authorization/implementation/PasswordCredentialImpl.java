@@ -5,8 +5,8 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.PasswordCredential;
-import com.azure.resourcemanager.authorization.models.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.models.PasswordCredential;
+import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 

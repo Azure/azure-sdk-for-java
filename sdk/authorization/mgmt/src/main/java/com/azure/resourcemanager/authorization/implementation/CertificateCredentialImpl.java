@@ -5,9 +5,9 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.CertificateCredential;
-import com.azure.resourcemanager.authorization.CertificateType;
-import com.azure.resourcemanager.authorization.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.models.CertificateCredential;
+import com.azure.resourcemanager.authorization.models.CertificateType;
+import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 
