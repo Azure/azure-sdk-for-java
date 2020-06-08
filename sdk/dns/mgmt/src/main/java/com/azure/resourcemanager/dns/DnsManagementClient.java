@@ -4,23 +4,21 @@
 
 package com.azure.resourcemanager.dns;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.dns.fluent.RecordSetsInner;
-import com.azure.resourcemanager.dns.fluent.ZonesInner;
+import com.azure.resourcemanager.dns.fluent.RecordSetsClient;
+import com.azure.resourcemanager.dns.fluent.ZonesClient;
 
-/** Initializes a new instance of the DnsManagementClientImpl type. */
+/** Initializes a new instance of the DnsManagementClient type. */
+@ServiceClient(builder = DnsManagementClientBuilder.class)
 public final class DnsManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(DnsManagementClient.class);
 
     /** The ID of the target subscription. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
@@ -31,42 +29,20 @@ public final class DnsManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public DnsManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public DnsManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -75,17 +51,6 @@ public final class DnsManagementClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public DnsManagementClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -100,44 +65,28 @@ public final class DnsManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The RecordSetsInner object to access its operations. */
-    private final RecordSetsInner recordSets;
+    /** The RecordSetsClient object to access its operations. */
+    private final RecordSetsClient recordSets;
 
     /**
-     * Gets the RecordSetsInner object to access its operations.
+     * Gets the RecordSetsClient object to access its operations.
      *
-     * @return the RecordSetsInner object.
+     * @return the RecordSetsClient object.
      */
-    public RecordSetsInner recordSets() {
+    public RecordSetsClient getRecordSets() {
         return this.recordSets;
     }
 
-    /** The ZonesInner object to access its operations. */
-    private final ZonesInner zones;
+    /** The ZonesClient object to access its operations. */
+    private final ZonesClient zones;
 
     /**
-     * Gets the ZonesInner object to access its operations.
+     * Gets the ZonesClient object to access its operations.
      *
-     * @return the ZonesInner object.
+     * @return the ZonesClient object.
      */
-    public ZonesInner zones() {
+    public ZonesClient getZones() {
         return this.zones;
-    }
-
-    /** Initializes an instance of DnsManagementClient client. */
-    public DnsManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of DnsManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public DnsManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -146,10 +95,14 @@ public final class DnsManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public DnsManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    DnsManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.recordSets = new RecordSetsInner(this);
-        this.zones = new ZonesInner(this);
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.apiVersion = "2018-03-01-preview";
+        this.recordSets = new RecordSetsClient(this);
+        this.zones = new ZonesClient(this);
     }
 }

@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the DnsManagementClientImpl type. */
+/** A builder for creating a new instance of the DnsManagementClient type. */
 @ServiceClientBuilder(serviceClients = {DnsManagementClient.class})
 public final class DnsManagementClientBuilder {
     /*
@@ -34,32 +34,16 @@ public final class DnsManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the DnsManagementClientBuilder.
      */
-    public DnsManagementClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the DnsManagementClientBuilder.
-     */
-    public DnsManagementClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public DnsManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -96,16 +80,13 @@ public final class DnsManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of DnsManagementClientImpl with the provided parameters.
+     * Builds an instance of DnsManagementClient with the provided parameters.
      *
-     * @return an instance of DnsManagementClientImpl.
+     * @return an instance of DnsManagementClient.
      */
     public DnsManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2018-03-01-preview";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -116,10 +97,7 @@ public final class DnsManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        DnsManagementClient client = new DnsManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        DnsManagementClient client = new DnsManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }
