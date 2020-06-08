@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.Reason;
+import com.azure.resourcemanager.keyvault.models.Reason;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

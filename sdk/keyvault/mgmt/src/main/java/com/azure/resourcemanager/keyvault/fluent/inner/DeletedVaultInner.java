@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.DeletedVaultProperties;
+import com.azure.resourcemanager.keyvault.models.DeletedVaultProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

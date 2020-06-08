@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.keyvault;
+package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.keyvault.fluent.VaultsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;

@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.keyvault;
+package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.keyvault.Key.DefinitionStages.WithKey;
+import com.azure.resourcemanager.keyvault.models.Key.DefinitionStages.WithKey;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

@@ -25,6 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.keyvault.KeyVaultManagementClientImpl;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionsBeginDeleteResponse;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionsPutResponse;

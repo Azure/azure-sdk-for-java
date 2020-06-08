@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.appservice;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

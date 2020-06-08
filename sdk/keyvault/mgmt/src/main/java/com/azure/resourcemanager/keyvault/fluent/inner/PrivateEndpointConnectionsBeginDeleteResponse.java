@@ -7,7 +7,7 @@ package com.azure.resourcemanager.keyvault.fluent.inner;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.resourcemanager.keyvault.PrivateEndpointConnectionsBeginDeleteHeaders;
+import com.azure.resourcemanager.keyvault.models.PrivateEndpointConnectionsBeginDeleteHeaders;
 
 /** Contains all response data for the beginDelete operation. */
 public final class PrivateEndpointConnectionsBeginDeleteResponse

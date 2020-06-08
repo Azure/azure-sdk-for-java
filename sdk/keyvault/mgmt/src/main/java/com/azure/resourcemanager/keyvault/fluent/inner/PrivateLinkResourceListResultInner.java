@@ -6,7 +6,7 @@ package com.azure.resourcemanager.keyvault.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.PrivateLinkResource;
+import com.azure.resourcemanager.keyvault.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

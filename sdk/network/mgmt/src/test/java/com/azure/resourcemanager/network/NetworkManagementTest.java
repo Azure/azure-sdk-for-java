@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
 import com.azure.resourcemanager.resources.core.TestBase;

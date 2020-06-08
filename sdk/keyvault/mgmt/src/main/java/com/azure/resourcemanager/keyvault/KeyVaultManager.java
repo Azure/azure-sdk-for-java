@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.keyvault.implementation;
+package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.keyvault.Vaults;
-import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClientBuilder;
-import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClientImpl;
+import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
+import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;

@@ -22,7 +22,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
-import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;

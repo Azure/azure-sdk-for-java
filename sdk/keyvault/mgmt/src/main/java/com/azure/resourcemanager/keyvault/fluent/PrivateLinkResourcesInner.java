@@ -21,6 +21,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.keyvault.KeyVaultManagementClientImpl;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.keyvault.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.OperationDisplay;
-import com.azure.resourcemanager.keyvault.ServiceSpecification;
+import com.azure.resourcemanager.keyvault.models.OperationDisplay;
+import com.azure.resourcemanager.keyvault.models.ServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

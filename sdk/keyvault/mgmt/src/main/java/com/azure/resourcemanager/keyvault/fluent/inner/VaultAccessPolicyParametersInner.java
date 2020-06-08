@@ -7,7 +7,7 @@ package com.azure.resourcemanager.keyvault.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.VaultAccessPolicyProperties;
+import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
