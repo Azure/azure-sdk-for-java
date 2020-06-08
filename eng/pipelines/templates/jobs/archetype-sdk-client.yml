@@ -65,8 +65,6 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
-
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
