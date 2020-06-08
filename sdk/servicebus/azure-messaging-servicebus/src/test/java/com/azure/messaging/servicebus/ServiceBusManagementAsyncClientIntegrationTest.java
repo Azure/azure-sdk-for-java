@@ -16,15 +16,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.time.Clock;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Tests {@link ServiceBusManagementAsyncClient}.
+ */
 class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
-
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
@@ -41,12 +45,23 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
         final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
+        final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(queueDescription -> {
                 assertEquals(queueName, queueDescription.getName());
+                assertNotNull(queueDescription.getCreatedAt());
+                assertTrue(nowUtc.isAfter(queueDescription.getCreatedAt()));
+
+                assertNotNull(queueDescription.getUpdatedAt());
+                assertTrue(nowUtc.isAfter(queueDescription.getUpdatedAt()));
+
+                assertNotNull(queueDescription.getAccessedAt());
+
+                assertFalse(queueDescription.isEnablePartitioning());
                 assertFalse(queueDescription.isRequiresSession());
+                assertTrue(queueDescription.isSupportOrdering());
                 assertNotNull(queueDescription.getLockDuration());
             })
             .verifyComplete();
@@ -74,12 +89,14 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             : TestUtils.getConnectionString();
         final ServiceBusManagementClientBuilder builder = new ServiceBusManagementClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .connectionString(connectionString)
-            .httpClient(httpClient);
+            .connectionString(connectionString);
 
-        if (!interceptorManager.isPlaybackMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-            builder.addPolicy(new RetryPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else {
+            builder.httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy());
         }
 
         return builder.buildAsyncClient();
