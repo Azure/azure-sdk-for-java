@@ -54,9 +54,6 @@ public class UsernamePasswordCredential implements TokenCredential {
                 .build();
         cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
-        if (identityClientOptions.getAuthenticationRecord() != null) {
-            cachedToken.set(new MsalAuthenticationAccount(identityClientOptions.getAuthenticationRecord()));
-        }
     }
 
     @Override
