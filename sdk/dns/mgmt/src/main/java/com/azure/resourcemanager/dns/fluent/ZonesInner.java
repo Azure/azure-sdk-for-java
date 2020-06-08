@@ -32,7 +32,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.dns.ZoneUpdate;
+import com.azure.resourcemanager.dns.DnsManagementClient;
+import com.azure.resourcemanager.dns.models.ZoneUpdate;
 import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.dns.fluent.inner.ZoneListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -52,14 +53,14 @@ public final class ZonesInner
     private final ZonesService service;
 
     /** The service client containing this operation class. */
-    private final DnsManagementClientImpl client;
+    private final DnsManagementClient client;
 
     /**
      * Initializes an instance of ZonesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ZonesInner(DnsManagementClientImpl client) {
+    ZonesInner(DnsManagementClient client) {
         this.service = RestProxy.create(ZonesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

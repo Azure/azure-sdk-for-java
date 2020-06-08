@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.TxtRecord;
-import com.azure.resourcemanager.dns.TxtRecordSet;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.models.TxtRecord;
+import com.azure.resourcemanager.dns.models.TxtRecordSet;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;

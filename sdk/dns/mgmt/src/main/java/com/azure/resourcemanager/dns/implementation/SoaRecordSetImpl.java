@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.SoaRecord;
-import com.azure.resourcemanager.dns.SoaRecordSet;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.models.SoaRecord;
+import com.azure.resourcemanager.dns.models.SoaRecordSet;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 
 /** Implementation of SoaRecordSet. */

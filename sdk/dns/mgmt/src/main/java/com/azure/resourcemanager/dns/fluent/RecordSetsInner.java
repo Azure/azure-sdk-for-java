@@ -31,7 +31,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.dns.RecordType;
+import com.azure.resourcemanager.dns.DnsManagementClient;
+import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetListResultInner;
 import reactor.core.publisher.Mono;
@@ -44,14 +45,14 @@ public final class RecordSetsInner {
     private final RecordSetsService service;
 
     /** The service client containing this operation class. */
-    private final DnsManagementClientImpl client;
+    private final DnsManagementClient client;
 
     /**
      * Initializes an instance of RecordSetsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RecordSetsInner(DnsManagementClientImpl client) {
+    RecordSetsInner(DnsManagementClient client) {
         this.service =
             RestProxy.create(RecordSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

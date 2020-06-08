@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.dns.implementation;
+package com.azure.resourcemanager.dns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.dns.DnsZones;
-import com.azure.resourcemanager.dns.fluent.DnsManagementClientBuilder;
-import com.azure.resourcemanager.dns.fluent.DnsManagementClientImpl;
+import com.azure.resourcemanager.dns.implementation.DnsZonesImpl;
+import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -16,7 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure DNS zone management. */
-public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientImpl> {
+public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClient> {
     // Collections
     private DnsZones zones;
 

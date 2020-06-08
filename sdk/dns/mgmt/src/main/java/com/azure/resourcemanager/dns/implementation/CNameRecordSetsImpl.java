@@ -4,9 +4,9 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.dns.CNameRecordSet;
-import com.azure.resourcemanager.dns.CNameRecordSets;
-import com.azure.resourcemanager.dns.RecordType;
+import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CNameRecordSets;
+import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import reactor.core.publisher.Mono;
 

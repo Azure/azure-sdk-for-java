@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.resourcemanager.dns;
+package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.dns.implementation.DnsZoneManager;
+import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.fluent.ZonesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.PtrRecord;
-import com.azure.resourcemanager.dns.PtrRecordSet;
-import com.azure.resourcemanager.dns.RecordType;
+import com.azure.resourcemanager.dns.models.PtrRecord;
+import com.azure.resourcemanager.dns.models.PtrRecordSet;
+import com.azure.resourcemanager.dns.models.RecordType;
 import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;

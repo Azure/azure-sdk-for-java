@@ -2,4 +2,4 @@
 // Licensed under the MIT License.
 
 /** Package containing the implementations and inner classes for DnsManagementClient. The DNS Management Client. */
-package com.azure.resourcemanager.dns;
+package com.azure.resourcemanager.dns.models;
