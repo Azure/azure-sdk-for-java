@@ -4,9 +4,10 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerregistry.Registries;
-import com.azure.resourcemanager.containerregistry.Webhook;
-import com.azure.resourcemanager.containerregistry.models.WebhooksInner;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.WebhooksClient;
+import com.azure.resourcemanager.containerregistry.models.Registries;
+import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +29,7 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
     @Override
     public Mono<Webhook> getAsync(final String resourceGroupName, final String registryName, final String webhookName) {
         final WebhooksClientImpl self = this;
-        final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
+        final WebhooksClient webhooksInner = this.containerRegistryManager.inner().getWebhooks();
 
         return webhooksInner
             .getAsync(resourceGroupName, registryName, webhookName)
@@ -47,7 +48,7 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
 
     @Override
     public void delete(final String resourceGroupName, final String registryName, final String webhookName) {
-        this.containerRegistryManager.inner().webhooks().delete(resourceGroupName, registryName, webhookName);
+        this.containerRegistryManager.inner().getWebhooks().delete(resourceGroupName, registryName, webhookName);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
         return this
             .containerRegistryManager
             .inner()
-            .webhooks()
+            .getWebhooks()
             .deleteAsync(resourceGroupName, registryName, webhookName);
     }
 
@@ -67,7 +68,7 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
     @Override
     public PagedFlux<Webhook> listAsync(final String resourceGroupName, final String registryName) {
         final WebhooksClientImpl self = this;
-        final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
+        final WebhooksClient webhooksInner = this.containerRegistryManager.inner().getWebhooks();
 
         return PagedConverter
             .flatMapPage(

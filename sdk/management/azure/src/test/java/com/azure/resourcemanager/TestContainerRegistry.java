@@ -3,11 +3,11 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerregistry.Registries;
-import com.azure.resourcemanager.containerregistry.Registry;
-import com.azure.resourcemanager.containerregistry.RegistryCredentials;
-import com.azure.resourcemanager.containerregistry.Webhook;
-import com.azure.resourcemanager.containerregistry.WebhookAction;
+import com.azure.resourcemanager.containerregistry.models.Registries;
+import com.azure.resourcemanager.containerregistry.models.Registry;
+import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+import com.azure.resourcemanager.containerregistry.models.Webhook;
+import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 

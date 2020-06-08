@@ -4,19 +4,20 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.containerregistry.AccessKeyType;
-import com.azure.resourcemanager.containerregistry.Registry;
-import com.azure.resourcemanager.containerregistry.RegistryCredentials;
-import com.azure.resourcemanager.containerregistry.RegistryTaskRun;
-import com.azure.resourcemanager.containerregistry.RegistryUpdateParameters;
-import com.azure.resourcemanager.containerregistry.RegistryUsage;
-import com.azure.resourcemanager.containerregistry.Sku;
-import com.azure.resourcemanager.containerregistry.SkuName;
-import com.azure.resourcemanager.containerregistry.SourceUploadDefinition;
-import com.azure.resourcemanager.containerregistry.StorageAccountProperties;
-import com.azure.resourcemanager.containerregistry.WebhookOperations;
-import com.azure.resourcemanager.containerregistry.models.RegistryInner;
-import com.azure.resourcemanager.containerregistry.models.RunInner;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.containerregistry.models.Registry;
+import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
+import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
+import com.azure.resourcemanager.containerregistry.models.RegistryUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
+import com.azure.resourcemanager.containerregistry.models.Sku;
+import com.azure.resourcemanager.containerregistry.models.SkuName;
+import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
+import com.azure.resourcemanager.containerregistry.models.StorageAccountProperties;
+import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -49,7 +50,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     protected Mono<RegistryInner> getInnerAsync() {
-        return this.manager().inner().registries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getRegistries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -71,14 +72,14 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
             return manager()
                 .inner()
-                .registries()
+                .getRegistries()
                 .createAsync(self.resourceGroupName(), self.name(), self.inner())
                 .map(innerToFluentMap(this));
         } else {
             updateParameters.withTags(inner().tags());
             return manager()
                 .inner()
-                .registries()
+                .getRegistries()
                 .updateAsync(self.resourceGroupName(), self.name(), self.updateParameters)
                 .map(innerToFluentMap(this));
         }
@@ -300,7 +301,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
         return this
             .manager()
             .inner()
-            .registries()
+            .getRegistries()
             .getBuildSourceUploadUrlAsync(this.resourceGroupName(), this.name())
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }
