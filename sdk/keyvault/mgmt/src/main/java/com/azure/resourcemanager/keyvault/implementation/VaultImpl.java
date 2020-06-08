@@ -22,7 +22,7 @@ import com.azure.resourcemanager.keyvault.Vault;
 import com.azure.resourcemanager.keyvault.VaultCreateOrUpdateParameters;
 import com.azure.resourcemanager.keyvault.VaultProperties;
 import com.azure.resourcemanager.keyvault.VirtualNetworkRule;
-import com.azure.resourcemanager.keyvault.fluent.VaultInner;
+import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
 import com.azure.resourcemanager.keyvault.fluent.VaultsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
