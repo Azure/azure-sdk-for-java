@@ -106,7 +106,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('queueSessionName'), '-', copyIndex())]",
+      "name": "[concat(variables('namespaceName'), '/', variables('queueName'), '-', copyIndex())]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
       ],
@@ -124,7 +124,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2017-04-01",
-      "name": "[concat(variables('namespaceName'), '/', variables('queueName'), '-', copyIndex())]",
+      "name": "[concat(variables('namespaceName'), '/', variables('queueSessionName'), '-', copyIndex())]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
       ],
