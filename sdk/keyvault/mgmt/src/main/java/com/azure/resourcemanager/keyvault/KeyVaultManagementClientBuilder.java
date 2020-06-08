@@ -13,7 +13,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
 /** A builder for creating a new instance of the KeyVaultManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {KeyVaultManagementClientImpl.class})
+@ServiceClientBuilder(serviceClients = {KeyVaultManagementClient.class})
 public final class KeyVaultManagementClientBuilder {
     /*
      * Subscription credentials which uniquely identify Microsoft Azure
@@ -103,7 +103,7 @@ public final class KeyVaultManagementClientBuilder {
      *
      * @return an instance of KeyVaultManagementClientImpl.
      */
-    public KeyVaultManagementClientImpl buildClient() {
+    public KeyVaultManagementClient buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -119,7 +119,7 @@ public final class KeyVaultManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        KeyVaultManagementClientImpl client = new KeyVaultManagementClientImpl(pipeline, environment);
+        KeyVaultManagementClient client = new KeyVaultManagementClient(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);
         client.setHost(this.host);
         client.setApiVersion(this.apiVersion);

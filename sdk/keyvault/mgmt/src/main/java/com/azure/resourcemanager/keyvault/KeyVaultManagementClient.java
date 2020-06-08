@@ -18,8 +18,8 @@ import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesInner;
 import com.azure.resourcemanager.keyvault.fluent.VaultsInner;
 
 /** Initializes a new instance of the KeyVaultManagementClientImpl type. */
-public final class KeyVaultManagementClientImpl extends AzureServiceClient {
-    private final ClientLogger logger = new ClientLogger(KeyVaultManagementClientImpl.class);
+public final class KeyVaultManagementClient extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(KeyVaultManagementClient.class);
 
     /**
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
@@ -44,7 +44,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
-    public KeyVaultManagementClientImpl setSubscriptionId(String subscriptionId) {
+    public KeyVaultManagementClient setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -67,7 +67,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      * @param host the host value.
      * @return the service client itself.
      */
-    public KeyVaultManagementClientImpl setHost(String host) {
+    public KeyVaultManagementClient setHost(String host) {
         this.host = host;
         return this;
     }
@@ -90,7 +90,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      * @param apiVersion the apiVersion value.
      * @return the service client itself.
      */
-    public KeyVaultManagementClientImpl setApiVersion(String apiVersion) {
+    public KeyVaultManagementClient setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -156,7 +156,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
     }
 
     /** Initializes an instance of KeyVaultManagementClient client. */
-    public KeyVaultManagementClientImpl() {
+    public KeyVaultManagementClient() {
         this(
             new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
             AzureEnvironment.AZURE);
@@ -167,7 +167,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    public KeyVaultManagementClientImpl(HttpPipeline httpPipeline) {
+    public KeyVaultManagementClient(HttpPipeline httpPipeline) {
         this(httpPipeline, AzureEnvironment.AZURE);
     }
 
@@ -177,7 +177,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public KeyVaultManagementClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    public KeyVaultManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
         this.vaults = new VaultsInner(this);

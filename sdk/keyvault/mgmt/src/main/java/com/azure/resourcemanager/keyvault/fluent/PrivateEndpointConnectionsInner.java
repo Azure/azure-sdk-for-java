@@ -25,7 +25,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClientImpl;
+import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionsBeginDeleteResponse;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateEndpointConnectionsPutResponse;
@@ -42,14 +42,14 @@ public final class PrivateEndpointConnectionsInner {
     private final PrivateEndpointConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final KeyVaultManagementClientImpl client;
+    private final KeyVaultManagementClient client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsInner(KeyVaultManagementClientImpl client) {
+    PrivateEndpointConnectionsInner(KeyVaultManagementClient client) {
         this.service =
             RestProxy
                 .create(

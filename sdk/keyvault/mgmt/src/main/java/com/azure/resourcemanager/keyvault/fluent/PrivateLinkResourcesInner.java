@@ -21,7 +21,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClientImpl;
+import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
@@ -33,14 +33,14 @@ public final class PrivateLinkResourcesInner {
     private final PrivateLinkResourcesService service;
 
     /** The service client containing this operation class. */
-    private final KeyVaultManagementClientImpl client;
+    private final KeyVaultManagementClient client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkResourcesInner(KeyVaultManagementClientImpl client) {
+    PrivateLinkResourcesInner(KeyVaultManagementClient client) {
         this.service =
             RestProxy
                 .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());

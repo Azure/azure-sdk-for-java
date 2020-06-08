@@ -25,7 +25,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClientImpl;
+import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.inner.OperationInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.OperationListResultInner;
 import reactor.core.publisher.Mono;
@@ -38,14 +38,14 @@ public final class OperationsInner {
     private final OperationsService service;
 
     /** The service client containing this operation class. */
-    private final KeyVaultManagementClientImpl client;
+    private final KeyVaultManagementClient client;
 
     /**
      * Initializes an instance of OperationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsInner(KeyVaultManagementClientImpl client) {
+    OperationsInner(KeyVaultManagementClient client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

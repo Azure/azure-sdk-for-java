@@ -33,7 +33,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.keyvault.KeyVaultManagementClientImpl;
+import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
 import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
 import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
@@ -60,14 +60,14 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     private final VaultsService service;
 
     /** The service client containing this operation class. */
-    private final KeyVaultManagementClientImpl client;
+    private final KeyVaultManagementClient client;
 
     /**
      * Initializes an instance of VaultsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VaultsInner(KeyVaultManagementClientImpl client) {
+    VaultsInner(KeyVaultManagementClient client) {
         this.service = RestProxy.create(VaultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
