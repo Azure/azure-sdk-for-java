@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.cosmos.implementation;
 
-import com.azure.resourcemanager.cosmos.PrivateLinkResource;
-import com.azure.resourcemanager.cosmos.models.PrivateLinkResourceInner;
+import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
+import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 
