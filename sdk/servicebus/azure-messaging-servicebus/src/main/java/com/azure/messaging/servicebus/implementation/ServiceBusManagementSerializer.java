@@ -8,6 +8,7 @@ import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -41,11 +42,16 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
-        if (encoding == SerializerEncoding.XML) {
-            return (T) value;
+        if (encoding != SerializerEncoding.XML) {
+            return jacksonAdapter.deserialize(value, type, encoding);
         }
 
-        return jacksonAdapter.deserialize(value, type, encoding);
+        if (ServiceBusManagementError.class == type) {
+            final ServiceBusManagementError error = deserialize(value, type);
+            return (T) error;
+        }
+
+        return (T) value;
     }
 
     @Override

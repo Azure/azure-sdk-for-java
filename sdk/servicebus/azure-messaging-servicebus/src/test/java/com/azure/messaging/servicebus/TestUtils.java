@@ -32,7 +32,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class TestUtils {
-    static final ClientLogger logger = new ClientLogger(TestUtils.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
@@ -79,7 +79,7 @@ public class TestUtils {
      *
      * @return The Service Bus queue name.
      */
-    public static String getQueueName() {
+    public static String getQueueBaseName() {
         return System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
     }
 
@@ -124,7 +124,7 @@ public class TestUtils {
                     System.getenv(subscriptionBuilder.append("2").toString()));
                 break;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unknown use case: " + useCase));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown use case: " + useCase));
         }
         return testResourceDescription;
     }
@@ -134,7 +134,7 @@ public class TestUtils {
      *
      * @return The Service Bus queue name.
      */
-    public static String getSessionQueueName() {
+    public static String getSessionQueueBaseName() {
         return System.getenv("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
     }
 
@@ -152,7 +152,7 @@ public class TestUtils {
      *
      * @return The Service Bus subscription name.
      */
-    public static String getSubscriptionName() {
+    public static String getSubscriptionBaseName() {
         return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
     }
 
@@ -161,8 +161,20 @@ public class TestUtils {
      *
      * @return The Service Bus subscription name.
      */
-    public static String getSessionSubscriptionName() {
+    public static String getSessionSubscriptionBaseName() {
         return System.getenv("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
+    }
+
+    /**
+     * Gets the name of an entity based on its base name.
+     *
+     * @param baseName Base of the entity.
+     * @param index Index number.
+     *
+     * @return The entity name.
+     */
+    public static String getEntityName(String baseName, int index) {
+        return String.join("-", baseName, String.valueOf(index));
     }
 
     /**

@@ -89,7 +89,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
@@ -106,7 +106,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
         int count = 4;
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
@@ -125,7 +125,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
@@ -153,7 +153,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, 0, false);
         final boolean isSessionEnabled =  false;
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
@@ -193,7 +193,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, true);
+        setSenderAndReceiver(entityType, 0, true);
 
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
@@ -218,7 +218,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Arrange
         boolean isSessionEnabled = false;
-        setSenderAndReceiver(entityType, false, isSessionEnabled);
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
         final Duration scheduleDuration = Duration.ofSeconds(3);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -248,43 +248,36 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
     }
 
-    /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
-     */
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean useCredentials) {
-        setSenderAndReceiver(entityType, useCredentials, false, null, false);
-    }
+
 
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean useCredentials, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, useCredentials, isSessionEnabled, null, false);
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials) {
+        setSenderAndReceiver(entityType, entityIndex, useCredentials, false, false);
     }
 
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
      * shared connection as needed.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, boolean useCredentials, boolean isSessionEnabled,
-                                      Duration autoLockRenewal, boolean shareConnection) {
-        this.sender = getSenderBuilder(useCredentials, entityType, isSessionEnabled, shareConnection).buildAsyncClient();
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials, boolean isSessionEnabled,
+                                      boolean shareConnection) {
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection)
+            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity(), shareConnection)
                 .sessionId(sessionId)
-                .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(useCredentials, entityType, Function.identity(), shareConnection)
-                .maxAutoLockRenewalDuration(autoLockRenewal)
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }

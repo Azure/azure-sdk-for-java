@@ -24,7 +24,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.Mockito;
@@ -42,6 +41,11 @@ import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -130,24 +134,46 @@ public abstract class IntegrationTestBase extends TestBase {
         return TestUtils.getTestResource(useCase, isSessionEnabled);
     }
 
-    public String getQueueName() {
-        return TestUtils.getQueueName();
+    /**
+     * Gets the name of the queue.
+     *
+     * @param index Index of the queue.
+     *
+     * @return Name of the queue.
+     */
+    public String getQueueName(int index) {
+        return getEntityName(getQueueBaseName(), index);
     }
 
-    public String getSessionQueueName() {
-        return TestUtils.getSessionQueueName();
+    public String getSessionQueueName(int index) {
+        return getEntityName(getSessionQueueBaseName(), index);
     }
 
-    public String getSessionSubscriptionName() {
-        return TestUtils.getSessionSubscriptionName();
-    }
-
+    /**
+     * Gets the name of the topic.
+     *
+     * @return Name of the topic.
+     */
     public String getTopicName() {
         return TestUtils.getTopicName();
     }
 
-    public String getSubscriptionName() {
-        return TestUtils.getSubscriptionName();
+    /**
+     * Gets the name of the first subscription.
+     *
+     * @return Name of the first subscription.
+     */
+    public String getSubscriptionName(int index) {
+        return getEntityName(getSubscriptionBaseName(), index);
+    }
+
+    /**
+     * Gets the name of the first session-enabled subscription.
+     *
+     * @return Name of the first session-enabled subscription.
+     */
+    public String getSessionSubscriptionName(int index) {
+        return getEntityName(getSessionSubscriptionBaseName(), index);
     }
 
     /**
@@ -230,71 +256,47 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        boolean isSessionAware) {
-        return getSenderBuilder(useCredentials, entityType, isSessionAware, false);
-    }
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        boolean isSessionAware, boolean sharedConnection) {
-        return getSenderBuilder(useCredentials, entityType, isSessionAware, sharedConnection, TestUtils.USE_CASE_DEFAULT);
-    }
+        int entityIndex, boolean isSessionAware, boolean sharedConnection) {
 
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        boolean isSessionAware, boolean sharedConnection, int useCase) {
-
-        TestResourceDescription testResourceDescription = getTestResourceDescription(useCase, isSessionAware);
+        //TestResourceDescription testResourceDescription = getTestResourceDescription(useCase, isSessionAware);
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         switch (entityType) {
             case QUEUE:
-                final String queueName = testResourceDescription.getQueueName();
+                final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-
                 return builder.sender()
                     .queueName(queueName);
             case SUBSCRIPTION:
-                final String topicName = testResourceDescription.getTopicName();
-                final String subscriptionName = testResourceDescription.getSubscriberName();
+                final String topicName = getTopicName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
                 return builder.sender().topicName(topicName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }
+
     }
 
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
-        return getReceiverBuilder(useCredentials, entityType, onBuilderCreate, false);
-    }
-
-
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate
-        , boolean sharedConnection) {
-        return getReceiverBuilder(useCredentials, entityType, onBuilderCreate, sharedConnection, TestUtils.USE_CASE_DEFAULT);
-    }
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
-        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection, int useCase) {
-
-        TestResourceDescription testResourceDescription = getTestResourceDescription(useCase, false);
+        int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         builder = onBuilderCreate.apply(builder);
         switch (entityType) {
             case QUEUE:
-                final String queueName = testResourceDescription.getQueueName();
+                final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
-                final String topicName = testResourceDescription.getTopicName();
-                final String subscriptionName = testResourceDescription.getSubscriberName();
+                final String topicName = getTopicName();
+                final String subscriptionName = getSubscriptionName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
@@ -305,34 +307,24 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
+        MessagingEntityType entityType, int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
         boolean sharedConnection) {
-        return getSessionReceiverBuilder(useCredentials, entityType, onBuilderCreate, sharedConnection, TestUtils.USE_CASE_DEFAULT);
-    }
-
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
-        boolean sharedConnection, int useCase) {
-
-        TestResourceDescription testResourceDescription = getTestResourceDescription(useCase, true);
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         switch (entityType) {
             case QUEUE:
-                final String queueName = testResourceDescription.getQueueName();
+                final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
-
                 return onBuilderCreate.apply(builder)
                     .sessionReceiver()
                     .queueName(queueName);
 
             case SUBSCRIPTION:
-                final String topicName = testResourceDescription.getTopicName();
-                final String subscriptionName = testResourceDescription.getSubscriberName();
+                final String topicName = getTopicName();
+                final String subscriptionName = getSessionSubscriptionName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
-
                 return onBuilderCreate.apply(builder)
                     .sessionReceiver()
                     .topicName(topicName).subscriptionName(subscriptionName);
@@ -472,7 +464,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
         // the queue or topic contains messages from previous test cases.
-        // assertEquals(messageId, message.getMessageId());
+        assertEquals(messageId, message.getMessageId());
 
         if (isSessionEnabled) {
             assertNotNull(message.getSessionId());
@@ -481,7 +473,6 @@ public abstract class IntegrationTestBase extends TestBase {
             // assertEquals(sessionId, message.getSessionId());
         }
     }
-
     private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
         ServiceBusClientBuilder builder;
         if (sharedConnection && sharedBuilder ==  null) {

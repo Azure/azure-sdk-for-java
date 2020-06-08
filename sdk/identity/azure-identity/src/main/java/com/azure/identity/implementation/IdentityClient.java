@@ -541,12 +541,13 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
         return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
-            AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-                .scopes(new HashSet<>(request.getScopes()))
-                .build()))
-            .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with authorization code",
-                null, t)).map(ar -> new MsalToken(ar, options));
+                AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
+                        .scopes(new HashSet<>(request.getScopes()))
+                        .build())).map(ar -> new MsalToken(ar, options))
+                       .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with "
+                                + "authorization code", null, t));
     }
+
 
     /**
      * Asynchronously acquire a token from Active Directory by opening a browser and wait for the user to login. The
@@ -884,5 +885,23 @@ public class IdentityClient {
                 httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
             }
         }
+    }
+
+    /**
+     * Get the configured tenant id.
+     *
+     * @return the tenant id.
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Get the configured client id.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
     }
 }

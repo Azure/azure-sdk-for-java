@@ -4,9 +4,10 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.RoleAssignment;
-import com.azure.resourcemanager.authorization.RoleDefinition;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;

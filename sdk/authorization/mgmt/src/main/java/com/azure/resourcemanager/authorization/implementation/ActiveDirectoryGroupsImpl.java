@@ -5,27 +5,28 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.ActiveDirectoryGroup;
-import com.azure.resourcemanager.authorization.ActiveDirectoryGroups;
-import com.azure.resourcemanager.authorization.GraphErrorException;
-import com.azure.resourcemanager.authorization.models.ADGroupInner;
-import com.azure.resourcemanager.authorization.models.GroupsInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
+import com.azure.resourcemanager.authorization.fluent.GroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
-class ActiveDirectoryGroupsImpl
+public class ActiveDirectoryGroupsImpl
     extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, ADGroupInner>
     implements ActiveDirectoryGroups {
     private final GraphRbacManager manager;
 
-    ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
+    public ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.inner().groups().list(null));
+        return wrapList(this.manager.inner().getGroups().list(null));
     }
 
     @Override
@@ -45,7 +46,7 @@ class ActiveDirectoryGroupsImpl
     public Mono<ActiveDirectoryGroup> getByIdAsync(String id) {
         return manager
             .inner()
-            .groups()
+            .getGroups()
             .getAsync(id)
             .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
@@ -53,14 +54,14 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryGroup> listAsync() {
-        return wrapPageAsync(manager().inner().groups().listAsync(null));
+        return wrapPageAsync(manager().inner().getGroups().listAsync(null));
     }
 
     @Override
     public Mono<ActiveDirectoryGroup> getByNameAsync(String name) {
         return manager()
             .inner()
-            .groups()
+            .getGroups()
             .listAsync(String.format("displayName eq '%s'", name))
             .singleOrEmpty()
             .map(adGroupInner -> new ActiveDirectoryGroupImpl(adGroupInner, manager()));
@@ -83,7 +84,7 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().groups().deleteAsync(id);
+        return manager().inner().getGroups().deleteAsync(id);
     }
 
     @Override
@@ -92,7 +93,7 @@ class ActiveDirectoryGroupsImpl
     }
 
     @Override
-    public GroupsInner inner() {
-        return manager().inner().groups();
+    public GroupsClient inner() {
+        return manager().inner().getGroups();
     }
 }

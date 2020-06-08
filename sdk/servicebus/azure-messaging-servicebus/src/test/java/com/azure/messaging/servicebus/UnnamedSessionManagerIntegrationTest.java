@@ -60,15 +60,17 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void singleUnnamedSession(MessagingEntityType entityType) {
         // Arrange
+        final int entityIndex = 0;
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "hello world";
         final int numberToSend = 5;
 
-        setSenderAndReceiver(entityType, TIMEOUT, builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
+        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
+            builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -102,6 +104,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     @Test
     void multipleSessions() {
         // Arrange
+        final int entityIndex = 0;
         final String messageId = "singleUnnamedSession";
         final String now = Instant.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)
@@ -119,7 +122,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final int maxConcurrency = 2;
         final Set<String> set = new HashSet<>();
 
-        setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, Duration.ofSeconds(20),
+        setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
             builder -> builder.maxConcurrentSessions(maxConcurrency).maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
@@ -176,13 +179,14 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, Duration operationTimeout,
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, Duration operationTimeout,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
-        this.sender = getSenderBuilder(false, entityType, true).buildAsyncClient();
-        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false, entityType,
+        this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
+            .buildAsyncClient();
+        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
+            entityType, entityIndex,
             builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
-
         this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 

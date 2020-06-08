@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.msi.implementation;
 
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.Identity;
 import com.azure.resourcemanager.msi.models.IdentityInner;

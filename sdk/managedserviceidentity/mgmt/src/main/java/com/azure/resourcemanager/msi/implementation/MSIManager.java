@@ -5,7 +5,7 @@ package com.azure.resourcemanager.msi.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.msi.Identities;
 import com.azure.resourcemanager.msi.models.ManagedServiceIdentityClientBuilder;
 import com.azure.resourcemanager.msi.models.ManagedServiceIdentityClientImpl;
