@@ -14,7 +14,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineOffer;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineSku;
-import com.azure.resourcemanager.msi.implementation.MSIManager;
+import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.network.Access;
 import com.azure.resourcemanager.network.ConnectionMonitor;
 import com.azure.resourcemanager.network.ConnectionMonitorQueryResult;

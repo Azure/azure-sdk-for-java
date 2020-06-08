@@ -7,7 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.SiteInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.msi.Identity;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
