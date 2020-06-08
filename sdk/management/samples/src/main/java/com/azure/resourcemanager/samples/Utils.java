@@ -92,7 +92,7 @@ import com.azure.resourcemanager.monitor.MetricSettings;
 import com.azure.resourcemanager.monitor.SmsReceiver;
 import com.azure.resourcemanager.monitor.VoiceReceiver;
 import com.azure.resourcemanager.monitor.WebhookReceiver;
-import com.azure.resourcemanager.msi.Identity;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.ApplicationGateway;
 import com.azure.resourcemanager.network.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.ApplicationGatewayBackendAddress;

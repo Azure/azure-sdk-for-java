@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.msi.implementation;
+package com.azure.resourcemanager.msi;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.msi.Identities;
-import com.azure.resourcemanager.msi.models.ManagedServiceIdentityClientBuilder;
-import com.azure.resourcemanager.msi.models.ManagedServiceIdentityClientImpl;
+import com.azure.resourcemanager.msi.implementation.IdentitesImpl;
+import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -19,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 /**
  * Entry point to Azure Managed Service Identity (MSI) resource management.
  */
-public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentityClientImpl> {
+public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentityClient> {
     private final GraphRbacManager rbacManager;
 
     private Identities identities;
@@ -97,7 +96,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
     private MSIManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(httpPipeline, profile, new ManagedServiceIdentityClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
                 sdkContext);
@@ -111,7 +110,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
      */
     public Identities identities() {
         if (identities == null) {
-            this.identities = new IdentitesImpl(this.inner().userAssignedIdentities(), this);
+            this.identities = new IdentitesImpl(this.inner().getUserAssignedIdentities(), this);
         }
         return this.identities;
     }

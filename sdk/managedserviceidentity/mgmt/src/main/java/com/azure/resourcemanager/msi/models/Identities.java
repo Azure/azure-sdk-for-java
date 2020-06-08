@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.msi;
+package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.msi.implementation.MSIManager;
-import com.azure.resourcemanager.msi.models.UserAssignedIdentitiesInner;
+import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.fluent.UserAssignedIdentitiesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -33,5 +33,5 @@ public interface Identities extends
         SupportsBatchCreation<Identity>,
         SupportsBatchDeletion,
         HasManager<MSIManager>,
-        HasInner<UserAssignedIdentitiesInner> {
+        HasInner<UserAssignedIdentitiesClient> {
 }
