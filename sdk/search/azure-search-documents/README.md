@@ -34,13 +34,13 @@ To make this possible you will need,
 1. [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and
 1. [Api-key of the Azure Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
+Note that you will need an admin key to authenticate the client (query keys only work for queries).
+
 The SDK provides three clients.
 
 1. SearchIndexClient for all CRUD operations on index and synonym maps.
 1. SearchIndexerClient for all CRUD operations on indexer, date source, and skillset.
 1. SearchClient for all document operations.
-
-Note that you will need an admin key to authenticate the client (query keys only work for queries).
 
 #### Create a SearchIndexClient
 
