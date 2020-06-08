@@ -30,6 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunGetLogResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
@@ -47,14 +48,14 @@ public final class RunsInner {
     private final RunsService service;
 
     /** The service client containing this operation class. */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryManagementClient client;
 
     /**
      * Initializes an instance of RunsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RunsInner(ContainerRegistryManagementClientImpl client) {
+    RunsInner(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(RunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

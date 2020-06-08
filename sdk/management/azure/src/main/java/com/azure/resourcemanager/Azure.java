@@ -29,7 +29,7 @@ import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
-import com.azure.resourcemanager.containerregistry.implementation.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerservice.KubernetesClusters;
 import com.azure.resourcemanager.containerservice.implementation.ContainerServiceManager;
 import com.azure.resourcemanager.cosmos.CosmosDBAccounts;

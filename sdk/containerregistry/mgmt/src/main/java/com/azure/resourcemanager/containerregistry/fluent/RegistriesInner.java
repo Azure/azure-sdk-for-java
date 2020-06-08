@@ -32,6 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.models.ImportImageParameters;
 import com.azure.resourcemanager.containerregistry.models.PasswordName;
 import com.azure.resourcemanager.containerregistry.models.RegenerateCredentialParameters;
@@ -62,14 +63,14 @@ public final class RegistriesInner
     private final RegistriesService service;
 
     /** The service client containing this operation class. */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryManagementClient client;
 
     /**
      * Initializes an instance of RegistriesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RegistriesInner(ContainerRegistryManagementClientImpl client) {
+    RegistriesInner(ContainerRegistryManagementClient client) {
         this.service =
             RestProxy.create(RegistriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

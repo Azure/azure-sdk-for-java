@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;

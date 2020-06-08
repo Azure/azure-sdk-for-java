@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;

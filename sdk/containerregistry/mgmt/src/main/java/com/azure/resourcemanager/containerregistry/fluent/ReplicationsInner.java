@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationListResultInner;
@@ -48,14 +49,14 @@ public final class ReplicationsInner {
     private final ReplicationsService service;
 
     /** The service client containing this operation class. */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryManagementClient client;
 
     /**
      * Initializes an instance of ReplicationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicationsInner(ContainerRegistryManagementClientImpl client) {
+    ReplicationsInner(ContainerRegistryManagementClient client) {
         this.service =
             RestProxy.create(ReplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

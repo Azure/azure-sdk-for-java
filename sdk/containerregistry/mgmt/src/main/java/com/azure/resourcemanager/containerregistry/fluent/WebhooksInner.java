@@ -32,6 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameters;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
 import java.nio.ByteBuffer;
@@ -53,14 +54,14 @@ public final class WebhooksInner {
     private final WebhooksService service;
 
     /** The service client containing this operation class. */
-    private final ContainerRegistryManagementClientImpl client;
+    private final ContainerRegistryManagementClient client;
 
     /**
      * Initializes an instance of WebhooksInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    WebhooksInner(ContainerRegistryManagementClientImpl client) {
+    WebhooksInner(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(WebhooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

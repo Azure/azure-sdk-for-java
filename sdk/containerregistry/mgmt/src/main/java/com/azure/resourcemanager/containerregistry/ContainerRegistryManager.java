@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.containerregistry.implementation;
+package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.implementation.annotation.Beta;
+import com.azure.resourcemanager.containerregistry.implementation.RegistriesImpl;
+import com.azure.resourcemanager.containerregistry.implementation.RegistryTaskRunsImpl;
+import com.azure.resourcemanager.containerregistry.implementation.RegistryTasksImpl;
 import com.azure.resourcemanager.containerregistry.models.Registries;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
-import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClientBuilder;
-import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClientImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -21,7 +22,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure container registry management. */
 public final class ContainerRegistryManager
-    extends Manager<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
+    extends Manager<ContainerRegistryManager, ContainerRegistryManagementClient> {
     // The service managers
     private RegistriesImpl registries;
     private StorageManager storageManager;
