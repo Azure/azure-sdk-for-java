@@ -233,7 +233,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             receiverThreads.add(thread);
         }
 
-        receiverThreads.forEach(t -> t.start());
+        receiverThreads.forEach(Thread::start);
 
         receiverThreads.forEach(t -> {
             try {
@@ -689,23 +689,16 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled, null);
-    }
-
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled,
-        Duration autoLockRenewal) {
         this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled).buildClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, Function.identity())
                 .sessionId(sessionId)
-                .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildClient();
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, entityIndex,
                 Function.identity())
@@ -714,7 +707,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, Function.identity())
-                .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
                 Function.identity())
@@ -722,6 +714,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         }
     }
+
     private void sendMessages(List<ServiceBusMessage> messageList) {
         sender.send(messageList);
         int number = messagesPending.getAndSet(messageList.size());
