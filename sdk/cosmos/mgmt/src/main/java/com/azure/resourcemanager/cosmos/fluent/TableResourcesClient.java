@@ -24,38 +24,39 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
-
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.TableGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.TableListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TableResources. */
-public final class TableResourcesInner {
-    private final ClientLogger logger = new ClientLogger(TableResourcesInner.class);
+public final class TableResourcesClient {
+    private final ClientLogger logger = new ClientLogger(TableResourcesClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final TableResourcesService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of TableResourcesInner.
+     * Initializes an instance of TableResourcesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TableResourcesInner(CosmosDBManagementClientImpl client) {
+    public TableResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(TableResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -74,8 +75,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TableListResultInner>> listTables(
-            @HostParam("$host") String host,
+        Mono<Response<TableListResultInner>> listTables(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -88,8 +89,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TableGetResultsInner>> getTable(
-            @HostParam("$host") String host,
+        Mono<Response<TableGetResultsInner>> getTable(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -103,8 +104,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateTable(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createUpdateTable(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -119,8 +120,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteTable(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> deleteTable(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -134,8 +135,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getTableThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -149,8 +150,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateTableThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> updateTableThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -165,8 +166,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TableGetResultsInner>> beginCreateUpdateTable(
-            @HostParam("$host") String host,
+        Mono<Response<TableGetResultsInner>> beginCreateUpdateTableWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -181,8 +182,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteTable(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteTableWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -196,8 +197,8 @@ public final class TableResourcesInner {
                 + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateTableThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateTableThroughputWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -220,9 +221,11 @@ public final class TableResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TableGetResultsInner>> listTablesSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -243,7 +246,7 @@ public final class TableResourcesInner {
                 context ->
                     service
                         .listTables(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -270,9 +273,11 @@ public final class TableResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TableGetResultsInner>> listTablesSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -290,7 +295,7 @@ public final class TableResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .listTables(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -350,6 +355,23 @@ public final class TableResourcesInner {
     }
 
     /**
+     * Lists the Tables under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Table and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TableGetResultsInner> listTables(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedIterable<>(listTablesAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
      * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -361,11 +383,13 @@ public final class TableResourcesInner {
      * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableGetResultsInner>> getTableWithResponseAsync(
+    public Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(
         String resourceGroupName, String accountName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -389,7 +413,7 @@ public final class TableResourcesInner {
                 context ->
                     service
                         .getTable(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -412,11 +436,13 @@ public final class TableResourcesInner {
      * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableGetResultsInner>> getTableWithResponseAsync(
+    public Mono<Response<TableGetResultsInner>> getTableWithResponseAsync(
         String resourceGroupName, String accountName, String tableName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -437,7 +463,7 @@ public final class TableResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getTable(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -461,7 +487,33 @@ public final class TableResourcesInner {
     public Mono<TableGetResultsInner> getTableAsync(String resourceGroupName, String accountName, String tableName) {
         return getTableWithResponseAsync(resourceGroupName, accountName, tableName)
             .flatMap(
-                (SimpleResponse<TableGetResultsInner> res) -> {
+                (Response<TableGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableGetResultsInner> getTableAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return getTableWithResponseAsync(resourceGroupName, accountName, tableName, context)
+            .flatMap(
+                (Response<TableGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -487,6 +539,24 @@ public final class TableResourcesInner {
     }
 
     /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableGetResultsInner getTable(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return getTableAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
      * Create or update an Azure Cosmos DB Table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -499,14 +569,16 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -538,7 +610,7 @@ public final class TableResourcesInner {
                 context ->
                     service
                         .createUpdateTable(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -547,6 +619,124 @@ public final class TableResourcesInner {
                             createUpdateTableParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateTableWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        if (createUpdateTableParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateTableParameters is required and cannot be null."));
+        } else {
+            createUpdateTableParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .createUpdateTable(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                tableName,
+                apiVersion,
+                createUpdateTableParameters,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateTableWithResponseAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters);
+        return this
+            .client
+            .<TableGetResultsInner, TableGetResultsInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TableGetResultsInner.class, TableGetResultsInner.class);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateTableWithResponseAsync(
+                resourceGroupName, accountName, tableName, createUpdateTableParameters, context);
+        return this
+            .client
+            .<TableGetResultsInner, TableGetResultsInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TableGetResultsInner.class, TableGetResultsInner.class);
     }
 
     /**
@@ -567,8 +757,39 @@ public final class TableResourcesInner {
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateTableWithResponseAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters);
+        return this
+            .client
+            .<TableGetResultsInner, TableGetResultsInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TableGetResultsInner.class, TableGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableGetResultsInner> createUpdateTableAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateTableWithResponseAsync(
+                resourceGroupName, accountName, tableName, createUpdateTableParameters, context);
         return this
             .client
             .<TableGetResultsInner, TableGetResultsInner>getLroResultAsync(
@@ -599,6 +820,30 @@ public final class TableResourcesInner {
     }
 
     /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableGetResultsInner createUpdateTable(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters,
+        Context context) {
+        return createUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters, context)
+            .block();
+    }
+
+    /**
      * Deletes an existing Azure Cosmos DB Table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -610,11 +855,13 @@ public final class TableResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteTableWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(
         String resourceGroupName, String accountName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -638,7 +885,7 @@ public final class TableResourcesInner {
                 context ->
                     service
                         .deleteTable(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -654,6 +901,93 @@ public final class TableResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteTableWithResponseAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .deleteTable(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                tableName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteTable(
+        String resourceGroupName, String accountName, String tableName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteTableWithResponseAsync(resourceGroupName, accountName, tableName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteTable(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteTableWithResponseAsync(resourceGroupName, accountName, tableName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -661,8 +995,31 @@ public final class TableResourcesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            deleteTableWithResponseAsync(resourceGroupName, accountName, tableName);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteTableWithResponseAsync(resourceGroupName, accountName, tableName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteTableAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteTableWithResponseAsync(resourceGroupName, accountName, tableName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -686,6 +1043,22 @@ public final class TableResourcesInner {
     }
 
     /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteTable(String resourceGroupName, String accountName, String tableName, Context context) {
+        deleteTableAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
      * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -698,11 +1071,13 @@ public final class TableResourcesInner {
      *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -726,7 +1101,7 @@ public final class TableResourcesInner {
                 context ->
                     service
                         .getTableThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -750,11 +1125,13 @@ public final class TableResourcesInner {
      *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String tableName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -775,7 +1152,7 @@ public final class TableResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getTableThroughput(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -801,7 +1178,34 @@ public final class TableResourcesInner {
         String resourceGroupName, String accountName, String tableName) {
         return getTableThroughputWithResponseAsync(resourceGroupName, accountName, tableName)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
+     *     name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> getTableThroughputAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return getTableThroughputWithResponseAsync(resourceGroupName, accountName, tableName, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -829,6 +1233,25 @@ public final class TableResourcesInner {
     }
 
     /**
+     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
+     *     name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getTableThroughput(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return getTableThroughputAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
      * Update RUs per second of an Azure Cosmos DB Table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -841,14 +1264,16 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -880,7 +1305,7 @@ public final class TableResourcesInner {
                 context ->
                     service
                         .updateTableThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -889,6 +1314,133 @@ public final class TableResourcesInner {
                             updateThroughputParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateTableThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .updateTableThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                tableName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateTableThroughput(
+            String resourceGroupName,
+            String accountName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateTableThroughput(
+            String resourceGroupName,
+            String accountName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
     }
 
     /**
@@ -909,9 +1461,43 @@ public final class TableResourcesInner {
         String accountName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateTableThroughputWithResponseAsync(
                 resourceGroupName, accountName, tableName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters, context);
         return this
             .client
             .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
@@ -946,6 +1532,31 @@ public final class TableResourcesInner {
     }
 
     /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateTableThroughput(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateTableThroughputAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters, context)
+            .block();
+    }
+
+    /**
      * Create or update an Azure Cosmos DB Table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -958,14 +1569,16 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableGetResultsInner>> beginCreateUpdateTableWithResponseAsync(
+    public Mono<Response<TableGetResultsInner>> beginCreateUpdateTableWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -996,8 +1609,8 @@ public final class TableResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginCreateUpdateTable(
-                            this.client.getHost(),
+                        .beginCreateUpdateTableWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1022,15 +1635,17 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TableGetResultsInner>> beginCreateUpdateTableWithResponseAsync(
+    public Mono<Response<TableGetResultsInner>> beginCreateUpdateTableWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1058,8 +1673,8 @@ public final class TableResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginCreateUpdateTable(
-                this.client.getHost(),
+            .beginCreateUpdateTableWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1082,15 +1697,47 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TableGetResultsInner> beginCreateUpdateTableAsync(
+    public Mono<TableGetResultsInner> beginCreateUpdateTableWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
-        return beginCreateUpdateTableWithResponseAsync(
+        return beginCreateUpdateTableWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, tableName, createUpdateTableParameters)
             .flatMap(
-                (SimpleResponse<TableGetResultsInner> res) -> {
+                (Response<TableGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TableGetResultsInner> beginCreateUpdateTableWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters,
+        Context context) {
+        return beginCreateUpdateTableWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, tableName, createUpdateTableParameters, context)
+            .flatMap(
+                (Response<TableGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1112,12 +1759,38 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB Table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableGetResultsInner beginCreateUpdateTable(
+    public TableGetResultsInner beginCreateUpdateTableWithoutPolling(
         String resourceGroupName,
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
-        return beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters)
+        return beginCreateUpdateTableWithoutPollingAsync(
+                resourceGroupName, accountName, tableName, createUpdateTableParameters)
+            .block();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateTableParameters Parameters to create and update Cosmos DB Table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableGetResultsInner beginCreateUpdateTableWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        TableCreateUpdateParameters createUpdateTableParameters,
+        Context context) {
+        return beginCreateUpdateTableWithoutPollingAsync(
+                resourceGroupName, accountName, tableName, createUpdateTableParameters, context)
             .block();
     }
 
@@ -1133,11 +1806,13 @@ public final class TableResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteTableWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteTableWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1160,8 +1835,8 @@ public final class TableResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginDeleteTable(
-                            this.client.getHost(),
+                        .beginDeleteTableWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1184,11 +1859,13 @@ public final class TableResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteTableWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteTableWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String tableName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1208,8 +1885,8 @@ public final class TableResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginDeleteTable(
-                this.client.getHost(),
+            .beginDeleteTableWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1230,8 +1907,28 @@ public final class TableResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteTableAsync(String resourceGroupName, String accountName, String tableName) {
-        return beginDeleteTableWithResponseAsync(resourceGroupName, accountName, tableName)
+    public Mono<Void> beginDeleteTableWithoutPollingAsync(
+        String resourceGroupName, String accountName, String tableName) {
+        return beginDeleteTableWithoutPollingWithResponseAsync(resourceGroupName, accountName, tableName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteTableWithoutPollingAsync(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        return beginDeleteTableWithoutPollingWithResponseAsync(resourceGroupName, accountName, tableName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1246,8 +1943,25 @@ public final class TableResourcesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteTable(String resourceGroupName, String accountName, String tableName) {
-        beginDeleteTableAsync(resourceGroupName, accountName, tableName).block();
+    public void beginDeleteTableWithoutPolling(String resourceGroupName, String accountName, String tableName) {
+        beginDeleteTableWithoutPollingAsync(resourceGroupName, accountName, tableName).block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteTableWithoutPolling(
+        String resourceGroupName, String accountName, String tableName, Context context) {
+        beginDeleteTableWithoutPollingAsync(resourceGroupName, accountName, tableName, context).block();
     }
 
     /**
@@ -1263,14 +1977,16 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateTableThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateTableThroughputWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1301,8 +2017,8 @@ public final class TableResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdateTableThroughput(
-                            this.client.getHost(),
+                        .beginUpdateTableThroughputWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1327,15 +2043,17 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateTableThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateTableThroughputWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1363,8 +2081,8 @@ public final class TableResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginUpdateTableThroughput(
-                this.client.getHost(),
+            .beginUpdateTableThroughputWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1387,15 +2105,47 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateTableThroughputAsync(
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateTableThroughputWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateTableThroughputWithResponseAsync(
+        return beginUpdateTableThroughputWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, tableName, updateThroughputParameters)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateTableThroughputWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateTableThroughputWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1417,12 +2167,38 @@ public final class TableResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateTableThroughput(
+    public ThroughputSettingsGetResultsInner beginUpdateTableThroughputWithoutPolling(
         String resourceGroupName,
         String accountName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters)
+        return beginUpdateTableThroughputWithoutPollingAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters)
+            .block();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner beginUpdateTableThroughputWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateTableThroughputWithoutPollingAsync(
+                resourceGroupName, accountName, tableName, updateThroughputParameters, context)
             .block();
     }
 }

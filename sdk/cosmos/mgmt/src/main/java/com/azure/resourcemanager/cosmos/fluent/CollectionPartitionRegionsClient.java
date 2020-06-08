@@ -19,76 +19,75 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PartitionKeyRangeIdRegions. */
-public final class PartitionKeyRangeIdRegionsInner {
-    private final ClientLogger logger = new ClientLogger(PartitionKeyRangeIdRegionsInner.class);
+/** An instance of this class provides access to all the operations defined in CollectionPartitionRegions. */
+public final class CollectionPartitionRegionsClient {
+    private final ClientLogger logger = new ClientLogger(CollectionPartitionRegionsClient.class);
 
     /** The proxy service used to perform REST calls. */
-    private final PartitionKeyRangeIdRegionsService service;
+    private final CollectionPartitionRegionsService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of PartitionKeyRangeIdRegionsInner.
+     * Initializes an instance of CollectionPartitionRegionsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PartitionKeyRangeIdRegionsInner(CosmosDBManagementClientImpl client) {
+    public CollectionPartitionRegionsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(
-                    PartitionKeyRangeIdRegionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                    CollectionPartitionRegionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CosmosDBManagementClientPartitionKeyRangeIdRegions to be used by the
+     * The interface defining all the services for CosmosDBManagementClientCollectionPartitionRegions to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface PartitionKeyRangeIdRegionsService {
+    private interface CollectionPartitionRegionsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/region/{region}/databases/{databaseRid}/collections"
-                + "/{collectionRid}/partitionKeyRangeId/{partitionKeyRangeId}/metrics")
+                + "/databaseAccounts/{accountName}/region/{region}/databases/{databaseRid}/collections/{collectionRid}"
+                + "/partitions/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PartitionMetricListResultInner>> listMetrics(
-            @HostParam("$host") String host,
+        Mono<Response<PartitionMetricListResultInner>> listMetrics(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @PathParam("region") String region,
             @PathParam("databaseRid") String databaseRid,
             @PathParam("collectionRid") String collectionRid,
-            @PathParam("partitionKeyRangeId") String partitionKeyRangeId,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             Context context);
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given partition key range id and region.
+     * Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param partitionKeyRangeId Partition Key Range Id for which to get data.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
@@ -104,11 +103,12 @@ public final class PartitionKeyRangeIdRegionsInner {
         String region,
         String databaseRid,
         String collectionRid,
-        String partitionKeyRangeId,
         String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -132,10 +132,6 @@ public final class PartitionKeyRangeIdRegionsInner {
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        if (partitionKeyRangeId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter partitionKeyRangeId is required and cannot be null."));
-        }
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
@@ -145,14 +141,13 @@ public final class PartitionKeyRangeIdRegionsInner {
                 context ->
                     service
                         .listMetrics(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
                             region,
                             databaseRid,
                             collectionRid,
-                            partitionKeyRangeId,
                             apiVersion,
                             filter,
                             context))
@@ -164,14 +159,13 @@ public final class PartitionKeyRangeIdRegionsInner {
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given partition key range id and region.
+     * Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param partitionKeyRangeId Partition Key Range Id for which to get data.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
@@ -188,12 +182,13 @@ public final class PartitionKeyRangeIdRegionsInner {
         String region,
         String databaseRid,
         String collectionRid,
-        String partitionKeyRangeId,
         String filter,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -217,24 +212,19 @@ public final class PartitionKeyRangeIdRegionsInner {
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        if (partitionKeyRangeId == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter partitionKeyRangeId is required and cannot be null."));
-        }
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01";
         return service
             .listMetrics(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
                 region,
                 databaseRid,
                 collectionRid,
-                partitionKeyRangeId,
                 apiVersion,
                 filter,
                 context)
@@ -245,14 +235,13 @@ public final class PartitionKeyRangeIdRegionsInner {
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given partition key range id and region.
+     * Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param partitionKeyRangeId Partition Key Range Id for which to get data.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
@@ -268,23 +257,20 @@ public final class PartitionKeyRangeIdRegionsInner {
         String region,
         String databaseRid,
         String collectionRid,
-        String partitionKeyRangeId,
         String filter) {
         return new PagedFlux<>(
             () ->
-                listMetricsSinglePageAsync(
-                    resourceGroupName, accountName, region, databaseRid, collectionRid, partitionKeyRangeId, filter));
+                listMetricsSinglePageAsync(resourceGroupName, accountName, region, databaseRid, collectionRid, filter));
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given partition key range id and region.
+     * Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param partitionKeyRangeId Partition Key Range Id for which to get data.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
@@ -301,31 +287,22 @@ public final class PartitionKeyRangeIdRegionsInner {
         String region,
         String databaseRid,
         String collectionRid,
-        String partitionKeyRangeId,
         String filter,
         Context context) {
         return new PagedFlux<>(
             () ->
                 listMetricsSinglePageAsync(
-                    resourceGroupName,
-                    accountName,
-                    region,
-                    databaseRid,
-                    collectionRid,
-                    partitionKeyRangeId,
-                    filter,
-                    context));
+                    resourceGroupName, accountName, region, databaseRid, collectionRid, filter, context));
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given partition key range id and region.
+     * Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
-     * @param partitionKeyRangeId Partition Key Range Id for which to get data.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
@@ -341,10 +318,38 @@ public final class PartitionKeyRangeIdRegionsInner {
         String region,
         String databaseRid,
         String collectionRid,
-        String partitionKeyRangeId,
         String filter) {
         return new PagedIterable<>(
-            listMetricsAsync(
-                resourceGroupName, accountName, region, databaseRid, collectionRid, partitionKeyRangeId, filter));
+            listMetricsAsync(resourceGroupName, accountName, region, databaseRid, collectionRid, filter));
+    }
+
+    /**
+     * Retrieves the metrics determined by the given filter for the given collection and region, split by partition.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param region Cosmos DB region, with spaces between words and each word capitalized.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list partition metrics request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PartitionMetricInner> listMetrics(
+        String resourceGroupName,
+        String accountName,
+        String region,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listMetricsAsync(resourceGroupName, accountName, region, databaseRid, collectionRid, filter, context));
     }
 }

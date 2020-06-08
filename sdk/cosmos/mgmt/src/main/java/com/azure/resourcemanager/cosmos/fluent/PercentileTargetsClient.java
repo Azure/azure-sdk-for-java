@@ -19,32 +19,33 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PercentileMetricInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.PercentileMetricListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PercentileTargets. */
-public final class PercentileTargetsInner {
-    private final ClientLogger logger = new ClientLogger(PercentileTargetsInner.class);
+public final class PercentileTargetsClient {
+    private final ClientLogger logger = new ClientLogger(PercentileTargetsClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final PercentileTargetsService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of PercentileTargetsInner.
+     * Initializes an instance of PercentileTargetsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PercentileTargetsInner(CosmosDBManagementClientImpl client) {
+    public PercentileTargetsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(PercentileTargetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -63,8 +64,8 @@ public final class PercentileTargetsInner {
                 + "/databaseAccounts/{accountName}/targetRegion/{targetRegion}/percentile/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PercentileMetricListResultInner>> listMetrics(
-            @HostParam("$host") String host,
+        Mono<Response<PercentileMetricListResultInner>> listMetrics(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -93,9 +94,11 @@ public final class PercentileTargetsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(
         String resourceGroupName, String accountName, String targetRegion, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -122,7 +125,7 @@ public final class PercentileTargetsInner {
                 context ->
                     service
                         .listMetrics(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -157,9 +160,11 @@ public final class PercentileTargetsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(
         String resourceGroupName, String accountName, String targetRegion, String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -183,7 +188,7 @@ public final class PercentileTargetsInner {
         final String apiVersion = "2019-08-01";
         return service
             .listMetrics(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -263,5 +268,28 @@ public final class PercentileTargetsInner {
     public PagedIterable<PercentileMetricInner> listMetrics(
         String resourceGroupName, String accountName, String targetRegion, String filter) {
         return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, targetRegion, filter));
+    }
+
+    /**
+     * Retrieves the metrics determined by the given filter for the given account target region. This url is only for
+     * PBS and Replication Latency data.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param targetRegion Target region to which data is written. Cosmos DB region, with spaces between words and each
+     *     word capitalized.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list percentile metrics request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PercentileMetricInner> listMetrics(
+        String resourceGroupName, String accountName, String targetRegion, String filter, Context context) {
+        return new PagedIterable<>(listMetricsAsync(resourceGroupName, accountName, targetRegion, filter, context));
     }
 }

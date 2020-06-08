@@ -24,41 +24,42 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.CassandraTableCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraKeyspaceGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraKeyspaceListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraTableGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.CassandraTableListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.CassandraKeyspaceCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.CassandraTableCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-
 /** An instance of this class provides access to all the operations defined in CassandraResources. */
-public final class CassandraResourcesInner {
-    private final ClientLogger logger = new ClientLogger(CassandraResourcesInner.class);
+public final class CassandraResourcesClient {
+    private final ClientLogger logger = new ClientLogger(CassandraResourcesClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final CassandraResourcesService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of CassandraResourcesInner.
+     * Initializes an instance of CassandraResourcesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CassandraResourcesInner(CosmosDBManagementClientImpl client) {
+    public CassandraResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(CassandraResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -77,8 +78,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CassandraKeyspaceListResultInner>> listCassandraKeyspaces(
-            @HostParam("$host") String host,
+        Mono<Response<CassandraKeyspaceListResultInner>> listCassandraKeyspaces(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -91,8 +92,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CassandraKeyspaceGetResultsInner>> getCassandraKeyspace(
-            @HostParam("$host") String host,
+        Mono<Response<CassandraKeyspaceGetResultsInner>> getCassandraKeyspace(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -106,8 +107,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateCassandraKeyspace(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraKeyspace(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -123,8 +124,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteCassandraKeyspace(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> deleteCassandraKeyspace(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -138,8 +139,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -153,8 +154,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -169,8 +170,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CassandraTableListResultInner>> listCassandraTables(
-            @HostParam("$host") String host,
+        Mono<Response<CassandraTableListResultInner>> listCassandraTables(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -184,8 +185,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CassandraTableGetResultsInner>> getCassandraTable(
-            @HostParam("$host") String host,
+        Mono<Response<CassandraTableGetResultsInner>> getCassandraTable(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -200,8 +201,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateCassandraTable(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraTable(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -217,8 +218,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteCassandraTable(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> deleteCassandraTable(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -234,8 +235,8 @@ public final class CassandraResourcesInner {
                 + "/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getCassandraTableThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraTableThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -251,8 +252,8 @@ public final class CassandraResourcesInner {
                 + "/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateCassandraTableThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> updateCassandraTableThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -268,8 +269,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CassandraKeyspaceGetResultsInner>> beginCreateUpdateCassandraKeyspace(
-            @HostParam("$host") String host,
+        Mono<Response<CassandraKeyspaceGetResultsInner>> beginCreateUpdateCassandraKeyspaceWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -285,8 +286,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteCassandraKeyspace(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteCassandraKeyspaceWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -300,8 +301,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateCassandraKeyspaceThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateCassandraKeyspaceThroughputWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -316,8 +317,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CassandraTableGetResultsInner>> beginCreateUpdateCassandraTable(
-            @HostParam("$host") String host,
+        Mono<Response<CassandraTableGetResultsInner>> beginCreateUpdateCassandraTableWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -333,8 +334,8 @@ public final class CassandraResourcesInner {
                 + "/databaseAccounts/{accountName}/cassandraKeyspaces/{keyspaceName}/tables/{tableName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteCassandraTable(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteCassandraTableWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -350,8 +351,8 @@ public final class CassandraResourcesInner {
                 + "/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateCassandraTableThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateCassandraTableThroughputWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -375,9 +376,11 @@ public final class CassandraResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CassandraKeyspaceGetResultsInner>> listCassandraKeyspacesSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -398,7 +401,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .listCassandraKeyspaces(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -425,9 +428,11 @@ public final class CassandraResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CassandraKeyspaceGetResultsInner>> listCassandraKeyspacesSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -445,7 +450,7 @@ public final class CassandraResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .listCassandraKeyspaces(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -507,6 +512,23 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Cassandra keyspaces and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CassandraKeyspaceGetResultsInner> listCassandraKeyspaces(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedIterable<>(listCassandraKeyspacesAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -518,11 +540,13 @@ public final class CassandraResourcesInner {
      * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraKeyspaceGetResultsInner>> getCassandraKeyspaceWithResponseAsync(
+    public Mono<Response<CassandraKeyspaceGetResultsInner>> getCassandraKeyspaceWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -546,7 +570,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .getCassandraKeyspace(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -569,11 +593,13 @@ public final class CassandraResourcesInner {
      * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraKeyspaceGetResultsInner>> getCassandraKeyspaceWithResponseAsync(
+    public Mono<Response<CassandraKeyspaceGetResultsInner>> getCassandraKeyspaceWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -594,7 +620,7 @@ public final class CassandraResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getCassandraKeyspace(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -619,7 +645,33 @@ public final class CassandraResourcesInner {
         String resourceGroupName, String accountName, String keyspaceName) {
         return getCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName)
             .flatMap(
-                (SimpleResponse<CassandraKeyspaceGetResultsInner> res) -> {
+                (Response<CassandraKeyspaceGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CassandraKeyspaceGetResultsInner> getCassandraKeyspaceAsync(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        return getCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName, context)
+            .flatMap(
+                (Response<CassandraKeyspaceGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -646,6 +698,24 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraKeyspaceGetResultsInner getCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        return getCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName, context).block();
+    }
+
+    /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -658,14 +728,16 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateCassandraKeyspaceWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraKeyspaceWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -697,7 +769,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .createUpdateCassandraKeyspace(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -706,6 +778,133 @@ public final class CassandraResourcesInner {
                             createUpdateCassandraKeyspaceParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraKeyspaceWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
+        }
+        if (createUpdateCassandraKeyspaceParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateCassandraKeyspaceParameters is required and cannot be null."));
+        } else {
+            createUpdateCassandraKeyspaceParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .createUpdateCassandraKeyspace(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                keyspaceName,
+                apiVersion,
+                createUpdateCassandraKeyspaceParameters,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
+        beginCreateUpdateCassandraKeyspace(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateCassandraKeyspaceWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters);
+        return this
+            .client
+            .<CassandraKeyspaceGetResultsInner, CassandraKeyspaceGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                CassandraKeyspaceGetResultsInner.class,
+                CassandraKeyspaceGetResultsInner.class);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<CassandraKeyspaceGetResultsInner>, CassandraKeyspaceGetResultsInner>
+        beginCreateUpdateCassandraKeyspace(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateCassandraKeyspaceWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters, context);
+        return this
+            .client
+            .<CassandraKeyspaceGetResultsInner, CassandraKeyspaceGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                CassandraKeyspaceGetResultsInner.class,
+                CassandraKeyspaceGetResultsInner.class);
     }
 
     /**
@@ -726,9 +925,43 @@ public final class CassandraResourcesInner {
         String accountName,
         String keyspaceName,
         CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateCassandraKeyspaceWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters);
+        return this
+            .client
+            .<CassandraKeyspaceGetResultsInner, CassandraKeyspaceGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                CassandraKeyspaceGetResultsInner.class,
+                CassandraKeyspaceGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CassandraKeyspaceGetResultsInner> createUpdateCassandraKeyspaceAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateCassandraKeyspaceWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters, context);
         return this
             .client
             .<CassandraKeyspaceGetResultsInner, CassandraKeyspaceGetResultsInner>getLroResultAsync(
@@ -764,6 +997,31 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraKeyspaceGetResultsInner createUpdateCassandraKeyspace(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+        Context context) {
+        return createUpdateCassandraKeyspaceAsync(
+                resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters, context)
+            .block();
+    }
+
+    /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -775,11 +1033,13 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteCassandraKeyspaceWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteCassandraKeyspaceWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -803,7 +1063,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .deleteCassandraKeyspace(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -819,6 +1079,94 @@ public final class CassandraResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteCassandraKeyspaceWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .deleteCassandraKeyspace(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                keyspaceName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,8 +1174,32 @@ public final class CassandraResourcesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCassandraKeyspaceAsync(String resourceGroupName, String accountName, String keyspaceName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteCassandraKeyspaceAsync(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -851,6 +1223,23 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteCassandraKeyspace(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        deleteCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName, context).block();
+    }
+
+    /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
      * provided name.
      *
@@ -864,11 +1253,13 @@ public final class CassandraResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -892,7 +1283,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .getCassandraKeyspaceThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -917,11 +1308,13 @@ public final class CassandraResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraKeyspaceThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -942,7 +1335,7 @@ public final class CassandraResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getCassandraKeyspaceThroughput(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -969,7 +1362,35 @@ public final class CassandraResourcesInner {
         String resourceGroupName, String accountName, String keyspaceName) {
         return getCassandraKeyspaceThroughputWithResponseAsync(resourceGroupName, accountName, keyspaceName)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> getCassandraKeyspaceThroughputAsync(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        return getCassandraKeyspaceThroughputWithResponseAsync(resourceGroupName, accountName, keyspaceName, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -998,6 +1419,26 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getCassandraKeyspaceThroughput(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        return getCassandraKeyspaceThroughputAsync(resourceGroupName, accountName, keyspaceName, context).block();
+    }
+
+    /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1010,14 +1451,16 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughputWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughputWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1049,7 +1492,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .updateCassandraKeyspaceThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1058,6 +1501,133 @@ public final class CassandraResourcesInner {
                             updateThroughputParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateCassandraKeyspaceThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .updateCassandraKeyspaceThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                keyspaceName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraKeyspaceThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateCassandraKeyspaceThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraKeyspaceThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateCassandraKeyspaceThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
     }
 
     /**
@@ -1078,9 +1648,43 @@ public final class CassandraResourcesInner {
         String accountName,
         String keyspaceName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateCassandraKeyspaceThroughputWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> updateCassandraKeyspaceThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateCassandraKeyspaceThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, updateThroughputParameters, context);
         return this
             .client
             .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
@@ -1116,6 +1720,31 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateCassandraKeyspaceThroughput(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateCassandraKeyspaceThroughputAsync(
+                resourceGroupName, accountName, keyspaceName, updateThroughputParameters, context)
+            .block();
+    }
+
+    /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1129,9 +1758,11 @@ public final class CassandraResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CassandraTableGetResultsInner>> listCassandraTablesSinglePageAsync(
         String resourceGroupName, String accountName, String keyspaceName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1155,7 +1786,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .listCassandraTables(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1184,9 +1815,11 @@ public final class CassandraResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CassandraTableGetResultsInner>> listCassandraTablesSinglePageAsync(
         String resourceGroupName, String accountName, String keyspaceName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1207,7 +1840,7 @@ public final class CassandraResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .listCassandraTables(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1274,6 +1907,24 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Lists the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the Cassandra tables and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CassandraTableGetResultsInner> listCassandraTables(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        return new PagedIterable<>(listCassandraTablesAsync(resourceGroupName, accountName, keyspaceName, context));
+    }
+
+    /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1286,11 +1937,13 @@ public final class CassandraResourcesInner {
      * @return the Cassandra table under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraTableGetResultsInner>> getCassandraTableWithResponseAsync(
+    public Mono<Response<CassandraTableGetResultsInner>> getCassandraTableWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1317,7 +1970,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .getCassandraTable(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1342,11 +1995,13 @@ public final class CassandraResourcesInner {
      * @return the Cassandra table under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraTableGetResultsInner>> getCassandraTableWithResponseAsync(
+    public Mono<Response<CassandraTableGetResultsInner>> getCassandraTableWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1370,7 +2025,7 @@ public final class CassandraResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getCassandraTable(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1397,7 +2052,34 @@ public final class CassandraResourcesInner {
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
         return getCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName)
             .flatMap(
-                (SimpleResponse<CassandraTableGetResultsInner> res) -> {
+                (Response<CassandraTableGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra table under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CassandraTableGetResultsInner> getCassandraTableAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        return getCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName, context)
+            .flatMap(
+                (Response<CassandraTableGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1425,6 +2107,25 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Gets the Cassandra table under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Cassandra table under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraTableGetResultsInner getCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        return getCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName, context).block();
+    }
+
+    /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1438,15 +2139,17 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateCassandraTableWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraTableWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1481,7 +2184,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .createUpdateCassandraTable(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1491,6 +2194,143 @@ public final class CassandraResourcesInner {
                             createUpdateCassandraTableParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateCassandraTableWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        if (createUpdateCassandraTableParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateCassandraTableParameters is required and cannot be null."));
+        } else {
+            createUpdateCassandraTableParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .createUpdateCassandraTable(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                keyspaceName,
+                tableName,
+                apiVersion,
+                createUpdateCassandraTableParameters,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
+        beginCreateUpdateCassandraTable(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateCassandraTableWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters);
+        return this
+            .client
+            .<CassandraTableGetResultsInner, CassandraTableGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                CassandraTableGetResultsInner.class,
+                CassandraTableGetResultsInner.class);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<CassandraTableGetResultsInner>, CassandraTableGetResultsInner>
+        beginCreateUpdateCassandraTable(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateCassandraTableWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters, context);
+        return this
+            .client
+            .<CassandraTableGetResultsInner, CassandraTableGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                CassandraTableGetResultsInner.class,
+                CassandraTableGetResultsInner.class);
     }
 
     /**
@@ -1513,9 +2353,45 @@ public final class CassandraResourcesInner {
         String keyspaceName,
         String tableName,
         CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateCassandraTableWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters);
+        return this
+            .client
+            .<CassandraTableGetResultsInner, CassandraTableGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                CassandraTableGetResultsInner.class,
+                CassandraTableGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CassandraTableGetResultsInner> createUpdateCassandraTableAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateCassandraTableWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters, context);
         return this
             .client
             .<CassandraTableGetResultsInner, CassandraTableGetResultsInner>getLroResultAsync(
@@ -1553,6 +2429,33 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraTableGetResultsInner createUpdateCassandraTable(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+        Context context) {
+        return createUpdateCassandraTableAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters, context)
+            .block();
+    }
+
+    /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1565,11 +2468,13 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteCassandraTableWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteCassandraTableWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1596,7 +2501,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .deleteCassandraTable(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1614,6 +2519,101 @@ public final class CassandraResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteCassandraTableWithResponseAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .deleteCassandraTable(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                keyspaceName,
+                tableName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1622,8 +2622,33 @@ public final class CassandraResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteCassandraTableAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteCassandraTableAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -1649,6 +2674,24 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteCassandraTable(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        deleteCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName, context).block();
+    }
+
+    /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
      * provided name.
      *
@@ -1663,11 +2706,13 @@ public final class CassandraResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getCassandraTableThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraTableThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1694,7 +2739,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .getCassandraTableThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1721,11 +2766,13 @@ public final class CassandraResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getCassandraTableThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getCassandraTableThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1749,7 +2796,7 @@ public final class CassandraResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getCassandraTableThroughput(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1778,7 +2825,37 @@ public final class CassandraResourcesInner {
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
         return getCassandraTableThroughputWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> getCassandraTableThroughputAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        return getCassandraTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1808,6 +2885,28 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getCassandraTableThroughput(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        return getCassandraTableThroughputAsync(resourceGroupName, accountName, keyspaceName, tableName, context)
+            .block();
+    }
+
+    /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1821,15 +2920,17 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateCassandraTableThroughputWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateCassandraTableThroughputWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1864,7 +2965,7 @@ public final class CassandraResourcesInner {
                 context ->
                     service
                         .updateCassandraTableThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1874,6 +2975,143 @@ public final class CassandraResourcesInner {
                             updateThroughputParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateCassandraTableThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyspaceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyspaceName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .updateCassandraTableThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                keyspaceName,
+                tableName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraTableThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateCassandraTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateCassandraTableThroughput(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateCassandraTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
     }
 
     /**
@@ -1896,9 +3134,45 @@ public final class CassandraResourcesInner {
         String keyspaceName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateCassandraTableThroughputWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> updateCassandraTableThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateCassandraTableThroughputWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters, context);
         return this
             .client
             .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
@@ -1936,6 +3210,33 @@ public final class CassandraResourcesInner {
     }
 
     /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateCassandraTableThroughput(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateCassandraTableThroughputAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters, context)
+            .block();
+    }
+
+    /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1948,14 +3249,17 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraKeyspaceGetResultsInner>> beginCreateUpdateCassandraKeyspaceWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String keyspaceName,
-        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<CassandraKeyspaceGetResultsInner>>
+        beginCreateUpdateCassandraKeyspaceWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1986,8 +3290,8 @@ public final class CassandraResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginCreateUpdateCassandraKeyspace(
-                            this.client.getHost(),
+                        .beginCreateUpdateCassandraKeyspaceWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2012,15 +3316,18 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraKeyspaceGetResultsInner>> beginCreateUpdateCassandraKeyspaceWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String keyspaceName,
-        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
-        Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<CassandraKeyspaceGetResultsInner>>
+        beginCreateUpdateCassandraKeyspaceWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+            Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2048,8 +3355,8 @@ public final class CassandraResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginCreateUpdateCassandraKeyspace(
-                this.client.getHost(),
+            .beginCreateUpdateCassandraKeyspaceWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2072,15 +3379,47 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CassandraKeyspaceGetResultsInner> beginCreateUpdateCassandraKeyspaceAsync(
+    public Mono<CassandraKeyspaceGetResultsInner> beginCreateUpdateCassandraKeyspaceWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        return beginCreateUpdateCassandraKeyspaceWithResponseAsync(
+        return beginCreateUpdateCassandraKeyspaceWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters)
             .flatMap(
-                (SimpleResponse<CassandraKeyspaceGetResultsInner> res) -> {
+                (Response<CassandraKeyspaceGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CassandraKeyspaceGetResultsInner> beginCreateUpdateCassandraKeyspaceWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+        Context context) {
+        return beginCreateUpdateCassandraKeyspaceWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters, context)
+            .flatMap(
+                (Response<CassandraKeyspaceGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2102,13 +3441,38 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra keyspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CassandraKeyspaceGetResultsInner beginCreateUpdateCassandraKeyspace(
+    public CassandraKeyspaceGetResultsInner beginCreateUpdateCassandraKeyspaceWithoutPolling(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters) {
-        return beginCreateUpdateCassandraKeyspaceAsync(
+        return beginCreateUpdateCassandraKeyspaceWithoutPollingAsync(
                 resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters)
+            .block();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param createUpdateCassandraKeyspaceParameters Parameters to create and update Cosmos DB Cassandra keyspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra keyspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraKeyspaceGetResultsInner beginCreateUpdateCassandraKeyspaceWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        CassandraKeyspaceCreateUpdateParameters createUpdateCassandraKeyspaceParameters,
+        Context context) {
+        return beginCreateUpdateCassandraKeyspaceWithoutPollingAsync(
+                resourceGroupName, accountName, keyspaceName, createUpdateCassandraKeyspaceParameters, context)
             .block();
     }
 
@@ -2124,11 +3488,13 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteCassandraKeyspaceWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteCassandraKeyspaceWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2151,8 +3517,8 @@ public final class CassandraResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginDeleteCassandraKeyspace(
-                            this.client.getHost(),
+                        .beginDeleteCassandraKeyspaceWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2175,11 +3541,13 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteCassandraKeyspaceWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteCassandraKeyspaceWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2199,8 +3567,8 @@ public final class CassandraResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginDeleteCassandraKeyspace(
-                this.client.getHost(),
+            .beginDeleteCassandraKeyspaceWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2221,9 +3589,29 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteCassandraKeyspaceAsync(
+    public Mono<Void> beginDeleteCassandraKeyspaceWithoutPollingAsync(
         String resourceGroupName, String accountName, String keyspaceName) {
-        return beginDeleteCassandraKeyspaceWithResponseAsync(resourceGroupName, accountName, keyspaceName)
+        return beginDeleteCassandraKeyspaceWithoutPollingWithResponseAsync(resourceGroupName, accountName, keyspaceName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteCassandraKeyspaceWithoutPollingAsync(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        return beginDeleteCassandraKeyspaceWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2238,8 +3626,26 @@ public final class CassandraResourcesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteCassandraKeyspace(String resourceGroupName, String accountName, String keyspaceName) {
-        beginDeleteCassandraKeyspaceAsync(resourceGroupName, accountName, keyspaceName).block();
+    public void beginDeleteCassandraKeyspaceWithoutPolling(
+        String resourceGroupName, String accountName, String keyspaceName) {
+        beginDeleteCassandraKeyspaceWithoutPollingAsync(resourceGroupName, accountName, keyspaceName).block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteCassandraKeyspaceWithoutPolling(
+        String resourceGroupName, String accountName, String keyspaceName, Context context) {
+        beginDeleteCassandraKeyspaceWithoutPollingAsync(resourceGroupName, accountName, keyspaceName, context).block();
     }
 
     /**
@@ -2255,15 +3661,17 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
-        beginUpdateCassandraKeyspaceThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateCassandraKeyspaceThroughputWithoutPollingWithResponseAsync(
             String resourceGroupName,
             String accountName,
             String keyspaceName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2294,8 +3702,8 @@ public final class CassandraResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdateCassandraKeyspaceThroughput(
-                            this.client.getHost(),
+                        .beginUpdateCassandraKeyspaceThroughputWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2320,16 +3728,18 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
-        beginUpdateCassandraKeyspaceThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateCassandraKeyspaceThroughputWithoutPollingWithResponseAsync(
             String resourceGroupName,
             String accountName,
             String keyspaceName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2357,8 +3767,8 @@ public final class CassandraResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginUpdateCassandraKeyspaceThroughput(
-                this.client.getHost(),
+            .beginUpdateCassandraKeyspaceThroughputWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2381,15 +3791,47 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateCassandraKeyspaceThroughputAsync(
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateCassandraKeyspaceThroughputWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateCassandraKeyspaceThroughputWithResponseAsync(
+        return beginUpdateCassandraKeyspaceThroughputWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, updateThroughputParameters)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateCassandraKeyspaceThroughputWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateCassandraKeyspaceThroughputWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, updateThroughputParameters, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2411,13 +3853,38 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateCassandraKeyspaceThroughput(
+    public ThroughputSettingsGetResultsInner beginUpdateCassandraKeyspaceThroughputWithoutPolling(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateCassandraKeyspaceThroughputAsync(
+        return beginUpdateCassandraKeyspaceThroughputWithoutPollingAsync(
                 resourceGroupName, accountName, keyspaceName, updateThroughputParameters)
+            .block();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner beginUpdateCassandraKeyspaceThroughputWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateCassandraKeyspaceThroughputWithoutPollingAsync(
+                resourceGroupName, accountName, keyspaceName, updateThroughputParameters, context)
             .block();
     }
 
@@ -2435,15 +3902,17 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraTableGetResultsInner>> beginCreateUpdateCassandraTableWithResponseAsync(
+    public Mono<Response<CassandraTableGetResultsInner>> beginCreateUpdateCassandraTableWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2477,8 +3946,8 @@ public final class CassandraResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginCreateUpdateCassandraTable(
-                            this.client.getHost(),
+                        .beginCreateUpdateCassandraTableWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2505,16 +3974,18 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CassandraTableGetResultsInner>> beginCreateUpdateCassandraTableWithResponseAsync(
+    public Mono<Response<CassandraTableGetResultsInner>> beginCreateUpdateCassandraTableWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2545,8 +4016,8 @@ public final class CassandraResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginCreateUpdateCassandraTable(
-                this.client.getHost(),
+            .beginCreateUpdateCassandraTableWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2571,16 +4042,50 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CassandraTableGetResultsInner> beginCreateUpdateCassandraTableAsync(
+    public Mono<CassandraTableGetResultsInner> beginCreateUpdateCassandraTableWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        return beginCreateUpdateCassandraTableWithResponseAsync(
+        return beginCreateUpdateCassandraTableWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters)
             .flatMap(
-                (SimpleResponse<CassandraTableGetResultsInner> res) -> {
+                (Response<CassandraTableGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CassandraTableGetResultsInner> beginCreateUpdateCassandraTableWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+        Context context) {
+        return beginCreateUpdateCassandraTableWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters, context)
+            .flatMap(
+                (Response<CassandraTableGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2603,14 +4108,41 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB Cassandra table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CassandraTableGetResultsInner beginCreateUpdateCassandraTable(
+    public CassandraTableGetResultsInner beginCreateUpdateCassandraTableWithoutPolling(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters) {
-        return beginCreateUpdateCassandraTableAsync(
+        return beginCreateUpdateCassandraTableWithoutPollingAsync(
                 resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters)
+            .block();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB Cassandra Table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param createUpdateCassandraTableParameters Parameters to create and update Cosmos DB Cassandra table.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB Cassandra table.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CassandraTableGetResultsInner beginCreateUpdateCassandraTableWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        CassandraTableCreateUpdateParameters createUpdateCassandraTableParameters,
+        Context context) {
+        return beginCreateUpdateCassandraTableWithoutPollingAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, createUpdateCassandraTableParameters, context)
             .block();
     }
 
@@ -2627,11 +4159,13 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteCassandraTableWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteCassandraTableWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2657,8 +4191,8 @@ public final class CassandraResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginDeleteCassandraTable(
-                            this.client.getHost(),
+                        .beginDeleteCassandraTableWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2683,11 +4217,13 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteCassandraTableWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteCassandraTableWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2710,8 +4246,8 @@ public final class CassandraResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginDeleteCassandraTable(
-                this.client.getHost(),
+            .beginDeleteCassandraTableWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2734,9 +4270,31 @@ public final class CassandraResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteCassandraTableAsync(
+    public Mono<Void> beginDeleteCassandraTableWithoutPollingAsync(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        return beginDeleteCassandraTableWithResponseAsync(resourceGroupName, accountName, keyspaceName, tableName)
+        return beginDeleteCassandraTableWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteCassandraTableWithoutPollingAsync(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        return beginDeleteCassandraTableWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2752,9 +4310,28 @@ public final class CassandraResourcesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteCassandraTable(
+    public void beginDeleteCassandraTableWithoutPolling(
         String resourceGroupName, String accountName, String keyspaceName, String tableName) {
-        beginDeleteCassandraTableAsync(resourceGroupName, accountName, keyspaceName, tableName).block();
+        beginDeleteCassandraTableWithoutPollingAsync(resourceGroupName, accountName, keyspaceName, tableName).block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteCassandraTableWithoutPolling(
+        String resourceGroupName, String accountName, String keyspaceName, String tableName, Context context) {
+        beginDeleteCassandraTableWithoutPollingAsync(resourceGroupName, accountName, keyspaceName, tableName, context)
+            .block();
     }
 
     /**
@@ -2771,15 +4348,18 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateCassandraTableThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String keyspaceName,
-        String tableName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateCassandraTableThroughputWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2813,8 +4393,8 @@ public final class CassandraResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdateCassandraTableThroughput(
-                            this.client.getHost(),
+                        .beginUpdateCassandraTableThroughputWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2841,16 +4421,19 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateCassandraTableThroughputWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String keyspaceName,
-        String tableName,
-        ThroughputSettingsUpdateParameters updateThroughputParameters,
-        Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateCassandraTableThroughputWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String keyspaceName,
+            String tableName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2881,8 +4464,8 @@ public final class CassandraResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginUpdateCassandraTableThroughput(
-                this.client.getHost(),
+            .beginUpdateCassandraTableThroughputWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2907,16 +4490,50 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateCassandraTableThroughputAsync(
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateCassandraTableThroughputWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateCassandraTableThroughputWithResponseAsync(
+        return beginUpdateCassandraTableThroughputWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateCassandraTableThroughputWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateCassandraTableThroughputWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2939,14 +4556,41 @@ public final class CassandraResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateCassandraTableThroughput(
+    public ThroughputSettingsGetResultsInner beginUpdateCassandraTableThroughputWithoutPolling(
         String resourceGroupName,
         String accountName,
         String keyspaceName,
         String tableName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateCassandraTableThroughputAsync(
+        return beginUpdateCassandraTableThroughputWithoutPollingAsync(
                 resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters)
+            .block();
+    }
+
+    /**
+     * Update RUs per second of an Azure Cosmos DB Cassandra table.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyspaceName Cosmos DB keyspace name.
+     * @param tableName Cosmos DB table name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner beginUpdateCassandraTableThroughputWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String keyspaceName,
+        String tableName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateCassandraTableThroughputWithoutPollingAsync(
+                resourceGroupName, accountName, keyspaceName, tableName, updateThroughputParameters, context)
             .block();
     }
 }

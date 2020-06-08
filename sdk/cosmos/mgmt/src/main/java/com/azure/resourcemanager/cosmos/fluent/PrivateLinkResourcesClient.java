@@ -19,32 +19,33 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResources. */
-public final class PrivateLinkResourcesInner {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesInner.class);
+public final class PrivateLinkResourcesClient {
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkResourcesService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of PrivateLinkResourcesInner.
+     * Initializes an instance of PrivateLinkResourcesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkResourcesInner(CosmosDBManagementClientImpl client) {
+    public PrivateLinkResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -64,8 +65,8 @@ public final class PrivateLinkResourcesInner {
                 + "/databaseAccounts/{accountName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByDatabaseAccount(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateLinkResourceListResultInner>> listByDatabaseAccount(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -78,8 +79,8 @@ public final class PrivateLinkResourcesInner {
                 + "/databaseAccounts/{accountName}/privateLinkResources/{groupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateLinkResourceInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateLinkResourceInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -101,9 +102,11 @@ public final class PrivateLinkResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateLinkResourceInner>> listByDatabaseAccountSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -124,7 +127,7 @@ public final class PrivateLinkResourcesInner {
                 context ->
                     service
                         .listByDatabaseAccount(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -151,9 +154,11 @@ public final class PrivateLinkResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateLinkResourceInner>> listByDatabaseAccountSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -171,7 +176,7 @@ public final class PrivateLinkResourcesInner {
         final String apiVersion = "2019-08-01-preview";
         return service
             .listByDatabaseAccount(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 apiVersion,
@@ -236,6 +241,23 @@ public final class PrivateLinkResourcesInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources that need to be created for a Cosmos DB account.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateLinkResourceInner> listByDatabaseAccount(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedIterable<>(listByDatabaseAccountAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
+     * Gets the private link resources that need to be created for a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -243,11 +265,13 @@ public final class PrivateLinkResourcesInner {
      * @return the private link resources that need to be created for a Cosmos DB account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateLinkResourceInner>> getWithResponseAsync(
+    public Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String groupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -271,7 +295,7 @@ public final class PrivateLinkResourcesInner {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -294,11 +318,13 @@ public final class PrivateLinkResourcesInner {
      * @return the private link resources that need to be created for a Cosmos DB account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateLinkResourceInner>> getWithResponseAsync(
+    public Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String groupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -319,7 +345,7 @@ public final class PrivateLinkResourcesInner {
         final String apiVersion = "2019-08-01-preview";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 apiVersion,
@@ -343,7 +369,33 @@ public final class PrivateLinkResourcesInner {
     public Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String accountName, String groupName) {
         return getWithResponseAsync(resourceGroupName, accountName, groupName)
             .flatMap(
-                (SimpleResponse<PrivateLinkResourceInner> res) -> {
+                (Response<PrivateLinkResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the private link resources that need to be created for a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param groupName The name of the private link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources that need to be created for a Cosmos DB account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateLinkResourceInner> getAsync(
+        String resourceGroupName, String accountName, String groupName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, groupName, context)
+            .flatMap(
+                (Response<PrivateLinkResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -366,5 +418,23 @@ public final class PrivateLinkResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceInner get(String resourceGroupName, String accountName, String groupName) {
         return getAsync(resourceGroupName, accountName, groupName).block();
+    }
+
+    /**
+     * Gets the private link resources that need to be created for a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param groupName The name of the private link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources that need to be created for a Cosmos DB account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceInner get(
+        String resourceGroupName, String accountName, String groupName, Context context) {
+        return getAsync(resourceGroupName, accountName, groupName, context).block();
     }
 }

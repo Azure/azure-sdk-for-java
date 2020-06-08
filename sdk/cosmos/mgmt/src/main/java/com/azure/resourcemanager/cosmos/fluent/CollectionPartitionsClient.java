@@ -19,56 +19,57 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricDefinitionsListResultInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.MetricListResultInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.UsageInner;
-import com.azure.resourcemanager.cosmos.fluent.inner.UsagesResultInner;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
+import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.PartitionMetricListResultInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.PartitionUsageInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.PartitionUsagesResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Collections. */
-public final class CollectionsInner {
-    private final ClientLogger logger = new ClientLogger(CollectionsInner.class);
+/** An instance of this class provides access to all the operations defined in CollectionPartitions. */
+public final class CollectionPartitionsClient {
+    private final ClientLogger logger = new ClientLogger(CollectionPartitionsClient.class);
 
     /** The proxy service used to perform REST calls. */
-    private final CollectionsService service;
+    private final CollectionPartitionsService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of CollectionsInner.
+     * Initializes an instance of CollectionPartitionsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CollectionsInner(CosmosDBManagementClientImpl client) {
+    public CollectionPartitionsClient(CosmosDBManagementClient client) {
         this.service =
-            RestProxy.create(CollectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy
+                .create(CollectionPartitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CosmosDBManagementClientCollections to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for CosmosDBManagementClientCollectionPartitions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface CollectionsService {
+    private interface CollectionPartitionsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/metrics")
+                + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions"
+                + "/metrics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MetricListResultInner>> listMetrics(
-            @HostParam("$host") String host,
+        Mono<Response<PartitionMetricListResultInner>> listMetrics(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -81,11 +82,12 @@ public final class CollectionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/usages")
+                + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions"
+                + "/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<UsagesResultInner>> listUsages(
-            @HostParam("$host") String host,
+        Mono<Response<PartitionUsagesResultInner>> listUsages(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -93,28 +95,11 @@ public final class CollectionsInner {
             @PathParam("collectionRid") String collectionRid,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}"
-                + "/metricDefinitions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MetricDefinitionsListResultInner>> listMetricDefinitions(
-            @HostParam("$host") String host,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("databaseRid") String databaseRid,
-            @PathParam("collectionRid") String collectionRid,
-            @QueryParam("api-version") String apiVersion,
             Context context);
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given database account and collection.
+     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -126,14 +111,16 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request.
+     * @return the response to a list partition metrics request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
+    public Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -163,7 +150,7 @@ public final class CollectionsInner {
                 context ->
                     service
                         .listMetrics(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -172,7 +159,7 @@ public final class CollectionsInner {
                             apiVersion,
                             filter,
                             context))
-            .<PagedResponse<MetricInner>>map(
+            .<PagedResponse<PartitionMetricInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
@@ -180,7 +167,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given database account and collection.
+     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -193,19 +180,21 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request.
+     * @return the response to a list partition metrics request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
+    public Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
         String resourceGroupName,
         String accountName,
         String databaseRid,
         String collectionRid,
         String filter,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -232,7 +221,7 @@ public final class CollectionsInner {
         final String apiVersion = "2019-08-01";
         return service
             .listMetrics(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -248,7 +237,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given database account and collection.
+     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -260,17 +249,17 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request.
+     * @return the response to a list partition metrics request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricInner> listMetricsAsync(
+    public PagedFlux<PartitionMetricInner> listMetricsAsync(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         return new PagedFlux<>(
             () -> listMetricsSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given database account and collection.
+     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -283,10 +272,10 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request.
+     * @return the response to a list partition metrics request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricInner> listMetricsAsync(
+    public PagedFlux<PartitionMetricInner> listMetricsAsync(
         String resourceGroupName,
         String accountName,
         String databaseRid,
@@ -300,7 +289,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the metrics determined by the given filter for the given database account and collection.
+     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -312,17 +301,45 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metrics request.
+     * @return the response to a list partition metrics request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricInner> listMetrics(
+    public PagedIterable<PartitionMetricInner> listMetrics(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         return new PagedIterable<>(
             listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the metrics determined by the given filter for the given collection, split by partition.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list partition metrics request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PartitionMetricInner> listMetrics(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listMetricsAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
+    }
+
+    /**
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -333,14 +350,16 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listUsagesSinglePageAsync(
+    public Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -367,7 +386,7 @@ public final class CollectionsInner {
                 context ->
                     service
                         .listUsages(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -376,7 +395,7 @@ public final class CollectionsInner {
                             apiVersion,
                             filter,
                             context))
-            .<PagedResponse<UsageInner>>map(
+            .<PagedResponse<PartitionUsageInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
@@ -384,7 +403,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -396,19 +415,21 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<UsageInner>> listUsagesSinglePageAsync(
+    public Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(
         String resourceGroupName,
         String accountName,
         String databaseRid,
         String collectionRid,
         String filter,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -432,7 +453,7 @@ public final class CollectionsInner {
         final String apiVersion = "2019-08-01";
         return service
             .listUsages(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -448,7 +469,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -459,17 +480,17 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listUsagesAsync(
+    public PagedFlux<PartitionUsageInner> listUsagesAsync(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         return new PagedFlux<>(
             () -> listUsagesSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -481,10 +502,10 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listUsagesAsync(
+    public PagedFlux<PartitionUsageInner> listUsagesAsync(
         String resourceGroupName,
         String accountName,
         String databaseRid,
@@ -497,7 +518,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -506,10 +527,10 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<UsageInner> listUsagesAsync(
+    public PagedFlux<PartitionUsageInner> listUsagesAsync(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
         final String filter = null;
         final Context context = null;
@@ -518,7 +539,7 @@ public final class CollectionsInner {
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -529,16 +550,43 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listUsages(
+    public PagedIterable<PartitionUsageInner> listUsages(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid, String filter) {
         return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 
     /**
-     * Retrieves the usages (most recent storage data) for the given collection.
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list partition level usage request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PartitionUsageInner> listUsages(
+        String resourceGroupName,
+        String accountName,
+        String databaseRid,
+        String collectionRid,
+        String filter,
+        Context context) {
+        return new PagedIterable<>(
+            listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
+    }
+
+    /**
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -547,188 +595,13 @@ public final class CollectionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
+     * @return the response to a list partition level usage request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listUsages(
+    public PagedIterable<PartitionUsageInner> listUsages(
         String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
         final String filter = null;
         final Context context = null;
         return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
-    }
-
-    /**
-     * Retrieves metric definitions for the given collection.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
-        if (this.client.getHost() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseRid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseRid is required and cannot be null."));
-        }
-        if (collectionRid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMetricDefinitions(
-                            this.client.getHost(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            databaseRid,
-                            collectionRid,
-                            apiVersion,
-                            context))
-            .<PagedResponse<MetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Retrieves metric definitions for the given collection.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid, Context context) {
-        if (this.client.getHost() == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (accountName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
-        }
-        if (databaseRid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseRid is required and cannot be null."));
-        }
-        if (collectionRid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
-        }
-        final String apiVersion = "2019-08-01";
-        return service
-            .listMetricDefinitions(
-                this.client.getHost(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                databaseRid,
-                collectionRid,
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Retrieves metric definitions for the given collection.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
-        return new PagedFlux<>(
-            () -> listMetricDefinitionsSinglePageAsync(resourceGroupName, accountName, databaseRid, collectionRid));
-    }
-
-    /**
-     * Retrieves metric definitions for the given collection.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listMetricDefinitionsSinglePageAsync(
-                    resourceGroupName, accountName, databaseRid, collectionRid, context));
-    }
-
-    /**
-     * Retrieves metric definitions for the given collection.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list metric definitions request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
-        return new PagedIterable<>(
-            listMetricDefinitionsAsync(resourceGroupName, accountName, databaseRid, collectionRid));
     }
 }

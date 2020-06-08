@@ -24,35 +24,36 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import java.nio.ByteBuffer;
-
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionListResultInner;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateEndpointConnections. */
-public final class PrivateEndpointConnectionsInner {
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsInner.class);
+public final class PrivateEndpointConnectionsClient {
+    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final PrivateEndpointConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of PrivateEndpointConnectionsInner.
+     * Initializes an instance of PrivateEndpointConnectionsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsInner(CosmosDBManagementClientImpl client) {
+    public PrivateEndpointConnectionsClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -73,8 +74,8 @@ public final class PrivateEndpointConnectionsInner {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionListResultInner>> listByDatabaseAccount(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateEndpointConnectionListResultInner>> listByDatabaseAccount(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -87,8 +88,8 @@ public final class PrivateEndpointConnectionsInner {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateEndpointConnectionInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -102,8 +103,8 @@ public final class PrivateEndpointConnectionsInner {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -118,8 +119,8 @@ public final class PrivateEndpointConnectionsInner {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -133,8 +134,8 @@ public final class PrivateEndpointConnectionsInner {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -149,8 +150,8 @@ public final class PrivateEndpointConnectionsInner {
                 + "/databaseAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDelete(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -172,9 +173,11 @@ public final class PrivateEndpointConnectionsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByDatabaseAccountSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -195,7 +198,7 @@ public final class PrivateEndpointConnectionsInner {
                 context ->
                     service
                         .listByDatabaseAccount(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -222,9 +225,11 @@ public final class PrivateEndpointConnectionsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PrivateEndpointConnectionInner>> listByDatabaseAccountSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -242,7 +247,7 @@ public final class PrivateEndpointConnectionsInner {
         final String apiVersion = "2019-08-01-preview";
         return service
             .listByDatabaseAccount(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 apiVersion,
@@ -304,6 +309,23 @@ public final class PrivateEndpointConnectionsInner {
     }
 
     /**
+     * List all private endpoint connections on a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of private endpoint connections.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PrivateEndpointConnectionInner> listByDatabaseAccount(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedIterable<>(listByDatabaseAccountAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
      * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -315,11 +337,13 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -346,7 +370,7 @@ public final class PrivateEndpointConnectionsInner {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -369,11 +393,13 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -397,7 +423,7 @@ public final class PrivateEndpointConnectionsInner {
         final String apiVersion = "2019-08-01-preview";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 apiVersion,
@@ -422,7 +448,33 @@ public final class PrivateEndpointConnectionsInner {
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
         return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context)
+            .flatMap(
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -449,6 +501,24 @@ public final class PrivateEndpointConnectionsInner {
     }
 
     /**
+     * Gets a private endpoint connection.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        return getAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
      * Approve or reject a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -461,14 +531,16 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -500,7 +572,7 @@ public final class PrivateEndpointConnectionsInner {
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -509,6 +581,130 @@ public final class PrivateEndpointConnectionsInner {
                             parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-08-01-preview";
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accountName,
+                privateEndpointConnectionName,
+                parameters,
+                context);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, accountName, privateEndpointConnectionName, parameters, context);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class);
     }
 
     /**
@@ -529,8 +725,42 @@ public final class PrivateEndpointConnectionsInner {
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters);
+        return this
+            .client
+            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                PrivateEndpointConnectionInner.class,
+                PrivateEndpointConnectionInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, accountName, privateEndpointConnectionName, parameters, context);
         return this
             .client
             .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResultAsync(
@@ -564,6 +794,30 @@ public final class PrivateEndpointConnectionsInner {
     }
 
     /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters, context)
+            .block();
+    }
+
+    /**
      * Deletes a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -575,11 +829,13 @@ public final class PrivateEndpointConnectionsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -606,7 +862,7 @@ public final class PrivateEndpointConnectionsInner {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -622,6 +878,97 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01-preview";
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accountName,
+                privateEndpointConnectionName,
+                context);
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -629,8 +976,32 @@ public final class PrivateEndpointConnectionsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -654,6 +1025,23 @@ public final class PrivateEndpointConnectionsInner {
     }
 
     /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        deleteAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
      * Approve or reject a private endpoint connection with a given name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -666,14 +1054,16 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -704,8 +1094,8 @@ public final class PrivateEndpointConnectionsInner {
             .withContext(
                 context ->
                     service
-                        .beginCreateOrUpdate(
-                            this.client.getHost(),
+                        .beginCreateOrUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -730,15 +1120,17 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<PrivateEndpointConnectionInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -766,8 +1158,8 @@ public final class PrivateEndpointConnectionsInner {
         }
         final String apiVersion = "2019-08-01-preview";
         return service
-            .beginCreateOrUpdate(
-                this.client.getHost(),
+            .beginCreateOrUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 apiVersion,
@@ -790,15 +1182,47 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> beginCreateOrUpdateAsync(
+    public Mono<PrivateEndpointConnectionInner> beginCreateOrUpdateWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
-        return beginCreateOrUpdateWithResponseAsync(
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, privateEndpointConnectionName, parameters)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (Response<PrivateEndpointConnectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateEndpointConnectionInner> beginCreateOrUpdateWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, privateEndpointConnectionName, parameters, context)
+            .flatMap(
+                (Response<PrivateEndpointConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -820,12 +1244,38 @@ public final class PrivateEndpointConnectionsInner {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner beginCreateOrUpdate(
+    public PrivateEndpointConnectionInner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName,
         String accountName,
         String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters)
+        return beginCreateOrUpdateWithoutPollingAsync(
+                resourceGroupName, accountName, privateEndpointConnectionName, parameters)
+            .block();
+    }
+
+    /**
+     * Approve or reject a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param parameters A private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private endpoint connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context) {
+        return beginCreateOrUpdateWithoutPollingAsync(
+                resourceGroupName, accountName, privateEndpointConnectionName, parameters, context)
             .block();
     }
 
@@ -841,11 +1291,13 @@ public final class PrivateEndpointConnectionsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -871,8 +1323,8 @@ public final class PrivateEndpointConnectionsInner {
             .withContext(
                 context ->
                     service
-                        .beginDelete(
-                            this.client.getHost(),
+                        .beginDeleteWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -895,11 +1347,13 @@ public final class PrivateEndpointConnectionsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -922,8 +1376,8 @@ public final class PrivateEndpointConnectionsInner {
         }
         final String apiVersion = "2019-08-01-preview";
         return service
-            .beginDelete(
-                this.client.getHost(),
+            .beginDeleteWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 apiVersion,
@@ -944,9 +1398,29 @@ public final class PrivateEndpointConnectionsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(
+    public Mono<Void> beginDeleteWithoutPollingAsync(
         String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return beginDeleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName)
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteWithoutPollingAsync(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        return beginDeleteWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, privateEndpointConnectionName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -961,7 +1435,25 @@ public final class PrivateEndpointConnectionsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).block();
+    public void beginDeleteWithoutPolling(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, accountName, privateEndpointConnectionName).block();
+    }
+
+    /**
+     * Deletes a private endpoint connection with a given name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteWithoutPolling(
+        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, accountName, privateEndpointConnectionName, context).block();
     }
 }

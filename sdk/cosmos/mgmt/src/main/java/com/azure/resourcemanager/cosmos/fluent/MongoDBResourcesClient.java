@@ -24,41 +24,42 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
-import java.nio.ByteBuffer;
-
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.resourcemanager.cosmos.CosmosDBManagementClient;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBCollectionGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBCollectionListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBDatabaseGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.MongoDBDatabaseListResultInner;
 import com.azure.resourcemanager.cosmos.fluent.inner.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.MongoDBDatabaseCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MongoDBResources. */
-public final class MongoDBResourcesInner {
-    private final ClientLogger logger = new ClientLogger(MongoDBResourcesInner.class);
+public final class MongoDBResourcesClient {
+    private final ClientLogger logger = new ClientLogger(MongoDBResourcesClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final MongoDBResourcesService service;
 
     /** The service client containing this operation class. */
-    private final CosmosDBManagementClientImpl client;
+    private final CosmosDBManagementClient client;
 
     /**
-     * Initializes an instance of MongoDBResourcesInner.
+     * Initializes an instance of MongoDBResourcesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MongoDBResourcesInner(CosmosDBManagementClientImpl client) {
+    public MongoDBResourcesClient(CosmosDBManagementClient client) {
         this.service =
             RestProxy.create(MongoDBResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -77,8 +78,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MongoDBDatabaseListResultInner>> listMongoDBDatabases(
-            @HostParam("$host") String host,
+        Mono<Response<MongoDBDatabaseListResultInner>> listMongoDBDatabases(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -91,8 +92,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MongoDBDatabaseGetResultsInner>> getMongoDBDatabase(
-            @HostParam("$host") String host,
+        Mono<Response<MongoDBDatabaseGetResultsInner>> getMongoDBDatabase(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -106,8 +107,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateMongoDBDatabase(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBDatabase(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -122,8 +123,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteMongoDBDatabase(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> deleteMongoDBDatabase(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -137,8 +138,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -152,8 +153,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -168,8 +169,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MongoDBCollectionListResultInner>> listMongoDBCollections(
-            @HostParam("$host") String host,
+        Mono<Response<MongoDBCollectionListResultInner>> listMongoDBCollections(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -183,8 +184,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MongoDBCollectionGetResultsInner>> getMongoDBCollection(
-            @HostParam("$host") String host,
+        Mono<Response<MongoDBCollectionGetResultsInner>> getMongoDBCollection(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -199,8 +200,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateMongoDBCollection(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBCollection(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -217,8 +218,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteMongoDBCollection(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> deleteMongoDBCollection(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -234,8 +235,8 @@ public final class MongoDBResourcesInner {
                 + "/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -251,8 +252,8 @@ public final class MongoDBResourcesInner {
                 + "/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateMongoDBCollectionThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> updateMongoDBCollectionThroughput(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -268,8 +269,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MongoDBDatabaseGetResultsInner>> beginCreateUpdateMongoDBDatabase(
-            @HostParam("$host") String host,
+        Mono<Response<MongoDBDatabaseGetResultsInner>> beginCreateUpdateMongoDBDatabaseWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -284,8 +285,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteMongoDBDatabase(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteMongoDBDatabaseWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -299,8 +300,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateMongoDBDatabaseThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateMongoDBDatabaseThroughputWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -315,8 +316,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MongoDBCollectionGetResultsInner>> beginCreateUpdateMongoDBCollection(
-            @HostParam("$host") String host,
+        Mono<Response<MongoDBCollectionGetResultsInner>> beginCreateUpdateMongoDBCollectionWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -333,8 +334,8 @@ public final class MongoDBResourcesInner {
                 + "/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDeleteMongoDBCollection(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteMongoDBCollectionWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -350,8 +351,8 @@ public final class MongoDBResourcesInner {
                 + "/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> beginUpdateMongoDBCollectionThroughput(
-            @HostParam("$host") String host,
+        Mono<Response<ThroughputSettingsGetResultsInner>> beginUpdateMongoDBCollectionThroughputWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
@@ -375,9 +376,11 @@ public final class MongoDBResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MongoDBDatabaseGetResultsInner>> listMongoDBDatabasesSinglePageAsync(
         String resourceGroupName, String accountName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -398,7 +401,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .listMongoDBDatabases(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -425,9 +428,11 @@ public final class MongoDBResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MongoDBDatabaseGetResultsInner>> listMongoDBDatabasesSinglePageAsync(
         String resourceGroupName, String accountName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -445,7 +450,7 @@ public final class MongoDBResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .listMongoDBDatabases(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -507,6 +512,23 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the MongoDB databases and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MongoDBDatabaseGetResultsInner> listMongoDBDatabases(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedIterable<>(listMongoDBDatabasesAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -518,11 +540,13 @@ public final class MongoDBResourcesInner {
      * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBDatabaseGetResultsInner>> getMongoDBDatabaseWithResponseAsync(
+    public Mono<Response<MongoDBDatabaseGetResultsInner>> getMongoDBDatabaseWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -546,7 +570,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .getMongoDBDatabase(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -569,11 +593,13 @@ public final class MongoDBResourcesInner {
      * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBDatabaseGetResultsInner>> getMongoDBDatabaseWithResponseAsync(
+    public Mono<Response<MongoDBDatabaseGetResultsInner>> getMongoDBDatabaseWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -594,7 +620,7 @@ public final class MongoDBResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getMongoDBDatabase(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -619,7 +645,33 @@ public final class MongoDBResourcesInner {
         String resourceGroupName, String accountName, String databaseName) {
         return getMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName)
             .flatMap(
-                (SimpleResponse<MongoDBDatabaseGetResultsInner> res) -> {
+                (Response<MongoDBDatabaseGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MongoDBDatabaseGetResultsInner> getMongoDBDatabaseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return getMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context)
+            .flatMap(
+                (Response<MongoDBDatabaseGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -646,6 +698,24 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBDatabaseGetResultsInner getMongoDBDatabase(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return getMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName, context).block();
+    }
+
+    /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -658,14 +728,16 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateMongoDBDatabaseWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBDatabaseWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -697,7 +769,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .createUpdateMongoDBDatabase(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -706,6 +778,133 @@ public final class MongoDBResourcesInner {
                             createUpdateMongoDBDatabaseParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBDatabaseWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (createUpdateMongoDBDatabaseParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateMongoDBDatabaseParameters is required and cannot be null."));
+        } else {
+            createUpdateMongoDBDatabaseParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .createUpdateMongoDBDatabase(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                createUpdateMongoDBDatabaseParameters,
+                context);
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
+        beginCreateUpdateMongoDBDatabase(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateMongoDBDatabaseWithResponseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters);
+        return this
+            .client
+            .<MongoDBDatabaseGetResultsInner, MongoDBDatabaseGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                MongoDBDatabaseGetResultsInner.class,
+                MongoDBDatabaseGetResultsInner.class);
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
+        beginCreateUpdateMongoDBDatabase(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateMongoDBDatabaseWithResponseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, context);
+        return this
+            .client
+            .<MongoDBDatabaseGetResultsInner, MongoDBDatabaseGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                MongoDBDatabaseGetResultsInner.class,
+                MongoDBDatabaseGetResultsInner.class);
     }
 
     /**
@@ -726,9 +925,43 @@ public final class MongoDBResourcesInner {
         String accountName,
         String databaseName,
         MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateMongoDBDatabaseWithResponseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters);
+        return this
+            .client
+            .<MongoDBDatabaseGetResultsInner, MongoDBDatabaseGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                MongoDBDatabaseGetResultsInner.class,
+                MongoDBDatabaseGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MongoDBDatabaseGetResultsInner> createUpdateMongoDBDatabaseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateMongoDBDatabaseWithResponseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, context);
         return this
             .client
             .<MongoDBDatabaseGetResultsInner, MongoDBDatabaseGetResultsInner>getLroResultAsync(
@@ -764,6 +997,31 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBDatabaseGetResultsInner createUpdateMongoDBDatabase(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+        Context context) {
+        return createUpdateMongoDBDatabaseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, context)
+            .block();
+    }
+
+    /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -775,11 +1033,13 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteMongoDBDatabaseWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteMongoDBDatabaseWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -803,7 +1063,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .deleteMongoDBDatabase(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -819,6 +1079,94 @@ public final class MongoDBResourcesInner {
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteMongoDBDatabaseWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .deleteMongoDBDatabase(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
+        String resourceGroupName, String accountName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBDatabase(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -826,8 +1174,32 @@ public final class MongoDBResourcesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoDBDatabaseAsync(String resourceGroupName, String accountName, String databaseName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMongoDBDatabaseAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -851,6 +1223,23 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteMongoDBDatabase(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        deleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName, context).block();
+    }
+
+    /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
      * provided name.
      *
@@ -864,11 +1253,13 @@ public final class MongoDBResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -892,7 +1283,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .getMongoDBDatabaseThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -917,11 +1308,13 @@ public final class MongoDBResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBDatabaseThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -942,7 +1335,7 @@ public final class MongoDBResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getMongoDBDatabaseThroughput(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -969,7 +1362,35 @@ public final class MongoDBResourcesInner {
         String resourceGroupName, String accountName, String databaseName) {
         return getMongoDBDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> getMongoDBDatabaseThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return getMongoDBDatabaseThroughputWithResponseAsync(resourceGroupName, accountName, databaseName, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -998,6 +1419,26 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getMongoDBDatabaseThroughput(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return getMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName, context).block();
+    }
+
+    /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1010,14 +1451,16 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughputWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughputWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1049,7 +1492,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .updateMongoDBDatabaseThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1058,6 +1501,133 @@ public final class MongoDBResourcesInner {
                             updateThroughputParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateMongoDBDatabaseThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .updateMongoDBDatabaseThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateMongoDBDatabaseThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateMongoDBDatabaseThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
+    }
+
+    /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateMongoDBDatabaseThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateMongoDBDatabaseThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
     }
 
     /**
@@ -1078,9 +1648,43 @@ public final class MongoDBResourcesInner {
         String accountName,
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateMongoDBDatabaseThroughputWithResponseAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> updateMongoDBDatabaseThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateMongoDBDatabaseThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context);
         return this
             .client
             .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
@@ -1116,6 +1720,31 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateMongoDBDatabaseThroughput(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateMongoDBDatabaseThroughputAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
+            .block();
+    }
+
+    /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1129,9 +1758,11 @@ public final class MongoDBResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MongoDBCollectionGetResultsInner>> listMongoDBCollectionsSinglePageAsync(
         String resourceGroupName, String accountName, String databaseName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1155,7 +1786,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .listMongoDBCollections(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1184,9 +1815,11 @@ public final class MongoDBResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MongoDBCollectionGetResultsInner>> listMongoDBCollectionsSinglePageAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1207,7 +1840,7 @@ public final class MongoDBResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .listMongoDBCollections(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1275,6 +1908,24 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the MongoDB collections and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MongoDBCollectionGetResultsInner> listMongoDBCollections(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return new PagedIterable<>(listMongoDBCollectionsAsync(resourceGroupName, accountName, databaseName, context));
+    }
+
+    /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1287,11 +1938,13 @@ public final class MongoDBResourcesInner {
      * @return the MongoDB collection under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBCollectionGetResultsInner>> getMongoDBCollectionWithResponseAsync(
+    public Mono<Response<MongoDBCollectionGetResultsInner>> getMongoDBCollectionWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1318,7 +1971,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .getMongoDBCollection(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1343,11 +1996,13 @@ public final class MongoDBResourcesInner {
      * @return the MongoDB collection under an existing Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBCollectionGetResultsInner>> getMongoDBCollectionWithResponseAsync(
+    public Mono<Response<MongoDBCollectionGetResultsInner>> getMongoDBCollectionWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1371,7 +2026,7 @@ public final class MongoDBResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getMongoDBCollection(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1398,7 +2053,35 @@ public final class MongoDBResourcesInner {
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
         return getMongoDBCollectionWithResponseAsync(resourceGroupName, accountName, databaseName, collectionName)
             .flatMap(
-                (SimpleResponse<MongoDBCollectionGetResultsInner> res) -> {
+                (Response<MongoDBCollectionGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MongoDBCollectionGetResultsInner> getMongoDBCollectionAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        return getMongoDBCollectionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context)
+            .flatMap(
+                (Response<MongoDBCollectionGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1426,6 +2109,25 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the MongoDB collection under an existing Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBCollectionGetResultsInner getMongoDBCollection(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        return getMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName, context).block();
+    }
+
+    /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1439,15 +2141,17 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createUpdateMongoDBCollectionWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBCollectionWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String collectionName,
         MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1482,7 +2186,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .createUpdateMongoDBCollection(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1492,6 +2196,148 @@ public final class MongoDBResourcesInner {
                             createUpdateMongoDBCollectionParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createUpdateMongoDBCollectionWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (createUpdateMongoDBCollectionParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter createUpdateMongoDBCollectionParameters is required and cannot be null."));
+        } else {
+            createUpdateMongoDBCollectionParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .createUpdateMongoDBCollection(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                apiVersion,
+                createUpdateMongoDBCollectionParameters,
+                context);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
+        beginCreateUpdateMongoDBCollection(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateMongoDBCollectionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters);
+        return this
+            .client
+            .<MongoDBCollectionGetResultsInner, MongoDBCollectionGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                MongoDBCollectionGetResultsInner.class,
+                MongoDBCollectionGetResultsInner.class);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
+        beginCreateUpdateMongoDBCollection(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateMongoDBCollectionWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                createUpdateMongoDBCollectionParameters,
+                context);
+        return this
+            .client
+            .<MongoDBCollectionGetResultsInner, MongoDBCollectionGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                MongoDBCollectionGetResultsInner.class,
+                MongoDBCollectionGetResultsInner.class);
     }
 
     /**
@@ -1514,9 +2360,50 @@ public final class MongoDBResourcesInner {
         String databaseName,
         String collectionName,
         MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createUpdateMongoDBCollectionWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters);
+        return this
+            .client
+            .<MongoDBCollectionGetResultsInner, MongoDBCollectionGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                MongoDBCollectionGetResultsInner.class,
+                MongoDBCollectionGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MongoDBCollectionGetResultsInner> createUpdateMongoDBCollectionAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createUpdateMongoDBCollectionWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                createUpdateMongoDBCollectionParameters,
+                context);
         return this
             .client
             .<MongoDBCollectionGetResultsInner, MongoDBCollectionGetResultsInner>getLroResultAsync(
@@ -1554,6 +2441,38 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBCollectionGetResultsInner createUpdateMongoDBCollection(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+        Context context) {
+        return createUpdateMongoDBCollectionAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                createUpdateMongoDBCollectionParameters,
+                context)
+            .block();
+    }
+
+    /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1566,11 +2485,13 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteMongoDBCollectionWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteMongoDBCollectionWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1597,7 +2518,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .deleteMongoDBCollection(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1615,6 +2536,102 @@ public final class MongoDBResourcesInner {
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteMongoDBCollectionWithResponseAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .deleteMongoDBCollection(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBCollection(
+        String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteMongoDBCollectionWithResponseAsync(resourceGroupName, accountName, databaseName, collectionName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteMongoDBCollection(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteMongoDBCollectionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1623,8 +2640,34 @@ public final class MongoDBResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMongoDBCollectionAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteMongoDBCollectionWithResponseAsync(resourceGroupName, accountName, databaseName, collectionName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteMongoDBCollectionAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteMongoDBCollectionWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -1650,6 +2693,24 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteMongoDBCollection(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        deleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName, context).block();
+    }
+
+    /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
      * provided name.
      *
@@ -1664,11 +2725,13 @@ public final class MongoDBResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1695,7 +2758,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .getMongoDBCollectionThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1722,11 +2785,13 @@ public final class MongoDBResourcesInner {
      *     provided name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>> getMongoDBCollectionThroughputWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1750,7 +2815,7 @@ public final class MongoDBResourcesInner {
         final String apiVersion = "2019-08-01";
         return service
             .getMongoDBCollectionThroughput(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -1780,7 +2845,37 @@ public final class MongoDBResourcesInner {
         return getMongoDBCollectionThroughputWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> getMongoDBCollectionThroughputAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        return getMongoDBCollectionThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1811,6 +2906,29 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     * provided name.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the
+     *     provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getMongoDBCollectionThroughput(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        return getMongoDBCollectionThroughputAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context)
+            .block();
+    }
+
+    /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1824,15 +2942,17 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateMongoDBCollectionThroughputWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateMongoDBCollectionThroughputWithResponseAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String collectionName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1867,7 +2987,7 @@ public final class MongoDBResourcesInner {
                 context ->
                     service
                         .updateMongoDBCollectionThroughput(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -1877,6 +2997,143 @@ public final class MongoDBResourcesInner {
                             updateThroughputParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateMongoDBCollectionThroughputWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (collectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter collectionName is required and cannot be null."));
+        }
+        if (updateThroughputParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter updateThroughputParameters is required and cannot be null."));
+        } else {
+            updateThroughputParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .updateMongoDBCollectionThroughput(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                apiVersion,
+                updateThroughputParameters,
+                context);
+    }
+
+    /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateMongoDBCollectionThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateMongoDBCollectionThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
+    }
+
+    /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
+        beginUpdateMongoDBCollectionThroughput(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            ThroughputSettingsUpdateParameters updateThroughputParameters,
+            Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateMongoDBCollectionThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, context);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class);
     }
 
     /**
@@ -1899,9 +3156,45 @@ public final class MongoDBResourcesInner {
         String databaseName,
         String collectionName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateMongoDBCollectionThroughputWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters);
+        return this
+            .client
+            .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ThroughputSettingsGetResultsInner.class,
+                ThroughputSettingsGetResultsInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> updateMongoDBCollectionThroughputAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateMongoDBCollectionThroughputWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, context);
         return this
             .client
             .<ThroughputSettingsGetResultsInner, ThroughputSettingsGetResultsInner>getLroResultAsync(
@@ -1939,6 +3232,33 @@ public final class MongoDBResourcesInner {
     }
 
     /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner updateMongoDBCollectionThroughput(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return updateMongoDBCollectionThroughputAsync(
+                resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, context)
+            .block();
+    }
+
+    /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
      * @param resourceGroupName Name of an Azure resource group.
@@ -1951,14 +3271,17 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBDatabaseGetResultsInner>> beginCreateUpdateMongoDBDatabaseWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<MongoDBDatabaseGetResultsInner>>
+        beginCreateUpdateMongoDBDatabaseWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1989,8 +3312,8 @@ public final class MongoDBResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginCreateUpdateMongoDBDatabase(
-                            this.client.getHost(),
+                        .beginCreateUpdateMongoDBDatabaseWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2015,15 +3338,18 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBDatabaseGetResultsInner>> beginCreateUpdateMongoDBDatabaseWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
-        Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<MongoDBDatabaseGetResultsInner>>
+        beginCreateUpdateMongoDBDatabaseWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+            Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2051,8 +3377,8 @@ public final class MongoDBResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginCreateUpdateMongoDBDatabase(
-                this.client.getHost(),
+            .beginCreateUpdateMongoDBDatabaseWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2075,15 +3401,47 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MongoDBDatabaseGetResultsInner> beginCreateUpdateMongoDBDatabaseAsync(
+    public Mono<MongoDBDatabaseGetResultsInner> beginCreateUpdateMongoDBDatabaseWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        return beginCreateUpdateMongoDBDatabaseWithResponseAsync(
+        return beginCreateUpdateMongoDBDatabaseWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters)
             .flatMap(
-                (SimpleResponse<MongoDBDatabaseGetResultsInner> res) -> {
+                (Response<MongoDBDatabaseGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MongoDBDatabaseGetResultsInner> beginCreateUpdateMongoDBDatabaseWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+        Context context) {
+        return beginCreateUpdateMongoDBDatabaseWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, context)
+            .flatMap(
+                (Response<MongoDBDatabaseGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2105,13 +3463,38 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoDBDatabaseGetResultsInner beginCreateUpdateMongoDBDatabase(
+    public MongoDBDatabaseGetResultsInner beginCreateUpdateMongoDBDatabaseWithoutPolling(
         String resourceGroupName,
         String accountName,
         String databaseName,
         MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        return beginCreateUpdateMongoDBDatabaseAsync(
+        return beginCreateUpdateMongoDBDatabaseWithoutPollingAsync(
                 resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters)
+            .block();
+    }
+
+    /**
+     * Create or updates Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param createUpdateMongoDBDatabaseParameters Parameters to create and update Cosmos DB MongoDB database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBDatabaseGetResultsInner beginCreateUpdateMongoDBDatabaseWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters,
+        Context context) {
+        return beginCreateUpdateMongoDBDatabaseWithoutPollingAsync(
+                resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, context)
             .block();
     }
 
@@ -2127,11 +3510,13 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteMongoDBDatabaseWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteMongoDBDatabaseWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2154,8 +3539,8 @@ public final class MongoDBResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginDeleteMongoDBDatabase(
-                            this.client.getHost(),
+                        .beginDeleteMongoDBDatabaseWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2178,11 +3563,13 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteMongoDBDatabaseWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteMongoDBDatabaseWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2202,8 +3589,8 @@ public final class MongoDBResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginDeleteMongoDBDatabase(
-                this.client.getHost(),
+            .beginDeleteMongoDBDatabaseWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2224,9 +3611,29 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteMongoDBDatabaseAsync(
+    public Mono<Void> beginDeleteMongoDBDatabaseWithoutPollingAsync(
         String resourceGroupName, String accountName, String databaseName) {
-        return beginDeleteMongoDBDatabaseWithResponseAsync(resourceGroupName, accountName, databaseName)
+        return beginDeleteMongoDBDatabaseWithoutPollingWithResponseAsync(resourceGroupName, accountName, databaseName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteMongoDBDatabaseWithoutPollingAsync(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        return beginDeleteMongoDBDatabaseWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, databaseName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2241,8 +3648,26 @@ public final class MongoDBResourcesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteMongoDBDatabase(String resourceGroupName, String accountName, String databaseName) {
-        beginDeleteMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName).block();
+    public void beginDeleteMongoDBDatabaseWithoutPolling(
+        String resourceGroupName, String accountName, String databaseName) {
+        beginDeleteMongoDBDatabaseWithoutPollingAsync(resourceGroupName, accountName, databaseName).block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteMongoDBDatabaseWithoutPolling(
+        String resourceGroupName, String accountName, String databaseName, Context context) {
+        beginDeleteMongoDBDatabaseWithoutPollingAsync(resourceGroupName, accountName, databaseName, context).block();
     }
 
     /**
@@ -2258,15 +3683,17 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
-        beginUpdateMongoDBDatabaseThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateMongoDBDatabaseThroughputWithoutPollingWithResponseAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2297,8 +3724,8 @@ public final class MongoDBResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdateMongoDBDatabaseThroughput(
-                            this.client.getHost(),
+                        .beginUpdateMongoDBDatabaseThroughputWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2323,16 +3750,18 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
-        beginUpdateMongoDBDatabaseThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateMongoDBDatabaseThroughputWithoutPollingWithResponseAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2360,8 +3789,8 @@ public final class MongoDBResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginUpdateMongoDBDatabaseThroughput(
-                this.client.getHost(),
+            .beginUpdateMongoDBDatabaseThroughputWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2384,15 +3813,47 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateMongoDBDatabaseThroughputAsync(
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateMongoDBDatabaseThroughputWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateMongoDBDatabaseThroughputWithResponseAsync(
+        return beginUpdateMongoDBDatabaseThroughputWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateMongoDBDatabaseThroughputWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateMongoDBDatabaseThroughputWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2414,13 +3875,38 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateMongoDBDatabaseThroughput(
+    public ThroughputSettingsGetResultsInner beginUpdateMongoDBDatabaseThroughputWithoutPolling(
         String resourceGroupName,
         String accountName,
         String databaseName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateMongoDBDatabaseThroughputAsync(
+        return beginUpdateMongoDBDatabaseThroughputWithoutPollingAsync(
                 resourceGroupName, accountName, databaseName, updateThroughputParameters)
+            .block();
+    }
+
+    /**
+     * Update RUs per second of the an Azure Cosmos DB MongoDB database.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner beginUpdateMongoDBDatabaseThroughputWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateMongoDBDatabaseThroughputWithoutPollingAsync(
+                resourceGroupName, accountName, databaseName, updateThroughputParameters, context)
             .block();
     }
 
@@ -2438,15 +3924,18 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBCollectionGetResultsInner>> beginCreateUpdateMongoDBCollectionWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String collectionName,
-        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<MongoDBCollectionGetResultsInner>>
+        beginCreateUpdateMongoDBCollectionWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2480,8 +3969,8 @@ public final class MongoDBResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginCreateUpdateMongoDBCollection(
-                            this.client.getHost(),
+                        .beginCreateUpdateMongoDBCollectionWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2508,16 +3997,19 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<MongoDBCollectionGetResultsInner>> beginCreateUpdateMongoDBCollectionWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String databaseName,
-        String collectionName,
-        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
-        Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<MongoDBCollectionGetResultsInner>>
+        beginCreateUpdateMongoDBCollectionWithoutPollingWithResponseAsync(
+            String resourceGroupName,
+            String accountName,
+            String databaseName,
+            String collectionName,
+            MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+            Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2548,8 +4040,8 @@ public final class MongoDBResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginCreateUpdateMongoDBCollection(
-                this.client.getHost(),
+            .beginCreateUpdateMongoDBCollectionWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2574,16 +4066,55 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MongoDBCollectionGetResultsInner> beginCreateUpdateMongoDBCollectionAsync(
+    public Mono<MongoDBCollectionGetResultsInner> beginCreateUpdateMongoDBCollectionWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String collectionName,
         MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        return beginCreateUpdateMongoDBCollectionWithResponseAsync(
+        return beginCreateUpdateMongoDBCollectionWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters)
             .flatMap(
-                (SimpleResponse<MongoDBCollectionGetResultsInner> res) -> {
+                (Response<MongoDBCollectionGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MongoDBCollectionGetResultsInner> beginCreateUpdateMongoDBCollectionWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+        Context context) {
+        return beginCreateUpdateMongoDBCollectionWithoutPollingWithResponseAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                createUpdateMongoDBCollectionParameters,
+                context)
+            .flatMap(
+                (Response<MongoDBCollectionGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2606,14 +4137,46 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB MongoDB collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MongoDBCollectionGetResultsInner beginCreateUpdateMongoDBCollection(
+    public MongoDBCollectionGetResultsInner beginCreateUpdateMongoDBCollectionWithoutPolling(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String collectionName,
         MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        return beginCreateUpdateMongoDBCollectionAsync(
+        return beginCreateUpdateMongoDBCollectionWithoutPollingAsync(
                 resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters)
+            .block();
+    }
+
+    /**
+     * Create or update an Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param createUpdateMongoDBCollectionParameters Parameters to create and update Cosmos DB MongoDB collection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB MongoDB collection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MongoDBCollectionGetResultsInner beginCreateUpdateMongoDBCollectionWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
+        Context context) {
+        return beginCreateUpdateMongoDBCollectionWithoutPollingAsync(
+                resourceGroupName,
+                accountName,
+                databaseName,
+                collectionName,
+                createUpdateMongoDBCollectionParameters,
+                context)
             .block();
     }
 
@@ -2630,11 +4193,13 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteMongoDBCollectionWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteMongoDBCollectionWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2660,8 +4225,8 @@ public final class MongoDBResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginDeleteMongoDBCollection(
-                            this.client.getHost(),
+                        .beginDeleteMongoDBCollectionWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2686,11 +4251,13 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteMongoDBCollectionWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteMongoDBCollectionWithoutPollingWithResponseAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2713,8 +4280,8 @@ public final class MongoDBResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginDeleteMongoDBCollection(
-                this.client.getHost(),
+            .beginDeleteMongoDBCollectionWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2737,10 +4304,31 @@ public final class MongoDBResourcesInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteMongoDBCollectionAsync(
+    public Mono<Void> beginDeleteMongoDBCollectionWithoutPollingAsync(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        return beginDeleteMongoDBCollectionWithResponseAsync(
+        return beginDeleteMongoDBCollectionWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteMongoDBCollectionWithoutPollingAsync(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        return beginDeleteMongoDBCollectionWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2756,9 +4344,30 @@ public final class MongoDBResourcesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDeleteMongoDBCollection(
+    public void beginDeleteMongoDBCollectionWithoutPolling(
         String resourceGroupName, String accountName, String databaseName, String collectionName) {
-        beginDeleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName).block();
+        beginDeleteMongoDBCollectionWithoutPollingAsync(resourceGroupName, accountName, databaseName, collectionName)
+            .block();
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB MongoDB Collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteMongoDBCollectionWithoutPolling(
+        String resourceGroupName, String accountName, String databaseName, String collectionName, Context context) {
+        beginDeleteMongoDBCollectionWithoutPollingAsync(
+                resourceGroupName, accountName, databaseName, collectionName, context)
+            .block();
     }
 
     /**
@@ -2775,16 +4384,18 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
-        beginUpdateMongoDBCollectionThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateMongoDBCollectionThroughputWithoutPollingWithResponseAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
             String collectionName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2818,8 +4429,8 @@ public final class MongoDBResourcesInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdateMongoDBCollectionThroughput(
-                            this.client.getHost(),
+                        .beginUpdateMongoDBCollectionThroughputWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
@@ -2846,17 +4457,19 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ThroughputSettingsGetResultsInner>>
-        beginUpdateMongoDBCollectionThroughputWithResponseAsync(
+    public Mono<Response<ThroughputSettingsGetResultsInner>>
+        beginUpdateMongoDBCollectionThroughputWithoutPollingWithResponseAsync(
             String resourceGroupName,
             String accountName,
             String databaseName,
             String collectionName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2887,8 +4500,8 @@ public final class MongoDBResourcesInner {
         }
         final String apiVersion = "2019-08-01";
         return service
-            .beginUpdateMongoDBCollectionThroughput(
-                this.client.getHost(),
+            .beginUpdateMongoDBCollectionThroughputWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
@@ -2913,16 +4526,50 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThroughputSettingsGetResultsInner> beginUpdateMongoDBCollectionThroughputAsync(
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateMongoDBCollectionThroughputWithoutPollingAsync(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String collectionName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateMongoDBCollectionThroughputWithResponseAsync(
+        return beginUpdateMongoDBCollectionThroughputWithoutPollingWithResponseAsync(
                 resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters)
             .flatMap(
-                (SimpleResponse<ThroughputSettingsGetResultsInner> res) -> {
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThroughputSettingsGetResultsInner> beginUpdateMongoDBCollectionThroughputWithoutPollingAsync(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateMongoDBCollectionThroughputWithoutPollingWithResponseAsync(
+                resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, context)
+            .flatMap(
+                (Response<ThroughputSettingsGetResultsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2945,14 +4592,41 @@ public final class MongoDBResourcesInner {
      * @return an Azure Cosmos DB resource throughput.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner beginUpdateMongoDBCollectionThroughput(
+    public ThroughputSettingsGetResultsInner beginUpdateMongoDBCollectionThroughputWithoutPolling(
         String resourceGroupName,
         String accountName,
         String databaseName,
         String collectionName,
         ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateMongoDBCollectionThroughputAsync(
+        return beginUpdateMongoDBCollectionThroughputWithoutPollingAsync(
                 resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters)
+            .block();
+    }
+
+    /**
+     * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param updateThroughputParameters Parameters to update Cosmos DB resource throughput.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB resource throughput.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner beginUpdateMongoDBCollectionThroughputWithoutPolling(
+        String resourceGroupName,
+        String accountName,
+        String databaseName,
+        String collectionName,
+        ThroughputSettingsUpdateParameters updateThroughputParameters,
+        Context context) {
+        return beginUpdateMongoDBCollectionThroughputWithoutPollingAsync(
+                resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, context)
             .block();
     }
 }
