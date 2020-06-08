@@ -30,7 +30,9 @@ create and manage indexes, load data, implement search features, execute queries
 ### Authenticate the client
 
 In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class. 
-To make this possible you will need an [api-key of the Azure Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+To make this possible you will need, 
+1. [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and
+1. [Api-key of the Azure Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
 The SDK provides three clients.
 
@@ -42,9 +44,8 @@ Note that you will need an admin key to authenticate the client (query keys only
 
 #### Create a SearchIndexClient
 
-To create a SearchIndexClient, you will need an existing index name as well as the values of the Azure Cognitive Search service 
-[URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
-[query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+To create a SearchIndexerClient, you will need the values of the Azure Cognitive Search service 
+URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L65 -->
 ```Java
@@ -66,9 +67,8 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 
 #### Create a SearchIndexerClient
 
-To create a SearchIndexerClient, you will need an existing index name as well as the values of the Azure Cognitive Search service 
-[URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
-[query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+To create a SearchIndexerClient, you will need the values of the Azure Cognitive Search service 
+URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
 ```Java
@@ -90,8 +90,8 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 
 #### Create a SearchClient
 
-Once you have the values of the Azure Cognitive Search service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) 
-and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the SearchClient:
+Once you have the values of the Azure Cognitive Search service URL endpoint and 
+admin key, you can create the SearchClient with an existing index name:
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L46-L50 -->
 ```Java
