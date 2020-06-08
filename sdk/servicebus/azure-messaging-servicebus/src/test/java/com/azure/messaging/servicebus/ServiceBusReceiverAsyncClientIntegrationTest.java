@@ -267,49 +267,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can do following using shared connection and on session enabled entity.
-     * 1. create transaction
-     * 2. receive and settle with transactionContext.
-     * 3. commit Rollback this transaction.
-     */
-    @MethodSource("messagingEntityProvider")
-    @ParameterizedTest
-    void transactionReceiveAndCommitOnSessionEntity(MessagingEntityType entityType) {
-
-        // Arrange
-        final boolean isSessionEnabled = true;
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
-
-        final String messageId1 = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId1, isSessionEnabled);
-        sendMessage(message).block(TIMEOUT);
-
-        // Assert & Act
-        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
-        StepVerifier.create(receiver.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
-                assertNotNull(transaction);
-            })
-            .verifyComplete();
-        assertNotNull(transaction.get());
-
-        // Assert & Act
-        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
-        assertNotNull(receivedContext);
-
-        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
-        assertNotNull(receivedMessage);
-
-        StepVerifier.create(receiver.complete(receivedMessage, sessionId, transaction.get()))
-            .verifyComplete();
-
-        StepVerifier.create(receiver.commitTransaction(transaction.get()))
-            .verifyComplete();
-        messagesPending.decrementAndGet();
-    }
-
-    /**
      * Verifies that we can do following on different clients i.e. sender and receiver.
      * 1. create transaction using sender
      * 2. receive and complete with transactionContext.
@@ -941,7 +898,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receivesByNumber(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_BY_NUMBER, false);
 
         final String messageId = UUID.randomUUID().toString();
         final int number = 10;
@@ -961,7 +918,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void receivesByTime(MessagingEntityType entityType) {
         // Arrange
 
-        setSenderAndReceiver(entityType, 0, false);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_RECEIVE_BY_TIME, false);
         final String messageId = UUID.randomUUID().toString();
         final int number = 10;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, CONTENTS_BYTES);
@@ -1013,7 +970,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private Mono<Void> sendMessage(ServiceBusMessage message) {
         return sender.send(message).doOnSuccess(aVoid -> {
             int number = messagesPending.incrementAndGet();
-            logger.info("Message Id {}. Number sent: {}",message.getMessageId(), number);
+            logger.info("Message Id {}. Number sent: {}", message.getMessageId(), number);
         });
     }
 

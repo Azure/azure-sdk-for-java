@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -32,7 +31,6 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class TestUtils {
-    private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
@@ -49,7 +47,7 @@ public class TestUtils {
     static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
 
     // An application property key to identify where in the stream this message was created.
-    static final String MESSAGE_POSITION_ID = "1";
+    static final String MESSAGE_POSITION_ID = "message-position";
 
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
@@ -82,52 +80,6 @@ public class TestUtils {
      */
     public static String getQueueBaseName() {
         return System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
-    }
-
-    /**
-     * The Service Bus resource name
-     *
-     * @return The Service Bus {@link TestResourceDescription}.
-     */
-    public static TestResourceDescription getTestResource(int useCase, boolean isSessionEnabled) {
-
-        StringBuilder queueBuilder = new StringBuilder();
-        StringBuilder topicBuilder = new StringBuilder("AZURE_SERVICEBUS_TOPIC_NAME-");
-        StringBuilder subscriptionBuilder = new StringBuilder();
-
-        if (isSessionEnabled) {
-            queueBuilder.append("AZURE_SERVICEBUS_SESSION_QUEUE_NAME-");
-            subscriptionBuilder.append("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME-");
-        } else {
-            queueBuilder.append("AZURE_SERVICEBUS_QUEUE_NAME-");
-            subscriptionBuilder.append("AZURE_SERVICEBUS_SUBSCRIPTION_NAME-");
-        }
-
-        TestResourceDescription testResourceDescription;
-
-        switch (useCase) {
-            case USE_CASE_DEFAULT :
-                testResourceDescription =  new TestResourceDescription(
-                    System.getenv(queueBuilder.append("0").toString()),
-                    System.getenv(topicBuilder.append("0").toString()),
-                    System.getenv(subscriptionBuilder.append("0").toString()));
-                break;
-            case USE_CASE_RECEIVE_BY_NUMBER :
-                testResourceDescription =  new TestResourceDescription(
-                    System.getenv(queueBuilder.append("1").toString()),
-                    System.getenv(topicBuilder.append("1").toString()),
-                    System.getenv(subscriptionBuilder.append("1").toString()));
-                break;
-            case USE_CASE_RECEIVE_BY_TIME :
-                testResourceDescription = new TestResourceDescription(
-                    System.getenv(queueBuilder.append("2").toString()),
-                    System.getenv(topicBuilder.append("2").toString()),
-                    System.getenv(subscriptionBuilder.append("2").toString()));
-                break;
-            default:
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown use case: " + useCase));
-        }
-        return testResourceDescription;
     }
 
     /**

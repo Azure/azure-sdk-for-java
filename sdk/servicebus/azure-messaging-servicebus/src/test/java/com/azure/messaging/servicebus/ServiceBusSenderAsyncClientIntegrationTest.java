@@ -34,11 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
-    /**
-     * Receiver used to clean up resources in {@link #afterTest()}.
-     */
-    private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
-
     private final AtomicInteger messagesPending = new AtomicInteger();
 
     ServiceBusSenderAsyncClientIntegrationTest() {
@@ -71,7 +66,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
-            dispose(receiver, receiveAndDeleteReceiver);
+            dispose(receiver);
         }
     }
 
@@ -153,10 +148,12 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
         // Arrange
+        Duration shortTimeout = Duration.ofSeconds(15);
         setSenderAndReceiver(entityType, 0, false);
         final boolean isSessionEnabled =  false;
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, false);
+        final int total = 3;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -169,12 +166,20 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(transaction.get());
 
         // Assert & Act
-        StepVerifier.create(sender.send(message, transaction.get()))
+        StepVerifier.create(sender.send(messages, transaction.get()))
             .verifyComplete();
         if (isCommit) {
             StepVerifier.create(sender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
-            StepVerifier.create(receiveAndDeleteReceiver.receive().next())
+            StepVerifier.create(receiver.receive().take(total).timeout(shortTimeout))
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                })
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                })
                 .assertNext(receivedMessage -> {
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
@@ -183,6 +188,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         } else {
             StepVerifier.create(sender.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
                 .verifyComplete();
+            StepVerifier.create(receiver.receive().take(total))
+                .verifyTimeout(shortTimeout);
         }
     }
 
@@ -240,15 +247,13 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(sender.commitTransaction(transaction.get()))
             .verifyComplete();
-        StepVerifier.create(Mono.delay(scheduleDuration).then(receiveAndDeleteReceiver.receive().next()))
+        StepVerifier.create(Mono.delay(scheduleDuration).then(receiver.receive().next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
     }
-
-
 
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
@@ -268,16 +273,11 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
-                .sessionId(sessionId)
-                .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
-                .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .sessionId(sessionId)
                 .buildAsyncClient();
         } else {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
-                .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(useCredentials, entityType, entityIndex, Function.identity(), shareConnection)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }

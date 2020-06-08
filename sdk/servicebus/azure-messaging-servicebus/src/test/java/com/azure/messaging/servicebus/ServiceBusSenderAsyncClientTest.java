@@ -57,6 +57,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doNothing;
@@ -426,7 +427,6 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
@@ -502,17 +502,12 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void scheduleMessageWithTransaction() {
         // Arrange
-        long sequenceNumberReturned = 10;
-        Instant instant = mock(Instant.class);
-        ArgumentCaptor<Instant> instantCapture = ArgumentCaptor.forClass(Instant.class);
-        ArgumentCaptor<Integer> lengthCapture = ArgumentCaptor.forClass(Integer.class);
-        ArgumentCaptor<String> linkNameCapture = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<ServiceBusTransactionContext> transactionCapture = ArgumentCaptor.forClass(ServiceBusTransactionContext.class);
-
+        final long sequenceNumberReturned = 10;
+        final Instant instant = mock(Instant.class);
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), any(ServiceBusTransactionContext.class)))
+        when(managementNode.schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
@@ -520,13 +515,7 @@ class ServiceBusSenderAsyncClientTest {
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
 
-        verify(managementNode).schedule(singleSBMessageCaptor.capture(), instantCapture.capture(), lengthCapture.capture(), linkNameCapture.capture(), transactionCapture.capture());
-
-        Assertions.assertEquals(message, singleSBMessageCaptor.getValue());
-        Assertions.assertEquals(instant, instantCapture.getValue());
-        Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, lengthCapture.getValue());
-        Assertions.assertEquals(LINK_NAME, linkNameCapture.getValue());
-        Assertions.assertSame(transactionContext, transactionCapture.getValue());
+        verify(managementNode).schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId())));
     }
 
 

@@ -76,7 +76,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     private final Mono<Instant> sessionLockedUntil;
 
     public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
+                                     TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
         super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
         this.receiver = receiver;
         this.handler = handler;
@@ -88,8 +88,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
             .flatMap(state -> {
-                @SuppressWarnings("unchecked")
-                final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
+                @SuppressWarnings("unchecked") final Map<Symbol, Object> remoteSource = ((Source) receiver.getRemoteSource()).getFilter();
                 final Object value = remoteSource.get(SESSION_FILTER);
                 if (value == null) {
                     logger.info("entityPath[{}], linkName[{}]. There is no session id.", entityPath, getLinkName());
@@ -158,9 +157,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     continue;
                 }
 
-                if (workItem.getDeliveryState() instanceof  TransactionalState) {
+                if (workItem.getDeliveryState() instanceof TransactionalState) {
                     pending.add(updateDispositionInternal(workItem.getLockToken(), Released.getInstance()));
-                    //pending.add(workItem.getMono());
                 } else {
                     pending.add(workItem.getMono());
                 }
@@ -248,7 +246,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     /**
      * Updates the outcome of a delivery. This occurs when a message is being settled from the receiver side.
-     *
      * @param delivery Delivery to update.
      */
     private void updateOutcome(String lockToken, Delivery delivery) {
@@ -374,7 +371,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     private static final class UpdateDispositionWorkItem {
         private final String lockToken;
-        private DeliveryState state;
+        private final DeliveryState state;
         private final Duration timeout;
         private final AtomicInteger retryAttempts = new AtomicInteger();
         private final AtomicBoolean isDisposed = new AtomicBoolean();

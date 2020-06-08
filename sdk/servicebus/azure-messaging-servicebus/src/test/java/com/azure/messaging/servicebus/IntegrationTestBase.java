@@ -47,7 +47,6 @@ import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -128,10 +127,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     public String getFullyQualifiedDomainName() {
         return TestUtils.getFullyQualifiedDomainName();
-    }
-
-    public TestResourceDescription getTestResourceDescription(int useCase, boolean isSessionEnabled) {
-        return TestUtils.getTestResource(useCase, isSessionEnabled);
     }
 
     /**
@@ -259,8 +254,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, boolean isSessionAware, boolean sharedConnection) {
-
-        //TestResourceDescription testResourceDescription = getTestResourceDescription(useCase, isSessionAware);
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
@@ -474,6 +467,7 @@ public abstract class IntegrationTestBase extends TestBase {
             // assertEquals(sessionId, message.getSessionId());
         }
     }
+
     private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
         ServiceBusClientBuilder builder;
         if (sharedConnection && sharedBuilder ==  null) {
