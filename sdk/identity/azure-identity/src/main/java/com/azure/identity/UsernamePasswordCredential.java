@@ -12,6 +12,7 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -66,13 +67,7 @@ public class UsernamePasswordCredential implements TokenCredential {
                 return Mono.empty();
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
-            .map(msalToken -> {
-                cachedToken.set(new MsalAuthenticationAccount(
-                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
-
-                return msalToken;
-            });
+            .map(this::updateCache);
     }
 
     /**
@@ -84,8 +79,8 @@ public class UsernamePasswordCredential implements TokenCredential {
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password))
-                       .map(msalToken -> new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                               identityClient.getTenantId()));
+                       .map(this::updateCache)
+                       .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
@@ -100,5 +95,13 @@ public class UsernamePasswordCredential implements TokenCredential {
                                                         + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
+    }
+
+    private MsalToken updateCache(MsalToken msalToken) {
+        cachedToken.set(
+                new MsalAuthenticationAccount(
+                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId())));
+        return msalToken;
     }
 }

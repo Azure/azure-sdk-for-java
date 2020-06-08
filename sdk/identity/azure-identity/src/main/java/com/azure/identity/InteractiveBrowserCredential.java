@@ -12,6 +12,7 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -77,14 +78,7 @@ public class InteractiveBrowserCredential implements TokenCredential {
                              + "code authentication.", request)));
             }
             return identityClient.authenticateWithBrowserInteraction(request, port);
-        }))
-            .map(msalToken -> {
-                cachedToken.set(
-                        new MsalAuthenticationAccount(
-                                new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                        identityClient.getTenantId())));
-                return msalToken;
-            });
+        })).map(this::updateCache);
     }
 
     /**
@@ -98,8 +92,8 @@ public class InteractiveBrowserCredential implements TokenCredential {
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port))
-                       .map(msalToken -> new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                               identityClient.getTenantId()));
+                .map(this::updateCache)
+                .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
@@ -117,4 +111,13 @@ public class InteractiveBrowserCredential implements TokenCredential {
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
+
+    private MsalToken updateCache(MsalToken msalToken) {
+        cachedToken.set(
+                new MsalAuthenticationAccount(
+                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId())));
+        return msalToken;
+    }
+
 }
