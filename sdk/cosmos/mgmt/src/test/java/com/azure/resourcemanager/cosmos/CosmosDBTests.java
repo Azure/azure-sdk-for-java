@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.cosmos;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
 import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
@@ -138,7 +137,7 @@ public class CosmosDBTests extends TestBase {
                 .withSubnet(network.subnets().get(subnetName).inner());
 
         privateEndpoint.withLocation(region.toString());
-        privateEndpoint = networkManager.inner().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
+        privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount
             .update()
