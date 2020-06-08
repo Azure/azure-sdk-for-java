@@ -236,7 +236,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekFromSequenceNumberMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 1, isSessionEnabled);
+        setSenderAndReceiver(entityType, 3, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -250,12 +250,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiver.peekAt(receivedMessage.getSequenceNumber()))
-            .assertNext(m -> {
-                assertEquals(receivedMessage.getSequenceNumber(), m.getSequenceNumber());
-                assertMessageEquals(m, messageId, isSessionEnabled);
-            })
-            .verifyComplete();
+        try {
+            StepVerifier.create(receiver.peekAt(receivedMessage.getSequenceNumber()))
+                .assertNext(m -> {
+                    assertEquals(receivedMessage.getSequenceNumber(), m.getSequenceNumber());
+                    assertMessageEquals(m, messageId, isSessionEnabled);
+                })
+                .verifyComplete();
+        } finally {
+            receiver.complete(receivedMessage);
+        }
     }
 
     /**
@@ -265,7 +269,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekBatchMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 2, isSessionEnabled);
+        setSenderAndReceiver(entityType, 4, isSessionEnabled);
 
         final BiConsumer<ServiceBusReceivedMessage, Integer> checkCorrectMessage = (message, index) -> {
             final Map<String, Object> properties = message.getProperties();
@@ -309,7 +313,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 2, false);
+        setSenderAndReceiver(entityType, 5, false);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
