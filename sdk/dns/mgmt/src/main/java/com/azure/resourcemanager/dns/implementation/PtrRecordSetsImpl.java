@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.dns.PtrRecordSet;
 import com.azure.resourcemanager.dns.PtrRecordSets;
 import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of PtrRecordSets. */

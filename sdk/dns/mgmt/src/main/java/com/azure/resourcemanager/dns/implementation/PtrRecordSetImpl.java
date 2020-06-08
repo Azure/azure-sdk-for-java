@@ -5,7 +5,7 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.resourcemanager.dns.PtrRecord;
 import com.azure.resourcemanager.dns.PtrRecordSet;
 import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

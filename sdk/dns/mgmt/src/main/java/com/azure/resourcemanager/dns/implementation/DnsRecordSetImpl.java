@@ -14,7 +14,7 @@ import com.azure.resourcemanager.dns.PtrRecord;
 import com.azure.resourcemanager.dns.RecordType;
 import com.azure.resourcemanager.dns.SrvRecord;
 import com.azure.resourcemanager.dns.TxtRecord;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import reactor.core.publisher.Mono;

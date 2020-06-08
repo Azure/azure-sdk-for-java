@@ -4,7 +4,7 @@ package com.azure.resourcemanager.dns;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.dns.implementation.DnsZoneManager;
-import com.azure.resourcemanager.dns.models.ZonesInner;
+import com.azure.resourcemanager.dns.fluent.ZonesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;

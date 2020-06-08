@@ -4,8 +4,8 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.resourcemanager.dns.DnsZone;
 import com.azure.resourcemanager.dns.DnsZones;
-import com.azure.resourcemanager.dns.models.ZoneInner;
-import com.azure.resourcemanager.dns.models.ZonesInner;
+import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
+import com.azure.resourcemanager.dns.fluent.ZonesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
