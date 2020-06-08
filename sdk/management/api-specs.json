@@ -102,10 +102,10 @@
     "package": "com.azure.resourcemanager.containerservice",
     "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
   },
-  "cosmosdb": {
+  "cosmos": {
     "dir": "../cosmos/mgmt",
     "source": "specification/cosmos-db/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.cosmosdb",
+    "package": "com.azure.resourcemanager.cosmos",
     "args": "--payload-flattening-threshold=1 --tag=package-2019-08-preview"
   },
   "customerinsights": {

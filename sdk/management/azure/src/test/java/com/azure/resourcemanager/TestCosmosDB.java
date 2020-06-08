@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.CosmosDBAccounts;
-import com.azure.resourcemanager.cosmos.DatabaseAccountKind;
-import com.azure.resourcemanager.cosmos.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
+import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 

@@ -45,9 +45,10 @@ import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListKeysResult;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.dns.ARecordSet;
 import com.azure.resourcemanager.dns.AaaaRecordSet;
 import com.azure.resourcemanager.dns.CNameRecordSet;
@@ -2234,13 +2235,13 @@ public final class Utils {
                 .append("\n\tPrimary Read-Only Key: ").append(readOnlyKeys.primaryReadonlyMasterKey())
                 .append("\n\tSecondary Read-Only Key: ").append(readOnlyKeys.secondaryReadonlyMasterKey());
 
-        for (com.azure.resourcemanager.cosmos.Location writeReplica : cosmosDBAccount.writableReplications()) {
+        for (Location writeReplica : cosmosDBAccount.writableReplications()) {
             builder.append("\n\t\tWrite replication: ")
                     .append("\n\t\t\tName :").append(writeReplica.locationName());
         }
 
         builder.append("\n\tNumber of read replications: ").append(cosmosDBAccount.readableReplications().size());
-        for (com.azure.resourcemanager.cosmos.Location readReplica : cosmosDBAccount.readableReplications()) {
+        for (Location readReplica : cosmosDBAccount.readableReplications()) {
             builder.append("\n\t\tRead replication: ")
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }
