@@ -5,13 +5,14 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
-import com.azure.resourcemanager.sql.AuthenticationType;
-import com.azure.resourcemanager.sql.ImportExtensionRequest;
-import com.azure.resourcemanager.sql.ImportOperationMode;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlDatabaseImportExportResponse;
-import com.azure.resourcemanager.sql.SqlDatabaseImportRequest;
-import com.azure.resourcemanager.sql.StorageKeyType;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.AuthenticationType;
+import com.azure.resourcemanager.sql.models.ImportExtensionRequest;
+import com.azure.resourcemanager.sql.models.ImportOperationMode;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
+import com.azure.resourcemanager.sql.models.SqlDatabaseImportRequest;
+import com.azure.resourcemanager.sql.models.StorageKeyType;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
@@ -47,7 +48,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .createImportOperationAsync(
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,

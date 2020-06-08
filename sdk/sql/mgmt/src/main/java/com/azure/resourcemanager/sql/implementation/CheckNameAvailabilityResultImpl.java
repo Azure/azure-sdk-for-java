@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResponseInner;
+import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.sql.fluent.inner.CheckNameAvailabilityResponseInner;
 
 /** Implementation for CheckNameAvailabilityResult. */
 public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvailabilityResponseInner>

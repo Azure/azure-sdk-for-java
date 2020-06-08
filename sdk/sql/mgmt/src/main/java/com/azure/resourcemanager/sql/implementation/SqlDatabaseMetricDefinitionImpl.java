@@ -3,12 +3,12 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.MetricAvailability;
-import com.azure.resourcemanager.sql.PrimaryAggregationType;
-import com.azure.resourcemanager.sql.SqlDatabaseMetricAvailability;
-import com.azure.resourcemanager.sql.SqlDatabaseMetricDefinition;
-import com.azure.resourcemanager.sql.UnitDefinitionType;
-import com.azure.resourcemanager.sql.models.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.models.MetricAvailability;
+import com.azure.resourcemanager.sql.models.PrimaryAggregationType;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetricAvailability;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition;
+import com.azure.resourcemanager.sql.models.UnitDefinitionType;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -3,10 +3,11 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRule;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.models.VirtualNetworkRuleInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
+import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
     @Override
     public SqlVirtualNetworkRule getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
         VirtualNetworkRuleInner inner =
-            this.sqlServerManager.inner().virtualNetworkRules().get(resourceGroupName, sqlServerName, name);
+            this.sqlServerManager.inner().getVirtualNetworkRules().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
             ? new SqlVirtualNetworkRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager)
             : null;
@@ -47,7 +48,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .getAsync(resourceGroupName, sqlServerName, name)
             .map(
                 inner ->
@@ -64,7 +65,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
             this
                 .sqlServerManager
                 .inner()
-                .virtualNetworkRules()
+                .getVirtualNetworkRules()
                 .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null)
             ? new SqlVirtualNetworkRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServerManager)
@@ -77,7 +78,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
         return sqlServer
             .manager()
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(
                 inner ->
@@ -87,19 +88,19 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
 
     @Override
     public void deleteBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        this.sqlServerManager.inner().virtualNetworkRules().delete(resourceGroupName, sqlServerName, name);
+        this.sqlServerManager.inner().getVirtualNetworkRules().delete(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.sqlServerManager.inner().virtualNetworkRules().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this.sqlServerManager.inner().getVirtualNetworkRules().deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public List<SqlVirtualNetworkRule> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlVirtualNetworkRule> virtualNetworkRuleSet = new ArrayList<>();
         for (VirtualNetworkRuleInner inner
-            : this.sqlServerManager.inner().virtualNetworkRules().listByServer(resourceGroupName, sqlServerName)) {
+            : this.sqlServerManager.inner().getVirtualNetworkRules().listByServer(resourceGroupName, sqlServerName)) {
             virtualNetworkRuleSet
                 .add(
                     new SqlVirtualNetworkRuleImpl(
@@ -114,7 +115,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
                 inner ->
@@ -130,7 +131,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
                 : this
                     .sqlServerManager
                     .inner()
-                    .virtualNetworkRules()
+                    .getVirtualNetworkRules()
                     .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 virtualNetworkRuleSet
                     .add(
@@ -147,7 +148,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
         return sqlServer
             .manager()
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
                 inner ->

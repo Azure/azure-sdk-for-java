@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.sql.CreateMode;
-import com.azure.resourcemanager.sql.RestorePoint;
-import com.azure.resourcemanager.sql.SampleName;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlElasticPoolOperations;
+import com.azure.resourcemanager.sql.models.CreateMode;
+import com.azure.resourcemanager.sql.models.RestorePoint;
+import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.OffsetDateTime;
 import java.util.Objects;

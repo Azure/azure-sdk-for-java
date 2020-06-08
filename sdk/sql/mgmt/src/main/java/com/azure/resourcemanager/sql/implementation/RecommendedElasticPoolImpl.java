@@ -6,14 +6,15 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.sql.ElasticPoolEdition;
-import com.azure.resourcemanager.sql.RecommendedElasticPool;
-import com.azure.resourcemanager.sql.RecommendedElasticPoolMetric;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.TrackedResource;
-import com.azure.resourcemanager.sql.models.DatabaseInner;
-import com.azure.resourcemanager.sql.models.RecommendedElasticPoolInner;
-import com.azure.resourcemanager.sql.models.RecommendedElasticPoolMetricInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
+import com.azure.resourcemanager.sql.models.RecommendedElasticPoolMetric;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.TrackedResource;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolMetricInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +37,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
         return this
             .manager()
             .inner()
-            .recommendedElasticPools()
+            .getRecommendedElasticPools()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
@@ -108,7 +109,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .sqlServer
                 .manager()
                 .inner()
-                .databases()
+                .getDatabases()
                 .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
         for (DatabaseInner inner : databaseInners) {
             databasesList.add(new SqlDatabaseImpl(inner.name(), this.sqlServer, inner, this.manager()));
@@ -123,7 +124,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             .sqlServer
             .manager()
             .inner()
-            .databases()
+            .getDatabases()
             .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
             .mapPage(
                 databaseInner ->
@@ -137,7 +138,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .sqlServer
                 .manager()
                 .inner()
-                .databases()
+                .getDatabases()
                 .get(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName);
 
         return new SqlDatabaseImpl(databaseInner.name(), this.sqlServer, databaseInner, this.manager());
@@ -150,7 +151,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             .sqlServer
             .manager()
             .inner()
-            .databases()
+            .getDatabases()
             .getAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName)
             .map(
                 databaseInner ->
@@ -165,7 +166,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .sqlServer
                 .manager()
                 .inner()
-                .recommendedElasticPools()
+                .getRecommendedElasticPools()
                 .listMetrics(this.resourceGroupName(), this.sqlServerName(), this.name());
         for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
             recommendedElasticPoolMetrics.add(new RecommendedElasticPoolMetricImpl(inner));

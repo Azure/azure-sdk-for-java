@@ -5,10 +5,11 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRule;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.models.VirtualNetworkRuleInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
+import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -84,7 +85,7 @@ public class SqlVirtualNetworkRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
                 inner -> {
@@ -103,7 +104,7 @@ public class SqlVirtualNetworkRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -112,7 +113,7 @@ public class SqlVirtualNetworkRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
