@@ -1,0 +1,46 @@
+//create a table
+
+TableAyncClient tableAyncClient = new TableAyncClientBuilder();
+        .connectionString("connectionString")
+        .build();
+
+Mono<AzureTable> createTableMono = tableAsyncClient.createTable("tableName");
+createTableMono.subscribe((AzureTable azureTable) -> {
+    System.out.println("Table creation successful, table name: " + azureTable.getName());
+    }, error -> {
+    System.out.println("There was an error creating the table. Error: " + error);
+});
+
+
+
+//deleteTable
+Mono<Void> deleteTableMono = tableAsyncClient.deleteTable("tableName");
+deleteTableMono.subscribe( void -> {
+    System.out.println("Table Successfully deleted.")
+    }, error -> {
+    System.out.println("Table deletion unsuccessful. Error: " + ERROR);
+});
+
+
+//query a table
+//queryEntities(string tableName, string filter, string select ...)
+String query = "filter: $"PartitionKey eq '{PartitionKeyValue}' and RowKey eq '{x}'"
+Flux<TableEntities> queryEntities = tableAsyncClient.queryEntities("tableName", query);
+queryEntities.flatMap( (Map<String, Object> resultEntity) -> {
+    return new tableEntity(resultEntity.get(),
+}
+
+//add an entity
+
+Mono<AzureTable> getTableMono = tableAsyncClient.getTable("TableName");
+getTableMono.flatMap( azureTable -> {
+    Mono<AzureTableEntity> azureTableEntity = azureTable.createEntity("value","rowKey","partitionKey");
+    return azureTableEntity;
+    }.map(azureTableEntity -> {
+        System.out.println("Successfully added" + azureTableEntity.getValue() + "to table.");
+        }, error -> {
+        System.out.println("Unsuccessful");
+    });
+
+
+
