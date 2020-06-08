@@ -106,7 +106,7 @@ public final class ContainerRegistryManager
             profile,
             new ContainerRegistryManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);

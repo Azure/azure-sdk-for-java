@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
-import com.azure.resourcemanager.containerregistry.fluent.RegistriesInner;
+import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -17,15 +17,16 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import java.util.Collection;
 import reactor.core.publisher.Mono;
+
+import java.util.Collection;
 
 /** Entry point to the registry management API. */
 @Fluent()
 public interface Registries
     extends SupportsCreating<Registry.DefinitionStages.Blank>,
         HasManager<ContainerRegistryManager>,
-        HasInner<RegistriesInner>,
+        HasInner<RegistriesClient>,
         SupportsBatchCreation<Registry>,
         SupportsGettingById<Registry>,
         SupportsDeletingById,

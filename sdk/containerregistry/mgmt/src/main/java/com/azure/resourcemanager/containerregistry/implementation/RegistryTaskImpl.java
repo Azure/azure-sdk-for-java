@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTrigger;
@@ -37,7 +38,6 @@ import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
 import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.Variant;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
-import com.azure.resourcemanager.containerregistry.fluent.TasksInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -54,7 +54,7 @@ import reactor.core.publisher.Mono;
 class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, RegistryTask.Update {
 
     private final ClientLogger logger = new ClientLogger(getClass());
-    private final TasksInner tasksInner;
+    private final TasksClient tasksInner;
     private final String taskName;
     private final String key = UUID.randomUUID().toString();
     private String resourceGroupName;
@@ -177,14 +177,14 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, String taskName) {
-        this.tasksInner = registryManager.inner().tasks();
+        this.tasksInner = registryManager.inner().getTasks();
         this.taskName = taskName;
         this.inner = new TaskInner();
         this.taskUpdateParameters = new TaskUpdateParameters();
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, TaskInner inner) {
-        this.tasksInner = registryManager.inner().tasks();
+        this.tasksInner = registryManager.inner().getTasks();
         this.taskName = inner.name();
         this.inner = inner;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.id());

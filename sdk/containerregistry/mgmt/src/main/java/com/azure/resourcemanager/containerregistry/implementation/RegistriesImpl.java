@@ -6,6 +6,9 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryUsageListResultInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.containerregistry.models.PasswordName;
@@ -14,25 +17,23 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
-import com.azure.resourcemanager.containerregistry.fluent.RegistriesInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryUsageListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.storage.StorageManager;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Registries. */
 public class RegistriesImpl
-    extends GroupableResourcesImpl<Registry, RegistryImpl, RegistryInner, RegistriesInner, ContainerRegistryManager>
+    extends GroupableResourcesImpl<Registry, RegistryImpl, RegistryInner, RegistriesClient, ContainerRegistryManager>
     implements Registries {
     private final StorageManager storageManager;
 
-    protected RegistriesImpl(final ContainerRegistryManager manager, final StorageManager storageManager) {
-        super(manager.inner().registries(), manager);
+    public RegistriesImpl(final ContainerRegistryManager manager, final StorageManager storageManager) {
+        super(manager.inner().getRegistries(), manager);
         this.storageManager = storageManager;
     }
 
@@ -176,7 +177,7 @@ public class RegistriesImpl
         return this
             .manager()
             .inner()
-            .registries()
+            .getRegistries()
             .getBuildSourceUploadUrlAsync(rgName, acrName)
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }

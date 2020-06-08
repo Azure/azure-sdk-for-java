@@ -5,6 +5,9 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.WebhooksClient;
+import com.azure.resourcemanager.containerregistry.fluent.inner.CallbackConfigInner;
+import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
@@ -13,19 +16,17 @@ import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameter
 import com.azure.resourcemanager.containerregistry.models.WebhookEventInfo;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
 import com.azure.resourcemanager.containerregistry.models.WebhookUpdateParameters;
-import com.azure.resourcemanager.containerregistry.fluent.inner.CallbackConfigInner;
-import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
-import com.azure.resourcemanager.containerregistry.fluent.WebhooksInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Webhook. */
 public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner, RegistryImpl, Registry>
@@ -185,7 +186,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         return this
             .containerRegistryManager
             .inner()
-            .webhooks()
+            .getWebhooks()
             .ping(this.resourceGroupName, this.registryName, name())
             .id();
     }
@@ -195,7 +196,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         return this
             .containerRegistryManager
             .inner()
-            .webhooks()
+            .getWebhooks()
             .pingAsync(this.resourceGroupName, this.registryName, name())
             .map(eventInfoInner -> eventInfoInner.id());
     }
@@ -212,7 +213,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         return this
             .containerRegistryManager
             .inner()
-            .webhooks()
+            .getWebhooks()
             .listEventsAsync(self.resourceGroupName, self.registryName, self.name())
             .mapPage(inner -> new WebhookEventInfoImpl(inner));
     }
@@ -224,7 +225,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
             return this
                 .containerRegistryManager
                 .inner()
-                .webhooks()
+                .getWebhooks()
                 .createAsync(self.resourceGroupName, this.registryName, this.name(), this.webhookCreateParametersInner)
                 .map(
                     inner -> {
@@ -253,7 +254,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         return this
             .containerRegistryManager
             .inner()
-            .webhooks()
+            .getWebhooks()
             .getCallbackConfigAsync(self.resourceGroupName, self.registryName, self.name())
             .map(
                 callbackConfigInner -> {
@@ -269,7 +270,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
             return this
                 .containerRegistryManager
                 .inner()
-                .webhooks()
+                .getWebhooks()
                 .updateAsync(self.resourceGroupName, self.registryName, self.name(), self.webhookUpdateParametersInner)
                 .map(
                     inner -> {
@@ -288,14 +289,14 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         return this
             .containerRegistryManager
             .inner()
-            .webhooks()
+            .getWebhooks()
             .deleteAsync(this.resourceGroupName, this.registryName, this.name());
     }
 
     @Override
     protected Mono<WebhookInner> getInnerAsync() {
         final WebhookImpl self = this;
-        final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
+        final WebhooksClient webhooksInner = this.containerRegistryManager.inner().getWebhooks();
         return webhooksInner
             .getAsync(this.resourceGroupName, this.registryName, this.name())
             .flatMap(

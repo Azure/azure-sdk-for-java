@@ -10,11 +10,11 @@ import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
 import reactor.core.publisher.Mono;
 
-class RegistryTaskRunsImpl implements RegistryTaskRuns {
+public class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     private ContainerRegistryManager registryManager;
 
-    RegistryTaskRunsImpl(ContainerRegistryManager registryManager) {
+    public RegistryTaskRunsImpl(ContainerRegistryManager registryManager) {
         this.registryManager = registryManager;
     }
 
@@ -25,7 +25,7 @@ class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public PagedFlux<RegistryTaskRun> listByRegistryAsync(String rgName, String acrName) {
-        return this.registryManager.inner().runs().listAsync(rgName, acrName).mapPage(inner -> wrapModel(inner));
+        return this.registryManager.inner().getRuns().listAsync(rgName, acrName).mapPage(inner -> wrapModel(inner));
     }
 
     @Override
@@ -38,7 +38,7 @@ class RegistryTaskRunsImpl implements RegistryTaskRuns {
         return this
             .registryManager
             .inner()
-            .runs()
+            .getRuns()
             .getLogSasUrlAsync(rgName, acrName, runId)
             .map(runGetLogResultInner -> runGetLogResultInner.logLink());
     }
@@ -50,7 +50,7 @@ class RegistryTaskRunsImpl implements RegistryTaskRuns {
 
     @Override
     public Mono<Void> cancelAsync(String rgName, String acrName, String runId) {
-        return this.registryManager.inner().runs().cancelAsync(rgName, acrName, runId);
+        return this.registryManager.inner().getRuns().cancelAsync(rgName, acrName, runId);
     }
 
     @Override

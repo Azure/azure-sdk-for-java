@@ -50,7 +50,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     protected Mono<RegistryInner> getInnerAsync() {
-        return this.manager().inner().registries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getRegistries().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -72,14 +72,14 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
             return manager()
                 .inner()
-                .registries()
+                .getRegistries()
                 .createAsync(self.resourceGroupName(), self.name(), self.inner())
                 .map(innerToFluentMap(this));
         } else {
             updateParameters.withTags(inner().tags());
             return manager()
                 .inner()
-                .registries()
+                .getRegistries()
                 .updateAsync(self.resourceGroupName(), self.name(), self.updateParameters)
                 .map(innerToFluentMap(this));
         }
@@ -301,7 +301,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
         return this
             .manager()
             .inner()
-            .registries()
+            .getRegistries()
             .getBuildSourceUploadUrlAsync(this.resourceGroupName(), this.name())
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }
