@@ -33,12 +33,10 @@ jobs:
           - name: azure-spring-boot-test-keyvault
             groupId: com.microsoft.azure
             safeName: azurespringboottestkeyvault
+          -   name: azure-spring-boot-test-application
+              groupId: com.microsoft.azure
+              safeName: azurespringboottestapplication
         EnvVars:
           AZURE_TEST_MODE: LIVE
-          AZURE_COSMOSDB_DATABASE_NAME: $(AZURE_COSMOSDB_DATABASE_NAME)
-          AZURE_COSMOSDB_ENDPOINT: $(AZURE_COSMOSDB_ENDPOINT)
-          AZURE_COSMOSDB_ACCOUNT_KEY: $(AZURE_COSMOSDB_ACCOUNT_KEY)
-          AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)
-          KEY_VAULT_SECRET_NAME: $(KEY_VAULT_SECRET_NAME)
-          KEY_VAULT_SECRET_VALUE: $(KEY_VAULT_SECRET_VALUE)
+
 
