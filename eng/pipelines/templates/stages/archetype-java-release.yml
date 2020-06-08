@@ -138,7 +138,8 @@ stages:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                          Target: JavaPublicDevFeed
+                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+                          Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
