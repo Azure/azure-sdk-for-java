@@ -8,8 +8,8 @@ parameters:
 
 steps:
   - pwsh: |
-      echo "Using $(parameters.Target)"
-    displayName: Echo TargetFeed          
+      echo "Just here to echo the target"
+    displayName: Echo ${{ parameters.Target }}          
 
   - ${{if eq(parameters.Target, 'Burner')}}:
     - pwsh: >
