@@ -7,10 +7,11 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.MsalAuthenticationAccount;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -26,7 +27,9 @@ public class UsernamePasswordCredential implements TokenCredential {
     private final String username;
     private final String password;
     private final IdentityClient identityClient;
-    private final AtomicReference<MsalToken> cachedToken;
+    private final String authorityHost;
+    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+    private final ClientLogger logger = new ClientLogger(UsernamePasswordCredential.class);
 
     /**
      * Creates a UserCredential with the given identity client options.
@@ -50,21 +53,59 @@ public class UsernamePasswordCredential implements TokenCredential {
                 .identityClientOptions(identityClientOptions)
                 .build();
         cachedToken = new AtomicReference<>();
+        this.authorityHost = identityClientOptions.getAuthorityHost();
+        if (identityClientOptions.getAuthenticationRecord() != null) {
+            cachedToken.set(new MsalAuthenticationAccount(identityClientOptions.getAuthenticationRecord()));
+        }
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get().getAccount())
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
             .map(msalToken -> {
-                cachedToken.set(msalToken);
+                cachedToken.set(new MsalAuthenticationAccount(
+                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId())));
+
                 return msalToken;
             });
+    }
+
+    /**
+     * Authenticates the user using the specified username and password.
+     *
+     * @param request The details of the authentication request.
+     *
+     * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
+     * on future execution if persistent caching was enabled via
+     * {@link UsernamePasswordCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     */
+    public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
+        return Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password))
+                       .map(msalToken -> new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                               identityClient.getTenantId()));
+    }
+
+    /**
+     * Interactively authenticates a user via the default browser.
+     *
+     * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
+     * on future execution if persistent caching was enabled via
+     * {@link UsernamePasswordCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     */
+    public Mono<AuthenticationRecord> authenticate() {
+        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+        if (defaultScope == null) {
+            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+                                                        + "environment requires specifying a TokenRequestContext.")));
+        }
+        return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 }
