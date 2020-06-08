@@ -17,9 +17,9 @@ import java.util.function.Supplier;
  */
 public class SynchronizedAccessor<T> {
     private final AtomicBoolean wip;
-    private T cache;
-    private final ReplayProcessor<T> emitterProcessor = ReplayProcessor.create(1);
-    private final FluxSink<T> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private volatile T cache;
+    private final ReplayProcessor<T> replayProcessor = ReplayProcessor.create(1);
+    private final FluxSink<T> sink = replayProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Supplier<T> supplier;
 
     public SynchronizedAccessor(Supplier<T> supplier) {
@@ -33,10 +33,10 @@ public class SynchronizedAccessor<T> {
      * @return the output {@code T}
      */
     public Mono<T> getValue() {
-        if (cache != null) {
-            return Mono.just(cache);
-        }
         return Mono.defer(() -> {
+            if (cache != null) {
+                return Mono.just(cache);
+            }
             if (!wip.getAndSet(true)) {
                 try {
                     cache = supplier.get();
@@ -47,7 +47,7 @@ public class SynchronizedAccessor<T> {
                     wip.set(false);
                 }
             }
-            return emitterProcessor.next();
+            return replayProcessor.next();
         });
     }
 }
