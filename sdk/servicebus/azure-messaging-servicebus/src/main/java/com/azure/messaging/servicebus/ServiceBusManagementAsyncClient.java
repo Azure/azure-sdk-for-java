@@ -6,6 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
@@ -20,8 +25,11 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientI
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementError;
+import com.azure.messaging.servicebus.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
 import reactor.core.publisher.Mono;
@@ -83,9 +91,16 @@ public final class ServiceBusManagementAsyncClient {
      * @param queue Information about the queue to create.
      *
      * @return A Mono that completes with information about the created queue.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> createQueue(QueueDescription queue) {
@@ -98,9 +113,16 @@ public final class ServiceBusManagementAsyncClient {
      * @param queue The queue to create.
      *
      * @return A Mono that returns the created queue in addition to the HTTP response.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue) {
@@ -113,8 +135,13 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to delete.
      *
      * @return A Mono that completes when the queue is deleted.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueue(String queueName) {
@@ -127,8 +154,13 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to delete.
      *
      * @return A Mono that completes when the queue is deleted and returns the HTTP response.
-     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/delete-queue">Delete Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
@@ -141,7 +173,13 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to get information about.
      *
      * @return A Mono that completes with information about the queue.
-     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> getQueue(String queueName) {
@@ -154,7 +192,13 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to get information about.
      *
      * @return A Mono that completes with information about the queue and the associated HTTP response.
-     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> getQueueWithResponse(String queueName) {
@@ -167,7 +211,13 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to get information about.
      *
      * @return A Mono that completes with runtime information about the queue.
-     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueRuntimeInfo> getQueueRuntimeInfo(String queueName) {
@@ -180,7 +230,13 @@ public final class ServiceBusManagementAsyncClient {
      * @param queueName Name of queue to get information about.
      *
      * @return A Mono that completes with runtime information about the queue and the associated HTTP response.
-     * @throws NullPointerException if {@code queueName} is null or an empty string.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If error occurred processing the request.
+     * @throws IllegalArgumentException if {@code queueName} is an empty string.
+     * @throws NullPointerException if {@code queueName} is null.
+     * @throws ResourceNotFoundException if the {@code queueName} does not exist.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/get-entity">Get Entity</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueRuntimeInfo>> getQueueRuntimeInfoWithResponse(String queueName) {
@@ -191,6 +247,10 @@ public final class ServiceBusManagementAsyncClient {
      * Fetches all the queues in the Service Bus namespace.
      *
      * @return A Flux of {@link QueueDescription queues} in the Service Bus namespace.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/enumeration">List Queues, Subscriptions, or
+     *     Authorization Rules</a>
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueDescription> listQueues() {
@@ -201,7 +261,7 @@ public final class ServiceBusManagementAsyncClient {
 
     /**
      * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
-     * all of the properties are replaced.
+     * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -220,13 +280,19 @@ public final class ServiceBusManagementAsyncClient {
      * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
-     * @param queue Information about the queue to update.
+     * @param queue Information about the queue to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
      *
      * @return A Mono that completes with information about the created queue.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueDescription> updateQueue(QueueDescription queue) {
@@ -235,7 +301,7 @@ public final class ServiceBusManagementAsyncClient {
 
     /**
      * Updates a queue with the given {@link QueueDescription}. The {@link QueueDescription} must be fully populated as
-     * all of the properties are replaced.
+     * all of the properties are replaced. If a property is not set the service default value is used.
      *
      * The suggested flow is:
      * <ol>
@@ -254,13 +320,19 @@ public final class ServiceBusManagementAsyncClient {
      * <li>{@link QueueDescription#setMaxDeliveryCount(Integer) MaxDeliveryCount}</li>
      * </ul>
      *
-     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
-     * @param queue The queue to create.
+     * @param queue Information about the queue to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
      *
      * @return A Mono that returns the updated queue in addition to the HTTP response.
-     * @throws NullPointerException if {@code queue} is null.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
      * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
      *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-queue">Update Queue</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> updateQueueWithResponse(QueueDescription queue) {
@@ -294,7 +366,8 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.putWithResponseAsync(queue.getName(), createEntity, null, withTracing)
-                .map(response -> deserializeQueue(response, queue.getName()));
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -321,6 +394,7 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.deleteWithResponseAsync(queueName, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
                     return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), null);
@@ -351,8 +425,9 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.getWithResponseAsync(queueName, true, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
                 .map(response -> {
-                    final Response<QueueDescription> deserializeQueue = deserializeQueue(response, queueName);
+                    final Response<QueueDescription> deserializeQueue = deserializeQueue(response);
                     final QueueRuntimeInfo runtimeInfo = deserializeQueue.getValue() != null
                         ? new QueueRuntimeInfo(deserializeQueue.getValue())
                         : null;
@@ -386,7 +461,8 @@ public final class ServiceBusManagementAsyncClient {
 
         try {
             return queuesClient.getWithResponseAsync(queueName, true, withTracing)
-                .map(response -> deserializeQueue(response, queueName));
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -435,7 +511,8 @@ public final class ServiceBusManagementAsyncClient {
     /**
      * Updates a queue with its context.
      *
-     * @param queue Queue to update
+     * @param queue Information about the queue to update. You must provide all the property values that are desired
+     *     on the updated entity. Any values not provided are set to the service default values.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the updated {@link QueueDescription}.
@@ -459,9 +536,28 @@ public final class ServiceBusManagementAsyncClient {
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return queuesClient.putWithResponseAsync(queue.getName(), createEntity, "*", withTracing)
-                .map(response -> deserializeQueue(response, queue.getName()));
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(response -> deserializeQueue(response));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    private <T> T deserialize(Object object, Class<T> clazz) {
+        if (object == null) {
+            return null;
+        }
+
+        final String contents = String.valueOf(object);
+        if (contents.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return serializer.deserialize(contents, clazz);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(String.format(
+                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
     }
 
@@ -475,56 +571,32 @@ public final class ServiceBusManagementAsyncClient {
      * @return A Response with a strongly typed response value.
      */
     private <T> Response<T> deserialize(Response<Object> response, Class<T> clazz) {
-        final Object body = response.getValue();
-        if (body == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final String contents = String.valueOf(body);
-        if (contents.isEmpty()) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        }
-
-        final T responseBody;
-        try {
-            responseBody = serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
-        }
-
-        if (responseBody == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, clazz)));
-        }
+        final T deserialize = deserialize(response.getValue(), clazz);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            responseBody);
+            deserialize);
     }
 
     /**
-     * Helper method that sets the convenience model properties on {@link QueueDescription}.
+     * Converts a Response into its corresponding {@link QueueDescriptionEntry} then mapped into {@link
+     * QueueDescription}.
      *
-     * @param queueName Name of the queue.
      * @param response HTTP Response to deserialize.
      *
      * @return The corresponding HTTP response with convenience properties set.
      */
-    private Response<QueueDescription> deserializeQueue(Response<Object> response, String queueName) {
-        final Response<QueueDescription> queueDescription = deserialize(response, QueueDescription.class);
-        final QueueDescription value = queueDescription.getValue();
+    private Response<QueueDescription> deserializeQueue(Response<Object> response) {
+        final QueueDescriptionEntry entry = deserialize(response.getValue(), QueueDescriptionEntry.class);
 
         // This was an empty response (ie. 204).
-        if (value == null) {
-            return queueDescription;
+        if (entry == null) {
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        // The queue name is a property we artificially added to the REST model.
-        if (value.getName() == null || value.getName().isEmpty()) {
-            value.setName(queueName);
-        }
+        final QueueDescription result = entry.getContent().getQueueDescription()
+            .setName(entry.getTitle().getTitle());
 
-        return queueDescription;
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
 
     /**
@@ -576,6 +648,7 @@ public final class ServiceBusManagementAsyncClient {
      */
     private Mono<PagedResponse<QueueDescription>> listQueues(int skip, int top, Context context) {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, top, context)
+            .onErrorMap(ServiceBusManagementAsyncClient::mapException)
             .flatMap(response -> {
                 final Response<QueueDescriptionFeed> feedResponse = deserialize(response, QueueDescriptionFeed.class);
                 final QueueDescriptionFeed feed = feedResponse.getValue();
@@ -586,7 +659,10 @@ public final class ServiceBusManagementAsyncClient {
 
                 final List<QueueDescription> entities = feed.getEntry().stream()
                     .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
-                    .map(e -> e.getContent().getQueueDescription())
+                    .map(e -> {
+                        final String queueName = e.getTitle().getTitle();
+                        return e.getContent().getQueueDescription().setName(queueName);
+                    })
                     .collect(Collectors.toList());
                 try {
                     return Mono.just(extractPage(feedResponse, entities, feed.getLink()));
@@ -595,6 +671,35 @@ public final class ServiceBusManagementAsyncClient {
                         error));
                 }
             });
+    }
+
+    /**
+     * Maps an exception from the ATOM APIs to its associated {@link HttpResponseException}.
+     *
+     * @param exception Exception from the ATOM API.
+     *
+     * @return The corresponding {@link HttpResponseException} or {@code throwable} if it is not an instance of {@link
+     *     ServiceBusManagementErrorException}.
+     */
+    private static Throwable mapException(Throwable exception) {
+        if (!(exception instanceof ServiceBusManagementErrorException)) {
+            return exception;
+        }
+
+        final ServiceBusManagementErrorException managementError = ((ServiceBusManagementErrorException) exception);
+        final ServiceBusManagementError error = managementError.getValue();
+        switch (error.getCode()) {
+            case 401:
+                return new ClientAuthenticationException(error.getDetail(), managementError.getResponse(), exception);
+            case 404:
+                return new ResourceNotFoundException(error.getDetail(), managementError.getResponse(), exception);
+            case 409:
+                return new ResourceExistsException(error.getDetail(), managementError.getResponse(), exception);
+            case 412:
+                return new ResourceModifiedException(error.getDetail(), managementError.getResponse(), exception);
+            default:
+                return new HttpResponseException(error.getDetail(), managementError.getResponse(), exception);
+        }
     }
 
     /**
