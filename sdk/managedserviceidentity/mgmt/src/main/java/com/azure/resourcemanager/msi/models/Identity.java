@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.msi;
+package com.azure.resourcemanager.msi.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
-import com.azure.resourcemanager.msi.implementation.MSIManager;
-import com.azure.resourcemanager.msi.models.IdentityInner;
+import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
