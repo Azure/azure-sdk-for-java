@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.BaseImageDependency;
-import com.azure.resourcemanager.containerregistry.RegistryTaskStep;
-import com.azure.resourcemanager.containerregistry.TaskStepProperties;
+import com.azure.resourcemanager.containerregistry.models.BaseImageDependency;
+import com.azure.resourcemanager.containerregistry.models.RegistryTaskStep;
+import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import java.util.List;
 
 abstract class RegistryTaskStepImpl implements RegistryTaskStep {

@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.EncodedTaskStep;
-import com.azure.resourcemanager.containerregistry.EncodedTaskStepUpdateParameters;
-import com.azure.resourcemanager.containerregistry.OverridingValue;
-import com.azure.resourcemanager.containerregistry.RegistryEncodedTaskStep;
-import com.azure.resourcemanager.containerregistry.RegistryTask;
-import com.azure.resourcemanager.containerregistry.SetValue;
-import com.azure.resourcemanager.containerregistry.TaskStepProperties;
+import com.azure.resourcemanager.containerregistry.models.EncodedTaskStep;
+import com.azure.resourcemanager.containerregistry.models.EncodedTaskStepUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.OverridingValue;
+import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryTask;
+import com.azure.resourcemanager.containerregistry.models.SetValue;
+import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.ArrayList;
 import java.util.Collections;

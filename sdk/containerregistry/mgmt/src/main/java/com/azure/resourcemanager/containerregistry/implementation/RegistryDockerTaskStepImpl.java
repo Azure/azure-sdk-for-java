@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.Argument;
-import com.azure.resourcemanager.containerregistry.DockerBuildStepUpdateParameters;
-import com.azure.resourcemanager.containerregistry.DockerTaskStep;
-import com.azure.resourcemanager.containerregistry.OverridingArgument;
-import com.azure.resourcemanager.containerregistry.RegistryDockerTaskStep;
-import com.azure.resourcemanager.containerregistry.RegistryTask;
-import com.azure.resourcemanager.containerregistry.TaskStepProperties;
+import com.azure.resourcemanager.containerregistry.models.Argument;
+import com.azure.resourcemanager.containerregistry.models.DockerBuildStepUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.DockerTaskStep;
+import com.azure.resourcemanager.containerregistry.models.OverridingArgument;
+import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryTask;
+import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
