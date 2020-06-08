@@ -49,7 +49,7 @@ public interface DeploymentExtended extends HasInner<DeploymentExtendedInner>, I
     /**
      * The entirety of the DeploymentExtended definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMicrosoftResource, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMicrosoft.Resource, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -59,19 +59,19 @@ public interface DeploymentExtended extends HasInner<DeploymentExtendedInner>, I
         /**
          * The first stage of a DeploymentExtended definition.
          */
-        interface Blank extends WithMicrosoftResource {
+        interface Blank extends WithMicrosoft.Resource {
         }
 
         /**
          * The stage of the deploymentextended definition allowing to specify Microsoft.Resource.
          */
-        interface WithMicrosoftResource {
+        interface WithMicrosoft.Resource {
            /**
             * Specifies groupId.
             * @param groupId The management group ID
             * @return the next definition stage
             */
-            WithProperties withExistingMicrosoftResource(String groupId);
+            WithProperties withExistingMicrosoft.Resource(String groupId);
         }
 
         /**
