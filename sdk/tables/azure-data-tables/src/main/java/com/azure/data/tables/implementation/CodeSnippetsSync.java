@@ -1,8 +1,7 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.cosmos.table.implementation.models.TableServiceErrorException;
-import com.azure.cosmos.table.implementation.models.TablesQueryEntitiesResponse;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 
 import java.util.HashMap;
 import java.util.List;

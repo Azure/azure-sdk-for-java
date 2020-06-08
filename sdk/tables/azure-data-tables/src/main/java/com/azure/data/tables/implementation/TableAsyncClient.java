@@ -1,5 +1,6 @@
 package com.azure.data.tables.implementation;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -11,29 +12,29 @@ public class TableAsyncClient {
 
     }
 
-    public Mono<Void> createTable(String name){ }
+    public Mono<Void> createTable(String name){return  Mono.empty(); }
 
-    public Mono<Void> createTableIfNotExist(String name) { }
+    public Mono<Void> createTableIfNotExist(String name) {return  Mono.empty(); }
 
-    public Mono<Void> deleteTable(String name) { }
+    public Mono<Void> deleteTable(String name) {return  Mono.empty(); }
 
-    public List<String> queryTables(String selectString, String filterString){
+    public Flux<String> queryTables(String selectString, String filterString){
         return null;
     }
 
-    public List<TableEntity> queryEntity(String az, String selectString, String filterString){
+    public Flux<TableEntity> queryEntity(String az, String selectString, String filterString){
         return null;
     }
 
-    public TableEntity insertEntity(String tableName, String row, String partition, Map<String, Object> tableEntityProperties){
-        return new TableEntity();
+    public Mono<TableEntity> insertEntity(String tableName, String row, String partition, Map<String, Object> tableEntityProperties){
+        return null;
     }
-    public TableEntity insertEntity(TableEntity te){
-        return te;
+    public  Mono<TableEntity> insertEntity(TableEntity te){
+        return null;
     }
-    public Mono<Void> deleteEntity(String tableName, TableEntity tableEntity){ }
+    public Mono<Void> deleteEntity(TableEntity tableEntity){return  Mono.empty(); }
 
-    public Mono<Void> updateEntity(TableEntity te){ }
-    public TableEntity upsertEntity(TableEntity te){ return new TableEntity(); }
+    public Mono<Void> updateEntity(TableEntity te){ return  Mono.empty(); }
+    public Mono<TableEntity> upsertEntity(TableEntity te){ return null; }
 
 }
