@@ -1,4 +1,4 @@
-#Integration tests for spring modules
+#Azure Spring Boot Integration tests client library for Java
 
 ## Key concepts
 The structure of integration tests are organized as:
@@ -11,9 +11,8 @@ The structure of integration tests are organized as:
    - azure-spring-boot-test-application (an application used by other integration tests)
 
 ## Getting started
-
+## Key concepts
+## Examples
 ## Troubleshooting
-
 ## Next steps
-
 ## Contributing
