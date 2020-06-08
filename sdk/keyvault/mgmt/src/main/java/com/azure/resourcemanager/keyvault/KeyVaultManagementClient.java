@@ -4,20 +4,18 @@
 
 package com.azure.resourcemanager.keyvault;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.keyvault.fluent.OperationsInner;
-import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsInner;
-import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesInner;
-import com.azure.resourcemanager.keyvault.fluent.VaultsInner;
+import com.azure.resourcemanager.keyvault.fluent.OperationsClient;
+import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
 
-/** Initializes a new instance of the KeyVaultManagementClientImpl type. */
+/** Initializes a new instance of the KeyVaultManagementClient type. */
+@ServiceClient(builder = KeyVaultManagementClientBuilder.class)
 public final class KeyVaultManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(KeyVaultManagementClient.class);
 
@@ -25,7 +23,7 @@ public final class KeyVaultManagementClient extends AzureServiceClient {
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
      */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
@@ -37,43 +35,20 @@ public final class KeyVaultManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public KeyVaultManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public KeyVaultManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -82,17 +57,6 @@ public final class KeyVaultManagementClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    public KeyVaultManagementClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -107,68 +71,52 @@ public final class KeyVaultManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The VaultsInner object to access its operations. */
-    private final VaultsInner vaults;
+    /** The VaultsClient object to access its operations. */
+    private final VaultsClient vaults;
 
     /**
-     * Gets the VaultsInner object to access its operations.
+     * Gets the VaultsClient object to access its operations.
      *
-     * @return the VaultsInner object.
+     * @return the VaultsClient object.
      */
-    public VaultsInner vaults() {
+    public VaultsClient getVaults() {
         return this.vaults;
     }
 
-    /** The PrivateEndpointConnectionsInner object to access its operations. */
-    private final PrivateEndpointConnectionsInner privateEndpointConnections;
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
-     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
-     * @return the PrivateEndpointConnectionsInner object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesInner object to access its operations. */
-    private final PrivateLinkResourcesInner privateLinkResources;
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
-     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      *
-     * @return the PrivateLinkResourcesInner object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    public PrivateLinkResourcesInner privateLinkResources() {
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The OperationsInner object to access its operations. */
-    private final OperationsInner operations;
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
 
     /**
-     * Gets the OperationsInner object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the OperationsInner object.
+     * @return the OperationsClient object.
      */
-    public OperationsInner operations() {
+    public OperationsClient getOperations() {
         return this.operations;
-    }
-
-    /** Initializes an instance of KeyVaultManagementClient client. */
-    public KeyVaultManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of KeyVaultManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public KeyVaultManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -177,12 +125,16 @@ public final class KeyVaultManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public KeyVaultManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    KeyVaultManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.vaults = new VaultsInner(this);
-        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(this);
-        this.privateLinkResources = new PrivateLinkResourcesInner(this);
-        this.operations = new OperationsInner(this);
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.apiVersion = "2018-02-14";
+        this.vaults = new VaultsClient(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClient(this);
+        this.privateLinkResources = new PrivateLinkResourcesClient(this);
+        this.operations = new OperationsClient(this);
     }
 }

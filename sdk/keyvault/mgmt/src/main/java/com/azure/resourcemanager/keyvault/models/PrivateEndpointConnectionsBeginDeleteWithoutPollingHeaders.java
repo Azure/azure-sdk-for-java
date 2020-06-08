@@ -9,11 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateEndpointConnectionsBeginDeleteHeaders model. */
+/** The PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders model. */
 @Fluent
-public final class PrivateEndpointConnectionsBeginDeleteHeaders {
+public final class PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsBeginDeleteHeaders.class);
+    private final ClientLogger logger =
+        new ClientLogger(PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders.class);
 
     /*
      * The Retry-After property.
@@ -40,9 +41,9 @@ public final class PrivateEndpointConnectionsBeginDeleteHeaders {
      * Set the retryAfter property: The Retry-After property.
      *
      * @param retryAfter the retryAfter value to set.
-     * @return the PrivateEndpointConnectionsBeginDeleteHeaders object itself.
+     * @return the PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders object itself.
      */
-    public PrivateEndpointConnectionsBeginDeleteHeaders withRetryAfter(Integer retryAfter) {
+    public PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders withRetryAfter(Integer retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -60,9 +61,9 @@ public final class PrivateEndpointConnectionsBeginDeleteHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the PrivateEndpointConnectionsBeginDeleteHeaders object itself.
+     * @return the PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders object itself.
      */
-    public PrivateEndpointConnectionsBeginDeleteHeaders withLocation(String location) {
+    public PrivateEndpointConnectionsBeginDeleteWithoutPollingHeaders withLocation(String location) {
         this.location = location;
         return this;
     }

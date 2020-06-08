@@ -26,19 +26,15 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.Resource;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.keyvault.KeyVaultManagementClient;
-import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
-import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
-import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
-import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
-import com.azure.resourcemanager.keyvault.models.VaultPatchParameters;
 import com.azure.resourcemanager.keyvault.fluent.inner.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultListResultInner;
@@ -46,6 +42,11 @@ import com.azure.resourcemanager.keyvault.fluent.inner.ResourceListResultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.VaultAccessPolicyParametersInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
 import com.azure.resourcemanager.keyvault.fluent.inner.VaultListResultInner;
+import com.azure.resourcemanager.keyvault.models.AccessPolicyUpdateKind;
+import com.azure.resourcemanager.keyvault.models.VaultAccessPolicyProperties;
+import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
+import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
+import com.azure.resourcemanager.keyvault.models.VaultPatchParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
@@ -53,8 +54,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Vaults. */
-public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSupportsDelete<Void> {
-    private final ClientLogger logger = new ClientLogger(VaultsInner.class);
+public final class VaultsClient implements InnerSupportsGet<VaultInner>, InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(VaultsClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final VaultsService service;
@@ -63,11 +64,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     private final KeyVaultManagementClient client;
 
     /**
-     * Initializes an instance of VaultsInner.
+     * Initializes an instance of VaultsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VaultsInner(KeyVaultManagementClient client) {
+    public VaultsClient(KeyVaultManagementClient client) {
         this.service = RestProxy.create(VaultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -81,12 +82,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     private interface VaultsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
@@ -96,12 +97,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<VaultInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
@@ -111,12 +112,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
@@ -125,12 +126,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<VaultInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
@@ -139,12 +140,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}/accessPolicies/{operationKind}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}/accessPolicies/{operationKind}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultAccessPolicyParametersInner>> updateAccessPolicy(
-            @HostParam("$host") String host,
+        Mono<Response<VaultAccessPolicyParametersInner>> updateAccessPolicy(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @PathParam("operationKind") AccessPolicyUpdateKind operationKind,
@@ -154,13 +155,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultListResultInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<VaultListResultInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
@@ -171,8 +170,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultListResultInner>> listBySubscription(
-            @HostParam("$host") String host,
+        Mono<Response<VaultListResultInner>> listBySubscription(
+            @HostParam("$host") String endpoint,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -182,8 +181,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<DeletedVaultListResultInner>> listDeleted(
-            @HostParam("$host") String host,
+        Mono<Response<DeletedVaultListResultInner>> listDeleted(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -194,8 +193,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 + "/{vaultName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<DeletedVaultInner>> getDeleted(
-            @HostParam("$host") String host,
+        Mono<Response<DeletedVaultInner>> getDeleted(
+            @HostParam("$host") String endpoint,
             @PathParam("vaultName") String vaultName,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -208,8 +207,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 + "/{vaultName}/purge")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> purgeDeleted(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> purgeDeleted(
+            @HostParam("$host") String endpoint,
             @PathParam("vaultName") String vaultName,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -220,8 +219,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("$filter") String filter,
             @QueryParam("$top") Integer top,
             @QueryParam("api-version") String apiVersion,
@@ -232,8 +231,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String host,
+        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VaultCheckNameAvailabilityParameters vaultName,
@@ -241,12 +240,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultInner>> beginCreateOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<VaultInner>> beginCreateOrUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
             @QueryParam("api-version") String apiVersion,
@@ -260,8 +259,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 + "/{vaultName}/purge")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginPurgeDeleted(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginPurgeDeletedWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("vaultName") String vaultName,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
@@ -272,28 +271,28 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultListResultInner>> listByResourceGroupNext(
+        Mono<Response<VaultListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<VaultListResultInner>> listBySubscriptionNext(
+        Mono<Response<VaultListResultInner>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<DeletedVaultListResultInner>> listDeletedNext(
+        Mono<Response<DeletedVaultListResultInner>> listDeletedNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listNext(
+        Mono<Response<ResourceListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -309,11 +308,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -338,7 +339,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             vaultName,
                             this.client.getApiVersion(),
@@ -346,6 +347,101 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                             parameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                vaultName,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
+        return this
+            .client
+            .<VaultInner, VaultInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class);
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<VaultInner>, VaultInner> beginCreateOrUpdate(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
+        return this
+            .client
+            .<VaultInner, VaultInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class);
     }
 
     /**
@@ -362,8 +458,33 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VaultInner> createOrUpdateAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters);
+        return this
+            .client
+            .<VaultInner, VaultInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), VaultInner.class, VaultInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VaultInner> createOrUpdateAsync(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters, context);
         return this
             .client
             .<VaultInner, VaultInner>getLroResultAsync(
@@ -390,6 +511,24 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner createOrUpdate(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, vaultName, parameters, context).block();
+    }
+
+    /**
      * Update a key vault in the specified subscription.
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
@@ -401,11 +540,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultInner>> updateWithResponseAsync(
+    public Mono<Response<VaultInner>> updateWithResponseAsync(
         String resourceGroupName, String vaultName, VaultPatchParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -430,7 +571,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             vaultName,
                             this.client.getApiVersion(),
@@ -453,11 +594,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultInner>> updateWithResponseAsync(
+    public Mono<Response<VaultInner>> updateWithResponseAsync(
         String resourceGroupName, String vaultName, VaultPatchParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -479,7 +622,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         }
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 vaultName,
                 this.client.getApiVersion(),
@@ -503,7 +646,33 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     public Mono<VaultInner> updateAsync(String resourceGroupName, String vaultName, VaultPatchParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, vaultName, parameters)
             .flatMap(
-                (SimpleResponse<VaultInner> res) -> {
+                (Response<VaultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VaultInner> updateAsync(
+        String resourceGroupName, String vaultName, VaultPatchParameters parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, vaultName, parameters, context)
+            .flatMap(
+                (Response<VaultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -529,6 +698,24 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner update(
+        String resourceGroupName, String vaultName, VaultPatchParameters parameters, Context context) {
+        return updateAsync(resourceGroupName, vaultName, parameters, context).block();
+    }
+
+    /**
      * Deletes the specified Azure key vault.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
@@ -540,9 +727,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vaultName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -562,7 +751,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             vaultName,
                             this.client.getApiVersion(),
@@ -584,9 +773,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String vaultName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -603,7 +794,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 vaultName,
                 this.client.getApiVersion(),
@@ -631,6 +822,23 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String vaultName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, vaultName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes the specified Azure key vault.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -638,6 +846,21 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String vaultName) {
         deleteAsync(resourceGroupName, vaultName).block();
+    }
+
+    /**
+     * Deletes the specified Azure key vault.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param vaultName The name of the vault to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String vaultName, Context context) {
+        deleteAsync(resourceGroupName, vaultName, context).block();
     }
 
     /**
@@ -651,11 +874,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the specified Azure key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String vaultName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<VaultInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String vaultName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -675,7 +899,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             vaultName,
                             this.client.getApiVersion(),
@@ -696,11 +920,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the specified Azure key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<VaultInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String vaultName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -717,7 +943,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         }
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 vaultName,
                 this.client.getApiVersion(),
@@ -739,7 +965,31 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     public Mono<VaultInner> getByResourceGroupAsync(String resourceGroupName, String vaultName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, vaultName)
             .flatMap(
-                (SimpleResponse<VaultInner> res) -> {
+                (Response<VaultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the specified Azure key vault.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param vaultName The name of the vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VaultInner> getByResourceGroupAsync(String resourceGroupName, String vaultName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, vaultName, context)
+            .flatMap(
+                (Response<VaultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -764,6 +1014,22 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Gets the specified Azure key vault.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param vaultName The name of the vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner getByResourceGroup(String resourceGroupName, String vaultName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, vaultName, context).block();
+    }
+
+    /**
      * Update access policies in a key vault in the specified subscription.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
@@ -776,14 +1042,16 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return parameters for updating the access policy in a vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultAccessPolicyParametersInner>> updateAccessPolicyWithResponseAsync(
+    public Mono<Response<VaultAccessPolicyParametersInner>> updateAccessPolicyWithResponseAsync(
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
         VaultAccessPolicyProperties properties) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -813,7 +1081,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .updateAccessPolicy(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             vaultName,
                             operationKind,
@@ -838,15 +1106,17 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return parameters for updating the access policy in a vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultAccessPolicyParametersInner>> updateAccessPolicyWithResponseAsync(
+    public Mono<Response<VaultAccessPolicyParametersInner>> updateAccessPolicyWithResponseAsync(
         String resourceGroupName,
         String vaultName,
         AccessPolicyUpdateKind operationKind,
         VaultAccessPolicyProperties properties,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -873,7 +1143,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         parameters.withProperties(properties);
         return service
             .updateAccessPolicy(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 vaultName,
                 operationKind,
@@ -903,7 +1173,38 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         VaultAccessPolicyProperties properties) {
         return updateAccessPolicyWithResponseAsync(resourceGroupName, vaultName, operationKind, properties)
             .flatMap(
-                (SimpleResponse<VaultAccessPolicyParametersInner> res) -> {
+                (Response<VaultAccessPolicyParametersInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update access policies in a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param vaultName Name of the vault.
+     * @param operationKind Name of the operation.
+     * @param properties Properties of the vault access policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters for updating the access policy in a vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VaultAccessPolicyParametersInner> updateAccessPolicyAsync(
+        String resourceGroupName,
+        String vaultName,
+        AccessPolicyUpdateKind operationKind,
+        VaultAccessPolicyProperties properties,
+        Context context) {
+        return updateAccessPolicyWithResponseAsync(resourceGroupName, vaultName, operationKind, properties, context)
+            .flatMap(
+                (Response<VaultAccessPolicyParametersInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -934,6 +1235,29 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Update access policies in a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param vaultName Name of the vault.
+     * @param operationKind Name of the operation.
+     * @param properties Properties of the vault access policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return parameters for updating the access policy in a vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultAccessPolicyParametersInner updateAccessPolicy(
+        String resourceGroupName,
+        String vaultName,
+        AccessPolicyUpdateKind operationKind,
+        VaultAccessPolicyProperties properties,
+        Context context) {
+        return updateAccessPolicyAsync(resourceGroupName, vaultName, operationKind, properties, context).block();
+    }
+
+    /**
      * The List operation gets information about the vaults associated with the subscription and within the specified
      * resource group.
      *
@@ -946,9 +1270,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VaultInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Integer top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -965,7 +1291,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             top,
                             this.client.getApiVersion(),
@@ -998,9 +1324,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VaultInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Integer top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1014,7 +1342,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 top,
                 this.client.getApiVersion(),
@@ -1108,6 +1436,23 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * resource group.
      *
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
+     * @param top Maximum number of results to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vaults.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VaultInner> listByResourceGroup(String resourceGroupName, Integer top, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, context));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription and within the specified
+     * resource group.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1131,9 +1476,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VaultInner>> listBySubscriptionSinglePageAsync(Integer top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1146,7 +1493,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .listBySubscription(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             top,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
@@ -1175,9 +1522,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VaultInner>> listBySubscriptionSinglePageAsync(Integer top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1187,7 +1536,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         }
         return service
             .listBySubscription(
-                this.client.getHost(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1263,6 +1612,21 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @param top Maximum number of results to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vaults.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<VaultInner> listBySubscription(Integer top, Context context) {
+        return new PagedIterable<>(listBySubscriptionAsync(top, context));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of vaults.
@@ -1283,9 +1647,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedVaultInner>> listDeletedSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1298,7 +1664,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .listDeleted(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
@@ -1325,9 +1691,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedVaultInner>> listDeletedSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1336,7 +1704,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .listDeleted(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .listDeleted(
+                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1389,6 +1758,20 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Gets information about the deleted vaults in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the deleted vaults in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeletedVaultInner> listDeleted(Context context) {
+        return new PagedIterable<>(listDeletedAsync(context));
+    }
+
+    /**
      * Gets the deleted Azure key vault.
      *
      * @param vaultName The name of the vault.
@@ -1399,10 +1782,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the deleted Azure key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeletedVaultInner>> getDeletedWithResponseAsync(String vaultName, String location) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<DeletedVaultInner>> getDeletedWithResponseAsync(String vaultName, String location) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -1421,7 +1806,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .getDeleted(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             vaultName,
                             location,
                             this.client.getApiVersion(),
@@ -1442,11 +1827,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the deleted Azure key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeletedVaultInner>> getDeletedWithResponseAsync(
+    public Mono<Response<DeletedVaultInner>> getDeletedWithResponseAsync(
         String vaultName, String location, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -1462,7 +1849,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         }
         return service
             .getDeleted(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 vaultName,
                 location,
                 this.client.getApiVersion(),
@@ -1484,7 +1871,31 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     public Mono<DeletedVaultInner> getDeletedAsync(String vaultName, String location) {
         return getDeletedWithResponseAsync(vaultName, location)
             .flatMap(
-                (SimpleResponse<DeletedVaultInner> res) -> {
+                (Response<DeletedVaultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the deleted Azure key vault.
+     *
+     * @param vaultName The name of the vault.
+     * @param location The location of the deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deleted Azure key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeletedVaultInner> getDeletedAsync(String vaultName, String location, Context context) {
+        return getDeletedWithResponseAsync(vaultName, location, context)
+            .flatMap(
+                (Response<DeletedVaultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1509,6 +1920,22 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Gets the deleted Azure key vault.
+     *
+     * @param vaultName The name of the vault.
+     * @param location The location of the deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the deleted Azure key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedVaultInner getDeleted(String vaultName, String location, Context context) {
+        return getDeletedAsync(vaultName, location, context).block();
+    }
+
+    /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
      *
      * @param vaultName The name of the soft-deleted vault.
@@ -1519,10 +1946,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String vaultName, String location) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String vaultName, String location) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -1541,13 +1970,88 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .purgeDeleted(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             vaultName,
                             location,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(
+        String vaultName, String location, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .purgeDeleted(
+                this.client.getEndpoint(),
+                vaultName,
+                location,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location) {
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginPurgeDeleted(String vaultName, String location, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
 
     /**
@@ -1562,7 +2066,28 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeDeletedAsync(String vaultName, String location) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> purgeDeletedAsync(String vaultName, String location, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(vaultName, location, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -1585,6 +2110,21 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void purgeDeleted(String vaultName, String location, Context context) {
+        purgeDeletedAsync(vaultName, location, context).block();
+    }
+
+    /**
      * The List operation gets information about the vaults associated with the subscription.
      *
      * @param top Maximum number of results to return.
@@ -1595,9 +2135,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Resource>> listSinglePageAsync(Integer top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1611,7 +2153,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             filter,
                             top,
                             this.client.getApiVersion(),
@@ -1641,9 +2183,11 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Resource>> listSinglePageAsync(Integer top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1654,7 +2198,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 filter,
                 top,
                 this.client.getApiVersion(),
@@ -1731,6 +2275,21 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     /**
      * The List operation gets information about the vaults associated with the subscription.
      *
+     * @param top Maximum number of results to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of vault resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Resource> list(Integer top, Context context) {
+        return new PagedIterable<>(listAsync(top, context));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of vault resources.
@@ -1752,10 +2311,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String name) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1773,7 +2334,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                 context ->
                     service
                         .checkNameAvailability(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             vaultName,
@@ -1792,11 +2353,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+    public Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1811,7 +2374,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         vaultName.withName(name);
         return service
             .checkNameAvailability(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 vaultName,
@@ -1831,7 +2394,30 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name) {
         return checkNameAvailabilityWithResponseAsync(name)
             .flatMap(
-                (SimpleResponse<CheckNameAvailabilityResultInner> res) -> {
+                (Response<CheckNameAvailabilityResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Checks that the vault name is valid and is not already in use.
+     *
+     * @param name The vault name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckNameAvailability operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String name, Context context) {
+        return checkNameAvailabilityWithResponseAsync(name, context)
+            .flatMap(
+                (Response<CheckNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1855,6 +2441,21 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * Checks that the vault name is valid and is not already in use.
+     *
+     * @param name The vault name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CheckNameAvailability operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameAvailabilityResultInner checkNameAvailability(String name, Context context) {
+        return checkNameAvailabilityAsync(name, context).block();
+    }
+
+    /**
      * Create or update a key vault in the specified subscription.
      *
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
@@ -1866,11 +2467,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<VaultInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1894,8 +2497,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
             .withContext(
                 context ->
                     service
-                        .beginCreateOrUpdate(
-                            this.client.getHost(),
+                        .beginCreateOrUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             vaultName,
                             this.client.getApiVersion(),
@@ -1918,11 +2521,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VaultInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<VaultInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1943,8 +2548,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
             parameters.validate();
         }
         return service
-            .beginCreateOrUpdate(
-                this.client.getHost(),
+            .beginCreateOrUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 resourceGroupName,
                 vaultName,
                 this.client.getApiVersion(),
@@ -1965,11 +2570,37 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VaultInner> beginCreateOrUpdateAsync(
+    public Mono<VaultInner> beginCreateOrUpdateWithoutPollingAsync(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, vaultName, parameters)
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, vaultName, parameters)
             .flatMap(
-                (SimpleResponse<VaultInner> res) -> {
+                (Response<VaultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VaultInner> beginCreateOrUpdateWithoutPollingAsync(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, vaultName, parameters, context)
+            .flatMap(
+                (Response<VaultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1990,9 +2621,27 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultInner beginCreateOrUpdate(
+    public VaultInner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, parameters).block();
+        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, vaultName, parameters).block();
+    }
+
+    /**
+     * Create or update a key vault in the specified subscription.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the server belongs.
+     * @param vaultName Name of the vault.
+     * @param parameters Parameters for creating or updating a vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information with extended details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName, String vaultName, VaultCreateOrUpdateParameters parameters, Context context) {
+        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, vaultName, parameters, context).block();
     }
 
     /**
@@ -2006,10 +2655,12 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginPurgeDeletedWithResponseAsync(String vaultName, String location) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Void>> beginPurgeDeletedWithoutPollingWithResponseAsync(String vaultName, String location) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -2027,8 +2678,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
             .withContext(
                 context ->
                     service
-                        .beginPurgeDeleted(
-                            this.client.getHost(),
+                        .beginPurgeDeletedWithoutPolling(
+                            this.client.getEndpoint(),
                             vaultName,
                             location,
                             this.client.getApiVersion(),
@@ -2049,10 +2700,13 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginPurgeDeletedWithResponseAsync(String vaultName, String location, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Void>> beginPurgeDeletedWithoutPollingWithResponseAsync(
+        String vaultName, String location, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -2067,8 +2721,8 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .beginPurgeDeleted(
-                this.client.getHost(),
+            .beginPurgeDeletedWithoutPolling(
+                this.client.getEndpoint(),
                 vaultName,
                 location,
                 this.client.getApiVersion(),
@@ -2087,8 +2741,26 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginPurgeDeletedAsync(String vaultName, String location) {
-        return beginPurgeDeletedWithResponseAsync(vaultName, location).flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> beginPurgeDeletedWithoutPollingAsync(String vaultName, String location) {
+        return beginPurgeDeletedWithoutPollingWithResponseAsync(vaultName, location)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginPurgeDeletedWithoutPollingAsync(String vaultName, String location, Context context) {
+        return beginPurgeDeletedWithoutPollingWithResponseAsync(vaultName, location, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -2101,8 +2773,23 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginPurgeDeleted(String vaultName, String location) {
-        beginPurgeDeletedAsync(vaultName, location).block();
+    public void beginPurgeDeletedWithoutPolling(String vaultName, String location) {
+        beginPurgeDeletedWithoutPollingAsync(vaultName, location).block();
+    }
+
+    /**
+     * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+     *
+     * @param vaultName The name of the soft-deleted vault.
+     * @param location The location of the soft-deleted vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginPurgeDeletedWithoutPolling(String vaultName, String location, Context context) {
+        beginPurgeDeletedWithoutPollingAsync(vaultName, location, context).block();
     }
 
     /**

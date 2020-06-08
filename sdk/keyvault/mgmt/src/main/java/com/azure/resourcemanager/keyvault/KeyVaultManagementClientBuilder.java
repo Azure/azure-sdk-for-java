@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the KeyVaultManagementClientImpl type. */
+/** A builder for creating a new instance of the KeyVaultManagementClient type. */
 @ServiceClientBuilder(serviceClients = {KeyVaultManagementClient.class})
 public final class KeyVaultManagementClientBuilder {
     /*
@@ -37,32 +37,16 @@ public final class KeyVaultManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the KeyVaultManagementClientBuilder.
      */
-    public KeyVaultManagementClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the KeyVaultManagementClientBuilder.
-     */
-    public KeyVaultManagementClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public KeyVaultManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -99,16 +83,13 @@ public final class KeyVaultManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of KeyVaultManagementClientImpl with the provided parameters.
+     * Builds an instance of KeyVaultManagementClient with the provided parameters.
      *
-     * @return an instance of KeyVaultManagementClientImpl.
+     * @return an instance of KeyVaultManagementClient.
      */
     public KeyVaultManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2018-02-14";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -119,10 +100,7 @@ public final class KeyVaultManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        KeyVaultManagementClient client = new KeyVaultManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        KeyVaultManagementClient client = new KeyVaultManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

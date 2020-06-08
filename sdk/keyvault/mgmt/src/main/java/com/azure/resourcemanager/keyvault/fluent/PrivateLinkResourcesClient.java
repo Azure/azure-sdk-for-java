@@ -15,8 +15,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -26,8 +26,8 @@ import com.azure.resourcemanager.keyvault.fluent.inner.PrivateLinkResourceListRe
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResources. */
-public final class PrivateLinkResourcesInner {
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesInner.class);
+public final class PrivateLinkResourcesClient {
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkResourcesService service;
@@ -36,11 +36,11 @@ public final class PrivateLinkResourcesInner {
     private final KeyVaultManagementClient client;
 
     /**
-     * Initializes an instance of PrivateLinkResourcesInner.
+     * Initializes an instance of PrivateLinkResourcesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkResourcesInner(KeyVaultManagementClient client) {
+    public PrivateLinkResourcesClient(KeyVaultManagementClient client) {
         this.service =
             RestProxy
                 .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -56,12 +56,12 @@ public final class PrivateLinkResourcesInner {
     private interface PrivateLinkResourcesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
-                + "/vaults/{vaultName}/privateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults"
+                + "/{vaultName}/privateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByVault(
-            @HostParam("$host") String host,
+        Mono<Response<PrivateLinkResourceListResultInner>> listByVault(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vaultName") String vaultName,
@@ -80,11 +80,13 @@ public final class PrivateLinkResourcesInner {
      * @return the private link resources supported for the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
+    public Mono<Response<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
         String resourceGroupName, String vaultName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -104,7 +106,7 @@ public final class PrivateLinkResourcesInner {
                 context ->
                     service
                         .listByVault(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             vaultName,
@@ -125,11 +127,13 @@ public final class PrivateLinkResourcesInner {
      * @return the private link resources supported for the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
+    public Mono<Response<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
         String resourceGroupName, String vaultName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -146,7 +150,7 @@ public final class PrivateLinkResourcesInner {
         }
         return service
             .listByVault(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 vaultName,
@@ -168,7 +172,32 @@ public final class PrivateLinkResourcesInner {
     public Mono<PrivateLinkResourceListResultInner> listByVaultAsync(String resourceGroupName, String vaultName) {
         return listByVaultWithResponseAsync(resourceGroupName, vaultName)
             .flatMap(
-                (SimpleResponse<PrivateLinkResourceListResultInner> res) -> {
+                (Response<PrivateLinkResourceListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the private link resources supported for the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources supported for the key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PrivateLinkResourceListResultInner> listByVaultAsync(
+        String resourceGroupName, String vaultName, Context context) {
+        return listByVaultWithResponseAsync(resourceGroupName, vaultName, context)
+            .flatMap(
+                (Response<PrivateLinkResourceListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -190,5 +219,21 @@ public final class PrivateLinkResourcesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourceListResultInner listByVault(String resourceGroupName, String vaultName) {
         return listByVaultAsync(resourceGroupName, vaultName).block();
+    }
+
+    /**
+     * Gets the private link resources supported for the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources supported for the key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceListResultInner listByVault(String resourceGroupName, String vaultName, Context context) {
+        return listByVaultAsync(resourceGroupName, vaultName, context).block();
     }
 }
