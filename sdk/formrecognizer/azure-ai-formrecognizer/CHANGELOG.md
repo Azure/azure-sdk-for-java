@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (2020-06-10)
+## 1.0.0-beta.3 (2020-06-09)
 ### New Features
 - Support to copy a custom model from one Form Recognizer resource to another
 - Added support for AAD Authentication.

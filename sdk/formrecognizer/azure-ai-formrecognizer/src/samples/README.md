@@ -1,14 +1,15 @@
 ---
-topic: sample
+page_type: sample
 languages:
   - java
 products:
   - azure
   - azure-cognitive-services
   - azure-form-recognizer
+urlFragment: formrecognizer-java-samples
 ---
 
-# Azure Form Recognizer client library for Java Samples
+# Azure Form Recognizer client library samples for Java
 
 Azure Form Recognizer samples are a set of self-contained Java programs that demonstrate interacting with Azure Form Recognizer service
 using the client library. Each sample focuses on a specific scenario and can be executed independently. 
