@@ -22,6 +22,9 @@ steps:
       displayName: 'Publish to Burner Feed'
 
   - ${{if eq(parameters.Target, 'JavaPrivateDevFeed')}}:
+    - pwsh: |
+        echo "here!"
+      displayName: Echo ${{ parameters.Target }}          
     - pwsh: >
         ${{parameters.JavaRepoRoot}}/eng/scripts/Publish-MavenPackages.ps1 -ArtifactDirectory ${{parameters.ArtifactDirectory}}
         -GroupIDFilter ${{parameters.GroupID}} -ArtifactIDFilter ${{parameters.ArtifactID}}
