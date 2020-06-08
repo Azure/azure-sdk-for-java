@@ -7,6 +7,12 @@ parameters:
   JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
 steps:
+  - pwsh: |
+      # For safety default to publishing to the private feed.
+      # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+      echo "Using $(parameters.Target)"
+    displayName: Echo TargetFeed          
+
   - ${{if eq(parameters.Target, 'Burner')}}:
     - pwsh: >
         ${{parameters.JavaRepoRoot}}/eng/scripts/Publish-MavenPackages.ps1 -ArtifactDirectory ${{parameters.ArtifactDirectory}}
