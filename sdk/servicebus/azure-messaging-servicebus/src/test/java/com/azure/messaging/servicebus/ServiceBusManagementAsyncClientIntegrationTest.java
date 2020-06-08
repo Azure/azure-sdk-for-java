@@ -59,8 +59,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         QueueDescription queueDescription = new QueueDescription().setName(queueName);
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String queueName = TestUtils.getQueueName();
-        final QueueDescription queueDescription = new QueueDescription().setName(queueName);
 
         // Act & Assert
         StepVerifier.create(client.createQueue(queueDescription))
