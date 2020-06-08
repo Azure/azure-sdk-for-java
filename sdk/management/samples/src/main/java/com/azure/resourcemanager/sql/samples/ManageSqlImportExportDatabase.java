@@ -13,9 +13,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.SampleName;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlServer;
+import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /**

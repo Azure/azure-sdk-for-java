@@ -5,27 +5,29 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUsers;
-import com.azure.resourcemanager.authorization.GraphErrorException;
-import com.azure.resourcemanager.authorization.models.UserInner;
-import com.azure.resourcemanager.authorization.models.UsersInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.fluent.inner.UserInner;
+import com.azure.resourcemanager.authorization.fluent.UsersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
-class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
-    implements ActiveDirectoryUsers, HasInner<UsersInner> {
+public class ActiveDirectoryUsersImpl
+    extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
+    implements ActiveDirectoryUsers, HasInner<UsersClient> {
     private final GraphRbacManager manager;
 
-    ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
+    public ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().inner().users().list());
+        return wrapList(this.manager().inner().getUsers().list());
     }
 
     @Override
@@ -45,7 +47,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
     public Mono<ActiveDirectoryUser> getByIdAsync(String id) {
         return manager()
             .inner()
-            .users()
+            .getUsers()
             .getAsync(id)
             .onErrorResume(GraphErrorException.class, e -> Mono.empty())
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
@@ -60,7 +62,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
     public Mono<ActiveDirectoryUser> getByNameAsync(final String name) {
         return manager()
             .inner()
-            .users()
+            .getUsers()
             .getAsync(name)
             .onErrorResume(
                 GraphErrorException.class,
@@ -68,7 +70,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
                     if (name.contains("@")) {
                         return manager()
                             .inner()
-                            .users()
+                            .getUsers()
                             .listAsync(
                                 String
                                     .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")),
@@ -77,7 +79,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
                     } else {
                         return manager()
                             .inner()
-                            .users()
+                            .getUsers()
                             .listAsync(String.format("displayName eq '%s'", name), null)
                             .singleOrEmpty();
                     }
@@ -102,7 +104,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().users().deleteAsync(id);
+        return manager().inner().getUsers().deleteAsync(id);
     }
 
     @Override
@@ -111,7 +113,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
     }
 
     @Override
-    public UsersInner inner() {
-        return manager().inner().users();
+    public UsersClient inner() {
+        return manager().inner().getUsers();
     }
 }

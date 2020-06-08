@@ -5,11 +5,12 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.ActiveDirectoryApplication;
-import com.azure.resourcemanager.authorization.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.GraphErrorException;
-import com.azure.resourcemanager.authorization.models.ApplicationInner;
-import com.azure.resourcemanager.authorization.models.ApplicationsInner;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
+import com.azure.resourcemanager.authorization.models.GraphErrorException;
+import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
@@ -17,13 +18,13 @@ import java.util.UUID;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Applications and its parent interfaces. */
-class ActiveDirectoryApplicationsImpl
+public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
-    implements ActiveDirectoryApplications, HasManager<GraphRbacManager>, HasInner<ApplicationsInner> {
-    private ApplicationsInner innerCollection;
+    implements ActiveDirectoryApplications, HasManager<GraphRbacManager>, HasInner<ApplicationsClient> {
+    private ApplicationsClient innerCollection;
     private GraphRbacManager manager;
 
-    ActiveDirectoryApplicationsImpl(final ApplicationsInner client, final GraphRbacManager graphRbacManager) {
+    public ActiveDirectoryApplicationsImpl(final ApplicationsClient client, final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
     }
@@ -120,7 +121,7 @@ class ActiveDirectoryApplicationsImpl
     }
 
     @Override
-    public ApplicationsInner inner() {
+    public ApplicationsClient inner() {
         return this.innerCollection;
     }
 }

@@ -28,10 +28,10 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAd
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.RoleAssignment;
-import com.azure.resourcemanager.keyvault.Secret;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.keyvault.models.Secret;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.network.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.LoadBalancer;
 import com.azure.resourcemanager.network.LoadBalancerBackend;

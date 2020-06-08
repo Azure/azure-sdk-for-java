@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
-import com.azure.resourcemanager.containerservice.ContainerServiceNetworkProfile;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.containerservice.NetworkPlugin;
-import com.azure.resourcemanager.containerservice.NetworkPolicy;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.NetworkPlugin;
+import com.azure.resourcemanager.containerservice.models.NetworkPolicy;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterNetworkProfileImpl

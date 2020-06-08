@@ -4,32 +4,36 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.implementation.models.QueueDescriptionEntry;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionFeed;
 import com.azure.messaging.servicebus.implementation.models.QueueDescriptionResponse;
 import com.azure.messaging.servicebus.models.QueueDescription;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -45,9 +49,6 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
 
-    private QueuesImpl queuesClient;
-    private ServiceBusManagementClientImpl managementClient;
-
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
@@ -58,45 +59,23 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
-    @Override
-    protected void beforeTest() {
-        Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK,
-            "Current record/playback does not support persisting XML calls.");
-
-        ConnectionStringProperties properties = new ConnectionStringProperties(TestUtils.getConnectionString());
-        ServiceBusSharedKeyCredential credential = new ServiceBusSharedKeyCredential(
-            properties.getSharedAccessKeyName(), properties.getSharedAccessKey());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(
-            new UserAgentPolicy(),
-            new ServiceBusTokenCredentialHttpPolicy(credential),
-            new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .addAllowedQueryParamName("api-version")),
-            new RetryPolicy()
-        ).build();
-
-        managementClient = new ServiceBusManagementClientImplBuilder()
-            .serializer(serializer)
-            .endpoint(properties.getEndpoint().getHost())
-            .apiVersion("2017-04")
-            .pipeline(pipeline)
-            .buildClient();
-
-        queuesClient = managementClient.getQueues();
-    }
-
     /**
      * Verifies we can get queue information.
      */
-    @Test
-    void getQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    void getQueueImplementation(HttpClient httpClient) {
         // Arrange
-        String queueName = TestUtils.getQueueName();
+        final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
+        final QueuesImpl queuesClient = managementClient.getQueues();
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-0"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 0);
 
         // Act & Assert
         StepVerifier.create(queuesClient.getWithResponseAsync(queueName, true, Context.NONE))
             .assertNext(response -> {
-                final QueueDescriptionResponse deserialize = deserialize(response, QueueDescriptionResponse.class);
+                final QueueDescriptionEntry deserialize = deserialize(response, QueueDescriptionEntry.class);
                 assertNotNull(deserialize);
                 assertNotNull(deserialize.getContent());
 
@@ -110,13 +89,17 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     /**
      * Verifies we can create a queue.
      */
-    @Test
-    void createQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    void createQueueImplementation(HttpClient httpClient) {
         // Arrange
-        String queueName = testResourceNamer.randomName("test", 7);
-        QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
-        CreateQueueBody createEntity = new CreateQueueBody();
-        CreateQueueBodyContent content = new CreateQueueBodyContent()
+        final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
+        final QueuesImpl queuesClient = managementClient.getQueues();
+
+        final String queueName = testResourceNamer.randomName("test", 7);
+        final QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
+        final CreateQueueBody createEntity = new CreateQueueBody();
+        final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
             .setQueueDescription(description);
         createEntity.setContent(content);
@@ -143,13 +126,17 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     /**
      * Verifies we can delete a queue.
      */
-    @Test
-    void deleteQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    void deleteQueueImplementation(HttpClient httpClient) {
         // Arrange
-        String queueName = testResourceNamer.randomName("test", 7);
-        QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
-        CreateQueueBody createEntity = new CreateQueueBody();
-        CreateQueueBodyContent content = new CreateQueueBodyContent()
+        final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
+        final QueuesImpl queuesClient = managementClient.getQueues();
+
+        final String queueName = testResourceNamer.randomName("test", 7);
+        final QueueDescription description = new QueueDescription().setMaxDeliveryCount(15);
+        final CreateQueueBody createEntity = new CreateQueueBody();
+        final CreateQueueBodyContent content = new CreateQueueBodyContent()
             .setType("application/xml")
             .setQueueDescription(description);
         createEntity.setContent(content);
@@ -172,10 +159,16 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     /**
      * Verifies that we can edit properties on an existing queue.
      */
-    @Test
-    void editQueue() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    void editQueueImplementation(HttpClient httpClient) {
         // Arrange
-        final String queueName = "q-5";
+        final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
+        final QueuesImpl queuesClient = managementClient.getQueues();
+
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final Response<Object> response = queuesClient.getWithResponseAsync(queueName, true, Context.NONE)
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
@@ -207,10 +200,12 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     /**
      * Verifies we can list queues.
      */
-    @Test
-    void listQueues() {
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    void listQueuesImplementation(HttpClient httpClient) {
         // Arrange
-        String entityType = "queues";
+        final ServiceBusManagementClientImpl managementClient = createClient(httpClient);
+        final String entityType = "queues";
 
         // Act & Assert
         StepVerifier.create(managementClient.listEntitiesWithResponseAsync(entityType, 0, 100, Context.NONE))
@@ -229,6 +224,40 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
                 assertTrue(deserialize.getEntry().size() > 2);
             })
             .verifyComplete();
+    }
+
+    private ServiceBusManagementClientImpl createClient(HttpClient httpClient) {
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            : TestUtils.getConnectionString();
+        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        final ServiceBusSharedKeyCredential credential = new ServiceBusSharedKeyCredential(
+            properties.getSharedAccessKeyName(), properties.getSharedAccessKey());
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy());
+        policies.add(new ServiceBusTokenCredentialHttpPolicy(credential));
+        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+
+        final HttpClient httpClientToUse;
+        if (interceptorManager.isPlaybackMode()) {
+            httpClientToUse = interceptorManager.getPlaybackClient();
+        } else {
+            httpClientToUse = httpClient;
+            policies.add(interceptorManager.getRecordPolicy());
+            policies.add(new RetryPolicy());
+        }
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClientToUse)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
+
+        return new ServiceBusManagementClientImplBuilder()
+            .serializer(serializer)
+            .endpoint(properties.getEndpoint().getHost())
+            .apiVersion("2017-04")
+            .pipeline(pipeline)
+            .buildClient();
     }
 
     private <T> T deserialize(Response<Object> response, Class<T> clazz) {

@@ -9,9 +9,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
-import com.azure.resourcemanager.authorization.implementation.GraphRbacManager;
+import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.Identity;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 

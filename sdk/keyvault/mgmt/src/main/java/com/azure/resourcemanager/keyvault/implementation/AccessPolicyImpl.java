@@ -3,17 +3,17 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
-import com.azure.resourcemanager.authorization.ActiveDirectoryGroup;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.ServicePrincipal;
-import com.azure.resourcemanager.keyvault.AccessPolicy;
-import com.azure.resourcemanager.keyvault.AccessPolicyEntry;
-import com.azure.resourcemanager.keyvault.CertificatePermissions;
-import com.azure.resourcemanager.keyvault.KeyPermissions;
-import com.azure.resourcemanager.keyvault.Permissions;
-import com.azure.resourcemanager.keyvault.SecretPermissions;
-import com.azure.resourcemanager.keyvault.StoragePermissions;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
+import com.azure.resourcemanager.keyvault.models.AccessPolicy;
+import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
+import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
+import com.azure.resourcemanager.keyvault.models.KeyPermissions;
+import com.azure.resourcemanager.keyvault.models.Permissions;
+import com.azure.resourcemanager.keyvault.models.SecretPermissions;
+import com.azure.resourcemanager.keyvault.models.StoragePermissions;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;

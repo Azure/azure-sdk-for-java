@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.Registry;
-import com.azure.resourcemanager.containerregistry.Webhook;
-import com.azure.resourcemanager.containerregistry.models.WebhookInner;
+import com.azure.resourcemanager.containerregistry.models.Registry;
+import com.azure.resourcemanager.containerregistry.models.Webhook;
+import com.azure.resourcemanager.containerregistry.fluent.inner.WebhookInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 /** Represents a webhook collection associated with a container registry. */

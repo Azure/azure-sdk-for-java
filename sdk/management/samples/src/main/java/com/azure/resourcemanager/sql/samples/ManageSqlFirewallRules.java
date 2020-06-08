@@ -12,8 +12,8 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.SqlFirewallRule;
-import com.azure.resourcemanager.sql.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlFirewallRule;
+import com.azure.resourcemanager.sql.models.SqlServer;
 
 import java.util.List;
 

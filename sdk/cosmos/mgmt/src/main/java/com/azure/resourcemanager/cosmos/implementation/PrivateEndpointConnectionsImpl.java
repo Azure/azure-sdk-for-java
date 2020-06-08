@@ -3,15 +3,16 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.PrivateEndpointConnection;
-import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnectionsInner;
+import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** Represents a private endpoint connection collection. */
 class PrivateEndpointConnectionsImpl
@@ -21,9 +22,9 @@ class PrivateEndpointConnectionsImpl
         PrivateEndpointConnectionInner,
         CosmosDBAccountImpl,
         CosmosDBAccount> {
-    private final PrivateEndpointConnectionsInner client;
+    private final PrivateEndpointConnectionsClient client;
 
-    PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsInner client, CosmosDBAccountImpl parent) {
+    PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsClient client, CosmosDBAccountImpl parent) {
         super(parent, parent.taskGroup(), "PrivateEndpointConnection");
         this.client = client;
     }

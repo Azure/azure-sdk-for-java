@@ -2,18 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
-import com.azure.resourcemanager.containerservice.ContainerServiceLinuxProfile;
-import com.azure.resourcemanager.containerservice.ContainerServiceNetworkProfile;
-import com.azure.resourcemanager.containerservice.ContainerServiceSshConfiguration;
-import com.azure.resourcemanager.containerservice.ContainerServiceSshPublicKey;
-import com.azure.resourcemanager.containerservice.CredentialResult;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.containerservice.KubernetesClusterAgentPool;
-import com.azure.resourcemanager.containerservice.KubernetesVersion;
-import com.azure.resourcemanager.containerservice.ManagedClusterAddonProfile;
-import com.azure.resourcemanager.containerservice.ManagedClusterAgentPoolProfile;
-import com.azure.resourcemanager.containerservice.ManagedClusterServicePrincipalProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceSshPublicKey;
+import com.azure.resourcemanager.containerservice.models.CredentialResult;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.KubernetesVersion;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -200,7 +201,7 @@ public class KubernetesClusterImpl
         return this
             .manager()
             .inner()
-            .managedClusters()
+            .getManagedClusters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name())
             .flatMap(
                 managedClusterInner -> Flux.merge(adminConfig, userConfig).last().map(bytes -> managedClusterInner));
@@ -218,7 +219,7 @@ public class KubernetesClusterImpl
         return this
             .manager()
             .inner()
-            .managedClusters()
+            .getManagedClusters()
             .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner())
             .flatMap(
                 inner ->

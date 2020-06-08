@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appservice.HostnameSslBinding;
 import com.azure.resourcemanager.appservice.HostnameSslState;
 import com.azure.resourcemanager.appservice.SslState;
 import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;

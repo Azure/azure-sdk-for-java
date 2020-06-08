@@ -7,10 +7,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.ServerKeyType;
-import com.azure.resourcemanager.sql.SqlEncryptionProtector;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.EncryptionProtectorInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.ServerKeyType;
+import com.azure.resourcemanager.sql.models.SqlEncryptionProtector;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.fluent.inner.EncryptionProtectorInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -162,7 +163,7 @@ public class SqlEncryptionProtectorImpl
         return this
             .sqlServerManager
             .inner()
-            .encryptionProtectors()
+            .getEncryptionProtectors()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
             .map(
                 encryptionProtectorInner -> {
@@ -191,7 +192,7 @@ public class SqlEncryptionProtectorImpl
         return this
             .sqlServerManager
             .inner()
-            .encryptionProtectors()
+            .getEncryptionProtectors()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
 }

@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.authorization.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.ActiveDirectoryGroups;
-import com.azure.resourcemanager.authorization.ActiveDirectoryUsers;
-import com.azure.resourcemanager.authorization.RoleAssignments;
-import com.azure.resourcemanager.authorization.RoleDefinitions;
-import com.azure.resourcemanager.authorization.ServicePrincipals;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
+import com.azure.resourcemanager.authorization.models.RoleAssignments;
+import com.azure.resourcemanager.authorization.models.RoleDefinitions;
+import com.azure.resourcemanager.authorization.models.ServicePrincipals;
 
 /** Exposes methods related to managing access permissions in Azure. */
 public interface AccessManagement {

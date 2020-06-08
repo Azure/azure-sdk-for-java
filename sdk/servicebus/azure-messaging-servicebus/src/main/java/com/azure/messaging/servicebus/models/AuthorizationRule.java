@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +20,17 @@ import java.util.List;
 @Fluent
 public final class AuthorizationRule {
     /*
-     * The Type property.
+     * The type property.
      */
-    @JacksonXmlProperty(localName = "Type", namespace = "http://www.w3.org/2001/XMLSchema-instance")
+    @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
 
     /*
      * The ClaimType property.
      */
-    @JacksonXmlProperty(localName = "ClaimType", isAttribute = true)
+    @JacksonXmlProperty(
+            localName = "ClaimType",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String claimType;
 
     /*
@@ -49,7 +52,7 @@ public final class AuthorizationRule {
     }
 
     /*
-     * Access rights of the entity
+     * Access rights of the entity. Values are 'Send', 'Listen', or 'Manage'
      */
     @JacksonXmlProperty(
             localName = "Rights",
@@ -57,7 +60,7 @@ public final class AuthorizationRule {
     private RightsWrapper rights;
 
     /*
-     * The CreatedTime property.
+     * The date and time when the authorization rule was created.
      */
     @JacksonXmlProperty(
             localName = "CreatedTime",
@@ -65,7 +68,7 @@ public final class AuthorizationRule {
     private OffsetDateTime createdTime;
 
     /*
-     * The ModifiedTime property.
+     * The date and time when the authorization rule was modified.
      */
     @JacksonXmlProperty(
             localName = "ModifiedTime",
@@ -73,7 +76,7 @@ public final class AuthorizationRule {
     private OffsetDateTime modifiedTime;
 
     /*
-     * The KeyName property.
+     * The authorization rule key name
      */
     @JacksonXmlProperty(
             localName = "KeyName",
@@ -81,7 +84,7 @@ public final class AuthorizationRule {
     private String keyName;
 
     /*
-     * The PrimaryKey property.
+     * The primary key of the authorization rule
      */
     @JacksonXmlProperty(
             localName = "PrimaryKey",
@@ -89,7 +92,7 @@ public final class AuthorizationRule {
     private String primaryKey;
 
     /*
-     * The SecondaryKey property.
+     * The primary key of the authorization rule
      */
     @JacksonXmlProperty(
             localName = "SecondaryKey",
@@ -97,7 +100,7 @@ public final class AuthorizationRule {
     private String secondaryKey;
 
     /**
-     * Get the type property: The Type property.
+     * Get the type property: The type property.
      *
      * @return the type value.
      */
@@ -106,7 +109,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the type property: The Type property.
+     * Set the type property: The type property.
      *
      * @param type the type value to set.
      * @return the AuthorizationRule object itself.
@@ -157,7 +160,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the rights property: Access rights of the entity.
+     * Get the rights property: Access rights of the entity. Values are 'Send', 'Listen', or 'Manage'.
      *
      * @return the rights value.
      */
@@ -169,7 +172,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the rights property: Access rights of the entity.
+     * Set the rights property: Access rights of the entity. Values are 'Send', 'Listen', or 'Manage'.
      *
      * @param rights the rights value to set.
      * @return the AuthorizationRule object itself.
@@ -180,7 +183,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the createdTime property: The CreatedTime property.
+     * Get the createdTime property: The date and time when the authorization rule was created.
      *
      * @return the createdTime value.
      */
@@ -189,7 +192,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the createdTime property: The CreatedTime property.
+     * Set the createdTime property: The date and time when the authorization rule was created.
      *
      * @param createdTime the createdTime value to set.
      * @return the AuthorizationRule object itself.
@@ -200,7 +203,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the modifiedTime property: The ModifiedTime property.
+     * Get the modifiedTime property: The date and time when the authorization rule was modified.
      *
      * @return the modifiedTime value.
      */
@@ -209,7 +212,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the modifiedTime property: The ModifiedTime property.
+     * Set the modifiedTime property: The date and time when the authorization rule was modified.
      *
      * @param modifiedTime the modifiedTime value to set.
      * @return the AuthorizationRule object itself.
@@ -220,7 +223,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the keyName property: The KeyName property.
+     * Get the keyName property: The authorization rule key name.
      *
      * @return the keyName value.
      */
@@ -229,7 +232,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the keyName property: The KeyName property.
+     * Set the keyName property: The authorization rule key name.
      *
      * @param keyName the keyName value to set.
      * @return the AuthorizationRule object itself.
@@ -240,7 +243,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the primaryKey property: The PrimaryKey property.
+     * Get the primaryKey property: The primary key of the authorization rule.
      *
      * @return the primaryKey value.
      */
@@ -249,7 +252,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the primaryKey property: The PrimaryKey property.
+     * Set the primaryKey property: The primary key of the authorization rule.
      *
      * @param primaryKey the primaryKey value to set.
      * @return the AuthorizationRule object itself.
@@ -260,7 +263,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Get the secondaryKey property: The SecondaryKey property.
+     * Get the secondaryKey property: The primary key of the authorization rule.
      *
      * @return the secondaryKey value.
      */
@@ -269,7 +272,7 @@ public final class AuthorizationRule {
     }
 
     /**
-     * Set the secondaryKey property: The SecondaryKey property.
+     * Set the secondaryKey property: The primary key of the authorization rule.
      *
      * @param secondaryKey the secondaryKey value to set.
      * @return the AuthorizationRule object itself.

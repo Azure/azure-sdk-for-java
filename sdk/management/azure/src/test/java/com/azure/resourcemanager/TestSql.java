@@ -5,9 +5,9 @@ package com.azure.resourcemanager;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.sql.ElasticPoolEdition;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServers;
+import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServers;
 import com.google.common.util.concurrent.SettableFuture;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Flux;

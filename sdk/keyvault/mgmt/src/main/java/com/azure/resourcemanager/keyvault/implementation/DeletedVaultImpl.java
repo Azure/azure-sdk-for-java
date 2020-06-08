@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
-import com.azure.resourcemanager.keyvault.DeletedVault;
-import com.azure.resourcemanager.keyvault.models.DeletedVaultInner;
+import com.azure.resourcemanager.keyvault.models.DeletedVault;
+import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.Map;

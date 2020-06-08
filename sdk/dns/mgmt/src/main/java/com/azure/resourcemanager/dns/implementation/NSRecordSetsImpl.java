@@ -4,10 +4,10 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.dns.NSRecordSet;
-import com.azure.resourcemanager.dns.NSRecordSets;
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.models.NSRecordSet;
+import com.azure.resourcemanager.dns.models.NSRecordSets;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of NSRecordSets. */
@@ -28,7 +28,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
@@ -42,7 +42,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
                     .parent()
                     .manager()
                     .inner()
-                    .recordSets()
+                    .getRecordSets()
                     .listByType(
                         this.dnsZone.resourceGroupName(),
                         this.dnsZone.name(),
@@ -58,7 +58,7 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
                 .parent()
                 .manager()
                 .inner()
-                .recordSets()
+                .getRecordSets()
                 .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 

@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.ServerMetric;
-import com.azure.resourcemanager.sql.models.ServerUsageInner;
+import com.azure.resourcemanager.sql.models.ServerMetric;
+import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for DatabaseMetric interface. */

@@ -11,47 +11,48 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.sql.AuthenticationType;
-import com.azure.resourcemanager.sql.CreateMode;
-import com.azure.resourcemanager.sql.DatabaseEdition;
-import com.azure.resourcemanager.sql.DatabaseStatus;
-import com.azure.resourcemanager.sql.DatabaseUpdate;
-import com.azure.resourcemanager.sql.ImportRequest;
-import com.azure.resourcemanager.sql.ReplicationLink;
-import com.azure.resourcemanager.sql.RestorePoint;
-import com.azure.resourcemanager.sql.SampleName;
-import com.azure.resourcemanager.sql.ServiceObjectiveName;
-import com.azure.resourcemanager.sql.ServiceTierAdvisor;
-import com.azure.resourcemanager.sql.Sku;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlDatabaseAutomaticTuning;
-import com.azure.resourcemanager.sql.SqlDatabaseBasicStorage;
-import com.azure.resourcemanager.sql.SqlDatabaseMetric;
-import com.azure.resourcemanager.sql.SqlDatabaseMetricDefinition;
-import com.azure.resourcemanager.sql.SqlDatabaseOperations;
-import com.azure.resourcemanager.sql.SqlDatabasePremiumServiceObjective;
-import com.azure.resourcemanager.sql.SqlDatabasePremiumStorage;
-import com.azure.resourcemanager.sql.SqlDatabaseStandardServiceObjective;
-import com.azure.resourcemanager.sql.SqlDatabaseStandardStorage;
-import com.azure.resourcemanager.sql.SqlDatabaseThreatDetectionPolicy;
-import com.azure.resourcemanager.sql.SqlDatabaseUsageMetric;
-import com.azure.resourcemanager.sql.SqlElasticPool;
-import com.azure.resourcemanager.sql.SqlRestorableDroppedDatabase;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlSyncGroupOperations;
-import com.azure.resourcemanager.sql.SqlWarehouse;
-import com.azure.resourcemanager.sql.StorageKeyType;
-import com.azure.resourcemanager.sql.TransparentDataEncryption;
-import com.azure.resourcemanager.sql.models.DatabaseAutomaticTuningInner;
-import com.azure.resourcemanager.sql.models.DatabaseInner;
-import com.azure.resourcemanager.sql.models.DatabaseSecurityAlertPolicyInner;
-import com.azure.resourcemanager.sql.models.DatabaseUsageInner;
-import com.azure.resourcemanager.sql.models.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.models.MetricInner;
-import com.azure.resourcemanager.sql.models.ReplicationLinkInner;
-import com.azure.resourcemanager.sql.models.RestorePointInner;
-import com.azure.resourcemanager.sql.models.ServiceTierAdvisorInner;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.AuthenticationType;
+import com.azure.resourcemanager.sql.models.CreateMode;
+import com.azure.resourcemanager.sql.models.DatabaseEdition;
+import com.azure.resourcemanager.sql.models.DatabaseStatus;
+import com.azure.resourcemanager.sql.models.DatabaseUpdate;
+import com.azure.resourcemanager.sql.models.ImportRequest;
+import com.azure.resourcemanager.sql.models.ReplicationLink;
+import com.azure.resourcemanager.sql.models.RestorePoint;
+import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
+import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
+import com.azure.resourcemanager.sql.models.Sku;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
+import com.azure.resourcemanager.sql.models.SqlDatabaseBasicStorage;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition;
+import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
+import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlDatabasePremiumStorage;
+import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlDatabaseStandardStorage;
+import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
+import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
+import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
+import com.azure.resourcemanager.sql.models.SqlWarehouse;
+import com.azure.resourcemanager.sql.models.StorageKeyType;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import com.azure.resourcemanager.sql.fluent.inner.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
@@ -271,7 +272,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .restorePoints()
+                .getRestorePoints()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (RestorePointInner inner : restorePointInners) {
             restorePoints.add(new RestorePointImpl(this.resourceGroupName, this.sqlServerName, inner));
@@ -285,7 +286,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .restorePoints()
+            .getRestorePoints()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 restorePointInner ->
@@ -299,7 +300,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .replicationLinks()
+                .getReplicationLinks()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (ReplicationLinkInner inner : replicationLinkInners) {
             replicationLinkMap
@@ -317,7 +318,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 replicationLinkInner ->
@@ -370,7 +371,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databaseThreatDetectionPolicies()
+                .getDatabaseThreatDetectionPolicies()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return policyInner != null
             ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.name(), this, policyInner, this.sqlServerManager)
@@ -383,7 +384,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databaseAutomaticTunings()
+                .getDatabaseAutomaticTunings()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return databaseAutomaticTuningInner != null
             ? new SqlDatabaseAutomaticTuningImpl(this, databaseAutomaticTuningInner)
@@ -397,7 +398,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databaseUsages()
+                .getDatabaseUsages()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (DatabaseUsageInner inner : databaseUsageInners) {
             databaseUsageMetrics.add(new SqlDatabaseUsageMetricImpl(inner));
@@ -410,7 +411,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databaseUsages()
+            .getDatabaseUsages()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(SqlDatabaseUsageMetricImpl::new);
     }
@@ -422,7 +423,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .rename(this.resourceGroupName, this.sqlServerName, this.name(), newId);
         return this
             .sqlServerManager
@@ -439,7 +440,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .renameAsync(this.resourceGroupName, this.sqlServerName, self.name(), newId)
             .flatMap(
                 aVoid ->
@@ -457,7 +458,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
         for (MetricInner metricInner : metricInners) {
             sqlDatabaseMetrics.add(new SqlDatabaseMetricImpl(metricInner));
@@ -470,7 +471,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
             .mapPage(SqlDatabaseMetricImpl::new);
     }
@@ -482,7 +483,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
         for (MetricDefinitionInner metricDefinitionInner : metricDefinitionInners) {
             sqlDatabaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
@@ -496,7 +497,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(SqlDatabaseMetricDefinitionImpl::new);
     }
@@ -507,7 +508,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .transparentDataEncryptions()
+                .getTransparentDataEncryptions()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return (transparentDataEncryptionInner == null)
             ? null
@@ -521,7 +522,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptions()
+            .getTransparentDataEncryptions()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .map(
                 transparentDataEncryptionInner ->
@@ -539,7 +540,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .serviceTierAdvisors()
+                .getServiceTierAdvisors()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
             serviceTierAdvisorMap
@@ -560,7 +561,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .serviceTierAdvisors()
+            .getServiceTierAdvisors()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 serviceTierAdvisorInner ->
@@ -602,7 +603,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -646,7 +647,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
                 .then(Mono.defer(() -> {
                     if (self.elasticPoolId() != null) {
@@ -663,7 +664,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
                 .map(
                     inner -> {
@@ -689,7 +690,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .updateAsync(this.resourceGroupName, this.sqlServerName, this.name(), databaseUpdateInner)
                 .map(
                     inner -> {
@@ -724,13 +725,13 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().databases().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getDatabases().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

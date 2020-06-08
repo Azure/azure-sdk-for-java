@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.cosmos.implementation;
 
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.PrivateEndpointConnection;
-import com.azure.resourcemanager.cosmos.PrivateEndpointProperty;
-import com.azure.resourcemanager.cosmos.PrivateLinkServiceConnectionStateProperty;
-import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnectionsInner;
+import com.azure.resourcemanager.cosmos.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;
+import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -19,13 +19,13 @@ public class PrivateEndpointConnectionImpl
         PrivateEndpointConnection.Definition<CosmosDBAccount.DefinitionStages.WithCreate>,
         PrivateEndpointConnection.UpdateDefinition<CosmosDBAccount.UpdateStages.WithOptionals>,
         PrivateEndpointConnection.Update {
-    private final PrivateEndpointConnectionsInner client;
+    private final PrivateEndpointConnectionsClient client;
 
     PrivateEndpointConnectionImpl(
         String name,
         CosmosDBAccountImpl parent,
         PrivateEndpointConnectionInner inner,
-        PrivateEndpointConnectionsInner client) {
+        PrivateEndpointConnectionsClient client) {
         super(name, parent, inner);
         this.client = client;
     }

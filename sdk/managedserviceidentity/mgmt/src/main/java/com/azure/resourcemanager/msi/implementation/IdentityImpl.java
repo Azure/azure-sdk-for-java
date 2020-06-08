@@ -3,11 +3,12 @@
 
 package com.azure.resourcemanager.msi.implementation;
 
-import com.azure.resourcemanager.authorization.BuiltInRole;
-import com.azure.resourcemanager.authorization.RoleAssignment;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.Identity;
-import com.azure.resourcemanager.msi.models.IdentityInner;
+import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
@@ -17,13 +18,13 @@ import java.util.Objects;
 /**
  * The implementation for Identity and its create and update interfaces.
  */
-final class IdentityImpl
+public final class IdentityImpl
         extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MSIManager>
         implements Identity, Identity.Definition, Identity.Update {
 
     private RoleAssignmentHelper roleAssignmentHelper;
 
-    protected IdentityImpl(String name, IdentityInner innerObject, MSIManager manager) {
+    public IdentityImpl(String name, IdentityInner innerObject, MSIManager manager) {
         super(name, innerObject, manager);
         this.roleAssignmentHelper = new RoleAssignmentHelper(manager.graphRbacManager(),
             this.taskGroup(),
@@ -107,7 +108,7 @@ final class IdentityImpl
 
     @Override
     public Mono<Identity> createResourceAsync() {
-        return this.manager().inner().userAssignedIdentities()
+        return this.manager().inner().getUserAssignedIdentities()
                 .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
                 .map(innerToFluentMap(this));
     }
@@ -116,7 +117,7 @@ final class IdentityImpl
     protected Mono<IdentityInner> getInnerAsync() {
         return this.myManager
                 .inner()
-                .userAssignedIdentities()
+                .getUserAssignedIdentities()
                 .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
