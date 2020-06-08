@@ -85,7 +85,7 @@ public class SqlVirtualNetworkRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
                 inner -> {
@@ -104,7 +104,7 @@ public class SqlVirtualNetworkRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -113,7 +113,7 @@ public class SqlVirtualNetworkRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .virtualNetworkRules()
+            .getVirtualNetworkRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

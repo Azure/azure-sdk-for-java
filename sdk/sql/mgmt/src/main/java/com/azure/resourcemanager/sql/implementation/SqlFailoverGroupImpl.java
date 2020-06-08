@@ -170,7 +170,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().failoverGroups().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getFailoverGroups().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -208,7 +208,7 @@ public class SqlFailoverGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .failoverGroups()
+            .getFailoverGroups()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name(), self.inner())
             .map(
                 failoverGroupInner -> {
@@ -227,7 +227,7 @@ public class SqlFailoverGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .failoverGroups()
+            .getFailoverGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -236,7 +236,7 @@ public class SqlFailoverGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .failoverGroups()
+            .getFailoverGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

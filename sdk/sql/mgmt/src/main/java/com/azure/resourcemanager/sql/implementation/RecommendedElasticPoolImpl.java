@@ -37,7 +37,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
         return this
             .manager()
             .inner()
-            .recommendedElasticPools()
+            .getRecommendedElasticPools()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
@@ -109,7 +109,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .sqlServer
                 .manager()
                 .inner()
-                .databases()
+                .getDatabases()
                 .listByElasticPool(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name());
         for (DatabaseInner inner : databaseInners) {
             databasesList.add(new SqlDatabaseImpl(inner.name(), this.sqlServer, inner, this.manager()));
@@ -124,7 +124,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             .sqlServer
             .manager()
             .inner()
-            .databases()
+            .getDatabases()
             .listByElasticPoolAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), this.name())
             .mapPage(
                 databaseInner ->
@@ -138,7 +138,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .sqlServer
                 .manager()
                 .inner()
-                .databases()
+                .getDatabases()
                 .get(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName);
 
         return new SqlDatabaseImpl(databaseInner.name(), this.sqlServer, databaseInner, this.manager());
@@ -151,7 +151,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
             .sqlServer
             .manager()
             .inner()
-            .databases()
+            .getDatabases()
             .getAsync(this.sqlServer.resourceGroupName(), this.sqlServer.name(), databaseName)
             .map(
                 databaseInner ->
@@ -166,7 +166,7 @@ class RecommendedElasticPoolImpl extends RefreshableWrapperImpl<RecommendedElast
                 .sqlServer
                 .manager()
                 .inner()
-                .recommendedElasticPools()
+                .getRecommendedElasticPools()
                 .listMetrics(this.resourceGroupName(), this.sqlServerName(), this.name());
         for (RecommendedElasticPoolMetricInner inner : recommendedElasticPoolMetricInners) {
             recommendedElasticPoolMetrics.add(new RecommendedElasticPoolMetricImpl(inner));

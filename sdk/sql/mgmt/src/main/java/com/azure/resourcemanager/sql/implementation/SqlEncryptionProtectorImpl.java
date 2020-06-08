@@ -163,7 +163,7 @@ public class SqlEncryptionProtectorImpl
         return this
             .sqlServerManager
             .inner()
-            .encryptionProtectors()
+            .getEncryptionProtectors()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
             .map(
                 encryptionProtectorInner -> {
@@ -192,7 +192,7 @@ public class SqlEncryptionProtectorImpl
         return this
             .sqlServerManager
             .inner()
-            .encryptionProtectors()
+            .getEncryptionProtectors()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
 }

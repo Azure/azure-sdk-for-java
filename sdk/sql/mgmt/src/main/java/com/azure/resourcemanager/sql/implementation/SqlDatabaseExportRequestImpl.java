@@ -51,7 +51,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .exportAsync(
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,
@@ -88,7 +88,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                                     "%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                     self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                     self.inner.withStorageKey(storageAccountKey.value());
-                    BlobContainers blobContainers = this.sqlServerManager.storageManager.blobContainers();
+                    BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
                     return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
                         .onErrorResume(error -> {
                             if (error instanceof ManagementException) {

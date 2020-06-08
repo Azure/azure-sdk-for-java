@@ -9,6 +9,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
+import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
+import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
@@ -33,12 +39,8 @@ import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardMaxEDTUs;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardMinEDTUs;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardStorage;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolActivityInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SqlElasticPool. */
 public class SqlElasticPoolImpl
@@ -202,7 +203,7 @@ public class SqlElasticPoolImpl
             this
                 .sqlServerManager
                 .inner()
-                .elasticPoolActivities()
+                .getElasticPoolActivities()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         for (ElasticPoolActivityInner inner : elasticPoolActivityInners) {
             elasticPoolActivities.add(new ElasticPoolActivityImpl(inner));
@@ -215,7 +216,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPoolActivities()
+            .getElasticPoolActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(ElasticPoolActivityImpl::new);
     }
@@ -227,7 +228,7 @@ public class SqlElasticPoolImpl
             this
                 .sqlServerManager
                 .inner()
-                .elasticPoolDatabaseActivities()
+                .getElasticPoolDatabaseActivities()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         for (ElasticPoolDatabaseActivityInner inner : elasticPoolDatabaseActivityInners) {
             elasticPoolDatabaseActivities.add(new ElasticPoolDatabaseActivityImpl(inner));
@@ -240,7 +241,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPoolDatabaseActivities()
+            .getElasticPoolDatabaseActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 ElasticPoolDatabaseActivityImpl::new);
@@ -253,7 +254,7 @@ public class SqlElasticPoolImpl
             this
                 .sqlServerManager
                 .inner()
-                .elasticPools()
+                .getElasticPools()
                 .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
         for (MetricInner inner : inners) {
             databaseMetrics.add(new SqlDatabaseMetricImpl(inner));
@@ -267,7 +268,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
             .mapPage(SqlDatabaseMetricImpl::new);
     }
@@ -279,7 +280,7 @@ public class SqlElasticPoolImpl
             this
                 .sqlServerManager
                 .inner()
-                .elasticPools()
+                .getElasticPools()
                 .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
         for (MetricDefinitionInner inner : inners) {
             databaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(inner));
@@ -293,7 +294,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(SqlDatabaseMetricDefinitionImpl::new);
     }
@@ -305,7 +306,7 @@ public class SqlElasticPoolImpl
             this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         for (DatabaseInner inner : databaseInners) {
             databases
@@ -327,7 +328,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .listByElasticPoolAsync(self.resourceGroupName, self.sqlServerName, this.name())
             .mapPage(
                 databaseInner ->
@@ -343,7 +344,7 @@ public class SqlElasticPoolImpl
     @Override
     public SqlDatabase getDatabase(String databaseName) {
         DatabaseInner databaseInner =
-            this.sqlServerManager.inner().databases().get(this.resourceGroupName, this.sqlServerName, databaseName);
+            this.sqlServerManager.inner().getDatabases().get(this.resourceGroupName, this.sqlServerName, databaseName);
 
         return databaseInner != null
             ? new SqlDatabaseImpl(
@@ -390,7 +391,7 @@ public class SqlElasticPoolImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().elasticPools().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getElasticPools().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -403,7 +404,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -414,7 +415,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
                 inner -> {
@@ -429,7 +430,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
                 inner -> {
@@ -460,7 +461,7 @@ public class SqlElasticPoolImpl
         return this
             .sqlServerManager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

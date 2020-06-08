@@ -38,7 +38,7 @@ public class SqlElasticPoolOperationsImpl
 
     @Override
     public SqlElasticPool getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        ElasticPoolInner inner = this.manager.inner().elasticPools().get(resourceGroupName, sqlServerName, name);
+        ElasticPoolInner inner = this.manager.inner().getElasticPools().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
             ? new SqlElasticPoolImpl(
                 resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
@@ -51,7 +51,7 @@ public class SqlElasticPoolOperationsImpl
         return this
             .manager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .getAsync(resourceGroupName, sqlServerName, name)
             .map(
                 inner ->
@@ -65,7 +65,7 @@ public class SqlElasticPoolOperationsImpl
             return null;
         }
         ElasticPoolInner inner =
-            this.manager.inner().elasticPools().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+            this.manager.inner().getElasticPools().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null)
             ? new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager)
             : null;
@@ -77,7 +77,7 @@ public class SqlElasticPoolOperationsImpl
         return sqlServer
             .manager()
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(inner -> new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }
@@ -135,12 +135,12 @@ public class SqlElasticPoolOperationsImpl
 
     @Override
     public void deleteBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        this.manager.inner().elasticPools().delete(resourceGroupName, sqlServerName, name);
+        this.manager.inner().getElasticPools().delete(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.manager.inner().elasticPools().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this.manager.inner().getElasticPools().deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
@@ -183,7 +183,7 @@ public class SqlElasticPoolOperationsImpl
     public List<SqlElasticPool> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlElasticPool> elasticPoolSet = new ArrayList<>();
         for (ElasticPoolInner inner
-            : this.manager.inner().elasticPools().listByServer(resourceGroupName, sqlServerName)) {
+            : this.manager.inner().getElasticPools().listByServer(resourceGroupName, sqlServerName)) {
             elasticPoolSet
                 .add(
                     new SqlElasticPoolImpl(
@@ -197,7 +197,7 @@ public class SqlElasticPoolOperationsImpl
         return this
             .manager
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
                 inner ->
@@ -210,7 +210,7 @@ public class SqlElasticPoolOperationsImpl
         List<SqlElasticPool> elasticPoolSet = new ArrayList<>();
         if (sqlServer != null) {
             for (ElasticPoolInner inner
-                : this.manager.inner().elasticPools().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+                : this.manager.inner().getElasticPools().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 elasticPoolSet.add(new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }
@@ -223,7 +223,7 @@ public class SqlElasticPoolOperationsImpl
         return sqlServer
             .manager()
             .inner()
-            .elasticPools()
+            .getElasticPools()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(inner -> new SqlElasticPoolImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }

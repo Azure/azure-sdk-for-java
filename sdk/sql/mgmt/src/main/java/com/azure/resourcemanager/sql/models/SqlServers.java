@@ -18,9 +18,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.ServersInner;
-import java.util.List;
+import com.azure.resourcemanager.sql.fluent.ServersClient;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /** Entry point to SQL Server management API. */
 @Fluent
@@ -35,7 +36,7 @@ public interface SqlServers
         SupportsBatchCreation<SqlServer>,
         SupportsBatchDeletion,
         HasManager<SqlServerManager>,
-        HasInner<ServersInner> {
+        HasInner<ServersClient> {
 
     /** @return the SQL Server Firewall Rules API entry point */
     SqlFirewallRuleOperations firewallRules();

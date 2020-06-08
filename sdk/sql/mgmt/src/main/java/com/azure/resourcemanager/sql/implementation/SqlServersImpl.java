@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.fluent.ServersInner;
+import com.azure.resourcemanager.sql.fluent.ServersClient;
 import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
 import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
 import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
@@ -35,7 +35,7 @@ import java.util.Objects;
 
 /** Implementation for SqlServers and its parent interfaces. */
 public class SqlServersImpl
-    extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+    extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersClient, SqlServerManager>
     implements SqlServers {
 
     private SqlFirewallRuleOperations firewallRules;
@@ -50,8 +50,8 @@ public class SqlServersImpl
     private SqlSyncMemberOperationsImpl syncMembers;
     private SqlServerSecurityAlertPolicyOperationsImpl serverSecurityAlertPolicies;
 
-    protected SqlServersImpl(SqlServerManager manager) {
-        super(manager.inner().servers(), manager);
+    public SqlServersImpl(SqlServerManager manager) {
+        super(manager.inner().getServers(), manager);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class SqlServersImpl
     @Override
     public RegionCapabilities getCapabilitiesByRegion(Region region) {
         LocationCapabilitiesInner capabilitiesInner =
-            this.manager().inner().capabilities().listByLocation(region.name());
+            this.manager().inner().getCapabilities().listByLocation(region.name());
         return capabilitiesInner != null ? new RegionCapabilitiesImpl(capabilitiesInner) : null;
     }
 
@@ -199,7 +199,7 @@ public class SqlServersImpl
         return this
             .manager()
             .inner()
-            .capabilities()
+            .getCapabilities()
             .listByLocationAsync(region.name())
             .map(RegionCapabilitiesImpl::new);
     }
@@ -209,7 +209,7 @@ public class SqlServersImpl
         Objects.requireNonNull(region);
         List<SqlSubscriptionUsageMetric> subscriptionUsages = new ArrayList<>();
         PagedIterable<SubscriptionUsageInner> subscriptionUsageInners =
-            this.manager().inner().subscriptionUsages().listByLocation(region.name());
+            this.manager().inner().getSubscriptionUsages().listByLocation(region.name());
         for (SubscriptionUsageInner inner : subscriptionUsageInners) {
             subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
         }
@@ -223,7 +223,7 @@ public class SqlServersImpl
         return this
             .manager()
             .inner()
-            .subscriptionUsages()
+            .getSubscriptionUsages()
             .listByLocationAsync(region.name())
             .mapPage(
                 subscriptionUsageInner ->

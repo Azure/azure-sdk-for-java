@@ -27,7 +27,7 @@ public class SqlSubscriptionUsageMetricImpl
 
     @Override
     protected Mono<SubscriptionUsageInner> getInnerAsync() {
-        return this.sqlServerManager.inner().subscriptionUsages().getAsync(this.location, this.name());
+        return this.sqlServerManager.inner().getSubscriptionUsages().getAsync(this.location, this.name());
     }
 
     @Override

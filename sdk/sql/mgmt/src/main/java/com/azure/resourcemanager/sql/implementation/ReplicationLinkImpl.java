@@ -39,7 +39,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         return this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
@@ -113,7 +113,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .delete(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
@@ -122,7 +122,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .failover(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
@@ -131,7 +131,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         return this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .failoverAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
@@ -140,7 +140,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .failoverAllowDataLoss(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
@@ -149,7 +149,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
         return this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .failoverAllowDataLossAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 

@@ -27,7 +27,7 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
 
     @Override
     public void pauseDataWarehouse() {
-        this.sqlServerManager.inner().databases().pause(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getDatabases().pause(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -35,14 +35,14 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .pauseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .flatMap(databaseInner -> Mono.empty());
     }
 
     @Override
     public void resumeDataWarehouse() {
-        this.sqlServerManager.inner().databases().resume(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getDatabases().resume(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -50,7 +50,7 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .resumeAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .flatMap(databaseInner -> Mono.empty());
     }

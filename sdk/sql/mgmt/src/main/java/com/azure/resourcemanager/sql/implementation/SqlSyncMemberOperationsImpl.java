@@ -42,7 +42,7 @@ public class SqlSyncMemberOperationsImpl
             this
                 .sqlServerManager
                 .inner()
-                .syncMembers()
+                .getSyncMembers()
                 .get(resourceGroupName, sqlServerName, databaseName, syncGroupName, name);
         return syncMemberInner != null
             ? new SqlSyncMemberImpl(
@@ -66,7 +66,7 @@ public class SqlSyncMemberOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .getAsync(resourceGroupName, sqlServerName, databaseName, syncGroupName, name)
             .map(
                 syncMemberInner ->
@@ -150,7 +150,7 @@ public class SqlSyncMemberOperationsImpl
         this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .delete(
                 this.sqlSyncGroup.resourceGroupName(),
                 this.sqlSyncGroup.sqlServerName(),
@@ -167,7 +167,7 @@ public class SqlSyncMemberOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .deleteAsync(
                 this.sqlSyncGroup.resourceGroupName(),
                 this.sqlSyncGroup.sqlServerName(),
@@ -183,7 +183,7 @@ public class SqlSyncMemberOperationsImpl
             this
                 .sqlServerManager
                 .inner()
-                .syncMembers()
+                .getSyncMembers()
                 .delete(
                     resourceId.resourceGroupName(),
                     resourceId.parent().parent().parent().name(),
@@ -201,7 +201,7 @@ public class SqlSyncMemberOperationsImpl
             return this
                 .sqlServerManager
                 .inner()
-                .syncMembers()
+                .getSyncMembers()
                 .deleteAsync(
                     resourceId.resourceGroupName(),
                     resourceId.parent().parent().parent().name(),
@@ -221,7 +221,7 @@ public class SqlSyncMemberOperationsImpl
                 this
                     .sqlServerManager
                     .inner()
-                    .syncMembers()
+                    .getSyncMembers()
                     .listBySyncGroup(
                         this.sqlSyncGroup.resourceGroupName(),
                         this.sqlSyncGroup.sqlServerName(),
@@ -243,7 +243,7 @@ public class SqlSyncMemberOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .listBySyncGroupAsync(
                 this.sqlSyncGroup.resourceGroupName(),
                 this.sqlSyncGroup.sqlServerName(),

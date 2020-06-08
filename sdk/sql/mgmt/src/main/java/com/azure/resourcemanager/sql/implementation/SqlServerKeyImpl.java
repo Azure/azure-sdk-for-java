@@ -158,7 +158,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
         return this
             .sqlServerManager
             .inner()
-            .serverKeys()
+            .getServerKeys()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.serverKeyName, self.inner())
             .map(
                 serverKeyInner -> {
@@ -177,7 +177,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
         return this
             .sqlServerManager
             .inner()
-            .serverKeys()
+            .getServerKeys()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -186,7 +186,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
         return this
             .sqlServerManager
             .inner()
-            .serverKeys()
+            .getServerKeys()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -237,7 +237,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().serverKeys().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getServerKeys().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

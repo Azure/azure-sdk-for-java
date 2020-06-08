@@ -272,7 +272,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .restorePoints()
+                .getRestorePoints()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (RestorePointInner inner : restorePointInners) {
             restorePoints.add(new RestorePointImpl(this.resourceGroupName, this.sqlServerName, inner));
@@ -286,7 +286,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .restorePoints()
+            .getRestorePoints()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 restorePointInner ->
@@ -300,7 +300,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .replicationLinks()
+                .getReplicationLinks()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (ReplicationLinkInner inner : replicationLinkInners) {
             replicationLinkMap
@@ -318,7 +318,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .replicationLinks()
+            .getReplicationLinks()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 replicationLinkInner ->
@@ -371,7 +371,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databaseThreatDetectionPolicies()
+                .getDatabaseThreatDetectionPolicies()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return policyInner != null
             ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.name(), this, policyInner, this.sqlServerManager)
@@ -384,7 +384,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databaseAutomaticTunings()
+                .getDatabaseAutomaticTunings()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return databaseAutomaticTuningInner != null
             ? new SqlDatabaseAutomaticTuningImpl(this, databaseAutomaticTuningInner)
@@ -398,7 +398,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databaseUsages()
+                .getDatabaseUsages()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (DatabaseUsageInner inner : databaseUsageInners) {
             databaseUsageMetrics.add(new SqlDatabaseUsageMetricImpl(inner));
@@ -411,7 +411,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databaseUsages()
+            .getDatabaseUsages()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(SqlDatabaseUsageMetricImpl::new);
     }
@@ -423,7 +423,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .rename(this.resourceGroupName, this.sqlServerName, this.name(), newId);
         return this
             .sqlServerManager
@@ -440,7 +440,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .renameAsync(this.resourceGroupName, this.sqlServerName, self.name(), newId)
             .flatMap(
                 aVoid ->
@@ -458,7 +458,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
         for (MetricInner metricInner : metricInners) {
             sqlDatabaseMetrics.add(new SqlDatabaseMetricImpl(metricInner));
@@ -471,7 +471,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
             .mapPage(SqlDatabaseMetricImpl::new);
     }
@@ -483,7 +483,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
         for (MetricDefinitionInner metricDefinitionInner : metricDefinitionInners) {
             sqlDatabaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
@@ -497,7 +497,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(SqlDatabaseMetricDefinitionImpl::new);
     }
@@ -508,7 +508,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .transparentDataEncryptions()
+                .getTransparentDataEncryptions()
                 .get(this.resourceGroupName, this.sqlServerName, this.name());
         return (transparentDataEncryptionInner == null)
             ? null
@@ -522,7 +522,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptions()
+            .getTransparentDataEncryptions()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .map(
                 transparentDataEncryptionInner ->
@@ -540,7 +540,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .inner()
-                .serviceTierAdvisors()
+                .getServiceTierAdvisors()
                 .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
             serviceTierAdvisorMap
@@ -561,7 +561,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .serviceTierAdvisors()
+            .getServiceTierAdvisors()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
                 serviceTierAdvisorInner ->
@@ -603,7 +603,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -647,7 +647,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
                 .then(Mono.defer(() -> {
                     if (self.elasticPoolId() != null) {
@@ -664,7 +664,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
                 .map(
                     inner -> {
@@ -690,7 +690,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .inner()
-                .databases()
+                .getDatabases()
                 .updateAsync(this.resourceGroupName, this.sqlServerName, this.name(), databaseUpdateInner)
                 .map(
                     inner -> {
@@ -725,13 +725,13 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().databases().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getDatabases().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

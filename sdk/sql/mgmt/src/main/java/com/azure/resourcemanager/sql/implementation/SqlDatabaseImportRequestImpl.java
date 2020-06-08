@@ -48,7 +48,7 @@ public class SqlDatabaseImportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .createImportOperationAsync(
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,

@@ -76,7 +76,7 @@ class TransparentDataEncryptionImpl
             this
                 .sqlServerManager
                 .inner()
-                .transparentDataEncryptions()
+                .getTransparentDataEncryptions()
                 .createOrUpdate(
                     this.resourceGroupName, this.sqlServerName, this.databaseName(), transparentDataEncryptionState);
         this.setInner(transparentDataEncryptionInner);
@@ -91,7 +91,7 @@ class TransparentDataEncryptionImpl
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptions()
+            .getTransparentDataEncryptions()
             .createOrUpdateAsync(
                 self.resourceGroupName, self.sqlServerName, self.databaseName(), transparentDataEncryptionState)
             .map(
@@ -108,7 +108,7 @@ class TransparentDataEncryptionImpl
             this
                 .sqlServerManager
                 .inner()
-                .transparentDataEncryptionActivities()
+                .getTransparentDataEncryptionActivities()
                 .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName());
         for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
             : transparentDataEncryptionActivityInners) {
@@ -123,7 +123,7 @@ class TransparentDataEncryptionImpl
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptionActivities()
+            .getTransparentDataEncryptionActivities()
             .listByConfigurationAsync(this.resourceGroupName, this.sqlServerName, this.databaseName())
             .mapPage(
                 TransparentDataEncryptionActivityImpl::new);
@@ -134,7 +134,7 @@ class TransparentDataEncryptionImpl
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptions()
+            .getTransparentDataEncryptions()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName());
     }
 }

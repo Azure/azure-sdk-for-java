@@ -80,7 +80,7 @@ public class SqlRestorableDroppedDatabaseImpl
         return this
             .sqlServerManager
             .inner()
-            .restorableDroppedDatabases()
+            .getRestorableDroppedDatabases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.inner().id());
     }
 

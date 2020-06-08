@@ -114,7 +114,7 @@ public class SqlDatabaseAutomaticTuningImpl
         return this
             .sqlServerManager
             .inner()
-            .databaseAutomaticTunings()
+            .getDatabaseAutomaticTunings()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName);
     }
 
@@ -130,7 +130,7 @@ public class SqlDatabaseAutomaticTuningImpl
         return this
             .sqlServerManager
             .inner()
-            .databaseAutomaticTunings()
+            .getDatabaseAutomaticTunings()
             .updateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.inner())
             .map(
                 databaseAutomaticTuningInner -> {

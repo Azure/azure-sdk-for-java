@@ -185,7 +185,7 @@ public class SqlServerSecurityAlertPolicyImpl
         return this
             .sqlServerManager
             .inner()
-            .serverSecurityAlertPolicies()
+            .getServerSecurityAlertPolicies()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.inner())
             .map(
                 serverSecurityAlertPolicyInner -> {
@@ -210,7 +210,7 @@ public class SqlServerSecurityAlertPolicyImpl
         return this
             .sqlServerManager
             .inner()
-            .serverSecurityAlertPolicies()
+            .getServerSecurityAlertPolicies()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
 

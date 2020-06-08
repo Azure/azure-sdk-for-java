@@ -16,7 +16,7 @@ import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure SQLServer resource management. */
-public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
+public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClient> {
     private SqlServers sqlServers;
     private final String tenantId;
 
@@ -29,7 +29,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
             new SqlManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .subscriptionId(profile.subscriptionId())
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .buildClient(),
             sdkContext);
         this.storageManager = StorageManager.authenticate(httpPipeline, profile);

@@ -179,7 +179,7 @@ public class SqlSyncMemberImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .createOrUpdateAsync(
                 this.resourceGroupName,
                 this.sqlServerName,
@@ -204,7 +204,7 @@ public class SqlSyncMemberImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .deleteAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
@@ -214,7 +214,7 @@ public class SqlSyncMemberImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .getAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
@@ -224,7 +224,7 @@ public class SqlSyncMemberImpl
         this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .delete(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
@@ -245,7 +245,7 @@ public class SqlSyncMemberImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .listMemberSchemas(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
             .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
@@ -256,7 +256,7 @@ public class SqlSyncMemberImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .listMemberSchemasAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
             .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
@@ -267,7 +267,7 @@ public class SqlSyncMemberImpl
         this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .refreshMemberSchema(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
@@ -277,7 +277,7 @@ public class SqlSyncMemberImpl
         return this
             .sqlServerManager
             .inner()
-            .syncMembers()
+            .getSyncMembers()
             .refreshMemberSchemaAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }

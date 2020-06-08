@@ -39,7 +39,7 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public SqlDatabase getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        DatabaseInner inner = this.manager.inner().databases().get(resourceGroupName, sqlServerName, name);
+        DatabaseInner inner = this.manager.inner().getDatabases().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
             ? new SqlDatabaseImpl(
                 resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
@@ -52,7 +52,7 @@ public class SqlDatabaseOperationsImpl
         return this
             .manager
             .inner()
-            .databases()
+            .getDatabases()
             .getAsync(resourceGroupName, sqlServerName, name)
             .map(
                 inner ->
@@ -66,7 +66,7 @@ public class SqlDatabaseOperationsImpl
             return null;
         }
         DatabaseInner inner =
-            this.manager.inner().databases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+            this.manager.inner().getDatabases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null) ? new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager) : null;
     }
 
@@ -76,7 +76,7 @@ public class SqlDatabaseOperationsImpl
         return sqlServer
             .manager()
             .inner()
-            .databases()
+            .getDatabases()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }
@@ -119,12 +119,12 @@ public class SqlDatabaseOperationsImpl
 
     @Override
     public void deleteBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        this.manager.inner().databases().delete(resourceGroupName, sqlServerName, name);
+        this.manager.inner().getDatabases().delete(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.manager.inner().databases().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this.manager.inner().getDatabases().deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
@@ -165,7 +165,7 @@ public class SqlDatabaseOperationsImpl
     @Override
     public List<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlDatabase> databasesSet = new ArrayList<>();
-        for (DatabaseInner inner : this.manager.inner().databases().listByServer(resourceGroupName, sqlServerName)) {
+        for (DatabaseInner inner : this.manager.inner().getDatabases().listByServer(resourceGroupName, sqlServerName)) {
             databasesSet
                 .add(
                     new SqlDatabaseImpl(
@@ -179,7 +179,7 @@ public class SqlDatabaseOperationsImpl
         return this
             .manager
             .inner()
-            .databases()
+            .getDatabases()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
                 inner ->
@@ -192,7 +192,7 @@ public class SqlDatabaseOperationsImpl
         List<SqlDatabase> firewallRuleSet = new ArrayList<>();
         if (sqlServer != null) {
             for (DatabaseInner inner
-                : this.manager.inner().databases().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+                : this.manager.inner().getDatabases().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 firewallRuleSet.add(new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }
@@ -204,7 +204,7 @@ public class SqlDatabaseOperationsImpl
         return sqlServer
             .manager()
             .inner()
-            .databases()
+            .getDatabases()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
                 inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));

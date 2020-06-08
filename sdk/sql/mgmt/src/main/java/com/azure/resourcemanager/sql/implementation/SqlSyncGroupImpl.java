@@ -167,7 +167,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .refreshHubSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -176,7 +176,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .refreshHubSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -185,7 +185,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
@@ -195,7 +195,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
@@ -205,7 +205,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listLogs(
                 this.resourceGroupName,
                 this.sqlServerName,
@@ -222,7 +222,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listLogsAsync(
                 this.resourceGroupName,
                 this.sqlServerName,
@@ -239,7 +239,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .triggerSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -248,7 +248,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .triggerSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -257,7 +257,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .cancelSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -266,7 +266,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .cancelSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -345,7 +345,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .createOrUpdateAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.inner())
             .map(
@@ -365,7 +365,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -374,7 +374,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -383,7 +383,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 

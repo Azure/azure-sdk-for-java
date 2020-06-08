@@ -111,7 +111,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         return this
             .sqlServerManager
             .inner()
-            .databaseThreatDetectionPolicies()
+            .getDatabaseThreatDetectionPolicies()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name());
     }
 
@@ -121,7 +121,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         return this
             .sqlServerManager
             .inner()
-            .databaseThreatDetectionPolicies()
+            .getDatabaseThreatDetectionPolicies()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(), this.inner())
             .map(
                 databaseSecurityAlertPolicyInner -> {

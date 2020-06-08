@@ -59,7 +59,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
     @Override
     public SqlServerSecurityAlertPolicy getBySqlServer(String resourceGroupName, String sqlServerName) {
         ServerSecurityAlertPolicyInner serverSecurityAlertPolicyInner =
-            this.sqlServerManager.inner().serverSecurityAlertPolicies().get(resourceGroupName, sqlServerName);
+            this.sqlServerManager.inner().getServerSecurityAlertPolicies().get(resourceGroupName, sqlServerName);
         return serverSecurityAlertPolicyInner != null
             ? new SqlServerSecurityAlertPolicyImpl(
                 resourceGroupName, sqlServerName, serverSecurityAlertPolicyInner, this.sqlServerManager)
@@ -73,7 +73,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .serverSecurityAlertPolicies()
+            .getServerSecurityAlertPolicies()
             .getAsync(resourceGroupName, sqlServerName)
             .map(
                 serverSecurityAlertPolicyInner ->
@@ -88,7 +88,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
             sqlServer
                 .manager()
                 .inner()
-                .serverSecurityAlertPolicies()
+                .getServerSecurityAlertPolicies()
                 .get(sqlServer.resourceGroupName(), sqlServer.name());
         return serverSecurityAlertPolicyInner != null
             ? new SqlServerSecurityAlertPolicyImpl(
@@ -102,7 +102,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
         return sqlServer
             .manager()
             .inner()
-            .serverSecurityAlertPolicies()
+            .getServerSecurityAlertPolicies()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .map(
                 serverSecurityAlertPolicyInner ->

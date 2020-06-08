@@ -8,15 +8,16 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
-import com.azure.resourcemanager.sql.models.SqlSyncGroup;
-import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
 import com.azure.resourcemanager.sql.fluent.inner.SyncDatabaseIdPropertiesInner;
 import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
+import com.azure.resourcemanager.sql.models.SqlSyncGroup;
+import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SQL Sync Group operations. */
 public class SqlSyncGroupOperationsImpl
@@ -41,7 +42,7 @@ public class SqlSyncGroupOperationsImpl
     public SqlSyncGroup getBySqlServer(
         String resourceGroupName, String sqlServerName, String databaseName, String name) {
         SyncGroupInner syncGroupInner =
-            this.sqlServerManager.inner().syncGroups().get(resourceGroupName, sqlServerName, databaseName, name);
+            this.sqlServerManager.inner().getSyncGroups().get(resourceGroupName, sqlServerName, databaseName, name);
         return syncGroupInner != null
             ? new SqlSyncGroupImpl(
                 resourceGroupName, sqlServerName, databaseName, name, syncGroupInner, this.sqlServerManager)
@@ -54,7 +55,7 @@ public class SqlSyncGroupOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .getAsync(resourceGroupName, sqlServerName, databaseName, name)
             .map(
                 syncGroupInner ->
@@ -67,7 +68,7 @@ public class SqlSyncGroupOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listSyncDatabaseIds(locationName)
             .mapPage(SyncDatabaseIdPropertiesInner::id);
     }
@@ -77,7 +78,7 @@ public class SqlSyncGroupOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listSyncDatabaseIdsAsync(locationName)
             .mapPage(SyncDatabaseIdPropertiesInner::id);
     }
@@ -159,7 +160,7 @@ public class SqlSyncGroupOperationsImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .delete(
                 this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name(), name);
     }
@@ -172,7 +173,7 @@ public class SqlSyncGroupOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .deleteAsync(
                 this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name(), name);
     }
@@ -185,7 +186,7 @@ public class SqlSyncGroupOperationsImpl
             this
                 .sqlServerManager
                 .inner()
-                .syncGroups()
+                .getSyncGroups()
                 .delete(
                     resourceId.resourceGroupName(),
                     resourceId.parent().parent().name(),
@@ -202,7 +203,7 @@ public class SqlSyncGroupOperationsImpl
             return this
                 .sqlServerManager
                 .inner()
-                .syncGroups()
+                .getSyncGroups()
                 .deleteAsync(
                     resourceId.resourceGroupName(),
                     resourceId.parent().parent().name(),
@@ -221,7 +222,7 @@ public class SqlSyncGroupOperationsImpl
                 this
                     .sqlServerManager
                     .inner()
-                    .syncGroups()
+                    .getSyncGroups()
                     .listByDatabase(
                         this.sqlDatabase.resourceGroupName(),
                         this.sqlDatabase.sqlServerName(),
@@ -242,7 +243,7 @@ public class SqlSyncGroupOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listByDatabaseAsync(
                 this.sqlDatabase.resourceGroupName(), this.sqlDatabase.sqlServerName(), this.sqlDatabase.name())
             .mapPage(

@@ -114,7 +114,7 @@ public class SqlServerDnsAliasImpl
         this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -153,7 +153,7 @@ public class SqlServerDnsAliasImpl
         return this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name())
             .map(
                 serverDnsAliasInner -> {
@@ -172,7 +172,7 @@ public class SqlServerDnsAliasImpl
         return this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -181,7 +181,7 @@ public class SqlServerDnsAliasImpl
         return this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 }
