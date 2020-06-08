@@ -46,9 +46,10 @@ public class TestUtils {
     static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
     static final int USE_CASE_SEND_RECEIVE_WITH_PROPERTIES = 4;
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
+    static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
 
     // An application property key to identify where in the stream this message was created.
-    static final String MESSAGE_POSITION_ID = "message-position";
+    static final String MESSAGE_POSITION_ID = "1";
 
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());

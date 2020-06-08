@@ -533,7 +533,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekBatchMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 4, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         final BiConsumer<ServiceBusReceivedMessage, Integer> checkCorrectMessage = (message, index) -> {
             final Map<String, Object> properties = message.getProperties();
@@ -573,6 +573,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             receiveAndDeleteReceiver.receive()
                 .take(messages.size())
                 .blockLast(Duration.ofSeconds(15));
+
+            messagesPending.addAndGet(-messages.size());
         }
     }
 
@@ -676,7 +678,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         try {
-            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(7))
                 .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage))))
                 .assertNext(lockedUntil -> {
                     assertTrue(lockedUntil.isAfter(initialLock),
@@ -810,7 +812,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, false);
         sendMessage(message).block(TIMEOUT);
-
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(TIMEOUT);
         assertNotNull(receivedContext);
 
@@ -1012,7 +1013,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private Mono<Void> sendMessage(ServiceBusMessage message) {
         return sender.send(message).doOnSuccess(aVoid -> {
             int number = messagesPending.incrementAndGet();
-            logger.info("Number sent: {}", number);
+            logger.info("Message Id {}. Number sent: {}",message.getMessageId(), number);
         });
     }
 
