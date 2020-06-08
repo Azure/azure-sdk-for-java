@@ -77,6 +77,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
             .flatMap(index -> {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(sessionId);
+                messagesPending.incrementAndGet();
                 return sender.send(message).thenReturn(index);
             }).subscribe(
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
@@ -132,6 +133,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 final String id = sessionIds.get(i);
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(id);
+                messagesPending.incrementAndGet();
                 return sender.send(message).thenReturn(
                     String.format("sessionId[%s] sent[%s] Message sent.", id, index));
             }).subscribe(
