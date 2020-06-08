@@ -91,7 +91,7 @@ class ServiceBusManagementClientImplIntegrationTests extends TestBase {
     @Test
     void getQueueImplementation() {
         // Arrange
-        String queueName = TestUtils.getQueueName();
+        String queueName = TestUtils.getQueueBaseName();
 
         // Act & Assert
         StepVerifier.create(queuesClient.getWithResponseAsync(queueName, true, Context.NONE))

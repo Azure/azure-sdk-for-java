@@ -41,6 +41,11 @@ import java.util.stream.Stream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
+import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSessionQueueBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
+import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -123,24 +128,46 @@ public abstract class IntegrationTestBase extends TestBase {
         return TestUtils.getFullyQualifiedDomainName();
     }
 
-    public String getQueueName() {
-        return TestUtils.getQueueName();
+    /**
+     * Gets the name of the queue.
+     *
+     * @param index Index of the queue.
+     *
+     * @return Name of the queue.
+     */
+    public String getQueueName(int index) {
+        return getEntityName(getQueueBaseName(), index);
     }
 
-    public String getSessionQueueName() {
-        return TestUtils.getSessionQueueName();
+    public String getSessionQueueName(int index) {
+        return getEntityName(getSessionQueueBaseName(), index);
     }
 
-    public String getSessionSubscriptionName() {
-        return TestUtils.getSessionSubscriptionName();
-    }
-
+    /**
+     * Gets the name of the topic.
+     *
+     * @return Name of the topic.
+     */
     public String getTopicName() {
         return TestUtils.getTopicName();
     }
 
-    public String getSubscriptionName() {
-        return TestUtils.getSubscriptionName();
+    /**
+     * Gets the name of the first subscription.
+     *
+     * @return Name of the first subscription.
+     */
+    public String getSubscriptionName(int index) {
+        return getEntityName(getSubscriptionBaseName(), index);
+    }
+
+    /**
+     * Gets the name of the first session-enabled subscription.
+     *
+     * @return Name of the first session-enabled subscription.
+     */
+    public String getSessionSubscriptionName(int index) {
+        return getEntityName(getSessionSubscriptionBaseName(), index);
     }
 
     /**
@@ -224,20 +251,18 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        boolean isSessionAware) {
+        int entityIndex, boolean isSessionAware) {
 
         switch (entityType) {
             case QUEUE:
-                final String queueName = isSessionAware ? getSessionQueueName() : getQueueName();
+                final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return getBuilder(useCredentials).sender()
                     .queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = isSessionAware ? getSessionSubscriptionName() : getSubscriptionName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
-                assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
                 return getBuilder(useCredentials).sender().topicName(topicName);
             default:
@@ -245,21 +270,21 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType,
+    protected ServiceBusReceiverClientBuilder getReceiverBuilder(
+        boolean useCredentials, MessagingEntityType entityType, int entityIndex,
         Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
 
         final ServiceBusClientBuilder builder = onBuilderCreate.apply(getBuilder(useCredentials));
 
         switch (entityType) {
             case QUEUE:
-                final String queueName = getQueueName();
+                final String queueName = getQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
+                final String subscriptionName = getSubscriptionName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
@@ -270,10 +295,11 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
+        MessagingEntityType entityType, int entityIndex,
+        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate) {
         switch (entityType) {
             case QUEUE:
-                final String queueName = getSessionQueueName();
+                final String queueName = getSessionQueueName(entityIndex);
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
                 return onBuilderCreate.apply(getBuilder(useCredentials))
@@ -282,7 +308,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = getSessionSubscriptionName();
+                final String subscriptionName = getSessionSubscriptionName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
@@ -363,7 +389,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
         // the queue or topic contains messages from previous test cases.
-        // assertEquals(messageId, message.getMessageId());
+        assertEquals(messageId, message.getMessageId());
 
         if (isSessionEnabled) {
             assertEquals(sessionId, message.getSessionId());

@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.implementation.models.ServiceBusManagement
 import com.azure.messaging.servicebus.models.QueueDescription;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     private ServiceBusManagementAsyncClient client;
 
+    @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
@@ -45,7 +47,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @Test
     void getQueue() {
         // Arrange
-        String queueName = TestUtils.getQueueName();
+        String queueName = TestUtils.getQueueBaseName();
 
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
@@ -58,7 +60,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @Test
     void createQueueExistingName() {
         // Arrange
-        String queueName = TestUtils.getQueueName();
+        String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         QueueDescription queueDescription = new QueueDescription().setName(queueName);
 
         // Act & Assert
