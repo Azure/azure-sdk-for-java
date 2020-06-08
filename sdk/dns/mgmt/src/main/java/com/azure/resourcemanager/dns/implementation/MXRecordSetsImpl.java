@@ -4,10 +4,10 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.dns.MXRecordSet;
-import com.azure.resourcemanager.dns.MXRecordSets;
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.models.MXRecordSet;
+import com.azure.resourcemanager.dns.models.MXRecordSets;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of MXRecordSets. */
@@ -28,7 +28,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
@@ -42,7 +42,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                     .parent()
                     .manager()
                     .inner()
-                    .recordSets()
+                    .getRecordSets()
                     .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
@@ -54,7 +54,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                     .parent()
                     .manager()
                     .inner()
-                    .recordSets()
+                    .getRecordSets()
                     .listByType(
                         this.dnsZone.resourceGroupName(),
                         this.dnsZone.name(),
@@ -70,7 +70,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                 .parent()
                 .manager()
                 .inner()
-                .recordSets()
+                .getRecordSets()
                 .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 

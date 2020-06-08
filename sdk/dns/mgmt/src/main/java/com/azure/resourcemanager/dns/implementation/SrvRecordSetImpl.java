@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.SrvRecord;
-import com.azure.resourcemanager.dns.SrvRecordSet;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.models.SrvRecord;
+import com.azure.resourcemanager.dns.models.SrvRecordSet;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

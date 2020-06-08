@@ -4,10 +4,10 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.dns.AaaaRecordSet;
-import com.azure.resourcemanager.dns.AaaaRecordSets;
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.models.AaaaRecordSet;
+import com.azure.resourcemanager.dns.models.AaaaRecordSets;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation of AaaaRecordSets. */
@@ -28,7 +28,7 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
@@ -46,7 +46,7 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
                 .parent()
                 .manager()
                 .inner()
-                .recordSets()
+                .getRecordSets()
                 .listByTypeAsync(
                     this.dnsZone.resourceGroupName(),
                     this.dnsZone.name(),
