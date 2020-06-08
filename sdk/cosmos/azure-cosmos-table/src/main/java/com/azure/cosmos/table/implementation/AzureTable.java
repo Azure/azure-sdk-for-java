@@ -11,7 +11,7 @@ public class AzureTable {
 
     }
     public TableEntity insertEntity(String key, Object value){
-
+        return null;
     }
     public void deleteEntity(TableEntity te){
 
