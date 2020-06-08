@@ -32,13 +32,16 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.containerservice.TagsObject;
+import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.Map;
 
 /** An instance of this class provides access to all the operations defined in OpenShiftManagedClusters. */
 public final class OpenShiftManagedClustersInner
