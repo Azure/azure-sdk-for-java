@@ -285,8 +285,6 @@ stages:
           displayName: Setup TargetFeed          
           timeoutInMinutes: 5
 
-        - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-
         - ${{ each artifact in parameters.Artifacts }}:
           - template: /eng/pipelines/templates/steps/java-publishing.yml
             parameters:

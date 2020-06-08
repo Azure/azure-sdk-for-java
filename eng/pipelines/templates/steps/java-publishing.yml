@@ -28,12 +28,8 @@ steps:
       displayName: 'Publish to Java Private Dev Feed'
 
   - ${{if eq(parameters.Target, 'JavaPublicDevFeed')}}:
-    - pwsh: >
-        ${{parameters.JavaRepoRoot}}/eng/scripts/Publish-MavenPackages.ps1 -ArtifactDirectory ${{parameters.ArtifactDirectory}}
-        -GroupIDFilter ${{parameters.GroupID}} -ArtifactIDFilter ${{parameters.ArtifactID}}
-        -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
-        -RepositoryUsername nobody -RepositoryPassword $(System.AccessToken)
-        -GPGExecutablePath ${{parameters.BuildToolsPath}}/tools/gpg/bin/gpg.exe -InformationAction Continue
+    - pwsh: |
+        echo "Using JavaPublicDevFeed...shouldn't be in here for this test"
       workingDirectory: $(Agent.BuildDirectory)
       displayName: 'Publish to Java Public Dev Feed'
         
