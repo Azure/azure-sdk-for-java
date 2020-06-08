@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
+import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceSshConfiguration;

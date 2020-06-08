@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterListResultInner;
@@ -54,14 +55,14 @@ public final class OpenShiftManagedClustersInner
     private final OpenShiftManagedClustersService service;
 
     /** The service client containing this operation class. */
-    private final ContainerServiceManagementClientImpl client;
+    private final ContainerServiceManagementClient client;
 
     /**
      * Initializes an instance of OpenShiftManagedClustersInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OpenShiftManagedClustersInner(ContainerServiceManagementClientImpl client) {
+    OpenShiftManagedClustersInner(ContainerServiceManagementClient client) {
         this.service =
             RestProxy
                 .create(OpenShiftManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());

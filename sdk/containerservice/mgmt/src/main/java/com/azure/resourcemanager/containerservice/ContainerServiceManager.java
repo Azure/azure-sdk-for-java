@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.containerservice.implementation;
+package com.azure.resourcemanager.containerservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.containerservice.implementation.KubernetesClustersImpl;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClientBuilder;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServiceManagementClientImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -17,7 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Container Service management. */
 public final class ContainerServiceManager
-    extends Manager<ContainerServiceManager, ContainerServiceManagementClientImpl> {
+    extends Manager<ContainerServiceManager, ContainerServiceManagementClient> {
     // The service managers
     private KubernetesClustersImpl kubernetesClusters;
 

@@ -24,6 +24,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.OperationListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.OperationValueInner;
 import reactor.core.publisher.Mono;
@@ -36,14 +37,14 @@ public final class OperationsInner {
     private final OperationsService service;
 
     /** The service client containing this operation class. */
-    private final ContainerServiceManagementClientImpl client;
+    private final ContainerServiceManagementClient client;
 
     /**
      * Initializes an instance of OperationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsInner(ContainerServiceManagementClientImpl client) {
+    OperationsInner(ContainerServiceManagementClient client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

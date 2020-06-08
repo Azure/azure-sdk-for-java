@@ -32,6 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 
+import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolAvailableVersionsInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.AgentPoolListResultInner;
@@ -47,14 +48,14 @@ public final class AgentPoolsInner {
     private final AgentPoolsService service;
 
     /** The service client containing this operation class. */
-    private final ContainerServiceManagementClientImpl client;
+    private final ContainerServiceManagementClient client;
 
     /**
      * Initializes an instance of AgentPoolsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AgentPoolsInner(ContainerServiceManagementClientImpl client) {
+    AgentPoolsInner(ContainerServiceManagementClient client) {
         this.service =
             RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

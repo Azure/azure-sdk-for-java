@@ -30,6 +30,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.fluent.inner.ContainerServiceInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.ContainerServiceListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.OrchestratorVersionProfileListResultInner;
@@ -51,14 +52,14 @@ public final class ContainerServicesInner
     private final ContainerServicesService service;
 
     /** The service client containing this operation class. */
-    private final ContainerServiceManagementClientImpl client;
+    private final ContainerServiceManagementClient client;
 
     /**
      * Initializes an instance of ContainerServicesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ContainerServicesInner(ContainerServiceManagementClientImpl client) {
+    ContainerServicesInner(ContainerServiceManagementClient client) {
         this.service =
             RestProxy.create(ContainerServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

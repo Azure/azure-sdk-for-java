@@ -32,6 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.resourcemanager.containerservice.ContainerServiceManagementClient;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.TagsObject;
@@ -59,14 +60,14 @@ public final class ManagedClustersInner
     private final ManagedClustersService service;
 
     /** The service client containing this operation class. */
-    private final ContainerServiceManagementClientImpl client;
+    private final ContainerServiceManagementClient client;
 
     /**
      * Initializes an instance of ManagedClustersInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ManagedClustersInner(ContainerServiceManagementClientImpl client) {
+    ManagedClustersInner(ContainerServiceManagementClient client) {
         this.service =
             RestProxy.create(ManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
