@@ -4,10 +4,10 @@ package com.azure.resourcemanager.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerservice.CredentialResult;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.containerservice.KubernetesClusters;
-import com.azure.resourcemanager.containerservice.OrchestratorVersionProfile;
+import com.azure.resourcemanager.containerservice.models.CredentialResult;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
+import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
 import com.azure.resourcemanager.containerservice.fluent.inner.CredentialResultsInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.ManagedClustersInner;

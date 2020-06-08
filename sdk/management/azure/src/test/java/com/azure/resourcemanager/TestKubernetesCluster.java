@@ -4,9 +4,9 @@ package com.azure.resourcemanager;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.containerservice.ContainerServiceVMSizeTypes;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.containerservice.KubernetesClusters;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

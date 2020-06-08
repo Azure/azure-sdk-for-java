@@ -31,7 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.containerservice.TagsObject;
+import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.inner.OpenShiftManagedClusterListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;

@@ -44,7 +44,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtension;
 import com.azure.resourcemanager.containerregistry.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.Registry;
 import com.azure.resourcemanager.containerregistry.RegistryCredentials;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;

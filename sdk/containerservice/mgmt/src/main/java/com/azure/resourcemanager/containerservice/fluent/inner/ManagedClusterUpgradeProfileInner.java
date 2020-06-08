@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerservice.ManagedClusterPoolUpgradeProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPoolUpgradeProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
