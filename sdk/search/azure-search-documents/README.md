@@ -35,15 +35,16 @@ To make this possible you will need an [api-key of the Azure Cognitive Search se
 The SDK provides three clients.
 
 1. SearchIndexClient for all CRUD operations on index and synonym maps.
-1. SearchIndexClient for all CRUD operations on indexer, date source, and skillset.
+1. SearchIndexerClient for all CRUD operations on indexer, date source, and skillset.
 1. SearchClient for all document operations.
 
-#### Create a SearchIndexerClient
+Note that you will need an admin key to authenticate the client (query keys only work for queries).
+
+#### Create a SearchIndexClient
 
 To create a SearchIndexClient, you will need an existing index name as well as the values of the Azure Cognitive Search service 
 [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
 [query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
-Note that you will need an admin key to index management (query keys only work for queries).
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L65 -->
 ```Java
@@ -68,7 +69,6 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 To create a SearchIndexerClient, you will need an existing index name as well as the values of the Azure Cognitive Search service 
 [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
 [query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
-Note that you will need an admin key to do indexer management (query keys only work for queries).
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
 ```Java
@@ -92,7 +92,6 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 
 Once you have the values of the Azure Cognitive Search service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) 
 and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the SearchClient:
-Note that you will need an admin key to index documents (query keys only work for queries).
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L46-L50 -->
 ```Java
@@ -133,7 +132,7 @@ There are several types of operations that can be executed against the service:
 
 ### Create an index
 
-Create Index using `searchClient` instantiated in [Create a SearchServiceClient](#create-a-searchserviceclient)
+Create Index using `searchIndexClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L127 -->
 ```java
@@ -152,7 +151,7 @@ searchIndexClient.createIndex(newIndex);
 ```
 ### Upload a Document
 
-Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchIndexClient](#create-a-searchindexclient)
+Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L136 -->
 ```java
@@ -166,7 +165,7 @@ searchClient.uploadDocuments(hotels);
 
 ### Search on hotel name
 
-Search hotel using keyword using `searchClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
+Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L140-L150 -->
 ```java
