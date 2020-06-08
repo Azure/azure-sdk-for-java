@@ -12,8 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerDnsAlias;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

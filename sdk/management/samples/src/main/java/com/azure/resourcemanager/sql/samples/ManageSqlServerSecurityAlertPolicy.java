@@ -10,11 +10,11 @@ import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.SampleName;
-import com.azure.resourcemanager.sql.SecurityAlertPolicyState;
-import com.azure.resourcemanager.sql.SqlDatabaseStandardServiceObjective;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicy;
+import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
+import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicy;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /**

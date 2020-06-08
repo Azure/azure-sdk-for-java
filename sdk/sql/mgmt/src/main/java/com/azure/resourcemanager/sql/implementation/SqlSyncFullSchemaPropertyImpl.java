@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.SqlSyncFullSchemaProperty;
-import com.azure.resourcemanager.sql.SyncFullSchemaTable;
-import com.azure.resourcemanager.sql.models.SyncFullSchemaPropertiesInner;
+import com.azure.resourcemanager.sql.models.SqlSyncFullSchemaProperty;
+import com.azure.resourcemanager.sql.models.SyncFullSchemaTable;
+import com.azure.resourcemanager.sql.fluent.inner.SyncFullSchemaPropertiesInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

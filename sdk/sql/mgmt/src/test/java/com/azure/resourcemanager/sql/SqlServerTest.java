@@ -8,7 +8,6 @@ import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.sql.implementation.SqlServerManager;
 import com.azure.resourcemanager.storage.StorageManager;
 
 public abstract class SqlServerTest extends TestBase {

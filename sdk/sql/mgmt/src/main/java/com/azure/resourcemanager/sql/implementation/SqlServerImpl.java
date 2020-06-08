@@ -11,40 +11,42 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
-import com.azure.resourcemanager.sql.ElasticPoolEdition;
-import com.azure.resourcemanager.sql.IdentityType;
-import com.azure.resourcemanager.sql.RecommendedElasticPool;
-import com.azure.resourcemanager.sql.ResourceIdentity;
-import com.azure.resourcemanager.sql.ServerMetric;
-import com.azure.resourcemanager.sql.ServiceObjective;
-import com.azure.resourcemanager.sql.SqlDatabaseOperations;
-import com.azure.resourcemanager.sql.SqlElasticPoolOperations;
-import com.azure.resourcemanager.sql.SqlEncryptionProtectorOperations;
-import com.azure.resourcemanager.sql.SqlFailoverGroupOperations;
-import com.azure.resourcemanager.sql.SqlFirewallRule;
-import com.azure.resourcemanager.sql.SqlFirewallRuleOperations;
-import com.azure.resourcemanager.sql.SqlRestorableDroppedDatabase;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerAutomaticTuning;
-import com.azure.resourcemanager.sql.SqlServerDnsAliasOperations;
-import com.azure.resourcemanager.sql.SqlServerKeyOperations;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicyOperations;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRule;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.models.RecommendedElasticPoolInner;
-import com.azure.resourcemanager.sql.models.RestorableDroppedDatabaseInner;
-import com.azure.resourcemanager.sql.models.ServerAutomaticTuningInner;
-import com.azure.resourcemanager.sql.models.ServerAzureADAdministratorInner;
-import com.azure.resourcemanager.sql.models.ServerInner;
-import com.azure.resourcemanager.sql.models.ServerUsageInner;
-import com.azure.resourcemanager.sql.models.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.fluent.inner.RecommendedElasticPoolInner;
+import com.azure.resourcemanager.sql.fluent.inner.RestorableDroppedDatabaseInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerUsageInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServiceObjectiveInner;
+import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.IdentityType;
+import com.azure.resourcemanager.sql.models.RecommendedElasticPool;
+import com.azure.resourcemanager.sql.models.ResourceIdentity;
+import com.azure.resourcemanager.sql.models.ServerMetric;
+import com.azure.resourcemanager.sql.models.ServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
+import com.azure.resourcemanager.sql.models.SqlEncryptionProtectorOperations;
+import com.azure.resourcemanager.sql.models.SqlFailoverGroupOperations;
+import com.azure.resourcemanager.sql.models.SqlFirewallRule;
+import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
+import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
+import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
+import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicyOperations;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SqlServer and its parent interfaces. */
 public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner, SqlServerImpl, SqlServerManager>
@@ -81,7 +83,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     protected Mono<ServerInner> getInnerAsync() {
-        return this.manager().inner().servers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getServers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -89,7 +91,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         return this
             .manager()
             .inner()
-            .servers()
+            .getServers()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(
                 serverInner -> {
@@ -193,7 +195,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public List<ServerMetric> listUsageMetrics() {
         List<ServerMetric> serverMetrics = new ArrayList<>();
         PagedIterable<ServerUsageInner> serverUsageInners =
-            this.manager().inner().serverUsages().listByServer(this.resourceGroupName(), this.name());
+            this.manager().inner().getServerUsages().listByServer(this.resourceGroupName(), this.name());
         for (ServerUsageInner serverUsageInner : serverUsageInners) {
             serverMetrics.add(new ServerMetricImpl(serverUsageInner));
         }
@@ -204,7 +206,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public List<ServiceObjective> listServiceObjectives() {
         List<ServiceObjective> serviceObjectives = new ArrayList<>();
         PagedIterable<ServiceObjectiveInner> serviceObjectiveInners =
-            this.manager().inner().serviceObjectives().listByServer(this.resourceGroupName(), this.name());
+            this.manager().inner().getServiceObjectives().listByServer(this.resourceGroupName(), this.name());
         for (ServiceObjectiveInner inner : serviceObjectiveInners) {
             serviceObjectives.add(new ServiceObjectiveImpl(inner, this));
         }
@@ -214,7 +216,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     @Override
     public ServiceObjective getServiceObjective(String serviceObjectiveName) {
         ServiceObjectiveInner inner =
-            this.manager().inner().serviceObjectives().get(this.resourceGroupName(), this.name(), serviceObjectiveName);
+            this.manager().inner().getServiceObjectives().get(this.resourceGroupName(), this.name(), serviceObjectiveName);
         return (inner != null) ? new ServiceObjectiveImpl(inner, this) : null;
     }
 
@@ -222,7 +224,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public Map<String, RecommendedElasticPool> listRecommendedElasticPools() {
         Map<String, RecommendedElasticPool> recommendedElasticPoolMap = new HashMap<>();
         PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
-            this.manager().inner().recommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
+            this.manager().inner().getRecommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
         for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
             recommendedElasticPoolMap.put(inner.name(), new RecommendedElasticPoolImpl(inner, this));
         }
@@ -234,7 +236,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     public List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases() {
         List<SqlRestorableDroppedDatabase> sqlRestorableDroppedDatabases = new ArrayList<>();
         PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners =
-            this.manager().inner().restorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
+            this.manager().inner().getRestorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
         for (RestorableDroppedDatabaseInner restorableDroppedDatabaseInner : restorableDroppedDatabasesInners) {
             sqlRestorableDroppedDatabases
                 .add(
@@ -250,7 +252,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         return this
             .manager()
             .inner()
-            .restorableDroppedDatabases()
+            .getRestorableDroppedDatabases()
             .listByServerAsync(this.resourceGroupName(), this.name())
             .mapPage(
                 restorableDroppedDatabaseInner ->
@@ -323,14 +325,14 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
             this
                 .manager()
                 .inner()
-                .serverAzureADAdministrators()
+                .getServerAzureADAdministrators()
                 .createOrUpdate(this.resourceGroupName(), this.name(), serverAzureADAdministratorInner));
     }
 
     @Override
     public SqlActiveDirectoryAdministratorImpl getActiveDirectoryAdministrator() {
         ServerAzureADAdministratorInner serverAzureADAdministratorInner =
-            this.manager().inner().serverAzureADAdministrators().get(this.resourceGroupName(), this.name());
+            this.manager().inner().getServerAzureADAdministrators().get(this.resourceGroupName(), this.name());
 
         return serverAzureADAdministratorInner != null
             ? new SqlActiveDirectoryAdministratorImpl(serverAzureADAdministratorInner)
@@ -339,13 +341,13 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public void removeActiveDirectoryAdministrator() {
-        this.manager().inner().serverAzureADAdministrators().delete(this.resourceGroupName(), this.name());
+        this.manager().inner().getServerAzureADAdministrators().delete(this.resourceGroupName(), this.name());
     }
 
     @Override
     public SqlServerAutomaticTuning getServerAutomaticTuning() {
         ServerAutomaticTuningInner serverAutomaticTuningInner =
-            this.manager().inner().serverAutomaticTunings().get(this.resourceGroupName(), this.name());
+            this.manager().inner().getServerAutomaticTunings().get(this.resourceGroupName(), this.name());
         return serverAutomaticTuningInner != null
             ? new SqlServerAutomaticTuningImpl(this, serverAutomaticTuningInner)
             : null;
@@ -400,7 +402,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                 return self
                     .manager()
                     .inner()
-                    .serverAzureADAdministrators()
+                    .getServerAzureADAdministrators()
                     .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
                     .flatMap(serverAzureADAdministratorInner1 -> context.voidMono());
             };

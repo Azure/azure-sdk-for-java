@@ -5,10 +5,11 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.sql.ServiceLevelObjectiveUsageMetric;
-import com.azure.resourcemanager.sql.ServiceTierAdvisor;
-import com.azure.resourcemanager.sql.SloUsageMetric;
-import com.azure.resourcemanager.sql.models.ServiceTierAdvisorInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.ServiceLevelObjectiveUsageMetric;
+import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
+import com.azure.resourcemanager.sql.models.SloUsageMetric;
+import com.azure.resourcemanager.sql.fluent.inner.ServiceTierAdvisorInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +172,7 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
         return this
             .sqlServerManager
             .inner()
-            .serviceTierAdvisors()
+            .getServiceTierAdvisors()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 }

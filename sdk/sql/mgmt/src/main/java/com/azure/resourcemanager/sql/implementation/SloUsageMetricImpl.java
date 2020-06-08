@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.ServiceObjectiveName;
-import com.azure.resourcemanager.sql.SloUsageMetric;
-import com.azure.resourcemanager.sql.SloUsageMetricInterface;
+import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
+import com.azure.resourcemanager.sql.models.SloUsageMetric;
+import com.azure.resourcemanager.sql.models.SloUsageMetricInterface;
 import java.util.UUID;
 
 /** Implementation for Azure SQL Database's SloUsageMetric. */

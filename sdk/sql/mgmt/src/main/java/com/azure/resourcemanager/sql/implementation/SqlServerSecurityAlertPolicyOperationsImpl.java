@@ -4,10 +4,11 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicy;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicyOperations;
-import com.azure.resourcemanager.sql.models.ServerSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicy;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicyOperations;
+import com.azure.resourcemanager.sql.fluent.inner.ServerSecurityAlertPolicyInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -58,7 +59,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
     @Override
     public SqlServerSecurityAlertPolicy getBySqlServer(String resourceGroupName, String sqlServerName) {
         ServerSecurityAlertPolicyInner serverSecurityAlertPolicyInner =
-            this.sqlServerManager.inner().serverSecurityAlertPolicies().get(resourceGroupName, sqlServerName);
+            this.sqlServerManager.inner().getServerSecurityAlertPolicies().get(resourceGroupName, sqlServerName);
         return serverSecurityAlertPolicyInner != null
             ? new SqlServerSecurityAlertPolicyImpl(
                 resourceGroupName, sqlServerName, serverSecurityAlertPolicyInner, this.sqlServerManager)
@@ -72,7 +73,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
         return this
             .sqlServerManager
             .inner()
-            .serverSecurityAlertPolicies()
+            .getServerSecurityAlertPolicies()
             .getAsync(resourceGroupName, sqlServerName)
             .map(
                 serverSecurityAlertPolicyInner ->
@@ -87,7 +88,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
             sqlServer
                 .manager()
                 .inner()
-                .serverSecurityAlertPolicies()
+                .getServerSecurityAlertPolicies()
                 .get(sqlServer.resourceGroupName(), sqlServer.name());
         return serverSecurityAlertPolicyInner != null
             ? new SqlServerSecurityAlertPolicyImpl(
@@ -101,7 +102,7 @@ public class SqlServerSecurityAlertPolicyOperationsImpl
         return sqlServer
             .manager()
             .inner()
-            .serverSecurityAlertPolicies()
+            .getServerSecurityAlertPolicies()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .map(
                 serverSecurityAlertPolicyInner ->

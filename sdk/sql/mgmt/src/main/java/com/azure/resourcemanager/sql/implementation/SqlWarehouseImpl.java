@@ -3,8 +3,9 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.sql.SqlWarehouse;
-import com.azure.resourcemanager.sql.models.DatabaseInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlWarehouse;
+import com.azure.resourcemanager.sql.fluent.inner.DatabaseInner;
 import reactor.core.publisher.Mono;
 
 /** Implementation for SqlWarehouse and its parent interfaces. */
@@ -26,7 +27,7 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
 
     @Override
     public void pauseDataWarehouse() {
-        this.sqlServerManager.inner().databases().pause(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getDatabases().pause(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -34,14 +35,14 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .pauseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .flatMap(databaseInner -> Mono.empty());
     }
 
     @Override
     public void resumeDataWarehouse() {
-        this.sqlServerManager.inner().databases().resume(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getDatabases().resume(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -49,7 +50,7 @@ class SqlWarehouseImpl extends SqlDatabaseImpl implements SqlWarehouse {
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .resumeAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .flatMap(databaseInner -> Mono.empty());
     }
