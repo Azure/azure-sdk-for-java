@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
@@ -15,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -34,11 +36,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents an AMQP session using proton-j reactor.
  */
 public class ReactorSession implements AmqpSession {
+
+    private static final String TRANSACTION_LINK_NAME = "coordinator";
+
     private final ConcurrentMap<String, LinkSubscription<AmqpSendLink>> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
 
@@ -60,6 +66,11 @@ public class ReactorSession implements AmqpSession {
     private final ReactorHandlerProvider handlerProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
+    private final AtomicReference<LinkSubscription<AmqpSendLink>> coordinatorLink = new AtomicReference<>();
+    private final AtomicReference<TransactionCoordinator> transactionCoordinator = new AtomicReference<>();
+
+    private AmqpRetryPolicy retryPolicy;
+
     /**
      * Creates a new AMQP session using proton-j.
      *
@@ -72,11 +83,12 @@ public class ReactorSession implements AmqpSession {
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param openTimeout Timeout to wait for the session operation to complete.
+     * @param retryPolicy for the session operation to complete.
      */
     public ReactorSession(Session session, SessionHandler sessionHandler, String sessionName, ReactorProvider provider,
         ReactorHandlerProvider handlerProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        Duration openTimeout) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Duration openTimeout,
+        AmqpRetryPolicy retryPolicy) {
         this.session = session;
         this.sessionHandler = sessionHandler;
         this.handlerProvider = handlerProvider;
@@ -86,6 +98,7 @@ public class ReactorSession implements AmqpSession {
         this.tokenManagerProvider = tokenManagerProvider;
         this.messageSerializer = messageSerializer;
         this.openTimeout = openTimeout;
+        this.retryPolicy = retryPolicy;
 
         this.subscriptions = Disposables.composite(
             this.sessionHandler.getEndpointStates().subscribe(
@@ -162,6 +175,34 @@ public class ReactorSession implements AmqpSession {
         return openTimeout;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpTransaction> createTransaction() {
+        return createTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.createTransaction());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> commitTransaction(AmqpTransaction transaction) {
+        return createTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.completeTransaction(transaction, true));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> rollbackTransaction(AmqpTransaction transaction) {
+        return createTransactionCoordinator()
+            .flatMap(coordinator -> coordinator.completeTransaction(transaction, false));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -224,6 +265,104 @@ public class ReactorSession implements AmqpSession {
     @Override
     public boolean removeLink(String linkName) {
         return removeLink(openSendLinks, linkName) || removeLink(openReceiveLinks, linkName);
+    }
+
+    /**
+     *
+     * @return {@link Mono} of {@link TransactionCoordinator}
+     */
+    private Mono<TransactionCoordinator> createTransactionCoordinator() {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
+        }
+        TransactionCoordinator existing = transactionCoordinator.get();
+        if (existing != null) {
+            logger.verbose("Coordinator[{}]: Returning existing transaction coordinator.", TRANSACTION_LINK_NAME);
+            return Mono.just(existing);
+        }
+
+        return createCoordinatorSendLink(openTimeout, retryPolicy)
+            .map(sendLink -> {
+                TransactionCoordinator newCoordinator = new TransactionCoordinator(sendLink, messageSerializer);
+                if (transactionCoordinator.compareAndSet(null, newCoordinator)) {
+                    logger.info("Coordinator[{}]: Created transaction coordinator.", TRANSACTION_LINK_NAME);
+                } else {
+                    logger.info("linkName[{}]: Another transaction coordinator exists.", TRANSACTION_LINK_NAME);
+                }
+                return transactionCoordinator.get();
+            });
+    }
+
+    private Mono<AmqpSendLink> createCoordinatorSendLink(Duration timeout, AmqpRetryPolicy retry) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create coordinator send link '%s' from a closed session.", TRANSACTION_LINK_NAME))));
+        }
+
+        final LinkSubscription<AmqpSendLink> existing = coordinatorLink.get();
+        if (existing != null) {
+            logger.verbose("linkName[{}]: Returning existing coordinator send link.", TRANSACTION_LINK_NAME);
+            return Mono.just(existing.getLink());
+        }
+
+        return RetryUtil.withRetry(
+            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+            timeout, retry)
+            .then(Mono.<AmqpSendLink>create(sink -> {
+                try {
+                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
+                    // sender because the link names are not unique. Link name == entity path.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        LinkSubscription<AmqpSendLink> linkSubscription = getCoordinator(TRANSACTION_LINK_NAME,
+                            timeout, retry);
+
+                        if (coordinatorLink.compareAndSet(null, linkSubscription)) {
+                            logger.info("linkName[{}]: coordinator send link created.", TRANSACTION_LINK_NAME);
+                        } else {
+                            logger.info("linkName[{}]: Another coordinator send link exists. Disposing of new one.",
+                                TRANSACTION_LINK_NAME);
+                            linkSubscription.dispose();
+                        }
+
+                        sink.success(coordinatorLink.get().getLink());
+                    });
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            }));
+    }
+
+    /**
+     * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
+     */
+    private LinkSubscription<AmqpSendLink> getCoordinator(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+
+        final Sender sender = session.sender(linkName);
+        sender.setTarget(new Coordinator());
+
+        final Source source = new Source();
+        sender.setSource(source);
+        sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
+
+        final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, linkName);
+        BaseHandler.setHandler(sender, sendLinkHandler);
+
+        sender.open();
+
+        final ReactorSender coordinator = new ReactorSender(linkName, sender, sendLinkHandler, provider, null,
+            messageSerializer, timeout, retry);
+
+        final Disposable subscription = coordinator.getEndpointStates().subscribe(state -> { },
+            error -> {
+                logger.info("linkName[{}]: Error occurred. Removing and disposing coordinator link.", linkName, error);
+                removeLink(openSendLinks, linkName);
+            }, () -> {
+                logger.info("linkName[{}]: Complete. Removing and disposing coordinator link.", linkName);
+                removeLink(openSendLinks, linkName);
+            });
+        return new LinkSubscription<>(coordinator, subscription);
     }
 
     private <T extends AmqpLink> boolean removeLink(ConcurrentMap<String, LinkSubscription<T>> openLinks, String key) {
