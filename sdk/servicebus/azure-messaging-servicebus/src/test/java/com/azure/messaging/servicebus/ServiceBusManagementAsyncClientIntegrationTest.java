@@ -44,7 +44,9 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     void getQueue(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
-        final String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
@@ -71,8 +73,10 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     void createQueueExistingName(HttpClient httpClient) {
         // Arrange
-        String queueName = TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
-        QueueDescription queueDescription = new QueueDescription().setName(queueName);
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-5"
+            : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
+        final QueueDescription queueDescription = new QueueDescription().setName(queueName);
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
 
         // Act & Assert
