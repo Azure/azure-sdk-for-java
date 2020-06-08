@@ -13,7 +13,7 @@ import com.azure.resourcemanager.containerservice.KubernetesVersion;
 import com.azure.resourcemanager.containerservice.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.ManagedClusterServicePrincipalProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClusterInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

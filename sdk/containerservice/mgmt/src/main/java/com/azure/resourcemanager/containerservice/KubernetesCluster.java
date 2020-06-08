@@ -4,7 +4,7 @@ package com.azure.resourcemanager.containerservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.implementation.ContainerServiceManager;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterInner;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClusterInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

@@ -6,4 +6,4 @@
  * Package containing the implementations and inner classes for ContainerServiceManagementClient. Container Service
  * Client.
  */
-package com.azure.resourcemanager.containerservice.models;
+package com.azure.resourcemanager.containerservice.fluent;
