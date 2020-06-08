@@ -86,7 +86,14 @@ public final class Credentials {
             sourceRegistry().validate();
         }
         if (customRegistries() != null) {
-            customRegistries().values().forEach(e -> e.validate());
+            customRegistries()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

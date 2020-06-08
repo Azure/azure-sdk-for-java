@@ -25,25 +25,25 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
-import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationListResultInner;
+import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
+import java.nio.ByteBuffer;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-import java.util.Map;
-
 /** An instance of this class provides access to all the operations defined in Replications. */
-public final class ReplicationsInner {
-    private final ClientLogger logger = new ClientLogger(ReplicationsInner.class);
+public final class ReplicationsClient {
+    private final ClientLogger logger = new ClientLogger(ReplicationsClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final ReplicationsService service;
@@ -52,11 +52,11 @@ public final class ReplicationsInner {
     private final ContainerRegistryManagementClient client;
 
     /**
-     * Initializes an instance of ReplicationsInner.
+     * Initializes an instance of ReplicationsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicationsInner(ContainerRegistryManagementClient client) {
+    public ReplicationsClient(ContainerRegistryManagementClient client) {
         this.service =
             RestProxy.create(ReplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -71,12 +71,12 @@ public final class ReplicationsInner {
     private interface ReplicationsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ReplicationInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<ReplicationInner>> get(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -86,12 +86,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -102,12 +102,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -117,12 +117,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -133,12 +133,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ReplicationListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ReplicationListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -147,12 +147,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ReplicationInner>> beginCreate(
-            @HostParam("$host") String host,
+        Mono<Response<ReplicationInner>> beginCreateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -163,12 +163,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDelete(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteWithoutPolling(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -178,12 +178,12 @@ public final class ReplicationsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/replications/{replicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/replications/{replicationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ReplicationInner>> beginUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<ReplicationInner>> beginUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -196,7 +196,7 @@ public final class ReplicationsInner {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ReplicationListResultInner>> listNext(
+        Mono<Response<ReplicationListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -212,11 +212,13 @@ public final class ReplicationsInner {
      * @return the properties of the specified replication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> getWithResponseAsync(
+    public Mono<Response<ReplicationInner>> getWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -241,7 +243,7 @@ public final class ReplicationsInner {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -264,11 +266,13 @@ public final class ReplicationsInner {
      * @return the properties of the specified replication.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> getWithResponseAsync(
+    public Mono<Response<ReplicationInner>> getWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -290,7 +294,7 @@ public final class ReplicationsInner {
         final String apiVersion = "2017-10-01";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -314,7 +318,33 @@ public final class ReplicationsInner {
     public Mono<ReplicationInner> getAsync(String resourceGroupName, String registryName, String replicationName) {
         return getWithResponseAsync(resourceGroupName, registryName, replicationName)
             .flatMap(
-                (SimpleResponse<ReplicationInner> res) -> {
+                (Response<ReplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the properties of the specified replication.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified replication.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationInner> getAsync(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, registryName, replicationName, context)
+            .flatMap(
+                (Response<ReplicationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -340,6 +370,24 @@ public final class ReplicationsInner {
     }
 
     /**
+     * Gets the properties of the specified replication.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified replication.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationInner get(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        return getAsync(resourceGroupName, registryName, replicationName, context).block();
+    }
+
+    /**
      * Creates a replication for a container registry with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -352,11 +400,13 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -386,7 +436,7 @@ public final class ReplicationsInner {
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -404,6 +454,118 @@ public final class ReplicationsInner {
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param replication An object that represents a replication for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationInner replication,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (replicationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
+        }
+        if (replication == null) {
+            return Mono.error(new IllegalArgumentException("Parameter replication is required and cannot be null."));
+        } else {
+            replication.validate();
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .create(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                replicationName,
+                replication,
+                context);
+    }
+
+    /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
+        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, replicationName, replication);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class);
+    }
+
+    /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationInner replication,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, replicationName, replication, context);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class);
+    }
+
+    /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -412,8 +574,38 @@ public final class ReplicationsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationInner> createAsync(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, registryName, replicationName, replication);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationInner> createAsync(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationInner replication,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, replicationName, replication, context);
         return this
             .client
             .<ReplicationInner, ReplicationInner>getLroResultAsync(
@@ -441,6 +633,29 @@ public final class ReplicationsInner {
     }
 
     /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationInner create(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationInner replication,
+        Context context) {
+        return createAsync(resourceGroupName, registryName, replicationName, replication, context).block();
+    }
+
+    /**
      * Deletes a replication from a container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -452,11 +667,13 @@ public final class ReplicationsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -481,7 +698,7 @@ public final class ReplicationsInner {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -497,6 +714,95 @@ public final class ReplicationsInner {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (replicationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                replicationName,
+                context);
+    }
+
+    /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String registryName, String replicationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, replicationName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, replicationName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -504,8 +810,32 @@ public final class ReplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String replicationName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, registryName, replicationName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, replicationName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -529,6 +859,22 @@ public final class ReplicationsInner {
     }
 
     /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String registryName, String replicationName, Context context) {
+        deleteAsync(resourceGroupName, registryName, replicationName, context).block();
+    }
+
+    /**
      * Updates a replication for a container registry with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -541,11 +887,13 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -572,7 +920,7 @@ public final class ReplicationsInner {
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -590,6 +938,115 @@ public final class ReplicationsInner {
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
      * @param tags The tags for the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        Map<String, String> tags,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (replicationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter replicationName is required and cannot be null."));
+        }
+        final String apiVersion = "2017-10-01";
+        ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
+        replicationUpdateParameters.withTags(tags);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                replicationName,
+                replicationUpdateParameters,
+                context);
+    }
+
+    /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
+        String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, replicationName, tags);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class);
+    }
+
+    /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        Map<String, String> tags,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, replicationName, tags, context);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class);
+    }
+
+    /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -598,8 +1055,38 @@ public final class ReplicationsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReplicationInner> updateAsync(
         String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, registryName, replicationName, tags);
+        return this
+            .client
+            .<ReplicationInner, ReplicationInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ReplicationInner.class, ReplicationInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationInner> updateAsync(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        Map<String, String> tags,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, replicationName, tags, context);
         return this
             .client
             .<ReplicationInner, ReplicationInner>getLroResultAsync(
@@ -627,6 +1114,29 @@ public final class ReplicationsInner {
     }
 
     /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationInner update(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        Map<String, String> tags,
+        Context context) {
+        return updateAsync(resourceGroupName, registryName, replicationName, tags, context).block();
+    }
+
+    /**
      * Lists all the replications for the specified container registry.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -638,9 +1148,11 @@ public final class ReplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ReplicationInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -661,7 +1173,7 @@ public final class ReplicationsInner {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -693,9 +1205,11 @@ public final class ReplicationsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ReplicationInner>> listSinglePageAsync(
         String resourceGroupName, String registryName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -713,7 +1227,7 @@ public final class ReplicationsInner {
         final String apiVersion = "2017-10-01";
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -780,6 +1294,22 @@ public final class ReplicationsInner {
     }
 
     /**
+     * Lists all the replications for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list replications for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName, context));
+    }
+
+    /**
      * Creates a replication for a container registry with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -792,11 +1322,13 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> beginCreateWithResponseAsync(
+    public Mono<Response<ReplicationInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -825,8 +1357,8 @@ public final class ReplicationsInner {
             .withContext(
                 context ->
                     service
-                        .beginCreate(
-                            this.client.getHost(),
+                        .beginCreateWithoutPolling(
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -851,15 +1383,17 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> beginCreateWithResponseAsync(
+    public Mono<Response<ReplicationInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String registryName,
         String replicationName,
         ReplicationInner replication,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -885,8 +1419,8 @@ public final class ReplicationsInner {
         }
         final String apiVersion = "2017-10-01";
         return service
-            .beginCreate(
-                this.client.getHost(),
+            .beginCreateWithoutPolling(
+                this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -909,11 +1443,43 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReplicationInner> beginCreateAsync(
+    public Mono<ReplicationInner> beginCreateWithoutPollingAsync(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        return beginCreateWithResponseAsync(resourceGroupName, registryName, replicationName, replication)
+        return beginCreateWithoutPollingWithResponseAsync(resourceGroupName, registryName, replicationName, replication)
             .flatMap(
-                (SimpleResponse<ReplicationInner> res) -> {
+                (Response<ReplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationInner> beginCreateWithoutPollingAsync(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationInner replication,
+        Context context) {
+        return beginCreateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, replicationName, replication, context)
+            .flatMap(
+                (Response<ReplicationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -935,9 +1501,33 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationInner beginCreate(
+    public ReplicationInner beginCreateWithoutPolling(
         String resourceGroupName, String registryName, String replicationName, ReplicationInner replication) {
-        return beginCreateAsync(resourceGroupName, registryName, replicationName, replication).block();
+        return beginCreateWithoutPollingAsync(resourceGroupName, registryName, replicationName, replication).block();
+    }
+
+    /**
+     * Creates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param replication An object that represents a replication for a container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationInner beginCreateWithoutPolling(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        ReplicationInner replication,
+        Context context) {
+        return beginCreateWithoutPollingAsync(resourceGroupName, registryName, replicationName, replication, context)
+            .block();
     }
 
     /**
@@ -952,11 +1542,13 @@ public final class ReplicationsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -980,8 +1572,8 @@ public final class ReplicationsInner {
             .withContext(
                 context ->
                     service
-                        .beginDelete(
-                            this.client.getHost(),
+                        .beginDeleteWithoutPolling(
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -1004,11 +1596,13 @@ public final class ReplicationsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1029,8 +1623,8 @@ public final class ReplicationsInner {
         }
         final String apiVersion = "2017-10-01";
         return service
-            .beginDelete(
-                this.client.getHost(),
+            .beginDeleteWithoutPolling(
+                this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -1051,8 +1645,28 @@ public final class ReplicationsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(String resourceGroupName, String registryName, String replicationName) {
-        return beginDeleteWithResponseAsync(resourceGroupName, registryName, replicationName)
+    public Mono<Void> beginDeleteWithoutPollingAsync(
+        String resourceGroupName, String registryName, String replicationName) {
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, registryName, replicationName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteWithoutPollingAsync(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, registryName, replicationName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1067,8 +1681,25 @@ public final class ReplicationsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String resourceGroupName, String registryName, String replicationName) {
-        beginDeleteAsync(resourceGroupName, registryName, replicationName).block();
+    public void beginDeleteWithoutPolling(String resourceGroupName, String registryName, String replicationName) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, registryName, replicationName).block();
+    }
+
+    /**
+     * Deletes a replication from a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteWithoutPolling(
+        String resourceGroupName, String registryName, String replicationName, Context context) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, registryName, replicationName, context).block();
     }
 
     /**
@@ -1084,11 +1715,13 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<ReplicationInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1114,8 +1747,8 @@ public final class ReplicationsInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdate(
-                            this.client.getHost(),
+                        .beginUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
@@ -1140,15 +1773,17 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ReplicationInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<ReplicationInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String registryName,
         String replicationName,
         Map<String, String> tags,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1171,8 +1806,8 @@ public final class ReplicationsInner {
         ReplicationUpdateParameters replicationUpdateParameters = new ReplicationUpdateParameters();
         replicationUpdateParameters.withTags(tags);
         return service
-            .beginUpdate(
-                this.client.getHost(),
+            .beginUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
@@ -1195,11 +1830,43 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReplicationInner> beginUpdateAsync(
+    public Mono<ReplicationInner> beginUpdateWithoutPollingAsync(
         String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
-        return beginUpdateWithResponseAsync(resourceGroupName, registryName, replicationName, tags)
+        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, registryName, replicationName, tags)
             .flatMap(
-                (SimpleResponse<ReplicationInner> res) -> {
+                (Response<ReplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ReplicationInner> beginUpdateWithoutPollingAsync(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        Map<String, String> tags,
+        Context context) {
+        return beginUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, replicationName, tags, context)
+            .flatMap(
+                (Response<ReplicationInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1221,9 +1888,32 @@ public final class ReplicationsInner {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationInner beginUpdate(
+    public ReplicationInner beginUpdateWithoutPolling(
         String resourceGroupName, String registryName, String replicationName, Map<String, String> tags) {
-        return beginUpdateAsync(resourceGroupName, registryName, replicationName, tags).block();
+        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, replicationName, tags).block();
+    }
+
+    /**
+     * Updates a replication for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param replicationName The name of the replication.
+     * @param tags The tags for the replication.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a replication for a container registry.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ReplicationInner beginUpdateWithoutPolling(
+        String resourceGroupName,
+        String registryName,
+        String replicationName,
+        Map<String, String> tags,
+        Context context) {
+        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, replicationName, tags, context).block();
     }
 
     /**

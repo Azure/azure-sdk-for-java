@@ -4,27 +4,25 @@
 
 package com.azure.resourcemanager.containerregistry;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.containerregistry.fluent.OperationsInner;
-import com.azure.resourcemanager.containerregistry.fluent.RegistriesInner;
-import com.azure.resourcemanager.containerregistry.fluent.ReplicationsInner;
-import com.azure.resourcemanager.containerregistry.fluent.RunsInner;
-import com.azure.resourcemanager.containerregistry.fluent.TasksInner;
-import com.azure.resourcemanager.containerregistry.fluent.WebhooksInner;
+import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
+import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
+import com.azure.resourcemanager.containerregistry.fluent.ReplicationsClient;
+import com.azure.resourcemanager.containerregistry.fluent.RunsClient;
+import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
+import com.azure.resourcemanager.containerregistry.fluent.WebhooksClient;
 
-/** Initializes a new instance of the ContainerRegistryManagementClientImpl type. */
+/** Initializes a new instance of the ContainerRegistryManagementClient type. */
+@ServiceClient(builder = ContainerRegistryManagementClientBuilder.class)
 public final class ContainerRegistryManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(ContainerRegistryManagementClient.class);
 
     /** The Microsoft Azure subscription ID. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The Microsoft Azure subscription ID.
@@ -35,38 +33,16 @@ public final class ContainerRegistryManagementClient extends AzureServiceClient 
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The Microsoft Azure subscription ID.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public ContainerRegistryManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public ContainerRegistryManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -81,92 +57,76 @@ public final class ContainerRegistryManagementClient extends AzureServiceClient 
         return this.httpPipeline;
     }
 
-    /** The RegistriesInner object to access its operations. */
-    private final RegistriesInner registries;
+    /** The RegistriesClient object to access its operations. */
+    private final RegistriesClient registries;
 
     /**
-     * Gets the RegistriesInner object to access its operations.
+     * Gets the RegistriesClient object to access its operations.
      *
-     * @return the RegistriesInner object.
+     * @return the RegistriesClient object.
      */
-    public RegistriesInner registries() {
+    public RegistriesClient getRegistries() {
         return this.registries;
     }
 
-    /** The OperationsInner object to access its operations. */
-    private final OperationsInner operations;
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
 
     /**
-     * Gets the OperationsInner object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the OperationsInner object.
+     * @return the OperationsClient object.
      */
-    public OperationsInner operations() {
+    public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ReplicationsInner object to access its operations. */
-    private final ReplicationsInner replications;
+    /** The ReplicationsClient object to access its operations. */
+    private final ReplicationsClient replications;
 
     /**
-     * Gets the ReplicationsInner object to access its operations.
+     * Gets the ReplicationsClient object to access its operations.
      *
-     * @return the ReplicationsInner object.
+     * @return the ReplicationsClient object.
      */
-    public ReplicationsInner replications() {
+    public ReplicationsClient getReplications() {
         return this.replications;
     }
 
-    /** The WebhooksInner object to access its operations. */
-    private final WebhooksInner webhooks;
+    /** The WebhooksClient object to access its operations. */
+    private final WebhooksClient webhooks;
 
     /**
-     * Gets the WebhooksInner object to access its operations.
+     * Gets the WebhooksClient object to access its operations.
      *
-     * @return the WebhooksInner object.
+     * @return the WebhooksClient object.
      */
-    public WebhooksInner webhooks() {
+    public WebhooksClient getWebhooks() {
         return this.webhooks;
     }
 
-    /** The RunsInner object to access its operations. */
-    private final RunsInner runs;
+    /** The RunsClient object to access its operations. */
+    private final RunsClient runs;
 
     /**
-     * Gets the RunsInner object to access its operations.
+     * Gets the RunsClient object to access its operations.
      *
-     * @return the RunsInner object.
+     * @return the RunsClient object.
      */
-    public RunsInner runs() {
+    public RunsClient getRuns() {
         return this.runs;
     }
 
-    /** The TasksInner object to access its operations. */
-    private final TasksInner tasks;
+    /** The TasksClient object to access its operations. */
+    private final TasksClient tasks;
 
     /**
-     * Gets the TasksInner object to access its operations.
+     * Gets the TasksClient object to access its operations.
      *
-     * @return the TasksInner object.
+     * @return the TasksClient object.
      */
-    public TasksInner tasks() {
+    public TasksClient getTasks() {
         return this.tasks;
-    }
-
-    /** Initializes an instance of ContainerRegistryManagementClient client. */
-    public ContainerRegistryManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of ContainerRegistryManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public ContainerRegistryManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -175,14 +135,17 @@ public final class ContainerRegistryManagementClient extends AzureServiceClient 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public ContainerRegistryManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    ContainerRegistryManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.registries = new RegistriesInner(this);
-        this.operations = new OperationsInner(this);
-        this.replications = new ReplicationsInner(this);
-        this.webhooks = new WebhooksInner(this);
-        this.runs = new RunsInner(this);
-        this.tasks = new TasksInner(this);
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.registries = new RegistriesClient(this);
+        this.operations = new OperationsClient(this);
+        this.replications = new ReplicationsClient(this);
+        this.webhooks = new WebhooksClient(this);
+        this.runs = new RunsClient(this);
+        this.tasks = new TasksClient(this);
     }
 }

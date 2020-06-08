@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the ContainerRegistryManagementClientImpl type. */
+/** A builder for creating a new instance of the ContainerRegistryManagementClient type. */
 @ServiceClientBuilder(serviceClients = {ContainerRegistryManagementClient.class})
 public final class ContainerRegistryManagementClientBuilder {
     /*
@@ -34,16 +34,16 @@ public final class ContainerRegistryManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the ContainerRegistryManagementClientBuilder.
      */
-    public ContainerRegistryManagementClientBuilder host(String host) {
-        this.host = host;
+    public ContainerRegistryManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -80,13 +80,13 @@ public final class ContainerRegistryManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of ContainerRegistryManagementClientImpl with the provided parameters.
+     * Builds an instance of ContainerRegistryManagementClient with the provided parameters.
      *
-     * @return an instance of ContainerRegistryManagementClientImpl.
+     * @return an instance of ContainerRegistryManagementClient.
      */
     public ContainerRegistryManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -97,9 +97,8 @@ public final class ContainerRegistryManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        ContainerRegistryManagementClient client = new ContainerRegistryManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
+        ContainerRegistryManagementClient client =
+            new ContainerRegistryManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

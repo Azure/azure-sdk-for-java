@@ -26,24 +26,24 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
-import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskListResultInner;
+import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-
 /** An instance of this class provides access to all the operations defined in Tasks. */
-public final class TasksInner {
-    private final ClientLogger logger = new ClientLogger(TasksInner.class);
+public final class TasksClient {
+    private final ClientLogger logger = new ClientLogger(TasksClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final TasksService service;
@@ -52,11 +52,11 @@ public final class TasksInner {
     private final ContainerRegistryManagementClient client;
 
     /**
-     * Initializes an instance of TasksInner.
+     * Initializes an instance of TasksClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TasksInner(ContainerRegistryManagementClient client) {
+    public TasksClient(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(TasksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -70,12 +70,12 @@ public final class TasksInner {
     private interface TasksService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TaskListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<TaskListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -84,12 +84,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TaskInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<TaskInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -99,12 +99,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -115,12 +115,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -130,12 +130,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -146,12 +146,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}/listDetails")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}/listDetails")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TaskInner>> getDetails(
-            @HostParam("$host") String host,
+        Mono<Response<TaskInner>> getDetails(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -161,12 +161,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TaskInner>> beginCreate(
-            @HostParam("$host") String host,
+        Mono<Response<TaskInner>> beginCreateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -177,12 +177,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginDelete(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginDeleteWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -192,12 +192,12 @@ public final class TasksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/tasks/{taskName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TaskInner>> beginUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<TaskInner>> beginUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -210,7 +210,7 @@ public final class TasksInner {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<TaskListResultInner>> listNext(
+        Mono<Response<TaskListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -226,9 +226,11 @@ public final class TasksInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TaskInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -249,7 +251,7 @@ public final class TasksInner {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -281,9 +283,11 @@ public final class TasksInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TaskInner>> listSinglePageAsync(
         String resourceGroupName, String registryName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -301,7 +305,7 @@ public final class TasksInner {
         final String apiVersion = "2018-09-01";
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -368,6 +372,22 @@ public final class TasksInner {
     }
 
     /**
+     * Lists all the tasks for a specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of tasks.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TaskInner> list(String resourceGroupName, String registryName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName, context));
+    }
+
+    /**
      * Get the properties of a specified task.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -379,11 +399,13 @@ public final class TasksInner {
      * @return the properties of a specified task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> getWithResponseAsync(
+    public Mono<Response<TaskInner>> getWithResponseAsync(
         String resourceGroupName, String registryName, String taskName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -407,7 +429,7 @@ public final class TasksInner {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -430,11 +452,13 @@ public final class TasksInner {
      * @return the properties of a specified task.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> getWithResponseAsync(
+    public Mono<Response<TaskInner>> getWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -455,7 +479,7 @@ public final class TasksInner {
         final String apiVersion = "2018-09-01";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -479,7 +503,32 @@ public final class TasksInner {
     public Mono<TaskInner> getAsync(String resourceGroupName, String registryName, String taskName) {
         return getWithResponseAsync(resourceGroupName, registryName, taskName)
             .flatMap(
-                (SimpleResponse<TaskInner> res) -> {
+                (Response<TaskInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the properties of a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specified task.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskInner> getAsync(String resourceGroupName, String registryName, String taskName, Context context) {
+        return getWithResponseAsync(resourceGroupName, registryName, taskName, context)
+            .flatMap(
+                (Response<TaskInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -505,6 +554,23 @@ public final class TasksInner {
     }
 
     /**
+     * Get the properties of a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specified task.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskInner get(String resourceGroupName, String registryName, String taskName, Context context) {
+        return getAsync(resourceGroupName, registryName, taskName, context).block();
+    }
+
+    /**
      * Creates a task for a container registry with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -518,11 +584,13 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -552,7 +620,7 @@ public final class TasksInner {
                 context ->
                     service
                         .create(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -571,6 +639,121 @@ public final class TasksInner {
      * @param taskName The name of the container registry task.
      * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
      *     information to schedule a run against it.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskInner taskCreateParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (taskName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
+        }
+        if (taskCreateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter taskCreateParameters is required and cannot be null."));
+        } else {
+            taskCreateParameters.validate();
+        }
+        final String apiVersion = "2018-09-01";
+        return service
+            .create(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                taskName,
+                taskCreateParameters,
+                context);
+    }
+
+    /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<TaskInner>, TaskInner> beginCreate(
+        String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, taskName, taskCreateParameters);
+        return this
+            .client
+            .<TaskInner, TaskInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TaskInner.class, TaskInner.class);
+    }
+
+    /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<TaskInner>, TaskInner> beginCreate(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskInner taskCreateParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, taskName, taskCreateParameters, context);
+        return this
+            .client
+            .<TaskInner, TaskInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TaskInner.class, TaskInner.class);
+    }
+
+    /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -579,8 +762,39 @@ public final class TasksInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskInner> createAsync(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, registryName, taskName, taskCreateParameters);
+        return this
+            .client
+            .<TaskInner, TaskInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TaskInner.class, TaskInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskInner> createAsync(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskInner taskCreateParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, taskName, taskCreateParameters, context);
         return this
             .client
             .<TaskInner, TaskInner>getLroResultAsync(
@@ -609,6 +823,30 @@ public final class TasksInner {
     }
 
     /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskInner create(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskInner taskCreateParameters,
+        Context context) {
+        return createAsync(resourceGroupName, registryName, taskName, taskCreateParameters, context).block();
+    }
+
+    /**
      * Deletes a specified task.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -620,11 +858,13 @@ public final class TasksInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String registryName, String taskName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -648,7 +888,7 @@ public final class TasksInner {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -664,6 +904,93 @@ public final class TasksInner {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String registryName, String taskName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (taskName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
+        }
+        final String apiVersion = "2018-09-01";
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                taskName,
+                context);
+    }
+
+    /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String registryName, String taskName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, taskName);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String registryName, String taskName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, taskName, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -671,8 +998,30 @@ public final class TasksInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, registryName, taskName);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, taskName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskName, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, taskName, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -696,6 +1045,22 @@ public final class TasksInner {
     }
 
     /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String registryName, String taskName, Context context) {
+        deleteAsync(resourceGroupName, registryName, taskName, context).block();
+    }
+
+    /**
      * Updates a task with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -708,11 +1073,13 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -742,7 +1109,7 @@ public final class TasksInner {
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -760,6 +1127,118 @@ public final class TasksInner {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskUpdateParameters taskUpdateParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (taskName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter taskName is required and cannot be null."));
+        }
+        if (taskUpdateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter taskUpdateParameters is required and cannot be null."));
+        } else {
+            taskUpdateParameters.validate();
+        }
+        final String apiVersion = "2018-09-01";
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                taskName,
+                taskUpdateParameters,
+                context);
+    }
+
+    /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdate(
+        String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, taskName, taskUpdateParameters);
+        return this
+            .client
+            .<TaskInner, TaskInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TaskInner.class, TaskInner.class);
+    }
+
+    /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdate(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskUpdateParameters taskUpdateParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, taskName, taskUpdateParameters, context);
+        return this
+            .client
+            .<TaskInner, TaskInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TaskInner.class, TaskInner.class);
+    }
+
+    /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -768,8 +1247,38 @@ public final class TasksInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskInner> updateAsync(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, registryName, taskName, taskUpdateParameters);
+        return this
+            .client
+            .<TaskInner, TaskInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), TaskInner.class, TaskInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskInner> updateAsync(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskUpdateParameters taskUpdateParameters,
+        Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, taskName, taskUpdateParameters, context);
         return this
             .client
             .<TaskInner, TaskInner>getLroResultAsync(
@@ -797,6 +1306,29 @@ public final class TasksInner {
     }
 
     /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskInner update(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskUpdateParameters taskUpdateParameters,
+        Context context) {
+        return updateAsync(resourceGroupName, registryName, taskName, taskUpdateParameters, context).block();
+    }
+
+    /**
      * Returns a task with extended information that includes all secrets.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -808,11 +1340,13 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> getDetailsWithResponseAsync(
+    public Mono<Response<TaskInner>> getDetailsWithResponseAsync(
         String resourceGroupName, String registryName, String taskName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -836,7 +1370,7 @@ public final class TasksInner {
                 context ->
                     service
                         .getDetails(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -859,11 +1393,13 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> getDetailsWithResponseAsync(
+    public Mono<Response<TaskInner>> getDetailsWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -884,7 +1420,7 @@ public final class TasksInner {
         final String apiVersion = "2018-09-01";
         return service
             .getDetails(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -908,7 +1444,33 @@ public final class TasksInner {
     public Mono<TaskInner> getDetailsAsync(String resourceGroupName, String registryName, String taskName) {
         return getDetailsWithResponseAsync(resourceGroupName, registryName, taskName)
             .flatMap(
-                (SimpleResponse<TaskInner> res) -> {
+                (Response<TaskInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Returns a task with extended information that includes all secrets.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskInner> getDetailsAsync(
+        String resourceGroupName, String registryName, String taskName, Context context) {
+        return getDetailsWithResponseAsync(resourceGroupName, registryName, taskName, context)
+            .flatMap(
+                (Response<TaskInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -934,6 +1496,23 @@ public final class TasksInner {
     }
 
     /**
+     * Returns a task with extended information that includes all secrets.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskInner getDetails(String resourceGroupName, String registryName, String taskName, Context context) {
+        return getDetailsAsync(resourceGroupName, registryName, taskName, context).block();
+    }
+
+    /**
      * Creates a task for a container registry with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -947,11 +1526,13 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> beginCreateWithResponseAsync(
+    public Mono<Response<TaskInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -980,8 +1561,8 @@ public final class TasksInner {
             .withContext(
                 context ->
                     service
-                        .beginCreate(
-                            this.client.getHost(),
+                        .beginCreateWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -1007,15 +1588,17 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> beginCreateWithResponseAsync(
+    public Mono<Response<TaskInner>> beginCreateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String registryName,
         String taskName,
         TaskInner taskCreateParameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1041,8 +1624,8 @@ public final class TasksInner {
         }
         final String apiVersion = "2018-09-01";
         return service
-            .beginCreate(
-                this.client.getHost(),
+            .beginCreateWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -1066,11 +1649,45 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskInner> beginCreateAsync(
+    public Mono<TaskInner> beginCreateWithoutPollingAsync(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
-        return beginCreateWithResponseAsync(resourceGroupName, registryName, taskName, taskCreateParameters)
+        return beginCreateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, taskName, taskCreateParameters)
             .flatMap(
-                (SimpleResponse<TaskInner> res) -> {
+                (Response<TaskInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskInner> beginCreateWithoutPollingAsync(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskInner taskCreateParameters,
+        Context context) {
+        return beginCreateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, taskName, taskCreateParameters, context)
+            .flatMap(
+                (Response<TaskInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1093,9 +1710,34 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskInner beginCreate(
+    public TaskInner beginCreateWithoutPolling(
         String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters) {
-        return beginCreateAsync(resourceGroupName, registryName, taskName, taskCreateParameters).block();
+        return beginCreateWithoutPollingAsync(resourceGroupName, registryName, taskName, taskCreateParameters).block();
+    }
+
+    /**
+     * Creates a task for a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskCreateParameters The task that has the ARM resource and task properties. The task will have all
+     *     information to schedule a run against it.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskInner beginCreateWithoutPolling(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskInner taskCreateParameters,
+        Context context) {
+        return beginCreateWithoutPollingAsync(resourceGroupName, registryName, taskName, taskCreateParameters, context)
+            .block();
     }
 
     /**
@@ -1110,11 +1752,13 @@ public final class TasksInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String taskName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1137,8 +1781,8 @@ public final class TasksInner {
             .withContext(
                 context ->
                     service
-                        .beginDelete(
-                            this.client.getHost(),
+                        .beginDeleteWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -1161,11 +1805,13 @@ public final class TasksInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+    public Mono<Response<Void>> beginDeleteWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1185,8 +1831,8 @@ public final class TasksInner {
         }
         final String apiVersion = "2018-09-01";
         return service
-            .beginDelete(
-                this.client.getHost(),
+            .beginDeleteWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -1207,8 +1853,27 @@ public final class TasksInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(String resourceGroupName, String registryName, String taskName) {
-        return beginDeleteWithResponseAsync(resourceGroupName, registryName, taskName)
+    public Mono<Void> beginDeleteWithoutPollingAsync(String resourceGroupName, String registryName, String taskName) {
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, registryName, taskName)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteWithoutPollingAsync(
+        String resourceGroupName, String registryName, String taskName, Context context) {
+        return beginDeleteWithoutPollingWithResponseAsync(resourceGroupName, registryName, taskName, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1223,8 +1888,25 @@ public final class TasksInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String resourceGroupName, String registryName, String taskName) {
-        beginDeleteAsync(resourceGroupName, registryName, taskName).block();
+    public void beginDeleteWithoutPolling(String resourceGroupName, String registryName, String taskName) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, registryName, taskName).block();
+    }
+
+    /**
+     * Deletes a specified task.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginDeleteWithoutPolling(
+        String resourceGroupName, String registryName, String taskName, Context context) {
+        beginDeleteWithoutPollingAsync(resourceGroupName, registryName, taskName, context).block();
     }
 
     /**
@@ -1240,11 +1922,13 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<TaskInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1273,8 +1957,8 @@ public final class TasksInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdate(
-                            this.client.getHost(),
+                        .beginUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -1299,15 +1983,17 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<TaskInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<TaskInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName,
         String registryName,
         String taskName,
         TaskUpdateParameters taskUpdateParameters,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1333,8 +2019,8 @@ public final class TasksInner {
         }
         final String apiVersion = "2018-09-01";
         return service
-            .beginUpdate(
-                this.client.getHost(),
+            .beginUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -1357,11 +2043,44 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskInner> beginUpdateAsync(
+    public Mono<TaskInner> beginUpdateWithoutPollingAsync(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
-        return beginUpdateWithResponseAsync(resourceGroupName, registryName, taskName, taskUpdateParameters)
+        return beginUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, taskName, taskUpdateParameters)
             .flatMap(
-                (SimpleResponse<TaskInner> res) -> {
+                (Response<TaskInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TaskInner> beginUpdateWithoutPollingAsync(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskUpdateParameters taskUpdateParameters,
+        Context context) {
+        return beginUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, taskName, taskUpdateParameters, context)
+            .flatMap(
+                (Response<TaskInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1383,9 +2102,33 @@ public final class TasksInner {
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskInner beginUpdate(
+    public TaskInner beginUpdateWithoutPolling(
         String resourceGroupName, String registryName, String taskName, TaskUpdateParameters taskUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, registryName, taskName, taskUpdateParameters).block();
+        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, taskName, taskUpdateParameters).block();
+    }
+
+    /**
+     * Updates a task with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param taskName The name of the container registry task.
+     * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the task that has the ARM resource and task properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskInner beginUpdateWithoutPolling(
+        String resourceGroupName,
+        String registryName,
+        String taskName,
+        TaskUpdateParameters taskUpdateParameters,
+        Context context) {
+        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, taskName, taskUpdateParameters, context)
+            .block();
     }
 
     /**

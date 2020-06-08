@@ -24,25 +24,25 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManagementClient;
-import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunGetLogResultInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.RunListResultInner;
+import com.azure.resourcemanager.containerregistry.models.RunUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
-
 /** An instance of this class provides access to all the operations defined in Runs. */
-public final class RunsInner {
-    private final ClientLogger logger = new ClientLogger(RunsInner.class);
+public final class RunsClient {
+    private final ClientLogger logger = new ClientLogger(RunsClient.class);
 
     /** The proxy service used to perform REST calls. */
     private final RunsService service;
@@ -51,11 +51,11 @@ public final class RunsInner {
     private final ContainerRegistryManagementClient client;
 
     /**
-     * Initializes an instance of RunsInner.
+     * Initializes an instance of RunsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RunsInner(ContainerRegistryManagementClient client) {
+    public RunsClient(ContainerRegistryManagementClient client) {
         this.service = RestProxy.create(RunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -69,12 +69,12 @@ public final class RunsInner {
     private interface RunsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<RunListResultInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<RunListResultInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -85,12 +85,12 @@ public final class RunsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs/{runId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<RunInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<RunInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -100,12 +100,12 @@ public final class RunsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs/{runId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -116,12 +116,12 @@ public final class RunsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/listLogSasUrl")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs/{runId}/listLogSasUrl")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<RunGetLogResultInner>> getLogSasUrl(
-            @HostParam("$host") String host,
+        Mono<Response<RunGetLogResultInner>> getLogSasUrl(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -131,12 +131,12 @@ public final class RunsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs/{runId}/cancel")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> cancel(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> cancel(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -146,12 +146,12 @@ public final class RunsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs/{runId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<RunInner>> beginUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<RunInner>> beginUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -162,12 +162,12 @@ public final class RunsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/cancel")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry"
+                + "/registries/{registryName}/runs/{runId}/cancel")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> beginCancel(
-            @HostParam("$host") String host,
+        Mono<Response<Void>> beginCancelWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("registryName") String registryName,
@@ -179,7 +179,7 @@ public final class RunsInner {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<RunListResultInner>> listNext(
+        Mono<Response<RunListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -199,9 +199,11 @@ public final class RunsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RunInner>> listSinglePageAsync(
         String resourceGroupName, String registryName, String filter, Integer top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -222,7 +224,7 @@ public final class RunsInner {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -259,9 +261,11 @@ public final class RunsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RunInner>> listSinglePageAsync(
         String resourceGroupName, String registryName, String filter, Integer top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -279,7 +283,7 @@ public final class RunsInner {
         final String apiVersion = "2018-09-01";
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -383,6 +387,26 @@ public final class RunsInner {
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
+     * @param filter The runs filter to apply on the operation. Arithmetic operators are not supported. The allowed
+     *     string function is 'contains'. All logical operators except 'Not', 'Has', 'All' are allowed.
+     * @param top $top is supported for get list of runs, which limits the maximum number of runs to return.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the runs for a registry.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RunInner> list(
+        String resourceGroupName, String registryName, String filter, Integer top, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter, top, context));
+    }
+
+    /**
+     * Gets all the runs for a registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -408,11 +432,12 @@ public final class RunsInner {
      * @return the detailed information for a given run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RunInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String runId) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<RunInner>> getWithResponseAsync(String resourceGroupName, String registryName, String runId) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -436,7 +461,7 @@ public final class RunsInner {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -459,11 +484,13 @@ public final class RunsInner {
      * @return the detailed information for a given run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RunInner>> getWithResponseAsync(
+    public Mono<Response<RunInner>> getWithResponseAsync(
         String resourceGroupName, String registryName, String runId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -484,7 +511,7 @@ public final class RunsInner {
         final String apiVersion = "2018-09-01";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -508,7 +535,32 @@ public final class RunsInner {
     public Mono<RunInner> getAsync(String resourceGroupName, String registryName, String runId) {
         return getWithResponseAsync(resourceGroupName, registryName, runId)
             .flatMap(
-                (SimpleResponse<RunInner> res) -> {
+                (Response<RunInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the detailed information for a given run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information for a given run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunInner> getAsync(String resourceGroupName, String registryName, String runId, Context context) {
+        return getWithResponseAsync(resourceGroupName, registryName, runId, context)
+            .flatMap(
+                (Response<RunInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -534,6 +586,23 @@ public final class RunsInner {
     }
 
     /**
+     * Gets the detailed information for a given run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the detailed information for a given run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunInner get(String resourceGroupName, String registryName, String runId, Context context) {
+        return getAsync(resourceGroupName, registryName, runId, context).block();
+    }
+
+    /**
      * Patch the run properties.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -546,11 +615,13 @@ public final class RunsInner {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -576,7 +647,7 @@ public final class RunsInner {
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -594,6 +665,104 @@ public final class RunsInner {
      * @param registryName The name of the container registry.
      * @param runId The run ID.
      * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
+        }
+        final String apiVersion = "2018-09-01";
+        RunUpdateParameters runUpdateParameters = new RunUpdateParameters();
+        runUpdateParameters.withIsArchiveEnabled(isArchiveEnabled);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                runId,
+                runUpdateParameters,
+                context);
+    }
+
+    /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<RunInner>, RunInner> beginUpdate(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, runId, isArchiveEnabled);
+        return this
+            .client
+            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class);
+    }
+
+    /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<RunInner>, RunInner> beginUpdate(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, runId, isArchiveEnabled, context);
+        return this
+            .client
+            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class);
+    }
+
+    /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -602,8 +771,33 @@ public final class RunsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RunInner> updateAsync(
         String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, registryName, runId, isArchiveEnabled);
+        return this
+            .client
+            .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunInner> updateAsync(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, runId, isArchiveEnabled, context);
         return this
             .client
             .<RunInner, RunInner>getLroResultAsync(mono, this.client.getHttpPipeline(), RunInner.class, RunInner.class)
@@ -629,6 +823,25 @@ public final class RunsInner {
     }
 
     /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunInner update(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
+        return updateAsync(resourceGroupName, registryName, runId, isArchiveEnabled, context).block();
+    }
+
+    /**
      * Gets a link to download the run logs.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -640,11 +853,13 @@ public final class RunsInner {
      * @return a link to download the run logs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
+    public Mono<Response<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
         String resourceGroupName, String registryName, String runId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -668,7 +883,7 @@ public final class RunsInner {
                 context ->
                     service
                         .getLogSasUrl(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -691,11 +906,13 @@ public final class RunsInner {
      * @return a link to download the run logs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
+    public Mono<Response<RunGetLogResultInner>> getLogSasUrlWithResponseAsync(
         String resourceGroupName, String registryName, String runId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -716,7 +933,7 @@ public final class RunsInner {
         final String apiVersion = "2018-09-01";
         return service
             .getLogSasUrl(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -740,7 +957,33 @@ public final class RunsInner {
     public Mono<RunGetLogResultInner> getLogSasUrlAsync(String resourceGroupName, String registryName, String runId) {
         return getLogSasUrlWithResponseAsync(resourceGroupName, registryName, runId)
             .flatMap(
-                (SimpleResponse<RunGetLogResultInner> res) -> {
+                (Response<RunGetLogResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets a link to download the run logs.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a link to download the run logs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunGetLogResultInner> getLogSasUrlAsync(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        return getLogSasUrlWithResponseAsync(resourceGroupName, registryName, runId, context)
+            .flatMap(
+                (Response<RunGetLogResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -766,6 +1009,24 @@ public final class RunsInner {
     }
 
     /**
+     * Gets a link to download the run logs.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a link to download the run logs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunGetLogResultInner getLogSasUrl(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        return getLogSasUrlAsync(resourceGroupName, registryName, runId, context).block();
+    }
+
+    /**
      * Cancel an existing run.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -777,11 +1038,13 @@ public final class RunsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> cancelWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
         String resourceGroupName, String registryName, String runId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -805,7 +1068,7 @@ public final class RunsInner {
                 context ->
                     service
                         .cancel(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -821,6 +1084,92 @@ public final class RunsInner {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> cancelWithResponseAsync(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        if (runId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter runId is required and cannot be null."));
+        }
+        final String apiVersion = "2018-09-01";
+        return service
+            .cancel(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                registryName,
+                apiVersion,
+                runId,
+                context);
+    }
+
+    /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginCancel(String resourceGroupName, String registryName, String runId) {
+        Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, registryName, runId);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginCancel(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            cancelWithResponseAsync(resourceGroupName, registryName, runId, context);
+        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
+    }
+
+    /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -828,7 +1177,30 @@ public final class RunsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAsync(String resourceGroupName, String registryName, String runId) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, registryName, runId);
+        Mono<Response<Flux<ByteBuffer>>> mono = cancelWithResponseAsync(resourceGroupName, registryName, runId);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelAsync(String resourceGroupName, String registryName, String runId, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            cancelWithResponseAsync(resourceGroupName, registryName, runId, context);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -852,6 +1224,22 @@ public final class RunsInner {
     }
 
     /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String resourceGroupName, String registryName, String runId, Context context) {
+        cancelAsync(resourceGroupName, registryName, runId, context).block();
+    }
+
+    /**
      * Patch the run properties.
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
@@ -864,11 +1252,13 @@ public final class RunsInner {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RunInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<RunInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -893,8 +1283,8 @@ public final class RunsInner {
             .withContext(
                 context ->
                     service
-                        .beginUpdate(
-                            this.client.getHost(),
+                        .beginUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -919,11 +1309,13 @@ public final class RunsInner {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RunInner>> beginUpdateWithResponseAsync(
+    public Mono<Response<RunInner>> beginUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -945,8 +1337,8 @@ public final class RunsInner {
         RunUpdateParameters runUpdateParameters = new RunUpdateParameters();
         runUpdateParameters.withIsArchiveEnabled(isArchiveEnabled);
         return service
-            .beginUpdate(
-                this.client.getHost(),
+            .beginUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -969,11 +1361,39 @@ public final class RunsInner {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RunInner> beginUpdateAsync(
+    public Mono<RunInner> beginUpdateWithoutPollingAsync(
         String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
-        return beginUpdateWithResponseAsync(resourceGroupName, registryName, runId, isArchiveEnabled)
+        return beginUpdateWithoutPollingWithResponseAsync(resourceGroupName, registryName, runId, isArchiveEnabled)
             .flatMap(
-                (SimpleResponse<RunInner> res) -> {
+                (Response<RunInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RunInner> beginUpdateWithoutPollingAsync(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
+        return beginUpdateWithoutPollingWithResponseAsync(
+                resourceGroupName, registryName, runId, isArchiveEnabled, context)
+            .flatMap(
+                (Response<RunInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -995,8 +1415,29 @@ public final class RunsInner {
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RunInner beginUpdate(String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
-        return beginUpdateAsync(resourceGroupName, registryName, runId, isArchiveEnabled).block();
+    public RunInner beginUpdateWithoutPolling(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled) {
+        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, runId, isArchiveEnabled).block();
+    }
+
+    /**
+     * Patch the run properties.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param isArchiveEnabled The value that indicates whether archiving is enabled or not.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return run resource properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunInner beginUpdateWithoutPolling(
+        String resourceGroupName, String registryName, String runId, Boolean isArchiveEnabled, Context context) {
+        return beginUpdateWithoutPollingAsync(resourceGroupName, registryName, runId, isArchiveEnabled, context)
+            .block();
     }
 
     /**
@@ -1011,11 +1452,13 @@ public final class RunsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginCancelWithResponseAsync(
+    public Mono<Response<Void>> beginCancelWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String runId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1038,8 +1481,8 @@ public final class RunsInner {
             .withContext(
                 context ->
                     service
-                        .beginCancel(
-                            this.client.getHost(),
+                        .beginCancelWithoutPolling(
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             registryName,
@@ -1062,11 +1505,13 @@ public final class RunsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginCancelWithResponseAsync(
+    public Mono<Response<Void>> beginCancelWithoutPollingWithResponseAsync(
         String resourceGroupName, String registryName, String runId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -1086,8 +1531,8 @@ public final class RunsInner {
         }
         final String apiVersion = "2018-09-01";
         return service
-            .beginCancel(
-                this.client.getHost(),
+            .beginCancelWithoutPolling(
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 registryName,
@@ -1108,8 +1553,27 @@ public final class RunsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginCancelAsync(String resourceGroupName, String registryName, String runId) {
-        return beginCancelWithResponseAsync(resourceGroupName, registryName, runId)
+    public Mono<Void> beginCancelWithoutPollingAsync(String resourceGroupName, String registryName, String runId) {
+        return beginCancelWithoutPollingWithResponseAsync(resourceGroupName, registryName, runId)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginCancelWithoutPollingAsync(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        return beginCancelWithoutPollingWithResponseAsync(resourceGroupName, registryName, runId, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1124,8 +1588,25 @@ public final class RunsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginCancel(String resourceGroupName, String registryName, String runId) {
-        beginCancelAsync(resourceGroupName, registryName, runId).block();
+    public void beginCancelWithoutPolling(String resourceGroupName, String registryName, String runId) {
+        beginCancelWithoutPollingAsync(resourceGroupName, registryName, runId).block();
+    }
+
+    /**
+     * Cancel an existing run.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param runId The run ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void beginCancelWithoutPolling(
+        String resourceGroupName, String registryName, String runId, Context context) {
+        beginCancelWithoutPollingAsync(resourceGroupName, registryName, runId, context).block();
     }
 
     /**
