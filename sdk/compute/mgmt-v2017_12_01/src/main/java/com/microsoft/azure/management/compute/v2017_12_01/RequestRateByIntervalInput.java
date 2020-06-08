@@ -23,7 +23,7 @@ public class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     private IntervalInMins intervalLength;
 
     /**
-     * Get the intervalLength value.
+     * Get interval value in minutes used to create LogAnalytics call rate logs. Possible values include: 'ThreeMins', 'FiveMins', 'ThirtyMins', 'SixtyMins'.
      *
      * @return the intervalLength value
      */
@@ -32,7 +32,7 @@ public class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     }
 
     /**
-     * Set the intervalLength value.
+     * Set interval value in minutes used to create LogAnalytics call rate logs. Possible values include: 'ThreeMins', 'FiveMins', 'ThirtyMins', 'SixtyMins'.
      *
      * @param intervalLength the intervalLength value to set
      * @return the RequestRateByIntervalInput object itself.
