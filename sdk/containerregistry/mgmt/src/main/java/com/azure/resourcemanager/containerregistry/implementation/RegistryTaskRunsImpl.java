@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.RegistryTaskRun;
 import com.azure.resourcemanager.containerregistry.RegistryTaskRuns;
-import com.azure.resourcemanager.containerregistry.models.RunInner;
+import com.azure.resourcemanager.containerregistry.fluent.RunInner;
 import reactor.core.publisher.Mono;
 
 class RegistryTaskRunsImpl implements RegistryTaskRuns {

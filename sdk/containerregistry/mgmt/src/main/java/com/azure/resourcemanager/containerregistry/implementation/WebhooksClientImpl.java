@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.Registries;
 import com.azure.resourcemanager.containerregistry.Webhook;
-import com.azure.resourcemanager.containerregistry.models.WebhooksInner;
+import com.azure.resourcemanager.containerregistry.fluent.WebhooksInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
