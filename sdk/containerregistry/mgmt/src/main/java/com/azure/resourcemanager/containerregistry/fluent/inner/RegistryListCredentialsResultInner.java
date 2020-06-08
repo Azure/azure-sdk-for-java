@@ -6,7 +6,7 @@ package com.azure.resourcemanager.containerregistry.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.RegistryPassword;
+import com.azure.resourcemanager.containerregistry.models.RegistryPassword;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

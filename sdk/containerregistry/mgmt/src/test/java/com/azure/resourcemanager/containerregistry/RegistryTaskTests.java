@@ -3,6 +3,21 @@
 package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.containerregistry.models.Architecture;
+import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerType;
+import com.azure.resourcemanager.containerregistry.models.OS;
+import com.azure.resourcemanager.containerregistry.models.Registry;
+import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryTask;
+import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
+import com.azure.resourcemanager.containerregistry.models.RunStatus;
+import com.azure.resourcemanager.containerregistry.models.SourceControlType;
+import com.azure.resourcemanager.containerregistry.models.SourceTriggerEvent;
+import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
+import com.azure.resourcemanager.containerregistry.models.TokenType;
+import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import java.io.File;

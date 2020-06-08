@@ -6,8 +6,8 @@ package com.azure.resourcemanager.containerregistry.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.EventRequestMessage;
-import com.azure.resourcemanager.containerregistry.EventResponseMessage;
+import com.azure.resourcemanager.containerregistry.models.EventRequestMessage;
+import com.azure.resourcemanager.containerregistry.models.EventResponseMessage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.containerregistry.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.QuarantinePolicy;
-import com.azure.resourcemanager.containerregistry.TrustPolicy;
+import com.azure.resourcemanager.containerregistry.models.QuarantinePolicy;
+import com.azure.resourcemanager.containerregistry.models.TrustPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

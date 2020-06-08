@@ -31,7 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.containerregistry.ReplicationUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.ReplicationUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.ReplicationListResultInner;
 import reactor.core.publisher.Flux;

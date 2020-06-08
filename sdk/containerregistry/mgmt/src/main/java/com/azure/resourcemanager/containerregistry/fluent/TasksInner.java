@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.containerregistry.TaskUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.containerregistry.fluent.inner.TaskListResultInner;
 import reactor.core.publisher.Flux;

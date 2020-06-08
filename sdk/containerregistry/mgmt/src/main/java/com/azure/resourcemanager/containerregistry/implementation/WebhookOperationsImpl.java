@@ -4,8 +4,8 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.containerregistry.Webhook;
-import com.azure.resourcemanager.containerregistry.WebhookOperations;
+import com.azure.resourcemanager.containerregistry.models.Webhook;
+import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
 import reactor.core.publisher.Mono;
 
 /** Represents a webhook collection associated with a container registry. */

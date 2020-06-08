@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.EncodedTaskRunRequest;
-import com.azure.resourcemanager.containerregistry.OverridingValue;
-import com.azure.resourcemanager.containerregistry.PlatformProperties;
-import com.azure.resourcemanager.containerregistry.RegistryEncodedTaskRunRequest;
-import com.azure.resourcemanager.containerregistry.SetValue;
+import com.azure.resourcemanager.containerregistry.models.EncodedTaskRunRequest;
+import com.azure.resourcemanager.containerregistry.models.OverridingValue;
+import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
+import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskRunRequest;
+import com.azure.resourcemanager.containerregistry.models.SetValue;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
