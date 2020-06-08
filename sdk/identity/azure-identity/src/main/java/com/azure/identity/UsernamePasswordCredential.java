@@ -83,9 +83,7 @@ public class UsernamePasswordCredential implements TokenCredential {
      *
      * @param request The details of the authentication request.
      *
-     * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
-     * on future execution if persistent caching was enabled via
-     * {@link UsernamePasswordCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * @return The {@link AuthenticationRecord} of the authenticated account..
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password))
@@ -96,9 +94,7 @@ public class UsernamePasswordCredential implements TokenCredential {
     /**
      * Authenticates the user using the specified username and password.
      *
-     * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
-     * on future execution if persistent caching was enabled via
-     * {@link UsernamePasswordCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * @return The {@link AuthenticationRecord} of the authenticated account.
      */
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
