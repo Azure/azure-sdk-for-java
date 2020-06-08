@@ -94,7 +94,7 @@ public class UsernamePasswordCredential implements TokenCredential {
     }
 
     /**
-     * Interactively authenticates a user via the default browser.
+     * Authenticates the user using the specified username and password.
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
