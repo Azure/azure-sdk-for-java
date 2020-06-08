@@ -4,21 +4,19 @@
 
 package com.azure.resourcemanager.containerservice;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.containerservice.fluent.AgentPoolsInner;
-import com.azure.resourcemanager.containerservice.fluent.ContainerServicesInner;
-import com.azure.resourcemanager.containerservice.fluent.ManagedClustersInner;
-import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersInner;
-import com.azure.resourcemanager.containerservice.fluent.OperationsInner;
+import com.azure.resourcemanager.containerservice.fluent.AgentPoolsClient;
+import com.azure.resourcemanager.containerservice.fluent.ContainerServicesClient;
+import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
+import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 
-/** Initializes a new instance of the ContainerServiceManagementClientImpl type. */
+/** Initializes a new instance of the ContainerServiceManagementClient type. */
+@ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
 public final class ContainerServiceManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(ContainerServiceManagementClient.class);
 
@@ -26,7 +24,7 @@ public final class ContainerServiceManagementClient extends AzureServiceClient {
      * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
      */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
@@ -38,39 +36,16 @@ public final class ContainerServiceManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public ContainerServiceManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public ContainerServiceManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -85,80 +60,64 @@ public final class ContainerServiceManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The OpenShiftManagedClustersInner object to access its operations. */
-    private final OpenShiftManagedClustersInner openShiftManagedClusters;
+    /** The OpenShiftManagedClustersClient object to access its operations. */
+    private final OpenShiftManagedClustersClient openShiftManagedClusters;
 
     /**
-     * Gets the OpenShiftManagedClustersInner object to access its operations.
+     * Gets the OpenShiftManagedClustersClient object to access its operations.
      *
-     * @return the OpenShiftManagedClustersInner object.
+     * @return the OpenShiftManagedClustersClient object.
      */
-    public OpenShiftManagedClustersInner openShiftManagedClusters() {
+    public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
         return this.openShiftManagedClusters;
     }
 
-    /** The ContainerServicesInner object to access its operations. */
-    private final ContainerServicesInner containerServices;
+    /** The ContainerServicesClient object to access its operations. */
+    private final ContainerServicesClient containerServices;
 
     /**
-     * Gets the ContainerServicesInner object to access its operations.
+     * Gets the ContainerServicesClient object to access its operations.
      *
-     * @return the ContainerServicesInner object.
+     * @return the ContainerServicesClient object.
      */
-    public ContainerServicesInner containerServices() {
+    public ContainerServicesClient getContainerServices() {
         return this.containerServices;
     }
 
-    /** The OperationsInner object to access its operations. */
-    private final OperationsInner operations;
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
 
     /**
-     * Gets the OperationsInner object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the OperationsInner object.
+     * @return the OperationsClient object.
      */
-    public OperationsInner operations() {
+    public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ManagedClustersInner object to access its operations. */
-    private final ManagedClustersInner managedClusters;
+    /** The ManagedClustersClient object to access its operations. */
+    private final ManagedClustersClient managedClusters;
 
     /**
-     * Gets the ManagedClustersInner object to access its operations.
+     * Gets the ManagedClustersClient object to access its operations.
      *
-     * @return the ManagedClustersInner object.
+     * @return the ManagedClustersClient object.
      */
-    public ManagedClustersInner managedClusters() {
+    public ManagedClustersClient getManagedClusters() {
         return this.managedClusters;
     }
 
-    /** The AgentPoolsInner object to access its operations. */
-    private final AgentPoolsInner agentPools;
+    /** The AgentPoolsClient object to access its operations. */
+    private final AgentPoolsClient agentPools;
 
     /**
-     * Gets the AgentPoolsInner object to access its operations.
+     * Gets the AgentPoolsClient object to access its operations.
      *
-     * @return the AgentPoolsInner object.
+     * @return the AgentPoolsClient object.
      */
-    public AgentPoolsInner agentPools() {
+    public AgentPoolsClient getAgentPools() {
         return this.agentPools;
-    }
-
-    /** Initializes an instance of ContainerServiceManagementClient client. */
-    public ContainerServiceManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of ContainerServiceManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public ContainerServiceManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -167,13 +126,16 @@ public final class ContainerServiceManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public ContainerServiceManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    ContainerServiceManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.openShiftManagedClusters = new OpenShiftManagedClustersInner(this);
-        this.containerServices = new ContainerServicesInner(this);
-        this.operations = new OperationsInner(this);
-        this.managedClusters = new ManagedClustersInner(this);
-        this.agentPools = new AgentPoolsInner(this);
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.openShiftManagedClusters = new OpenShiftManagedClustersClient(this);
+        this.containerServices = new ContainerServicesClient(this);
+        this.operations = new OperationsClient(this);
+        this.managedClusters = new ManagedClustersClient(this);
+        this.agentPools = new AgentPoolsClient(this);
     }
 }

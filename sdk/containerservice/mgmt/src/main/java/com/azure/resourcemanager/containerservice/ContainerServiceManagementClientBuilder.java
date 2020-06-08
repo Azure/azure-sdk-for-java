@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the ContainerServiceManagementClientImpl type. */
+/** A builder for creating a new instance of the ContainerServiceManagementClient type. */
 @ServiceClientBuilder(serviceClients = {ContainerServiceManagementClient.class})
 public final class ContainerServiceManagementClientBuilder {
     /*
@@ -37,16 +37,16 @@ public final class ContainerServiceManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the ContainerServiceManagementClientBuilder.
      */
-    public ContainerServiceManagementClientBuilder host(String host) {
-        this.host = host;
+    public ContainerServiceManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -83,13 +83,13 @@ public final class ContainerServiceManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of ContainerServiceManagementClientImpl with the provided parameters.
+     * Builds an instance of ContainerServiceManagementClient with the provided parameters.
      *
-     * @return an instance of ContainerServiceManagementClientImpl.
+     * @return an instance of ContainerServiceManagementClient.
      */
     public ContainerServiceManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -100,9 +100,8 @@ public final class ContainerServiceManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        ContainerServiceManagementClient client = new ContainerServiceManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
+        ContainerServiceManagementClient client =
+            new ContainerServiceManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

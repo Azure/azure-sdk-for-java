@@ -465,7 +465,14 @@ public class ManagedClusterInner extends Resource {
             servicePrincipalProfile().validate();
         }
         if (addonProfiles() != null) {
-            addonProfiles().values().forEach(e -> e.validate());
+            addonProfiles()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
         if (networkProfile() != null) {
             networkProfile().validate();
