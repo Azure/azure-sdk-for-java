@@ -83,7 +83,7 @@ public class UsernamePasswordCredential implements TokenCredential {
      *
      * @param request The details of the authentication request.
      *
-     * @return The {@link AuthenticationRecord} of the authenticated account..
+     * @return The {@link AuthenticationRecord} of the authenticated account.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password))
