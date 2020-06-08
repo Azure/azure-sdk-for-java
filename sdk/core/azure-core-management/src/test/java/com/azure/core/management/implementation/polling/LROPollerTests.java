@@ -323,15 +323,12 @@ public class LROPollerTests {
         WireMockServer lroServer = startServer();
         lroServer.start();
 
-        HttpPipelinePolicy contextVerifyPolicy = new HttpPipelinePolicy() {
-            @Override
-            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-                Optional<Object> valueOpt = context.getData("key1");
-                if (valueOpt.isPresent() && "value1".equals(valueOpt.get())) {
-                    return next.process();
-                } else {
-                    return Mono.error(new AssertionError());
-                }
+        HttpPipelinePolicy contextVerifyPolicy = (context, next) -> {
+            Optional<Object> valueOpt = context.getData("key1");
+            if (valueOpt.isPresent() && "value1".equals(valueOpt.get())) {
+                return next.process();
+            } else {
+                return Mono.error(new AssertionError());
             }
         };
 
