@@ -38,7 +38,7 @@ The SDK provides three clients.
 1. SearchIndexClient for all CRUD operations on indexer, date source, and skillset.
 1. SearchClient for all document operations.
 
-#### Create a SearchIndexerClient
+#### Create a SearchIndexClient
 
 To create a SearchIndexClient, you will need an existing index name as well as the values of the Azure Cognitive Search service 
 [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
