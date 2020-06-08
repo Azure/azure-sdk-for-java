@@ -44,7 +44,7 @@ The SDK provides three clients.
 
 #### Create a SearchIndexClient
 
-To create a SearchIndexerClient, you will need the values of the Azure Cognitive Search service 
+To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service 
 URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L65 -->
@@ -67,7 +67,7 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 
 #### Create a SearchIndexerClient
 
-To create a SearchIndexerClient, you will need the values of the Azure Cognitive Search service 
+To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service 
 URL endpoint and admin key.
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
@@ -91,7 +91,7 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 #### Create a SearchClient
 
 Once you have the values of the Azure Cognitive Search service URL endpoint and 
-admin key, you can create the SearchClient with an existing index name:
+admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L46-L50 -->
 ```Java
