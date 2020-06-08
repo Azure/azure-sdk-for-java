@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.keyvault.implementation;
 
-import com.azure.resourcemanager.keyvault.Key;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.keyvault.models.Key;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;

@@ -5,8 +5,8 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.keyvault.Secret;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.keyvault.models.Secret;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.fasterxml.jackson.databind.JsonNode;
