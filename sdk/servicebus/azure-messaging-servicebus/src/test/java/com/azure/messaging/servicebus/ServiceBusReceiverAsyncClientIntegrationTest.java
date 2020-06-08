@@ -43,7 +43,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
-    private boolean isSessionEnabled;
 
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
@@ -69,18 +68,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // In the case that this test failed... we're going to drain the queue or subscription.
         try {
-            if (isSessionEnabled) {
-                logger.info("Sessioned receiver. It is probably locked until some time.");
-            } else {
-                receiveAndDeleteReceiver.receive()
-                    .take(pending)
-                    .map(message -> {
-                        logger.info("Message received: {}", message.getMessage().getSequenceNumber());
-                        return message;
-                    })
-                    .timeout(Duration.ofSeconds(5), Mono.empty())
-                    .blockLast();
-            }
+            receiveAndDeleteReceiver.receive()
+                .map(message -> {
+                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
+                    return message;
+                })
+                .timeout(Duration.ofSeconds(15), Mono.empty())
+                .blockLast();
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
@@ -258,7 +252,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 })
                 .verifyComplete();
         } finally {
-            receiver.complete(receivedMessage);
+            receiver.complete(receivedMessage)
+                .block(Duration.ofSeconds(10));
         }
     }
 
@@ -288,22 +283,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messages).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.peekBatch(3))
-            .assertNext(message -> checkCorrectMessage.accept(message, 0))
-            .assertNext(message -> checkCorrectMessage.accept(message, 1))
-            .assertNext(message -> checkCorrectMessage.accept(message, 2))
-            .verifyComplete();
+        try {
+            StepVerifier.create(receiver.peekBatch(3))
+                .assertNext(message -> checkCorrectMessage.accept(message, 0))
+                .assertNext(message -> checkCorrectMessage.accept(message, 1))
+                .assertNext(message -> checkCorrectMessage.accept(message, 2))
+                .verifyComplete();
 
-        StepVerifier.create(receiver.peekBatch(4))
-            .assertNext(message -> checkCorrectMessage.accept(message, 3))
-            .assertNext(message -> checkCorrectMessage.accept(message, 4))
-            .assertNext(message -> checkCorrectMessage.accept(message, 5))
-            .assertNext(message -> checkCorrectMessage.accept(message, 6))
-            .verifyComplete();
+            StepVerifier.create(receiver.peekBatch(4))
+                .assertNext(message -> checkCorrectMessage.accept(message, 3))
+                .assertNext(message -> checkCorrectMessage.accept(message, 4))
+                .assertNext(message -> checkCorrectMessage.accept(message, 5))
+                .assertNext(message -> checkCorrectMessage.accept(message, 6))
+                .verifyComplete();
 
-        StepVerifier.create(receiver.peek())
-            .assertNext(message -> checkCorrectMessage.accept(message, 7))
-            .verifyComplete();
+            StepVerifier.create(receiver.peek())
+                .assertNext(message -> checkCorrectMessage.accept(message, 7))
+                .verifyComplete();
+        } finally {
+            receiveAndDeleteReceiver.receive()
+                .take(messages.size())
+                .blockLast(Duration.ofSeconds(15));
+        }
     }
 
     /**
@@ -708,7 +709,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
-        this.isSessionEnabled = isSessionEnabled;
         this.sender = getSenderBuilder(false, entityType, entityIndex, isSessionEnabled).buildAsyncClient();
 
         if (isSessionEnabled) {
