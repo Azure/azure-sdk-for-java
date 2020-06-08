@@ -283,8 +283,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, isSessionEnabled, true);
 
         final String messageId1 = UUID.randomUUID().toString();
-        final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
-        sendMessage(message1).block(TIMEOUT);
+        final ServiceBusMessage message = getMessage(messageId1, isSessionEnabled);
+        sendMessage(message).block(TIMEOUT);
 
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -525,7 +525,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             assertEquals(index, position);
         };
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(10, messageId, CONTENTS_BYTES);
         if (isSessionEnabled) {
             messages.forEach(m -> m.setSessionId(sessionId));
         }
@@ -670,64 +670,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    /**
-     * Verifies that the lock can be automatically renewed.
-     */
-    @MethodSource("messagingEntityWithSessions")
-    @ParameterizedTest
-    @Disabled
-    void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
-        // Arrange
-//        setSenderAndReceiver(entityType, isSessionEnabled,
-//            builder -> builder.maxAutoLockRenewalDuration(Duration.ofSeconds(120)));
-
-        setSenderAndReceiver(entityType, isSessionEnabled);
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        // Send the message to verify.
-        sendMessage(message).block(TIMEOUT);
-
-        // Act & Assert
-        StepVerifier.create(receiver.receive().map(ServiceBusReceivedMessageContext::getMessage))
-            .assertNext(received -> {
-                assertNotNull(received.getLockedUntil());
-                assertNotNull(received.getLockToken());
-                logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
-                    received.getLockToken(), received.getLockedUntil(), Instant.now());
-
-                final Instant initial = received.getLockedUntil();
-                final Instant timeToStop = initial.plusSeconds(5);
-                Instant latest = Instant.MIN;
-
-                // Simulate some sort of long processing.
-                final AtomicInteger iteration = new AtomicInteger();
-                while (Instant.now().isBefore(timeToStop)) {
-                    logger.info("Iteration {}: Now:{} TimeToStop:{}.", iteration.incrementAndGet(), Instant.now(), timeToStop);
-
-                    try {
-                        TimeUnit.SECONDS.sleep(15);
-                    } catch (InterruptedException error) {
-                        logger.error("Error occurred while sleeping: " + error);
-                    }
-                    assertNotNull(received.getLockedUntil());
-                    latest = received.getLockedUntil();
-                }
-
-                try {
-                    assertTrue(initial.isBefore(latest), String.format(
-                        "Latest should be after or equal to initial. initial: %s. latest: %s", initial, latest));
-                } finally {
-                    logger.info("Completing message.");
-                    receiver.complete(received).block(Duration.ofSeconds(15));
-                    messagesPending.decrementAndGet();
-                }
-            })
-            .thenCancel()
-            .verify(Duration.ofMinutes(2));
-    }
-
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
     void receiveAndAbandon(MessagingEntityType entityType, boolean isSessionEnabled) {
@@ -828,12 +770,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    @MethodSource("messagingEntityWithSessions")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
 
+        final boolean isSessionEnabled = true;
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
 
@@ -914,12 +857,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receivesByNumber(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, false, TestUtils.USE_CASE_RECEIVE_BY_NUMBER);
 
         final String messageId = UUID.randomUUID().toString();
-        final byte[] contents = "Some-contents".getBytes();
         final int number = 10;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, contents);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, CONTENTS_BYTES);
 
         sendMessage(messages).block(Duration.ofSeconds(10));
 
@@ -934,12 +876,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receivesByTime(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, false);
+        setSenderAndReceiver(entityType, false, TestUtils.USE_CASE_RECEIVE_BY_TIME);
 
         final String messageId = UUID.randomUUID().toString();
-        final byte[] contents = "Some-contents".getBytes();
         final int number = 10;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, contents);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(number, messageId, CONTENTS_BYTES);
 
         sendMessage(messages).block(Duration.ofSeconds(15));
 
@@ -948,6 +889,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .doOnNext(next -> messagesPending.decrementAndGet()))
             .expectNextCount(number)
             .verifyComplete();
+    }
+
+    /**
+     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
+     */
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled, int useCase) {
+        setSenderAndReceiver(entityType, isSessionEnabled, null, false, useCase);
     }
 
     /**
@@ -967,23 +915,29 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
         Duration autoLockRenewal, boolean shareConnection) {
-        this.sender = getSenderBuilder(false, entityType, isSessionEnabled, shareConnection).buildAsyncClient();
+        setSenderAndReceiver(entityType, isSessionEnabled, autoLockRenewal, shareConnection, TestUtils.USE_CASE_DEFAULT);
+    }
+
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
+        Duration autoLockRenewal, boolean shareConnection, int useCase) {
+
+        this.sender = getSenderBuilder(false, entityType, isSessionEnabled, shareConnection, useCase).buildAsyncClient();
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection)
+            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection, useCase)
                 .sessionId(sessionId)
                 .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity(), shareConnection, useCase)
                 .sessionId(sessionId)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType, Function.identity(), shareConnection)
+            this.receiver = getReceiverBuilder(false, entityType, Function.identity(), shareConnection, useCase)
                 .maxAutoLockRenewalDuration(autoLockRenewal)
                 .buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity(), shareConnection)
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity(), shareConnection, useCase)
                 .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }

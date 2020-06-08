@@ -109,10 +109,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void multipleReceiveByOneSubscriberMessageTimeout(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
+        setSenderAndReceiver(entityType, isSessionEnabled, TestUtils.USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT);
         final int maxMessages = 2;
         final int totalReceive = 2;
-        final Duration shortTimeOut = Duration.ofSeconds(8);
+        final Duration shortTimeOut = Duration.ofSeconds(7);
         final Duration longTimeOut = Duration.ofSeconds(10);
 
         final String messageId = UUID.randomUUID().toString();
@@ -286,7 +286,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveNoMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
+        setSenderAndReceiver(entityType, isSessionEnabled, TestUtils.USE_CASE_RECEIVE_NO_MESSAGES);
         int howManyMessage = 2;
         long noMessages = 0;
 
@@ -723,7 +723,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
+        setSenderAndReceiver(entityType, isSessionEnabled, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);

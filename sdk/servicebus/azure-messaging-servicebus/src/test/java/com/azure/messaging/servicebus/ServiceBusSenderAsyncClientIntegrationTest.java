@@ -92,8 +92,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, false);
 
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Assert & Act
         StepVerifier.create(sender.send(message).doOnSuccess(aVoid -> messagesPending.incrementAndGet()))
