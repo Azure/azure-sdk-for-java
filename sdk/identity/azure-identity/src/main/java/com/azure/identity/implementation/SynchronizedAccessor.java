@@ -43,8 +43,6 @@ public class SynchronizedAccessor<T> {
                     sink.next(cache);
                 } catch (Exception e) {
                     sink.error(e);
-                } finally {
-                    wip.set(false);
                 }
             }
             return replayProcessor.next();
