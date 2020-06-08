@@ -82,7 +82,7 @@ jobs:
           python3 --version
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}}
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-        displayName: Apply version settings to repository
+        displayName: Apply version settings to repository $(System.TeamProject)
 
       - script: |
           pip install markdown2 BeautifulSoup4
