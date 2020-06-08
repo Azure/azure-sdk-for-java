@@ -1,4 +1,4 @@
-package com.azure.cosmos.table.implementation;
+package com.azure.data.tables.implementation;
 
 import java.util.Map;
 

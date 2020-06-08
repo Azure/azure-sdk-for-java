@@ -1,4 +1,4 @@
-package com.azure.cosmos.table.implementation;
+package com.azure.data.tables.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.cosmos.table.implementation.models.TableServiceErrorException;
