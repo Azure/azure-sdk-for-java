@@ -8,7 +8,6 @@ jobs:
         - name: azure-messaging-servicebus
           groupId: com.azure
           safeName: azuremessagingservicebus
-      TimeoutInMinutes: 70
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_LOG_LEVEL: 2

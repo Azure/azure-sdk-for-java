@@ -251,7 +251,6 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, boolean isSessionAware, boolean sharedConnection) {
 
@@ -273,7 +272,6 @@ public abstract class IntegrationTestBase extends TestBase {
         }
 
     }
-
 
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
@@ -445,8 +443,7 @@ public abstract class IntegrationTestBase extends TestBase {
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusReceivedMessageContext context, String messageId,
-        boolean isSessionEnabled) {
+    protected void assertMessageEquals(ServiceBusReceivedMessageContext context, String messageId, boolean isSessionEnabled) {
         Assertions.assertNotNull(context);
         Assertions.assertNotNull(context.getMessage());
         assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);
@@ -470,10 +467,10 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private ServiceBusClientBuilder getBuilder(boolean useCredentials, boolean sharedConnection) {
         ServiceBusClientBuilder builder;
-        if (sharedConnection && sharedBuilder ==  null) {
+        if (sharedConnection && sharedBuilder == null) {
             sharedBuilder = getBuilder(useCredentials);
             builder = sharedBuilder;
-        } else if (sharedConnection && sharedBuilder !=  null) {
+        } else if (sharedConnection && sharedBuilder != null) {
             builder = sharedBuilder;
         } else {
             builder = getBuilder(useCredentials);
