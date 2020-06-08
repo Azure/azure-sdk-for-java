@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountsInner;
+import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;

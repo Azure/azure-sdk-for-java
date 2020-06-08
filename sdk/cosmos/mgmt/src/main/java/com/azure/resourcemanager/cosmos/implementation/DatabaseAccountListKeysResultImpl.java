@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.DatabaseAccountListKeysResult;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResultInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListKeysResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The implementation for DatabaseAccountListKeysResult. */

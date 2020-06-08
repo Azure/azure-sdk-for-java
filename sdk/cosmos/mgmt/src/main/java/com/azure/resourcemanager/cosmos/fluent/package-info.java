@@ -6,4 +6,4 @@
  * Package containing the implementations and inner classes for CosmosDBManagementClient. Azure Cosmos DB Database
  * Service Resource Provider REST API.
  */
-package com.azure.resourcemanager.cosmos.models;
+package com.azure.resourcemanager.cosmos.fluent;

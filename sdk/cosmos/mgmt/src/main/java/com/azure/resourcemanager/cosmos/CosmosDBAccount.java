@@ -5,7 +5,7 @@ package com.azure.resourcemanager.cosmos;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

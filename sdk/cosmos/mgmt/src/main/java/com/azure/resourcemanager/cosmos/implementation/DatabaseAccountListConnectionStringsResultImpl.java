@@ -4,7 +4,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.resourcemanager.cosmos.DatabaseAccountConnectionString;
 import com.azure.resourcemanager.cosmos.DatabaseAccountListConnectionStringsResult;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResultInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountListConnectionStringsResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 

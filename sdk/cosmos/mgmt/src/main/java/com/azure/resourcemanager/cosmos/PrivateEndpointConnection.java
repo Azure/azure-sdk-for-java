@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.cosmos;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.cosmos.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
