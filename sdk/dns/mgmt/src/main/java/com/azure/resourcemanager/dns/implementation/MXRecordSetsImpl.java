@@ -28,7 +28,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), name, this.recordType)
             .onErrorResume(e -> Mono.empty())
             .map(this::wrapModel);
@@ -42,7 +42,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                     .parent()
                     .manager()
                     .inner()
-                    .recordSets()
+                    .getRecordSets()
                     .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
@@ -54,7 +54,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                     .parent()
                     .manager()
                     .inner()
-                    .recordSets()
+                    .getRecordSets()
                     .listByType(
                         this.dnsZone.resourceGroupName(),
                         this.dnsZone.name(),
@@ -70,7 +70,7 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
                 .parent()
                 .manager()
                 .inner()
-                .recordSets()
+                .getRecordSets()
                 .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 

@@ -299,7 +299,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.recordType())
             .map(recordSetInner -> prepare(recordSetInner))
             .flatMap(recordSetInner -> createOrUpdateAsync(recordSetInner));
@@ -311,7 +311,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .deleteAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
@@ -336,7 +336,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.recordType());
     }
 
@@ -346,7 +346,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .createOrUpdateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),

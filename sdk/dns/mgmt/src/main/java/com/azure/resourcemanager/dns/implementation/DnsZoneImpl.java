@@ -175,7 +175,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     @Override
     public SoaRecordSet getSoaRecordSet() {
         RecordSetInner inner =
-            this.manager().inner().recordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+            this.manager().inner().getRecordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
         if (inner == null) {
             return null;
         }
@@ -405,7 +405,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                     self
                         .manager()
                         .inner()
-                        .zones()
+                        .getZones()
                         .createOrUpdateAsync(
                             self.resourceGroupName(),
                             self.name(),
@@ -446,7 +446,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     protected Mono<ZoneInner> getInnerAsync() {
-        return this.manager().inner().zones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getZones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {
@@ -470,7 +470,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                     this
                         .manager()
                         .inner()
-                        .recordSets()
+                        .getRecordSets()
                         .listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
                     inner -> {
                         DnsRecordSet recordSet = new DnsRecordSetImpl(inner.name(), inner.type(), self, inner);

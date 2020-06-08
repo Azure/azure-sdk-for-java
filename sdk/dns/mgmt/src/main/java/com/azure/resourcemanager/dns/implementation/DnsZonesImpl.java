@@ -3,20 +3,20 @@
 package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.resourcemanager.dns.DnsZoneManager;
+import com.azure.resourcemanager.dns.fluent.ZonesClient;
+import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.DnsZones;
-import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
-import com.azure.resourcemanager.dns.fluent.ZonesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation of DnsZones. */
-class DnsZonesImpl extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesInner, DnsZoneManager>
+public class DnsZonesImpl extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager>
     implements DnsZones {
 
-    DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
-        super(dnsZoneManager.inner().zones(), dnsZoneManager);
+    public DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
+        super(dnsZoneManager.inner().getZones(), dnsZoneManager);
     }
 
     @Override
@@ -45,12 +45,12 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl,
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName) {
-        return this.manager().inner().zones().deleteAsync(resourceGroupName, zoneName);
+        return this.manager().inner().getZones().deleteAsync(resourceGroupName, zoneName);
     }
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue) {
-        return this.manager().inner().zones().deleteAsync(resourceGroupName, zoneName, eTagValue);
+        return this.manager().inner().getZones().deleteAsync(resourceGroupName, zoneName, eTagValue);
     }
 
     @Override
