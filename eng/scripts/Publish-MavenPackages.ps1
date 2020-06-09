@@ -265,7 +265,7 @@ foreach ($packageDetail in $packageDetails) {
   Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
   if ($RepositoryUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
-    Write-Information "GPG Signing and deploying package in one step to public feed: $RepositoryUrl"
+    Write-Information "GPG Signing and deploying package in one step to devops feed: $RepositoryUrl"
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
   }
   elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
