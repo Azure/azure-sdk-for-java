@@ -10,6 +10,7 @@ package com.microsoft.azure.management.eventhubs.v2017_04_01.implementation;
 
 import com.microsoft.azure.management.eventhubs.v2017_04_01.NetworkRuleSet;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import rx.Observable;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.DefaultAction;
 import java.util.List;
 import com.microsoft.azure.management.eventhubs.v2017_04_01.NWRuleSetIpRules;
@@ -17,7 +18,8 @@ import com.microsoft.azure.management.eventhubs.v2017_04_01.NWRuleSetVirtualNetw
 
 class NetworkRuleSetImpl extends WrapperImpl<NetworkRuleSetInner> implements NetworkRuleSet {
     private final EventHubsManager manager;
-    NetworkRuleSetImpl(NetworkRuleSetInner inner, EventHubsManager manager) {
+
+    NetworkRuleSetImpl(NetworkRuleSetInner inner,  EventHubsManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -26,6 +28,8 @@ class NetworkRuleSetImpl extends WrapperImpl<NetworkRuleSetInner> implements Net
     public EventHubsManager manager() {
         return this.manager;
     }
+
+
 
     @Override
     public DefaultAction defaultAction() {

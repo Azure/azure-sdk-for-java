@@ -67,10 +67,14 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
     public Observable<Eventhub> getAsync(String resourceGroupName, String namespaceName, String eventHubName) {
         EventHubsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, eventHubName)
-        .map(new Func1<EventhubInner, Eventhub>() {
+        .flatMap(new Func1<EventhubInner, Observable<Eventhub>>() {
             @Override
-            public Eventhub call(EventhubInner inner) {
-                return wrapModel(inner);
+            public Observable<Eventhub> call(EventhubInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Eventhub)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
     public Observable<EventhubNamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
         EventHubsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
-        .map(new Func1<AuthorizationRuleInner, EventhubNamespaceAuthorizationRule>() {
+        .flatMap(new Func1<AuthorizationRuleInner, Observable<EventhubNamespaceAuthorizationRule>>() {
             @Override
-            public EventhubNamespaceAuthorizationRule call(AuthorizationRuleInner inner) {
-                return wrapEventhubNamespaceAuthorizationRuleModel(inner);
+            public Observable<EventhubNamespaceAuthorizationRule> call(AuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((EventhubNamespaceAuthorizationRule)wrapEventhubNamespaceAuthorizationRuleModel(inner));
+                }
             }
        });
     }
