@@ -17,7 +17,7 @@ public class Hotel {
     @JsonProperty(value = "HotelId")
     private String hotelId;
 
-    @SearchableFieldProperty(isSortable = true, analyzer = "en.lucene")
+    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     private String hotelName;
 

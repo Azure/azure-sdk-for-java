@@ -64,7 +64,9 @@ public final class PollerFactory {
                         content);
                     state.store(context);
                     T result = PollOperation.deserialize(serializerAdapter, content, pollResultType);
-                    return new PollResponse<>(state.getOperationStatus(), new PollResult<>(result));
+                    return new PollResponse<>(state.getOperationStatus(),
+                        new PollResult<>(result),
+                        state.getPollDelay());
                 }));
         return PollerFlux.create(defaultPollInterval,
             defaultLroInitOperation,

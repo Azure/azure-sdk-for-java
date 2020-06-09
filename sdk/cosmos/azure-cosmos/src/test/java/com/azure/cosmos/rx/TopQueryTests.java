@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -49,7 +49,7 @@ public class TopQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         options.setQueryMetricsEnabled(qmEnabled);
 
@@ -142,7 +142,7 @@ public class TopQueryTests extends TestSuiteBase {
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
 
         do {
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.<CosmosItemProperties>queryItems(query, options, CosmosItemProperties.class);
 

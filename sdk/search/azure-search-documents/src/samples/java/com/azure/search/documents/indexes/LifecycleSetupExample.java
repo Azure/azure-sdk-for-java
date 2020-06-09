@@ -187,7 +187,7 @@ public class LifecycleSetupExample {
                         .setAnalyzerName(LexicalAnalyzerName.EN_MICROSOFT)));
 
         // Set Suggester
-        index.setSearchSuggesters(Collections.singletonList(new SearchSuggester()
+        index.setSuggesters(Collections.singletonList(new SearchSuggester()
             .setName(SUGGESTER_NAME)
             .setSourceFields(Collections.singletonList("Tags"))));
 

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.KnownAuthorityHosts;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;
@@ -50,6 +51,7 @@ public final class IdentityClientOptions {
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
     private String keePassDatabasePath;
+    private AuthenticationRecord authenticationRecord;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -285,5 +287,26 @@ public final class IdentityClientOptions {
      */
     public String getIntelliJKeePassDatabasePath() {
         return keePassDatabasePath;
+    }
+
+    /**
+     * Sets the {@link AuthenticationRecord} captured from a previous authentication.
+     *
+     * @param authenticationRecord The Authentication record to be configured.
+     *
+     * @return An updated instance of this builder with the configured authentication record.
+     */
+    public IdentityClientOptions setAuthenticationRecord(AuthenticationRecord authenticationRecord) {
+        this.authenticationRecord = authenticationRecord;
+        return this;
+    }
+
+    /**
+     * Get the configured {@link AuthenticationRecord}.
+     *
+     * @return {@link AuthenticationRecord}.
+     */
+    public AuthenticationRecord getAuthenticationRecord() {
+        return authenticationRecord;
     }
 }

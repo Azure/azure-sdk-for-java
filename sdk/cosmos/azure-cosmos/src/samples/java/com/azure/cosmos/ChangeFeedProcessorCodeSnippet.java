@@ -12,14 +12,14 @@ public class ChangeFeedProcessorCodeSnippet {
         CosmosAsyncContainer feedContainer = null;
         CosmosAsyncContainer leaseContainer = null;
         // BEGIN: com.azure.cosmos.changeFeedProcessor.builder
-        ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .handleChanges(docs -> {
                 // Implementation for handling and processing CosmosItemProperties list goes here
             })
-            .build();
+            .buildChangeFeedProcessor();
         // END: com.azure.cosmos.changeFeedProcessor.builder
     }
 }

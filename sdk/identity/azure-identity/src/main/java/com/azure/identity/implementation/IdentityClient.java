@@ -45,12 +45,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -541,12 +539,13 @@ public class IdentityClient {
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
         return Mono.fromFuture(() -> getPublicClientApplication(false).acquireToken(
-            AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
-                .scopes(new HashSet<>(request.getScopes()))
-                .build()))
-            .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with authorization code",
-                null, t)).map(ar -> new MsalToken(ar, options));
+                AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
+                        .scopes(new HashSet<>(request.getScopes()))
+                        .build())).map(ar -> new MsalToken(ar, options))
+                       .onErrorMap(t -> new ClientAuthenticationException("Failed to acquire token with "
+                                + "authorization code", null, t));
     }
+
 
     /**
      * Asynchronously acquire a token from Active Directory by opening a browser and wait for the user to login. The
@@ -795,7 +794,7 @@ public class IdentityClient {
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(500);
                 connection.connect();
-            } catch (ConnectException | SecurityException | SocketTimeoutException e) {
+            } catch (Exception e) {
                 throw logger.logExceptionAsError(
                     new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
                                                              + e.getMessage(), e));
@@ -884,5 +883,23 @@ public class IdentityClient {
                 httpPipelineAdapter = new HttpPipelineAdapter(setupPipeline(HttpClient.createDefault()));
             }
         }
+    }
+
+    /**
+     * Get the configured tenant id.
+     *
+     * @return the tenant id.
+     */
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    /**
+     * Get the configured client id.
+     *
+     * @return the client id.
+     */
+    public String getClientId() {
+        return clientId;
     }
 }

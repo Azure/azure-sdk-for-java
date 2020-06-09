@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.USReceipt;
+import com.azure.ai.formrecognizer.models.FormField;
+import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -16,6 +18,8 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 
@@ -270,22 +274,42 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         String receiptUrl = "{file_source_url}";
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl).subscribe(recognizePollingOperation -> {
             // if training polling operation completed, retrieve the final result.
-            recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts ->
-                recognizedReceipts.forEach(recognizedReceipt -> {
-                    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        usReceipt.getMerchantName().getFieldValue(),
-                        usReceipt.getMerchantName().getConfidence());
-                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                        usReceipt.getMerchantAddress().getFieldValue(),
-                        usReceipt.getMerchantAddress().getConfidence());
-                    System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
-                        usReceipt.getMerchantPhoneNumber().getFieldValue(),
-                        usReceipt.getMerchantPhoneNumber().getConfidence());
-                    System.out.printf("Total: %.2f, confidence: %.2f%n",
-                        usReceipt.getTotal().getFieldValue(),
-                        usReceipt.getTotal().getConfidence());
-                }));
+            recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
+                for (int i = 0; i < recognizedReceipts.size(); i++) {
+                    RecognizedReceipt recognizedReceipt = recognizedReceipts.get(i);
+                    Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+                    System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+                    FormField merchantNameField = recognizedFields.get("MerchantName");
+                    if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                            merchantNameField.getFieldValue().asString(),
+                            merchantNameField.getConfidence());
+                    }
+                    FormField transactionDateField = recognizedFields.get("TransactionDate");
+                    if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                        System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                            transactionDateField.getFieldValue().asDate(),
+                            transactionDateField.getConfidence());
+                    }
+                    FormField receiptItemsField = recognizedFields.get("Items");
+                    System.out.printf("Receipt Items: %n");
+                    if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
+                        List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                        receiptItems.forEach(receiptItem -> {
+                            if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
+                                receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
+                                    if (key.equals("Quantity")) {
+                                        if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                                            System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                                formField.getFieldValue().asInteger(), formField.getConfidence());
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            });
         });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string
     }
@@ -300,22 +324,42 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceiptsFromUrl(receiptUrl, includeTextDetails, Duration.ofSeconds(5))
             .subscribe(recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts ->
-                    recognizedReceipts.forEach(recognizedReceipt -> {
-                        USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                            usReceipt.getMerchantName().getFieldValue(),
-                            usReceipt.getMerchantName().getConfidence());
-                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                            usReceipt.getMerchantAddress().getFieldValue(),
-                            usReceipt.getMerchantAddress().getConfidence());
-                        System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
-                            usReceipt.getMerchantPhoneNumber().getFieldValue(),
-                            usReceipt.getMerchantPhoneNumber().getConfidence());
-                        System.out.printf("Total: %.2f, confidence: %.2f%n",
-                            usReceipt.getTotal().getFieldValue(),
-                            usReceipt.getTotal().getConfidence());
-                    }));
+                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
+                    for (int i = 0; i < recognizedReceipts.size(); i++) {
+                        RecognizedReceipt recognizedReceipt = recognizedReceipts.get(i);
+                        Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+                        System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+                        FormField merchantNameField = recognizedFields.get("MerchantName");
+                        if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                merchantNameField.getFieldValue().asString(),
+                                merchantNameField.getConfidence());
+                        }
+                        FormField transactionDateField = recognizedFields.get("TransactionDate");
+                        if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                transactionDateField.getFieldValue().asDate(),
+                                transactionDateField.getConfidence());
+                        }
+                        FormField receiptItemsField = recognizedFields.get("Items");
+                        System.out.printf("Receipt Items: %n");
+                        if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
+                            List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                            receiptItems.forEach(receiptItem -> {
+                                if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
+                                    receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
+                                        if (key.equals("Quantity")) {
+                                            if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                                                System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                                    formField.getFieldValue().asInteger(), formField.getConfidence());
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration
     }
@@ -333,25 +377,44 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG)
             .subscribe(recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts ->
-                    recognizedReceipts.forEach(recognizedReceipt -> {
-                        USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                            usReceipt.getMerchantName().getFieldValue(),
-                            usReceipt.getMerchantName().getConfidence());
-                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                            usReceipt.getMerchantAddress().getFieldValue(),
-                            usReceipt.getMerchantAddress().getConfidence());
-                        System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
-                            usReceipt.getMerchantPhoneNumber().getFieldValue(),
-                            usReceipt.getMerchantPhoneNumber().getConfidence());
-                        System.out.printf("Total: %.2f, confidence: %.2f%n",
-                            usReceipt.getTotal().getFieldValue(),
-                            usReceipt.getTotal().getConfidence());
-                    }));
+                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
+                    for (int i = 0; i < recognizedReceipts.size(); i++) {
+                        RecognizedReceipt recognizedReceipt = recognizedReceipts.get(i);
+                        Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+                        System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+                        FormField merchantNameField = recognizedFields.get("MerchantName");
+                        if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                merchantNameField.getFieldValue().asString(),
+                                merchantNameField.getConfidence());
+                        }
+                        FormField transactionDateField = recognizedFields.get("TransactionDate");
+                        if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                transactionDateField.getFieldValue().asDate(),
+                                transactionDateField.getConfidence());
+                        }
+                        FormField receiptItemsField = recognizedFields.get("Items");
+                        System.out.printf("Receipt Items: %n");
+                        if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
+                            List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                            receiptItems.forEach(receiptItem -> {
+                                if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
+                                    receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
+                                        if (key.equals("Quantity")) {
+                                            if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                                                System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                                    formField.getFieldValue().asInteger(), formField.getConfidence());
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType
-
     }
 
     /**
@@ -368,22 +431,42 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
         formRecognizerAsyncClient.beginRecognizeReceipts(buffer, sourceFile.length(), FormContentType.IMAGE_JPEG,
             includeTextDetails, Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {
                 // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts ->
-                    recognizedReceipts.forEach(recognizedReceipt -> {
-                        USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-                        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                            usReceipt.getMerchantName().getFieldValue(),
-                            usReceipt.getMerchantName().getConfidence());
-                        System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                            usReceipt.getMerchantAddress().getFieldValue(),
-                            usReceipt.getMerchantAddress().getConfidence());
-                        System.out.printf("Merchant Phone Number %s, confidence: %.2f%n",
-                            usReceipt.getMerchantPhoneNumber().getFieldValue(),
-                            usReceipt.getMerchantPhoneNumber().getConfidence());
-                        System.out.printf("Total: %.2f, confidence: %.2f%n",
-                            usReceipt.getTotal().getFieldValue(),
-                            usReceipt.getTotal().getConfidence());
-                    }));
+                recognizePollingOperation.getFinalResult().subscribe(recognizedReceipts -> {
+                    for (int i = 0; i < recognizedReceipts.size(); i++) {
+                        RecognizedReceipt recognizedReceipt = recognizedReceipts.get(i);
+                        Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+                        System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+                        FormField merchantNameField = recognizedFields.get("MerchantName");
+                        if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                            System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+                                merchantNameField.getFieldValue().asString(),
+                                merchantNameField.getConfidence());
+                        }
+                        FormField transactionDateField = recognizedFields.get("TransactionDate");
+                        if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                            System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+                                transactionDateField.getFieldValue().asDate(),
+                                transactionDateField.getConfidence());
+                        }
+                        FormField receiptItemsField = recognizedFields.get("Items");
+                        System.out.printf("Receipt Items: %n");
+                        if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
+                            List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                            receiptItems.forEach(receiptItem -> {
+                                if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
+                                    receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
+                                        if (key.equals("Quantity")) {
+                                            if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                                                System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                                    formField.getFieldValue().asInteger(), formField.getConfidence());
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
             });
         // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration
     }

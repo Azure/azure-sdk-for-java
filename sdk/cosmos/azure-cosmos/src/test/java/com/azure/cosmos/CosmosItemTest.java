@@ -9,7 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -133,10 +133,10 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
-                container.readAllItems(queryRequestOptions, CosmosItemProperties.class);
+                container.readAllItems(cosmosQueryRequestOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -147,16 +147,16 @@ public class CosmosItemTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
-                container.queryItems(query, queryRequestOptions, CosmosItemProperties.class);
+                container.queryItems(query, cosmosQueryRequestOptions, CosmosItemProperties.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator3 =
-                container.queryItems(querySpec, queryRequestOptions, CosmosItemProperties.class);
+                container.queryItems(querySpec, cosmosQueryRequestOptions, CosmosItemProperties.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -175,7 +175,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
 
         String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0), actualIds.get(1), actualIds.get(2));
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         String continuationToken = null;
         int pageSize = 1;
 
@@ -183,7 +183,7 @@ public class CosmosItemTest extends TestSuiteBase {
         int finalDocumentCount = 0;
 
         CosmosPagedIterable<CosmosItemProperties> feedResponseIterator1 =
-            container.queryItems(query, queryRequestOptions, CosmosItemProperties.class);
+            container.queryItems(query, cosmosQueryRequestOptions, CosmosItemProperties.class);
 
         do {
             Iterable<FeedResponse<CosmosItemProperties>> feedResponseIterable =

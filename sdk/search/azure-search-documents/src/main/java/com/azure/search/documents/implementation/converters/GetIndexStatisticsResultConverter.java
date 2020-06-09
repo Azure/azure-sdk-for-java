@@ -4,36 +4,36 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult} and
- * {@link GetIndexStatisticsResult}.
+ * {@link SearchIndexStatistics}.
  */
 public final class GetIndexStatisticsResultConverter {
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult} to
-     * {@link GetIndexStatisticsResult}.
+     * {@link SearchIndexStatistics}.
      */
-    public static GetIndexStatisticsResult map(com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult obj) {
+    public static SearchIndexStatistics map(com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult obj) {
         if (obj == null) {
             return null;
         }
-        GetIndexStatisticsResult getIndexStatisticsResult = new GetIndexStatisticsResult();
+        SearchIndexStatistics searchIndexStatistics = new SearchIndexStatistics();
 
         long documentCount = obj.getDocumentCount();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "documentCount", documentCount);
+        PrivateFieldAccessHelper.set(searchIndexStatistics, "documentCount", documentCount);
 
         long storageSize = obj.getStorageSize();
-        PrivateFieldAccessHelper.set(getIndexStatisticsResult, "storageSize", storageSize);
-        return getIndexStatisticsResult;
+        PrivateFieldAccessHelper.set(searchIndexStatistics, "storageSize", storageSize);
+        return searchIndexStatistics;
     }
 
     /**
-     * Maps from {@link GetIndexStatisticsResult} to
+     * Maps from {@link SearchIndexStatistics} to
      * {@link com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult map(GetIndexStatisticsResult obj) {
+    public static com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult map(SearchIndexStatistics obj) {
         if (obj == null) {
             return null;
         }

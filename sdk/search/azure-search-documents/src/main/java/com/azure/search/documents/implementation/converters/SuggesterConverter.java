@@ -12,7 +12,6 @@ import java.util.List;
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link SearchSuggester}.
  */
 public final class SuggesterConverter {
-    private static final String SEARCH_MODE = "analyzingInfixMatching";
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.Suggester} to {@link SearchSuggester}.
      */
@@ -51,7 +50,6 @@ public final class SuggesterConverter {
         String name = obj.getName();
         suggester.setName(name);
 
-        suggester.setSearchMode(SEARCH_MODE);
         return suggester;
     }
 

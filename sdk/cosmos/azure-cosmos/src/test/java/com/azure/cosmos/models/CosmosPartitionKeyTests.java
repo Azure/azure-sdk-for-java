@@ -189,13 +189,13 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         this.validateItemSuccess(upsertMono, validator);
 
         // one document was created during setup, one with create (which was replaced) and one with upsert
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
-        queryRequestOptions.setPartitionKey(PartitionKey.NONE);
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setPartitionKey(PartitionKey.NONE);
         ArrayList<String> expectedIds = new ArrayList<String>();
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);
         expectedIds.add(upsertedItemId);
-        CosmosPagedFlux<CosmosItemProperties> queryFlux = createdContainer.queryItems("SELECT * from c", queryRequestOptions, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> queryFlux = createdContainer.queryItems("SELECT * from c", cosmosQueryRequestOptions, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -203,7 +203,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
 
-        queryFlux = createdContainer.queryItems("SELECT * FROM r", queryRequestOptions, CosmosItemProperties.class);
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", cosmosQueryRequestOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(3)
                 .numberOfPages(1)
@@ -240,7 +240,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // 3 previous items + 1 created from the sproc
         expectedIds.add(documentCreatedBySprocId);
-        queryFlux = createdContainer.queryItems("SELECT * FROM r", queryRequestOptions, CosmosItemProperties.class);
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", cosmosQueryRequestOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(4)
                 .numberOfPages(1)
@@ -278,7 +278,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         this.validateItemSuccess(deleteMono, deleteResponseValidator);
 
-        queryFlux = createdContainer.queryItems("SELECT * FROM r", queryRequestOptions, CosmosItemProperties.class);
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", cosmosQueryRequestOptions, CosmosItemProperties.class);
         queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(0)
                 .numberOfPages(1)
