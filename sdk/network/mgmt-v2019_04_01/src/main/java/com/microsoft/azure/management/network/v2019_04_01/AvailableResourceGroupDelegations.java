@@ -9,12 +9,13 @@
 package com.microsoft.azure.management.network.v2019_04_01;
 
 import rx.Observable;
-import com.microsoft.azure.management.network.v2019_04_01.LocationAvailableDelegationModel;
+import com.microsoft.azure.management.network.v2019_04_01.implementation.AvailableResourceGroupDelegationsInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing AvailableResourceGroupDelegations.
  */
-public interface AvailableResourceGroupDelegations {
+public interface AvailableResourceGroupDelegations extends HasInner<AvailableResourceGroupDelegationsInner> {
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
      *

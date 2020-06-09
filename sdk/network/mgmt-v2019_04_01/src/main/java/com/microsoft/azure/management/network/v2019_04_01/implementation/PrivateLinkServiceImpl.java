@@ -13,12 +13,13 @@ import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkService;
 import rx.Observable;
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServiceIpConfiguration;
-import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpointConnection;
+import com.microsoft.azure.management.network.v2019_04_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServicePropertiesVisibility;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServicePropertiesAutoApproval;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2019_04_01.FrontendIPConfiguration;
 import com.microsoft.azure.management.network.v2019_04_01.NetworkInterface;
+import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpointConnection;
 
 class PrivateLinkServiceImpl extends GroupableResourceCoreImpl<PrivateLinkService, PrivateLinkServiceInner, PrivateLinkServiceImpl, NetworkManager> implements PrivateLinkService, PrivateLinkService.Definition, PrivateLinkService.Update {
     PrivateLinkServiceImpl(String name, PrivateLinkServiceInner inner, NetworkManager manager) {
@@ -77,10 +78,10 @@ class PrivateLinkServiceImpl extends GroupableResourceCoreImpl<PrivateLinkServic
     }
 
     @Override
-    public List<FrontendIPConfiguration> loadBalancerFrontendIPConfigurations() {
+    public List<FrontendIPConfiguration> loadBalancerFrontendIpConfigurations() {
         List<FrontendIPConfiguration> lst = new ArrayList<FrontendIPConfiguration>();
-        if (this.inner().loadBalancerFrontendIPConfigurations() != null) {
-            for (FrontendIPConfigurationInner inner : this.inner().loadBalancerFrontendIPConfigurations()) {
+        if (this.inner().loadBalancerFrontendIpConfigurations() != null) {
+            for (FrontendIPConfigurationInner inner : this.inner().loadBalancerFrontendIpConfigurations()) {
                 lst.add( new FrontendIPConfigurationImpl(inner, manager()));
             }
         }
@@ -100,11 +101,17 @@ class PrivateLinkServiceImpl extends GroupableResourceCoreImpl<PrivateLinkServic
 
     @Override
     public List<PrivateEndpointConnection> privateEndpointConnections() {
-        return this.inner().privateEndpointConnections();
+        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
+        if (this.inner().privateEndpointConnections() != null) {
+            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
+                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
     }
 
     @Override
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
 
@@ -138,13 +145,13 @@ class PrivateLinkServiceImpl extends GroupableResourceCoreImpl<PrivateLinkServic
     }
 
     @Override
-    public PrivateLinkServiceImpl withLoadBalancerFrontendIPConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIPConfigurations) {
-        this.inner().withLoadBalancerFrontendIPConfigurations(loadBalancerFrontendIPConfigurations);
+    public PrivateLinkServiceImpl withLoadBalancerFrontendIpConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations) {
+        this.inner().withLoadBalancerFrontendIpConfigurations(loadBalancerFrontendIpConfigurations);
         return this;
     }
 
     @Override
-    public PrivateLinkServiceImpl withPrivateEndpointConnections(List<PrivateEndpointConnection> privateEndpointConnections) {
+    public PrivateLinkServiceImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.inner().withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }
