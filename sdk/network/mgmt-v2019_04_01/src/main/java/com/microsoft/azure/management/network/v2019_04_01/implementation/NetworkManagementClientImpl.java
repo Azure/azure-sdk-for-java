@@ -12,6 +12,8 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 import com.microsoft.azure.management.network.v2019_04_01.ErrorException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
@@ -200,32 +202,6 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      */
     public AvailableResourceGroupDelegationsInner availableResourceGroupDelegations() {
         return this.availableResourceGroupDelegations;
-    }
-
-    /**
-     * The AvailablePrivateEndpointTypesInner object to access its operations.
-     */
-    private AvailablePrivateEndpointTypesInner availablePrivateEndpointTypes;
-
-    /**
-     * Gets the AvailablePrivateEndpointTypesInner object to access its operations.
-     * @return the AvailablePrivateEndpointTypesInner object.
-     */
-    public AvailablePrivateEndpointTypesInner availablePrivateEndpointTypes() {
-        return this.availablePrivateEndpointTypes;
-    }
-
-    /**
-     * The AvailableResourceGroupPrivateEndpointTypesInner object to access its operations.
-     */
-    private AvailableResourceGroupPrivateEndpointTypesInner availableResourceGroupPrivateEndpointTypes;
-
-    /**
-     * Gets the AvailableResourceGroupPrivateEndpointTypesInner object to access its operations.
-     * @return the AvailableResourceGroupPrivateEndpointTypesInner object.
-     */
-    public AvailableResourceGroupPrivateEndpointTypesInner availableResourceGroupPrivateEndpointTypes() {
-        return this.availableResourceGroupPrivateEndpointTypes;
     }
 
     /**
@@ -486,6 +462,19 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      */
     public PrivateEndpointsInner privateEndpoints() {
         return this.privateEndpoints;
+    }
+
+    /**
+     * The AvailablePrivateEndpointTypesInner object to access its operations.
+     */
+    private AvailablePrivateEndpointTypesInner availablePrivateEndpointTypes;
+
+    /**
+     * Gets the AvailablePrivateEndpointTypesInner object to access its operations.
+     * @return the AvailablePrivateEndpointTypesInner object.
+     */
+    public AvailablePrivateEndpointTypesInner availablePrivateEndpointTypes() {
+        return this.availablePrivateEndpointTypes;
     }
 
     /**
@@ -1203,8 +1192,6 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.applicationSecurityGroups = new ApplicationSecurityGroupsInner(restClient().retrofit(), this);
         this.availableDelegations = new AvailableDelegationsInner(restClient().retrofit(), this);
         this.availableResourceGroupDelegations = new AvailableResourceGroupDelegationsInner(restClient().retrofit(), this);
-        this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesInner(restClient().retrofit(), this);
-        this.availableResourceGroupPrivateEndpointTypes = new AvailableResourceGroupPrivateEndpointTypesInner(restClient().retrofit(), this);
         this.azureFirewalls = new AzureFirewallsInner(restClient().retrofit(), this);
         this.azureFirewallFqdnTags = new AzureFirewallFqdnTagsInner(restClient().retrofit(), this);
         this.bastionHosts = new BastionHostsInner(restClient().retrofit(), this);
@@ -1225,6 +1212,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.expressRoutePorts = new ExpressRoutePortsInner(restClient().retrofit(), this);
         this.expressRouteLinks = new ExpressRouteLinksInner(restClient().retrofit(), this);
         this.privateEndpoints = new PrivateEndpointsInner(restClient().retrofit(), this);
+        this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesInner(restClient().retrofit(), this);
         this.privateLinkServices = new PrivateLinkServicesInner(restClient().retrofit(), this);
         this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
         this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsInner(restClient().retrofit(), this);
