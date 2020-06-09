@@ -339,6 +339,23 @@ public class FunctionAppsTests extends AppServiceTest {
         }
     }
 
+    @Test
+    public void canCRUDLinuxFunctionAppJava11() throws Exception {
+        rgName2 = null;
+
+        // function app with consumption plan
+        FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName1)
+            .withNewLinuxConsumptionPlan()
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_11)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+            .create();
+        Assertions.assertNotNull(functionApp1);
+        assertLinuxJava8(functionApp1, FunctionRuntimeStack.JAVA_11.getLinuxFxVersionForConsumptionPlan());
+    }
+
     private static Map<String, AppSetting> assertLinuxJava8(FunctionApp functionApp, String linuxFxVersion) {
         Assertions.assertEquals(linuxFxVersion, functionApp.linuxFxVersion());
         Assertions
