@@ -25,14 +25,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.LogSearchRuleResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -53,11 +52,11 @@ public final class ScheduledQueryRulesClient
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of ScheduledQueryRulesInner.
+     * Initializes an instance of ScheduledQueryRulesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ScheduledQueryRulesClient(MonitorClient client) {
+    public ScheduledQueryRulesClient(MonitorClient client) {
         this.service =
             RestProxy.create(ScheduledQueryRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -76,8 +75,8 @@ public final class ScheduledQueryRulesClient
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogSearchRuleResourceInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<LogSearchRuleResourceInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
@@ -91,8 +90,8 @@ public final class ScheduledQueryRulesClient
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogSearchRuleResourceInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<LogSearchRuleResourceInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
@@ -105,8 +104,8 @@ public final class ScheduledQueryRulesClient
                 + "/scheduledQueryRules/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogSearchRuleResourceInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<LogSearchRuleResourceInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
@@ -121,7 +120,7 @@ public final class ScheduledQueryRulesClient
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
@@ -132,8 +131,8 @@ public final class ScheduledQueryRulesClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/scheduledQueryRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogSearchRuleResourceCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<LogSearchRuleResourceCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @PathParam("subscriptionId") String subscriptionId,
@@ -145,8 +144,8 @@ public final class ScheduledQueryRulesClient
                 + "/scheduledQueryRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogSearchRuleResourceCollectionInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<LogSearchRuleResourceCollectionInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
@@ -166,11 +165,13 @@ public final class ScheduledQueryRulesClient
      * @return the Log Search Rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogSearchRuleResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<LogSearchRuleResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String ruleName, LogSearchRuleResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -196,7 +197,7 @@ public final class ScheduledQueryRulesClient
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             ruleName,
@@ -219,11 +220,13 @@ public final class ScheduledQueryRulesClient
      * @return the Log Search Rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogSearchRuleResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<LogSearchRuleResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String ruleName, LogSearchRuleResourceInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -246,7 +249,7 @@ public final class ScheduledQueryRulesClient
         final String apiVersion = "2018-04-16";
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 ruleName,
@@ -271,7 +274,33 @@ public final class ScheduledQueryRulesClient
         String resourceGroupName, String ruleName, LogSearchRuleResourceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters)
             .flatMap(
-                (SimpleResponse<LogSearchRuleResourceInner> res) -> {
+                (Response<LogSearchRuleResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates or updates an log search rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param parameters The Log Search Rule resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Log Search Rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogSearchRuleResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String ruleName, LogSearchRuleResourceInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters, context)
+            .flatMap(
+                (Response<LogSearchRuleResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -298,6 +327,24 @@ public final class ScheduledQueryRulesClient
     }
 
     /**
+     * Creates or updates an log search rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param parameters The Log Search Rule resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Log Search Rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogSearchRuleResourceInner createOrUpdate(
+        String resourceGroupName, String ruleName, LogSearchRuleResourceInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, ruleName, parameters, context).block();
+    }
+
+    /**
      * Gets an Log Search rule.
      *
      * @param resourceGroupName The name of the resource group.
@@ -308,11 +355,13 @@ public final class ScheduledQueryRulesClient
      * @return an Log Search rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogSearchRuleResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<LogSearchRuleResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String ruleName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -333,7 +382,7 @@ public final class ScheduledQueryRulesClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             apiVersion,
@@ -354,11 +403,13 @@ public final class ScheduledQueryRulesClient
      * @return an Log Search rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogSearchRuleResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<LogSearchRuleResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String ruleName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -376,7 +427,7 @@ public final class ScheduledQueryRulesClient
         final String apiVersion = "2018-04-16";
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 apiVersion,
@@ -398,7 +449,32 @@ public final class ScheduledQueryRulesClient
     public Mono<LogSearchRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName)
             .flatMap(
-                (SimpleResponse<LogSearchRuleResourceInner> res) -> {
+                (Response<LogSearchRuleResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets an Log Search rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Log Search rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogSearchRuleResourceInner> getByResourceGroupAsync(
+        String resourceGroupName, String ruleName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName, context)
+            .flatMap(
+                (Response<LogSearchRuleResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -423,6 +499,22 @@ public final class ScheduledQueryRulesClient
     }
 
     /**
+     * Gets an Log Search rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Log Search rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogSearchRuleResourceInner getByResourceGroup(String resourceGroupName, String ruleName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, ruleName, context).block();
+    }
+
+    /**
      * Update log search Rule.
      *
      * @param resourceGroupName The name of the resource group.
@@ -434,11 +526,13 @@ public final class ScheduledQueryRulesClient
      * @return the Log Search Rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogSearchRuleResourceInner>> updateWithResponseAsync(
+    public Mono<Response<LogSearchRuleResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String ruleName, LogSearchRuleResourcePatch parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -464,7 +558,7 @@ public final class ScheduledQueryRulesClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             ruleName,
@@ -487,11 +581,13 @@ public final class ScheduledQueryRulesClient
      * @return the Log Search Rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogSearchRuleResourceInner>> updateWithResponseAsync(
+    public Mono<Response<LogSearchRuleResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String ruleName, LogSearchRuleResourcePatch parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -514,7 +610,7 @@ public final class ScheduledQueryRulesClient
         final String apiVersion = "2018-04-16";
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 ruleName,
@@ -539,7 +635,33 @@ public final class ScheduledQueryRulesClient
         String resourceGroupName, String ruleName, LogSearchRuleResourcePatch parameters) {
         return updateWithResponseAsync(resourceGroupName, ruleName, parameters)
             .flatMap(
-                (SimpleResponse<LogSearchRuleResourceInner> res) -> {
+                (Response<LogSearchRuleResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update log search Rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param parameters The log search rule resource for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Log Search Rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogSearchRuleResourceInner> updateAsync(
+        String resourceGroupName, String ruleName, LogSearchRuleResourcePatch parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, ruleName, parameters, context)
+            .flatMap(
+                (Response<LogSearchRuleResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -566,6 +688,24 @@ public final class ScheduledQueryRulesClient
     }
 
     /**
+     * Update log search Rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param parameters The log search rule resource for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Log Search Rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogSearchRuleResourceInner update(
+        String resourceGroupName, String ruleName, LogSearchRuleResourcePatch parameters, Context context) {
+        return updateAsync(resourceGroupName, ruleName, parameters, context).block();
+    }
+
+    /**
      * Deletes a Log Search rule.
      *
      * @param resourceGroupName The name of the resource group.
@@ -577,9 +717,11 @@ public final class ScheduledQueryRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -600,7 +742,7 @@ public final class ScheduledQueryRulesClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             apiVersion,
@@ -622,9 +764,11 @@ public final class ScheduledQueryRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -642,7 +786,7 @@ public final class ScheduledQueryRulesClient
         final String apiVersion = "2018-04-16";
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 apiVersion,
@@ -670,6 +814,23 @@ public final class ScheduledQueryRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String ruleName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, ruleName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a Log Search rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -677,6 +838,21 @@ public final class ScheduledQueryRulesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ruleName) {
         deleteAsync(resourceGroupName, ruleName).block();
+    }
+
+    /**
+     * Deletes a Log Search rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String ruleName, Context context) {
+        deleteAsync(resourceGroupName, ruleName, context).block();
     }
 
     /**
@@ -691,9 +867,11 @@ public final class ScheduledQueryRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LogSearchRuleResourceInner>> listSinglePageAsync(String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -705,7 +883,8 @@ public final class ScheduledQueryRulesClient
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getHost(), apiVersion, filter, this.client.getSubscriptionId(), context))
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, filter, this.client.getSubscriptionId(), context))
             .<PagedResponse<LogSearchRuleResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -726,9 +905,11 @@ public final class ScheduledQueryRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LogSearchRuleResourceInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -738,7 +919,7 @@ public final class ScheduledQueryRulesClient
         }
         final String apiVersion = "2018-04-16";
         return service
-            .list(this.client.getHost(), apiVersion, filter, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, filter, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -808,6 +989,22 @@ public final class ScheduledQueryRulesClient
     /**
      * List the Log Search rules within a subscription group.
      *
+     * @param filter The filter to apply on the operation. For more information please see
+     *     https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of Log Search rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LogSearchRuleResourceInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
+    }
+
+    /**
+     * List the Log Search rules within a subscription group.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of Log Search rule resources.
@@ -833,9 +1030,11 @@ public final class ScheduledQueryRulesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LogSearchRuleResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -853,7 +1052,7 @@ public final class ScheduledQueryRulesClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             apiVersion,
                             filter,
@@ -881,9 +1080,11 @@ public final class ScheduledQueryRulesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LogSearchRuleResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -898,7 +1099,12 @@ public final class ScheduledQueryRulesClient
         final String apiVersion = "2018-04-16";
         return service
             .listByResourceGroup(
-                this.client.getHost(), resourceGroupName, apiVersion, filter, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                resourceGroupName,
+                apiVersion,
+                filter,
+                this.client.getSubscriptionId(),
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -969,6 +1175,24 @@ public final class ScheduledQueryRulesClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(String resourceGroupName, String filter) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
+    }
+
+    /**
+     * List the Log Search rules within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param filter The filter to apply on the operation. For more information please see
+     *     https://msdn.microsoft.com/en-us/library/azure/dn931934.aspx.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of Log Search rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LogSearchRuleResourceInner> listByResourceGroup(
+        String resourceGroupName, String filter, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
     }
 
     /**

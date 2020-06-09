@@ -17,15 +17,15 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.BaselineResponseInner;
 import com.azure.resourcemanager.monitor.fluent.inner.CalculateBaselineResponseInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import com.azure.resourcemanager.monitor.models.TimeSeriesInformation;
 import java.time.Duration;
@@ -42,11 +42,11 @@ public final class MetricBaselinesClient {
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of MetricBaselinesInner.
+     * Initializes an instance of MetricBaselinesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricBaselinesClient(MonitorClient client) {
+    public MetricBaselinesClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricBaselinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -63,8 +63,8 @@ public final class MetricBaselinesClient {
         @Get("/{resourceUri}/providers/microsoft.insights/baseline/{metricName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<BaselineResponseInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<BaselineResponseInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("metricName") String metricName,
             @QueryParam("timespan") String timespan,
@@ -79,8 +79,8 @@ public final class MetricBaselinesClient {
         @Post("/{resourceUri}/providers/microsoft.insights/calculatebaseline")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaseline(
-            @HostParam("$host") String host,
+        Mono<Response<CalculateBaselineResponseInner>> calculateBaseline(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TimeSeriesInformation timeSeriesInformation,
@@ -107,7 +107,7 @@ public final class MetricBaselinesClient {
      * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BaselineResponseInner>> getWithResponseAsync(
+    public Mono<Response<BaselineResponseInner>> getWithResponseAsync(
         String resourceUri,
         String metricName,
         String timespan,
@@ -115,9 +115,11 @@ public final class MetricBaselinesClient {
         String aggregation,
         String sensitivities,
         ResultType resultType) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -131,7 +133,7 @@ public final class MetricBaselinesClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceUri,
                             metricName,
                             timespan,
@@ -165,7 +167,7 @@ public final class MetricBaselinesClient {
      * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BaselineResponseInner>> getWithResponseAsync(
+    public Mono<Response<BaselineResponseInner>> getWithResponseAsync(
         String resourceUri,
         String metricName,
         String timespan,
@@ -174,9 +176,11 @@ public final class MetricBaselinesClient {
         String sensitivities,
         ResultType resultType,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -187,7 +191,7 @@ public final class MetricBaselinesClient {
         final String apiVersion = "2017-11-01-preview";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceUri,
                 metricName,
                 timespan,
@@ -229,7 +233,49 @@ public final class MetricBaselinesClient {
         ResultType resultType) {
         return getWithResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType)
             .flatMap(
-                (SimpleResponse<BaselineResponseInner> res) -> {
+                (Response<BaselineResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * **Gets the baseline values for a specific metric**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
+     * @param sensitivities The list of sensitivities (comma separated) to retrieve.
+     * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BaselineResponseInner> getAsync(
+        String resourceUri,
+        String metricName,
+        String timespan,
+        Duration interval,
+        String aggregation,
+        String sensitivities,
+        ResultType resultType,
+        Context context) {
+        return getWithResponseAsync(
+                resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType, context)
+            .flatMap(
+                (Response<BaselineResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -261,7 +307,7 @@ public final class MetricBaselinesClient {
         final Context context = null;
         return getWithResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType)
             .flatMap(
-                (SimpleResponse<BaselineResponseInner> res) -> {
+                (Response<BaselineResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -309,6 +355,40 @@ public final class MetricBaselinesClient {
      *     For example:
      *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
      * @param metricName The name of the metric to retrieve the baseline for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
+     * @param sensitivities The list of sensitivities (comma separated) to retrieve.
+     * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BaselineResponseInner get(
+        String resourceUri,
+        String metricName,
+        String timespan,
+        Duration interval,
+        String aggregation,
+        String sensitivities,
+        ResultType resultType,
+        Context context) {
+        return getAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType, context)
+            .block();
+    }
+
+    /**
+     * **Gets the baseline values for a specific metric**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,11 +419,13 @@ public final class MetricBaselinesClient {
      * @return the response to a calculate baseline call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaselineWithResponseAsync(
+    public Mono<Response<CalculateBaselineResponseInner>> calculateBaselineWithResponseAsync(
         String resourceUri, TimeSeriesInformation timeSeriesInformation) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -360,7 +442,7 @@ public final class MetricBaselinesClient {
                 context ->
                     service
                         .calculateBaseline(
-                            this.client.getHost(), resourceUri, apiVersion, timeSeriesInformation, context))
+                            this.client.getEndpoint(), resourceUri, apiVersion, timeSeriesInformation, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -379,11 +461,13 @@ public final class MetricBaselinesClient {
      * @return the response to a calculate baseline call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaselineWithResponseAsync(
+    public Mono<Response<CalculateBaselineResponseInner>> calculateBaselineWithResponseAsync(
         String resourceUri, TimeSeriesInformation timeSeriesInformation, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -396,7 +480,7 @@ public final class MetricBaselinesClient {
         }
         final String apiVersion = "2017-11-01-preview";
         return service
-            .calculateBaseline(this.client.getHost(), resourceUri, apiVersion, timeSeriesInformation, context);
+            .calculateBaseline(this.client.getEndpoint(), resourceUri, apiVersion, timeSeriesInformation, context);
     }
 
     /**
@@ -417,7 +501,35 @@ public final class MetricBaselinesClient {
         String resourceUri, TimeSeriesInformation timeSeriesInformation) {
         return calculateBaselineWithResponseAsync(resourceUri, timeSeriesInformation)
             .flatMap(
-                (SimpleResponse<CalculateBaselineResponseInner> res) -> {
+                (Response<CalculateBaselineResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * **Lists the baseline values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param timeSeriesInformation The time series info needed for calculating the baseline.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a calculate baseline call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CalculateBaselineResponseInner> calculateBaselineAsync(
+        String resourceUri, TimeSeriesInformation timeSeriesInformation, Context context) {
+        return calculateBaselineWithResponseAsync(resourceUri, timeSeriesInformation, context)
+            .flatMap(
+                (Response<CalculateBaselineResponseInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -443,5 +555,25 @@ public final class MetricBaselinesClient {
     public CalculateBaselineResponseInner calculateBaseline(
         String resourceUri, TimeSeriesInformation timeSeriesInformation) {
         return calculateBaselineAsync(resourceUri, timeSeriesInformation).block();
+    }
+
+    /**
+     * **Lists the baseline values for a resource**.
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param timeSeriesInformation The time series info needed for calculating the baseline.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a calculate baseline call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CalculateBaselineResponseInner calculateBaseline(
+        String resourceUri, TimeSeriesInformation timeSeriesInformation, Context context) {
+        return calculateBaselineAsync(resourceUri, timeSeriesInformation, context).block();
     }
 }

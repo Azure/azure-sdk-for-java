@@ -14,8 +14,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -35,11 +35,11 @@ public final class OperationsClient {
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of OperationsInner.
+     * Initializes an instance of OperationsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClient(MonitorClient client) {
+    public OperationsClient(MonitorClient client) {
         this.service =
             RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -56,8 +56,8 @@ public final class OperationsClient {
         @Get("/providers/microsoft.insights/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<OperationListResultInner>> list(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<OperationListResultInner>> list(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
     }
 
     /**
@@ -68,14 +68,16 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OperationListResultInner>> listWithResponseAsync() {
-        if (this.client.getHost() == null) {
+    public Mono<Response<OperationListResultInner>> listWithResponseAsync() {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getHost(), apiVersion, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -89,13 +91,15 @@ public final class OperationsClient {
      * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OperationListResultInner>> listWithResponseAsync(Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<OperationListResultInner>> listWithResponseAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
-        return service.list(this.client.getHost(), apiVersion, context);
+        return service.list(this.client.getEndpoint(), apiVersion, context);
     }
 
     /**
@@ -109,7 +113,29 @@ public final class OperationsClient {
     public Mono<OperationListResultInner> listAsync() {
         return listWithResponseAsync()
             .flatMap(
-                (SimpleResponse<OperationListResultInner> res) -> {
+                (Response<OperationListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Lists all of the available operations from Microsoft.Insights provider.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OperationListResultInner> listAsync(Context context) {
+        return listWithResponseAsync(context)
+            .flatMap(
+                (Response<OperationListResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -128,5 +154,19 @@ public final class OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationListResultInner list() {
         return listAsync().block();
+    }
+
+    /**
+     * Lists all of the available operations from Microsoft.Insights provider.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationListResultInner list(Context context) {
+        return listAsync(context).block();
     }
 }

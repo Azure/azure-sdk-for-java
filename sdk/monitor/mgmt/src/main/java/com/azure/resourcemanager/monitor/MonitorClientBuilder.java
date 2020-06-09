@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the MonitorClientImpl type. */
+/** A builder for creating a new instance of the MonitorClient type. */
 @ServiceClientBuilder(serviceClients = {MonitorClient.class})
 public final class MonitorClientBuilder {
     /*
@@ -34,16 +34,16 @@ public final class MonitorClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the MonitorClientBuilder.
      */
-    public MonitorClientBuilder host(String host) {
-        this.host = host;
+    public MonitorClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -80,13 +80,13 @@ public final class MonitorClientBuilder {
     }
 
     /**
-     * Builds an instance of MonitorClientImpl with the provided parameters.
+     * Builds an instance of MonitorClient with the provided parameters.
      *
-     * @return an instance of MonitorClientImpl.
+     * @return an instance of MonitorClient.
      */
     public MonitorClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -97,9 +97,7 @@ public final class MonitorClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        MonitorClient client = new MonitorClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
+        MonitorClient client = new MonitorClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

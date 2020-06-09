@@ -26,14 +26,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
 import com.azure.resourcemanager.monitor.models.EnableRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -55,11 +54,11 @@ public final class ActionGroupsClient
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of ActionGroupsInner.
+     * Initializes an instance of ActionGroupsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ActionGroupsClient(MonitorClient client) {
+    public ActionGroupsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActionGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -78,8 +77,8 @@ public final class ActionGroupsClient
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActionGroupResourceInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<ActionGroupResourceInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("actionGroupName") String actionGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -93,8 +92,8 @@ public final class ActionGroupsClient
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActionGroupResourceInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<ActionGroupResourceInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("actionGroupName") String actionGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -108,7 +107,7 @@ public final class ActionGroupsClient
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("actionGroupName") String actionGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -121,8 +120,8 @@ public final class ActionGroupsClient
                 + "/actionGroups/{actionGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActionGroupResourceInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<ActionGroupResourceInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("actionGroupName") String actionGroupName,
@@ -134,8 +133,8 @@ public final class ActionGroupsClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/actionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActionGroupListInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ActionGroupListInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -146,8 +145,8 @@ public final class ActionGroupsClient
                 + "/actionGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActionGroupListInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<ActionGroupListInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -160,7 +159,7 @@ public final class ActionGroupsClient
         @ExpectedResponses({200, 409})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> enableReceiver(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("actionGroupName") String actionGroupName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -181,11 +180,13 @@ public final class ActionGroupsClient
      * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,7 +213,7 @@ public final class ActionGroupsClient
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             actionGroupName,
                             this.client.getSubscriptionId(),
@@ -235,11 +236,13 @@ public final class ActionGroupsClient
      * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ActionGroupResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -263,7 +266,7 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 actionGroupName,
                 this.client.getSubscriptionId(),
@@ -288,7 +291,33 @@ public final class ActionGroupsClient
         String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup) {
         return createOrUpdateWithResponseAsync(resourceGroupName, actionGroupName, actionGroup)
             .flatMap(
-                (SimpleResponse<ActionGroupResourceInner> res) -> {
+                (Response<ActionGroupResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create a new action group or update an existing one.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param actionGroup An action group resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActionGroupResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, actionGroupName, actionGroup, context)
+            .flatMap(
+                (Response<ActionGroupResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -315,6 +344,24 @@ public final class ActionGroupsClient
     }
 
     /**
+     * Create a new action group or update an existing one.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param actionGroup An action group resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActionGroupResourceInner createOrUpdate(
+        String resourceGroupName, String actionGroupName, ActionGroupResourceInner actionGroup, Context context) {
+        return createOrUpdateAsync(resourceGroupName, actionGroupName, actionGroup, context).block();
+    }
+
+    /**
      * Get an action group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -325,11 +372,13 @@ public final class ActionGroupsClient
      * @return an action group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String actionGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -351,7 +400,7 @@ public final class ActionGroupsClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             actionGroupName,
                             this.client.getSubscriptionId(),
@@ -372,11 +421,13 @@ public final class ActionGroupsClient
      * @return an action group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<ActionGroupResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String actionGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -395,7 +446,7 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 actionGroupName,
                 this.client.getSubscriptionId(),
@@ -417,7 +468,32 @@ public final class ActionGroupsClient
     public Mono<ActionGroupResourceInner> getByResourceGroupAsync(String resourceGroupName, String actionGroupName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, actionGroupName)
             .flatMap(
-                (SimpleResponse<ActionGroupResourceInner> res) -> {
+                (Response<ActionGroupResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get an action group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActionGroupResourceInner> getByResourceGroupAsync(
+        String resourceGroupName, String actionGroupName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, actionGroupName, context)
+            .flatMap(
+                (Response<ActionGroupResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -442,6 +518,23 @@ public final class ActionGroupsClient
     }
 
     /**
+     * Get an action group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActionGroupResourceInner getByResourceGroup(
+        String resourceGroupName, String actionGroupName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, actionGroupName, context).block();
+    }
+
+    /**
      * Delete an action group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -453,9 +546,11 @@ public final class ActionGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String actionGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -477,7 +572,7 @@ public final class ActionGroupsClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             actionGroupName,
                             this.client.getSubscriptionId(),
@@ -500,9 +595,11 @@ public final class ActionGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String actionGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -521,7 +618,7 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 actionGroupName,
                 this.client.getSubscriptionId(),
@@ -550,6 +647,23 @@ public final class ActionGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String actionGroupName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, actionGroupName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete an action group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -557,6 +671,21 @@ public final class ActionGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String actionGroupName) {
         deleteAsync(resourceGroupName, actionGroupName).block();
+    }
+
+    /**
+     * Delete an action group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String actionGroupName, Context context) {
+        deleteAsync(resourceGroupName, actionGroupName, context).block();
     }
 
     /**
@@ -571,11 +700,13 @@ public final class ActionGroupsClient
      * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActionGroupResourceInner>> updateWithResponseAsync(
+    public Mono<Response<ActionGroupResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -603,7 +734,7 @@ public final class ActionGroupsClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             actionGroupName,
@@ -626,11 +757,13 @@ public final class ActionGroupsClient
      * @return an action group resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActionGroupResourceInner>> updateWithResponseAsync(
+    public Mono<Response<ActionGroupResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -655,7 +788,7 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 actionGroupName,
@@ -680,7 +813,33 @@ public final class ActionGroupsClient
         String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch) {
         return updateWithResponseAsync(resourceGroupName, actionGroupName, actionGroupPatch)
             .flatMap(
-                (SimpleResponse<ActionGroupResourceInner> res) -> {
+                (Response<ActionGroupResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param actionGroupPatch An action group object for the body of patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActionGroupResourceInner> updateAsync(
+        String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, actionGroupName, actionGroupPatch, context)
+            .flatMap(
+                (Response<ActionGroupResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -707,6 +866,24 @@ public final class ActionGroupsClient
     }
 
     /**
+     * Updates an existing action group's tags. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param actionGroupPatch An action group object for the body of patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an action group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActionGroupResourceInner update(
+        String resourceGroupName, String actionGroupName, ActionGroupPatchBody actionGroupPatch, Context context) {
+        return updateAsync(resourceGroupName, actionGroupName, actionGroupPatch, context).block();
+    }
+
+    /**
      * Get a list of all action groups in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -715,9 +892,11 @@ public final class ActionGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActionGroupResourceInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -728,7 +907,8 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context))
+                context ->
+                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
             .<PagedResponse<ActionGroupResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -747,9 +927,11 @@ public final class ActionGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActionGroupResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -759,7 +941,7 @@ public final class ActionGroupsClient
         }
         final String apiVersion = "2019-06-01";
         return service
-            .list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -805,6 +987,20 @@ public final class ActionGroupsClient
     }
 
     /**
+     * Get a list of all action groups in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all action groups in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ActionGroupResourceInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Get a list of all action groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -815,9 +1011,11 @@ public final class ActionGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActionGroupResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -835,7 +1033,7 @@ public final class ActionGroupsClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             apiVersion,
@@ -860,9 +1058,11 @@ public final class ActionGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActionGroupResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -877,7 +1077,7 @@ public final class ActionGroupsClient
         final String apiVersion = "2019-06-01";
         return service
             .listByResourceGroup(
-                this.client.getHost(), resourceGroupName, this.client.getSubscriptionId(), apiVersion, context)
+                this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(), apiVersion, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -928,6 +1128,21 @@ public final class ActionGroupsClient
     }
 
     /**
+     * Get a list of all action groups in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all action groups in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ActionGroupResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
      * is only supported for Email or SMS receivers.
      *
@@ -942,9 +1157,11 @@ public final class ActionGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableReceiverWithResponseAsync(
         String resourceGroupName, String actionGroupName, String receiverName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -971,7 +1188,7 @@ public final class ActionGroupsClient
                 context ->
                     service
                         .enableReceiver(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             actionGroupName,
                             this.client.getSubscriptionId(),
@@ -997,9 +1214,11 @@ public final class ActionGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableReceiverWithResponseAsync(
         String resourceGroupName, String actionGroupName, String receiverName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1023,7 +1242,7 @@ public final class ActionGroupsClient
         enableRequest.withReceiverName(receiverName);
         return service
             .enableReceiver(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 actionGroupName,
                 this.client.getSubscriptionId(),
@@ -1057,6 +1276,26 @@ public final class ActionGroupsClient
      * @param resourceGroupName The name of the resource group.
      * @param actionGroupName The name of the action group.
      * @param receiverName The name of the receiver to resubscribe.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> enableReceiverAsync(
+        String resourceGroupName, String actionGroupName, String receiverName, Context context) {
+        return enableReceiverWithResponseAsync(resourceGroupName, actionGroupName, receiverName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
+     * is only supported for Email or SMS receivers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param receiverName The name of the receiver to resubscribe.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1064,5 +1303,22 @@ public final class ActionGroupsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableReceiver(String resourceGroupName, String actionGroupName, String receiverName) {
         enableReceiverAsync(resourceGroupName, actionGroupName, receiverName).block();
+    }
+
+    /**
+     * Enable a receiver in an action group. This changes the receiver's status from Disabled to Enabled. This operation
+     * is only supported for Email or SMS receivers.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param actionGroupName The name of the action group.
+     * @param receiverName The name of the receiver to resubscribe.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enableReceiver(String resourceGroupName, String actionGroupName, String receiverName, Context context) {
+        enableReceiverAsync(resourceGroupName, actionGroupName, receiverName, context).block();
     }
 }

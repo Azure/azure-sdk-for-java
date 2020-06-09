@@ -25,14 +25,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.ActivityLogAlertPatchBody;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -53,11 +52,11 @@ public final class ActivityLogAlertsClient
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of ActivityLogAlertsInner.
+     * Initializes an instance of ActivityLogAlertsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ActivityLogAlertsClient(MonitorClient client) {
+    public ActivityLogAlertsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActivityLogAlertsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -76,8 +75,8 @@ public final class ActivityLogAlertsClient
                 + "/activityLogAlerts/{activityLogAlertName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActivityLogAlertResourceInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<ActivityLogAlertResourceInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("activityLogAlertName") String activityLogAlertName,
@@ -91,8 +90,8 @@ public final class ActivityLogAlertsClient
                 + "/activityLogAlerts/{activityLogAlertName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActivityLogAlertResourceInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<ActivityLogAlertResourceInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("activityLogAlertName") String activityLogAlertName,
@@ -106,7 +105,7 @@ public final class ActivityLogAlertsClient
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("activityLogAlertName") String activityLogAlertName,
@@ -119,8 +118,8 @@ public final class ActivityLogAlertsClient
                 + "/activityLogAlerts/{activityLogAlertName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActivityLogAlertResourceInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<ActivityLogAlertResourceInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("activityLogAlertName") String activityLogAlertName,
@@ -132,8 +131,8 @@ public final class ActivityLogAlertsClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/activityLogAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActivityLogAlertListInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ActivityLogAlertListInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -144,8 +143,8 @@ public final class ActivityLogAlertsClient
                 + "/activityLogAlerts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<ActivityLogAlertListInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<ActivityLogAlertListInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -164,11 +163,13 @@ public final class ActivityLogAlertsClient
      * @return an activity log alert resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlert) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -196,7 +197,7 @@ public final class ActivityLogAlertsClient
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             activityLogAlertName,
@@ -219,14 +220,16 @@ public final class ActivityLogAlertsClient
      * @return an activity log alert resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<ActivityLogAlertResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String activityLogAlertName,
         ActivityLogAlertResourceInner activityLogAlert,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -251,7 +254,7 @@ public final class ActivityLogAlertsClient
         final String apiVersion = "2017-04-01";
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 activityLogAlertName,
@@ -276,7 +279,36 @@ public final class ActivityLogAlertsClient
         String resourceGroupName, String activityLogAlertName, ActivityLogAlertResourceInner activityLogAlert) {
         return createOrUpdateWithResponseAsync(resourceGroupName, activityLogAlertName, activityLogAlert)
             .flatMap(
-                (SimpleResponse<ActivityLogAlertResourceInner> res) -> {
+                (Response<ActivityLogAlertResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create a new activity log alert or update an existing one.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param activityLogAlert An activity log alert resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an activity log alert resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActivityLogAlertResourceInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String activityLogAlertName,
+        ActivityLogAlertResourceInner activityLogAlert,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, activityLogAlertName, activityLogAlert, context)
+            .flatMap(
+                (Response<ActivityLogAlertResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -303,6 +335,27 @@ public final class ActivityLogAlertsClient
     }
 
     /**
+     * Create a new activity log alert or update an existing one.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param activityLogAlert An activity log alert resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an activity log alert resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityLogAlertResourceInner createOrUpdate(
+        String resourceGroupName,
+        String activityLogAlertName,
+        ActivityLogAlertResourceInner activityLogAlert,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, activityLogAlertName, activityLogAlert, context).block();
+    }
+
+    /**
      * Get an activity log alert.
      *
      * @param resourceGroupName The name of the resource group.
@@ -313,11 +366,13 @@ public final class ActivityLogAlertsClient
      * @return an activity log alert.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String activityLogAlertName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -339,7 +394,7 @@ public final class ActivityLogAlertsClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             activityLogAlertName,
@@ -360,11 +415,13 @@ public final class ActivityLogAlertsClient
      * @return an activity log alert.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<ActivityLogAlertResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String activityLogAlertName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -383,7 +440,7 @@ public final class ActivityLogAlertsClient
         final String apiVersion = "2017-04-01";
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 activityLogAlertName,
@@ -406,7 +463,32 @@ public final class ActivityLogAlertsClient
         String resourceGroupName, String activityLogAlertName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, activityLogAlertName)
             .flatMap(
-                (SimpleResponse<ActivityLogAlertResourceInner> res) -> {
+                (Response<ActivityLogAlertResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get an activity log alert.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an activity log alert.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActivityLogAlertResourceInner> getByResourceGroupAsync(
+        String resourceGroupName, String activityLogAlertName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, activityLogAlertName, context)
+            .flatMap(
+                (Response<ActivityLogAlertResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -431,6 +513,23 @@ public final class ActivityLogAlertsClient
     }
 
     /**
+     * Get an activity log alert.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an activity log alert.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityLogAlertResourceInner getByResourceGroup(
+        String resourceGroupName, String activityLogAlertName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, activityLogAlertName, context).block();
+    }
+
+    /**
      * Delete an activity log alert.
      *
      * @param resourceGroupName The name of the resource group.
@@ -442,9 +541,11 @@ public final class ActivityLogAlertsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String activityLogAlertName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -466,7 +567,7 @@ public final class ActivityLogAlertsClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             activityLogAlertName,
@@ -489,9 +590,11 @@ public final class ActivityLogAlertsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String activityLogAlertName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -510,7 +613,7 @@ public final class ActivityLogAlertsClient
         final String apiVersion = "2017-04-01";
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 activityLogAlertName,
@@ -539,6 +642,23 @@ public final class ActivityLogAlertsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param activityLogAlertName The name of the activity log alert.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String activityLogAlertName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, activityLogAlertName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete an activity log alert.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -546,6 +666,21 @@ public final class ActivityLogAlertsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String activityLogAlertName) {
         deleteAsync(resourceGroupName, activityLogAlertName).block();
+    }
+
+    /**
+     * Delete an activity log alert.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String activityLogAlertName, Context context) {
+        deleteAsync(resourceGroupName, activityLogAlertName, context).block();
     }
 
     /**
@@ -560,11 +695,13 @@ public final class ActivityLogAlertsClient
      * @return an activity log alert resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActivityLogAlertResourceInner>> updateWithResponseAsync(
+    public Mono<Response<ActivityLogAlertResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String activityLogAlertName, ActivityLogAlertPatchBody activityLogAlertPatch) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -592,7 +729,7 @@ public final class ActivityLogAlertsClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             activityLogAlertName,
@@ -615,14 +752,16 @@ public final class ActivityLogAlertsClient
      * @return an activity log alert resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ActivityLogAlertResourceInner>> updateWithResponseAsync(
+    public Mono<Response<ActivityLogAlertResourceInner>> updateWithResponseAsync(
         String resourceGroupName,
         String activityLogAlertName,
         ActivityLogAlertPatchBody activityLogAlertPatch,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -647,7 +786,7 @@ public final class ActivityLogAlertsClient
         final String apiVersion = "2017-04-01";
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 activityLogAlertName,
@@ -672,7 +811,36 @@ public final class ActivityLogAlertsClient
         String resourceGroupName, String activityLogAlertName, ActivityLogAlertPatchBody activityLogAlertPatch) {
         return updateWithResponseAsync(resourceGroupName, activityLogAlertName, activityLogAlertPatch)
             .flatMap(
-                (SimpleResponse<ActivityLogAlertResourceInner> res) -> {
+                (Response<ActivityLogAlertResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates an existing ActivityLogAlertResource's tags. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param activityLogAlertPatch An activity log alert object for the body of patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an activity log alert resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ActivityLogAlertResourceInner> updateAsync(
+        String resourceGroupName,
+        String activityLogAlertName,
+        ActivityLogAlertPatchBody activityLogAlertPatch,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, activityLogAlertName, activityLogAlertPatch, context)
+            .flatMap(
+                (Response<ActivityLogAlertResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -699,6 +867,27 @@ public final class ActivityLogAlertsClient
     }
 
     /**
+     * Updates an existing ActivityLogAlertResource's tags. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param activityLogAlertName The name of the activity log alert.
+     * @param activityLogAlertPatch An activity log alert object for the body of patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an activity log alert resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityLogAlertResourceInner update(
+        String resourceGroupName,
+        String activityLogAlertName,
+        ActivityLogAlertPatchBody activityLogAlertPatch,
+        Context context) {
+        return updateAsync(resourceGroupName, activityLogAlertName, activityLogAlertPatch, context).block();
+    }
+
+    /**
      * Get a list of all activity log alerts in a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -707,9 +896,11 @@ public final class ActivityLogAlertsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActivityLogAlertResourceInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -720,7 +911,8 @@ public final class ActivityLogAlertsClient
         final String apiVersion = "2017-04-01";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context))
+                context ->
+                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
             .<PagedResponse<ActivityLogAlertResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -739,9 +931,11 @@ public final class ActivityLogAlertsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActivityLogAlertResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -751,7 +945,7 @@ public final class ActivityLogAlertsClient
         }
         final String apiVersion = "2017-04-01";
         return service
-            .list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -797,6 +991,20 @@ public final class ActivityLogAlertsClient
     }
 
     /**
+     * Get a list of all activity log alerts in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all activity log alerts in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ActivityLogAlertResourceInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Get a list of all activity log alerts in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -808,9 +1016,11 @@ public final class ActivityLogAlertsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActivityLogAlertResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -828,7 +1038,7 @@ public final class ActivityLogAlertsClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
@@ -853,9 +1063,11 @@ public final class ActivityLogAlertsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ActivityLogAlertResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -870,7 +1082,7 @@ public final class ActivityLogAlertsClient
         final String apiVersion = "2017-04-01";
         return service
             .listByResourceGroup(
-                this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -919,5 +1131,20 @@ public final class ActivityLogAlertsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ActivityLogAlertResourceInner> listByResourceGroup(String resourceGroupName) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+    }
+
+    /**
+     * Get a list of all activity log alerts in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all activity log alerts in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ActivityLogAlertResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 }

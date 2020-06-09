@@ -19,15 +19,15 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.EventDataCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ActivityLogs. */
@@ -41,11 +41,11 @@ public final class ActivityLogsClient {
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of ActivityLogsInner.
+     * Initializes an instance of ActivityLogsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ActivityLogsClient(MonitorClient client) {
+    public ActivityLogsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActivityLogsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,8 +62,8 @@ public final class ActivityLogsClient {
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/eventtypes/management/values")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EventDataCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<EventDataCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
             @QueryParam("$select") String select,
@@ -74,7 +74,7 @@ public final class ActivityLogsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<EventDataCollectionInner>> listNext(
+        Mono<Response<EventDataCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -106,9 +106,11 @@ public final class ActivityLogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
@@ -125,7 +127,7 @@ public final class ActivityLogsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             apiVersion,
                             filter,
                             select,
@@ -172,9 +174,11 @@ public final class ActivityLogsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EventDataInner>> listSinglePageAsync(String filter, String select, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
@@ -187,7 +191,7 @@ public final class ActivityLogsClient {
         }
         final String apiVersion = "2015-04-01";
         return service
-            .list(this.client.getHost(), apiVersion, filter, select, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, filter, select, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -322,6 +326,38 @@ public final class ActivityLogsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventDataInner> list(String filter, String select) {
         return new PagedIterable<>(listAsync(filter, select));
+    }
+
+    /**
+     * Provides the list of records from the activity logs.
+     *
+     * @param filter Reduces the set of data collected.&lt;br&gt;This argument is required and it also requires at least
+     *     the start date/time.&lt;br&gt;The **$filter** argument is very restricted and allows only the following
+     *     patterns.&lt;br&gt;- *List events for a resource group*: $filter=eventTimestamp ge
+     *     '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceGroupName eq
+     *     'resourceGroupName'.&lt;br&gt;- *List events for resource*: $filter=eventTimestamp ge
+     *     '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z' and resourceUri eq
+     *     'resourceURI'.&lt;br&gt;- *List events for a subscription in a time range*: $filter=eventTimestamp ge
+     *     '2014-07-16T04:36:37.6407898Z' and eventTimestamp le '2014-07-20T04:36:37.6407898Z'.&lt;br&gt;- *List events
+     *     for a resource provider*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
+     *     '2014-07-20T04:36:37.6407898Z' and resourceProvider eq 'resourceProviderName'.&lt;br&gt;- *List events for a
+     *     correlation Id*: $filter=eventTimestamp ge '2014-07-16T04:36:37.6407898Z' and eventTimestamp le
+     *     '2014-07-20T04:36:37.6407898Z' and correlationId eq 'correlationID'.&lt;br&gt;&lt;br&gt;**NOTE**: No other
+     *     syntax is allowed.
+     * @param select Used to fetch events with only the given properties.&lt;br&gt;The **$select** argument is a comma
+     *     separated list of property names to be returned. Possible values are: *authorization*, *claims*,
+     *     *correlationId*, *description*, *eventDataId*, *eventName*, *eventTimestamp*, *httpRequest*, *level*,
+     *     *operationId*, *operationName*, *properties*, *resourceGroupName*, *resourceProviderName*, *resourceId*,
+     *     *status*, *submissionTimestamp*, *subStatus*, *subscriptionId*.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of events.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EventDataInner> list(String filter, String select, Context context) {
+        return new PagedIterable<>(listAsync(filter, select, context));
     }
 
     /**

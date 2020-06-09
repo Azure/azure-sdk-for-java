@@ -25,14 +25,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileResourceInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
 import reactor.core.publisher.Mono;
 
@@ -47,11 +46,11 @@ public final class LogProfilesClient {
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of LogProfilesInner.
+     * Initializes an instance of LogProfilesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    LogProfilesClient(MonitorClient client) {
+    public LogProfilesClient(MonitorClient client) {
         this.service =
             RestProxy.create(LogProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -69,7 +68,7 @@ public final class LogProfilesClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("logProfileName") String logProfileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -79,8 +78,8 @@ public final class LogProfilesClient {
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogProfileResourceInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<LogProfileResourceInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("logProfileName") String logProfileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -90,8 +89,8 @@ public final class LogProfilesClient {
         @Put("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogProfileResourceInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<LogProfileResourceInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("logProfileName") String logProfileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -102,8 +101,8 @@ public final class LogProfilesClient {
         @Patch("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles/{logProfileName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogProfileResourceInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<LogProfileResourceInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("logProfileName") String logProfileName,
             @QueryParam("api-version") String apiVersion,
@@ -114,8 +113,8 @@ public final class LogProfilesClient {
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/logprofiles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<LogProfileCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<LogProfileCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -132,9 +131,11 @@ public final class LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String logProfileName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (logProfileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logProfileName is required and cannot be null."));
@@ -151,7 +152,7 @@ public final class LogProfilesClient {
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             logProfileName,
                             apiVersion,
                             this.client.getSubscriptionId(),
@@ -171,9 +172,11 @@ public final class LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String logProfileName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (logProfileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logProfileName is required and cannot be null."));
@@ -186,7 +189,7 @@ public final class LogProfilesClient {
         }
         final String apiVersion = "2016-03-01";
         return service
-            .delete(this.client.getHost(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
+            .delete(this.client.getEndpoint(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -207,6 +210,21 @@ public final class LogProfilesClient {
      * Deletes the log profile.
      *
      * @param logProfileName The name of the log profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String logProfileName, Context context) {
+        return deleteWithResponseAsync(logProfileName, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes the log profile.
+     *
+     * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,6 +232,20 @@ public final class LogProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String logProfileName) {
         deleteAsync(logProfileName).block();
+    }
+
+    /**
+     * Deletes the log profile.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String logProfileName, Context context) {
+        deleteAsync(logProfileName, context).block();
     }
 
     /**
@@ -226,10 +258,12 @@ public final class LogProfilesClient {
      * @return the log profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogProfileResourceInner>> getWithResponseAsync(String logProfileName) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<LogProfileResourceInner>> getWithResponseAsync(String logProfileName) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (logProfileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logProfileName is required and cannot be null."));
@@ -246,7 +280,7 @@ public final class LogProfilesClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             logProfileName,
                             apiVersion,
                             this.client.getSubscriptionId(),
@@ -265,10 +299,12 @@ public final class LogProfilesClient {
      * @return the log profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogProfileResourceInner>> getWithResponseAsync(String logProfileName, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<LogProfileResourceInner>> getWithResponseAsync(String logProfileName, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (logProfileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logProfileName is required and cannot be null."));
@@ -280,7 +316,8 @@ public final class LogProfilesClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2016-03-01";
-        return service.get(this.client.getHost(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
+        return service
+            .get(this.client.getEndpoint(), logProfileName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -296,7 +333,30 @@ public final class LogProfilesClient {
     public Mono<LogProfileResourceInner> getAsync(String logProfileName) {
         return getWithResponseAsync(logProfileName)
             .flatMap(
-                (SimpleResponse<LogProfileResourceInner> res) -> {
+                (Response<LogProfileResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets the log profile.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogProfileResourceInner> getAsync(String logProfileName, Context context) {
+        return getWithResponseAsync(logProfileName, context)
+            .flatMap(
+                (Response<LogProfileResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -320,6 +380,21 @@ public final class LogProfilesClient {
     }
 
     /**
+     * Gets the log profile.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogProfileResourceInner get(String logProfileName, Context context) {
+        return getAsync(logProfileName, context).block();
+    }
+
+    /**
      * Create or update a log profile in Azure Monitoring REST API.
      *
      * @param logProfileName The name of the log profile.
@@ -330,11 +405,13 @@ public final class LogProfilesClient {
      * @return the log profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
         String logProfileName, LogProfileResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (logProfileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logProfileName is required and cannot be null."));
@@ -356,7 +433,7 @@ public final class LogProfilesClient {
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             logProfileName,
                             apiVersion,
                             this.client.getSubscriptionId(),
@@ -377,11 +454,13 @@ public final class LogProfilesClient {
      * @return the log profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
         String logProfileName, LogProfileResourceInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (logProfileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter logProfileName is required and cannot be null."));
@@ -400,7 +479,7 @@ public final class LogProfilesClient {
         final String apiVersion = "2016-03-01";
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 logProfileName,
                 apiVersion,
                 this.client.getSubscriptionId(),
@@ -423,7 +502,32 @@ public final class LogProfilesClient {
         String logProfileName, LogProfileResourceInner parameters) {
         return createOrUpdateWithResponseAsync(logProfileName, parameters)
             .flatMap(
-                (SimpleResponse<LogProfileResourceInner> res) -> {
+                (Response<LogProfileResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create or update a log profile in Azure Monitoring REST API.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param parameters The log profile resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogProfileResourceInner> createOrUpdateAsync(
+        String logProfileName, LogProfileResourceInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(logProfileName, parameters, context)
+            .flatMap(
+                (Response<LogProfileResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -448,6 +552,23 @@ public final class LogProfilesClient {
     }
 
     /**
+     * Create or update a log profile in Azure Monitoring REST API.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param parameters The log profile resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogProfileResourceInner createOrUpdate(
+        String logProfileName, LogProfileResourceInner parameters, Context context) {
+        return createOrUpdateAsync(logProfileName, parameters, context).block();
+    }
+
+    /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
      *
      * @param logProfileName The name of the log profile.
@@ -458,11 +579,13 @@ public final class LogProfilesClient {
      * @return the log profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogProfileResourceInner>> updateWithResponseAsync(
+    public Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(
         String logProfileName, LogProfileResourcePatch logProfilesResource) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -485,7 +608,7 @@ public final class LogProfilesClient {
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             logProfileName,
                             apiVersion,
@@ -506,11 +629,13 @@ public final class LogProfilesClient {
      * @return the log profile resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LogProfileResourceInner>> updateWithResponseAsync(
+    public Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(
         String logProfileName, LogProfileResourcePatch logProfilesResource, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -530,7 +655,7 @@ public final class LogProfilesClient {
         final String apiVersion = "2016-03-01";
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 logProfileName,
                 apiVersion,
@@ -553,7 +678,32 @@ public final class LogProfilesClient {
         String logProfileName, LogProfileResourcePatch logProfilesResource) {
         return updateWithResponseAsync(logProfileName, logProfilesResource)
             .flatMap(
-                (SimpleResponse<LogProfileResourceInner> res) -> {
+                (Response<LogProfileResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource The log profile resource for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LogProfileResourceInner> updateAsync(
+        String logProfileName, LogProfileResourcePatch logProfilesResource, Context context) {
+        return updateWithResponseAsync(logProfileName, logProfilesResource, context)
+            .flatMap(
+                (Response<LogProfileResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -578,6 +728,23 @@ public final class LogProfilesClient {
     }
 
     /**
+     * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param logProfileName The name of the log profile.
+     * @param logProfilesResource The log profile resource for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the log profile resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LogProfileResourceInner update(
+        String logProfileName, LogProfileResourcePatch logProfilesResource, Context context) {
+        return updateAsync(logProfileName, logProfilesResource, context).block();
+    }
+
+    /**
      * List the log profiles.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -586,9 +753,11 @@ public final class LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LogProfileResourceInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -599,7 +768,8 @@ public final class LogProfilesClient {
         final String apiVersion = "2016-03-01";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
+                context ->
+                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
             .<PagedResponse<LogProfileResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -618,9 +788,11 @@ public final class LogProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LogProfileResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -630,7 +802,7 @@ public final class LogProfilesClient {
         }
         final String apiVersion = "2016-03-01";
         return service
-            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -673,5 +845,19 @@ public final class LogProfilesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogProfileResourceInner> list() {
         return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * List the log profiles.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of log profiles.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<LogProfileResourceInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
     }
 }

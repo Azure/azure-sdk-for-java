@@ -19,15 +19,15 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentInner;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentListResultInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AlertRuleIncidents. */
@@ -41,11 +41,11 @@ public final class AlertRuleIncidentsClient {
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of AlertRuleIncidentsInner.
+     * Initializes an instance of AlertRuleIncidentsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AlertRuleIncidentsClient(MonitorClient client) {
+    public AlertRuleIncidentsClient(MonitorClient client) {
         this.service =
             RestProxy.create(AlertRuleIncidentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -60,12 +60,12 @@ public final class AlertRuleIncidentsClient {
     private interface AlertRuleIncidentsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/alertrules/{ruleName}/incidents/{incidentName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
+                + "/{ruleName}/incidents/{incidentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<IncidentInner>> get(
-            @HostParam("$host") String host,
+        Mono<Response<IncidentInner>> get(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @PathParam("incidentName") String incidentName,
@@ -75,12 +75,12 @@ public final class AlertRuleIncidentsClient {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/alertrules/{ruleName}/incidents")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
+                + "/{ruleName}/incidents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<IncidentListResultInner>> listByAlertRule(
-            @HostParam("$host") String host,
+        Mono<Response<IncidentListResultInner>> listByAlertRule(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
@@ -100,11 +100,13 @@ public final class AlertRuleIncidentsClient {
      * @return an incident associated to an alert rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IncidentInner>> getWithResponseAsync(
+    public Mono<Response<IncidentInner>> getWithResponseAsync(
         String resourceGroupName, String ruleName, String incidentName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -128,7 +130,7 @@ public final class AlertRuleIncidentsClient {
                 context ->
                     service
                         .get(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             incidentName,
@@ -151,11 +153,13 @@ public final class AlertRuleIncidentsClient {
      * @return an incident associated to an alert rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<IncidentInner>> getWithResponseAsync(
+    public Mono<Response<IncidentInner>> getWithResponseAsync(
         String resourceGroupName, String ruleName, String incidentName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,7 +180,7 @@ public final class AlertRuleIncidentsClient {
         final String apiVersion = "2016-03-01";
         return service
             .get(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 incidentName,
@@ -200,7 +204,33 @@ public final class AlertRuleIncidentsClient {
     public Mono<IncidentInner> getAsync(String resourceGroupName, String ruleName, String incidentName) {
         return getWithResponseAsync(resourceGroupName, ruleName, incidentName)
             .flatMap(
-                (SimpleResponse<IncidentInner> res) -> {
+                (Response<IncidentInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets an incident associated to an alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param incidentName The name of the incident to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an incident associated to an alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<IncidentInner> getAsync(
+        String resourceGroupName, String ruleName, String incidentName, Context context) {
+        return getWithResponseAsync(resourceGroupName, ruleName, incidentName, context)
+            .flatMap(
+                (Response<IncidentInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -226,6 +256,23 @@ public final class AlertRuleIncidentsClient {
     }
 
     /**
+     * Gets an incident associated to an alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param incidentName The name of the incident to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an incident associated to an alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IncidentInner get(String resourceGroupName, String ruleName, String incidentName, Context context) {
+        return getAsync(resourceGroupName, ruleName, incidentName, context).block();
+    }
+
+    /**
      * Gets a list of incidents associated to an alert rule.
      *
      * @param resourceGroupName The name of the resource group.
@@ -238,9 +285,11 @@ public final class AlertRuleIncidentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentInner>> listByAlertRuleSinglePageAsync(
         String resourceGroupName, String ruleName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -261,7 +310,7 @@ public final class AlertRuleIncidentsClient {
                 context ->
                     service
                         .listByAlertRule(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             apiVersion,
@@ -288,9 +337,11 @@ public final class AlertRuleIncidentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<IncidentInner>> listByAlertRuleSinglePageAsync(
         String resourceGroupName, String ruleName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -308,7 +359,7 @@ public final class AlertRuleIncidentsClient {
         final String apiVersion = "2016-03-01";
         return service
             .listByAlertRule(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 apiVersion,
@@ -364,5 +415,21 @@ public final class AlertRuleIncidentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IncidentInner> listByAlertRule(String resourceGroupName, String ruleName) {
         return new PagedIterable<>(listByAlertRuleAsync(resourceGroupName, ruleName));
+    }
+
+    /**
+     * Gets a list of incidents associated to an alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of incidents associated to an alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IncidentInner> listByAlertRule(String resourceGroupName, String ruleName, Context context) {
+        return new PagedIterable<>(listByAlertRuleAsync(resourceGroupName, ruleName, context));
     }
 }

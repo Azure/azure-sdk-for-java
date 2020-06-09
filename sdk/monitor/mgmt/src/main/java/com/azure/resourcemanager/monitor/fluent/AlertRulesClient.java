@@ -25,14 +25,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.AlertRuleResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.AlertRuleResourceInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.AlertRuleResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -53,11 +52,11 @@ public final class AlertRulesClient
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of AlertRulesInner.
+     * Initializes an instance of AlertRulesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AlertRulesClient(MonitorClient client) {
+    public AlertRulesClient(MonitorClient client) {
         this.service =
             RestProxy.create(AlertRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -72,12 +71,12 @@ public final class AlertRulesClient
     private interface AlertRulesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/alertrules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
+                + "/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<AlertRuleResourceInner>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<AlertRuleResourceInner>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
@@ -87,12 +86,12 @@ public final class AlertRulesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/alertrules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
+                + "/{ruleName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
@@ -101,12 +100,12 @@ public final class AlertRulesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/alertrules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
+                + "/{ruleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<AlertRuleResourceInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<AlertRuleResourceInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
             @QueryParam("api-version") String apiVersion,
@@ -115,12 +114,12 @@ public final class AlertRulesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights"
-                + "/alertrules/{ruleName}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules"
+                + "/{ruleName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<AlertRuleResourceInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<AlertRuleResourceInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ruleName") String ruleName,
@@ -134,8 +133,8 @@ public final class AlertRulesClient
                 + "/alertrules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<AlertRuleResourceCollectionInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<AlertRuleResourceCollectionInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -145,8 +144,8 @@ public final class AlertRulesClient
         @Get("/subscriptions/{subscriptionId}/providers/microsoft.insights/alertrules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<AlertRuleResourceCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<AlertRuleResourceCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -164,11 +163,13 @@ public final class AlertRulesClient
      * @return the alert rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String ruleName, AlertRuleResourceInner parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -194,7 +195,7 @@ public final class AlertRulesClient
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             apiVersion,
@@ -217,11 +218,13 @@ public final class AlertRulesClient
      * @return the alert rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(
+    public Mono<Response<AlertRuleResourceInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String ruleName, AlertRuleResourceInner parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -244,7 +247,7 @@ public final class AlertRulesClient
         final String apiVersion = "2016-03-01";
         return service
             .createOrUpdate(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 apiVersion,
@@ -269,7 +272,33 @@ public final class AlertRulesClient
         String resourceGroupName, String ruleName, AlertRuleResourceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters)
             .flatMap(
-                (SimpleResponse<AlertRuleResourceInner> res) -> {
+                (Response<AlertRuleResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates or updates a classic metric alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param parameters The alert rule resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the alert rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AlertRuleResourceInner> createOrUpdateAsync(
+        String resourceGroupName, String ruleName, AlertRuleResourceInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, ruleName, parameters, context)
+            .flatMap(
+                (Response<AlertRuleResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -296,6 +325,24 @@ public final class AlertRulesClient
     }
 
     /**
+     * Creates or updates a classic metric alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param parameters The alert rule resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the alert rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertRuleResourceInner createOrUpdate(
+        String resourceGroupName, String ruleName, AlertRuleResourceInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, ruleName, parameters, context).block();
+    }
+
+    /**
      * Deletes a classic metric alert rule.
      *
      * @param resourceGroupName The name of the resource group.
@@ -307,9 +354,11 @@ public final class AlertRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -330,7 +379,7 @@ public final class AlertRulesClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             apiVersion,
@@ -352,9 +401,11 @@ public final class AlertRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String ruleName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,7 +423,7 @@ public final class AlertRulesClient
         final String apiVersion = "2016-03-01";
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 apiVersion,
@@ -400,6 +451,23 @@ public final class AlertRulesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String ruleName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, ruleName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Deletes a classic metric alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -407,6 +475,21 @@ public final class AlertRulesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String ruleName) {
         deleteAsync(resourceGroupName, ruleName).block();
+    }
+
+    /**
+     * Deletes a classic metric alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String ruleName, Context context) {
+        deleteAsync(resourceGroupName, ruleName, context).block();
     }
 
     /**
@@ -420,11 +503,13 @@ public final class AlertRulesClient
      * @return a classic metric alert rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AlertRuleResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<AlertRuleResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String ruleName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -445,7 +530,7 @@ public final class AlertRulesClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             ruleName,
                             apiVersion,
@@ -466,11 +551,13 @@ public final class AlertRulesClient
      * @return a classic metric alert rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AlertRuleResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<AlertRuleResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String ruleName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -488,7 +575,7 @@ public final class AlertRulesClient
         final String apiVersion = "2016-03-01";
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 ruleName,
                 apiVersion,
@@ -510,7 +597,32 @@ public final class AlertRulesClient
     public Mono<AlertRuleResourceInner> getByResourceGroupAsync(String resourceGroupName, String ruleName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName)
             .flatMap(
-                (SimpleResponse<AlertRuleResourceInner> res) -> {
+                (Response<AlertRuleResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gets a classic metric alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a classic metric alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AlertRuleResourceInner> getByResourceGroupAsync(
+        String resourceGroupName, String ruleName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, ruleName, context)
+            .flatMap(
+                (Response<AlertRuleResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -535,6 +647,22 @@ public final class AlertRulesClient
     }
 
     /**
+     * Gets a classic metric alert rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a classic metric alert rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertRuleResourceInner getByResourceGroup(String resourceGroupName, String ruleName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, ruleName, context).block();
+    }
+
+    /**
      * Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
      *
      * @param resourceGroupName The name of the resource group.
@@ -546,11 +674,13 @@ public final class AlertRulesClient
      * @return the alert rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AlertRuleResourceInner>> updateWithResponseAsync(
+    public Mono<Response<AlertRuleResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -577,7 +707,7 @@ public final class AlertRulesClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             ruleName,
@@ -600,11 +730,13 @@ public final class AlertRulesClient
      * @return the alert rule resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AlertRuleResourceInner>> updateWithResponseAsync(
+    public Mono<Response<AlertRuleResourceInner>> updateWithResponseAsync(
         String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -628,7 +760,7 @@ public final class AlertRulesClient
         final String apiVersion = "2016-03-01";
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 ruleName,
@@ -653,7 +785,33 @@ public final class AlertRulesClient
         String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource) {
         return updateWithResponseAsync(resourceGroupName, ruleName, alertRulesResource)
             .flatMap(
-                (SimpleResponse<AlertRuleResourceInner> res) -> {
+                (Response<AlertRuleResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param alertRulesResource The alert rule object for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the alert rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AlertRuleResourceInner> updateAsync(
+        String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource, Context context) {
+        return updateWithResponseAsync(resourceGroupName, ruleName, alertRulesResource, context)
+            .flatMap(
+                (Response<AlertRuleResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -680,6 +838,24 @@ public final class AlertRulesClient
     }
 
     /**
+     * Updates an existing classic metric AlertRuleResource. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param ruleName The name of the rule.
+     * @param alertRulesResource The alert rule object for patch operations.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the alert rule resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AlertRuleResourceInner update(
+        String resourceGroupName, String ruleName, AlertRuleResourcePatch alertRulesResource, Context context) {
+        return updateAsync(resourceGroupName, ruleName, alertRulesResource, context).block();
+    }
+
+    /**
      * List the classic metric alert rules within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -690,9 +866,11 @@ public final class AlertRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AlertRuleResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -710,7 +888,7 @@ public final class AlertRulesClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
@@ -735,9 +913,11 @@ public final class AlertRulesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AlertRuleResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -752,7 +932,7 @@ public final class AlertRulesClient
         final String apiVersion = "2016-03-01";
         return service
             .listByResourceGroup(
-                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -803,6 +983,21 @@ public final class AlertRulesClient
     }
 
     /**
+     * List the classic metric alert rules within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of alert rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AlertRuleResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * List the classic metric alert rules within a subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
@@ -811,9 +1006,11 @@ public final class AlertRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AlertRuleResourceInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -824,7 +1021,8 @@ public final class AlertRulesClient
         final String apiVersion = "2016-03-01";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
+                context ->
+                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
             .<PagedResponse<AlertRuleResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -843,9 +1041,11 @@ public final class AlertRulesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AlertRuleResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -855,7 +1055,7 @@ public final class AlertRulesClient
         }
         final String apiVersion = "2016-03-01";
         return service
-            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -898,5 +1098,19 @@ public final class AlertRulesClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertRuleResourceInner> list() {
         return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * List the classic metric alert rules within a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a collection of alert rule resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AlertRuleResourceInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
     }
 }

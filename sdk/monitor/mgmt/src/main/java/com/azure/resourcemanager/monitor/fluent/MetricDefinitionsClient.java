@@ -19,15 +19,15 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricDefinitions. */
@@ -41,11 +41,11 @@ public final class MetricDefinitionsClient {
     private final MonitorClient client;
 
     /**
-     * Initializes an instance of MetricDefinitionsInner.
+     * Initializes an instance of MetricDefinitionsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricDefinitionsClient(MonitorClient client) {
+    public MetricDefinitionsClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,8 +62,8 @@ public final class MetricDefinitionsClient {
         @Get("/{resourceUri}/providers/microsoft.insights/metricDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<MetricDefinitionCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<MetricDefinitionCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("metricnamespace") String metricnamespace,
@@ -82,9 +82,11 @@ public final class MetricDefinitionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricDefinitionInner>> listSinglePageAsync(String resourceUri, String metricnamespace) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -92,7 +94,7 @@ public final class MetricDefinitionsClient {
         final String apiVersion = "2018-01-01";
         return FluxUtil
             .withContext(
-                context -> service.list(this.client.getHost(), resourceUri, apiVersion, metricnamespace, context))
+                context -> service.list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, context))
             .<PagedResponse<MetricDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -114,16 +116,18 @@ public final class MetricDefinitionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricDefinitionInner>> listSinglePageAsync(
         String resourceUri, String metricnamespace, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01";
         return service
-            .list(this.client.getHost(), resourceUri, apiVersion, metricnamespace, context)
+            .list(this.client.getEndpoint(), resourceUri, apiVersion, metricnamespace, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -190,6 +194,22 @@ public final class MetricDefinitionsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricDefinitionInner> list(String resourceUri, String metricnamespace) {
         return new PagedIterable<>(listAsync(resourceUri, metricnamespace));
+    }
+
+    /**
+     * Lists the metric definitions for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric definitions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MetricDefinitionInner> list(String resourceUri, String metricnamespace, Context context) {
+        return new PagedIterable<>(listAsync(resourceUri, metricnamespace, context));
     }
 
     /**
