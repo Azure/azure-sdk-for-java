@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.Topology;
-import com.azure.resourcemanager.network.TopologyParameters;
-import com.azure.resourcemanager.network.TopologyResource;
-import com.azure.resourcemanager.network.models.TopologyInner;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.Topology;
+import com.azure.resourcemanager.network.models.TopologyParameters;
+import com.azure.resourcemanager.network.models.TopologyResource;
+import com.azure.resourcemanager.network.fluent.inner.TopologyInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -98,7 +98,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getTopologyAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(
                 topologyInner -> {

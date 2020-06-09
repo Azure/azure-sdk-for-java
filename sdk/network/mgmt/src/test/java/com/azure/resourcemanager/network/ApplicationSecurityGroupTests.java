@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;

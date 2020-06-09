@@ -4,15 +4,15 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerSkuType;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.PublicIPSkuType;
-import com.azure.resourcemanager.network.TransportProtocol;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.TransportProtocol;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
@@ -39,7 +39,7 @@ public abstract class ComputeManagementTest extends TestBase {
     protected ComputeManager computeManager;
     protected NetworkManager networkManager;
     protected StorageManager storageManager;
-    protected GraphRbacManager rbacManager;
+    protected AuthorizationManager authorizationManager;
     protected KeyVaultManager keyVaultManager;
 
     @Override
@@ -55,7 +55,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
 
-        rbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

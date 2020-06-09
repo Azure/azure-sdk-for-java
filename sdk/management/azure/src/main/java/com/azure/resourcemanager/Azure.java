@@ -6,13 +6,21 @@ package com.azure.resourcemanager;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrders;
-import com.azure.resourcemanager.appservice.AppServiceCertificates;
-import com.azure.resourcemanager.appservice.AppServiceDomains;
-import com.azure.resourcemanager.appservice.AppServicePlans;
-import com.azure.resourcemanager.appservice.FunctionApps;
-import com.azure.resourcemanager.appservice.WebApps;
-import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
+import com.azure.resourcemanager.appservice.models.AppServiceDomains;
+import com.azure.resourcemanager.appservice.models.AppServicePlans;
+import com.azure.resourcemanager.appservice.models.FunctionApps;
+import com.azure.resourcemanager.appservice.models.WebApps;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
+import com.azure.resourcemanager.authorization.models.RoleAssignments;
+import com.azure.resourcemanager.authorization.models.RoleDefinitions;
+import com.azure.resourcemanager.authorization.models.ServicePrincipals;
+import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.ComputeSkus;
 import com.azure.resourcemanager.compute.models.ComputeUsages;
@@ -25,52 +33,51 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCustomImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.containerregistry.Registries;
-import com.azure.resourcemanager.containerregistry.RegistryTaskRuns;
-import com.azure.resourcemanager.containerregistry.RegistryTasks;
-import com.azure.resourcemanager.containerregistry.implementation.ContainerRegistryManager;
-import com.azure.resourcemanager.containerservice.KubernetesClusters;
-import com.azure.resourcemanager.containerservice.implementation.ContainerServiceManager;
-import com.azure.resourcemanager.cosmos.CosmosDBAccounts;
-import com.azure.resourcemanager.cosmos.implementation.CosmosDBManager;
-import com.azure.resourcemanager.dns.DnsZones;
-import com.azure.resourcemanager.dns.implementation.DnsZoneManager;
-import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
-import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
-import com.azure.resourcemanager.authorization.models.RoleAssignments;
-import com.azure.resourcemanager.authorization.models.RoleDefinitions;
-import com.azure.resourcemanager.authorization.models.ServicePrincipals;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.keyvault.Vaults;
-import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
-import com.azure.resourcemanager.monitor.ActionGroups;
-import com.azure.resourcemanager.monitor.ActivityLogs;
-import com.azure.resourcemanager.monitor.AlertRules;
-import com.azure.resourcemanager.monitor.AutoscaleSettings;
-import com.azure.resourcemanager.monitor.DiagnosticSettings;
-import com.azure.resourcemanager.monitor.MetricDefinitions;
-import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.msi.Identities;
-import com.azure.resourcemanager.msi.implementation.MSIManager;
-import com.azure.resourcemanager.network.ApplicationGateways;
-import com.azure.resourcemanager.network.ApplicationSecurityGroups;
-import com.azure.resourcemanager.network.DdosProtectionPlans;
-import com.azure.resourcemanager.network.ExpressRouteCircuits;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnections;
-import com.azure.resourcemanager.network.LoadBalancers;
-import com.azure.resourcemanager.network.LocalNetworkGateways;
-import com.azure.resourcemanager.network.NetworkInterfaces;
-import com.azure.resourcemanager.network.NetworkSecurityGroups;
-import com.azure.resourcemanager.network.NetworkUsages;
-import com.azure.resourcemanager.network.NetworkWatchers;
-import com.azure.resourcemanager.network.Networks;
-import com.azure.resourcemanager.network.PublicIpAddresses;
-import com.azure.resourcemanager.network.RouteFilters;
-import com.azure.resourcemanager.network.RouteTables;
-import com.azure.resourcemanager.network.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.models.Registries;
+import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
+import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
+import com.azure.resourcemanager.containerservice.ContainerServiceManager;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
+import com.azure.resourcemanager.cosmos.CosmosManager;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
+import com.azure.resourcemanager.dns.models.DnsZones;
+import com.azure.resourcemanager.dns.DnsZoneManager;
+import com.azure.resourcemanager.keyvault.models.Vaults;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.monitor.models.ActionGroups;
+import com.azure.resourcemanager.monitor.models.ActivityLogs;
+import com.azure.resourcemanager.monitor.models.AlertRules;
+import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
+import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
+import com.azure.resourcemanager.monitor.models.MetricDefinitions;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.msi.models.Identities;
+import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.network.models.ApplicationGateways;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
+import com.azure.resourcemanager.network.models.DdosProtectionPlans;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
+import com.azure.resourcemanager.network.models.LoadBalancers;
+import com.azure.resourcemanager.network.models.LocalNetworkGateways;
+import com.azure.resourcemanager.network.models.NetworkInterfaces;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
+import com.azure.resourcemanager.network.models.NetworkUsages;
+import com.azure.resourcemanager.network.models.NetworkWatchers;
+import com.azure.resourcemanager.network.models.Networks;
+import com.azure.resourcemanager.network.models.PublicIpAddresses;
+import com.azure.resourcemanager.network.models.RouteFilters;
+import com.azure.resourcemanager.network.models.RouteTables;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.GenericResources;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
@@ -80,22 +87,15 @@ import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
-import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.sql.SqlServers;
-import com.azure.resourcemanager.sql.implementation.SqlServerManager;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlServers;
+import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.BlobServices;
 import com.azure.resourcemanager.storage.models.ManagementPolicies;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import com.azure.resourcemanager.storage.models.StorageSkus;
 import com.azure.resourcemanager.storage.models.Usages;
-import com.azure.resourcemanager.storage.StorageManager;
 
 import java.util.Objects;
 
@@ -118,7 +118,7 @@ public final class Azure {
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
     //    private final SearchServiceManager searchServiceManager;
-    private final CosmosDBManager cosmosDBManager;
+    private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
     private final MSIManager msiManager;
     private final MonitorManager monitorManager;
@@ -247,7 +247,7 @@ public final class Azure {
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
-        private final GraphRbacManager graphRbacManager;
+        private final AuthorizationManager authorizationManager;
         private SdkContext sdkContext;
         private String tenantId;
         private String subscriptionId;
@@ -255,7 +255,7 @@ public final class Azure {
 
         private AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
-            this.graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile);
+            this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
             this.tenantId = profile.tenantId();
             this.subscriptionId = profile.subscriptionId();
@@ -280,32 +280,32 @@ public final class Azure {
 
         @Override
         public ActiveDirectoryUsers activeDirectoryUsers() {
-            return graphRbacManager.users();
+            return authorizationManager.users();
         }
 
         @Override
         public ActiveDirectoryGroups activeDirectoryGroups() {
-            return graphRbacManager.groups();
+            return authorizationManager.groups();
         }
 
         @Override
         public ServicePrincipals servicePrincipals() {
-            return graphRbacManager.servicePrincipals();
+            return authorizationManager.servicePrincipals();
         }
 
         @Override
         public ActiveDirectoryApplications activeDirectoryApplications() {
-            return graphRbacManager.applications();
+            return authorizationManager.applications();
         }
 
         @Override
         public RoleDefinitions roleDefinitions() {
-            return graphRbacManager.roleDefinitions();
+            return authorizationManager.roleDefinitions();
         }
 
         @Override
         public RoleAssignments roleAssignments() {
-            return graphRbacManager.roleAssignments();
+            return authorizationManager.roleAssignments();
         }
 
         @Override
@@ -360,7 +360,7 @@ public final class Azure {
         // sdkContext);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        this.cosmosDBManager = CosmosDBManager.authenticate(httpPipeline, profile, sdkContext);
+        this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
@@ -704,7 +704,7 @@ public final class Azure {
 
     /** @return entry point to managing Container Regsitries. */
     public CosmosDBAccounts cosmosDBAccounts() {
-        return cosmosDBManager.databaseAccounts();
+        return cosmosManager.databaseAccounts();
     }
 
     //    /**

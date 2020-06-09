@@ -2,17 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.ApplicationLogsConfig;
-import com.azure.resourcemanager.appservice.AzureBlobStorageApplicationLogsConfig;
-import com.azure.resourcemanager.appservice.AzureBlobStorageHttpLogsConfig;
-import com.azure.resourcemanager.appservice.EnabledConfig;
-import com.azure.resourcemanager.appservice.FileSystemApplicationLogsConfig;
-import com.azure.resourcemanager.appservice.FileSystemHttpLogsConfig;
-import com.azure.resourcemanager.appservice.HttpLogsConfig;
-import com.azure.resourcemanager.appservice.LogLevel;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.WebAppDiagnosticLogs;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.models.ApplicationLogsConfig;
+import com.azure.resourcemanager.appservice.models.AzureBlobStorageApplicationLogsConfig;
+import com.azure.resourcemanager.appservice.models.AzureBlobStorageHttpLogsConfig;
+import com.azure.resourcemanager.appservice.models.EnabledConfig;
+import com.azure.resourcemanager.appservice.models.FileSystemApplicationLogsConfig;
+import com.azure.resourcemanager.appservice.models.FileSystemHttpLogsConfig;
+import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
+import com.azure.resourcemanager.appservice.models.LogLevel;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebAppDiagnosticLogs;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 

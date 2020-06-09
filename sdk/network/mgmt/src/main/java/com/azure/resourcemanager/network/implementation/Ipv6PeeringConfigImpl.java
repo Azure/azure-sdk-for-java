@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnectionPeering;
-import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.Ipv6PeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.Ipv6PeeringConfig;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.ArrayList;
 import java.util.List;

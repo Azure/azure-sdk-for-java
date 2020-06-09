@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayProbe;
-import com.azure.resourcemanager.network.ApplicationGatewayProbeHealthResponseMatch;
-import com.azure.resourcemanager.network.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
 import java.util.Collections;

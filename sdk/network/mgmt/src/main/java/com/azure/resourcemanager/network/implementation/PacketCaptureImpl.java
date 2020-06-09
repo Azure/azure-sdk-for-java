@@ -2,32 +2,33 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.PCFilter;
-import com.azure.resourcemanager.network.PacketCapture;
-import com.azure.resourcemanager.network.PacketCaptureFilter;
-import com.azure.resourcemanager.network.PacketCaptureStatus;
-import com.azure.resourcemanager.network.PacketCaptureStorageLocation;
-import com.azure.resourcemanager.network.ProvisioningState;
-import com.azure.resourcemanager.network.models.PacketCaptureInner;
-import com.azure.resourcemanager.network.models.PacketCaptureResultInner;
-import com.azure.resourcemanager.network.models.PacketCapturesInner;
+import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
+import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
+import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.PCFilter;
+import com.azure.resourcemanager.network.models.PacketCapture;
+import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PacketCaptureStatus;
+import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Packet Capture and its create and update interfaces. */
 public class PacketCaptureImpl
     extends CreatableUpdatableImpl<PacketCapture, PacketCaptureResultInner, PacketCaptureImpl>
     implements PacketCapture, PacketCapture.Definition {
-    private final PacketCapturesInner client;
+    private final PacketCapturesClient client;
     private final PacketCaptureInner createParameters;
     private final NetworkWatcher parent;
 
     PacketCaptureImpl(
-        String name, NetworkWatcherImpl parent, PacketCaptureResultInner innerObject, PacketCapturesInner client) {
+        String name, NetworkWatcherImpl parent, PacketCaptureResultInner innerObject, PacketCapturesClient client) {
         super(name, innerObject);
         this.client = client;
         this.parent = parent;

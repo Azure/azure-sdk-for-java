@@ -7,11 +7,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import com.azure.resourcemanager.sql.TransparentDataEncryption;
-import com.azure.resourcemanager.sql.TransparentDataEncryptionActivity;
-import com.azure.resourcemanager.sql.TransparentDataEncryptionStatus;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivityInner;
-import com.azure.resourcemanager.sql.models.TransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivity;
+import com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus;
+import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionActivityInner;
+import com.azure.resourcemanager.sql.fluent.inner.TransparentDataEncryptionInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,7 @@ class TransparentDataEncryptionImpl
             this
                 .sqlServerManager
                 .inner()
-                .transparentDataEncryptions()
+                .getTransparentDataEncryptions()
                 .createOrUpdate(
                     this.resourceGroupName, this.sqlServerName, this.databaseName(), transparentDataEncryptionState);
         this.setInner(transparentDataEncryptionInner);
@@ -90,7 +91,7 @@ class TransparentDataEncryptionImpl
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptions()
+            .getTransparentDataEncryptions()
             .createOrUpdateAsync(
                 self.resourceGroupName, self.sqlServerName, self.databaseName(), transparentDataEncryptionState)
             .map(
@@ -107,7 +108,7 @@ class TransparentDataEncryptionImpl
             this
                 .sqlServerManager
                 .inner()
-                .transparentDataEncryptionActivities()
+                .getTransparentDataEncryptionActivities()
                 .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName());
         for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
             : transparentDataEncryptionActivityInners) {
@@ -122,7 +123,7 @@ class TransparentDataEncryptionImpl
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptionActivities()
+            .getTransparentDataEncryptionActivities()
             .listByConfigurationAsync(this.resourceGroupName, this.sqlServerName, this.databaseName())
             .mapPage(
                 TransparentDataEncryptionActivityImpl::new);
@@ -133,7 +134,7 @@ class TransparentDataEncryptionImpl
         return this
             .sqlServerManager
             .inner()
-            .transparentDataEncryptions()
+            .getTransparentDataEncryptions()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName());
     }
 }

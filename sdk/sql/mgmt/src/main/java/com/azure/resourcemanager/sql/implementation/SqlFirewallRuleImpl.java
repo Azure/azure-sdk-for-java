@@ -6,12 +6,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SqlFirewallRule;
-import com.azure.resourcemanager.sql.SqlFirewallRuleOperations;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.FirewallRuleInner;
-import java.util.Objects;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.fluent.inner.FirewallRuleInner;
+import com.azure.resourcemanager.sql.models.SqlFirewallRule;
+import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /** Implementation for SqlFirewallRule. */
 public class SqlFirewallRuleImpl
@@ -84,7 +86,7 @@ public class SqlFirewallRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .firewallRules()
+            .getFirewallRules()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -151,7 +153,7 @@ public class SqlFirewallRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .firewallRules()
+            .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
                 inner -> {
@@ -166,7 +168,7 @@ public class SqlFirewallRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .firewallRules()
+            .getFirewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
             .map(
                 inner -> {
@@ -180,7 +182,7 @@ public class SqlFirewallRuleImpl
         return this
             .sqlServerManager
             .inner()
-            .firewallRules()
+            .getFirewallRules()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

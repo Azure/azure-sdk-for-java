@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -57,6 +58,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -254,6 +256,86 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that we error if we try to settle a message with null transaction.
+     */
+    @ParameterizedTest
+    @EnumSource(DispositionStatus.class)
+    void settleWithNullTransaction(DispositionStatus dispositionStatus) {
+        // Arrange
+        ServiceBusTransactionContext nullTransaction = null;
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
+        when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
+            isNull(), isNull(), isNull()))
+            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
+
+        final Mono<Void> operation;
+        switch (dispositionStatus) {
+            case DEFERRED:
+                operation = receiver.defer(receivedMessage, null, nullTransaction);
+                break;
+            case ABANDONED:
+                operation = receiver.abandon(receivedMessage, null, nullTransaction);
+                break;
+            case COMPLETED:
+                operation = receiver.complete(receivedMessage, nullTransaction);
+                break;
+            case SUSPENDED:
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransaction);
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
+        }
+
+        StepVerifier.create(operation)
+            .expectError(NullPointerException.class)
+            .verify();
+
+        verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
+            isNull(), isNull(), isNull(), isNull());
+    }
+
+    /**
+     * Verifies that we error if we try to settle a message with null transaction-id.
+     */
+    @ParameterizedTest
+    @EnumSource(DispositionStatus.class)
+    void settleWithNullTransactionId(DispositionStatus dispositionStatus) {
+        // Arrange
+        ServiceBusTransactionContext nullTransactionId = new ServiceBusTransactionContext(null);
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
+        when(managementNode.updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(), isNull(),
+            isNull(), isNull(), isNull()))
+            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+        when(receivedMessage.getLockToken()).thenReturn("mylockToken");
+
+        final Mono<Void> operation;
+        switch (dispositionStatus) {
+            case DEFERRED:
+                operation = receiver.defer(receivedMessage, null, nullTransactionId);
+                break;
+            case ABANDONED:
+                operation = receiver.abandon(receivedMessage, null, nullTransactionId);
+                break;
+            case COMPLETED:
+                operation = receiver.complete(receivedMessage, nullTransactionId);
+                break;
+            case SUSPENDED:
+                operation = receiver.deadLetter(receivedMessage, new DeadLetterOptions(), nullTransactionId);
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized operation: " + dispositionStatus);
+        }
+
+        StepVerifier.create(operation)
+            .expectError(NullPointerException.class)
+            .verify();
+
+        verify(managementNode, never()).updateDisposition(any(), eq(dispositionStatus), isNull(), isNull(),
+            isNull(), isNull(), isNull(), isNull());
+    }
+
+    /**
      * Verifies that we error if we try to complete a message without a lock token.
      */
     @Test
@@ -261,7 +343,7 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
         when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
-            isNull(), isNull()))
+            isNull(), isNull(), isNull()))
             .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
 
         when(receivedMessage.getLockToken()).thenReturn(null);
@@ -271,7 +353,7 @@ class ServiceBusReceiverAsyncClientTest {
             .verify();
 
         verify(managementNode, never()).updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(),
-            isNull(), isNull(), isNull());
+            isNull(), isNull(), isNull(), isNull());
     }
 
     /**
@@ -419,9 +501,9 @@ class ServiceBusReceiverAsyncClientTest {
         })))
             .thenReturn(Flux.just(receivedMessage, receivedMessage2));
 
-        when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null))
+        when(managementNode.updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null, null))
             .thenReturn(Mono.empty());
-        when(managementNode.updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null))
+        when(managementNode.updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null, null))
             .thenReturn(Mono.empty());
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
@@ -452,8 +534,8 @@ class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(operation)
             .verifyComplete();
 
-        verify(managementNode).updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null);
-        verify(managementNode, never()).updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null);
+        verify(managementNode).updateDisposition(lockToken1, dispositionStatus, null, null, null, null, null, null);
+        verify(managementNode, never()).updateDisposition(lockToken2, dispositionStatus, null, null, null, null, null, null);
     }
 
     /**
@@ -673,5 +755,15 @@ class ServiceBusReceiverAsyncClientTest {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(index -> getMessage(PAYLOAD_BYTES, messageTrackingUUID, map))
             .collect(Collectors.toList());
+    }
+
+    protected static Stream<Arguments> dispositionStatus() {
+        return Stream.of(
+            // The data corresponds to :entityType, isSessionEnabled, commit, dispositionStatus
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, false, true, DispositionStatus.DEFERRED)
+        );
     }
 }

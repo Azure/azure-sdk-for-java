@@ -60,18 +60,18 @@ import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInn
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.Identity;
-import com.azure.resourcemanager.network.ApplicationSecurityGroup;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatPool;
-import com.azure.resourcemanager.network.LoadBalancerPrivateFrontend;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -161,13 +161,13 @@ public class VirtualMachineScaleSetImpl
         final ComputeManager computeManager,
         final StorageManager storageManager,
         final NetworkManager networkManager,
-        final GraphRbacManager rbacManager) {
+        final AuthorizationManager authorizationManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.name());
         this.managedDataDisks = new ManagedDataDiskCollection(this);
-        this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(rbacManager, this);
+        this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(authorizationManager, this);
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;

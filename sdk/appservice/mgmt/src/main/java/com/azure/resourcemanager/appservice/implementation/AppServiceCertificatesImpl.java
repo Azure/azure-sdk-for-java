@@ -5,21 +5,22 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.AppServiceCertificate;
-import com.azure.resourcemanager.appservice.AppServiceCertificates;
-import com.azure.resourcemanager.appservice.models.CertificateInner;
-import com.azure.resourcemanager.appservice.models.CertificatesInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
+import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
+import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServiceCertificates. */
-class AppServiceCertificatesImpl
+public class AppServiceCertificatesImpl
     extends GroupableResourcesImpl<
-        AppServiceCertificate, AppServiceCertificateImpl, CertificateInner, CertificatesInner, AppServiceManager>
+        AppServiceCertificate, AppServiceCertificateImpl, CertificateInner, CertificatesClient, AppServiceManager>
     implements AppServiceCertificates {
 
-    AppServiceCertificatesImpl(AppServiceManager manager) {
-        super(manager.inner().certificates(), manager);
+    public AppServiceCertificatesImpl(AppServiceManager manager) {
+        super(manager.inner().getCertificates(), manager);
     }
 
     @Override

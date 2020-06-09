@@ -7,6 +7,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
+import com.azure.resourcemanager.keyvault.models.AccessPolicy;
+import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
+import com.azure.resourcemanager.keyvault.models.KeyPermissions;
+import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
+import com.azure.resourcemanager.keyvault.models.SecretPermissions;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
@@ -19,10 +25,10 @@ public class VaultTests extends KeyVaultManagementTest {
         String sp = sdkContext.randomResourceName("sp", 20);
         String us = sdkContext.randomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
-            graphRbacManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
 
         ActiveDirectoryUser user =
-            graphRbacManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
+            authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
 
         try {
             // CREATE
@@ -107,7 +113,7 @@ public class VaultTests extends KeyVaultManagementTest {
             SdkContext.sleep(20000);
             assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
-            graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
+            authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             //            graphRbacManager.users().deleteById(user.id());
         }
     }
@@ -118,10 +124,10 @@ public class VaultTests extends KeyVaultManagementTest {
         String sp = sdkContext.randomResourceName("sp", 20);
         String us = sdkContext.randomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
-            graphRbacManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
 
         ActiveDirectoryUser user =
-            graphRbacManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
+            authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
 
         try {
             // CREATE
@@ -202,7 +208,7 @@ public class VaultTests extends KeyVaultManagementTest {
             SdkContext.sleep(20000);
             assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
-            graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
+            authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             //            graphRbacManager.users().deleteById(user.id());
         }
     }
@@ -214,10 +220,10 @@ public class VaultTests extends KeyVaultManagementTest {
         String us = sdkContext.randomResourceName("us", 20);
 
         ServicePrincipal servicePrincipal =
-            graphRbacManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
 
         ActiveDirectoryUser user =
-            graphRbacManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
+            authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
 
         try {
             Vault vault =
@@ -254,7 +260,7 @@ public class VaultTests extends KeyVaultManagementTest {
             // Vault is purged
             assertVaultDeleted(otherVaultName, Region.US_WEST.toString());
         } finally {
-            graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
+            authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             // graphRbacManager.users().deleteById(user.id());
         }
     }

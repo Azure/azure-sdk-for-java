@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.AvailableProviders;
-import com.azure.resourcemanager.network.AvailableProvidersListCountry;
-import com.azure.resourcemanager.network.AvailableProvidersListParameters;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.models.AvailableProvidersListInner;
+import com.azure.resourcemanager.network.models.AvailableProviders;
+import com.azure.resourcemanager.network.models.AvailableProvidersListCountry;
+import com.azure.resourcemanager.network.models.AvailableProvidersListParameters;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.fluent.inner.AvailableProvidersListInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,7 +64,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(
                 availableProvidersListInner -> {

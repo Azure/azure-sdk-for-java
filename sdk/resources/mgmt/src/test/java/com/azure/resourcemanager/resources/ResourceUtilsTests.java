@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -47,9 +48,9 @@ public class ResourceUtilsTests {
 
     @Test
     public void canGetDefaultScopeFromUrl() throws Exception {
-        Assertions.assertEquals("https://graph.windows.net/.default", com.azure.resourcemanager.Utils.getDefaultScopeFromUrl("https://graph.windows.net/random", AzureEnvironment.AZURE));
-        Assertions.assertEquals("https://vault.azure.net/.default", com.azure.resourcemanager.Utils.getDefaultScopeFromUrl("https://random.vault.azure.net/random", AzureEnvironment.AZURE));
-        Assertions.assertEquals("https://api.applicationinsights.io/.default", com.azure.resourcemanager.Utils.getDefaultScopeFromUrl("https://api.applicationinsights.io/random", AzureEnvironment.AZURE));
-        Assertions.assertEquals("https://api.loganalytics.io/.default", com.azure.resourcemanager.Utils.getDefaultScopeFromUrl("https://api.loganalytics.io/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://graph.windows.net/.default", Utils.getDefaultScopeFromUrl("https://graph.windows.net/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://vault.azure.net/.default", Utils.getDefaultScopeFromUrl("https://random.vault.azure.net/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://api.applicationinsights.io/.default", Utils.getDefaultScopeFromUrl("https://api.applicationinsights.io/random", AzureEnvironment.AZURE));
+        Assertions.assertEquals("https://api.loganalytics.io/.default", Utils.getDefaultScopeFromUrl("https://api.loganalytics.io/random", AzureEnvironment.AZURE));
     }
 }

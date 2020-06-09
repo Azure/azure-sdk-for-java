@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentity;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityType;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityUserAssignedIdentities;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SitePatchResourceInner;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.Identity;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
@@ -39,12 +39,12 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
     /**
      * Creates VirtualMachineMsiHandler.
      *
-     * @param rbacManager the graph rbac manager
+     * @param authorizationManager the graph rbac manager
      * @param webAppBase the web app to which MSI extension needs to be installed and for which role assignments needs
      *     to be created
      */
-    WebAppMsiHandler(final GraphRbacManager rbacManager, WebAppBaseImpl webAppBase) {
-        super(rbacManager, webAppBase.taskGroup(), webAppBase.idProvider());
+    WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl webAppBase) {
+        super(authorizationManager, webAppBase.taskGroup(), webAppBase.idProvider());
         this.webAppBase = webAppBase;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();
@@ -76,7 +76,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
             return this;
         } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.NONE);
-        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -224,7 +224,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
                         siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
                     } else if (currentIdentity
                         .type()
-                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
                         siteUpdate.withIdentity(currentIdentity);
                         siteUpdate.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ManagedServiceIdentityType.USER_ASSIGNED)) {
@@ -269,7 +269,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
             || siteInner.identity().type().equals(identityType)) {
             siteInner.identity().withType(identityType);
         } else {
-            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }

@@ -2,18 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnection;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnectionPeering;
-import com.azure.resourcemanager.network.ExpressRoutePeeringState;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeringInner;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeringsInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import java.util.Arrays;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
 
 class ExpressRouteCrossConnectionPeeringImpl
     extends CreatableUpdatableImpl<
@@ -23,7 +25,7 @@ class ExpressRouteCrossConnectionPeeringImpl
     implements ExpressRouteCrossConnectionPeering,
         ExpressRouteCrossConnectionPeering.Definition,
         ExpressRouteCrossConnectionPeering.Update {
-    private final ExpressRouteCrossConnectionPeeringsInner client;
+    private final ExpressRouteCrossConnectionPeeringsClient client;
     private final ExpressRouteCrossConnection parent;
 
     ExpressRouteCrossConnectionPeeringImpl(
@@ -31,7 +33,7 @@ class ExpressRouteCrossConnectionPeeringImpl
         ExpressRouteCrossConnectionPeeringInner innerObject,
         ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
-        this.client = parent.manager().inner().expressRouteCrossConnectionPeerings();
+        this.client = parent.manager().inner().getExpressRouteCrossConnectionPeerings();
         this.parent = parent;
         inner().withPeeringType(type);
     }

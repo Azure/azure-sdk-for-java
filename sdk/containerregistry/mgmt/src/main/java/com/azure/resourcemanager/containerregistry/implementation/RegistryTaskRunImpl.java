@@ -3,30 +3,32 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.AgentProperties;
-import com.azure.resourcemanager.containerregistry.Architecture;
-import com.azure.resourcemanager.containerregistry.DockerBuildRequest;
-import com.azure.resourcemanager.containerregistry.EncodedTaskRunRequest;
-import com.azure.resourcemanager.containerregistry.FileTaskRunRequest;
-import com.azure.resourcemanager.containerregistry.OS;
-import com.azure.resourcemanager.containerregistry.OverridingValue;
-import com.azure.resourcemanager.containerregistry.PlatformProperties;
-import com.azure.resourcemanager.containerregistry.ProvisioningState;
-import com.azure.resourcemanager.containerregistry.RegistryTaskRun;
-import com.azure.resourcemanager.containerregistry.RunStatus;
-import com.azure.resourcemanager.containerregistry.RunType;
-import com.azure.resourcemanager.containerregistry.SetValue;
-import com.azure.resourcemanager.containerregistry.TaskRunRequest;
-import com.azure.resourcemanager.containerregistry.Variant;
-import com.azure.resourcemanager.containerregistry.models.RegistriesInner;
-import com.azure.resourcemanager.containerregistry.models.RunInner;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.RegistriesClient;
+import com.azure.resourcemanager.containerregistry.fluent.inner.RunInner;
+import com.azure.resourcemanager.containerregistry.models.AgentProperties;
+import com.azure.resourcemanager.containerregistry.models.Architecture;
+import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;
+import com.azure.resourcemanager.containerregistry.models.EncodedTaskRunRequest;
+import com.azure.resourcemanager.containerregistry.models.FileTaskRunRequest;
+import com.azure.resourcemanager.containerregistry.models.OS;
+import com.azure.resourcemanager.containerregistry.models.OverridingValue;
+import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
+import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
+import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
+import com.azure.resourcemanager.containerregistry.models.RunStatus;
+import com.azure.resourcemanager.containerregistry.models.RunType;
+import com.azure.resourcemanager.containerregistry.models.SetValue;
+import com.azure.resourcemanager.containerregistry.models.TaskRunRequest;
+import com.azure.resourcemanager.containerregistry.models.Variant;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition {
 
@@ -36,7 +38,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
     private String resourceGroupName;
     private String registryName;
     private RunInner inner;
-    private RegistriesInner registriesInner;
+    private RegistriesClient registriesInner;
     private FileTaskRunRequest fileTaskRunRequest;
     private EncodedTaskRunRequest encodedTaskRunRequest;
     private DockerBuildRequest dockerTaskRunRequest;
@@ -108,7 +110,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
 
     RegistryTaskRunImpl(ContainerRegistryManager registryManager, RunInner runInner) {
         this.registryManager = registryManager;
-        this.registriesInner = registryManager.inner().registries();
+        this.registriesInner = registryManager.inner().getRegistries();
         this.platform = new PlatformProperties();
         this.inner = runInner;
     }
@@ -357,7 +359,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
         final RegistryTaskRunImpl self = this;
         return registryManager
             .inner()
-            .runs()
+            .getRuns()
             .getAsync(this.resourceGroupName, this.registryName, this.inner.runId())
             .map(
                 runInner -> {

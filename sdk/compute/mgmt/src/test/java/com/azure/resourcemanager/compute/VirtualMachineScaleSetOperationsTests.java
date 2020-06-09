@@ -30,20 +30,20 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
-import com.azure.resourcemanager.keyvault.Secret;
-import com.azure.resourcemanager.keyvault.Vault;
-import com.azure.resourcemanager.network.ApplicationSecurityGroup;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatRule;
-import com.azure.resourcemanager.network.LoadBalancerSkuType;
-import com.azure.resourcemanager.network.LoadBalancingRule;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.SecurityRuleProtocol;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.keyvault.models.Secret;
+import com.azure.resourcemanager.keyvault.models.Vault;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
+import com.azure.resourcemanager.network.models.LoadBalancingRule;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -964,7 +964,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -973,7 +973,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -1052,7 +1052,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -1061,7 +1061,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -1080,7 +1080,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Ensure role assigned for storage account
         //
         PagedIterable<RoleAssignment> stgRoleAssignments =
-            rbacManager.roleAssignments().listByScope(storageAccount.id());
+            authorizationManager.roleAssignments().listByScope(storageAccount.id());
         Assertions.assertNotNull(stgRoleAssignments);
         found = false;
         for (RoleAssignment roleAssignment : stgRoleAssignments) {

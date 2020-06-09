@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ApplicationCreateParameters;
 import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
@@ -31,13 +31,13 @@ class ActiveDirectoryApplicationImpl
         ActiveDirectoryApplication.Definition,
         ActiveDirectoryApplication.Update,
         HasCredential<ActiveDirectoryApplicationImpl> {
-    private GraphRbacManager manager;
+    private AuthorizationManager manager;
     private ApplicationCreateParameters createParameters;
     private ApplicationUpdateParameters updateParameters;
     private Map<String, PasswordCredential> cachedPasswordCredentials;
     private Map<String, CertificateCredential> cachedCertificateCredentials;
 
-    ActiveDirectoryApplicationImpl(ApplicationInner innerObject, GraphRbacManager manager) {
+    ActiveDirectoryApplicationImpl(ApplicationInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ApplicationCreateParameters().withDisplayName(innerObject.displayName());
@@ -312,7 +312,7 @@ class ActiveDirectoryApplicationImpl
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 }

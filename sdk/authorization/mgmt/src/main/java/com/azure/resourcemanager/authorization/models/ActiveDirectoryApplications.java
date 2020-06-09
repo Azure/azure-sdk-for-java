@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
@@ -24,6 +24,6 @@ public interface ActiveDirectoryApplications
         SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,
         SupportsBatchCreation<ActiveDirectoryApplication>,
         SupportsDeletingById,
-        HasManager<GraphRbacManager>,
+        HasManager<AuthorizationManager>,
         HasInner<ApplicationsClient> {
 }

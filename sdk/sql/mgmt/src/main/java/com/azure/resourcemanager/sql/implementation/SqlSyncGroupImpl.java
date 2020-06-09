@@ -7,17 +7,18 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlSyncFullSchemaProperty;
-import com.azure.resourcemanager.sql.SqlSyncGroup;
-import com.azure.resourcemanager.sql.SqlSyncGroupLogProperty;
-import com.azure.resourcemanager.sql.SqlSyncGroupOperations;
-import com.azure.resourcemanager.sql.SqlSyncMemberOperations;
-import com.azure.resourcemanager.sql.SyncConflictResolutionPolicy;
-import com.azure.resourcemanager.sql.SyncGroupSchema;
-import com.azure.resourcemanager.sql.SyncGroupState;
-import com.azure.resourcemanager.sql.SyncGroupsType;
-import com.azure.resourcemanager.sql.models.SyncGroupInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlSyncFullSchemaProperty;
+import com.azure.resourcemanager.sql.models.SqlSyncGroup;
+import com.azure.resourcemanager.sql.models.SqlSyncGroupLogProperty;
+import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
+import com.azure.resourcemanager.sql.models.SqlSyncMemberOperations;
+import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
+import com.azure.resourcemanager.sql.models.SyncGroupSchema;
+import com.azure.resourcemanager.sql.models.SyncGroupState;
+import com.azure.resourcemanager.sql.models.SyncGroupsType;
+import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
@@ -166,7 +167,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .refreshHubSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -175,7 +176,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .refreshHubSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -184,7 +185,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
@@ -194,7 +195,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
@@ -204,7 +205,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listLogs(
                 this.resourceGroupName,
                 this.sqlServerName,
@@ -221,7 +222,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .listLogsAsync(
                 this.resourceGroupName,
                 this.sqlServerName,
@@ -238,7 +239,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .triggerSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -247,7 +248,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .triggerSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -256,7 +257,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .cancelSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -265,7 +266,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .cancelSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -344,7 +345,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .createOrUpdateAsync(
                 this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.inner())
             .map(
@@ -364,7 +365,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -373,7 +374,7 @@ public class SqlSyncGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -382,7 +383,7 @@ public class SqlSyncGroupImpl
         this
             .sqlServerManager
             .inner()
-            .syncGroups()
+            .getSyncGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 

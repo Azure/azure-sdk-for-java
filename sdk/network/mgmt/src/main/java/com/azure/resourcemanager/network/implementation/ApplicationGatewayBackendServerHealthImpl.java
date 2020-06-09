@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHealthStatus;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfigurationHealth;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendServerHealth;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthStatus;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfigurationHealth;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendServerHealth;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthServerInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 
 /** Implementation of application gateway backend server health information. */

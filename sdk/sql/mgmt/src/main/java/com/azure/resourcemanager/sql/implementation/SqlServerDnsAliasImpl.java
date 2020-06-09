@@ -5,10 +5,11 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerDnsAlias;
-import com.azure.resourcemanager.sql.SqlServerDnsAliasOperations;
-import com.azure.resourcemanager.sql.models.ServerDnsAliasInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
+import com.azure.resourcemanager.sql.models.SqlServerDnsAliasOperations;
+import com.azure.resourcemanager.sql.fluent.inner.ServerDnsAliasInner;
 import java.util.Objects;
 import reactor.core.publisher.Mono;
 
@@ -113,7 +114,7 @@ public class SqlServerDnsAliasImpl
         this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -152,7 +153,7 @@ public class SqlServerDnsAliasImpl
         return this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name())
             .map(
                 serverDnsAliasInner -> {
@@ -171,7 +172,7 @@ public class SqlServerDnsAliasImpl
         return this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -180,7 +181,7 @@ public class SqlServerDnsAliasImpl
         return this
             .sqlServerManager
             .inner()
-            .serverDnsAliases()
+            .getServerDnsAliases()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 }

@@ -75,7 +75,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void receiveMessage() {
         // Arrange
-        final String queueName = getQueueName();
+        final String queueName = getQueueName(0);
 
         Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
 

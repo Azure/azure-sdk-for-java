@@ -4,8 +4,7 @@
 package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.keyvault.implementation.KeyVaultManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
@@ -14,7 +13,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 public class KeyVaultManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
-    protected GraphRbacManager graphRbacManager;
+    protected AuthorizationManager authorizationManager;
     protected String rgName = "";
     protected String vaultName = "";
 
@@ -34,7 +33,7 @@ public class KeyVaultManagementTest extends TestBase {
         resourceManager =
             ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
 
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
     }

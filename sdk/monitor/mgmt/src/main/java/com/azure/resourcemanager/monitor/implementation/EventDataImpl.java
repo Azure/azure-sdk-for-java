@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.EventData;
-import com.azure.resourcemanager.monitor.EventLevel;
-import com.azure.resourcemanager.monitor.HttpRequestInfo;
-import com.azure.resourcemanager.monitor.LocalizableString;
-import com.azure.resourcemanager.monitor.SenderAuthorization;
-import com.azure.resourcemanager.monitor.models.EventDataInner;
+import com.azure.resourcemanager.monitor.models.EventData;
+import com.azure.resourcemanager.monitor.models.EventLevel;
+import com.azure.resourcemanager.monitor.models.HttpRequestInfo;
+import com.azure.resourcemanager.monitor.models.LocalizableString;
+import com.azure.resourcemanager.monitor.models.SenderAuthorization;
+import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.Map;

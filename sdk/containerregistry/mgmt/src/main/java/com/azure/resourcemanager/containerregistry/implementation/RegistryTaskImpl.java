@@ -4,39 +4,40 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.containerregistry.AgentProperties;
-import com.azure.resourcemanager.containerregistry.Architecture;
-import com.azure.resourcemanager.containerregistry.BaseImageTrigger;
-import com.azure.resourcemanager.containerregistry.BaseImageTriggerType;
-import com.azure.resourcemanager.containerregistry.BaseImageTriggerUpdateParameters;
-import com.azure.resourcemanager.containerregistry.DockerBuildStepUpdateParameters;
-import com.azure.resourcemanager.containerregistry.DockerTaskStep;
-import com.azure.resourcemanager.containerregistry.EncodedTaskStep;
-import com.azure.resourcemanager.containerregistry.EncodedTaskStepUpdateParameters;
-import com.azure.resourcemanager.containerregistry.FileTaskStep;
-import com.azure.resourcemanager.containerregistry.FileTaskStepUpdateParameters;
-import com.azure.resourcemanager.containerregistry.OS;
-import com.azure.resourcemanager.containerregistry.PlatformProperties;
-import com.azure.resourcemanager.containerregistry.PlatformUpdateParameters;
-import com.azure.resourcemanager.containerregistry.ProvisioningState;
-import com.azure.resourcemanager.containerregistry.RegistryDockerTaskStep;
-import com.azure.resourcemanager.containerregistry.RegistryEncodedTaskStep;
-import com.azure.resourcemanager.containerregistry.RegistryFileTaskStep;
-import com.azure.resourcemanager.containerregistry.RegistrySourceTrigger;
-import com.azure.resourcemanager.containerregistry.RegistryTask;
-import com.azure.resourcemanager.containerregistry.RegistryTaskStep;
-import com.azure.resourcemanager.containerregistry.SourceProperties;
-import com.azure.resourcemanager.containerregistry.SourceTrigger;
-import com.azure.resourcemanager.containerregistry.SourceTriggerUpdateParameters;
-import com.azure.resourcemanager.containerregistry.SourceUpdateParameters;
-import com.azure.resourcemanager.containerregistry.TaskStatus;
-import com.azure.resourcemanager.containerregistry.TaskUpdateParameters;
-import com.azure.resourcemanager.containerregistry.TriggerProperties;
-import com.azure.resourcemanager.containerregistry.TriggerStatus;
-import com.azure.resourcemanager.containerregistry.TriggerUpdateParameters;
-import com.azure.resourcemanager.containerregistry.Variant;
-import com.azure.resourcemanager.containerregistry.models.TaskInner;
-import com.azure.resourcemanager.containerregistry.models.TasksInner;
+import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.TasksClient;
+import com.azure.resourcemanager.containerregistry.models.AgentProperties;
+import com.azure.resourcemanager.containerregistry.models.Architecture;
+import com.azure.resourcemanager.containerregistry.models.BaseImageTrigger;
+import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerType;
+import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.DockerBuildStepUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.DockerTaskStep;
+import com.azure.resourcemanager.containerregistry.models.EncodedTaskStep;
+import com.azure.resourcemanager.containerregistry.models.EncodedTaskStepUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.FileTaskStep;
+import com.azure.resourcemanager.containerregistry.models.FileTaskStepUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.OS;
+import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
+import com.azure.resourcemanager.containerregistry.models.PlatformUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
+import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryEncodedTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistrySourceTrigger;
+import com.azure.resourcemanager.containerregistry.models.RegistryTask;
+import com.azure.resourcemanager.containerregistry.models.RegistryTaskStep;
+import com.azure.resourcemanager.containerregistry.models.SourceProperties;
+import com.azure.resourcemanager.containerregistry.models.SourceTrigger;
+import com.azure.resourcemanager.containerregistry.models.SourceTriggerUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.SourceUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.TaskStatus;
+import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.TriggerProperties;
+import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
+import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.Variant;
+import com.azure.resourcemanager.containerregistry.fluent.inner.TaskInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -53,7 +54,7 @@ import reactor.core.publisher.Mono;
 class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, RegistryTask.Update {
 
     private final ClientLogger logger = new ClientLogger(getClass());
-    private final TasksInner tasksInner;
+    private final TasksClient tasksInner;
     private final String taskName;
     private final String key = UUID.randomUUID().toString();
     private String resourceGroupName;
@@ -176,14 +177,14 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, String taskName) {
-        this.tasksInner = registryManager.inner().tasks();
+        this.tasksInner = registryManager.inner().getTasks();
         this.taskName = taskName;
         this.inner = new TaskInner();
         this.taskUpdateParameters = new TaskUpdateParameters();
     }
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, TaskInner inner) {
-        this.tasksInner = registryManager.inner().tasks();
+        this.tasksInner = registryManager.inner().getTasks();
         this.taskName = inner.name();
         this.inner = inner;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.id());

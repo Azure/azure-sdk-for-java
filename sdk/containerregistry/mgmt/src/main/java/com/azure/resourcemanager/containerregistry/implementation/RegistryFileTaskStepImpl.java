@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.FileTaskStep;
-import com.azure.resourcemanager.containerregistry.FileTaskStepUpdateParameters;
-import com.azure.resourcemanager.containerregistry.OverridingValue;
-import com.azure.resourcemanager.containerregistry.RegistryFileTaskStep;
-import com.azure.resourcemanager.containerregistry.RegistryTask;
-import com.azure.resourcemanager.containerregistry.SetValue;
-import com.azure.resourcemanager.containerregistry.TaskStepProperties;
+import com.azure.resourcemanager.containerregistry.models.FileTaskStep;
+import com.azure.resourcemanager.containerregistry.models.FileTaskStepUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.OverridingValue;
+import com.azure.resourcemanager.containerregistry.models.RegistryFileTaskStep;
+import com.azure.resourcemanager.containerregistry.models.RegistryTask;
+import com.azure.resourcemanager.containerregistry.models.SetValue;
+import com.azure.resourcemanager.containerregistry.models.TaskStepProperties;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.MetricValue;
-import com.azure.resourcemanager.sql.SqlDatabaseMetricValue;
+import com.azure.resourcemanager.sql.models.MetricValue;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetricValue;
 import java.time.OffsetDateTime;
 
 /** Implementation for SqlDatabaseMetricValue. */

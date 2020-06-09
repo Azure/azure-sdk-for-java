@@ -4,21 +4,22 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnection;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnections;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionInner;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionsInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
-class ExpressRouteCrossConnectionsImpl
+public class ExpressRouteCrossConnectionsImpl
     extends ReadableWrappersImpl<
         ExpressRouteCrossConnection, ExpressRouteCrossConnectionImpl, ExpressRouteCrossConnectionInner>
     implements ExpressRouteCrossConnections {
     private final NetworkManager manager;
 
-    ExpressRouteCrossConnectionsImpl(NetworkManager manager) {
+    public ExpressRouteCrossConnectionsImpl(NetworkManager manager) {
         this.manager = manager;
     }
 
@@ -77,7 +78,7 @@ class ExpressRouteCrossConnectionsImpl
     }
 
     @Override
-    public ExpressRouteCrossConnectionsInner inner() {
-        return manager.inner().expressRouteCrossConnections();
+    public ExpressRouteCrossConnectionsClient inner() {
+        return manager.inner().getExpressRouteCrossConnections();
     }
 }

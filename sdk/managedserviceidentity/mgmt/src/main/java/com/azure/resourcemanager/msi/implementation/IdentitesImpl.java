@@ -3,24 +3,25 @@
 
 package com.azure.resourcemanager.msi.implementation;
 
-import com.azure.resourcemanager.msi.Identities;
-import com.azure.resourcemanager.msi.Identity;
-import com.azure.resourcemanager.msi.models.IdentityInner;
-import com.azure.resourcemanager.msi.models.UserAssignedIdentitiesInner;
+import com.azure.resourcemanager.msi.MSIManager;
+import com.azure.resourcemanager.msi.models.Identities;
+import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.msi.fluent.inner.IdentityInner;
+import com.azure.resourcemanager.msi.fluent.UserAssignedIdentitiesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /**
  * The implementation for Identities.
  */
-final class IdentitesImpl
+public final class IdentitesImpl
     extends TopLevelModifiableResourcesImpl<Identity,
         IdentityImpl,
         IdentityInner,
-        UserAssignedIdentitiesInner,
-        MSIManager>
+    UserAssignedIdentitiesClient,
+    MSIManager>
     implements Identities {
 
-    protected IdentitesImpl(UserAssignedIdentitiesInner innerCollection, MSIManager manager) {
+    public IdentitesImpl(UserAssignedIdentitiesClient innerCollection, MSIManager manager) {
         super(innerCollection, manager);
     }
 

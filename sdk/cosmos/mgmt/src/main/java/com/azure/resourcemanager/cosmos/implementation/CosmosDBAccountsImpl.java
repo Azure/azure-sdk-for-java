@@ -5,29 +5,31 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.CosmosDBAccounts;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListConnectionStringsResult;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListKeysResult;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListReadOnlyKeysResult;
-import com.azure.resourcemanager.cosmos.FailoverPolicy;
-import com.azure.resourcemanager.cosmos.KeyKind;
-import com.azure.resourcemanager.cosmos.Location;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountGetResultsInner;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountsInner;
+import com.azure.resourcemanager.cosmos.CosmosManager;
+import com.azure.resourcemanager.cosmos.fluent.DatabaseAccountsClient;
+import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
+import com.azure.resourcemanager.cosmos.models.KeyKind;
+import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import java.util.ArrayList;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** Implementation for Registries. */
-class CosmosDBAccountsImpl
+public class CosmosDBAccountsImpl
     extends GroupableResourcesImpl<
-        CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsInner, CosmosDBManager>
+        CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsClient, CosmosManager>
     implements CosmosDBAccounts {
 
-    CosmosDBAccountsImpl(final CosmosDBManager manager) {
-        super(manager.inner().databaseAccounts(), manager);
+    public CosmosDBAccountsImpl(final CosmosManager manager) {
+        super(manager.inner().getDatabaseAccounts(), manager);
     }
 
     @Override
@@ -106,7 +108,7 @@ class CosmosDBAccountsImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .failoverPriorityChangeAsync(groupName, accountName, policyInners);
     }
 
@@ -125,7 +127,7 @@ class CosmosDBAccountsImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .listKeysAsync(groupName, accountName)
             .map(
                 databaseAccountListKeysResultInner ->
@@ -137,7 +139,7 @@ class CosmosDBAccountsImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .listReadOnlyKeysAsync(groupName, accountName)
             .map(
                 databaseAccountListReadOnlyKeysResultInner ->
@@ -155,7 +157,7 @@ class CosmosDBAccountsImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .listConnectionStringsAsync(groupName, accountName)
             .map(
                 databaseAccountListConnectionStringsResultInner ->
@@ -170,6 +172,6 @@ class CosmosDBAccountsImpl
 
     @Override
     public Mono<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind) {
-        return this.manager().inner().databaseAccounts().regenerateKeyAsync(groupName, accountName, keyKind);
+        return this.manager().inner().getDatabaseAccounts().regenerateKeyAsync(groupName, accountName, keyKind);
     }
 }

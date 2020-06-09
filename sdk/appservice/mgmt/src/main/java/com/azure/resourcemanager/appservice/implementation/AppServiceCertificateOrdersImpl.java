@@ -3,25 +3,26 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrders;
-import com.azure.resourcemanager.appservice.AppServicePlans;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderInner;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrdersInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
+import com.azure.resourcemanager.appservice.models.AppServicePlans;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for {@link AppServicePlans}. */
-class AppServiceCertificateOrdersImpl
+public class AppServiceCertificateOrdersImpl
     extends TopLevelModifiableResourcesImpl<
         AppServiceCertificateOrder,
         AppServiceCertificateOrderImpl,
         AppServiceCertificateOrderInner,
-        AppServiceCertificateOrdersInner,
-        AppServiceManager>
+    AppServiceCertificateOrdersClient,
+    AppServiceManager>
     implements AppServiceCertificateOrders {
 
-    AppServiceCertificateOrdersImpl(AppServiceManager manager) {
-        super(manager.inner().appServiceCertificateOrders(), manager);
+    public AppServiceCertificateOrdersImpl(AppServiceManager manager) {
+        super(manager.inner().getAppServiceCertificateOrders(), manager);
     }
 
     @Override

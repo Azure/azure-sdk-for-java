@@ -5,7 +5,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
@@ -19,13 +19,13 @@ import reactor.core.publisher.Mono;
 /** The implementation of ServicePrincipals and its parent interfaces. */
 public class ServicePrincipalsImpl
     extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
-    implements ServicePrincipals, HasManager<GraphRbacManager>, HasInner<ServicePrincipalsClient> {
+    implements ServicePrincipals, HasManager<AuthorizationManager>, HasInner<ServicePrincipalsClient> {
     private ServicePrincipalsClient innerCollection;
-    private GraphRbacManager manager;
+    private AuthorizationManager manager;
 
-    public ServicePrincipalsImpl(final ServicePrincipalsClient client, final GraphRbacManager graphRbacManager) {
+    public ServicePrincipalsImpl(final ServicePrincipalsClient client, final AuthorizationManager authorizationManager) {
         this.innerCollection = client;
-        this.manager = graphRbacManager;
+        this.manager = authorizationManager;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class ServicePrincipalsImpl
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

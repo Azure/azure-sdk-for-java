@@ -4,10 +4,10 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.CapabilityStatus;
-import com.azure.resourcemanager.sql.RegionCapabilities;
-import com.azure.resourcemanager.sql.ServerVersionCapability;
-import com.azure.resourcemanager.sql.models.LocationCapabilitiesInner;
+import com.azure.resourcemanager.sql.models.CapabilityStatus;
+import com.azure.resourcemanager.sql.models.RegionCapabilities;
+import com.azure.resourcemanager.sql.models.ServerVersionCapability;
+import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

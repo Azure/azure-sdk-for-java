@@ -6,24 +6,25 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.keyvault.AccessPolicy;
-import com.azure.resourcemanager.keyvault.AccessPolicyEntry;
-import com.azure.resourcemanager.keyvault.CreateMode;
-import com.azure.resourcemanager.keyvault.IpRule;
-import com.azure.resourcemanager.keyvault.Keys;
-import com.azure.resourcemanager.keyvault.NetworkRuleAction;
-import com.azure.resourcemanager.keyvault.NetworkRuleBypassOptions;
-import com.azure.resourcemanager.keyvault.NetworkRuleSet;
-import com.azure.resourcemanager.keyvault.Secrets;
-import com.azure.resourcemanager.keyvault.Sku;
-import com.azure.resourcemanager.keyvault.SkuName;
-import com.azure.resourcemanager.keyvault.Vault;
-import com.azure.resourcemanager.keyvault.VaultCreateOrUpdateParameters;
-import com.azure.resourcemanager.keyvault.VaultProperties;
-import com.azure.resourcemanager.keyvault.VirtualNetworkRule;
-import com.azure.resourcemanager.keyvault.models.VaultInner;
-import com.azure.resourcemanager.keyvault.models.VaultsInner;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
+import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
+import com.azure.resourcemanager.keyvault.models.AccessPolicy;
+import com.azure.resourcemanager.keyvault.models.AccessPolicyEntry;
+import com.azure.resourcemanager.keyvault.models.CreateMode;
+import com.azure.resourcemanager.keyvault.models.IpRule;
+import com.azure.resourcemanager.keyvault.models.Keys;
+import com.azure.resourcemanager.keyvault.models.NetworkRuleAction;
+import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
+import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
+import com.azure.resourcemanager.keyvault.models.Secrets;
+import com.azure.resourcemanager.keyvault.models.Sku;
+import com.azure.resourcemanager.keyvault.models.SkuName;
+import com.azure.resourcemanager.keyvault.models.Vault;
+import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
+import com.azure.resourcemanager.keyvault.models.VaultProperties;
+import com.azure.resourcemanager.keyvault.models.VirtualNetworkRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -31,11 +32,12 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Vault and its parent interfaces. */
 class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyVaultManager>
@@ -43,7 +45,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
 
-    private GraphRbacManager graphRbacManager;
+    private AuthorizationManager authorizationManager;
     private List<AccessPolicyImpl> accessPolicies;
 
     private SecretAsyncClient secretClient;
@@ -53,9 +55,9 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     private Keys keys;
     private Secrets secrets;
 
-    VaultImpl(String key, VaultInner innerObject, KeyVaultManager manager, GraphRbacManager graphRbacManager) {
+    VaultImpl(String key, VaultInner innerObject, KeyVaultManager manager, AuthorizationManager authorizationManager) {
         super(key, innerObject, manager);
-        this.graphRbacManager = graphRbacManager;
+        this.authorizationManager = authorizationManager;
         this.accessPolicies = new ArrayList<>();
         if (innerObject != null
             && innerObject.properties() != null
@@ -292,7 +294,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                 if (accessPolicy.userPrincipalName() != null) {
                     observables
                         .add(
-                            graphRbacManager
+                            authorizationManager
                                 .users()
                                 .getByNameAsync(accessPolicy.userPrincipalName())
                                 .subscribeOn(SdkContext.getReactorScheduler())
@@ -304,12 +306,12 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                                 String
                                                     .format(
                                                         "User principal name %s is not found in tenant %s",
-                                                        accessPolicy.userPrincipalName(), graphRbacManager.tenantId()),
+                                                        accessPolicy.userPrincipalName(), authorizationManager.tenantId()),
                                                 null))));
                 } else if (accessPolicy.servicePrincipalName() != null) {
                     observables
                         .add(
-                            graphRbacManager
+                            authorizationManager
                                 .servicePrincipals()
                                 .getByNameAsync(accessPolicy.servicePrincipalName())
                                 .subscribeOn(SdkContext.getReactorScheduler())
@@ -322,7 +324,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                                     .format(
                                                         "Service principal name %s is not found in tenant %s",
                                                         accessPolicy.servicePrincipalName(),
-                                                        graphRbacManager.tenantId()),
+                                                        authorizationManager.tenantId()),
                                                 null))));
                 } else {
                     throw logger.logExceptionAsError(
@@ -339,7 +341,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     public Mono<Vault> createResourceAsync() {
-        final VaultsInner client = this.manager().inner().vaults();
+        final VaultsClient client = this.manager().inner().getVaults();
         return populateAccessPolicies()
             .then(
                 Mono
@@ -365,7 +367,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     @Override
     protected Mono<VaultInner> getInnerAsync() {
-        return this.manager().inner().vaults().getByResourceGroupAsync(resourceGroupName(), this.name());
+        return this.manager().inner().getVaults().getByResourceGroupAsync(resourceGroupName(), this.name());
     }
 
     @Override

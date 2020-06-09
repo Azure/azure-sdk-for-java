@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.ManagedInstanceAdministratorType;
-import com.azure.resourcemanager.sql.SqlActiveDirectoryAdministrator;
-import com.azure.resourcemanager.sql.models.ServerAzureADAdministratorInner;
+import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
+import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
+import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
 
 /** Response containing the SQL Active Directory administrator. */
 public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzureADAdministratorInner>

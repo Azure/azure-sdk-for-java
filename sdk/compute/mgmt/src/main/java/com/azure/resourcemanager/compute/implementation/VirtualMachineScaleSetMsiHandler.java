@@ -9,9 +9,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.Identity;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
@@ -38,10 +38,10 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     /**
      * Creates VirtualMachineScaleSetMsiHandler.
      *
-     * @param rbacManager the graph rbac manager
+     * @param authorizationManager the graph rbac manager
      */
-    VirtualMachineScaleSetMsiHandler(GraphRbacManager rbacManager, VirtualMachineScaleSetImpl scaleSet) {
-        super(rbacManager, scaleSet.taskGroup(), scaleSet.idProvider());
+    VirtualMachineScaleSetMsiHandler(AuthorizationManager authorizationManager, VirtualMachineScaleSetImpl scaleSet) {
+        super(authorizationManager, scaleSet.taskGroup(), scaleSet.idProvider());
         this.scaleSet = scaleSet;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();

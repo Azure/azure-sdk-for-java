@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.AggregationType;
-import com.azure.resourcemanager.monitor.MetricAlert;
-import com.azure.resourcemanager.monitor.MetricAlertCondition;
-import com.azure.resourcemanager.monitor.MetricAlertRuleCondition;
-import com.azure.resourcemanager.monitor.MetricAlertRuleTimeAggregation;
-import com.azure.resourcemanager.monitor.MetricCriteria;
-import com.azure.resourcemanager.monitor.Operator;
+import com.azure.resourcemanager.monitor.models.AggregationType;
+import com.azure.resourcemanager.monitor.models.MetricAlert;
+import com.azure.resourcemanager.monitor.models.MetricAlertCondition;
+import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
+import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
+import com.azure.resourcemanager.monitor.models.MetricCriteria;
+import com.azure.resourcemanager.monitor.models.Operator;
 import java.util.ArrayList;
 
 /** Implementation for MetricAlertCondition. */

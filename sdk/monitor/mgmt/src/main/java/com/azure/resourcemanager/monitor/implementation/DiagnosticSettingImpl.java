@@ -4,13 +4,14 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.CategoryType;
-import com.azure.resourcemanager.monitor.DiagnosticSetting;
-import com.azure.resourcemanager.monitor.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.LogSettings;
-import com.azure.resourcemanager.monitor.MetricSettings;
-import com.azure.resourcemanager.monitor.RetentionPolicy;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.CategoryType;
+import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
+import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
+import com.azure.resourcemanager.monitor.models.LogSettings;
+import com.azure.resourcemanager.monitor.models.MetricSettings;
+import com.azure.resourcemanager.monitor.models.RetentionPolicy;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -222,14 +223,14 @@ class DiagnosticSettingImpl
         return this
             .manager()
             .inner()
-            .diagnosticSettings()
+            .getDiagnosticSettings()
             .createOrUpdateAsync(this.resourceId, this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().inner().diagnosticSettings().getAsync(this.resourceId, this.name());
+        return this.manager().inner().getDiagnosticSettings().getAsync(this.resourceId, this.name());
     }
 
     @Override

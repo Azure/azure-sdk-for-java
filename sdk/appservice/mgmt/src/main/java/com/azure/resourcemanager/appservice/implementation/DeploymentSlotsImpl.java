@@ -5,13 +5,14 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.DeploymentSlot;
-import com.azure.resourcemanager.appservice.DeploymentSlots;
-import com.azure.resourcemanager.appservice.WebApp;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.models.WebAppsInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.DeploymentSlots;
+import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
@@ -19,13 +20,13 @@ import reactor.core.publisher.Mono;
 /** The implementation DeploymentSlots. */
 class DeploymentSlotsImpl
     extends IndependentChildResourcesImpl<
-        DeploymentSlot, DeploymentSlotImpl, SiteInner, WebAppsInner, AppServiceManager, WebApp>
+        DeploymentSlot, DeploymentSlotImpl, SiteInner, WebAppsClient, AppServiceManager, WebApp>
     implements DeploymentSlots {
 
     private final WebAppImpl parent;
 
     DeploymentSlotsImpl(final WebAppImpl parent) {
-        super(parent.manager().inner().webApps(), parent.manager());
+        super(parent.manager().inner().getWebApps(), parent.manager());
 
         this.parent = parent;
     }

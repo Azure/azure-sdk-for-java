@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.MetricAlertRuleTimeAggregation;
-import com.azure.resourcemanager.monitor.MetricDimension;
-import com.azure.resourcemanager.monitor.MultiMetricCriteria;
+import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
+import com.azure.resourcemanager.monitor.models.MetricDimension;
+import com.azure.resourcemanager.monitor.models.MultiMetricCriteria;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.ArrayList;
 import java.util.Arrays;

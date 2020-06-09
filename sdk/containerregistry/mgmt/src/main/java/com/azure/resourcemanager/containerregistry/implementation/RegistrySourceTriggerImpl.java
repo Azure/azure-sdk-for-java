@@ -2,18 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.AuthInfo;
-import com.azure.resourcemanager.containerregistry.AuthInfoUpdateParameters;
-import com.azure.resourcemanager.containerregistry.RegistrySourceTrigger;
-import com.azure.resourcemanager.containerregistry.RegistryTask;
-import com.azure.resourcemanager.containerregistry.SourceControlType;
-import com.azure.resourcemanager.containerregistry.SourceProperties;
-import com.azure.resourcemanager.containerregistry.SourceTrigger;
-import com.azure.resourcemanager.containerregistry.SourceTriggerEvent;
-import com.azure.resourcemanager.containerregistry.SourceTriggerUpdateParameters;
-import com.azure.resourcemanager.containerregistry.SourceUpdateParameters;
-import com.azure.resourcemanager.containerregistry.TokenType;
-import com.azure.resourcemanager.containerregistry.TriggerStatus;
+import com.azure.resourcemanager.containerregistry.models.AuthInfo;
+import com.azure.resourcemanager.containerregistry.models.AuthInfoUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.RegistrySourceTrigger;
+import com.azure.resourcemanager.containerregistry.models.RegistryTask;
+import com.azure.resourcemanager.containerregistry.models.SourceControlType;
+import com.azure.resourcemanager.containerregistry.models.SourceProperties;
+import com.azure.resourcemanager.containerregistry.models.SourceTrigger;
+import com.azure.resourcemanager.containerregistry.models.SourceTriggerEvent;
+import com.azure.resourcemanager.containerregistry.models.SourceTriggerUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.SourceUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.TokenType;
+import com.azure.resourcemanager.containerregistry.models.TriggerStatus;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.ArrayList;
 import java.util.List;

@@ -4,12 +4,13 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationInner;
-import com.azure.resourcemanager.network.models.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
+import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
@@ -179,7 +180,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .getVirtualMachineScaleSetNetworkInterfaceAsync(
                 this.resourceGroupName,
                 this.scaleSetName,

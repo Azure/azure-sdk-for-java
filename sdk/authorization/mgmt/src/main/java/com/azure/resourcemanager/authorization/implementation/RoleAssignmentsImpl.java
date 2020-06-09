@@ -6,7 +6,7 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleAssignments;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 /** The implementation of RoleAssignments and its parent interfaces. */
 public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
     implements RoleAssignments, HasInner<RoleAssignmentsClient> {
-    private final GraphRbacManager manager;
+    private final AuthorizationManager manager;
 
-    public RoleAssignmentsImpl(final GraphRbacManager manager) {
+    public RoleAssignmentsImpl(final AuthorizationManager manager) {
         this.manager = manager;
     }
 
@@ -93,7 +93,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

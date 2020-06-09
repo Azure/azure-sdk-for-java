@@ -3,26 +3,27 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.cosmos.Capability;
-import com.azure.resourcemanager.cosmos.ConnectorOffer;
-import com.azure.resourcemanager.cosmos.ConsistencyPolicy;
-import com.azure.resourcemanager.cosmos.CosmosDBAccount;
-import com.azure.resourcemanager.cosmos.DatabaseAccountCreateUpdateParameters;
-import com.azure.resourcemanager.cosmos.DatabaseAccountKind;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListConnectionStringsResult;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListKeysResult;
-import com.azure.resourcemanager.cosmos.DatabaseAccountListReadOnlyKeysResult;
-import com.azure.resourcemanager.cosmos.DatabaseAccountOfferType;
-import com.azure.resourcemanager.cosmos.DatabaseAccountUpdateParameters;
-import com.azure.resourcemanager.cosmos.DefaultConsistencyLevel;
-import com.azure.resourcemanager.cosmos.FailoverPolicy;
-import com.azure.resourcemanager.cosmos.KeyKind;
-import com.azure.resourcemanager.cosmos.Location;
-import com.azure.resourcemanager.cosmos.PrivateEndpointConnection;
-import com.azure.resourcemanager.cosmos.PrivateLinkResource;
-import com.azure.resourcemanager.cosmos.SqlDatabase;
-import com.azure.resourcemanager.cosmos.VirtualNetworkRule;
-import com.azure.resourcemanager.cosmos.models.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.CosmosManager;
+import com.azure.resourcemanager.cosmos.fluent.inner.DatabaseAccountGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.Capability;
+import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
+import com.azure.resourcemanager.cosmos.models.ConsistencyPolicy;
+import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListConnectionStringsResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListKeysResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountOfferType;
+import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
+import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
+import com.azure.resourcemanager.cosmos.models.KeyKind;
+import com.azure.resourcemanager.cosmos.models.Location;
+import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.cosmos.models.PrivateLinkResource;
+import com.azure.resourcemanager.cosmos.models.SqlDatabase;
+import com.azure.resourcemanager.cosmos.models.VirtualNetworkRule;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
@@ -42,7 +43,7 @@ import java.util.stream.Collectors;
 
 /** The implementation for CosmosDBAccount. */
 class CosmosDBAccountImpl
-    extends GroupableResourceImpl<CosmosDBAccount, DatabaseAccountGetResultsInner, CosmosDBAccountImpl, CosmosDBManager>
+    extends GroupableResourceImpl<CosmosDBAccount, DatabaseAccountGetResultsInner, CosmosDBAccountImpl, CosmosManager>
     implements CosmosDBAccount, CosmosDBAccount.Definition, CosmosDBAccount.Update {
     private List<FailoverPolicy> failoverPolicies;
     private boolean hasFailoverPolicyChanges;
@@ -50,11 +51,11 @@ class CosmosDBAccountImpl
     private Map<String, VirtualNetworkRule> virtualNetworkRulesMap;
     private PrivateEndpointConnectionsImpl privateEndpointConnections;
 
-    CosmosDBAccountImpl(String name, DatabaseAccountGetResultsInner innerObject, CosmosDBManager manager) {
+    CosmosDBAccountImpl(String name, DatabaseAccountGetResultsInner innerObject, CosmosManager manager) {
         super(fixDBName(name), innerObject, manager);
         this.failoverPolicies = new ArrayList<>();
         this.privateEndpointConnections =
-            new PrivateEndpointConnectionsImpl(this.manager().inner().privateEndpointConnections(), this);
+            new PrivateEndpointConnectionsImpl(this.manager().inner().getPrivateEndpointConnections(), this);
     }
 
     @Override
@@ -111,7 +112,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
             .map(
                 DatabaseAccountListKeysResultImpl::new);
@@ -127,7 +128,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .listReadOnlyKeysAsync(this.resourceGroupName(), this.name())
             .map(
                 DatabaseAccountListReadOnlyKeysResultImpl::new);
@@ -143,7 +144,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .listConnectionStringsAsync(this.resourceGroupName(), this.name())
             .map(
                 DatabaseAccountListConnectionStringsResultImpl::new);
@@ -159,7 +160,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .sqlResources()
+            .getSqlResources()
             .listSqlDatabasesAsync(this.resourceGroupName(), this.name())
             .mapPage(SqlDatabaseImpl::new);
     }
@@ -174,7 +175,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .privateLinkResources()
+            .getPrivateLinkResources()
             .listByDatabaseAccountAsync(this.resourceGroupName(), this.name())
             .mapPage(PrivateLinkResourceImpl::new);
     }
@@ -189,7 +190,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .privateLinkResources()
+            .getPrivateLinkResources()
             .getAsync(this.resourceGroupName(), this.name(), groupName)
             .map(PrivateLinkResourceImpl::new);
     }
@@ -257,7 +258,7 @@ class CosmosDBAccountImpl
 
     @Override
     public void offlineRegion(Region region) {
-        this.manager().inner().databaseAccounts().offlineRegion(this.resourceGroupName(), this.name(), region.label());
+        this.manager().inner().getDatabaseAccounts().offlineRegion(this.resourceGroupName(), this.name(), region.label());
     }
 
     @Override
@@ -265,13 +266,13 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .offlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
     }
 
     @Override
     public void onlineRegion(Region region) {
-        this.manager().inner().databaseAccounts().onlineRegion(this.resourceGroupName(), this.name(), region.label());
+        this.manager().inner().getDatabaseAccounts().onlineRegion(this.resourceGroupName(), this.name(), region.label());
     }
 
     @Override
@@ -279,13 +280,13 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .onlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
     }
 
     @Override
     public void regenerateKey(KeyKind keyKind) {
-        this.manager().inner().databaseAccounts().regenerateKey(this.resourceGroupName(), this.name(), keyKind);
+        this.manager().inner().getDatabaseAccounts().regenerateKey(this.resourceGroupName(), this.name(), keyKind);
     }
 
     @Override
@@ -293,7 +294,7 @@ class CosmosDBAccountImpl
         return this
             .manager()
             .inner()
-            .databaseAccounts()
+            .getDatabaseAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyKind);
     }
 
@@ -360,7 +361,7 @@ class CosmosDBAccountImpl
 
     @Override
     protected Mono<DatabaseAccountGetResultsInner> getInnerAsync() {
-        return this.manager().inner().databaseAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getDatabaseAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -554,7 +555,7 @@ class CosmosDBAccountImpl
                 this
                     .manager()
                     .inner()
-                    .databaseAccounts()
+                    .getDatabaseAccounts()
                     .createOrUpdateAsync(resourceGroupName(), name(), createUpdateParametersInner);
             locationParameters = new CreateUpdateLocationParameters(createUpdateParametersInner);
         } else {
@@ -563,7 +564,7 @@ class CosmosDBAccountImpl
                 this
                     .manager()
                     .inner()
-                    .databaseAccounts()
+                    .getDatabaseAccounts()
                     .updateAsync(resourceGroupName(), name(), updateParametersInner);
             locationParameters = new UpdateLocationParameters(updateParametersInner);
         }

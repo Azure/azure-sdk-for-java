@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.LoadBalancingRule;
+
 import java.util.Map;
 
 /** An interface representing a model's ability to reference load balancing rules. */
