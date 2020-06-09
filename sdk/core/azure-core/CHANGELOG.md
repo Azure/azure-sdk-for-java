@@ -1,5 +1,8 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+
 ## 1.5.1 (2020-06-08)
 
 - Added handling for more complex `Content-Type` headers such as `text/custom+xml`.
