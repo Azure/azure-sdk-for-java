@@ -10,9 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class ChangeFeedProcessorCodeSnippet {
 
     public void changeFeedProcessorBuilderCodeSnippet() {
-        String hostName = null;
-        CosmosAsyncContainer feedContainer = null;
-        CosmosAsyncContainer leaseContainer = null;
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase("testDb", cosmosAsyncClient);
+        CosmosAsyncContainer feedContainer = new CosmosAsyncContainer("feedContainer", cosmosAsyncDatabase);
+        CosmosAsyncContainer leaseContainer = new CosmosAsyncContainer("leaseContainer", cosmosAsyncDatabase);
         // BEGIN: com.azure.cosmos.changeFeedProcessor.builder
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
