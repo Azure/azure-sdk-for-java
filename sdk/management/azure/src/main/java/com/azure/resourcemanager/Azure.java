@@ -39,7 +39,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
-import com.azure.resourcemanager.cosmos.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.dns.DnsZoneManager;
@@ -118,7 +118,7 @@ public final class Azure {
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
     //    private final SearchServiceManager searchServiceManager;
-    private final CosmosDBManager cosmosDBManager;
+    private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
     private final MSIManager msiManager;
     private final MonitorManager monitorManager;
@@ -360,7 +360,7 @@ public final class Azure {
         // sdkContext);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        this.cosmosDBManager = CosmosDBManager.authenticate(httpPipeline, profile, sdkContext);
+        this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
@@ -704,7 +704,7 @@ public final class Azure {
 
     /** @return entry point to managing Container Regsitries. */
     public CosmosDBAccounts cosmosDBAccounts() {
-        return cosmosDBManager.databaseAccounts();
+        return cosmosManager.databaseAccounts();
     }
 
     //    /**

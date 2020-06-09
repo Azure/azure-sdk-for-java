@@ -15,7 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure compute resource management. */
-public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBManagementClient> {
+public final class CosmosManager extends Manager<CosmosManager, CosmosDBManagementClient> {
     private CosmosDBAccountsImpl databaseAccounts;
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -23,7 +23,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      * @return Configurable
      */
     public static Configurable configure() {
-        return new CosmosDBManager.ConfigurableImpl();
+        return new CosmosManager.ConfigurableImpl();
     }
 
     /**
@@ -33,7 +33,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      * @param profile the profile to use
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static CosmosManager authenticate(TokenCredential credential, AzureProfile profile) {
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -44,7 +44,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      * @param profile the profile
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return authenticate(httpPipeline, profile, new SdkContext());
     }
 
@@ -56,8 +56,8 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      * @param sdkContext the sdk context
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new CosmosDBManager(httpPipeline, profile, sdkContext);
+    public static CosmosManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new CosmosManager(httpPipeline, profile, sdkContext);
     }
 
     /** The interface allowing configurations to be set. */
@@ -69,18 +69,18 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
          * @param profile the profile to use
          * @return the ComputeManager
          */
-        CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile);
+        CosmosManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
-        public CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return CosmosDBManager.authenticate(buildHttpPipeline(credential, profile), profile);
+        public CosmosManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return CosmosManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private CosmosDBManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private CosmosManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
             httpPipeline,
             profile,
