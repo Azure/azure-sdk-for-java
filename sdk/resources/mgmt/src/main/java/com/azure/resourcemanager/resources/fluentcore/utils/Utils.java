@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
@@ -213,5 +214,22 @@ public final class Utils {
                 new IllegalStateException(stringBuilder.toString()));
         }
         return subscriptionList.get(0).subscriptionId();
+    }
+
+    /**
+     * Get the Azure storage account connection string.
+     * @param accountName storage account name
+     * @param accountKey storage account key
+     * @param environment the Azure environment
+     * @return the storage account connection string.
+     */
+    public static String getStorageConnectionString(String accountName, String accountKey,
+                                                    AzureEnvironment environment) {
+        if (environment == null || environment.getStorageEndpointSuffix() == null) {
+            environment = AzureEnvironment.AZURE;
+        }
+        String suffix = environment.getStorageEndpointSuffix().replaceAll("^\\.*", "");
+        return String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=%s",
+            accountName, accountKey, suffix);
     }
 }
