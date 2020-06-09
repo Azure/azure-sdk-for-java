@@ -21,8 +21,10 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -610,5 +612,22 @@ class HelperTest extends APISpec {
 
         then:
         new BlobUrlParts().parse(bup.toUrl()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+    }
+
+    def "Utility convertStreamToBuffer replayable"() {
+        setup:
+        def data = getRandomByteArray(1024)
+
+        when:
+        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024)
+
+        then:
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
+        // subscribe multiple times and ensure data is same each time
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
     }
 }
