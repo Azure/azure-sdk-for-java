@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.network.v2020_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.network.v2020_03_01.implementation.ResourceNavigationLinkInner;
-import com.microsoft.azure.management.network.v2020_03_01.implementation.ServiceAssociationLinkInner;
 import com.microsoft.azure.management.network.v2020_03_01.implementation.SubnetInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
