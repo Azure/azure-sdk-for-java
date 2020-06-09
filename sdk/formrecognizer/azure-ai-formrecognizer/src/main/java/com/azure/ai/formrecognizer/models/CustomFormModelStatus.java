@@ -5,8 +5,6 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /**
  * Defines enum values for CustomFormModelStatus.
  */
@@ -36,12 +34,5 @@ public final class CustomFormModelStatus extends ExpandableStringEnum<CustomForm
      */
     public static CustomFormModelStatus fromString(String value) {
         return fromString(value, CustomFormModelStatus.class);
-    }
-
-    /**
-     * @return known {@link CustomFormModelStatus} values.
-     */
-    public static Collection<CustomFormModelStatus> values() {
-        return values(CustomFormModelStatus.class);
     }
 }

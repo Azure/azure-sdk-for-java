@@ -1,26 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/tenants?api-version=2016-06-01",
+    "Uri" : "http://localhost:1234/tenants?api-version=2020-01-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.management/null (1.8.0_231; Windows 10 10.0)"
+      "User-Agent" : "azsdk-java-com.azure.management.resources/2.0.0 (13.0.3; Windows 10 10.0)",
+      "Content-Type" : "application/json"
     },
     "Response" : {
-      "date" : "Wed, 19 Feb 2020 05:37:33 GMT",
+      "date" : "Wed, 13 May 2020 04:39:39 GMT",
+      "content-length" : "140",
       "expires" : "-1",
-      "vary" : "Accept-Encoding",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
       "pragma" : "no-cache",
-      "x-ms-correlation-request-id" : "fe933483-06e5-47df-b605-2e1d126750ff",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11998",
+      "x-ms-correlation-request-id" : "fa1eff7c-fd6e-48f7-af51-7442b5db5284",
+      "x-ms-ratelimit-remaining-tenant-reads" : "11999",
       "x-content-type-options" : "nosniff",
-      "x-ms-routing-request-id" : "KOREASOUTH:20200219T053734Z:fe933483-06e5-47df-b605-2e1d126750ff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200513T043939Z:fa1eff7c-fd6e-48f7-af51-7442b5db5284",
       "content-type" : "application/json; charset=utf-8",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "fe933483-06e5-47df-b605-2e1d126750ff",
-      "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\"}]}"
+      "x-ms-request-id" : "fa1eff7c-fd6e-48f7-af51-7442b5db5284",
+      "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"tenantCategory\":\"Home\"}]}"
     }
   } ],
   "variables" : [ ]

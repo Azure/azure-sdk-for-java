@@ -3,6 +3,9 @@
 ## 12.6.0-beta.1 (Unreleased)
 
 
+## 12.5.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
 ## 12.5.0 (2020-04-06)
 - Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
@@ -64,7 +67,7 @@ and
 - Changed `VoidResponse` to `Response<Void>` on sync API, and `Mono<VoidResponse>` to `Mono<Response<Void>>` on async API.
 - Fixed metadata does not allow capital letter issue. [`Bug 5295`](https://github.com/Azure/azure-sdk-for-java/issues/5295)
 - `getQueueServiceUrl`, `getQueueUrl` API now returns URL with scheme, host, resource name and snapshot if any.
-- Removed SAS token generation APIs from clients, use QueueServiceSasSignatureValues to generate SAS tokens. 
+- Removed SAS token generation APIs from clients, use QueueServiceSasSignatureValues to generate SAS tokens.
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 ## 12.0.0-preview.3 (2019-09-10)
@@ -107,4 +110,4 @@ demonstrate the new API.
     - `azure-storage-queue` contains a `QueueServiceClient`, `QueueServiceAsyncClient`, `QueueClient` and `QueueAsyncClient` for storage queue operations.
 - Client instances are scoped to storage queue service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-  
+

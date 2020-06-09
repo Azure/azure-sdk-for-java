@@ -67,7 +67,7 @@ public enum InnerErrorCodeValue {
 
     /**
      * Parses a serialized value to a InnerErrorCodeValue instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed InnerErrorCodeValue object, or null if unable to parse.
      */

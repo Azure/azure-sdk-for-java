@@ -6,98 +6,87 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
-import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
+import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormTrainingClientTestBase extends TestBase {
-    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
+    private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
+    private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+
+    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
+    static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
+    static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation returned with a failed status";
+    static final String EXPECTED_INVALID_MODEL_ERROR = "Unable to list blobs on the Azure blob storage account.";
+    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID";
+    static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
+    static final String EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE = ", errorCode: [" + EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE + "], "
+            + "message: " + EXPECTED_INVALID_MODEL_ERROR;
+    static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
-    private static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    private static final String NAME = "name";
-    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    private static final String VERSION = "version";
-    private final HttpLogOptions httpLogOptions = new HttpLogOptions();
-    private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
-    private final String clientName = properties.getOrDefault(NAME, "UnknownName");
-    private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+    static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
+    static final String RESOURCE_RESOLVER_ERROR = "ResourceResolverError";
 
-    static void validateCustomModelData(CustomFormModel actualCustomModel, Model modelRawResponse,
-        boolean isLabeled) {
-        assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
-            actualCustomModel.getModelStatus().toString());
-        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
-        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
-            actualCustomModel.getTrainingDocuments());
-        final List<CustomFormSubModel> subModelList =
-            actualCustomModel.getSubModels().stream().collect(Collectors.toList());
-        if (isLabeled) {
-            final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
-            for (final FormFieldsReport expectedField : fields) {
-                final CustomFormModelField actualFormField =
-                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
-                assertEquals(expectedField.getFieldName(), actualFormField.getName());
-                assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
+    void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
+        CopyAuthorization actualResult) {
+        assertNotNull(actualResult.getModelId());
+        assertNotNull(actualResult.getAccessToken());
+        assertNotNull(actualResult.getExpiresOn());
+        assertEquals(expectedResourceRegion, actualResult.getResourceRegion());
+        assertEquals(expectedResourceId, actualResult.getResourceId());
+    }
 
-            }
-            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
-            assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
-                subModelList.get(0).getAccuracy());
+    FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
+            .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
-                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
-                final List<String> customFormFieldList = new ArrayList<String>();
-                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField -> customFormFieldList.add(customFormModelField.getLabel()));
-                Collections.sort(fields);
-                Collections.sort(customFormFieldList);
-                assertEquals(fields, customFormFieldList);
-            });
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
+        return builder;
     }
 
     private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
         List<TrainingDocumentInfo> actualTrainingDocuments) {
-
         assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
         for (int i = 0; i < actualTrainingDocuments.size(); i++) {
             com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo expectedTrainingDocument =
@@ -124,173 +113,150 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
-        assertNotNull(actualCustomModel.getModelId());
-        assertEquals(expectedModel.getModelStatus(), actualCustomModel.getModelStatus());
-        validateErrors(expectedModel.getModelError(), actualCustomModel.getModelError());
-        assertNotNull(actualCustomModel.getCreatedOn());
-        assertNotNull(actualCustomModel.getLastUpdatedOn());
-        validateSubModels(expectedModel.getSubModels(), actualCustomModel.getSubModels());
-        validateTrainingDocuments(expectedModel.getTrainingDocuments(), actualCustomModel.getTrainingDocuments());
+    static void validateAccountProperties(AccountProperties actualAccountProperties) {
+        assertNotNull(actualAccountProperties.getCustomModelLimit());
+        assertNotNull(actualAccountProperties.getCustomModelCount());
     }
 
-    static void validateAccountProperties(AccountProperties expectedAccountProperties,
-        AccountProperties actualAccountProperties) {
-        assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
-        assertNotNull(actualAccountProperties.getCount());
-    }
-
-    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments,
-        List<TrainingDocumentInfo> actualTrainingDocuments) {
-        List<TrainingDocumentInfo> actualTrainingList = new ArrayList<>(actualTrainingDocuments);
-        List<TrainingDocumentInfo> expectedTrainingList =
-            new ArrayList<>(expectedTrainingDocuments);
-        assertEquals(expectedTrainingList.size(), actualTrainingList.size());
-        for (int i = 0; i < actualTrainingList.size(); i++) {
-            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
-            TrainingDocumentInfo actualTrainingDocument = actualTrainingList.get(i);
-            assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
-            assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
-            assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
-            validateErrors(expectedTrainingDocument.getDocumentErrors(), actualTrainingDocument.getDocumentErrors());
+    /**
+     * Deserialize test data from service.
+     *
+     * @return the deserialized raw response test data
+     */
+    static <T> T deserializeRawResponse(SerializerAdapter serializerAdapter, NetworkCallRecord record, Class<T> clazz) {
+        try {
+            return serializerAdapter.deserialize(record.getResponse().get("Body"),
+                clazz, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to deserialize service response.");
         }
     }
 
-    private static void validateErrors(List<FormRecognizerError> expectedErrors,
-        List<FormRecognizerError> actualErrors) {
-        if (expectedErrors != null && actualErrors != null) {
-            List<FormRecognizerError> actualErrorList = new ArrayList<>(actualErrors);
-            List<FormRecognizerError> expectedErrorList = new ArrayList<>(expectedErrors);
-            assertEquals(expectedErrorList.size(), actualErrorList.size());
-            for (int i = 0; i < actualErrorList.size(); i++) {
-                FormRecognizerError expectedError = expectedErrorList.get(i);
-                FormRecognizerError actualError = actualErrorList.get(i);
-                assertEquals(expectedError.getCode(), actualError.getCode());
-                assertEquals(expectedError.getMessage(), actualError.getMessage());
+    void validateCustomModelData(CustomFormModel actualCustomModel, boolean isLabeled) {
+        Model modelRawResponse = getRawModelResponse();
+        assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
+            actualCustomModel.getModelStatus().toString());
+        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
+        assertNotNull(actualCustomModel.getRequestedOn());
+        assertNotNull(actualCustomModel.getCompletedOn());
+        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
+            actualCustomModel.getTrainingDocuments());
+        final List<CustomFormSubmodel> subModelList =
+            actualCustomModel.getSubmodels().stream().collect(Collectors.toList());
+        if (isLabeled) {
+            final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
+            for (final FormFieldsReport expectedField : fields) {
+                final CustomFormModelField actualFormField =
+                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
+                assertEquals(expectedField.getFieldName(), actualFormField.getName());
+                assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
+
             }
+            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
+            assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
+                subModelList.get(0).getAccuracy());
+        } else {
+            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
+                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
+                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField ->
+                    assertTrue(fields.contains(customFormModelField.getLabel())));
+            });
         }
     }
 
-    private static void validateSubModels(IterableStream<CustomFormSubModel> expectedSubModels,
-        IterableStream<CustomFormSubModel> actualSubModels) {
-        List<CustomFormSubModel> actualSubModelList = actualSubModels.stream().collect(Collectors.toList());
-        List<CustomFormSubModel> expectedSubModelList = expectedSubModels.stream().collect(Collectors.toList());
-        assertEquals(expectedSubModelList.size(), actualSubModelList.size());
-        for (int i = 0; i < expectedSubModelList.size(); i++) {
-            CustomFormSubModel expectedSubModel = expectedSubModelList.get(i);
-            CustomFormSubModel actualSubModel = actualSubModelList.get(i);
-            assertNotNull(actualSubModel.getFormType());
-            assertEquals(expectedSubModel.getAccuracy(), actualSubModel.getAccuracy());
-            validateModelFieldMap(expectedSubModel.getFieldMap(), actualSubModel.getFieldMap());
-        }
-    }
-
-    private static void validateModelFieldMap(Map<String, CustomFormModelField> expectedFieldMap, Map<String,
-        CustomFormModelField> actualFieldMap) {
-        assertEquals(expectedFieldMap.size(), actualFieldMap.size());
-        expectedFieldMap.entrySet().stream().allMatch(stringFieldEntry ->
-            stringFieldEntry.getValue().equals(actualFieldMap.get(stringFieldEntry.getKey())));
+    /**
+     * Prepare the expected test data from service raw response.
+     *
+     * @return the {@link Model} test data
+     */
+    private Model getRawModelResponse() {
+        final SerializerAdapter serializerAdapter = getSerializerAdapter();
+        final NetworkCallRecord networkCallRecord =
+            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+                Model rawModelResponse = deserializeRawResponse(serializerAdapter, record, Model.class);
+                return rawModelResponse != null && rawModelResponse.getModelInfo().getStatus() == READY;
+            });
+        interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
+        return deserializeRawResponse(serializerAdapter, networkCallRecord, Model.class);
     }
 
     @Test
-    abstract void getCustomModelNullModelId();
+    abstract void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelLabeled();
+    abstract void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelUnlabeled();
+    abstract void getCustomModelUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelInvalidModelId();
+    abstract void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getCustomModelWithResponse();
+    abstract void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void validGetAccountProperties();
+    abstract void validGetAccountProperties(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void validGetAccountPropertiesWithResponse();
+    abstract void validGetAccountPropertiesWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void deleteModelInvalidModelId();
+    abstract void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void deleteModelValidModelIdWithResponse();
+    abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getModelInfos();
+    abstract void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void getModelInfosWithContext();
+    abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingNullInput();
+    abstract void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void beginTrainingLabeledResult();
+    abstract void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     // @Test
-    // abstract void beginTrainingUnlabeledResult();
+    // abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    //
+    // @Test
+    // abstract void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    //
+    // @Test
+    // abstract void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     void getCustomModelInvalidModelIdRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_MODEL_ID);
     }
 
-    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/TrainLabeled"), true);
+    void beginTrainingLabeledRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(getTrainingSasUri(), true);
     }
 
-    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(createStorageAndGenerateSas("src/test/resources/sample_files/Train"), false);
+    void beginTrainingUnlabeledRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(getTrainingSasUri(), false);
     }
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        // TODO: #9252 AAD not supported by service
-        // TokenCredential credential = null;
-        AzureKeyCredential credential = null;
+    void beginCopyRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(getTargetResourceId(), getTargetResourceRegion());
+    }
 
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new AzureKeyCredential(getApiKey());
-        }
+    void beginCopyInvalidRegionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(getTargetResourceId(), "RESOURCE_REGION");
+    }
 
-        HttpClient httpClient;
-        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
+    void beginCopyIncorrectRegionRunner(BiConsumer<String, String> testRunner) {
+        testRunner.accept(getTargetResourceId(), "westus2");
+    }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        }
-
-        policies.add(new RetryPolicy());
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-        }
-        policies.add(interceptorManager.getRecordPolicy());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
+    void beginTrainingInvalidModelStatusRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(INVALID_RECEIPT_URL, false);
     }
 
     /**
@@ -303,18 +269,36 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY);
     }
 
+    /**
+     * Get the target resource Identifier based on the test running mode.
+     *
+     * @return the target resource Identifier
+     */
+    String getTargetResourceId() {
+        return interceptorManager.isPlaybackMode() ? "resourceIdInPlayback"
+            : Configuration.getGlobalConfiguration().get(RESOURCE_ID);
+    }
+
+
+    /**
+     * Get the target resource region based on the test running mode.
+     *
+     * @return the target resource region
+     */
+    String getTargetResourceRegion() {
+        return interceptorManager.isPlaybackMode() ? "resourceRegionInPlayback"
+            : Configuration.getGlobalConfiguration().get(RESOURCE_REGION);
+    }
+
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
-            : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+            : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
-    private String createStorageAndGenerateSas(String folderPath) {
-        if (interceptorManager.isPlaybackMode()) {
-            return "https://isPlaybackmode";
-        } else {
-            return Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
-
-        }
+    private String getTrainingSasUri() {
+        return interceptorManager.isPlaybackMode()
+            ? "https://isPlaybackmode"
+            : Configuration.getGlobalConfiguration().get(FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL);
     }
 }

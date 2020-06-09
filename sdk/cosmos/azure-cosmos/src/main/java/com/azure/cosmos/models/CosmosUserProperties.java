@@ -3,30 +3,25 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.User;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The Cosmos user properties.
  */
-public final class CosmosUserProperties extends Resource {
+public final class CosmosUserProperties {
+
+    private User user;
+
     /**
      * Initialize a user object.
      */
     public CosmosUserProperties() {
-        super();
-    }
-
-    /**
-     * Gets the id
-     *
-     * @return the id of the user
-     */
-    public String getId() {
-        return super.getId();
+        this.user = new User();
     }
 
     /**
@@ -36,7 +31,8 @@ public final class CosmosUserProperties extends Resource {
      * @return the current instance of cosmos user properties
      */
     public CosmosUserProperties setId(String id) {
-        return (CosmosUserProperties) super.setId(id);
+        this.user.setId(id);
+        return this;
     }
 
     /**
@@ -45,12 +41,12 @@ public final class CosmosUserProperties extends Resource {
      * @param jsonString the json string that represents the database user.
      */
     CosmosUserProperties(String jsonString) {
-        super(jsonString);
+        this.user = new User(jsonString);
     }
 
-    // Converting document collection to CosmosContainerProperties
+    // Converting container to CosmosContainerProperties
     CosmosUserProperties(User user) {
-        super(user.toJson());
+        this.user = user;
     }
 
     /**
@@ -59,16 +55,54 @@ public final class CosmosUserProperties extends Resource {
      * @return the permissions link.
      */
     String getPermissionsLink() {
-        String selfLink = this.getSelfLink();
-        if (selfLink.endsWith("/")) {
-            return selfLink + super.getString(Constants.Properties.PERMISSIONS_LINK);
-        } else {
-            return selfLink + "/" + super.getString(Constants.Properties.PERMISSIONS_LINK);
-        }
+        return this.user.getPermissionsLink();
     }
 
     User getV2User() {
-        return new User(this.toJson());
+        return new User(this.user.toJson());
+    }
+
+
+    Resource getResource() {
+        return this.user;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.user.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    String getResourceId() {
+        return this.user.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the timestamp.
+     */
+    public Instant getTimestamp() {
+        return this.user.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.user.getETag();
     }
 
     static List<CosmosUserProperties> getFromV2Results(List<User> results) {

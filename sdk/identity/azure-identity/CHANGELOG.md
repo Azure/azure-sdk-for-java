@@ -3,6 +3,15 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 
+## 1.0.6 (2020-05-05)
+- Upgraded `azure-core` dependency to 1.5.0
+- Fix `MSIToken` expiry time parsing for Azure App Service platforms.
+
+
+## 1.0.5 (2020-04-07)
+- Upgraded `azure-core` dependency to 1.4.0
+
+
 ## 1.0.4 (2020-03-10)
 - Upgraded `azure-core` dependency to 1.0.4
 

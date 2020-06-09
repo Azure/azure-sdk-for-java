@@ -14,6 +14,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Upda
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UserAccessList;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -56,7 +57,6 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus add(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
 
     /**
@@ -68,7 +68,6 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> addAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter);
 
     /**
@@ -147,7 +146,6 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus delete(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
 
     /**
@@ -159,7 +157,6 @@ public interface Permissions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> deleteAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter);
 
     /**
@@ -228,8 +225,8 @@ public interface Permissions {
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
-     *   to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all
+     *   access to other users will be removed.
      *
      * @param appId The application ID.
      * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -238,24 +235,22 @@ public interface Permissions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus update(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
-     *   to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all
+     *   access to other users will be removed.
      *
      * @param appId The application ID.
      * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter);
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access
-     *   to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all
+     *   access to other users will be removed.
      *
      * @return the first stage of the update call
      */
