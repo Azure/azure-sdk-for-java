@@ -27,5 +27,5 @@ public interface WebApps
         SupportsGettingById<WebApp>,
         SupportsDeletingByResourceGroup,
         HasManager<AppServiceManager>,
-        HasInner<WebAppsInner> {
+        HasInner<WebAppsClient> {
 }

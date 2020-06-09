@@ -5,9 +5,9 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.WebApp;
-import com.azure.resourcemanager.appservice.fluent.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.fluent.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;

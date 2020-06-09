@@ -7,8 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
-import com.azure.resourcemanager.appservice.fluent.CertificateInner;
-import com.azure.resourcemanager.appservice.fluent.CertificatesInner;
+import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
+import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.io.File;
@@ -139,7 +139,7 @@ class AppServiceCertificateImpl
                             return null;
                         });
         }
-        final CertificatesInner client = this.manager().inner().certificates();
+        final CertificatesClient client = this.manager().inner().certificates();
         return pfxBytes
             .then(keyVaultBinding)
             .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner()))

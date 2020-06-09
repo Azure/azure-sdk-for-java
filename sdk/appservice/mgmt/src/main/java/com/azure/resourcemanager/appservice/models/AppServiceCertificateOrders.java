@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersInner;
+import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -27,5 +27,5 @@ public interface AppServiceCertificateOrders
         SupportsGettingById<AppServiceCertificateOrder>,
         SupportsDeletingByResourceGroup,
         HasManager<AppServiceManager>,
-        HasInner<AppServiceCertificateOrdersInner> {
+        HasInner<AppServiceCertificateOrdersClient> {
 }

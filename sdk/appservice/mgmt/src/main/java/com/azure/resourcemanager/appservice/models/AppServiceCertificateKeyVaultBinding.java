@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 
 /** An immutable client-side representation of an Azure App Service Key Vault binding. */

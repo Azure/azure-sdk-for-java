@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.DomainsInner;
+import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -28,7 +28,7 @@ public interface AppServiceDomains
         SupportsGettingByResourceGroup<AppServiceDomain>,
         SupportsGettingById<AppServiceDomain>,
         HasManager<AppServiceManager>,
-        HasInner<DomainsInner> {
+        HasInner<DomainsClient> {
     /**
      * List the agreements for purchasing a domain with a specific top level extension.
      *

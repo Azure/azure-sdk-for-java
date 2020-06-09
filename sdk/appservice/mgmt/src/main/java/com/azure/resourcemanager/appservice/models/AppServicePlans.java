@@ -5,7 +5,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.AppServicePlansInner;
+import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -27,5 +27,5 @@ public interface AppServicePlans
         SupportsGettingById<AppServicePlan>,
         SupportsDeletingByResourceGroup,
         HasManager<AppServiceManager>,
-        HasInner<AppServicePlansInner> {
+        HasInner<AppServicePlansClient> {
 }

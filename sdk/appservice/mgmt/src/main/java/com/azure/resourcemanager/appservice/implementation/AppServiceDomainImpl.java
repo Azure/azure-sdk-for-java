@@ -9,10 +9,10 @@ import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
-import com.azure.resourcemanager.appservice.fluent.DomainInner;
-import com.azure.resourcemanager.appservice.fluent.DomainOwnershipIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.DomainsInner;
-import com.azure.resourcemanager.appservice.fluent.TldLegalAgreementInner;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.DomainsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.net.Inet4Address;
@@ -45,7 +45,7 @@ class AppServiceDomainImpl
     public Mono<AppServiceDomain> createResourceAsync() {
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        final DomainsInner client = this.manager().inner().domains();
+        final DomainsClient client = this.manager().inner().domains();
         return this
             .manager()
             .inner()

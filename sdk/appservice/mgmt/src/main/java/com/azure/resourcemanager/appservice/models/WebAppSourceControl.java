@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.fluent.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

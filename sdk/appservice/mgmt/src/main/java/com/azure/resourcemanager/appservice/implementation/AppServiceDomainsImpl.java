@@ -8,14 +8,14 @@ import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppServiceDomains;
 import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
-import com.azure.resourcemanager.appservice.fluent.DomainInner;
-import com.azure.resourcemanager.appservice.fluent.DomainsInner;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for AppServiceDomains. */
 class AppServiceDomainsImpl
     extends TopLevelModifiableResourcesImpl<
-        AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsInner, AppServiceManager>
+        AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsClient, AppServiceManager>
     implements AppServiceDomains {
 
     AppServiceDomainsImpl(AppServiceManager manager) {
