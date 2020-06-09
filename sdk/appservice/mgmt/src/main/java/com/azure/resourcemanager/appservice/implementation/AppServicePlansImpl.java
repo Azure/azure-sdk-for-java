@@ -11,13 +11,13 @@ import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for AppServicePlans. */
-class AppServicePlansImpl
+public class AppServicePlansImpl
     extends TopLevelModifiableResourcesImpl<
         AppServicePlan, AppServicePlanImpl, AppServicePlanInner, AppServicePlansClient, AppServiceManager>
     implements AppServicePlans {
 
-    AppServicePlansImpl(AppServiceManager manager) {
-        super(manager.inner().appServicePlans(), manager);
+    public AppServicePlansImpl(AppServiceManager manager) {
+        super(manager.inner().getAppServicePlans(), manager);
     }
 
     @Override

@@ -31,14 +31,14 @@ class AppServicePlanImpl
         return this
             .manager()
             .inner()
-            .appServicePlans()
+            .getAppServicePlans()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AppServicePlanInner> getInnerAsync() {
-        return this.manager().inner().appServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().inner().getAppServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

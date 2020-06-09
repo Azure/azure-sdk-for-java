@@ -111,7 +111,7 @@ class AppServiceCertificateImpl
 
     @Override
     protected Mono<CertificateInner> getInnerAsync() {
-        return this.manager().inner().certificates().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().inner().getCertificates().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -140,7 +140,7 @@ class AppServiceCertificateImpl
                             return null;
                         });
         }
-        final CertificatesClient client = this.manager().inner().certificates();
+        final CertificatesClient client = this.manager().inner().getCertificates();
         return pfxBytes
             .then(keyVaultBinding)
             .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner()))

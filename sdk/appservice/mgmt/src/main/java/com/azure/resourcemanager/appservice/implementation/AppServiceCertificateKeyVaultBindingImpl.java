@@ -41,7 +41,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         return parent
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(parent.resourceGroupName(), parent.name(), name(), inner())
             .map(
                 appServiceCertificateInner -> {
@@ -70,7 +70,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         return parent
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .getCertificateAsync(parent.resourceGroupName(), parent.name(), name());
     }
 }

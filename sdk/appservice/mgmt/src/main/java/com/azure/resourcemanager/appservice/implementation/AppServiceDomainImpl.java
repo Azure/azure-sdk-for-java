@@ -46,11 +46,11 @@ class AppServiceDomainImpl
     public Mono<AppServiceDomain> createResourceAsync() {
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        final DomainsClient client = this.manager().inner().domains();
+        final DomainsClient client = this.manager().inner().getDomains();
         return this
             .manager()
             .inner()
-            .topLevelDomains()
+            .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
             // Step 1: Consent to agreements
             .mapPage(TldLegalAgreementInner::agreementKey)
@@ -75,7 +75,7 @@ class AppServiceDomainImpl
 
     @Override
     protected Mono<DomainInner> getInnerAsync() {
-        return this.manager().inner().domains().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().inner().getDomains().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -163,7 +163,7 @@ class AppServiceDomainImpl
         return this
             .manager()
             .inner()
-            .domains()
+            .getDomains()
             .createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
             .then(Mono.empty());
     }

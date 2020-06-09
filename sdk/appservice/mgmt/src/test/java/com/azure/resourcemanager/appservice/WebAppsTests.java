@@ -102,7 +102,7 @@ public class WebAppsTests extends AppServiceTest {
                 webApp1
                     .manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .listMetadata(webApp1.resourceGroupName(), webApp1.name())
                     .properties()
                     .get("CURRENT_STACK"));
@@ -122,7 +122,7 @@ public class WebAppsTests extends AppServiceTest {
                 webApp3
                     .manager()
                     .inner()
-                    .webApps()
+                    .getWebApps()
                     .listMetadata(webApp3.resourceGroupName(), webApp3.name())
                     .properties()
                     .get("CURRENT_STACK"));

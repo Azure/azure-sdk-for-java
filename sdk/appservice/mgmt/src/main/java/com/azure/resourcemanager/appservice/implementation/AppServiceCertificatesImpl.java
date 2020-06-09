@@ -14,13 +14,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServiceCertificates. */
-class AppServiceCertificatesImpl
+public class AppServiceCertificatesImpl
     extends GroupableResourcesImpl<
         AppServiceCertificate, AppServiceCertificateImpl, CertificateInner, CertificatesClient, AppServiceManager>
     implements AppServiceCertificates {
 
-    AppServiceCertificatesImpl(AppServiceManager manager) {
-        super(manager.inner().certificates(), manager);
+    public AppServiceCertificatesImpl(AppServiceManager manager) {
+        super(manager.inner().getCertificates(), manager);
     }
 
     @Override

@@ -28,7 +28,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure storage resource management. */
-public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
+public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClient> {
     // Managers
     private GraphRbacManager rbacManager;
     private KeyVaultManager keyVaultManager;
@@ -110,7 +110,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
             profile,
             new WebSiteManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
@@ -120,17 +120,17 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     }
 
     /** @return the Graph RBAC manager instance. */
-    GraphRbacManager rbacManager() {
+    public GraphRbacManager rbacManager() {
         return rbacManager;
     }
 
     /** @return the key vault manager instance. */
-    KeyVaultManager keyVaultManager() {
+    public KeyVaultManager keyVaultManager() {
         return keyVaultManager;
     }
 
     /** @return the storage manager instance. */
-    StorageManager storageManager() {
+    public StorageManager storageManager() {
         return storageManager;
     }
 

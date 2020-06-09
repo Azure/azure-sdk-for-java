@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
@@ -12,16 +14,15 @@ import com.azure.resourcemanager.appservice.models.CertificateDetails;
 import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateOrderInner;
-import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 /** The implementation for {@link AppServicePlan}. */
 class AppServiceCertificateOrderImpl
@@ -43,7 +44,7 @@ class AppServiceCertificateOrderImpl
         return this
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
 
@@ -57,7 +58,7 @@ class AppServiceCertificateOrderImpl
         return this
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .listCertificatesAsync(resourceGroupName(), name())
             .switchIfEmpty(Mono.empty())
             .take(1)
@@ -159,7 +160,7 @@ class AppServiceCertificateOrderImpl
         return this
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
             .map(
                 appServiceCertificateInner ->
@@ -195,7 +196,7 @@ class AppServiceCertificateOrderImpl
         return this
             .manager()
             .inner()
-            .appServiceCertificateOrders()
+            .getAppServiceCertificateOrders()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this))
             .then(

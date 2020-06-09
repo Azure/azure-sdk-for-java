@@ -260,10 +260,10 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
     }
 
     Mono<StringDictionaryInner> listMetadata() {
-        return this.manager().inner().webApps().listMetadataAsync(resourceGroupName(), name());
+        return this.manager().inner().getWebApps().listMetadataAsync(resourceGroupName(), name());
     }
 
     Mono<StringDictionaryInner> updateMetadata(StringDictionaryInner inner) {
-        return this.manager().inner().webApps().updateMetadataAsync(resourceGroupName(), name(), inner);
+        return this.manager().inner().getWebApps().updateMetadataAsync(resourceGroupName(), name(), inner);
     }
 }

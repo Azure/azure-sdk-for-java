@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersCl
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for {@link AppServicePlans}. */
-class AppServiceCertificateOrdersImpl
+public class AppServiceCertificateOrdersImpl
     extends TopLevelModifiableResourcesImpl<
         AppServiceCertificateOrder,
         AppServiceCertificateOrderImpl,
@@ -21,8 +21,8 @@ class AppServiceCertificateOrdersImpl
     AppServiceManager>
     implements AppServiceCertificateOrders {
 
-    AppServiceCertificateOrdersImpl(AppServiceManager manager) {
-        super(manager.inner().appServiceCertificateOrders(), manager);
+    public AppServiceCertificateOrdersImpl(AppServiceManager manager) {
+        super(manager.inner().getAppServiceCertificateOrders(), manager);
     }
 
     @Override
