@@ -8,7 +8,7 @@
         <relativePath>../../management/pom.xml</relativePath>
     </parent>
 
-    <artifactId>azure-resourcemanager-cosmosdb</artifactId>
+    <artifactId>azure-resourcemanager-cosmos</artifactId>
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for CosmosDB Management</name>

@@ -12,7 +12,7 @@
     <relativePath>../../management/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-resourcemanager-graph-rbac</artifactId>
+  <artifactId>azure-resourcemanager-authorization</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Graph RBAC Management</name>
