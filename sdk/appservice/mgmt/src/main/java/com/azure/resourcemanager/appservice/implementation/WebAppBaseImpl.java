@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.implementation;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppSetting;

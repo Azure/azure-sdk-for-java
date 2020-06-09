@@ -29,7 +29,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.inner.RecommendationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.RecommendationInner;
 import com.azure.resourcemanager.appservice.fluent.inner.RecommendationRuleInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 

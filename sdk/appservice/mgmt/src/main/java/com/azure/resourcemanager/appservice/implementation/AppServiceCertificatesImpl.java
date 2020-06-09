@@ -5,6 +5,7 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;

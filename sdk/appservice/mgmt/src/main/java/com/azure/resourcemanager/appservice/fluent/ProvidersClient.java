@@ -28,7 +28,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackCollect
 import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.ProviderOsTypeSelected;
 import reactor.core.publisher.Mono;

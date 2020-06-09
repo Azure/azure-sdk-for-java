@@ -39,7 +39,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.CertificateEmailInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CertificateOrderActionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.inner.SiteSealInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificatePatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;

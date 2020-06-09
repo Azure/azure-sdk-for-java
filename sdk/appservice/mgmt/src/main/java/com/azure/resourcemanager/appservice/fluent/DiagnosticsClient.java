@@ -35,7 +35,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.DiagnosticCategoryColle
 import com.azure.resourcemanager.appservice.fluent.inner.DiagnosticCategoryInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DiagnosticDetectorCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DiagnosticDetectorResponseInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;

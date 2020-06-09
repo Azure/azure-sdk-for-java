@@ -54,7 +54,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.StampCapacityInner;
 import com.azure.resourcemanager.appservice.fluent.inner.UsageCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.UsageInner;
 import com.azure.resourcemanager.appservice.fluent.inner.WebAppCollectionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.fluent.inner.WorkerPoolCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.WorkerPoolResourceInner;
 import com.azure.resourcemanager.appservice.models.AppServiceEnvironmentPatchResource;

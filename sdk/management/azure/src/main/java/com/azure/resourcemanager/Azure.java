@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceDomains;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
-import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;

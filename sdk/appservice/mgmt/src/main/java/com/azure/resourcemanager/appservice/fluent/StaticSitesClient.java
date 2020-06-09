@@ -42,7 +42,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserArmResour
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserInvitationResponseResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;

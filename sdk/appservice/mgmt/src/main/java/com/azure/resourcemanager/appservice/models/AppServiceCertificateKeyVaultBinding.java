@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 

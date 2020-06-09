@@ -39,7 +39,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifi
 import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.DomainPatchResource;
 import com.azure.resourcemanager.appservice.models.DomainRecommendationSearchParameters;

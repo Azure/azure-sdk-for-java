@@ -1,18 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.appservice.implementation;
+package com.azure.resourcemanager.appservice;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appservice.implementation.AppServiceCertificateOrdersImpl;
+import com.azure.resourcemanager.appservice.implementation.AppServiceCertificatesImpl;
+import com.azure.resourcemanager.appservice.implementation.AppServiceDomainsImpl;
+import com.azure.resourcemanager.appservice.implementation.AppServicePlansImpl;
+import com.azure.resourcemanager.appservice.implementation.FunctionAppsImpl;
+import com.azure.resourcemanager.appservice.implementation.WebAppsImpl;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
 import com.azure.resourcemanager.appservice.models.AppServiceDomains;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientBuilder;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

@@ -46,7 +46,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.VnetGatewayInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetInfoInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetRouteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.WebAppCollectionInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;

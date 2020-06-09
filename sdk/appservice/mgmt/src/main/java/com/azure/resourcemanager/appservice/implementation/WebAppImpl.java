@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.DeploymentSlots;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;

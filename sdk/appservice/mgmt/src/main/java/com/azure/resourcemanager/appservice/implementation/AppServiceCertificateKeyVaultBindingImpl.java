@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
@@ -18,7 +19,7 @@ class AppServiceCertificateKeyVaultBindingImpl
         AppServiceCertificateOrder,
         AppServiceCertificateResourceInner,
         AppServiceCertificateKeyVaultBindingImpl,
-        AppServiceManager>
+    AppServiceManager>
     implements AppServiceCertificateKeyVaultBinding {
 
     private final AppServiceCertificateOrderImpl parent;

@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
@@ -17,7 +18,7 @@ class AppServiceCertificateOrdersImpl
         AppServiceCertificateOrderImpl,
         AppServiceCertificateOrderInner,
     AppServiceCertificateOrdersClient,
-        AppServiceManager>
+    AppServiceManager>
     implements AppServiceCertificateOrders {
 
     AppServiceCertificateOrdersImpl(AppServiceManager manager) {

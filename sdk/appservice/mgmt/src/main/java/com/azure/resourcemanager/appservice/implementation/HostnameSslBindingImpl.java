@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.HostnameSslBinding;

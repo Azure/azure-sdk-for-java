@@ -30,7 +30,7 @@ import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementCollec
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.appservice.fluent.inner.TopLevelDomainCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.TopLevelDomainInner;
-import com.azure.resourcemanager.appservice.fluent.inner.WebSiteManagementClientImpl;
+import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 import reactor.core.publisher.Mono;
