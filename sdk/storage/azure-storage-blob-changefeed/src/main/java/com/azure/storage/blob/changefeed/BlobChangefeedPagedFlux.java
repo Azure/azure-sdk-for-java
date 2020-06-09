@@ -5,6 +5,7 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
@@ -60,6 +61,12 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
         return byPage(null, DEFAULT_PAGE_SIZE);
     }
 
+    /**
+     * Unsupported. To resume with the continuation token, call {@link BlobChangefeedAsyncClient#getEvents(String)} or
+     * {@link BlobChangefeedClient#getEvents(String)}.
+     * @param continuationToken Unsupported.
+     * @throws UnsupportedOperationException if a continuation token is specified.
+     */
     @Override
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken) {
         return byPage(continuationToken, DEFAULT_PAGE_SIZE);
@@ -70,6 +77,19 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
         return byPage(null, preferredPageSize);
     }
 
+    /**
+     * Gets a {@link Flux} of {@link ContinuablePage} beginning at the page identified by the Changefeed
+     * requesting each page to contain the number of elements equal to the preferred page size.
+     * <p>
+     * The service may or may not honor the preferred page size therefore the client <em>MUST</em> be prepared to handle
+     * pages with different page sizes.
+     *
+     * @param continuationToken @param continuationToken Unsupported. To resume with the continuation token, call
+     * {@link BlobChangefeedAsyncClient#getEvents(String)} or {@link BlobChangefeedClient#getEvents(String)}.
+     * @param preferredPageSize The preferred page size.
+     * @return A {@link Flux} of {@link ContinuablePage}.
+     * @throws UnsupportedOperationException if a continuation token is specified.
+     */
     @Override
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken, int preferredPageSize) {
 

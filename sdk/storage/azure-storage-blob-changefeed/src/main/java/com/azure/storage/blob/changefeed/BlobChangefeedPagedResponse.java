@@ -54,6 +54,8 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
 
     /**
      * Gets a reference to the next page, should you want to re-initialize the BlobChangefeed.
+     * To resume with the continuation token, call {@link BlobChangefeedAsyncClient#getEvents(String)} or
+     * {@link BlobChangefeedClient#getEvents(String)}.
      *
      * @return The {@link String cursor} that references the next page.
      */

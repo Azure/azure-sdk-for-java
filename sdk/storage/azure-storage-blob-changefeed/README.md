@@ -113,11 +113,84 @@ high-bandwidth, and without having to write a custom application.
 
 ## Examples
 
+The following sections provide several code snippets covering some of the most common Azure Storage Blob Changefeed 
+tasks, including:
+
+- [Create a `BlobChangefeedClient`](#create-a-blobchangefeedclient)
+- [Get events](#get-events)
+- [Get events between a start and end time](#get-events-start-end)
+- [Resume with a cursor](#get-events-cursor)
+
+### Create a `BlobChangefeedClient`
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L23-L23 -->
+```java
+client = new BlobChangefeedClientBuilder(blobServiceClient).buildClient();
+```
+
+### Get events
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L27-L28 -->
+```java
+client.getEvents().forEach(event ->
+            System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+```
+
+### Get events between a start and end time
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L32-L36 -->
+```java
+OffsetDateTime startTime = OffsetDateTime.MIN;
+OffsetDateTime endTime = OffsetDateTime.now();
+
+client.getEvents(startTime, endTime).forEach(event ->
+    System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+```
+
+### Resume with a cursor
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L40-L56 -->
+```java
+BlobChangefeedPagedIterable iterable = client.getEvents();
+Iterable<BlobChangefeedPagedResponse> pages = iterable.iterableByPage();
+
+String cursor = null;
+for (BlobChangefeedPagedResponse page : pages) {
+    page.getValue().forEach(event ->
+        System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+    /*
+     * Get the change feed cursor. The cursor is not required to get each page of events,
+     * it is intended to be saved and used to resume iterating at a later date.
+     */
+    cursor = page.getContinuationToken();
+}
+
+/* Resume iterating from the pervious position with the cursor. */
+client.getEvents(cursor).forEach(event ->
+    System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+```
+
 ## Troubleshooting
+When interacting with blobs using this Java client library, errors returned by the service correspond to the same HTTP
+status codes returned for [REST API][error_codes] requests. For example, if you try to retrieve a container or blob that
+doesn't exist in your Storage Account, a `404` error is returned, indicating `Not Found`.
+
+### Default HTTP Client
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
+the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
+[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+
+### Default SSL library
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
+reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
+Several Storage blob changefeed Java SDK samples are available to you in the SDK's GitHub repository.
 
 ## Next steps Samples
+Samples are explained in detail [here][samples_readme].
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -125,5 +198,26 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+
+<!-- LINKS -->
+[source]: src
+[samples_readme]: src/samples/README.md
+[docs]: http://azure.github.io/azure-sdk-for-java/
+[rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
+[product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[azure_subscription]: https://azure.microsoft.com/free/
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md
+[error_codes]: https://docs.microsoft.com/rest/api/storageservices/blob-service-error-codes
+[samples]: src/samples
+[cla]: https://cla.microsoft.com
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc_contact]: mailto:opencode@microsoft.com
+[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-changefeed%2FREADME.png)

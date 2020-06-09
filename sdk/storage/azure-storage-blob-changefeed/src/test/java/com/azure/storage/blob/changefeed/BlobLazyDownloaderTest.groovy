@@ -17,7 +17,7 @@ class BlobLazyDownloaderTest extends APISpec {
     def setup() {
         def cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         cc.create().block()
-        bc = cc.getBlobAsyncClient(generateBlobName())
+        bc = Spy(cc.getBlobAsyncClient(generateBlobName()))
         factory = new BlobLazyDownloaderFactory(cc)
     }
 
@@ -47,12 +47,13 @@ class BlobLazyDownloaderTest extends APISpec {
 
         then:
         output == input
+        numDownloads * bc.downloadWithResponse(_,_,_,_)
 
         where:
-        size                | blockSize        || _
-        Constants.KB        | Constants.KB     || _        /* blockSize = size. 1 download call. */
-        Constants.KB        | Constants.MB     || _        /* blockSize > size. 1 download call. */
-        4 * Constants.KB    | Constants.KB     || _        /* blockSize < size. 4 download calls.*/
+        size                | blockSize        || numDownloads
+        Constants.KB        | Constants.KB     || 1        /* blockSize = size. 1 download call. */
+        Constants.KB        | Constants.MB     || 1        /* blockSize > size. 1 download call. */
+        4 * Constants.KB    | Constants.KB     || 4        /* blockSize < size. 4 download calls.*/
     }
 
     @Unroll
@@ -61,12 +62,13 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(Constants.KB)
 
         when:
-        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, offset))
+        byte[] output = downloadHelper(new BlobLazyDownloader(bc, Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
             assert output[i] == input[i + offset]
         }
+        1 * bc.downloadWithResponse(_,_,_,_)
 
         where:
         offset              || _
@@ -82,17 +84,18 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(size)
 
         when:
-        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), Constants.KB, offset))
+        byte[] output = downloadHelper(new BlobLazyDownloader(bc, Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
             assert output[i] == input[i + offset]
         }
+        numDownloads * bc.downloadWithResponse(_,_,_,_)
 
         where:
-        size                | blockSize        | offset           || _
-        4 * Constants.KB    | Constants.KB     | Constants.KB     || _        /* 3 download calls. */
-        4 * Constants.KB    | Constants.KB     | 2 * Constants.KB || _        /* 2 download calls. */
+        size                | blockSize        | offset           || numDownloads
+        4 * Constants.KB    | Constants.KB     | Constants.KB     || 3        /* 3 download calls. */
+        4 * Constants.KB    | Constants.KB     | 2 * Constants.KB || 2        /* 2 download calls. */
     }
 
     /* Tests offset > length of blob. */
@@ -114,13 +117,14 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(uploadSize)
 
         when:
-        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc.getBlobName(), downloadSize))
+        byte[] output = downloadHelper(new BlobLazyDownloader(bc, downloadSize))
 
         then:
         assert output.length == downloadSize
         for (int i = 0; i < downloadSize; i++) {
             assert output[i] == input[i]
         }
+        1 * bc.downloadWithResponse(_,_,_,_)
 
         where:
         uploadSize     | downloadSize       || _
