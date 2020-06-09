@@ -225,7 +225,7 @@ public final class Utils {
      */
     public static String getStorageConnectionString(String accountName, String accountKey,
                                                     AzureEnvironment environment) {
-        if (environment == null || environment.getStorageEndpointSuffix() != null) {
+        if (environment == null || environment.getStorageEndpointSuffix() == null) {
             environment = AzureEnvironment.AZURE;
         }
         String suffix = environment.getStorageEndpointSuffix().replaceAll("^\\.*", "");
