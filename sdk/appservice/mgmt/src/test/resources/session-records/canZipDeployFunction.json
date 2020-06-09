@@ -237,7 +237,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b13bf986-602d-4df0-8572-54e347d96928",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"mGc8boTjy8j/Ufai9mYB5fktZJKLoNP1sj00HV2laiPOSRhAb1kuMrLKr2d+vPOV8AnT8K81EqlgvJmmqnRTgg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"/xgv5Kb+uCYzNTZBRq09XqZ+DU6usCnKMLeRwzoRVtNHYwKR40ssOsS9d8iFXo07+k4MreZwb5Qi1t97D0vA9w==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",

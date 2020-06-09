@@ -237,7 +237,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "1f24c5d8-546d-4109-89e2-426f4b62c91d",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"ipHB4Xf0JPzBkzx7z8jFS5ClnF4CSjQ34EzL7QSBTU+zi1fXUtlI7pjGH4UQXkT0R1FBY7iBTfCaapiuvj7xJQ==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"4qpSelNNcKrt1uJ7FOT8C6x7Tz7UJ/zzo0LxIzBcOL+egRgDwMSpqUbu9iCk4DmLc1NqjnPyROQJ64I2st8VnQ==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -670,7 +670,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "249b9605-9ee0-4098-a9b2-8ce6d07960ef",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"ud2ixZ88FXwUwV++47/PMCLS0MLmwYpxMJ9t9MuahQtoPx+KmNAZxnSDDCowPmenYnsvy5ifXPpnp967HBpMng==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"sWsr0+2fc/BxJi+j6c9IF3lO6wrzs24hsL7M5BhTROjsXAvUoONI0esTmzgZOlAcLA6coIybSZj9S3iEHLN/8A==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -994,7 +994,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "6379d7d9-753e-4139-ac55-e9c2e0d68364",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"q5k/8Q7M77V+m44NmDOwAFMTj5RkKw2/YYYdgaTxCa13GJpCOg0NoZBYYdqn2Db1RsIgycY7b4dNmf8E28ljnA==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"gDvQsKRmBs+gWGExXnqV2o1484dvHP0jlg/X1a3WmroCuZVJHRWWx9gC0QN5xKre0/AwRZxv6wbmrqiWggrTmg==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",

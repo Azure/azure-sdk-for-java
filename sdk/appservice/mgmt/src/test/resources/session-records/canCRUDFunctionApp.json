@@ -210,7 +210,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "0fee7a70-97c0-4d6a-b0c8-ec70418a069c",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"FOmQRe9W4aD1fdz5DFsJAHz9MCN/TD4eZr/a/qOETTKajkhBn/2rJ17Y+tDkJOYKzlCNlnTq7EqVtWj5Q01yTg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"kqxAdSwQBtKJxiYjiSdDaoVsSOSZTVVylcSy9EsoIyvAnZEmIW+DMJgcNAK1/R92xzBQ23Ui2EYjU4+W1+Fd2g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
@@ -424,7 +424,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "eb98fe7e-64b2-40bb-8091-ff53211cbbd2",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"FOmQRe9W4aD1fdz5DFsJAHz9MCN/TD4eZr/a/qOETTKajkhBn/2rJ17Y+tDkJOYKzlCNlnTq7EqVtWj5Q01yTg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"kqxAdSwQBtKJxiYjiSdDaoVsSOSZTVVylcSy9EsoIyvAnZEmIW+DMJgcNAK1/R92xzBQ23Ui2EYjU4+W1+Fd2g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",
@@ -532,7 +532,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "593eeff9-3319-4539-97e6-d2eabdcddb84",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"FOmQRe9W4aD1fdz5DFsJAHz9MCN/TD4eZr/a/qOETTKajkhBn/2rJ17Y+tDkJOYKzlCNlnTq7EqVtWj5Q01yTg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"kqxAdSwQBtKJxiYjiSdDaoVsSOSZTVVylcSy9EsoIyvAnZEmIW+DMJgcNAK1/R92xzBQ23Ui2EYjU4+W1+Fd2g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
@@ -753,7 +753,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b8ab2a37-a71d-462a-935c-7bdc2b9f5deb",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"FOmQRe9W4aD1fdz5DFsJAHz9MCN/TD4eZr/a/qOETTKajkhBn/2rJ17Y+tDkJOYKzlCNlnTq7EqVtWj5Q01yTg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"kqxAdSwQBtKJxiYjiSdDaoVsSOSZTVVylcSy9EsoIyvAnZEmIW+DMJgcNAK1/R92xzBQ23Ui2EYjU4+W1+Fd2g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -913,7 +913,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "d1c86cd2-5b05-4231-86f0-fabd285c009b",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"FOmQRe9W4aD1fdz5DFsJAHz9MCN/TD4eZr/a/qOETTKajkhBn/2rJ17Y+tDkJOYKzlCNlnTq7EqVtWj5Q01yTg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"kqxAdSwQBtKJxiYjiSdDaoVsSOSZTVVylcSy9EsoIyvAnZEmIW+DMJgcNAK1/R92xzBQ23Ui2EYjU4+W1+Fd2g==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
@@ -1453,7 +1453,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "00030f6c-cd0d-49cc-aee7-f00ef88fd233",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"UHLYMxekz+gIPnBmeakMEemvs5N6CqlLaDS1r5ARLibSiGCRca+ANOTtnM2V8vIN+3Oh2avPBTr879WzQz6Hpg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"C3a5NHViBfaTKsWdCj+7p9suaHbe+822+F9BSB4WNUk+8pqJb/VBQ9ASh9uonPc1l+VtKhp8zxpxbLHev3ZraQ==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
@@ -1640,7 +1640,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "aea162dd-360f-4c5a-8b25-d171aa703a1d",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"UHLYMxekz+gIPnBmeakMEemvs5N6CqlLaDS1r5ARLibSiGCRca+ANOTtnM2V8vIN+3Oh2avPBTr879WzQz6Hpg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"C3a5NHViBfaTKsWdCj+7p9suaHbe+822+F9BSB4WNUk+8pqJb/VBQ9ASh9uonPc1l+VtKhp8zxpxbLHev3ZraQ==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "GET",
