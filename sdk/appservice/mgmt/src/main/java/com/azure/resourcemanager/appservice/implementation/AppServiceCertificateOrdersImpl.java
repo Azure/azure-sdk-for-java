@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrders;
-import com.azure.resourcemanager.appservice.AppServicePlans;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
+import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrderInner;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

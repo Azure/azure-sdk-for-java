@@ -4,15 +4,15 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.appservice.AppSetting;
-import com.azure.resourcemanager.appservice.ConnectionString;
-import com.azure.resourcemanager.appservice.CsmPublishingProfileOptions;
-import com.azure.resourcemanager.appservice.CsmSlotEntity;
-import com.azure.resourcemanager.appservice.HostnameBinding;
-import com.azure.resourcemanager.appservice.MSDeploy;
-import com.azure.resourcemanager.appservice.PublishingProfile;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.WebAppSourceControl;
+import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.ConnectionString;
+import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
+import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
+import com.azure.resourcemanager.appservice.models.HostnameBinding;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
+import com.azure.resourcemanager.appservice.models.PublishingProfile;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.appservice.fluent.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.MSDeployStatusInner;

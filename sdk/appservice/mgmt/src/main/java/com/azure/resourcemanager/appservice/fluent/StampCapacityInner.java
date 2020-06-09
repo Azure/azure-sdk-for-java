@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ComputeModeOptions;
-import com.azure.resourcemanager.appservice.WorkerSizeOptions;
+import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
+import com.azure.resourcemanager.appservice.models.WorkerSizeOptions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

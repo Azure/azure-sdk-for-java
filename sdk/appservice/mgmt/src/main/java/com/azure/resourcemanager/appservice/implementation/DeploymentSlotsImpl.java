@@ -5,9 +5,9 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.DeploymentSlot;
-import com.azure.resourcemanager.appservice.DeploymentSlots;
-import com.azure.resourcemanager.appservice.WebApp;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.DeploymentSlots;
+import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.fluent.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.SiteLogsConfigInner;

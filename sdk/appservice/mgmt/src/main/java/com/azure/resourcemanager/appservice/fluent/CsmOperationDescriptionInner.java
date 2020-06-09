@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.CsmOperationDescriptionProperties;
-import com.azure.resourcemanager.appservice.CsmOperationDisplay;
+import com.azure.resourcemanager.appservice.models.CsmOperationDescriptionProperties;
+import com.azure.resourcemanager.appservice.models.CsmOperationDisplay;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

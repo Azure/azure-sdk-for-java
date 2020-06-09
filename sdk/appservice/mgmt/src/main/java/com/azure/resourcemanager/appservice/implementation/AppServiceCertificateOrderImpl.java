@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceCertificateKeyVaultBinding;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.CertificateDetails;
-import com.azure.resourcemanager.appservice.CertificateOrderStatus;
-import com.azure.resourcemanager.appservice.CertificateProductType;
-import com.azure.resourcemanager.appservice.WebAppBase;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.CertificateDetails;
+import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
+import com.azure.resourcemanager.appservice.models.CertificateProductType;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrderInner;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;

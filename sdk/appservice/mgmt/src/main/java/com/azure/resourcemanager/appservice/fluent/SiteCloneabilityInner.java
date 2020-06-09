@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.CloneAbilityResult;
-import com.azure.resourcemanager.appservice.SiteCloneabilityCriterion;
+import com.azure.resourcemanager.appservice.models.CloneAbilityResult;
+import com.azure.resourcemanager.appservice.models.SiteCloneabilityCriterion;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

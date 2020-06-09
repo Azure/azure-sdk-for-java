@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.AppServiceDomains;
-import com.azure.resourcemanager.appservice.DomainLegalAgreement;
-import com.azure.resourcemanager.appservice.TopLevelDomainAgreementOption;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AppServiceDomains;
+import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 import com.azure.resourcemanager.appservice.fluent.DomainInner;
 import com.azure.resourcemanager.appservice.fluent.DomainsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

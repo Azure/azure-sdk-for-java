@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.RepositoryType;
-import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.WebAppSourceControl;
+import com.azure.resourcemanager.appservice.models.RepositoryType;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
+import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.appservice.fluent.SiteSourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.SourceControlInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;

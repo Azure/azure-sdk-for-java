@@ -3,12 +3,12 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.AppServiceCertificate;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.HostnameSslBinding;
-import com.azure.resourcemanager.appservice.HostnameSslState;
-import com.azure.resourcemanager.appservice.SslState;
-import com.azure.resourcemanager.appservice.WebAppBase;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.HostnameSslBinding;
+import com.azure.resourcemanager.appservice.models.HostnameSslState;
+import com.azure.resourcemanager.appservice.models.SslState;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;

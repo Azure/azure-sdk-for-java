@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.FunctionApp;
-import com.azure.resourcemanager.appservice.FunctionDeploymentSlot;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.fluent.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.SiteLogsConfigInner;

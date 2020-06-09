@@ -35,13 +35,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.appservice.CheckNameResourceTypes;
-import com.azure.resourcemanager.appservice.CsmMoveResourceEnvelope;
-import com.azure.resourcemanager.appservice.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appservice.ResourceNameAvailabilityRequest;
-import com.azure.resourcemanager.appservice.SkuName;
-import com.azure.resourcemanager.appservice.ValidateRequest;
-import com.azure.resourcemanager.appservice.VnetParameters;
+import com.azure.resourcemanager.appservice.models.CheckNameResourceTypes;
+import com.azure.resourcemanager.appservice.models.CsmMoveResourceEnvelope;
+import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
+import com.azure.resourcemanager.appservice.models.SkuName;
+import com.azure.resourcemanager.appservice.models.ValidateRequest;
+import com.azure.resourcemanager.appservice.models.VnetParameters;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the WebSiteManagementClientImpl type. */

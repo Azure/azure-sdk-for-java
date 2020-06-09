@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.appservice.WebApp;
-import com.azure.resourcemanager.appservice.WebApps;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.appservice.fluent.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.SiteLogsConfigInner;

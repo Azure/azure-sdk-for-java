@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.appservice;
 
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import org.junit.jupiter.api.Assertions;

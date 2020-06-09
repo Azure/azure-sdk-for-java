@@ -5,12 +5,12 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrders;
-import com.azure.resourcemanager.appservice.AppServiceCertificates;
-import com.azure.resourcemanager.appservice.AppServiceDomains;
-import com.azure.resourcemanager.appservice.AppServicePlans;
-import com.azure.resourcemanager.appservice.FunctionApps;
-import com.azure.resourcemanager.appservice.WebApps;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrders;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificates;
+import com.azure.resourcemanager.appservice.models.AppServiceDomains;
+import com.azure.resourcemanager.appservice.models.AppServicePlans;
+import com.azure.resourcemanager.appservice.models.FunctionApps;
+import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClientBuilder;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.authorization.GraphRbacManager;

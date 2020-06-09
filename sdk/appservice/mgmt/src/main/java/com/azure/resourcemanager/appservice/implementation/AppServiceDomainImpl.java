@@ -3,12 +3,12 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.Contact;
-import com.azure.resourcemanager.appservice.DomainPurchaseConsent;
-import com.azure.resourcemanager.appservice.DomainStatus;
-import com.azure.resourcemanager.appservice.Hostname;
-import com.azure.resourcemanager.appservice.TopLevelDomainAgreementOption;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.Contact;
+import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
+import com.azure.resourcemanager.appservice.models.DomainStatus;
+import com.azure.resourcemanager.appservice.models.Hostname;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 import com.azure.resourcemanager.appservice.fluent.DomainInner;
 import com.azure.resourcemanager.appservice.fluent.DomainOwnershipIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.DomainsInner;

@@ -7,11 +7,11 @@ package com.azure.resourcemanager.appservice.fluent;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ConfigReferenceLocation;
-import com.azure.resourcemanager.appservice.ConfigReferenceSource;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityType;
-import com.azure.resourcemanager.appservice.ProxyOnlyResource;
-import com.azure.resourcemanager.appservice.ResolveStatus;
+import com.azure.resourcemanager.appservice.models.ConfigReferenceLocation;
+import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
+import com.azure.resourcemanager.appservice.models.ResolveStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -4,9 +4,9 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentity;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityType;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.appservice.fluent.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.SitePatchResourceInner;
 import com.azure.resourcemanager.authorization.GraphRbacManager;

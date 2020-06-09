@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.SkuCapacity;
-import com.azure.resourcemanager.appservice.SkuDescription;
+import com.azure.resourcemanager.appservice.models.SkuCapacity;
+import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

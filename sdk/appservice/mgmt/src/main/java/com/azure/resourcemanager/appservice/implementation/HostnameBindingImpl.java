@@ -4,13 +4,13 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.AzureResourceType;
-import com.azure.resourcemanager.appservice.CustomHostnameDnsRecordType;
-import com.azure.resourcemanager.appservice.DeploymentSlot;
-import com.azure.resourcemanager.appservice.HostnameBinding;
-import com.azure.resourcemanager.appservice.HostnameType;
-import com.azure.resourcemanager.appservice.WebAppBase;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AzureResourceType;
+import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.HostnameBinding;
+import com.azure.resourcemanager.appservice.models.HostnameType;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.fluent.HostnameBindingInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

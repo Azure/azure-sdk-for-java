@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ConnStringValueTypePair;
-import com.azure.resourcemanager.appservice.ProxyOnlyResource;
+import com.azure.resourcemanager.appservice.models.ConnStringValueTypePair;
+import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;

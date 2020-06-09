@@ -25,7 +25,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 

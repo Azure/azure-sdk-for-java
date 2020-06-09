@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.DomainLegalAgreement;
+import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
 import com.azure.resourcemanager.appservice.fluent.TldLegalAgreementInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 

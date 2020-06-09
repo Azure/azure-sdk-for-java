@@ -26,8 +26,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.DefaultErrorResponseErrorException;
-import com.azure.resourcemanager.appservice.TopLevelDomainAgreementOption;
+import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TopLevelDomains. */

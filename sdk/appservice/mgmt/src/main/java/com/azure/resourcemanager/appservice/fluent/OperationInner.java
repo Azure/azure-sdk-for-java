@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ErrorEntity;
-import com.azure.resourcemanager.appservice.OperationStatus;
+import com.azure.resourcemanager.appservice.models.ErrorEntity;
+import com.azure.resourcemanager.appservice.models.OperationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;

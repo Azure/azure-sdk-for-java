@@ -3,10 +3,10 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceCertificateKeyVaultBinding;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.KeyVaultSecretStatus;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateKeyVaultBinding;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import reactor.core.publisher.Mono;

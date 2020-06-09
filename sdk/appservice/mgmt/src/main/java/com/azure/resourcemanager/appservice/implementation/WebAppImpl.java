@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.DeploymentSlots;
-import com.azure.resourcemanager.appservice.OperatingSystem;
-import com.azure.resourcemanager.appservice.PricingTier;
-import com.azure.resourcemanager.appservice.RuntimeStack;
-import com.azure.resourcemanager.appservice.WebApp;
-import com.azure.resourcemanager.appservice.WebAppRuntimeStack;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.DeploymentSlots;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.RuntimeStack;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebAppRuntimeStack;
 import com.azure.resourcemanager.appservice.fluent.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.SiteLogsConfigInner;

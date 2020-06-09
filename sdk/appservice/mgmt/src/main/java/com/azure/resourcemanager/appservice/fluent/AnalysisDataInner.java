@@ -6,9 +6,9 @@ package com.azure.resourcemanager.appservice.fluent;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.DiagnosticMetricSet;
-import com.azure.resourcemanager.appservice.NameValuePair;
-import com.azure.resourcemanager.appservice.ResponseMetadata;
+import com.azure.resourcemanager.appservice.models.DiagnosticMetricSet;
+import com.azure.resourcemanager.appservice.models.NameValuePair;
+import com.azure.resourcemanager.appservice.models.ResponseMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
