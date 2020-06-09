@@ -195,7 +195,7 @@ public class AzureADGraphClient {
 
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
         throws ServiceUnavailableException {
-        final IClientCredential clientCredential = ClientCredentialFactory.createFromSecret(clientSecret);
+        final IClientCredential clientCredential = ClientCredentialFactory.create(clientSecret);
         final UserAssertion assertion = new UserAssertion(idToken);
 
         IAuthenticationResult result = null;
