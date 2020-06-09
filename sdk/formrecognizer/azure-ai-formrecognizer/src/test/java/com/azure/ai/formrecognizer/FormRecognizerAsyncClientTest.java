@@ -441,7 +441,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId()).getSyncPoller().getFinalResult());
             ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
             assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
-            assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
+            assertEquals(GENERIC_ERROR_DURING_PREDICTION, errorInformation.getMessage());
             assertEquals(EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
         }));
     }

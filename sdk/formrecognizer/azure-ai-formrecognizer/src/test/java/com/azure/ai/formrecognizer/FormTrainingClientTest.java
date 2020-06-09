@@ -298,7 +298,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
                 FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
                     () -> client.beginCopyModel(actualModel.getModelId(), target).getFinalResult());
                 ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-                assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
+                assertEquals(AUTHORIZATION_ERROR, errorInformation.getCode());
                 assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
             });
         });
