@@ -4,11 +4,11 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.AutoscaleNotification;
-import com.azure.resourcemanager.monitor.AutoscaleProfile;
-import com.azure.resourcemanager.monitor.AutoscaleSetting;
-import com.azure.resourcemanager.monitor.EmailNotification;
-import com.azure.resourcemanager.monitor.WebhookNotification;
+import com.azure.resourcemanager.monitor.models.AutoscaleNotification;
+import com.azure.resourcemanager.monitor.models.AutoscaleProfile;
+import com.azure.resourcemanager.monitor.models.AutoscaleSetting;
+import com.azure.resourcemanager.monitor.models.EmailNotification;
+import com.azure.resourcemanager.monitor.models.WebhookNotification;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

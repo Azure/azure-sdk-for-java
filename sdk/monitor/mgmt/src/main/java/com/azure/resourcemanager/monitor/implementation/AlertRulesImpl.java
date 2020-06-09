@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ActivityLogAlerts;
-import com.azure.resourcemanager.monitor.AlertRules;
-import com.azure.resourcemanager.monitor.MetricAlerts;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlerts;
+import com.azure.resourcemanager.monitor.models.AlertRules;
+import com.azure.resourcemanager.monitor.models.MetricAlerts;
 
 /** Implementation for {@link MetricAlerts}. */
 class AlertRulesImpl implements AlertRules {

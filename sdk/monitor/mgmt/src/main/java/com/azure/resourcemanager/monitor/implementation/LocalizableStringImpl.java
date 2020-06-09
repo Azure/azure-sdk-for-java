@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.LocalizableString;
+import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 

@@ -6,9 +6,9 @@ package com.azure.resourcemanager.monitor.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.Recurrence;
-import com.azure.resourcemanager.monitor.ScaleCapacity;
-import com.azure.resourcemanager.monitor.TimeWindow;
+import com.azure.resourcemanager.monitor.models.Recurrence;
+import com.azure.resourcemanager.monitor.models.ScaleCapacity;
+import com.azure.resourcemanager.monitor.models.TimeWindow;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

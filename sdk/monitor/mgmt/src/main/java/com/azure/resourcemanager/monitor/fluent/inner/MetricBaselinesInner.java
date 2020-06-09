@@ -23,8 +23,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.ResultType;
-import com.azure.resourcemanager.monitor.TimeSeriesInformation;
+import com.azure.resourcemanager.monitor.models.ResultType;
+import com.azure.resourcemanager.monitor.models.TimeSeriesInformation;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 

@@ -3,13 +3,13 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.AggregationType;
-import com.azure.resourcemanager.monitor.LocalizableString;
-import com.azure.resourcemanager.monitor.MetricAvailability;
-import com.azure.resourcemanager.monitor.MetricCollection;
-import com.azure.resourcemanager.monitor.MetricDefinition;
-import com.azure.resourcemanager.monitor.ResultType;
-import com.azure.resourcemanager.monitor.Unit;
+import com.azure.resourcemanager.monitor.models.AggregationType;
+import com.azure.resourcemanager.monitor.models.LocalizableString;
+import com.azure.resourcemanager.monitor.models.MetricAvailability;
+import com.azure.resourcemanager.monitor.models.MetricCollection;
+import com.azure.resourcemanager.monitor.models.MetricDefinition;
+import com.azure.resourcemanager.monitor.models.ResultType;
+import com.azure.resourcemanager.monitor.models.Unit;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;

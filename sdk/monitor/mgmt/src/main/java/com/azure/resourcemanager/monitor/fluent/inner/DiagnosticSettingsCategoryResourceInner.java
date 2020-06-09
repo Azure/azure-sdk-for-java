@@ -7,8 +7,8 @@ package com.azure.resourcemanager.monitor.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.CategoryType;
-import com.azure.resourcemanager.monitor.ProxyOnlyResource;
+import com.azure.resourcemanager.monitor.models.CategoryType;
+import com.azure.resourcemanager.monitor.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

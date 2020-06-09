@@ -6,9 +6,9 @@ package com.azure.resourcemanager.monitor.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.AggregationType;
-import com.azure.resourcemanager.monitor.MetricAvailability;
-import com.azure.resourcemanager.monitor.Unit;
+import com.azure.resourcemanager.monitor.models.AggregationType;
+import com.azure.resourcemanager.monitor.models.MetricAvailability;
+import com.azure.resourcemanager.monitor.models.Unit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

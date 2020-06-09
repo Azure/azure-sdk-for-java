@@ -3,8 +3,8 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ActionGroup;
-import com.azure.resourcemanager.monitor.ActionGroups;
+import com.azure.resourcemanager.monitor.models.ActionGroup;
+import com.azure.resourcemanager.monitor.models.ActionGroups;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

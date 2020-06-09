@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ActivityLogAlert;
-import com.azure.resourcemanager.monitor.ActivityLogAlertActionGroup;
-import com.azure.resourcemanager.monitor.ActivityLogAlertActionList;
-import com.azure.resourcemanager.monitor.ActivityLogAlertAllOfCondition;
-import com.azure.resourcemanager.monitor.ActivityLogAlertLeafCondition;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlert;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionGroup;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertActionList;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
+import com.azure.resourcemanager.monitor.models.ActivityLogAlertLeafCondition;
 import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

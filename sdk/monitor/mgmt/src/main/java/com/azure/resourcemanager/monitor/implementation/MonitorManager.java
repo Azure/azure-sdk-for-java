@@ -5,12 +5,12 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.monitor.ActionGroups;
-import com.azure.resourcemanager.monitor.ActivityLogs;
-import com.azure.resourcemanager.monitor.AlertRules;
-import com.azure.resourcemanager.monitor.AutoscaleSettings;
-import com.azure.resourcemanager.monitor.DiagnosticSettings;
-import com.azure.resourcemanager.monitor.MetricDefinitions;
+import com.azure.resourcemanager.monitor.models.ActionGroups;
+import com.azure.resourcemanager.monitor.models.ActivityLogs;
+import com.azure.resourcemanager.monitor.models.AlertRules;
+import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
+import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
+import com.azure.resourcemanager.monitor.models.MetricDefinitions;
 import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientBuilder;
 import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;

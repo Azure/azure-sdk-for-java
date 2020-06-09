@@ -6,9 +6,9 @@ package com.azure.resourcemanager.monitor.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.EventLevel;
-import com.azure.resourcemanager.monitor.HttpRequestInfo;
-import com.azure.resourcemanager.monitor.SenderAuthorization;
+import com.azure.resourcemanager.monitor.models.EventLevel;
+import com.azure.resourcemanager.monitor.models.HttpRequestInfo;
+import com.azure.resourcemanager.monitor.models.SenderAuthorization;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;

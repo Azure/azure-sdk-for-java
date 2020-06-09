@@ -4,12 +4,12 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.CategoryType;
-import com.azure.resourcemanager.monitor.DiagnosticSetting;
-import com.azure.resourcemanager.monitor.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.LogSettings;
-import com.azure.resourcemanager.monitor.MetricSettings;
-import com.azure.resourcemanager.monitor.RetentionPolicy;
+import com.azure.resourcemanager.monitor.models.CategoryType;
+import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
+import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
+import com.azure.resourcemanager.monitor.models.LogSettings;
+import com.azure.resourcemanager.monitor.models.MetricSettings;
+import com.azure.resourcemanager.monitor.models.RetentionPolicy;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;

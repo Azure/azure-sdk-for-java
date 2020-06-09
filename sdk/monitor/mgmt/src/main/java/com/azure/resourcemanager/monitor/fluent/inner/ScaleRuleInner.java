@@ -6,8 +6,8 @@ package com.azure.resourcemanager.monitor.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MetricTrigger;
-import com.azure.resourcemanager.monitor.ScaleAction;
+import com.azure.resourcemanager.monitor.models.MetricTrigger;
+import com.azure.resourcemanager.monitor.models.ScaleAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

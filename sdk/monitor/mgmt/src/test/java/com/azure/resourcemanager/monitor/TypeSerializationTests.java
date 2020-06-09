@@ -10,6 +10,12 @@ import com.azure.resourcemanager.monitor.fluent.inner.AlertRuleResourceInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogSearchRuleResourceInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
 import java.util.Arrays;
+
+import com.azure.resourcemanager.monitor.models.AlertingAction;
+import com.azure.resourcemanager.monitor.models.MetricAlertMultipleResourceMultipleMetricCriteria;
+import com.azure.resourcemanager.monitor.models.RuleEmailAction;
+import com.azure.resourcemanager.monitor.models.RuleMetricDataSource;
+import com.azure.resourcemanager.monitor.models.ThresholdRuleCondition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

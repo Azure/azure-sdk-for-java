@@ -6,7 +6,7 @@ package com.azure.resourcemanager.monitor.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.MetricNamespaceName;
+import com.azure.resourcemanager.monitor.models.MetricNamespaceName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

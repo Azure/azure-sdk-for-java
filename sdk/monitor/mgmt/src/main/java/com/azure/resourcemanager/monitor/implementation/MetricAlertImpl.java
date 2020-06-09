@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.DynamicMetricCriteria;
-import com.azure.resourcemanager.monitor.MetricAlert;
-import com.azure.resourcemanager.monitor.MetricAlertAction;
-import com.azure.resourcemanager.monitor.MetricAlertCondition;
-import com.azure.resourcemanager.monitor.MetricAlertCriteria;
-import com.azure.resourcemanager.monitor.MetricAlertMultipleResourceMultipleMetricCriteria;
-import com.azure.resourcemanager.monitor.MetricAlertSingleResourceMultipleMetricCriteria;
-import com.azure.resourcemanager.monitor.MetricCriteria;
-import com.azure.resourcemanager.monitor.MetricDynamicAlertCondition;
-import com.azure.resourcemanager.monitor.MultiMetricCriteria;
+import com.azure.resourcemanager.monitor.models.DynamicMetricCriteria;
+import com.azure.resourcemanager.monitor.models.MetricAlert;
+import com.azure.resourcemanager.monitor.models.MetricAlertAction;
+import com.azure.resourcemanager.monitor.models.MetricAlertCondition;
+import com.azure.resourcemanager.monitor.models.MetricAlertCriteria;
+import com.azure.resourcemanager.monitor.models.MetricAlertMultipleResourceMultipleMetricCriteria;
+import com.azure.resourcemanager.monitor.models.MetricAlertSingleResourceMultipleMetricCriteria;
+import com.azure.resourcemanager.monitor.models.MetricCriteria;
+import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
+import com.azure.resourcemanager.monitor.models.MultiMetricCriteria;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
