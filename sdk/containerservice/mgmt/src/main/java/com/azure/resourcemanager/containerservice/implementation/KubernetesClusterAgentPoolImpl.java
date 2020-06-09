@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerservice.implementation;
 
-import com.azure.resourcemanager.containerservice.AgentPoolType;
-import com.azure.resourcemanager.containerservice.ContainerServiceVMSizeTypes;
-import com.azure.resourcemanager.containerservice.KubernetesCluster;
-import com.azure.resourcemanager.containerservice.KubernetesClusterAgentPool;
-import com.azure.resourcemanager.containerservice.ManagedClusterAgentPoolProfile;
-import com.azure.resourcemanager.containerservice.OSType;
-import com.azure.resourcemanager.containerservice.OrchestratorServiceBase;
+import com.azure.resourcemanager.containerservice.models.AgentPoolType;
+import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
+import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.OrchestratorServiceBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 

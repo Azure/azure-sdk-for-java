@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.msi.Identity;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.NetworkInterface;
 import com.azure.resourcemanager.network.PublicIpAddress;

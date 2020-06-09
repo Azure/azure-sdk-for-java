@@ -2,19 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.dns.implementation;
 
-import com.azure.resourcemanager.dns.ARecord;
-import com.azure.resourcemanager.dns.AaaaRecord;
-import com.azure.resourcemanager.dns.CaaRecord;
-import com.azure.resourcemanager.dns.CnameRecord;
-import com.azure.resourcemanager.dns.DnsRecordSet;
-import com.azure.resourcemanager.dns.DnsZone;
-import com.azure.resourcemanager.dns.MxRecord;
-import com.azure.resourcemanager.dns.NsRecord;
-import com.azure.resourcemanager.dns.PtrRecord;
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.SrvRecord;
-import com.azure.resourcemanager.dns.TxtRecord;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
+import com.azure.resourcemanager.dns.models.ARecord;
+import com.azure.resourcemanager.dns.models.AaaaRecord;
+import com.azure.resourcemanager.dns.models.CaaRecord;
+import com.azure.resourcemanager.dns.models.CnameRecord;
+import com.azure.resourcemanager.dns.models.DnsRecordSet;
+import com.azure.resourcemanager.dns.models.DnsZone;
+import com.azure.resourcemanager.dns.models.MxRecord;
+import com.azure.resourcemanager.dns.models.NsRecord;
+import com.azure.resourcemanager.dns.models.PtrRecord;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.models.SrvRecord;
+import com.azure.resourcemanager.dns.models.TxtRecord;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import reactor.core.publisher.Mono;
@@ -299,7 +299,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.recordType())
             .map(recordSetInner -> prepare(recordSetInner))
             .flatMap(recordSetInner -> createOrUpdateAsync(recordSetInner));
@@ -311,7 +311,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .deleteAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
@@ -336,7 +336,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.recordType());
     }
 
@@ -346,7 +346,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .parent()
             .manager()
             .inner()
-            .recordSets()
+            .getRecordSets()
             .createOrUpdateAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),

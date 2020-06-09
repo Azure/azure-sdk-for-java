@@ -5,7 +5,7 @@ package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Immutable;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 /**
@@ -17,9 +17,9 @@ public class QueueRuntimeInfo {
     private final MessageCountDetails details;
     private final long messageCount;
     private final long sizeInBytes;
-    private final Instant accessAt;
-    private final Instant createdAt;
-    private final Instant updatedAt;
+    private final OffsetDateTime accessedAt;
+    private final OffsetDateTime createdAt;
+    private final OffsetDateTime updatedAt;
 
     /**
      * Creates a new instance with runtime properties extracted from the given QueueDescription.
@@ -34,9 +34,9 @@ public class QueueRuntimeInfo {
         this.details = queueDescription.getMessageCountDetails();
         this.messageCount = queueDescription.getMessageCount();
         this.sizeInBytes = queueDescription.getSizeInBytes();
-        this.accessAt = queueDescription.getAccessedAt().toInstant();
-        this.createdAt = queueDescription.getCreatedAt().toInstant();
-        this.updatedAt = queueDescription.getUpdatedAt().toInstant();
+        this.accessedAt = queueDescription.getAccessedAt();
+        this.createdAt = queueDescription.getCreatedAt();
+        this.updatedAt = queueDescription.getUpdatedAt();
     }
 
     /**
@@ -44,8 +44,8 @@ public class QueueRuntimeInfo {
      *
      * @return The last time a message was sent, or the last time there was a receive request to this queue.
      */
-    public Instant getAccessAt() {
-        return accessAt;
+    public OffsetDateTime getAccessedAt() {
+        return accessedAt;
     }
 
     /**
@@ -53,7 +53,7 @@ public class QueueRuntimeInfo {
      *
      * @return The exact time the queue was created.
      */
-    public Instant getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -98,7 +98,7 @@ public class QueueRuntimeInfo {
      *
      * @return The exact time a message was updated in the queue.
      */
-    public Instant getUpdatedAt() {
+    public OffsetDateTime getUpdatedAt() {
         return updatedAt;
     }
 }

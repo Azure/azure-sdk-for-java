@@ -45,12 +45,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -796,7 +794,7 @@ public class IdentityClient {
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(500);
                 connection.connect();
-            } catch (ConnectException | SecurityException | SocketTimeoutException e) {
+            } catch (Exception e) {
                 throw logger.logExceptionAsError(
                     new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
                                                              + e.getMessage(), e));

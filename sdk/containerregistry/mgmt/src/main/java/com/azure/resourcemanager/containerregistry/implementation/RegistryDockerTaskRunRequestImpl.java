@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.containerregistry.implementation;
 
-import com.azure.resourcemanager.containerregistry.Argument;
-import com.azure.resourcemanager.containerregistry.DockerBuildRequest;
-import com.azure.resourcemanager.containerregistry.OverridingArgument;
-import com.azure.resourcemanager.containerregistry.PlatformProperties;
-import com.azure.resourcemanager.containerregistry.RegistryDockerTaskRunRequest;
+import com.azure.resourcemanager.containerregistry.models.Argument;
+import com.azure.resourcemanager.containerregistry.models.DockerBuildRequest;
+import com.azure.resourcemanager.containerregistry.models.OverridingArgument;
+import com.azure.resourcemanager.containerregistry.models.PlatformProperties;
+import com.azure.resourcemanager.containerregistry.models.RegistryDockerTaskRunRequest;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;

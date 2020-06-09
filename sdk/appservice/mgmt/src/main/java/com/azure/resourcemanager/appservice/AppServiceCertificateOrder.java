@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.implementation.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderInner;
-import com.azure.resourcemanager.keyvault.Vault;
+import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;

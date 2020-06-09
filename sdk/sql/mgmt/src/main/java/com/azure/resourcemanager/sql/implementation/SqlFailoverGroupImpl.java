@@ -6,16 +6,17 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.resourcemanager.sql.FailoverGroupReadOnlyEndpoint;
-import com.azure.resourcemanager.sql.FailoverGroupReadWriteEndpoint;
-import com.azure.resourcemanager.sql.FailoverGroupReplicationRole;
-import com.azure.resourcemanager.sql.PartnerInfo;
-import com.azure.resourcemanager.sql.ReadOnlyEndpointFailoverPolicy;
-import com.azure.resourcemanager.sql.ReadWriteEndpointFailoverPolicy;
-import com.azure.resourcemanager.sql.SqlFailoverGroup;
-import com.azure.resourcemanager.sql.SqlFailoverGroupOperations;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.models.FailoverGroupInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.FailoverGroupReadOnlyEndpoint;
+import com.azure.resourcemanager.sql.models.FailoverGroupReadWriteEndpoint;
+import com.azure.resourcemanager.sql.models.FailoverGroupReplicationRole;
+import com.azure.resourcemanager.sql.models.PartnerInfo;
+import com.azure.resourcemanager.sql.models.ReadOnlyEndpointFailoverPolicy;
+import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
+import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
+import com.azure.resourcemanager.sql.models.SqlFailoverGroupOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -169,7 +170,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().failoverGroups().delete(this.resourceGroupName, this.sqlServerName, this.name());
+        this.sqlServerManager.inner().getFailoverGroups().delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -207,7 +208,7 @@ public class SqlFailoverGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .failoverGroups()
+            .getFailoverGroups()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.name(), self.inner())
             .map(
                 failoverGroupInner -> {
@@ -226,7 +227,7 @@ public class SqlFailoverGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .failoverGroups()
+            .getFailoverGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
@@ -235,7 +236,7 @@ public class SqlFailoverGroupImpl
         return this
             .sqlServerManager
             .inner()
-            .failoverGroups()
+            .getFailoverGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 

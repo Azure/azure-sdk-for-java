@@ -17,12 +17,6 @@
     "package": "com.azure.resourcemanager.appservice",
     "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --add-inner=AppServiceCertificate"
   },
-  "arm-keyvault": {
-    "dir": "../keyvault/mgmt",
-    "source": "specification/keyvault/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-02"
-  },
   "authorization": {
     "dir": "../authorization/mgmt",
     "source": "specification/authorization/resource-manager/readme.md",
@@ -102,10 +96,10 @@
     "package": "com.azure.resourcemanager.containerservice",
     "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
   },
-  "cosmosdb": {
+  "cosmos": {
     "dir": "../cosmos/mgmt",
     "source": "specification/cosmos-db/resource-manager/readme.md",
-    "package": "com.azure.resourcemanager.cosmosdb",
+    "package": "com.azure.resourcemanager.cosmos",
     "args": "--payload-flattening-threshold=1 --tag=package-2019-08-preview"
   },
   "customerinsights": {
@@ -179,11 +173,10 @@
     "args": "--payload-flattening-threshold=1 --tag=package-2017-01"
   },
   "keyvault": {
-    "dir": "azure-keyvault",
+    "dir": "../keyvault/mgmt",
     "source": "specification/keyvault/resource-manager/readme.md",
-    "package": "com.microsoft.azure.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2015-06",
-    "fluent": false
+    "package": "com.azure.resourcemanager.keyvault",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-02"
   },
   "locks": {
     "dir": "../locks/mgmt",

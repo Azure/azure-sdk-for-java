@@ -4,8 +4,9 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.sql.SqlChildrenOperations;
-import com.azure.resourcemanager.sql.SqlServer;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlChildrenOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
 import java.util.List;
 import java.util.Objects;
 import reactor.core.publisher.Mono;

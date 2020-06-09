@@ -5,22 +5,23 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.dns.ARecordSets;
-import com.azure.resourcemanager.dns.AaaaRecordSets;
-import com.azure.resourcemanager.dns.CNameRecordSets;
-import com.azure.resourcemanager.dns.CaaRecordSets;
-import com.azure.resourcemanager.dns.DnsRecordSet;
-import com.azure.resourcemanager.dns.DnsZone;
-import com.azure.resourcemanager.dns.MXRecordSets;
-import com.azure.resourcemanager.dns.NSRecordSets;
-import com.azure.resourcemanager.dns.PtrRecordSets;
-import com.azure.resourcemanager.dns.RecordType;
-import com.azure.resourcemanager.dns.SoaRecordSet;
-import com.azure.resourcemanager.dns.SrvRecordSets;
-import com.azure.resourcemanager.dns.TxtRecordSets;
-import com.azure.resourcemanager.dns.ZoneType;
-import com.azure.resourcemanager.dns.models.RecordSetInner;
-import com.azure.resourcemanager.dns.models.ZoneInner;
+import com.azure.resourcemanager.dns.DnsZoneManager;
+import com.azure.resourcemanager.dns.models.ARecordSets;
+import com.azure.resourcemanager.dns.models.AaaaRecordSets;
+import com.azure.resourcemanager.dns.models.CNameRecordSets;
+import com.azure.resourcemanager.dns.models.CaaRecordSets;
+import com.azure.resourcemanager.dns.models.DnsRecordSet;
+import com.azure.resourcemanager.dns.models.DnsZone;
+import com.azure.resourcemanager.dns.models.MXRecordSets;
+import com.azure.resourcemanager.dns.models.NSRecordSets;
+import com.azure.resourcemanager.dns.models.PtrRecordSets;
+import com.azure.resourcemanager.dns.models.RecordType;
+import com.azure.resourcemanager.dns.models.SoaRecordSet;
+import com.azure.resourcemanager.dns.models.SrvRecordSets;
+import com.azure.resourcemanager.dns.models.TxtRecordSets;
+import com.azure.resourcemanager.dns.models.ZoneType;
+import com.azure.resourcemanager.dns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.dns.fluent.inner.ZoneInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ETagState;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -174,7 +175,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     @Override
     public SoaRecordSet getSoaRecordSet() {
         RecordSetInner inner =
-            this.manager().inner().recordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+            this.manager().inner().getRecordSets().get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
         if (inner == null) {
             return null;
         }
@@ -404,7 +405,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                     self
                         .manager()
                         .inner()
-                        .zones()
+                        .getZones()
                         .createOrUpdateAsync(
                             self.resourceGroupName(),
                             self.name(),
@@ -445,7 +446,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
 
     @Override
     protected Mono<ZoneInner> getInnerAsync() {
-        return this.manager().inner().zones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getZones().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private void initRecordSets() {
@@ -469,7 +470,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                     this
                         .manager()
                         .inner()
-                        .recordSets()
+                        .getRecordSets()
                         .listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
                     inner -> {
                         DnsRecordSet recordSet = new DnsRecordSetImpl(inner.name(), inner.type(), self, inner);

@@ -7,33 +7,35 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.resourcemanager.sql.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.sql.RegionCapabilities;
-import com.azure.resourcemanager.sql.SqlDatabaseOperations;
-import com.azure.resourcemanager.sql.SqlElasticPoolOperations;
-import com.azure.resourcemanager.sql.SqlEncryptionProtectorOperations;
-import com.azure.resourcemanager.sql.SqlFirewallRuleOperations;
-import com.azure.resourcemanager.sql.SqlServer;
-import com.azure.resourcemanager.sql.SqlServerKeyOperations;
-import com.azure.resourcemanager.sql.SqlServerSecurityAlertPolicyOperations;
-import com.azure.resourcemanager.sql.SqlServers;
-import com.azure.resourcemanager.sql.SqlSubscriptionUsageMetric;
-import com.azure.resourcemanager.sql.SqlSyncGroupOperations;
-import com.azure.resourcemanager.sql.SqlSyncMemberOperations;
-import com.azure.resourcemanager.sql.SqlVirtualNetworkRuleOperations;
-import com.azure.resourcemanager.sql.models.LocationCapabilitiesInner;
-import com.azure.resourcemanager.sql.models.ServerInner;
-import com.azure.resourcemanager.sql.models.ServersInner;
-import com.azure.resourcemanager.sql.models.SubscriptionUsageInner;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.fluent.ServersClient;
+import com.azure.resourcemanager.sql.fluent.inner.LocationCapabilitiesInner;
+import com.azure.resourcemanager.sql.fluent.inner.ServerInner;
+import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
+import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.sql.models.RegionCapabilities;
+import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolOperations;
+import com.azure.resourcemanager.sql.models.SqlEncryptionProtectorOperations;
+import com.azure.resourcemanager.sql.models.SqlFirewallRuleOperations;
+import com.azure.resourcemanager.sql.models.SqlServer;
+import com.azure.resourcemanager.sql.models.SqlServerKeyOperations;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicyOperations;
+import com.azure.resourcemanager.sql.models.SqlServers;
+import com.azure.resourcemanager.sql.models.SqlSubscriptionUsageMetric;
+import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
+import com.azure.resourcemanager.sql.models.SqlSyncMemberOperations;
+import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRuleOperations;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import reactor.core.publisher.Mono;
 
 /** Implementation for SqlServers and its parent interfaces. */
-class SqlServersImpl
-    extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
+public class SqlServersImpl
+    extends TopLevelModifiableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersClient, SqlServerManager>
     implements SqlServers {
 
     private SqlFirewallRuleOperations firewallRules;
@@ -48,8 +50,8 @@ class SqlServersImpl
     private SqlSyncMemberOperationsImpl syncMembers;
     private SqlServerSecurityAlertPolicyOperationsImpl serverSecurityAlertPolicies;
 
-    protected SqlServersImpl(SqlServerManager manager) {
-        super(manager.inner().servers(), manager);
+    public SqlServersImpl(SqlServerManager manager) {
+        super(manager.inner().getServers(), manager);
     }
 
     @Override
@@ -188,7 +190,7 @@ class SqlServersImpl
     @Override
     public RegionCapabilities getCapabilitiesByRegion(Region region) {
         LocationCapabilitiesInner capabilitiesInner =
-            this.manager().inner().capabilities().listByLocation(region.name());
+            this.manager().inner().getCapabilities().listByLocation(region.name());
         return capabilitiesInner != null ? new RegionCapabilitiesImpl(capabilitiesInner) : null;
     }
 
@@ -197,7 +199,7 @@ class SqlServersImpl
         return this
             .manager()
             .inner()
-            .capabilities()
+            .getCapabilities()
             .listByLocationAsync(region.name())
             .map(RegionCapabilitiesImpl::new);
     }
@@ -207,7 +209,7 @@ class SqlServersImpl
         Objects.requireNonNull(region);
         List<SqlSubscriptionUsageMetric> subscriptionUsages = new ArrayList<>();
         PagedIterable<SubscriptionUsageInner> subscriptionUsageInners =
-            this.manager().inner().subscriptionUsages().listByLocation(region.name());
+            this.manager().inner().getSubscriptionUsages().listByLocation(region.name());
         for (SubscriptionUsageInner inner : subscriptionUsageInners) {
             subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
         }
@@ -221,7 +223,7 @@ class SqlServersImpl
         return this
             .manager()
             .inner()
-            .subscriptionUsages()
+            .getSubscriptionUsages()
             .listByLocationAsync(region.name())
             .mapPage(
                 subscriptionUsageInner ->

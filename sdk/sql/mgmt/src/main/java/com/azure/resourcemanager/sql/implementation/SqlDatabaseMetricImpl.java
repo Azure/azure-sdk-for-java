@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.sql.MetricValue;
-import com.azure.resourcemanager.sql.SqlDatabaseMetric;
-import com.azure.resourcemanager.sql.SqlDatabaseMetricValue;
-import com.azure.resourcemanager.sql.UnitType;
-import com.azure.resourcemanager.sql.models.MetricInner;
+import com.azure.resourcemanager.sql.models.MetricValue;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
+import com.azure.resourcemanager.sql.models.SqlDatabaseMetricValue;
+import com.azure.resourcemanager.sql.models.UnitType;
+import com.azure.resourcemanager.sql.fluent.inner.MetricInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -12,12 +12,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.RestorePoint;
-import com.azure.resourcemanager.sql.SampleName;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlDatabaseStandardServiceObjective;
-import com.azure.resourcemanager.sql.SqlRestorableDroppedDatabase;
-import com.azure.resourcemanager.sql.SqlServer;
+import com.azure.resourcemanager.sql.models.RestorePoint;
+import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlRestorableDroppedDatabase;
+import com.azure.resourcemanager.sql.models.SqlServer;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;

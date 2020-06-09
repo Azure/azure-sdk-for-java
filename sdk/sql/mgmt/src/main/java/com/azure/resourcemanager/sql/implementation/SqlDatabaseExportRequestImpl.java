@@ -7,12 +7,13 @@ import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
-import com.azure.resourcemanager.sql.AuthenticationType;
-import com.azure.resourcemanager.sql.ExportRequest;
-import com.azure.resourcemanager.sql.SqlDatabase;
-import com.azure.resourcemanager.sql.SqlDatabaseExportRequest;
-import com.azure.resourcemanager.sql.SqlDatabaseImportExportResponse;
-import com.azure.resourcemanager.sql.StorageKeyType;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.AuthenticationType;
+import com.azure.resourcemanager.sql.models.ExportRequest;
+import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlDatabaseExportRequest;
+import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
+import com.azure.resourcemanager.sql.models.StorageKeyType;
 import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.PublicAccess;
@@ -50,7 +51,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         return this
             .sqlServerManager
             .inner()
-            .databases()
+            .getDatabases()
             .exportAsync(
                 this.sqlDatabase.resourceGroupName,
                 this.sqlDatabase.sqlServerName,
@@ -87,7 +88,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                                     "%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                     self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
                     self.inner.withStorageKey(storageAccountKey.value());
-                    BlobContainers blobContainers = this.sqlServerManager.storageManager.blobContainers();
+                    BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
                     return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
                         .onErrorResume(error -> {
                             if (error instanceof ManagementException) {

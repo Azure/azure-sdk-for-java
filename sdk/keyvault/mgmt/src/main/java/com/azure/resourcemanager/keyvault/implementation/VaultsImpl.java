@@ -6,30 +6,32 @@ package com.azure.resourcemanager.keyvault.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.keyvault.CheckNameAvailabilityResult;
-import com.azure.resourcemanager.keyvault.CreateMode;
-import com.azure.resourcemanager.keyvault.DeletedVault;
-import com.azure.resourcemanager.keyvault.Sku;
-import com.azure.resourcemanager.keyvault.SkuName;
-import com.azure.resourcemanager.keyvault.Vault;
-import com.azure.resourcemanager.keyvault.VaultCreateOrUpdateParameters;
-import com.azure.resourcemanager.keyvault.VaultProperties;
-import com.azure.resourcemanager.keyvault.Vaults;
-import com.azure.resourcemanager.keyvault.models.DeletedVaultInner;
-import com.azure.resourcemanager.keyvault.models.VaultInner;
-import com.azure.resourcemanager.keyvault.models.VaultsInner;
+import com.azure.resourcemanager.keyvault.KeyVaultManager;
+import com.azure.resourcemanager.keyvault.fluent.VaultsClient;
+import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
+import com.azure.resourcemanager.keyvault.fluent.inner.VaultInner;
+import com.azure.resourcemanager.keyvault.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.keyvault.models.CreateMode;
+import com.azure.resourcemanager.keyvault.models.DeletedVault;
+import com.azure.resourcemanager.keyvault.models.Sku;
+import com.azure.resourcemanager.keyvault.models.SkuName;
+import com.azure.resourcemanager.keyvault.models.Vault;
+import com.azure.resourcemanager.keyvault.models.VaultCreateOrUpdateParameters;
+import com.azure.resourcemanager.keyvault.models.VaultProperties;
+import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /** The implementation of Vaults and its parent interfaces. */
-class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, VaultsInner, KeyVaultManager>
+public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, VaultsClient, KeyVaultManager>
     implements Vaults {
     private final GraphRbacManager graphRbacManager;
     private final String tenantId;
 
-    VaultsImpl(final KeyVaultManager keyVaultManager, final GraphRbacManager graphRbacManager, final String tenantId) {
-        super(keyVaultManager.inner().vaults(), keyVaultManager);
+    public VaultsImpl(final KeyVaultManager keyVaultManager, final GraphRbacManager graphRbacManager, final String tenantId) {
+        super(keyVaultManager.inner().getVaults(), keyVaultManager);
         this.graphRbacManager = graphRbacManager;
         this.tenantId = tenantId;
     }
@@ -100,8 +102,7 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
 
     @Override
     public Mono<DeletedVault> getDeletedAsync(String vaultName, String location) {
-        VaultsInner client = this.inner();
-        return client.getDeletedAsync(vaultName, location).map(DeletedVaultImpl::new);
+        return this.inner().getDeletedAsync(vaultName, location).map(DeletedVaultImpl::new);
     }
 
     @Override
@@ -111,8 +112,7 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
 
     @Override
     public PagedFlux<DeletedVault> listDeletedAsync() {
-        VaultsInner client = this.inner();
-        return client.listDeletedAsync().mapPage(DeletedVaultImpl::new);
+        return this.inner().listDeletedAsync().mapPage(DeletedVaultImpl::new);
     }
 
     @Override

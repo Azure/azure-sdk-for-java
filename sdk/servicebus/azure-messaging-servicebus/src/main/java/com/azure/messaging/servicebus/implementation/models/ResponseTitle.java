@@ -5,11 +5,13 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
-/** The ResponseTitle model. */
+/**
+ * The ResponseTitle model.
+ */
 @JacksonXmlRootElement(localName = "ResponseTitle")
 @Fluent
 public final class ResponseTitle {
@@ -22,7 +24,10 @@ public final class ResponseTitle {
     /*
      * Contents of the title.
      */
-    @JsonProperty(value = "title")
+    // There is no current way to represent an XML element with an attribute in Open API 2.0 or 3.0.
+    // https://github.com/OAI/OpenAPI-Specification/issues/630. Consequently, we have to make this change so that
+    // It will not wrap the element with another set of tags.
+    @JacksonXmlText
     private String title;
 
     /**
@@ -38,6 +43,7 @@ public final class ResponseTitle {
      * Set the type property: Type of value.
      *
      * @param type the type value to set.
+     *
      * @return the ResponseTitle object itself.
      */
     public ResponseTitle setType(String type) {
@@ -58,6 +64,7 @@ public final class ResponseTitle {
      * Set the title property: Contents of the title.
      *
      * @param title the title value to set.
+     *
      * @return the ResponseTitle object itself.
      */
     public ResponseTitle setTitle(String title) {

@@ -3,21 +3,21 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.resourcemanager.sql.ElasticPoolEdition;
-import com.azure.resourcemanager.sql.Sku;
-import com.azure.resourcemanager.sql.SqlDatabaseOperations;
-import com.azure.resourcemanager.sql.SqlElasticPool;
-import com.azure.resourcemanager.sql.SqlElasticPoolBasicEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolBasicMaxEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolBasicMinEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolPremiumEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolPremiumMaxEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolPremiumMinEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolPremiumSorage;
-import com.azure.resourcemanager.sql.SqlElasticPoolStandardEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolStandardMaxEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolStandardMinEDTUs;
-import com.azure.resourcemanager.sql.SqlElasticPoolStandardStorage;
+import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
+import com.azure.resourcemanager.sql.models.Sku;
+import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
+import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicMaxEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicMinEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolPremiumEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolPremiumMaxEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolPremiumMinEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolPremiumSorage;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardMaxEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardMinEDTUs;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardStorage;
 
 /** Implementation for SqlElasticPool as inline definition inside a SqlDatabase definition. */
 public class SqlElasticPoolForDatabaseImpl
