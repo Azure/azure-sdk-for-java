@@ -12,18 +12,7 @@ import java.util.function.Consumer;
 /**
  * Helper class to build a {@link ChangeFeedProcessor} instance.
  * <p>
- * {@code
- * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
- *     .hostName(hostName)
- *     .feedContainer(feedContainer)
- *     .leaseContainer(leaseContainer)
- *     .handleChanges(docs -> {
- *         for (JsonNode item : docs) {
- *             // Implementation for handling and processing of each JsonNode item goes here
- *         }
- *     })
- *     .buildChangeFeedProcessor();
- * }
+ * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public class ChangeFeedProcessorBuilder {
     private String hostName;
@@ -77,14 +66,7 @@ public class ChangeFeedProcessorBuilder {
     /**
      * Sets a consumer function which will be called to process changes.
      * <p>
-     * {@code
-     * An example for how this will look like:
-     *     .handleChanges(docs -> {
-     *         for (JsonNode item : docs) {
-     *             // Implementation for handling and processing of each JsonNode item goes here
-     *         }
-     *     })
-     *  }
+     * {@codesnippet com.azure.cosmos.changeFeedProcessor.handleChanges}
      *
      * @param consumer the {@link Consumer} to call for handling the feeds.
      * @return current Builder.
