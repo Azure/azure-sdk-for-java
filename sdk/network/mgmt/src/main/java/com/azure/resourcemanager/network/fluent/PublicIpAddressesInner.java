@@ -32,7 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.models.TagsObject;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -54,14 +54,14 @@ public final class PublicIpAddressesInner
     private final PublicIpAddressesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of PublicIpAddressesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PublicIpAddressesInner(NetworkManagementClientImpl client) {
+    PublicIpAddressesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PublicIpAddressesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyRuleGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.FirewallPolicyRuleGroupListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,14 +46,14 @@ public final class FirewallPolicyRuleGroupsInner {
     private final FirewallPolicyRuleGroupsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of FirewallPolicyRuleGroupsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    FirewallPolicyRuleGroupsInner(NetworkManagementClientImpl client) {
+    FirewallPolicyRuleGroupsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(FirewallPolicyRuleGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

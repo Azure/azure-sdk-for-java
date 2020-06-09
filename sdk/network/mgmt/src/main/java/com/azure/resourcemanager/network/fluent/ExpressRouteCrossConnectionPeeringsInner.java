@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringListInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,14 +46,14 @@ public final class ExpressRouteCrossConnectionPeeringsInner {
     private final ExpressRouteCrossConnectionPeeringsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ExpressRouteCrossConnectionPeeringsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ExpressRouteCrossConnectionPeeringsInner(NetworkManagementClientImpl client) {
+    ExpressRouteCrossConnectionPeeringsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

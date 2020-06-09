@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerProbeListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
 import reactor.core.publisher.Mono;
 
@@ -38,14 +38,14 @@ public final class LoadBalancerProbesInner {
     private final LoadBalancerProbesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of LoadBalancerProbesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    LoadBalancerProbesInner(NetworkManagementClientImpl client) {
+    LoadBalancerProbesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(LoadBalancerProbesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

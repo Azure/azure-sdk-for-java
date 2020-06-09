@@ -35,7 +35,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnGatewaysResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VpnGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -54,14 +54,14 @@ public final class VpnGatewaysInner
     private final VpnGatewaysService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VpnGatewaysInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VpnGatewaysInner(NetworkManagementClientImpl client) {
+    VpnGatewaysInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VpnGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

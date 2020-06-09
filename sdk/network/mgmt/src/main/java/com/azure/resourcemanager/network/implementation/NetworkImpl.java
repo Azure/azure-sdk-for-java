@@ -5,6 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
 import com.azure.resourcemanager.network.models.DhcpOptions;

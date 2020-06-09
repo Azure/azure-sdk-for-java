@@ -35,7 +35,7 @@ import com.azure.resourcemanager.network.models.CheckPrivateLinkServiceVisibilit
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.fluent.inner.AutoApprovedPrivateLinkServiceInner;
 import com.azure.resourcemanager.network.fluent.inner.AutoApprovedPrivateLinkServicesResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateLinkServiceInner;
 import com.azure.resourcemanager.network.fluent.inner.PrivateLinkServiceListResultInner;
@@ -58,14 +58,14 @@ public final class PrivateLinkServicesInner
     private final PrivateLinkServicesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of PrivateLinkServicesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkServicesInner(NetworkManagementClientImpl client) {
+    PrivateLinkServicesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PrivateLinkServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

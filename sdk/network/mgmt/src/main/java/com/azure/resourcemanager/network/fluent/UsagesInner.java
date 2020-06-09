@@ -25,7 +25,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.UsageInner;
 import com.azure.resourcemanager.network.fluent.inner.UsagesListResultInner;
 import reactor.core.publisher.Mono;
@@ -38,14 +38,14 @@ public final class UsagesInner {
     private final UsagesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of UsagesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    UsagesInner(NetworkManagementClientImpl client) {
+    UsagesInner(NetworkManagementClient client) {
         this.service = RestProxy.create(UsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

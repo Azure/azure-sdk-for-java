@@ -35,7 +35,7 @@ import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
 import java.nio.ByteBuffer;
 
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.network.fluent.inner.SubnetListResultInner;
 import reactor.core.publisher.Flux;
@@ -49,14 +49,14 @@ public final class SubnetsInner {
     private final SubnetsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of SubnetsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    SubnetsInner(NetworkManagementClientImpl client) {
+    SubnetsInner(NetworkManagementClient client) {
         this.service = RestProxy.create(SubnetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

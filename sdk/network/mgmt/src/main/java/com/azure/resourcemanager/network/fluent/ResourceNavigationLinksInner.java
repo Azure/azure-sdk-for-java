@@ -21,7 +21,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ResourceNavigationLinksListResultInner;
 import reactor.core.publisher.Mono;
 
@@ -33,14 +33,14 @@ public final class ResourceNavigationLinksInner {
     private final ResourceNavigationLinksService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ResourceNavigationLinksInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ResourceNavigationLinksInner(NetworkManagementClientImpl client) {
+    ResourceNavigationLinksInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ResourceNavigationLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());

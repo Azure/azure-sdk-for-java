@@ -25,7 +25,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleListResultInner;
 import reactor.core.publisher.Mono;
@@ -38,14 +38,14 @@ public final class DefaultSecurityRulesInner {
     private final DefaultSecurityRulesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of DefaultSecurityRulesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DefaultSecurityRulesInner(NetworkManagementClientImpl client) {
+    DefaultSecurityRulesInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(DefaultSecurityRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());

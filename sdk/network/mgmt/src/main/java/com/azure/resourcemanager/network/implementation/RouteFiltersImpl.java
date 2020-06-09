@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.RouteFilter;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;

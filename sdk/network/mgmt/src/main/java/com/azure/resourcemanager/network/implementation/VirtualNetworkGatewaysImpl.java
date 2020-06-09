@@ -5,6 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
@@ -22,7 +23,7 @@ class VirtualNetworkGatewaysImpl
         VirtualNetworkGatewayImpl,
         VirtualNetworkGatewayInner,
         VirtualNetworkGatewaysInner,
-        NetworkManager>
+    NetworkManager>
     implements VirtualNetworkGateways {
 
     VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {

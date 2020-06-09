@@ -71,7 +71,7 @@ import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;

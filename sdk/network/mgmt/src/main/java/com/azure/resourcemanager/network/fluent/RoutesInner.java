@@ -32,7 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteListResultInner;
 import reactor.core.publisher.Flux;
@@ -46,14 +46,14 @@ public final class RoutesInner {
     private final RoutesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of RoutesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RoutesInner(NetworkManagementClientImpl client) {
+    RoutesInner(NetworkManagementClient client) {
         this.service = RestProxy.create(RoutesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

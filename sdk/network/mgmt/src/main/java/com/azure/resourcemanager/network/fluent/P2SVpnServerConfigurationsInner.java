@@ -33,7 +33,7 @@ import com.azure.resourcemanager.network.models.ErrorException;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnServerConfigurationsResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.P2SVpnServerConfigurationInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -46,14 +46,14 @@ public final class P2SVpnServerConfigurationsInner {
     private final P2SVpnServerConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of P2SVpnServerConfigurationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    P2SVpnServerConfigurationsInner(NetworkManagementClientImpl client) {
+    P2SVpnServerConfigurationsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

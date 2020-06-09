@@ -37,7 +37,7 @@ import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.P2SVpnProfileParameters;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnGatewaysResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.P2SVpnGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.VpnProfileResponseInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -59,14 +59,14 @@ public final class P2SVpnGatewaysInner
     private final P2SVpnGatewaysService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of P2SVpnGatewaysInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    P2SVpnGatewaysInner(NetworkManagementClientImpl client) {
+    P2SVpnGatewaysInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(P2SVpnGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

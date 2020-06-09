@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;

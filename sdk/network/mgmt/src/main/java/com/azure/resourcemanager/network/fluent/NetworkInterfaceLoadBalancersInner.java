@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceLoadBalancerListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetworkInterfaceLoadBalancers. */
@@ -38,14 +38,14 @@ public final class NetworkInterfaceLoadBalancersInner {
     private final NetworkInterfaceLoadBalancersService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of NetworkInterfaceLoadBalancersInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    NetworkInterfaceLoadBalancersInner(NetworkManagementClientImpl client) {
+    NetworkInterfaceLoadBalancersInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network;
 
-import com.azure.resourcemanager.network.implementation.NetworkManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerHttpProbe;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;

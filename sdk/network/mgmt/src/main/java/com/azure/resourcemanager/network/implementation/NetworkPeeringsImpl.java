@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeerings;
@@ -20,7 +21,7 @@ class NetworkPeeringsImpl
         NetworkPeeringImpl,
         VirtualNetworkPeeringInner,
         VirtualNetworkPeeringsInner,
-        NetworkManager,
+    NetworkManager,
         Network>
     implements NetworkPeerings {
 

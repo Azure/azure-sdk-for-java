@@ -36,7 +36,7 @@ import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsRoutes
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
@@ -54,14 +54,14 @@ public final class ExpressRouteCrossConnectionsInner
     private final ExpressRouteCrossConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ExpressRouteCrossConnectionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ExpressRouteCrossConnectionsInner(NetworkManagementClientImpl client) {
+    ExpressRouteCrossConnectionsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

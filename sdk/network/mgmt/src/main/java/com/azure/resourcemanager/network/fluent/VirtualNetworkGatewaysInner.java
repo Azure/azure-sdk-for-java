@@ -37,7 +37,7 @@ import com.azure.resourcemanager.network.models.VpnClientParameters;
 import com.azure.resourcemanager.network.models.VpnDeviceScriptParameters;
 import com.azure.resourcemanager.network.fluent.inner.BgpPeerStatusListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.GatewayRouteListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayListConnectionsResultInner;
@@ -60,14 +60,14 @@ public final class VirtualNetworkGatewaysInner
     private final VirtualNetworkGatewaysService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VirtualNetworkGatewaysInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VirtualNetworkGatewaysInner(NetworkManagementClientImpl client) {
+    VirtualNetworkGatewaysInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VirtualNetworkGatewaysService.class, client.getHttpPipeline(), client.getSerializerAdapter());

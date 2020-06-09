@@ -40,7 +40,7 @@ import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorQueryResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -52,14 +52,14 @@ public final class ConnectionMonitorsInner {
     private final ConnectionMonitorsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ConnectionMonitorsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ConnectionMonitorsInner(NetworkManagementClientImpl client) {
+    ConnectionMonitorsInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(ConnectionMonitorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

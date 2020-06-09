@@ -33,7 +33,7 @@ import com.azure.resourcemanager.network.models.ErrorException;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.ListVpnConnectionsResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VpnConnectionInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -46,14 +46,14 @@ public final class VpnConnectionsInner {
     private final VpnConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VpnConnectionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VpnConnectionsInner(NetworkManagementClientImpl client) {
+    VpnConnectionsInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VpnConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

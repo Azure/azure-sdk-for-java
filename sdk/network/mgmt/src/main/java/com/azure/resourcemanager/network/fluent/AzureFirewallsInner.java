@@ -33,7 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallInner;
 import com.azure.resourcemanager.network.fluent.inner.AzureFirewallListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -52,14 +52,14 @@ public final class AzureFirewallsInner
     private final AzureFirewallsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of AzureFirewallsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AzureFirewallsInner(NetworkManagementClientImpl client) {
+    AzureFirewallsInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(AzureFirewallsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

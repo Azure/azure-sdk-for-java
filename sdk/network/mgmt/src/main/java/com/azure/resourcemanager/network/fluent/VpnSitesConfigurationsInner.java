@@ -27,7 +27,7 @@ import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
 import java.nio.ByteBuffer;
 
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -39,14 +39,14 @@ public final class VpnSitesConfigurationsInner {
     private final VpnSitesConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VpnSitesConfigurationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VpnSitesConfigurationsInner(NetworkManagementClientImpl client) {
+    VpnSitesConfigurationsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(VpnSitesConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

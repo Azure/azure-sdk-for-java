@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
@@ -17,7 +18,7 @@ class NetworkSecurityGroupsImpl
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
         NetworkSecurityGroupsInner,
-        NetworkManager>
+    NetworkManager>
     implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkManager networkManager) {

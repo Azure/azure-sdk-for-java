@@ -35,7 +35,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionResetSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionSharedKeyInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -54,14 +54,14 @@ public final class VirtualNetworkGatewayConnectionsInner
     private final VirtualNetworkGatewayConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VirtualNetworkGatewayConnectionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VirtualNetworkGatewayConnectionsInner(NetworkManagementClientImpl client) {
+    VirtualNetworkGatewayConnectionsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

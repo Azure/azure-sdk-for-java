@@ -34,7 +34,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -54,14 +54,14 @@ public final class DdosProtectionPlansInner
     private final DdosProtectionPlansService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of DdosProtectionPlansInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DdosProtectionPlansInner(NetworkManagementClientImpl client) {
+    DdosProtectionPlansInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(DdosProtectionPlansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

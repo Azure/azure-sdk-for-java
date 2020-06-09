@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,14 +46,14 @@ public final class InboundNatRulesInner {
     private final InboundNatRulesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of InboundNatRulesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    InboundNatRulesInner(NetworkManagementClientImpl client) {
+    InboundNatRulesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(InboundNatRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

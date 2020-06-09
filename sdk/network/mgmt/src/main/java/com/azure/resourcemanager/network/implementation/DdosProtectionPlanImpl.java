@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

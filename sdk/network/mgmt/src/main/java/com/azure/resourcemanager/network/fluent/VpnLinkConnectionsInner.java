@@ -26,7 +26,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.fluent.inner.ListVpnSiteLinkConnectionsResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkConnectionInner;
 import reactor.core.publisher.Mono;
 
@@ -38,14 +38,14 @@ public final class VpnLinkConnectionsInner {
     private final VpnLinkConnectionsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VpnLinkConnectionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VpnLinkConnectionsInner(NetworkManagementClientImpl client) {
+    VpnLinkConnectionsInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VpnLinkConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

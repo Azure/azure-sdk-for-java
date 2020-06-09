@@ -39,7 +39,7 @@ import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitStatsIn
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -59,14 +59,14 @@ public final class ExpressRouteCircuitsInner
     private final ExpressRouteCircuitsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ExpressRouteCircuitsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ExpressRouteCircuitsInner(NetworkManagementClientImpl client) {
+    ExpressRouteCircuitsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(ExpressRouteCircuitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

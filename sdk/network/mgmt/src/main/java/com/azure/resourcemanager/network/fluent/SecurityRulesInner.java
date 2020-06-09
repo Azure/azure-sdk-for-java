@@ -32,7 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleListResultInner;
 import reactor.core.publisher.Flux;
@@ -46,14 +46,14 @@ public final class SecurityRulesInner {
     private final SecurityRulesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of SecurityRulesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    SecurityRulesInner(NetworkManagementClientImpl client) {
+    SecurityRulesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(SecurityRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

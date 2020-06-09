@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
@@ -20,7 +21,7 @@ class ExpressRouteCircuitPeeringsImpl
         ExpressRouteCircuitPeeringImpl,
         ExpressRouteCircuitPeeringInner,
         ExpressRouteCircuitPeeringsInner,
-        NetworkManager,
+    NetworkManager,
         ExpressRouteCircuit>
     implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;

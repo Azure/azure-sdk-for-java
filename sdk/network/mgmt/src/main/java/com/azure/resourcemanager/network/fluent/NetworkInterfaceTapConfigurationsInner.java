@@ -34,7 +34,7 @@ import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceTapConfigurationListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -46,14 +46,14 @@ public final class NetworkInterfaceTapConfigurationsInner {
     private final NetworkInterfaceTapConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of NetworkInterfaceTapConfigurationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    NetworkInterfaceTapConfigurationsInner(NetworkManagementClientImpl client) {
+    NetworkInterfaceTapConfigurationsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

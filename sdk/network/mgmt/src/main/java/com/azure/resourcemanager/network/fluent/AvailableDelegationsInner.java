@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.inner.AvailableDelegationInner;
 import com.azure.resourcemanager.network.fluent.inner.AvailableDelegationsResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableDelegations. */
@@ -38,14 +38,14 @@ public final class AvailableDelegationsInner {
     private final AvailableDelegationsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of AvailableDelegationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AvailableDelegationsInner(NetworkManagementClientImpl client) {
+    AvailableDelegationsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(AvailableDelegationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());

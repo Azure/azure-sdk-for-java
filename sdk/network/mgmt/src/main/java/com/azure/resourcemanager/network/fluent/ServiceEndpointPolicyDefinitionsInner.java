@@ -32,7 +32,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionInner;
 import com.azure.resourcemanager.network.fluent.inner.ServiceEndpointPolicyDefinitionListResultInner;
 import reactor.core.publisher.Flux;
@@ -46,14 +46,14 @@ public final class ServiceEndpointPolicyDefinitionsInner {
     private final ServiceEndpointPolicyDefinitionsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ServiceEndpointPolicyDefinitionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ServiceEndpointPolicyDefinitionsInner(NetworkManagementClientImpl client) {
+    ServiceEndpointPolicyDefinitionsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

@@ -33,7 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureListResultInner;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureQueryStatusResultInner;
@@ -49,14 +49,14 @@ public final class PacketCapturesInner {
     private final PacketCapturesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of PacketCapturesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PacketCapturesInner(NetworkManagementClientImpl client) {
+    PacketCapturesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(PacketCapturesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

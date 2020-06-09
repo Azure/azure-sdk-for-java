@@ -33,7 +33,7 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.fluent.inner.ListVirtualWansResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.VirtualWanInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -52,14 +52,14 @@ public final class VirtualWansInner
     private final VirtualWansService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of VirtualWansInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VirtualWansInner(NetworkManagementClientImpl client) {
+    VirtualWansInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(VirtualWansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
@@ -22,7 +23,7 @@ class LocalNetworkGatewaysImpl
         LocalNetworkGatewayImpl,
         LocalNetworkGatewayInner,
         LocalNetworkGatewaysInner,
-        NetworkManager>
+    NetworkManager>
     implements LocalNetworkGateways {
 
     LocalNetworkGatewaysImpl(final NetworkManager networkManager) {

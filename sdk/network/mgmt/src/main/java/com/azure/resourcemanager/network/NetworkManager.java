@@ -1,10 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.resourcemanager.network.implementation;
+package com.azure.resourcemanager.network;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.implementation.ApplicationGatewaysImpl;
+import com.azure.resourcemanager.network.implementation.ApplicationSecurityGroupsImpl;
+import com.azure.resourcemanager.network.implementation.DdosProtectionPlansImpl;
+import com.azure.resourcemanager.network.implementation.ExpressRouteCircuitsImpl;
+import com.azure.resourcemanager.network.implementation.ExpressRouteCrossConnectionsImpl;
+import com.azure.resourcemanager.network.implementation.LoadBalancersImpl;
+import com.azure.resourcemanager.network.implementation.LocalNetworkGatewaysImpl;
+import com.azure.resourcemanager.network.implementation.NetworkInterfacesImpl;
+import com.azure.resourcemanager.network.implementation.NetworkSecurityGroupsImpl;
+import com.azure.resourcemanager.network.implementation.NetworkUsagesImpl;
+import com.azure.resourcemanager.network.implementation.NetworkWatchersImpl;
+import com.azure.resourcemanager.network.implementation.NetworksImpl;
+import com.azure.resourcemanager.network.implementation.PublicIpAddressesImpl;
+import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
+import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
+import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
@@ -26,8 +42,6 @@ import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientBuilder;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -45,7 +59,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /** Entry point to Azure network management. */
-public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
+public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClient> {
 
     // Collections
     private PublicIpAddresses publicIPAddresses;

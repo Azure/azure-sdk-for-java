@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;

@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.models.NetworkUsage;
 import com.azure.resourcemanager.network.models.NetworkUsages;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -14,9 +14,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 /** The implementation of NetworkUsages. */
 class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
     implements NetworkUsages {
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
-    NetworkUsagesImpl(NetworkManagementClientImpl client) {
+    NetworkUsagesImpl(NetworkManagementClient client) {
         this.client = client;
     }
 

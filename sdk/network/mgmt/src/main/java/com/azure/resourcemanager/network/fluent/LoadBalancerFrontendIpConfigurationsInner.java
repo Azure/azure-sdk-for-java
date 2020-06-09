@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerFrontendIpConfigurationListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoadBalancerFrontendIpConfigurations. */
@@ -38,14 +38,14 @@ public final class LoadBalancerFrontendIpConfigurationsInner {
     private final LoadBalancerFrontendIpConfigurationsService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of LoadBalancerFrontendIpConfigurationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    LoadBalancerFrontendIpConfigurationsInner(NetworkManagementClientImpl client) {
+    LoadBalancerFrontendIpConfigurationsInner(NetworkManagementClient client) {
         this.service =
             RestProxy
                 .create(

@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
@@ -25,7 +26,7 @@ public class VirtualNetworkGatewayConnectionImpl
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionInner,
         VirtualNetworkGatewayConnectionImpl,
-        NetworkManager>
+    NetworkManager>
     implements VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnection.Definition,
         VirtualNetworkGatewayConnection.Update,

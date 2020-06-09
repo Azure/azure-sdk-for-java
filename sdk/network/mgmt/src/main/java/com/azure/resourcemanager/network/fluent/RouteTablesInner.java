@@ -32,7 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.models.TagsObject;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableListResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -52,14 +52,14 @@ public final class RouteTablesInner
     private final RouteTablesService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of RouteTablesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RouteTablesInner(NetworkManagementClientImpl client) {
+    RouteTablesInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(RouteTablesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

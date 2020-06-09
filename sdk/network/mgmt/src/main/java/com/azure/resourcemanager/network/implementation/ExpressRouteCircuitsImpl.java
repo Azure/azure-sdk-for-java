@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
@@ -14,7 +15,7 @@ class ExpressRouteCircuitsImpl
         ExpressRouteCircuitImpl,
         ExpressRouteCircuitInner,
         ExpressRouteCircuitsInner,
-        NetworkManager>
+    NetworkManager>
     implements ExpressRouteCircuits {
 
     ExpressRouteCircuitsImpl(NetworkManager manager) {

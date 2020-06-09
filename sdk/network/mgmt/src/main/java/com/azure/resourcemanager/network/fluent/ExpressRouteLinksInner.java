@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteLinkInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteLinkListResultInner;
-import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.NetworkManagementClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExpressRouteLinks. */
@@ -38,14 +38,14 @@ public final class ExpressRouteLinksInner {
     private final ExpressRouteLinksService service;
 
     /** The service client containing this operation class. */
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
     /**
      * Initializes an instance of ExpressRouteLinksInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ExpressRouteLinksInner(NetworkManagementClientImpl client) {
+    ExpressRouteLinksInner(NetworkManagementClient client) {
         this.service =
             RestProxy.create(ExpressRouteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
