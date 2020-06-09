@@ -4,30 +4,30 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.InboundNatPool;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancerFrontend;
-import com.azure.resourcemanager.network.LoadBalancerHttpProbe;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatPool;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatRule;
-import com.azure.resourcemanager.network.LoadBalancerPrivateFrontend;
-import com.azure.resourcemanager.network.LoadBalancerProbe;
-import com.azure.resourcemanager.network.LoadBalancerPublicFrontend;
-import com.azure.resourcemanager.network.LoadBalancerSkuType;
-import com.azure.resourcemanager.network.LoadBalancerTcpProbe;
-import com.azure.resourcemanager.network.LoadBalancingRule;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.ProbeProtocol;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.models.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.models.FrontendIpConfigurationInner;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.InboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerHttpProbe;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerProbe;
+import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
+import com.azure.resourcemanager.network.models.LoadBalancerTcpProbe;
+import com.azure.resourcemanager.network.models.LoadBalancingRule;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.ProbeProtocol;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.models.InboundNatRuleInner;
-import com.azure.resourcemanager.network.models.LoadBalancerInner;
-import com.azure.resourcemanager.network.models.LoadBalancingRuleInner;
-import com.azure.resourcemanager.network.models.ProbeInner;
+import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
@@ -83,13 +83,13 @@ class LoadBalancerImpl
         return this
             .manager()
             .inner()
-            .loadBalancers()
+            .getLoadBalancers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<LoadBalancerInner> applyTagsToInnerAsync() {
-        return this.manager().inner().loadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().inner().getLoadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Helpers
@@ -326,7 +326,7 @@ class LoadBalancerImpl
         return this
             .manager()
             .inner()
-            .loadBalancers()
+            .getLoadBalancers()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 

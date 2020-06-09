@@ -4,10 +4,10 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.ConnectionMonitor;
-import com.azure.resourcemanager.network.ConnectionMonitors;
-import com.azure.resourcemanager.network.models.ConnectionMonitorResultInner;
-import com.azure.resourcemanager.network.models.ConnectionMonitorsInner;
+import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.models.ConnectionMonitor;
+import com.azure.resourcemanager.network.models.ConnectionMonitors;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
@@ -17,14 +17,14 @@ class ConnectionMonitorsImpl
     extends CreatableResourcesImpl<ConnectionMonitor, ConnectionMonitorImpl, ConnectionMonitorResultInner>
     implements ConnectionMonitors {
     private final NetworkWatcherImpl parent;
-    private final ConnectionMonitorsInner innerCollection;
+    private final ConnectionMonitorsClient innerCollection;
 
     /**
      * Creates a new ConnectionMonitorsImpl.
      *
      * @param parent the Network Watcher associated with Connection Monitors
      */
-    ConnectionMonitorsImpl(ConnectionMonitorsInner innerCollection, NetworkWatcherImpl parent) {
+    ConnectionMonitorsImpl(ConnectionMonitorsClient innerCollection, NetworkWatcherImpl parent) {
         this.parent = parent;
         this.innerCollection = innerCollection;
     }
@@ -75,7 +75,7 @@ class ConnectionMonitorsImpl
     }
 
     @Override
-    public ConnectionMonitorsInner inner() {
+    public ConnectionMonitorsClient inner() {
         return innerCollection;
     }
 

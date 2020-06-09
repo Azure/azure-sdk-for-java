@@ -2,24 +2,26 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.AddressSpace;
-import com.azure.resourcemanager.network.DhcpOptions;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.Networks;
-import com.azure.resourcemanager.network.models.SubnetInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkInner;
-import com.azure.resourcemanager.network.models.VirtualNetworksInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
+import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.DhcpOptions;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+
 import java.util.ArrayList;
 
 /** Implementation for Networks. */
-class NetworksImpl
+public class NetworksImpl
     extends TopLevelModifiableResourcesImpl<
-        Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksInner, NetworkManager>
+        Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksClient, NetworkManager>
     implements Networks {
 
-    NetworksImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().virtualNetworks(), networkManager);
+    public NetworksImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getVirtualNetworks(), networkManager);
     }
 
     @Override

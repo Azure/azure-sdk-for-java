@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.PacketCaptureStatus;
-import com.azure.resourcemanager.network.PcError;
-import com.azure.resourcemanager.network.PcStatus;
-import com.azure.resourcemanager.network.models.PacketCaptureQueryStatusResultInner;
+import com.azure.resourcemanager.network.models.PacketCaptureStatus;
+import com.azure.resourcemanager.network.models.PcError;
+import com.azure.resourcemanager.network.models.PcStatus;
+import com.azure.resourcemanager.network.fluent.inner.PacketCaptureQueryStatusResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.List;

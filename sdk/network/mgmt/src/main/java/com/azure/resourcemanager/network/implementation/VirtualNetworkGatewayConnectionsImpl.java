@@ -6,16 +6,18 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.resourcemanager.network.VirtualNetworkGateway;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnection;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnections;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionsInner;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnections;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import reactor.core.publisher.Mono;
+
 import java.util.Iterator;
 import java.util.function.Function;
-import reactor.core.publisher.Mono;
 
 /** The implementation of VirtualNetworkGatewayConnections. */
 class VirtualNetworkGatewayConnectionsImpl
@@ -23,14 +25,14 @@ class VirtualNetworkGatewayConnectionsImpl
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionImpl,
         VirtualNetworkGatewayConnectionInner,
-        VirtualNetworkGatewayConnectionsInner,
-        NetworkManager>
+    VirtualNetworkGatewayConnectionsClient,
+    NetworkManager>
     implements VirtualNetworkGatewayConnections {
 
     private final VirtualNetworkGatewayImpl parent;
 
     VirtualNetworkGatewayConnectionsImpl(final VirtualNetworkGatewayImpl parent) {
-        super(parent.manager().inner().virtualNetworkGatewayConnections(), parent.manager());
+        super(parent.manager().inner().getVirtualNetworkGatewayConnections(), parent.manager());
         this.parent = parent;
     }
 
@@ -75,7 +77,7 @@ class VirtualNetworkGatewayConnectionsImpl
             this
                 .manager()
                 .inner()
-                .virtualNetworkGatewayConnections()
+                .getVirtualNetworkGatewayConnections()
                 .getByResourceGroup(this.parent().resourceGroupName(), name);
         return new VirtualNetworkGatewayConnectionImpl(name, parent, inner);
     }

@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuitReference;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnection;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnectionPeering;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnectionPeerings;
-import com.azure.resourcemanager.network.ServiceProviderProvisioningState;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionInner;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeringInner;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeerings;
+import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class ExpressRouteCrossConnectionImpl
         return this
             .manager()
             .inner()
-            .expressRouteCrossConnections()
+            .getExpressRouteCrossConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
@@ -56,7 +56,7 @@ public class ExpressRouteCrossConnectionImpl
         return this
             .manager()
             .inner()
-            .expressRouteCrossConnections()
+            .getExpressRouteCrossConnections()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -78,7 +78,7 @@ public class ExpressRouteCrossConnectionImpl
         return this
             .manager()
             .inner()
-            .expressRouteCrossConnections()
+            .getExpressRouteCrossConnections()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 

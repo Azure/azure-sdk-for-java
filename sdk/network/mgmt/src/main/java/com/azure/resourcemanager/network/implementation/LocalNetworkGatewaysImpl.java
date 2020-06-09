@@ -5,28 +5,30 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.resourcemanager.network.LocalNetworkGateway;
-import com.azure.resourcemanager.network.LocalNetworkGateways;
-import com.azure.resourcemanager.network.models.LocalNetworkGatewayInner;
-import com.azure.resourcemanager.network.models.LocalNetworkGatewaysInner;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
+import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
+import com.azure.resourcemanager.network.models.LocalNetworkGateway;
+import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import java.util.Iterator;
-import java.util.function.Function;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
+import java.util.function.Function;
+
 /** Implementation for LocalNetworkGateways. */
-class LocalNetworkGatewaysImpl
+public class LocalNetworkGatewaysImpl
     extends GroupableResourcesImpl<
         LocalNetworkGateway,
         LocalNetworkGatewayImpl,
         LocalNetworkGatewayInner,
-        LocalNetworkGatewaysInner,
-        NetworkManager>
+    LocalNetworkGatewaysClient,
+    NetworkManager>
     implements LocalNetworkGateways {
 
-    LocalNetworkGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().localNetworkGateways(), networkManager);
+    public LocalNetworkGatewaysImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getLocalNetworkGateways(), networkManager);
     }
 
     @Override

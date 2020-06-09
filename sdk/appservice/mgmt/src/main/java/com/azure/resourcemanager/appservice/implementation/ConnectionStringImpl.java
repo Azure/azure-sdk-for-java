@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.ConnStringValueTypePair;
-import com.azure.resourcemanager.appservice.ConnectionString;
-import com.azure.resourcemanager.appservice.ConnectionStringType;
+import com.azure.resourcemanager.appservice.models.ConnStringValueTypePair;
+import com.azure.resourcemanager.appservice.models.ConnectionString;
+import com.azure.resourcemanager.appservice.models.ConnectionStringType;
 
 /** An immutable client-side representation of a connection string on a web app. */
 public class ConnectionStringImpl implements ConnectionString {

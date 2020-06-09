@@ -5,25 +5,27 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.FunctionApp;
-import com.azure.resourcemanager.appservice.FunctionApps;
-import com.azure.resourcemanager.appservice.FunctionEnvelope;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.models.WebAppsInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionApps;
+import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 /** The implementation for WebApps. */
-class FunctionAppsImpl
-    extends TopLevelModifiableResourcesImpl<FunctionApp, FunctionAppImpl, SiteInner, WebAppsInner, AppServiceManager>
+public class FunctionAppsImpl
+    extends TopLevelModifiableResourcesImpl<FunctionApp, FunctionAppImpl, SiteInner, WebAppsClient, AppServiceManager>
     implements FunctionApps {
 
-    FunctionAppsImpl(final AppServiceManager manager) {
-        super(manager.inner().webApps(), manager);
+    public FunctionAppsImpl(final AppServiceManager manager) {
+        super(manager.inner().getWebApps(), manager);
     }
 
     @Override

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.DeploymentSlot;
-import com.azure.resourcemanager.appservice.PublishingProfile;
-import com.azure.resourcemanager.appservice.WebAppBase;
+import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.PublishingProfile;
+import com.azure.resourcemanager.appservice.models.WebAppBase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

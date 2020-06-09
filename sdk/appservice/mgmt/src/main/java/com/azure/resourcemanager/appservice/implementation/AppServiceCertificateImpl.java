@@ -4,11 +4,12 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.AppServiceCertificate;
-import com.azure.resourcemanager.appservice.AppServiceCertificateOrder;
-import com.azure.resourcemanager.appservice.HostingEnvironmentProfile;
-import com.azure.resourcemanager.appservice.models.CertificateInner;
-import com.azure.resourcemanager.appservice.models.CertificatesInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificate;
+import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
+import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
+import com.azure.resourcemanager.appservice.fluent.inner.CertificateInner;
+import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.io.File;
@@ -110,7 +111,7 @@ class AppServiceCertificateImpl
 
     @Override
     protected Mono<CertificateInner> getInnerAsync() {
-        return this.manager().inner().certificates().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().inner().getCertificates().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -139,7 +140,7 @@ class AppServiceCertificateImpl
                             return null;
                         });
         }
-        final CertificatesInner client = this.manager().inner().certificates();
+        final CertificatesClient client = this.manager().inner().getCertificates();
         return pfxBytes
             .then(keyVaultBinding)
             .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner()))

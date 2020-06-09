@@ -4,10 +4,11 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.AppServicePlan;
-import com.azure.resourcemanager.appservice.OperatingSystem;
-import com.azure.resourcemanager.appservice.PricingTier;
-import com.azure.resourcemanager.appservice.models.AppServicePlanInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
@@ -30,14 +31,14 @@ class AppServicePlanImpl
         return this
             .manager()
             .inner()
-            .appServicePlans()
+            .getAppServicePlans()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AppServicePlanInner> getInnerAsync() {
-        return this.manager().inner().appServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().inner().getAppServicePlans().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override

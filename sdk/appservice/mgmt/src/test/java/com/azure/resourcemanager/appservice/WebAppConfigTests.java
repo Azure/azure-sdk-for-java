@@ -4,6 +4,17 @@
 package com.azure.resourcemanager.appservice;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.ConnectionString;
+import com.azure.resourcemanager.appservice.models.ConnectionStringType;
+import com.azure.resourcemanager.appservice.models.FtpsState;
+import com.azure.resourcemanager.appservice.models.JavaVersion;
+import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
+import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PythonVersion;
+import com.azure.resourcemanager.appservice.models.SupportedTlsVersions;
+import com.azure.resourcemanager.appservice.models.WebApp;
+import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import java.util.Map;
 
