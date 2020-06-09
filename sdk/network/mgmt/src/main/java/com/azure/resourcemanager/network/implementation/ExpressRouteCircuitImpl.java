@@ -11,7 +11,6 @@ import com.azure.resourcemanager.network.ServiceProviderProvisioningState;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitAuthorizationInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.fluent.GroupableParentResourceWithTagsImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;

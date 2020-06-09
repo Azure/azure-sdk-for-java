@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.resourcemanager.network.fluent;
+package com.azure.resourcemanager.network.implementation;
 
+import com.azure.resourcemanager.network.models.AppliableWithTags;
+import com.azure.resourcemanager.network.models.UpdatableWithTags;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

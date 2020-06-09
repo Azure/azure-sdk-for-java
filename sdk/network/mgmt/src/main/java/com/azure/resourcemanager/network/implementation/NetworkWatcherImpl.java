@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.FlowLogSettings;
 import com.azure.resourcemanager.network.NetworkWatcher;
 import com.azure.resourcemanager.network.SecurityGroupView;
-import com.azure.resourcemanager.network.fluent.AppliableWithTags;
+import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.NetworkWatcherInner;
 import com.azure.resourcemanager.network.fluent.SecurityGroupViewResultInner;

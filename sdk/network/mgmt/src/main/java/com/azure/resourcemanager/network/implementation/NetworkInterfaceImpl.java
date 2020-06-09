@@ -10,7 +10,6 @@ import com.azure.resourcemanager.network.NetworkInterface;
 import com.azure.resourcemanager.network.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.NicIpConfiguration;
 import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.GroupableParentResourceWithTagsImpl;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupInner;

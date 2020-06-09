@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.LoadBalancerBackend;
 import com.azure.resourcemanager.network.LoadBalancingRule;
 import com.azure.resourcemanager.network.NetworkInterface;
 import com.azure.resourcemanager.network.fluent.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;

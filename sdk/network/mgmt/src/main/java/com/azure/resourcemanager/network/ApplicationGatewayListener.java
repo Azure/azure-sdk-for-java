@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.HasHostname;
-import com.azure.resourcemanager.network.fluent.HasProtocol;
-import com.azure.resourcemanager.network.fluent.HasPublicIpAddress;
-import com.azure.resourcemanager.network.fluent.HasServerNameIndication;
-import com.azure.resourcemanager.network.fluent.HasSslCertificate;
+import com.azure.resourcemanager.network.models.HasHostname;
+import com.azure.resourcemanager.network.models.HasProtocol;
+import com.azure.resourcemanager.network.models.HasPublicIpAddress;
+import com.azure.resourcemanager.network.models.HasServerNameIndication;
+import com.azure.resourcemanager.network.models.HasSslCertificate;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;

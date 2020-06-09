@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.ConnectivityParameters;
 import com.azure.resourcemanager.network.ConnectivitySource;
 import com.azure.resourcemanager.network.Protocol;
 import com.azure.resourcemanager.network.fluent.ConnectivityInformationInner;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.List;

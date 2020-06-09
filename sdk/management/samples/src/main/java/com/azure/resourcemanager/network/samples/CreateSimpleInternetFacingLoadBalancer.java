@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.LoadBalancer;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.TransportProtocol;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;

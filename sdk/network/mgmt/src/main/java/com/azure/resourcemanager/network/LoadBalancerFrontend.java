@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.FrontendIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.HasLoadBalancingRules;
+import com.azure.resourcemanager.network.models.HasLoadBalancingRules;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.Map;

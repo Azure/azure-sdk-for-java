@@ -6,7 +6,6 @@ import com.azure.resourcemanager.network.Route;
 import com.azure.resourcemanager.network.RouteNextHopType;
 import com.azure.resourcemanager.network.RouteTable;
 import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.fluent.GroupableParentResourceWithTagsImpl;
 import com.azure.resourcemanager.network.fluent.RouteInner;
 import com.azure.resourcemanager.network.fluent.RouteTableInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

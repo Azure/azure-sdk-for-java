@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.HasBackendPort;
-import com.azure.resourcemanager.network.fluent.HasFrontend;
-import com.azure.resourcemanager.network.fluent.HasProtocol;
+import com.azure.resourcemanager.network.models.HasBackendPort;
+import com.azure.resourcemanager.network.models.HasFrontend;
+import com.azure.resourcemanager.network.models.HasProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

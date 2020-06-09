@@ -5,7 +5,6 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.NetworkSecurityRule;
 import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.fluent.GroupableParentResourceWithTagsImpl;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.SecurityRuleInner;

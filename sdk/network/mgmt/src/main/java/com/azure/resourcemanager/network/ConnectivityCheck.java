@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.HasProtocol;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import java.util.List;

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.AddressSpace;
 import com.azure.resourcemanager.network.BgpSettings;
 import com.azure.resourcemanager.network.LocalNetworkGateway;
-import com.azure.resourcemanager.network.fluent.AppliableWithTags;
+import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;

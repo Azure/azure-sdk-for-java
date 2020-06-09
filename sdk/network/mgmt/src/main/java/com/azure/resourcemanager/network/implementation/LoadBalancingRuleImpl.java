@@ -13,7 +13,7 @@ import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.Subnet;
 import com.azure.resourcemanager.network.TransportProtocol;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.fluent.LoadBalancingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;

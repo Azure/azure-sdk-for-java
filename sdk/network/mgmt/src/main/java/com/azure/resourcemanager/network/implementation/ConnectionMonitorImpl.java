@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.ProvisioningState;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsInner;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.time.OffsetDateTime;

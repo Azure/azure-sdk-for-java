@@ -19,7 +19,6 @@ import com.azure.resourcemanager.network.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.VpnClientConfiguration;
 import com.azure.resourcemanager.network.VpnClientParameters;
 import com.azure.resourcemanager.network.VpnType;
-import com.azure.resourcemanager.network.fluent.GroupableParentResourceWithTagsImpl;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayInner;

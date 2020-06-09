@@ -4,9 +4,9 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.HasBackendNics;
-import com.azure.resourcemanager.network.fluent.HasLoadBalancingRules;
-import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.models.HasBackendNics;
+import com.azure.resourcemanager.network.models.HasLoadBalancingRules;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.NicIpConfiguration;
 import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.PublicIPSkuType;
-import com.azure.resourcemanager.network.fluent.AppliableWithTags;
+import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.IpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;

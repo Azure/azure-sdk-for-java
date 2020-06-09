@@ -46,7 +46,6 @@ import com.azure.resourcemanager.network.fluent.ApplicationGatewayRequestRouting
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaySslCertificateInner;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysInner;
-import com.azure.resourcemanager.network.fluent.GroupableParentResourceWithTagsImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

@@ -3,9 +3,9 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.HasLoadBalancingRules;
-import com.azure.resourcemanager.network.fluent.HasPort;
-import com.azure.resourcemanager.network.fluent.HasProtocol;
+import com.azure.resourcemanager.network.models.HasLoadBalancingRules;
+import com.azure.resourcemanager.network.models.HasPort;
+import com.azure.resourcemanager.network.models.HasProtocol;
 import com.azure.resourcemanager.network.fluent.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

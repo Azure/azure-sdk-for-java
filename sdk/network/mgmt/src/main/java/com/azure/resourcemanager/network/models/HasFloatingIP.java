@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.resourcemanager.network.fluent;
+package com.azure.resourcemanager.network.models;
 
 /** An interface representing a model's ability to have floating IP support. */
 public interface HasFloatingIP {
