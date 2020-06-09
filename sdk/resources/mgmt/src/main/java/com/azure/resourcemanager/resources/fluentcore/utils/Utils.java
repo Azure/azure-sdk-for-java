@@ -219,7 +219,6 @@ public final class Utils {
         return subscriptionList.get(0).subscriptionId();
     }
 
-
     /**
      * Generates default scope for oauth2 from the specific request
      * @param request a http request
@@ -275,5 +274,22 @@ public final class Utils {
             return s.substring(0, s.length() - 1);
         }
         return s;
+    }
+
+    /**
+     * Get the Azure storage account connection string.
+     * @param accountName storage account name
+     * @param accountKey storage account key
+     * @param environment the Azure environment
+     * @return the storage account connection string.
+     */
+    public static String getStorageConnectionString(String accountName, String accountKey,
+                                                    AzureEnvironment environment) {
+        if (environment == null || environment.getStorageEndpointSuffix() == null) {
+            environment = AzureEnvironment.AZURE;
+        }
+        String suffix = environment.getStorageEndpointSuffix().replaceAll("^\\.*", "");
+        return String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=%s",
+            accountName, accountKey, suffix);
     }
 }

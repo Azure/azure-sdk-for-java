@@ -202,11 +202,9 @@ class FunctionAppImpl
                         .zipWith(
                             cachedAppServicePlanObservable,
                             (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString =
-                                    String
-                                        .format(
-                                            "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                                            storageAccountToSet.name(), storageAccountKey.value());
+                                String connectionString = com.azure.resourcemanager.resources.fluentcore.utils.Utils
+                                    .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
+                                        manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                                 if (OperatingSystem.WINDOWS.equals(operatingSystem())
