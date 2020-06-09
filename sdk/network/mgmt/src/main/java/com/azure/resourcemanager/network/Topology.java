@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.TopologyInner;
+import com.azure.resourcemanager.network.fluent.inner.TopologyInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

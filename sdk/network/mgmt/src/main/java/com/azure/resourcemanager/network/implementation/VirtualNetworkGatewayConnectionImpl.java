@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.VirtualNetworkGatewayConnectionType;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.Collection;

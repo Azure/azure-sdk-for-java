@@ -35,14 +35,24 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.ApplicationGatewayOnDemandProbe;
 import com.azure.resourcemanager.network.ErrorException;
 import com.azure.resourcemanager.network.TagsObject;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslOptionsInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableSslPredefinedPoliciesInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAvailableWafRuleSetsResultInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthOnDemandInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayListResultInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslPredefinedPolicyInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplicationGateways. */
 public final class ApplicationGatewaysInner

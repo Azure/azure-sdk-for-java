@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.ConnectionMonitor;
 import com.azure.resourcemanager.network.ConnectionMonitors;
-import com.azure.resourcemanager.network.fluent.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;

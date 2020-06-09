@@ -7,9 +7,9 @@ import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.RouteFilter;
 import com.azure.resourcemanager.network.RouteFilterRule;
 import com.azure.resourcemanager.network.RouteFilterRuleType;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.fluent.RouteFilterInner;
-import com.azure.resourcemanager.network.fluent.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import reactor.core.publisher.Mono;
 

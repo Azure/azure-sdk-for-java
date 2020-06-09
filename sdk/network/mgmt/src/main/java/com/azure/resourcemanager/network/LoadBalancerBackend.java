@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
 import com.azure.resourcemanager.network.models.HasBackendNics;
 import com.azure.resourcemanager.network.models.HasLoadBalancingRules;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;

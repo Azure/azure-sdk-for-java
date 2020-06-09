@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.HasFrontend;
 import com.azure.resourcemanager.network.models.HasFrontendPort;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.HasProtocol;
-import com.azure.resourcemanager.network.fluent.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

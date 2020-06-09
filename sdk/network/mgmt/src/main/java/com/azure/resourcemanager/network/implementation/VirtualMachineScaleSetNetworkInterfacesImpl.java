@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.VirtualMachineScaleSetNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 

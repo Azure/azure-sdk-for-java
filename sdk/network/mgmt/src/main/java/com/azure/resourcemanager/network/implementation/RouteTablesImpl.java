@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.RouteTable;
 import com.azure.resourcemanager.network.RouteTables;
-import com.azure.resourcemanager.network.fluent.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.network.fluent.RouteTablesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 

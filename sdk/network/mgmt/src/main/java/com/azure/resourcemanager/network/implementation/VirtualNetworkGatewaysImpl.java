@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.resourcemanager.network.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;

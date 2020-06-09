@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.HasPrivateIpAddress;
 import com.azure.resourcemanager.network.models.HasPublicIpAddress;
 import com.azure.resourcemanager.network.models.UpdatableWithTags;

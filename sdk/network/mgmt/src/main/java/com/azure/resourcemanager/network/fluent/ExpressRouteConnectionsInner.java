@@ -27,6 +27,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteConnectionInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteConnectionListInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

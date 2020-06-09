@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.fluent.LocalNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.network.models.UpdatableWithTags;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

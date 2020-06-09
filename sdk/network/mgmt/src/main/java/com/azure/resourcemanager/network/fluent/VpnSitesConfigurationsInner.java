@@ -26,6 +26,8 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.ErrorException;
 import com.azure.resourcemanager.network.GetVpnSitesConfigurationRequest;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

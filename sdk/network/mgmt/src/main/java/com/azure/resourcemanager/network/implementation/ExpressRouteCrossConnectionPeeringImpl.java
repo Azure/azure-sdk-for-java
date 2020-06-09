@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.ExpressRouteCrossConnectionPeering;
 import com.azure.resourcemanager.network.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

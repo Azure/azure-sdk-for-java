@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.ExpressRouteCrossConnection;
 import com.azure.resourcemanager.network.ExpressRouteCrossConnections;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;

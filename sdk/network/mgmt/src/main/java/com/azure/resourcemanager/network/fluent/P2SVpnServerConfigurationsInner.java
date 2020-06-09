@@ -31,6 +31,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.ErrorException;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.network.fluent.inner.ListP2SVpnServerConfigurationsResultInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.fluent.inner.P2SVpnServerConfigurationInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -35,6 +35,12 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.TagsObject;
 import java.nio.ByteBuffer;
 import java.util.Map;
+
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorListResultInner;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorQueryResultInner;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

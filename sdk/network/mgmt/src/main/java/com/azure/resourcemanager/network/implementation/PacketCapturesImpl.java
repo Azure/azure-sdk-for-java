@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.PacketCapture;
 import com.azure.resourcemanager.network.PacketCaptures;
-import com.azure.resourcemanager.network.fluent.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
 import com.azure.resourcemanager.network.fluent.PacketCapturesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;

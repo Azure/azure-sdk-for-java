@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.UsageInner;
+import com.azure.resourcemanager.network.fluent.inner.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** An immutable client-side representation of an Azure compute resource usage info object. */

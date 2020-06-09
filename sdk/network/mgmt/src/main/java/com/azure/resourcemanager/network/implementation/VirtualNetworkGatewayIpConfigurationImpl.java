@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.Subnet;
 import com.azure.resourcemanager.network.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.VirtualNetworkGatewayIpConfiguration;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 

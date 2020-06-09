@@ -34,6 +34,10 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.PrepareNetworkPoliciesRequest;
 import com.azure.resourcemanager.network.UnprepareNetworkPoliciesRequest;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.inner.SubnetListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

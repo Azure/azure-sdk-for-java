@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.HasPrivateIpAddress;
 import com.azure.resourcemanager.network.models.HasPublicIpAddress;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

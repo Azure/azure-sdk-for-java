@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkInterface;
 import com.azure.resourcemanager.network.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.NetworkSecurityGroups;
-import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;

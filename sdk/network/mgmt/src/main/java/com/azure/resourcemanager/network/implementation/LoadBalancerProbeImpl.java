@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.LoadBalancerHttpProbe;
 import com.azure.resourcemanager.network.LoadBalancerTcpProbe;
 import com.azure.resourcemanager.network.LoadBalancingRule;
 import com.azure.resourcemanager.network.ProbeProtocol;
-import com.azure.resourcemanager.network.fluent.ProbeInner;
+import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.HasPublicIpAddress;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;

@@ -25,6 +25,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.ErrorException;
+import com.azure.resourcemanager.network.fluent.inner.ListVpnSiteLinksResultInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnSiteLinks. */

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.ApplicationGateway;
 import com.azure.resourcemanager.network.ApplicationGatewayAuthenticationCertificate;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;

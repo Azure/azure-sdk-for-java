@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.ApplicationGateway;
 import com.azure.resourcemanager.network.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.ApplicationGateways;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

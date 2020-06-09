@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.ConnectionMonitorQueryResultInner;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorQueryResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.List;
 

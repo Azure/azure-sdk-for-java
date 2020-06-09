@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.NetworkPeering;
 import com.azure.resourcemanager.network.NetworkPeerings;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;

@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.resourcemanager.network.LocalNetworkGateway;
 import com.azure.resourcemanager.network.LocalNetworkGateways;
-import com.azure.resourcemanager.network.fluent.LocalNetworkGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;

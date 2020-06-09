@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.ApplicationSecurityGroups;
-import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 

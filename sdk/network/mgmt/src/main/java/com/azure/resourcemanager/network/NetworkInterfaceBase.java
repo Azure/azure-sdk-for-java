@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.List;

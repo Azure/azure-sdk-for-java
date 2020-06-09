@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
 import com.azure.resourcemanager.network.ExpressRouteCircuitPeerings;
 import com.azure.resourcemanager.network.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;

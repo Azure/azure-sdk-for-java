@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.resourcemanager.network.models.HasBackendPort;
 import com.azure.resourcemanager.network.models.HasCookieBasedAffinity;
 import com.azure.resourcemanager.network.models.HasFrontendPort;

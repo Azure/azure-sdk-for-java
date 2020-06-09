@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
 import com.azure.resourcemanager.network.models.HasProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;

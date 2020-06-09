@@ -33,6 +33,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.resourcemanager.network.PatchRouteFilterRule;
 import java.nio.ByteBuffer;
+
+import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleListResultInner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
