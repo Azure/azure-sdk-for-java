@@ -537,7 +537,9 @@
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
-              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <groups>
