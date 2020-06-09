@@ -11,11 +11,11 @@ import java.util.Objects;
 public class FunctionRuntimeStack {
 
     /** JAVA 8. */
-    public static final com.azure.resourcemanager.appservice.FunctionRuntimeStack JAVA_8 = new com.azure.resourcemanager.appservice.FunctionRuntimeStack("java", "~3",
+    public static final FunctionRuntimeStack JAVA_8 = new FunctionRuntimeStack("java", "~3",
         "java|8", "java|8");
 
     /** JAVA 11. */
-    public static final com.azure.resourcemanager.appservice.FunctionRuntimeStack JAVA_11 = new com.azure.resourcemanager.appservice.FunctionRuntimeStack("java", "~3",
+    public static final FunctionRuntimeStack JAVA_11 = new FunctionRuntimeStack("java", "~3",
         "java|11", "java|11");
 
     private final String runtime;
@@ -86,8 +86,8 @@ public class FunctionRuntimeStack {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        com.azure.resourcemanager.appservice.FunctionRuntimeStack that = (com.azure.resourcemanager.appservice.FunctionRuntimeStack) o;
-        return runtime.equals(that.runt  ime) && version.equals(that.version);
+        FunctionRuntimeStack that = (FunctionRuntimeStack) o;
+        return runtime.equals(that.runtime) && version.equals(that.version);
     }
 
     @Override
