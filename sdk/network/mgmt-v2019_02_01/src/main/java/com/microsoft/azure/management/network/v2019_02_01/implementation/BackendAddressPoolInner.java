@@ -38,6 +38,12 @@ public class BackendAddressPoolInner extends SubResource {
     private SubResource outboundRule;
 
     /**
+     * Gets outbound rules that use this backend address pool.
+     */
+    @JsonProperty(value = "properties.outboundRules", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> outboundRules;
+
+    /**
      * Get provisioning state of the public IP resource. Possible values are:
      * 'Updating', 'Deleting', and 'Failed'.
      */
@@ -82,6 +88,15 @@ public class BackendAddressPoolInner extends SubResource {
      */
     public SubResource outboundRule() {
         return this.outboundRule;
+    }
+
+    /**
+     * Get gets outbound rules that use this backend address pool.
+     *
+     * @return the outboundRules value
+     */
+    public List<SubResource> outboundRules() {
+        return this.outboundRules;
     }
 
     /**
