@@ -180,7 +180,7 @@ class VirtualMachineImpl
         final ComputeManager computeManager,
         final StorageManager storageManager,
         final NetworkManager networkManager,
-        final AuthorizationManager rbacManager) {
+        final AuthorizationManager authorizationManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -195,7 +195,7 @@ class VirtualMachineImpl
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
-        this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(rbacManager, this);
+        this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(authorizationManager, this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;
         this.mapper = new ObjectMapper();

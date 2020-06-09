@@ -38,12 +38,12 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
     /**
      * Creates VirtualMachineMsiHandler.
      *
-     * @param rbacManager the graph rbac manager
+     * @param authorizationManager the graph rbac manager
      * @param virtualMachine the virtual machine to which MSI extension needs to be installed and for which role
      *     assignments needs to be created
      */
-    VirtualMachineMsiHandler(final AuthorizationManager rbacManager, VirtualMachineImpl virtualMachine) {
-        super(rbacManager, virtualMachine.taskGroup(), virtualMachine.idProvider());
+    VirtualMachineMsiHandler(final AuthorizationManager authorizationManager, VirtualMachineImpl virtualMachine) {
+        super(authorizationManager, virtualMachine.taskGroup(), virtualMachine.idProvider());
         this.virtualMachine = virtualMachine;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();

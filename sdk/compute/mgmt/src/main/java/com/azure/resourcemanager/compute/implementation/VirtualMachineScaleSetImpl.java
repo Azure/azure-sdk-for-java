@@ -161,13 +161,13 @@ public class VirtualMachineScaleSetImpl
         final ComputeManager computeManager,
         final StorageManager storageManager,
         final NetworkManager networkManager,
-        final AuthorizationManager rbacManager) {
+        final AuthorizationManager authorizationManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.name());
         this.managedDataDisks = new ManagedDataDiskCollection(this);
-        this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(rbacManager, this);
+        this.virtualMachineScaleSetMsiHandler = new VirtualMachineScaleSetMsiHandler(authorizationManager, this);
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;

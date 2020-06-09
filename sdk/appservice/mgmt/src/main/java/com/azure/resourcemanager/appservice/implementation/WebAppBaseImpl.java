@@ -151,7 +151,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.diagnosticLogs = new WebAppDiagnosticLogsImpl<>(logConfig, this);
         }
 
-        webAppMsiHandler = new WebAppMsiHandler(manager.rbacManager(), this);
+        webAppMsiHandler = new WebAppMsiHandler(manager.authorizationManager(), this);
         normalizeProperties();
         isInCreateMode = inner() == null || inner().id() == null;
         if (!isInCreateMode) {

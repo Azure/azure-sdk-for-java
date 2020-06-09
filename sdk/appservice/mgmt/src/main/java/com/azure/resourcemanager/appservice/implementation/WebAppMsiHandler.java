@@ -39,12 +39,12 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
     /**
      * Creates VirtualMachineMsiHandler.
      *
-     * @param rbacManager the graph rbac manager
+     * @param authorizationManager the graph rbac manager
      * @param webAppBase the web app to which MSI extension needs to be installed and for which role assignments needs
      *     to be created
      */
-    WebAppMsiHandler(final AuthorizationManager rbacManager, WebAppBaseImpl webAppBase) {
-        super(rbacManager, webAppBase.taskGroup(), webAppBase.idProvider());
+    WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl webAppBase) {
+        super(authorizationManager, webAppBase.taskGroup(), webAppBase.idProvider());
         this.webAppBase = webAppBase;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();

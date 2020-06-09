@@ -47,7 +47,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     // The service managers
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final AuthorizationManager rbacManager;
+    private final AuthorizationManager authorizationManager;
 
     // The collections
     private AvailabilitySets availabilitySets;
@@ -138,7 +138,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
         networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-        rbacManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /** @return the availability set resource management API entry point */
@@ -152,7 +152,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     /** @return the virtual machine resource management API entry point */
     public VirtualMachines virtualMachines() {
         if (virtualMachines == null) {
-            virtualMachines = new VirtualMachinesImpl(this, storageManager, networkManager, rbacManager);
+            virtualMachines = new VirtualMachinesImpl(this, storageManager, networkManager, authorizationManager);
         }
         return virtualMachines;
     }
@@ -186,7 +186,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         if (virtualMachineScaleSets == null) {
             virtualMachineScaleSets =
-                new VirtualMachineScaleSetsImpl(this, storageManager, networkManager, this.rbacManager);
+                new VirtualMachineScaleSetsImpl(this, storageManager, networkManager, this.authorizationManager);
         }
         return virtualMachineScaleSets;
     }

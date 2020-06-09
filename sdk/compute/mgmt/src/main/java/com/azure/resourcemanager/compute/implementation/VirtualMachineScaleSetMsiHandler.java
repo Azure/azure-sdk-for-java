@@ -38,10 +38,10 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
     /**
      * Creates VirtualMachineScaleSetMsiHandler.
      *
-     * @param rbacManager the graph rbac manager
+     * @param authorizationManager the graph rbac manager
      */
-    VirtualMachineScaleSetMsiHandler(AuthorizationManager rbacManager, VirtualMachineScaleSetImpl scaleSet) {
-        super(rbacManager, scaleSet.taskGroup(), scaleSet.idProvider());
+    VirtualMachineScaleSetMsiHandler(AuthorizationManager authorizationManager, VirtualMachineScaleSetImpl scaleSet) {
+        super(authorizationManager, scaleSet.taskGroup(), scaleSet.idProvider());
         this.scaleSet = scaleSet;
         this.creatableIdentityKeys = new ArrayList<>();
         this.userAssignedIdentities = new HashMap<>();

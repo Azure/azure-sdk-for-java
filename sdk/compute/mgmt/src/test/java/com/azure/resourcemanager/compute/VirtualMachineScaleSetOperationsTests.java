@@ -964,7 +964,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -973,7 +973,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -1052,7 +1052,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         //
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -1061,7 +1061,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -1080,7 +1080,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Ensure role assigned for storage account
         //
         PagedIterable<RoleAssignment> stgRoleAssignments =
-            rbacManager.roleAssignments().listByScope(storageAccount.id());
+            authorizationManager.roleAssignments().listByScope(storageAccount.id());
         Assertions.assertNotNull(stgRoleAssignments);
         found = false;
         for (RoleAssignment roleAssignment : stgRoleAssignments) {

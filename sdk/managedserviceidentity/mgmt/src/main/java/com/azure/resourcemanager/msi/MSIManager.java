@@ -19,7 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
  * Entry point to Azure Managed Service Identity (MSI) resource management.
  */
 public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentityClient> {
-    private final AuthorizationManager rbacManager;
+    private final AuthorizationManager authorizationManager;
 
     private Identities identities;
 
@@ -100,7 +100,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
                 sdkContext);
-        rbacManager = AuthorizationManager.authenticate(httpPipeline,
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline,
             profile,
             sdkContext);
     }
@@ -119,6 +119,6 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
      * @return the Graph RBAC manager.
      */
     public AuthorizationManager graphRbacManager() {
-        return this.rbacManager;
+        return this.authorizationManager;
     }
 }

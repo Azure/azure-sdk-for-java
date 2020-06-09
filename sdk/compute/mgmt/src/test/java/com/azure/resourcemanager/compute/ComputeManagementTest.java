@@ -39,7 +39,7 @@ public abstract class ComputeManagementTest extends TestBase {
     protected ComputeManager computeManager;
     protected NetworkManager networkManager;
     protected StorageManager storageManager;
-    protected AuthorizationManager rbacManager;
+    protected AuthorizationManager authorizationManager;
     protected KeyVaultManager keyVaultManager;
 
     @Override
@@ -55,7 +55,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
 
-        rbacManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

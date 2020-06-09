@@ -30,7 +30,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 /** Entry point to Azure storage resource management. */
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClient> {
     // Managers
-    private AuthorizationManager rbacManager;
+    private AuthorizationManager authorizationManager;
     private KeyVaultManager keyVaultManager;
     private StorageManager storageManager;
     // Collections
@@ -116,12 +116,12 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
             sdkContext);
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        rbacManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /** @return the Graph RBAC manager instance. */
-    public AuthorizationManager rbacManager() {
-        return rbacManager;
+    public AuthorizationManager authorizationManager() {
+        return authorizationManager;
     }
 
     /** @return the key vault manager instance. */

@@ -36,17 +36,17 @@ public class VirtualMachineScaleSetsImpl
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final AuthorizationManager rbacManager;
+    private final AuthorizationManager authorizationManager;
 
     public VirtualMachineScaleSetsImpl(
         ComputeManager computeManager,
         StorageManager storageManager,
         NetworkManager networkManager,
-        AuthorizationManager rbacManager) {
+        AuthorizationManager authorizationManager) {
         super(computeManager.inner().getVirtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.rbacManager = rbacManager;
+        this.authorizationManager = authorizationManager;
     }
 
     @Override
@@ -208,7 +208,7 @@ public class VirtualMachineScaleSetsImpl
             .add(primaryNetworkInterfaceConfiguration);
 
         return new VirtualMachineScaleSetImpl(
-            name, inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
+            name, inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
     }
 
     @Override
@@ -217,6 +217,6 @@ public class VirtualMachineScaleSetsImpl
             return null;
         }
         return new VirtualMachineScaleSetImpl(
-            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
+            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
     }
 }
