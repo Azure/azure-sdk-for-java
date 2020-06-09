@@ -167,6 +167,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
+         * The stage of the expressroutecircuit definition allowing to specify CircuitProvisioningState.
+         */
+        interface WithCircuitProvisioningState {
+            /**
+             * Specifies circuitProvisioningState.
+             * @param circuitProvisioningState The CircuitProvisioningState state of the resource
+             * @return the next definition stage
+             */
+            WithCreate withCircuitProvisioningState(String circuitProvisioningState);
+        }
+
+        /**
          * The stage of the expressroutecircuit definition allowing to specify ExpressRoutePort.
          */
         interface WithExpressRoutePort {
@@ -191,6 +203,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
+         * The stage of the expressroutecircuit definition allowing to specify GlobalReachEnabled.
+         */
+        interface WithGlobalReachEnabled {
+            /**
+             * Specifies globalReachEnabled.
+             * @param globalReachEnabled Flag denoting Global reach status
+             * @return the next definition stage
+             */
+            WithCreate withGlobalReachEnabled(Boolean globalReachEnabled);
+        }
+
+        /**
          * The stage of the expressroutecircuit definition allowing to specify Peerings.
          */
         interface WithPeerings {
@@ -200,6 +224,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
              * @return the next definition stage
              */
             WithCreate withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
+        }
+
+        /**
+         * The stage of the expressroutecircuit definition allowing to specify ServiceKey.
+         */
+        interface WithServiceKey {
+            /**
+             * Specifies serviceKey.
+             * @param serviceKey The ServiceKey
+             * @return the next definition stage
+             */
+            WithCreate withServiceKey(String serviceKey);
         }
 
         /**
@@ -227,6 +263,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
+         * The stage of the expressroutecircuit definition allowing to specify ServiceProviderProvisioningState.
+         */
+        interface WithServiceProviderProvisioningState {
+            /**
+             * Specifies serviceProviderProvisioningState.
+             * @param serviceProviderProvisioningState The ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
+             * @return the next definition stage
+             */
+            WithCreate withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
+        }
+
+        /**
          * The stage of the expressroutecircuit definition allowing to specify Sku.
          */
         interface WithSku {
@@ -243,13 +291,13 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExpressRouteCircuit>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowClassicOperations, DefinitionStages.WithAuthorizations, DefinitionStages.WithBandwidthInGbps, DefinitionStages.WithExpressRoutePort, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithPeerings, DefinitionStages.WithServiceProviderNotes, DefinitionStages.WithServiceProviderProperties, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<ExpressRouteCircuit>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowClassicOperations, DefinitionStages.WithAuthorizations, DefinitionStages.WithBandwidthInGbps, DefinitionStages.WithCircuitProvisioningState, DefinitionStages.WithExpressRoutePort, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithGlobalReachEnabled, DefinitionStages.WithPeerings, DefinitionStages.WithServiceKey, DefinitionStages.WithServiceProviderNotes, DefinitionStages.WithServiceProviderProperties, DefinitionStages.WithServiceProviderProvisioningState, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a ExpressRouteCircuit update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAuthorizations, UpdateStages.WithBandwidthInGbps, UpdateStages.WithExpressRoutePort, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithPeerings, UpdateStages.WithServiceProviderNotes, UpdateStages.WithServiceProviderProperties, UpdateStages.WithSku {
+    interface Update extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAuthorizations, UpdateStages.WithBandwidthInGbps, UpdateStages.WithCircuitProvisioningState, UpdateStages.WithExpressRoutePort, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithGlobalReachEnabled, UpdateStages.WithPeerings, UpdateStages.WithServiceKey, UpdateStages.WithServiceProviderNotes, UpdateStages.WithServiceProviderProperties, UpdateStages.WithServiceProviderProvisioningState, UpdateStages.WithSku {
     }
 
     /**
@@ -293,6 +341,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
+         * The stage of the expressroutecircuit update allowing to specify CircuitProvisioningState.
+         */
+        interface WithCircuitProvisioningState {
+            /**
+             * Specifies circuitProvisioningState.
+             * @param circuitProvisioningState The CircuitProvisioningState state of the resource
+             * @return the next update stage
+             */
+            Update withCircuitProvisioningState(String circuitProvisioningState);
+        }
+
+        /**
          * The stage of the expressroutecircuit update allowing to specify ExpressRoutePort.
          */
         interface WithExpressRoutePort {
@@ -317,6 +377,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
+         * The stage of the expressroutecircuit update allowing to specify GlobalReachEnabled.
+         */
+        interface WithGlobalReachEnabled {
+            /**
+             * Specifies globalReachEnabled.
+             * @param globalReachEnabled Flag denoting Global reach status
+             * @return the next update stage
+             */
+            Update withGlobalReachEnabled(Boolean globalReachEnabled);
+        }
+
+        /**
          * The stage of the expressroutecircuit update allowing to specify Peerings.
          */
         interface WithPeerings {
@@ -326,6 +398,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
              * @return the next update stage
              */
             Update withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
+        }
+
+        /**
+         * The stage of the expressroutecircuit update allowing to specify ServiceKey.
+         */
+        interface WithServiceKey {
+            /**
+             * Specifies serviceKey.
+             * @param serviceKey The ServiceKey
+             * @return the next update stage
+             */
+            Update withServiceKey(String serviceKey);
         }
 
         /**
@@ -350,6 +434,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
              * @return the next update stage
              */
             Update withServiceProviderProperties(ExpressRouteCircuitServiceProviderProperties serviceProviderProperties);
+        }
+
+        /**
+         * The stage of the expressroutecircuit update allowing to specify ServiceProviderProvisioningState.
+         */
+        interface WithServiceProviderProvisioningState {
+            /**
+             * Specifies serviceProviderProvisioningState.
+             * @param serviceProviderProvisioningState The ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned', 'Provisioning', 'Provisioned', 'Deprovisioning'
+             * @return the next update stage
+             */
+            Update withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
         }
 
         /**

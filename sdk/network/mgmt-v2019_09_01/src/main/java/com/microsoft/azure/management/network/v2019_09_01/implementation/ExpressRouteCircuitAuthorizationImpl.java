@@ -114,6 +114,18 @@ class ExpressRouteCircuitAuthorizationImpl extends CreatableUpdatableImpl<Expres
     }
 
     @Override
+    public ExpressRouteCircuitAuthorizationImpl withAuthorizationKey(String authorizationKey) {
+        this.inner().withAuthorizationKey(authorizationKey);
+        return this;
+    }
+
+    @Override
+    public ExpressRouteCircuitAuthorizationImpl withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus) {
+        this.inner().withAuthorizationUseStatus(authorizationUseStatus);
+        return this;
+    }
+
+    @Override
     public ExpressRouteCircuitAuthorizationImpl withId(String id) {
         this.inner().withId(id);
         return this;

@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2019_09_01.implementation.NetworkManager;
 import com.microsoft.azure.SubResource;
 import java.util.List;
+import com.microsoft.azure.management.network.v2019_09_01.implementation.ExpressRouteCircuitConnectionInner;
 import com.microsoft.azure.management.network.v2019_09_01.implementation.ExpressRouteCircuitStatsInner;
 
 /**
@@ -175,6 +176,30 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         }
 
         /**
+         * The stage of the expressroutecircuitpeering definition allowing to specify AzureASN.
+         */
+        interface WithAzureASN {
+            /**
+             * Specifies azureASN.
+             * @param azureASN The Azure ASN
+             * @return the next definition stage
+             */
+            WithCreate withAzureASN(Integer azureASN);
+        }
+
+        /**
+         * The stage of the expressroutecircuitpeering definition allowing to specify Connections.
+         */
+        interface WithConnections {
+            /**
+             * Specifies connections.
+             * @param connections The list of circuit connections associated with Azure Private Peering for this circuit
+             * @return the next definition stage
+             */
+            WithCreate withConnections(List<ExpressRouteCircuitConnectionInner> connections);
+        }
+
+        /**
          * The stage of the expressroutecircuitpeering definition allowing to specify ExpressRouteConnection.
          */
         interface WithExpressRouteConnection {
@@ -271,6 +296,18 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         }
 
         /**
+         * The stage of the expressroutecircuitpeering definition allowing to specify PrimaryAzurePort.
+         */
+        interface WithPrimaryAzurePort {
+            /**
+             * Specifies primaryAzurePort.
+             * @param primaryAzurePort The primary port
+             * @return the next definition stage
+             */
+            WithCreate withPrimaryAzurePort(String primaryAzurePort);
+        }
+
+        /**
          * The stage of the expressroutecircuitpeering definition allowing to specify PrimaryPeerAddressPrefix.
          */
         interface WithPrimaryPeerAddressPrefix {
@@ -292,6 +329,18 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
              * @return the next definition stage
              */
             WithCreate withRouteFilter(SubResource routeFilter);
+        }
+
+        /**
+         * The stage of the expressroutecircuitpeering definition allowing to specify SecondaryAzurePort.
+         */
+        interface WithSecondaryAzurePort {
+            /**
+             * Specifies secondaryAzurePort.
+             * @param secondaryAzurePort The secondary port
+             * @return the next definition stage
+             */
+            WithCreate withSecondaryAzurePort(String secondaryAzurePort);
         }
 
         /**
@@ -359,19 +408,43 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExpressRouteCircuitPeering>, DefinitionStages.WithExpressRouteConnection, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithId, DefinitionStages.WithIpv6PeeringConfig, DefinitionStages.WithMicrosoftPeeringConfig, DefinitionStages.WithName, DefinitionStages.WithPeerASN, DefinitionStages.WithPeeringType, DefinitionStages.WithPrimaryPeerAddressPrefix, DefinitionStages.WithRouteFilter, DefinitionStages.WithSecondaryPeerAddressPrefix, DefinitionStages.WithSharedKey, DefinitionStages.WithState, DefinitionStages.WithStats, DefinitionStages.WithVlanId {
+        interface WithCreate extends Creatable<ExpressRouteCircuitPeering>, DefinitionStages.WithAzureASN, DefinitionStages.WithConnections, DefinitionStages.WithExpressRouteConnection, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithId, DefinitionStages.WithIpv6PeeringConfig, DefinitionStages.WithMicrosoftPeeringConfig, DefinitionStages.WithName, DefinitionStages.WithPeerASN, DefinitionStages.WithPeeringType, DefinitionStages.WithPrimaryAzurePort, DefinitionStages.WithPrimaryPeerAddressPrefix, DefinitionStages.WithRouteFilter, DefinitionStages.WithSecondaryAzurePort, DefinitionStages.WithSecondaryPeerAddressPrefix, DefinitionStages.WithSharedKey, DefinitionStages.WithState, DefinitionStages.WithStats, DefinitionStages.WithVlanId {
         }
     }
     /**
      * The template for a ExpressRouteCircuitPeering update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCircuitPeering>, UpdateStages.WithExpressRouteConnection, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithId, UpdateStages.WithIpv6PeeringConfig, UpdateStages.WithMicrosoftPeeringConfig, UpdateStages.WithName, UpdateStages.WithPeerASN, UpdateStages.WithPeeringType, UpdateStages.WithPrimaryPeerAddressPrefix, UpdateStages.WithRouteFilter, UpdateStages.WithSecondaryPeerAddressPrefix, UpdateStages.WithSharedKey, UpdateStages.WithState, UpdateStages.WithStats, UpdateStages.WithVlanId {
+    interface Update extends Appliable<ExpressRouteCircuitPeering>, UpdateStages.WithAzureASN, UpdateStages.WithConnections, UpdateStages.WithExpressRouteConnection, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithId, UpdateStages.WithIpv6PeeringConfig, UpdateStages.WithMicrosoftPeeringConfig, UpdateStages.WithName, UpdateStages.WithPeerASN, UpdateStages.WithPeeringType, UpdateStages.WithPrimaryAzurePort, UpdateStages.WithPrimaryPeerAddressPrefix, UpdateStages.WithRouteFilter, UpdateStages.WithSecondaryAzurePort, UpdateStages.WithSecondaryPeerAddressPrefix, UpdateStages.WithSharedKey, UpdateStages.WithState, UpdateStages.WithStats, UpdateStages.WithVlanId {
     }
 
     /**
      * Grouping of ExpressRouteCircuitPeering update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the expressroutecircuitpeering update allowing to specify AzureASN.
+         */
+        interface WithAzureASN {
+            /**
+             * Specifies azureASN.
+             * @param azureASN The Azure ASN
+             * @return the next update stage
+             */
+            Update withAzureASN(Integer azureASN);
+        }
+
+        /**
+         * The stage of the expressroutecircuitpeering update allowing to specify Connections.
+         */
+        interface WithConnections {
+            /**
+             * Specifies connections.
+             * @param connections The list of circuit connections associated with Azure Private Peering for this circuit
+             * @return the next update stage
+             */
+            Update withConnections(List<ExpressRouteCircuitConnectionInner> connections);
+        }
+
         /**
          * The stage of the expressroutecircuitpeering update allowing to specify ExpressRouteConnection.
          */
@@ -469,6 +542,18 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         }
 
         /**
+         * The stage of the expressroutecircuitpeering update allowing to specify PrimaryAzurePort.
+         */
+        interface WithPrimaryAzurePort {
+            /**
+             * Specifies primaryAzurePort.
+             * @param primaryAzurePort The primary port
+             * @return the next update stage
+             */
+            Update withPrimaryAzurePort(String primaryAzurePort);
+        }
+
+        /**
          * The stage of the expressroutecircuitpeering update allowing to specify PrimaryPeerAddressPrefix.
          */
         interface WithPrimaryPeerAddressPrefix {
@@ -490,6 +575,18 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
              * @return the next update stage
              */
             Update withRouteFilter(SubResource routeFilter);
+        }
+
+        /**
+         * The stage of the expressroutecircuitpeering update allowing to specify SecondaryAzurePort.
+         */
+        interface WithSecondaryAzurePort {
+            /**
+             * Specifies secondaryAzurePort.
+             * @param secondaryAzurePort The secondary port
+             * @return the next update stage
+             */
+            Update withSecondaryAzurePort(String secondaryAzurePort);
         }
 
         /**
