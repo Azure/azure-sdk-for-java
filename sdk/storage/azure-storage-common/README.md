@@ -1,7 +1,7 @@
 # Azure Storage Common shared library for Java
 Azure Storage Common is a library that has common dependencies for all Azure Storage packages.
 
-[Source code][source] | [API reference documentation][docs] 
+[Source code][source] | [API reference documentation][docs]
 
 ## Getting started
 
@@ -18,7 +18,7 @@ Azure Storage Common is a library that has common dependencies for all Azure Sto
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-common</artifactId>
-    <version>12.6.0</version>
+    <version>12.6.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,14 +32,14 @@ Azure Storage Common is a library that has common dependencies for all Azure Sto
 ## Troubleshooting
 
 ### Default HTTP Client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
+All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
 [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
 
 ### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
-better performance compared to the default SSL implementation within the JDK. For more information, including how to 
+All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
+operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
+better performance compared to the default SSL implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps

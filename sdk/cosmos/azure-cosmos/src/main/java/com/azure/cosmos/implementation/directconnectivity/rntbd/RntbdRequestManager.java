@@ -4,9 +4,10 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -25,8 +26,6 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.models.CosmosError;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -542,6 +541,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     boolean isServiceable(final int demand) {
+        reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
         return this.pendingRequests.size() < limit;
     }
@@ -713,9 +713,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         } else {
 
-            // Map response to a CosmosClientException
+            // Map response to a CosmosException
 
-            final CosmosClientException cause;
+            final CosmosException cause;
 
             // ..Fetch required header values
 
@@ -725,7 +725,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             // ..Create Error instance
 
             final CosmosError error = response.hasPayload()
-                ? ModelBridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response))
+                ? new CosmosError(RntbdObjectMapper.readTree(response))
                 : new CosmosError(Integer.toString(statusCode), status.reasonPhrase(), status.codeClass().name());
 
             // ..Map RNTBD response headers to HTTP response headers
@@ -734,7 +734,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 this.rntbdContext().orElseThrow(IllegalStateException::new), activityId
             );
 
-            // ..Create CosmosClientException based on status and sub-status codes
+            // ..Create CosmosException based on status and sub-status codes
 
             switch (status.code()) {
 
@@ -818,7 +818,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 default:
-                    cause = BridgeInternal.createCosmosClientException(status.code(), error, responseHeaders);
+                    cause = BridgeInternal.createCosmosException(status.code(), error, responseHeaders);
                     break;
             }
 

@@ -30,7 +30,7 @@ public class AutoCompleteExample {
 
     public static void main(String[] args) {
 
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName("hotels-sample-index")
@@ -41,13 +41,13 @@ public class AutoCompleteExample {
         autoCompleteWithFilterAndFuzzy(searchClient);
     }
 
-    private static void autoCompleteWithOneTermContext(SearchIndexClient searchClient) {
+    private static void autoCompleteWithOneTermContext(SearchClient searchClient) {
 
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(
             AutocompleteMode.ONE_TERM_WITH_CONTEXT);
 
         RequestOptions requestOptions = new RequestOptions()
-            .setXMsClientRequestId(UUID.randomUUID());
+            .setClientRequestId(UUID.randomUUID());
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("coffee m",
             "sg", params, requestOptions, Context.NONE);
@@ -61,7 +61,7 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithHighlighting(SearchIndexClient searchClient) {
+    private static void autoCompleteWithHighlighting(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setFilter("Address/City eq 'San Diego' or Address/City eq 'Hartford'")
@@ -69,7 +69,7 @@ public class AutoCompleteExample {
             .setHighlightPostTag("</b>");
 
         RequestOptions requestOptions = new RequestOptions()
-            .setXMsClientRequestId(UUID.randomUUID());
+            .setClientRequestId(UUID.randomUUID());
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("co", "sg", params,
             requestOptions, Context.NONE);
@@ -83,14 +83,14 @@ public class AutoCompleteExample {
          */
     }
 
-    private static void autoCompleteWithFilterAndFuzzy(SearchIndexClient searchClient) {
+    private static void autoCompleteWithFilterAndFuzzy(SearchClient searchClient) {
         AutocompleteOptions params = new AutocompleteOptions()
             .setAutocompleteMode(AutocompleteMode.ONE_TERM)
             .setUseFuzzyMatching(true)
             .setFilter("HotelId ne '6' and Category eq 'Budget'");
 
         RequestOptions requestOptions = new RequestOptions()
-            .setXMsClientRequestId(UUID.randomUUID());
+            .setClientRequestId(UUID.randomUUID());
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = searchClient.autocomplete("su", "sg", params,
             requestOptions, Context.NONE);

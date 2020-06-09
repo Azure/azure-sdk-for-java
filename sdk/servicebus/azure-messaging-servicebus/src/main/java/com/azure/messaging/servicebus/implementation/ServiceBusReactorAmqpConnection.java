@@ -199,7 +199,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public void dispose() {
-        logger.info("Disposing of connection.");
+        logger.verbose("Disposing of connection.");
         sendLinks.forEach((key, value) -> value.dispose());
         sendLinks.clear();
 

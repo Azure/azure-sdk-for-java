@@ -3,6 +3,9 @@
 ## 12.7.0-beta.1 (Unreleased)
 
 
+## 12.6.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
 ## 12.6.0 (2020-04-06)
 - It is now possible to specify a key/keyResolver after they specify a pipeline/client on the builder.
 - The builder will now throw if a pipeline/client was already configured for decryption as the encryption info may conflict.
@@ -12,7 +15,7 @@
 - Fixed a bug where the EncryptedBlockClientBuilder.pipeline method would not allow the client to support decryption.
 - Added support for specifying a customer provided key.
 - Fixed a bug that would cause EncryptedBlobClient.upload(InputStream, long) to not encrypt the data.
-- Changed getAppendBlobClient, getBlockBlobClient, and getPageBlobClient on EncryptedBlobClient to throw as working with such clients is not supported. 
+- Changed getAppendBlobClient, getBlockBlobClient, and getPageBlobClient on EncryptedBlobClient to throw as working with such clients is not supported.
 
 ## 12.4.0 (2020-02-12)
 - Added support for upload via OutputStream by adding EncryptedBlobClient.getOutputStream methods
@@ -54,4 +57,4 @@ and
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports client side encryption for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-  
+

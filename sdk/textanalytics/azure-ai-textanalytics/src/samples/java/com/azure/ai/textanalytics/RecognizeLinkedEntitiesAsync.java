@@ -19,7 +19,7 @@ public class RecognizeLinkedEntitiesAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -27,14 +27,15 @@ public class RecognizeLinkedEntitiesAsync {
         String document = "Old Faithful is a geyser at Yellowstone Park.";
 
         client.recognizeLinkedEntities(document).subscribe(
-            linkedEntity -> {
+            linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
-                linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                    "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
-            },
+                linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                    "Matched entity: %s, confidence score: %f.%n",
+                    entityMatch.getText(), entityMatch.getConfidenceScore()));
+            }),
             error -> System.err.println("There was an error recognizing linked entity of the text." + error),
             () -> System.out.println("Linked entity recognized."));
 

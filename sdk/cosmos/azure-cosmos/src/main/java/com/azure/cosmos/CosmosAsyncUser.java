@@ -4,12 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
+import com.azure.cosmos.models.CosmosPermissionResponse;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -55,22 +55,22 @@ public class CosmosAsyncUser {
      *
      * @return a {@link Mono} containing the single resource response with the read user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> read() {
+    public Mono<CosmosUserResponse> read() {
         return this.database.getDocClientWrapper()
-                   .readUser(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
+                            .readUser(getLink(), null)
+                            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
-     * REPLACE a cosmos user
+     * Replace a cosmos user
      *
-     * @param userSettings the user properties to use
+     * @param userProperties the user properties to use
      * @return a {@link Mono} containing the single resource response with the replaced user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> replace(CosmosUserProperties userSettings) {
+    public Mono<CosmosUserResponse> replace(CosmosUserProperties userProperties) {
         return this.database.getDocClientWrapper()
-                   .replaceUser(ModelBridgeInternal.getV2User(userSettings), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
+                            .replaceUser(ModelBridgeInternal.getV2User(userProperties), null)
+                            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
@@ -78,10 +78,10 @@ public class CosmosAsyncUser {
      *
      * @return a {@link Mono} containing the single resource response with the deleted user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> delete() {
+    public Mono<CosmosUserResponse> delete() {
         return this.database.getDocClientWrapper()
-                   .deleteUser(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, database)).single();
+                            .deleteUser(getLink(), null)
+                            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     /**
@@ -91,20 +91,20 @@ public class CosmosAsyncUser {
      * The {@link Mono} upon successful completion will contain a single resource response with the created permission.
      * In case of failure the {@link Mono} will error.
      *
-     * @param permissionSettings the permission properties to create.
+     * @param permissionProperties the permission properties to create.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the created permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> createPermission(
-        CosmosPermissionProperties permissionSettings,
+    public Mono<CosmosPermissionResponse> createPermission(
+        CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionSettings);
+        Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         return database.getDocClientWrapper()
                    .createPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, this))
+                   .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
                    .single();
     }
 
@@ -115,20 +115,20 @@ public class CosmosAsyncUser {
      * The {@link Mono} upon successful completion will contain a single resource response with the upserted permission.
      * In case of failure the {@link Mono} will error.
      *
-     * @param permissionSettings the permission properties to upsert.
+     * @param permissionProperties the permission properties to upsert.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the upserted permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> upsertPermission(
-        CosmosPermissionProperties permissionSettings,
+    public Mono<CosmosPermissionResponse> upsertPermission(
+        CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionSettings);
+        Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
         return database.getDocClientWrapper()
                    .upsertPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, this))
+                   .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
                    .single();
     }
 
@@ -140,17 +140,31 @@ public class CosmosAsyncUser {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
      * error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions() {
+        return readAllPermissions(new CosmosQueryRequestOptions());
+    }
+
+    /**
+     * Reads all permissions.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read permissions.
+     * In case of failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param options the query request options.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
+     * error.
+     */
+    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -167,7 +181,7 @@ public class CosmosAsyncUser {
      * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
-        return queryPermissions(query, new FeedOptions());
+        return queryPermissions(query, new CosmosQueryRequestOptions());
     }
 
     /**
@@ -178,17 +192,17 @@ public class CosmosAsyncUser {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or
      * an error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -226,7 +240,7 @@ public class CosmosAsyncUser {
      *
      * @return the (@link CosmosAsyncDatabase)
      */
-    public CosmosAsyncDatabase getDatabase() {
+    CosmosAsyncDatabase getDatabase() {
         return database;
     }
 }

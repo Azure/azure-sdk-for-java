@@ -7,8 +7,11 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.search.documents.implementation.converters.SuggestResultConverter;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.models.SuggestResult;
+
+import java.util.stream.Collectors;
 
 /**
  * Represents an HTTP response from the suggest API request that contains a list of items deserialized into a {@link
@@ -41,7 +44,8 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
-            documentSearchResponse.getValue().getResults(),
+            documentSearchResponse.getValue().getResults().stream().map(SuggestResultConverter::map)
+                .collect(Collectors.toList()),
             null,
             null);
         this.coverage = documentSearchResponse.getValue().getCoverage();

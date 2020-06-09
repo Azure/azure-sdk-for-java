@@ -4,9 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -26,8 +25,6 @@ import java.util.UUID;
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceRequest implements Cloneable {
-    private static final char PREFER_HEADER_SEPERATOR = ';';
-    private static final String PREFER_HEADER_VALUE_FORMAT = "%s=%s";
 
     public volatile boolean forcePartitionKeyRangeRefresh;
     public volatile boolean forceCollectionRoutingMapRefresh;
@@ -969,17 +966,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
-    public void addPreferHeader(String preferHeaderName, String preferHeaderValue) {
-        String headerToAdd = String.format(PREFER_HEADER_VALUE_FORMAT, preferHeaderName, preferHeaderValue);
-        String preferHeader = this.headers.get(HttpConstants.HttpHeaders.PREFER);
-        if(StringUtils.isNotEmpty(preferHeader)) {
-            preferHeader += PREFER_HEADER_SEPERATOR + headerToAdd;
-        } else {
-            preferHeader = headerToAdd;
-        }
-        this.headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
-    }
-
     public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
         RxDocumentServiceRequest modifiedRequest;
         if (!request.getIsNameBased()) {
@@ -1050,8 +1036,8 @@ public class RxDocumentServiceRequest implements Cloneable {
             return null;
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
-        } else if (options instanceof FeedOptions) {
-            return ((FeedOptions) options).getProperties();
+        } else if (options instanceof CosmosQueryRequestOptions) {
+            return ModelBridgeInternal.getPropertiesFromQueryRequestOptions((CosmosQueryRequestOptions) options);
         } else if (options instanceof ChangeFeedOptions) {
             return ((ChangeFeedOptions) options).getProperties();
         } else {

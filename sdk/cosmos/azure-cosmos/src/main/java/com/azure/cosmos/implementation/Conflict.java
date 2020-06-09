@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.Resource;
-
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -35,8 +33,8 @@ public final class Conflict extends Resource {
      *
      * @return the operation kind.
      */
-    public String getOperationKind() {
-        return super.getString(Constants.Properties.OPERATION_TYPE);
+    public OperationKind getOperationKind() {
+        return OperationKind.fromServiceSerializedFormat(super.getString(Constants.Properties.OPERATION_TYPE));
     }
 
     /**
@@ -44,7 +42,7 @@ public final class Conflict extends Resource {
      *
      * @return the resource type.
      */
-    public String getResouceType() {
+    public String getResourceType() {
         return super.getString(Constants.Properties.RESOURCE_TYPE);
     }
 

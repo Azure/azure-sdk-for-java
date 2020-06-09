@@ -4,14 +4,18 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -220,22 +224,31 @@ public class AsynReadWithMultipleClients<T> {
                 if (hostAndKey.length >= 2) {
                     String endpoint = hostAndKey[0].substring(hostAndKey[0].indexOf(ACCOUNT_ENDPOINT_TAG) + ACCOUNT_ENDPOINT_TAG.length());
                     String key = hostAndKey[1].substring(hostAndKey[1].indexOf(ACCOUNT_KEY_TAG) + ACCOUNT_KEY_TAG.length());
-                    CosmosAsyncClient asyncClient = new CosmosClientBuilder()
+                    CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                         .endpoint(endpoint)
                         .key(key)
-                        .connectionPolicy(configuration.getConnectionPolicy())
                         .consistencyLevel(configuration.getConsistencyLevel())
-                        .connectionReuseAcrossClientsEnabled(true)
-                        .buildAsyncClient();
+                        .connectionSharingAcrossClientsEnabled(true)
+                        .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));
+                    if (this.configuration.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+                        cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
+                    } else {
+                        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+                        gatewayConnectionConfig.setMaxConnectionPoolSize(this.configuration.getMaxConnectionPoolSize());
+                        cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
+                    }
+                    CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
                     List<PojoizedJson> docsToRead = new ArrayList<>();
                     CosmosAsyncDatabase cosmosAsyncDatabase = null;
                     CosmosAsyncContainer cosmosAsyncContainer = null;
                     boolean databaseCreated = false;
                     try {
-                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
-                    } catch (CosmosClientException e) {
+                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId());
+                        cosmosAsyncDatabase.read().block();
+                    } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                            cosmosAsyncDatabase = asyncClient.createDatabase(this.configuration.getDatabaseId()).block().getDatabase();
+                            asyncClient.createDatabase(this.configuration.getDatabaseId()).block();
+                            cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId());
                             logger.info("Database {} is created for this test on host {}", this.configuration.getDatabaseId(), endpoint);
                             databaseCreated = true;
                             databaseListToClear.add(cosmosAsyncDatabase);
@@ -245,11 +258,17 @@ public class AsynReadWithMultipleClients<T> {
                     }
 
                     try {
-                        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
-                    } catch (CosmosClientException e) {
+                        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+                        cosmosAsyncContainer.read().block();
+                    } catch (CosmosException e) {
                         if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                            cosmosAsyncContainer =
-                                cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).block().getContainer();
+                            cosmosAsyncDatabase.createContainer(
+                                this.configuration.getCollectionId(),
+                                Configuration.DEFAULT_PARTITION_KEY_PATH,
+                                ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+                            ).block();
+
+                            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
                             logger.info("Collection {} is created for this test on host {}", this.configuration.getCollectionId(), endpoint);
                             if(!databaseCreated) {
                                 collectionListToClear.add(cosmosAsyncContainer);
@@ -312,7 +331,7 @@ public class AsynReadWithMultipleClients<T> {
         String partitionKeyValue = doc.getId();
         result = client.getDatabase(configuration.getDatabaseId()).getContainer(configuration.getCollectionId()).readItem(doc.getId(),
             new PartitionKey(partitionKeyValue),
-            PojoizedJson.class).map(CosmosAsyncItemResponse::getItem);
+            PojoizedJson.class).map(CosmosItemResponse::getItem);
         concurrencyControlSemaphore.acquire();
         AsyncReadBenchmark.LatencySubscriber<PojoizedJson> latencySubscriber = new AsyncReadBenchmark.LatencySubscriber<>(baseSubscriber);
         latencySubscriber.context = latency.time();

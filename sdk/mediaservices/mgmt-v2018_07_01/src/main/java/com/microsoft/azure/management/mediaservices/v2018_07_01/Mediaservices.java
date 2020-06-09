@@ -35,6 +35,17 @@ public interface Mediaservices extends SupportsCreating<MediaService.DefinitionS
     Completable syncStorageKeysAsync(String resourceGroupName, String accountName);
 
     /**
+     * List the media edge policies associated with the Media Services account.
+     * List the media edge policies associated with the Media Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<EdgePolicies> listEdgePoliciesAsync(String resourceGroupName, String accountName);
+
+    /**
      * Get a Media Services account.
      * Get the details of a Media Services account.
      *
