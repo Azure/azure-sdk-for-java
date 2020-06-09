@@ -32,7 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LogProfileResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
 import reactor.core.publisher.Mono;
 
@@ -44,14 +44,14 @@ public final class LogProfilesClient {
     private final LogProfilesService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of LogProfilesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    LogProfilesClient(MonitorClientImpl client) {
+    LogProfilesClient(MonitorClient client) {
         this.service =
             RestProxy.create(LogProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.CategoryType;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;

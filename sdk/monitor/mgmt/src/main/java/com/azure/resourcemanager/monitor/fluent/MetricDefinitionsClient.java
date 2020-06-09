@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricDefinitions. */
@@ -38,14 +38,14 @@ public final class MetricDefinitionsClient {
     private final MetricDefinitionsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of MetricDefinitionsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricDefinitionsClient(MonitorClientImpl client) {
+    MetricDefinitionsClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

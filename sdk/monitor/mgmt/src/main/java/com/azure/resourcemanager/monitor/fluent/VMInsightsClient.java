@@ -21,7 +21,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.VMInsightsOnboardingStatusInner;
 import reactor.core.publisher.Mono;
 
@@ -33,14 +33,14 @@ public final class VMInsightsClient {
     private final VMInsightsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of VMInsightsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    VMInsightsClient(MonitorClientImpl client) {
+    VMInsightsClient(MonitorClient client) {
         this.service =
             RestProxy.create(VMInsightsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

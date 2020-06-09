@@ -33,7 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupListInner;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.ActionGroupPatchBody;
 import com.azure.resourcemanager.monitor.models.EnableRequest;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -52,14 +52,14 @@ public final class ActionGroupsClient
     private final ActionGroupsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of ActionGroupsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ActionGroupsClient(MonitorClientImpl client) {
+    ActionGroupsClient(MonitorClient client) {
         this.service =
             RestProxy.create(ActionGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

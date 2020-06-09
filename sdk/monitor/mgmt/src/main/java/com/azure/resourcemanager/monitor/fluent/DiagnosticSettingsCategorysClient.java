@@ -23,7 +23,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiagnosticSettingsCategorys. */
@@ -34,14 +34,14 @@ public final class DiagnosticSettingsCategorysClient {
     private final DiagnosticSettingsCategorysService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of DiagnosticSettingsCategorysInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DiagnosticSettingsCategorysClient(MonitorClientImpl client) {
+    DiagnosticSettingsCategorysClient(MonitorClient client) {
         this.service =
             RestProxy
                 .create(

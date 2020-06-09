@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentInner;
 import com.azure.resourcemanager.monitor.fluent.inner.IncidentListResultInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AlertRuleIncidents. */
@@ -38,14 +38,14 @@ public final class AlertRuleIncidentsClient {
     private final AlertRuleIncidentsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of AlertRuleIncidentsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AlertRuleIncidentsClient(MonitorClientImpl client) {
+    AlertRuleIncidentsClient(MonitorClient client) {
         this.service =
             RestProxy.create(AlertRuleIncidentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

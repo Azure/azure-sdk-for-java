@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor.models;
 
-import com.azure.resourcemanager.monitor.implementation.MonitorManager;
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

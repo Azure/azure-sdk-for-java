@@ -32,7 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettingResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -50,14 +50,14 @@ public final class AutoscaleSettingsClient
     private final AutoscaleSettingsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of AutoscaleSettingsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AutoscaleSettingsClient(MonitorClientImpl client) {
+    AutoscaleSettingsClient(MonitorClient client) {
         this.service =
             RestProxy.create(AutoscaleSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

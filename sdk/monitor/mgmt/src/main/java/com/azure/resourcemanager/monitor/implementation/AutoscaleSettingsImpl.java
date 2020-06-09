@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AutoscaleSetting;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;

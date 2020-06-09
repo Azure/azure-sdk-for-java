@@ -26,7 +26,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.EventCategoryCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventCategories. */
@@ -37,14 +37,14 @@ public final class EventCategoriesClient {
     private final EventCategoriesService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of EventCategoriesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    EventCategoriesClient(MonitorClientImpl client) {
+    EventCategoriesClient(MonitorClient client) {
         this.service =
             RestProxy.create(EventCategoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

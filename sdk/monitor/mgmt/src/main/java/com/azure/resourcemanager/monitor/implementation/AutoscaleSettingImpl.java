@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AutoscaleNotification;
 import com.azure.resourcemanager.monitor.models.AutoscaleProfile;
 import com.azure.resourcemanager.monitor.models.AutoscaleSetting;

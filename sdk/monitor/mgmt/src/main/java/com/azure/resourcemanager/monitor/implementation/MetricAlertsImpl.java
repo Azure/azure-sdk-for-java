@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.MetricAlert;
 import com.azure.resourcemanager.monitor.models.MetricAlerts;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;

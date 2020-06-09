@@ -1,18 +1,22 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.resourcemanager.monitor.implementation;
+package com.azure.resourcemanager.monitor;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.monitor.implementation.ActionGroupsImpl;
+import com.azure.resourcemanager.monitor.implementation.ActivityLogsImpl;
+import com.azure.resourcemanager.monitor.implementation.AlertRulesImpl;
+import com.azure.resourcemanager.monitor.implementation.AutoscaleSettingsImpl;
+import com.azure.resourcemanager.monitor.implementation.DiagnosticSettingsImpl;
+import com.azure.resourcemanager.monitor.implementation.MetricDefinitionsImpl;
 import com.azure.resourcemanager.monitor.models.ActionGroups;
 import com.azure.resourcemanager.monitor.models.ActivityLogs;
 import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientBuilder;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
@@ -21,7 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Monitor. */
-public final class MonitorManager extends Manager<MonitorManager, MonitorClientImpl> {
+public final class MonitorManager extends Manager<MonitorManager, MonitorClient> {
     // Collections
     private ActivityLogs activityLogs;
     private MetricDefinitions metricDefinitions;

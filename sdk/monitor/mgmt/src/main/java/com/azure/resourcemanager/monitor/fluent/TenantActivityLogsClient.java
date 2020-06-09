@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.EventDataCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TenantActivityLogs. */
@@ -38,14 +38,14 @@ public final class TenantActivityLogsClient {
     private final TenantActivityLogsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of TenantActivityLogsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TenantActivityLogsClient(MonitorClientImpl client) {
+    TenantActivityLogsClient(MonitorClient client) {
         this.service =
             RestProxy.create(TenantActivityLogsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

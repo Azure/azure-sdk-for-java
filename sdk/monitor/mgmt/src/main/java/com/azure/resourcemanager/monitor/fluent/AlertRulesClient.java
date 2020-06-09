@@ -32,7 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.AlertRuleResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.AlertRuleResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.models.AlertRuleResourcePatch;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -50,14 +50,14 @@ public final class AlertRulesClient
     private final AlertRulesService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of AlertRulesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AlertRulesClient(MonitorClientImpl client) {
+    AlertRulesClient(MonitorClient client) {
         this.service =
             RestProxy.create(AlertRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

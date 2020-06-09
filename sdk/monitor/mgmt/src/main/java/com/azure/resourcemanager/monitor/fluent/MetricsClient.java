@@ -21,7 +21,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.ResponseInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
@@ -35,14 +35,14 @@ public final class MetricsClient {
     private final MetricsService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of MetricsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricsClient(MonitorClientImpl client) {
+    MetricsClient(MonitorClient client) {
         this.service = RestProxy.create(MetricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

@@ -26,7 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricBaselinesResponseInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import com.azure.resourcemanager.monitor.fluent.inner.SingleMetricBaselineInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
@@ -40,14 +40,14 @@ public final class BaselinesClient {
     private final BaselinesService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of BaselinesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    BaselinesClient(MonitorClientImpl client) {
+    BaselinesClient(MonitorClient client) {
         this.service =
             RestProxy.create(BaselinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

@@ -51,7 +51,7 @@ import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
-import com.azure.resourcemanager.monitor.implementation.MonitorManager;
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.msi.MSIManager;
 import com.azure.resourcemanager.network.models.ApplicationGateways;

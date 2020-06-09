@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
 import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;

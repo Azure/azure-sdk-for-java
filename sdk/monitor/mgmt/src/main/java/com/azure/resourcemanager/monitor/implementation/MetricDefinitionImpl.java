@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.AggregationType;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.MetricAvailability;

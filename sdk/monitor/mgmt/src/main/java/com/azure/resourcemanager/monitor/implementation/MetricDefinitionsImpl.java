@@ -5,6 +5,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.monitor.MonitorManager;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.MetricDefinitions;
 import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;

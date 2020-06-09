@@ -27,7 +27,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricNamespaceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricNamespaceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricNamespaces. */
@@ -38,14 +38,14 @@ public final class MetricNamespacesClient {
     private final MetricNamespacesService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of MetricNamespacesInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricNamespacesClient(MonitorClientImpl client) {
+    MetricNamespacesClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricNamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

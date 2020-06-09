@@ -22,7 +22,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertStatusCollectionInner;
-import com.azure.resourcemanager.monitor.fluent.inner.MonitorClientImpl;
+import com.azure.resourcemanager.monitor.MonitorClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MetricAlertsStatus. */
@@ -33,14 +33,14 @@ public final class MetricAlertsStatusClient {
     private final MetricAlertsStatusService service;
 
     /** The service client containing this operation class. */
-    private final MonitorClientImpl client;
+    private final MonitorClient client;
 
     /**
      * Initializes an instance of MetricAlertsStatusInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricAlertsStatusClient(MonitorClientImpl client) {
+    MetricAlertsStatusClient(MonitorClient client) {
         this.service =
             RestProxy.create(MetricAlertsStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
