@@ -4,6 +4,8 @@
 package com.azure.resourcemanager.appservice;
 
 import java.util.Collection;
+
+import com.azure.resourcemanager.appservice.models.RuntimeStack;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

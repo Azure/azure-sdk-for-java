@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.InboundNatPool;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerFrontend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatPool;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.TransportProtocol;
+import com.azure.resourcemanager.network.models.InboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatPool;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
@@ -34,7 +34,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
         ServicePrincipal.Definition,
         ServicePrincipal.Update,
         HasCredential<ServicePrincipalImpl> {
-    private GraphRbacManager manager;
+    private AuthorizationManager manager;
 
     private Map<String, PasswordCredential> cachedPasswordCredentials;
     private Map<String, CertificateCredential> cachedCertificateCredentials;
@@ -51,7 +51,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
     private Set<String> certificateCredentialsToDelete;
     private Set<String> passwordCredentialsToDelete;
 
-    ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
+    ServicePrincipalImpl(ServicePrincipalInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ServicePrincipalCreateParameters();
@@ -365,7 +365,7 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 }

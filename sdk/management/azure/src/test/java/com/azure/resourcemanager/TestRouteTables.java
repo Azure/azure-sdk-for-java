@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
-import com.azure.resourcemanager.network.Route;
-import com.azure.resourcemanager.network.RouteNextHopType;
-import com.azure.resourcemanager.network.RouteTable;
-import com.azure.resourcemanager.network.RouteTables;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.Route;
+import com.azure.resourcemanager.network.models.RouteNextHopType;
+import com.azure.resourcemanager.network.models.RouteTable;
+import com.azure.resourcemanager.network.models.RouteTables;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import org.junit.jupiter.api.Assertions;
 

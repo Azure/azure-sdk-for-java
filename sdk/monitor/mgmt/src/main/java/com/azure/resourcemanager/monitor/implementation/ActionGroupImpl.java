@@ -3,17 +3,18 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ActionGroup;
-import com.azure.resourcemanager.monitor.AutomationRunbookReceiver;
-import com.azure.resourcemanager.monitor.AzureAppPushReceiver;
-import com.azure.resourcemanager.monitor.AzureFunctionReceiver;
-import com.azure.resourcemanager.monitor.EmailReceiver;
-import com.azure.resourcemanager.monitor.ItsmReceiver;
-import com.azure.resourcemanager.monitor.LogicAppReceiver;
-import com.azure.resourcemanager.monitor.SmsReceiver;
-import com.azure.resourcemanager.monitor.VoiceReceiver;
-import com.azure.resourcemanager.monitor.WebhookReceiver;
-import com.azure.resourcemanager.monitor.models.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.ActionGroup;
+import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
+import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;
+import com.azure.resourcemanager.monitor.models.AzureFunctionReceiver;
+import com.azure.resourcemanager.monitor.models.EmailReceiver;
+import com.azure.resourcemanager.monitor.models.ItsmReceiver;
+import com.azure.resourcemanager.monitor.models.LogicAppReceiver;
+import com.azure.resourcemanager.monitor.models.SmsReceiver;
+import com.azure.resourcemanager.monitor.models.VoiceReceiver;
+import com.azure.resourcemanager.monitor.models.WebhookReceiver;
+import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;
@@ -223,14 +224,14 @@ class ActionGroupImpl
         return this
             .manager()
             .inner()
-            .actionGroups()
+            .getActionGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ActionGroupResourceInner> getInnerAsync() {
-        return this.manager().inner().actionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getActionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

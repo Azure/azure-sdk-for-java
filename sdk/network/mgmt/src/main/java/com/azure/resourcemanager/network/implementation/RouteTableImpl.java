@@ -2,19 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.Route;
-import com.azure.resourcemanager.network.RouteNextHopType;
-import com.azure.resourcemanager.network.RouteTable;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.resourcemanager.network.models.RouteInner;
-import com.azure.resourcemanager.network.models.RouteTableInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.inner.RouteInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
+import com.azure.resourcemanager.network.models.Route;
+import com.azure.resourcemanager.network.models.RouteNextHopType;
+import com.azure.resourcemanager.network.models.RouteTable;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation for RouteTable. */
 class RouteTableImpl
@@ -29,7 +30,7 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this.manager().inner().routeTables().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().inner().getRouteTables().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -65,13 +66,15 @@ class RouteTableImpl
         return this
             .manager()
             .inner()
-            .routeTables()
+            .getRouteTables()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public List<Subnet> listAssociatedSubnets() {
-        return this.myManager.listAssociatedSubnets(this.inner().subnets());
+        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedSubnets(
+            this.myManager, this.inner().subnets()
+        );
     }
 
     // Setters (fluent)
@@ -129,7 +132,7 @@ class RouteTableImpl
         return this
             .manager()
             .inner()
-            .routeTables()
+            .getRouteTables()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 

@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.PCFilter;
-import com.azure.resourcemanager.network.PacketCapture;
-import com.azure.resourcemanager.network.PacketCaptureFilter;
-import com.azure.resourcemanager.network.PcProtocol;
+import com.azure.resourcemanager.network.models.PCFilter;
+import com.azure.resourcemanager.network.models.PacketCapture;
+import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PcProtocol;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.List;
 

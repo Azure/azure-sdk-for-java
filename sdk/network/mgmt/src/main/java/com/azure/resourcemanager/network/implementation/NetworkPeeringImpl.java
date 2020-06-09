@@ -3,12 +3,13 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkPeering;
-import com.azure.resourcemanager.network.NetworkPeering.DefinitionStages.WithCreate;
-import com.azure.resourcemanager.network.NetworkPeeringGatewayUse;
-import com.azure.resourcemanager.network.VirtualNetworkPeeringState;
-import com.azure.resourcemanager.network.models.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkPeering;
+import com.azure.resourcemanager.network.models.NetworkPeering.DefinitionStages.WithCreate;
+import com.azure.resourcemanager.network.models.NetworkPeeringGatewayUse;
+import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -249,7 +250,7 @@ class NetworkPeeringImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkPeerings()
+            .getVirtualNetworkPeerings()
             .createOrUpdateAsync(this.parent.resourceGroupName(), networkName, this.name(), this.inner())
             // After successful creation, update the inner
             .doOnNext(
@@ -442,7 +443,7 @@ class NetworkPeeringImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkPeerings()
+            .getVirtualNetworkPeerings()
             .getAsync(
                 this.resourceGroupName(), ResourceUtils.nameFromResourceId(this.networkId()), this.inner().name());
     }

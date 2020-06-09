@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.RouteFilter;
-import com.azure.resourcemanager.network.RouteFilters;
-import com.azure.resourcemanager.network.models.RouteFilterInner;
-import com.azure.resourcemanager.network.models.RouteFiltersInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.RouteFiltersClient;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
+import com.azure.resourcemanager.network.models.RouteFilter;
+import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteFilters. */
-class RouteFiltersImpl
+public class RouteFiltersImpl
     extends TopLevelModifiableResourcesImpl<
-        RouteFilter, RouteFilterImpl, RouteFilterInner, RouteFiltersInner, NetworkManager>
+        RouteFilter, RouteFilterImpl, RouteFilterInner, RouteFiltersClient, NetworkManager>
     implements RouteFilters {
 
-    RouteFiltersImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().routeFilters(), networkManager);
+    public RouteFiltersImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getRouteFilters(), networkManager);
     }
 
     @Override

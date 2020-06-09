@@ -17,8 +17,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import java.util.ArrayList;
@@ -36,17 +36,17 @@ public class VirtualMachineScaleSetsImpl
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager authorizationManager;
 
     public VirtualMachineScaleSetsImpl(
         ComputeManager computeManager,
         StorageManager storageManager,
         NetworkManager networkManager,
-        GraphRbacManager rbacManager) {
+        AuthorizationManager authorizationManager) {
         super(computeManager.inner().getVirtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
-        this.rbacManager = rbacManager;
+        this.authorizationManager = authorizationManager;
     }
 
     @Override
@@ -208,7 +208,7 @@ public class VirtualMachineScaleSetsImpl
             .add(primaryNetworkInterfaceConfiguration);
 
         return new VirtualMachineScaleSetImpl(
-            name, inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
+            name, inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
     }
 
     @Override
@@ -217,6 +217,6 @@ public class VirtualMachineScaleSetsImpl
             return null;
         }
         return new VirtualMachineScaleSetImpl(
-            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
+            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.authorizationManager);
     }
 }

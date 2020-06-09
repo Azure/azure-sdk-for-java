@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppSetting;
+import com.azure.resourcemanager.appservice.models.AppSetting;
 
 /** An immutable client-side representation of an app setting on a web app. */
 class AppSettingImpl implements AppSetting {

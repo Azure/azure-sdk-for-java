@@ -9,12 +9,12 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PrivateLinkServiceConnection;
-import com.azure.resourcemanager.network.PrivateLinkServiceConnectionState;
-import com.azure.resourcemanager.network.ServiceEndpointType;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.PrivateEndpointInner;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
+import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.network.models.ServiceEndpointType;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointInner;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
@@ -30,7 +30,7 @@ public class CosmosDBTests extends TestBase {
 
     private String rgName = "";
     protected ResourceManager resourceManager;
-    protected CosmosDBManager cosmosDBManager;
+    protected CosmosManager cosmosManager;
     protected NetworkManager networkManager;
     //    final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
 
@@ -44,7 +44,7 @@ public class CosmosDBTests extends TestBase {
         rgName = generateRandomResourceName("rgcosmosdb", 20);
         resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 
-        cosmosDBManager = CosmosDBManager.authenticate(httpPipeline, profile);
+        cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
 
         networkManager = NetworkManager.authenticate(httpPipeline, profile);
     }
@@ -59,7 +59,7 @@ public class CosmosDBTests extends TestBase {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
-            cosmosDBManager
+            cosmosManager
                 .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST_CENTRAL)
@@ -90,7 +90,7 @@ public class CosmosDBTests extends TestBase {
         final String pedName = sdkContext.randomResourceName("ped", 22);
         final Region region = Region.US_WEST;
 
-        cosmosDBManager.resourceManager().resourceGroups().define(rgName).withRegion(region).create();
+        cosmosManager.resourceManager().resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             networkManager
@@ -111,7 +111,7 @@ public class CosmosDBTests extends TestBase {
         network.update().updateSubnet(subnetName).parent().apply();
 
         CosmosDBAccount cosmosDBAccount =
-            cosmosDBManager
+            cosmosManager
                 .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST)
@@ -137,7 +137,7 @@ public class CosmosDBTests extends TestBase {
                 .withSubnet(network.subnets().get(subnetName).inner());
 
         privateEndpoint.withLocation(region.toString());
-        privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
+        privateEndpoint = networkManager.inner().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount
             .update()
@@ -173,7 +173,7 @@ public class CosmosDBTests extends TestBase {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
-            cosmosDBManager
+            cosmosManager
                 .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST_CENTRAL)
@@ -198,7 +198,7 @@ public class CosmosDBTests extends TestBase {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
-            cosmosDBManager
+            cosmosManager
                 .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST_CENTRAL)
@@ -225,7 +225,7 @@ public class CosmosDBTests extends TestBase {
 
         // CassandraConnector could only be used in West US and South Central US.
         CosmosDBAccount cosmosDBAccount =
-            cosmosDBManager
+            cosmosManager
                 .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST)
@@ -250,7 +250,7 @@ public class CosmosDBTests extends TestBase {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
         CosmosDBAccount cosmosDBAccount =
-            cosmosDBManager
+            cosmosManager
                 .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST_CENTRAL)

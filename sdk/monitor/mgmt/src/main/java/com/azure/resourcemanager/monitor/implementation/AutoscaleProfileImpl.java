@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.AutoscaleProfile;
-import com.azure.resourcemanager.monitor.DayOfWeek;
-import com.azure.resourcemanager.monitor.Recurrence;
-import com.azure.resourcemanager.monitor.RecurrenceFrequency;
-import com.azure.resourcemanager.monitor.RecurrentSchedule;
-import com.azure.resourcemanager.monitor.ScaleCapacity;
-import com.azure.resourcemanager.monitor.ScaleRule;
-import com.azure.resourcemanager.monitor.TimeWindow;
-import com.azure.resourcemanager.monitor.models.AutoscaleProfileInner;
-import com.azure.resourcemanager.monitor.models.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.models.AutoscaleProfile;
+import com.azure.resourcemanager.monitor.models.DayOfWeek;
+import com.azure.resourcemanager.monitor.models.Recurrence;
+import com.azure.resourcemanager.monitor.models.RecurrenceFrequency;
+import com.azure.resourcemanager.monitor.models.RecurrentSchedule;
+import com.azure.resourcemanager.monitor.models.ScaleCapacity;
+import com.azure.resourcemanager.monitor.models.ScaleRule;
+import com.azure.resourcemanager.monitor.models.TimeWindow;
+import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

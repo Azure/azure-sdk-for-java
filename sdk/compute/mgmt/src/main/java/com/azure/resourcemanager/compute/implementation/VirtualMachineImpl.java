@@ -61,13 +61,13 @@ import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInn
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -180,7 +180,7 @@ class VirtualMachineImpl
         final ComputeManager computeManager,
         final StorageManager storageManager,
         final NetworkManager networkManager,
-        final GraphRbacManager rbacManager) {
+        final AuthorizationManager authorizationManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -195,7 +195,7 @@ class VirtualMachineImpl
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
         this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
-        this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(rbacManager, this);
+        this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(authorizationManager, this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;
         this.mapper = new ObjectMapper();

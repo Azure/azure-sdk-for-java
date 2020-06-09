@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.DdosProtectionPlan;
-import com.azure.resourcemanager.network.DdosProtectionPlans;
-import com.azure.resourcemanager.network.models.DdosProtectionPlanInner;
-import com.azure.resourcemanager.network.models.DdosProtectionPlansInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.DdosProtectionPlansClient;
+import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
+import com.azure.resourcemanager.network.models.DdosProtectionPlan;
+import com.azure.resourcemanager.network.models.DdosProtectionPlans;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for DdosProtectionPlans. */
-class DdosProtectionPlansImpl
+public class DdosProtectionPlansImpl
     extends TopLevelModifiableResourcesImpl<
-        DdosProtectionPlan, DdosProtectionPlanImpl, DdosProtectionPlanInner, DdosProtectionPlansInner, NetworkManager>
+        DdosProtectionPlan, DdosProtectionPlanImpl, DdosProtectionPlanInner, DdosProtectionPlansClient, NetworkManager>
     implements DdosProtectionPlans {
 
-    DdosProtectionPlansImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().ddosProtectionPlans(), networkManager);
+    public DdosProtectionPlansImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getDdosProtectionPlans(), networkManager);
     }
 
     @Override

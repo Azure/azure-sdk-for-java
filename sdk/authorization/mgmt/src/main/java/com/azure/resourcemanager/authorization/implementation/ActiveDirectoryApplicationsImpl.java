@@ -5,7 +5,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
@@ -20,13 +20,13 @@ import reactor.core.publisher.Mono;
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
-    implements ActiveDirectoryApplications, HasManager<GraphRbacManager>, HasInner<ApplicationsClient> {
+    implements ActiveDirectoryApplications, HasManager<AuthorizationManager>, HasInner<ApplicationsClient> {
     private ApplicationsClient innerCollection;
-    private GraphRbacManager manager;
+    private AuthorizationManager manager;
 
-    public ActiveDirectoryApplicationsImpl(final ApplicationsClient client, final GraphRbacManager graphRbacManager) {
+    public ActiveDirectoryApplicationsImpl(final ApplicationsClient client, final AuthorizationManager authorizationManager) {
         this.innerCollection = client;
-        this.manager = graphRbacManager;
+        this.manager = authorizationManager;
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ActiveDirectoryApplicationsImpl
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

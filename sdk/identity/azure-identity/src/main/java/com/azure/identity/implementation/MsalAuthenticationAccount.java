@@ -27,4 +27,8 @@ public class MsalAuthenticationAccount implements IAccount {
     public String username() {
         return authenticationRecord.getUsername();
     }
+
+    public AuthenticationRecord getAuthenticationRecord() {
+        return authenticationRecord;
+    }
 }

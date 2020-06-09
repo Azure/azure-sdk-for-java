@@ -70,7 +70,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         ResourceGroup resourceGroup =
             this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
         PagedIterable<RoleAssignment> rgRoleAssignments1 =
-            rbacManager.roleAssignments().listByScope(resourceGroup.id());
+            authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments1) {
@@ -95,7 +95,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure NO role assigned for resource group
         //
-        rgRoleAssignments1 = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        rgRoleAssignments1 = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments1) {
@@ -160,7 +160,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Validate service created service principal
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -171,7 +171,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         //
         ResourceGroup resourceGroup =
             this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         boolean found = false;
         for (RoleAssignment rgRoleAssignment : rgRoleAssignments) {
             if (rgRoleAssignment.principalId() != null
@@ -248,7 +248,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // TODO: Renable the below code snippet: https://github.com/Azure/azure-libraries-for-net/issues/739
 
-        //        ServicePrincipal servicePrincipal = rbacManager
+        //        ServicePrincipal servicePrincipal = authorizationManager
         //                .servicePrincipals()
         //                .getById(virtualMachine.systemAssignedManagedServiceIdentityPrincipalId());
         //
@@ -257,7 +257,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
@@ -274,7 +274,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         // Ensure role assigned for storage account
         //
         PagedIterable<RoleAssignment> stgRoleAssignments =
-            rbacManager.roleAssignments().listByScope(storageAccount.id());
+            authorizationManager.roleAssignments().listByScope(storageAccount.id());
         Assertions.assertNotNull(stgRoleAssignments);
         found = false;
         for (RoleAssignment roleAssignment : stgRoleAssignments) {
@@ -323,7 +323,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         ResourceGroup resourceGroup =
             this.resourceManager.resourceGroups().getByName(virtualMachine.resourceGroupName());
         PagedIterable<RoleAssignment> rgRoleAssignments1 =
-            rbacManager.roleAssignments().listByScope(resourceGroup.id());
+            authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments1);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments1) {
@@ -346,7 +346,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> roleAssignments2 = rbacManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> roleAssignments2 = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(roleAssignments2);
         for (RoleAssignment roleAssignment : roleAssignments2) {
             if (roleAssignment.principalId() != null
