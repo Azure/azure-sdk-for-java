@@ -14,9 +14,10 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.network.v2019_04_01.CheckPrivateLinkServiceVisibilityRequest;
 import com.microsoft.azure.management.network.v2019_04_01.ErrorException;
-import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpointConnection;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -32,6 +33,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -95,7 +97,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices updatePrivateEndpointConnection" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices/{serviceName}/privateEndpointConnections/{peConnectionName}")
-        Observable<Response<ResponseBody>> updatePrivateEndpointConnection(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("peConnectionName") String peConnectionName, @Path("subscriptionId") String subscriptionId, @Body PrivateEndpointConnection parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePrivateEndpointConnection(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("peConnectionName") String peConnectionName, @Path("subscriptionId") String subscriptionId, @Body PrivateEndpointConnectionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices deletePrivateEndpointConnection" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices/{serviceName}/privateEndpointConnections/{peConnectionName}", method = "DELETE", hasBody = true)
@@ -105,6 +107,22 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateLinkServices/{serviceName}/privateEndpointConnections/{peConnectionName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDeletePrivateEndpointConnection(@Path("resourceGroupName") String resourceGroupName, @Path("serviceName") String serviceName, @Path("peConnectionName") String peConnectionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices checkPrivateLinkServiceVisibility" })
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility")
+        Observable<Response<ResponseBody>> checkPrivateLinkServiceVisibility(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckPrivateLinkServiceVisibilityRequest parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices checkPrivateLinkServiceVisibilityByResourceGroup" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/checkPrivateLinkServiceVisibility")
+        Observable<Response<ResponseBody>> checkPrivateLinkServiceVisibilityByResourceGroup(@Path("location") String location, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CheckPrivateLinkServiceVisibilityRequest parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices listAutoApprovedPrivateLinkServices" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/autoApprovedPrivateLinkServices")
+        Observable<Response<ResponseBody>> listAutoApprovedPrivateLinkServices(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices listAutoApprovedPrivateLinkServicesByResourceGroup" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations/{location}/autoApprovedPrivateLinkServices")
+        Observable<Response<ResponseBody>> listAutoApprovedPrivateLinkServicesByResourceGroup(@Path("location") String location, @Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -112,6 +130,14 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices listAutoApprovedPrivateLinkServicesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAutoApprovedPrivateLinkServicesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServices listAutoApprovedPrivateLinkServicesByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listAutoApprovedPrivateLinkServicesByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -437,7 +463,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -452,7 +478,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -466,7 +492,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -484,7 +510,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -512,7 +538,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -527,7 +553,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -541,7 +567,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkServiceInner object
      */
@@ -559,7 +585,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
-     * @param parameters Parameters supplied to the create or update private link service operation
+     * @param parameters Parameters supplied to the create or update private link service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkServiceInner object
      */
@@ -828,9 +854,10 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateEndpointConnectionInner object if successful.
      */
-    public void updatePrivateEndpointConnection(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnection parameters) {
-        updatePrivateEndpointConnectionWithServiceResponseAsync(resourceGroupName, serviceName, peConnectionName, parameters).toBlocking().single().body();
+    public PrivateEndpointConnectionInner updatePrivateEndpointConnection(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnectionInner parameters) {
+        return updatePrivateEndpointConnectionWithServiceResponseAsync(resourceGroupName, serviceName, peConnectionName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -844,7 +871,7 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updatePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnection parameters, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnectionInner parameters, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
         return ServiceFuture.fromResponse(updatePrivateEndpointConnectionWithServiceResponseAsync(resourceGroupName, serviceName, peConnectionName, parameters), serviceCallback);
     }
 
@@ -856,12 +883,12 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param peConnectionName The name of the private end point connection.
      * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the PrivateEndpointConnectionInner object
      */
-    public Observable<Void> updatePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnection parameters) {
-        return updatePrivateEndpointConnectionWithServiceResponseAsync(resourceGroupName, serviceName, peConnectionName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnectionInner parameters) {
+        return updatePrivateEndpointConnectionWithServiceResponseAsync(resourceGroupName, serviceName, peConnectionName, parameters).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public PrivateEndpointConnectionInner call(ServiceResponse<PrivateEndpointConnectionInner> response) {
                 return response.body();
             }
         });
@@ -875,9 +902,9 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
      * @param peConnectionName The name of the private end point connection.
      * @param parameters Parameters supplied to approve or reject the private end point connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the PrivateEndpointConnectionInner object
      */
-    public Observable<ServiceResponse<Void>> updatePrivateEndpointConnectionWithServiceResponseAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnection parameters) {
+    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> updatePrivateEndpointConnectionWithServiceResponseAsync(String resourceGroupName, String serviceName, String peConnectionName, PrivateEndpointConnectionInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -896,11 +923,11 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         Validator.validate(parameters);
         final String apiVersion = "2019-04-01";
         return service.updatePrivateEndpointConnection(resourceGroupName, serviceName, peConnectionName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateEndpointConnectionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<PrivateEndpointConnectionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = updatePrivateEndpointConnectionDelegate(response);
+                        ServiceResponse<PrivateEndpointConnectionInner> clientResponse = updatePrivateEndpointConnectionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -909,9 +936,9 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
             });
     }
 
-    private ServiceResponse<Void> updatePrivateEndpointConnectionDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionInner, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PrivateEndpointConnectionInner>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
@@ -1078,6 +1105,566 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location) {
+        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location).toBlocking().single().body();
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location), serviceCallback);
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location) {
+        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityWithServiceResponseAsync(String location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-04-01";
+        final String privateLinkServiceAlias = null;
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(null);
+        return service.checkPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location, String privateLinkServiceAlias) {
+        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).toBlocking().single().body();
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias), serviceCallback);
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location, String privateLinkServiceAlias) {
+        return checkPrivateLinkServiceVisibilityWithServiceResponseAsync(location, privateLinkServiceAlias).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityWithServiceResponseAsync(String location, String privateLinkServiceAlias) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-04-01";
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
+        return service.checkPrivateLinkServiceVisibility(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateLinkServiceVisibilityInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).toBlocking().single().body();
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName), serviceCallback);
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(String location, String resourceGroupName) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-04-01";
+        final String privateLinkServiceAlias = null;
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(null);
+        return service.checkPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateLinkServiceVisibilityInner object if successful.
+     */
+    public PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName, String privateLinkServiceAlias) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).toBlocking().single().body();
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, String privateLinkServiceAlias, final ServiceCallback<PrivateLinkServiceVisibilityInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias), serviceCallback);
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName, String privateLinkServiceAlias) {
+        return checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(location, resourceGroupName, privateLinkServiceAlias).map(new Func1<ServiceResponse<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>() {
+            @Override
+            public PrivateLinkServiceVisibilityInner call(ServiceResponse<PrivateLinkServiceVisibilityInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param privateLinkServiceAlias The alias of the private link service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateLinkServiceVisibilityInner object
+     */
+    public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> checkPrivateLinkServiceVisibilityByResourceGroupWithServiceResponseAsync(String location, String resourceGroupName, String privateLinkServiceAlias) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-04-01";
+        CheckPrivateLinkServiceVisibilityRequest parameters = new CheckPrivateLinkServiceVisibilityRequest();
+        parameters.withPrivateLinkServiceAlias(privateLinkServiceAlias);
+        return service.checkPrivateLinkServiceVisibilityByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateLinkServiceVisibilityInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateLinkServiceVisibilityInner> clientResponse = checkPrivateLinkServiceVisibilityByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateLinkServiceVisibilityInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PrivateLinkServiceVisibilityInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object if successful.
+     */
+    public PagedList<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(final String location) {
+        ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response = listAutoApprovedPrivateLinkServicesSinglePageAsync(location).toBlocking().single();
+        return new PagedList<AutoApprovedPrivateLinkServiceInner>(response.body()) {
+            @Override
+            public Page<AutoApprovedPrivateLinkServiceInner> nextPage(String nextPageLink) {
+                return listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesAsync(final String location, final ListOperationCallback<AutoApprovedPrivateLinkServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listAutoApprovedPrivateLinkServicesSinglePageAsync(location),
+            new Func1<String, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(String nextPageLink) {
+                    return listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<Page<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesAsync(final String location) {
+        return listAutoApprovedPrivateLinkServicesWithServiceResponseAsync(location)
+            .map(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Page<AutoApprovedPrivateLinkServiceInner>>() {
+                @Override
+                public Page<AutoApprovedPrivateLinkServiceInner> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesWithServiceResponseAsync(final String location) {
+        return listAutoApprovedPrivateLinkServicesSinglePageAsync(location)
+            .concatMap(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAutoApprovedPrivateLinkServicesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+    ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesSinglePageAsync(final String location) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-04-01";
+        return service.listAutoApprovedPrivateLinkServices(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> result = listAutoApprovedPrivateLinkServicesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AutoApprovedPrivateLinkServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AutoApprovedPrivateLinkServiceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object if successful.
+     */
+    public PagedList<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(final String location, final String resourceGroupName) {
+        ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response = listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(location, resourceGroupName).toBlocking().single();
+        return new PagedList<AutoApprovedPrivateLinkServiceInner>(response.body()) {
+            @Override
+            public Page<AutoApprovedPrivateLinkServiceInner> nextPage(String nextPageLink) {
+                return listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(final String location, final String resourceGroupName, final ListOperationCallback<AutoApprovedPrivateLinkServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(location, resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(String nextPageLink) {
+                    return listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<Page<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(final String location, final String resourceGroupName) {
+        return listAutoApprovedPrivateLinkServicesByResourceGroupWithServiceResponseAsync(location, resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Page<AutoApprovedPrivateLinkServiceInner>>() {
+                @Override
+                public Page<AutoApprovedPrivateLinkServiceInner> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesByResourceGroupWithServiceResponseAsync(final String location, final String resourceGroupName) {
+        return listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(location, resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAutoApprovedPrivateLinkServicesByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+    ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> * @param location The location of the domain name.
+    ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesByResourceGroupSinglePageAsync(final String location, final String resourceGroupName) {
+        if (location == null) {
+            throw new IllegalArgumentException("Parameter location is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-04-01";
+        return service.listAutoApprovedPrivateLinkServicesByResourceGroup(location, resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> result = listAutoApprovedPrivateLinkServicesByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AutoApprovedPrivateLinkServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AutoApprovedPrivateLinkServiceInner>>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -1300,6 +1887,228 @@ public class PrivateLinkServicesInner implements InnerSupportsGet<PrivateLinkSer
         return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkServiceInner>, ErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateLinkServiceInner>>() { }.getType())
                 .registerError(ErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object if successful.
+     */
+    public PagedList<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesNext(final String nextPageLink) {
+        ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response = listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AutoApprovedPrivateLinkServiceInner>(response.body()) {
+            @Override
+            public Page<AutoApprovedPrivateLinkServiceInner> nextPage(String nextPageLink) {
+                return listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesNextAsync(final String nextPageLink, final ServiceFuture<List<AutoApprovedPrivateLinkServiceInner>> serviceFuture, final ListOperationCallback<AutoApprovedPrivateLinkServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(String nextPageLink) {
+                    return listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<Page<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesNextAsync(final String nextPageLink) {
+        return listAutoApprovedPrivateLinkServicesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Page<AutoApprovedPrivateLinkServiceInner>>() {
+                @Override
+                public Page<AutoApprovedPrivateLinkServiceInner> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listAutoApprovedPrivateLinkServicesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAutoApprovedPrivateLinkServicesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+    ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAutoApprovedPrivateLinkServicesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> result = listAutoApprovedPrivateLinkServicesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AutoApprovedPrivateLinkServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AutoApprovedPrivateLinkServiceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object if successful.
+     */
+    public PagedList<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response = listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<AutoApprovedPrivateLinkServiceInner>(response.body()) {
+            @Override
+            public Page<AutoApprovedPrivateLinkServiceInner> nextPage(String nextPageLink) {
+                return listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<AutoApprovedPrivateLinkServiceInner>> serviceFuture, final ListOperationCallback<AutoApprovedPrivateLinkServiceInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(String nextPageLink) {
+                    return listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<Page<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesByResourceGroupNextAsync(final String nextPageLink) {
+        return listAutoApprovedPrivateLinkServicesByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Page<AutoApprovedPrivateLinkServiceInner>>() {
+                @Override
+                public Page<AutoApprovedPrivateLinkServiceInner> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAutoApprovedPrivateLinkServicesByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this subscription in this region.
+     *
+    ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;AutoApprovedPrivateLinkServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> listAutoApprovedPrivateLinkServicesByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listAutoApprovedPrivateLinkServicesByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> result = listAutoApprovedPrivateLinkServicesByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<AutoApprovedPrivateLinkServiceInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<AutoApprovedPrivateLinkServiceInner>> listAutoApprovedPrivateLinkServicesByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AutoApprovedPrivateLinkServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AutoApprovedPrivateLinkServiceInner>>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
