@@ -136,7 +136,7 @@ import com.azure.resourcemanager.network.Topology;
 import com.azure.resourcemanager.network.TopologyAssociation;
 import com.azure.resourcemanager.network.TopologyResource;
 import com.azure.resourcemanager.network.VerificationIPFlow;
-import com.azure.resourcemanager.network.models.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.SecurityRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;

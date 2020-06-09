@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.NetworkWatcher;
 import com.azure.resourcemanager.network.Topology;
 import com.azure.resourcemanager.network.TopologyParameters;
 import com.azure.resourcemanager.network.TopologyResource;
-import com.azure.resourcemanager.network.models.TopologyInner;
+import com.azure.resourcemanager.network.fluent.TopologyInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.Collections;

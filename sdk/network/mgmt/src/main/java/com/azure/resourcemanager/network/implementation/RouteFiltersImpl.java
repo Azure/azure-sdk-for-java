@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.RouteFilter;
 import com.azure.resourcemanager.network.RouteFilters;
-import com.azure.resourcemanager.network.models.RouteFilterInner;
-import com.azure.resourcemanager.network.models.RouteFiltersInner;
+import com.azure.resourcemanager.network.fluent.RouteFilterInner;
+import com.azure.resourcemanager.network.fluent.RouteFiltersInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteFilters. */

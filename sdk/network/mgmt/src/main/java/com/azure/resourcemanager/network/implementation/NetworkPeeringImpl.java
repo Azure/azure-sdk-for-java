@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.NetworkPeering;
 import com.azure.resourcemanager.network.NetworkPeering.DefinitionStages.WithCreate;
 import com.azure.resourcemanager.network.NetworkPeeringGatewayUse;
 import com.azure.resourcemanager.network.VirtualNetworkPeeringState;
-import com.azure.resourcemanager.network.models.VirtualNetworkPeeringInner;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;

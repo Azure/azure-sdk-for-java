@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.models.PacketCaptureQueryStatusResultInner;
+import com.azure.resourcemanager.network.fluent.PacketCaptureQueryStatusResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
 import java.util.List;

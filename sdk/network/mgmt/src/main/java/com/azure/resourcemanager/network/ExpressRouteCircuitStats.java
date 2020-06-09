@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitStatsInner;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Contains stats associated with the peering. */

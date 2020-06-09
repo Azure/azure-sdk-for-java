@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.DdosProtectionPlan;
 import com.azure.resourcemanager.network.DdosProtectionPlans;
-import com.azure.resourcemanager.network.models.DdosProtectionPlanInner;
-import com.azure.resourcemanager.network.models.DdosProtectionPlansInner;
+import com.azure.resourcemanager.network.fluent.DdosProtectionPlanInner;
+import com.azure.resourcemanager.network.fluent.DdosProtectionPlansInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for DdosProtectionPlans. */

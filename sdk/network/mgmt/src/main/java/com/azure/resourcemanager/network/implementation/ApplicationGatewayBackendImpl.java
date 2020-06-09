@@ -6,7 +6,7 @@ import com.azure.resourcemanager.network.ApplicationGateway;
 import com.azure.resourcemanager.network.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.ApplicationGatewayBackendAddress;
 import com.azure.resourcemanager.network.ApplicationGatewayBackendAddressPool;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;

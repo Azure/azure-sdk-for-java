@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.UpdatableWithTags;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.fluent.UpdatableWithTags;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

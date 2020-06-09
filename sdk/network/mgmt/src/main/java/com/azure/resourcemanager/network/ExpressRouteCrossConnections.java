@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionsInner;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;

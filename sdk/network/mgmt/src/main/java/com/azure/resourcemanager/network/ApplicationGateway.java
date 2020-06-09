@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.models.HasPrivateIpAddress;
-import com.azure.resourcemanager.network.models.HasPublicIpAddress;
-import com.azure.resourcemanager.network.models.UpdatableWithTags;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.HasPrivateIpAddress;
+import com.azure.resourcemanager.network.fluent.HasPublicIpAddress;
+import com.azure.resourcemanager.network.fluent.UpdatableWithTags;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;

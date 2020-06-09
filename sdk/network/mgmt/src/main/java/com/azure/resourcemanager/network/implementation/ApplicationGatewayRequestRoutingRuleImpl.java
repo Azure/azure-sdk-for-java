@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.ApplicationGatewayRequestRoutingRuleTyp
 import com.azure.resourcemanager.network.ApplicationGatewaySslCertificate;
 import com.azure.resourcemanager.network.ApplicationGatewayUrlPathMap;
 import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayRequestRoutingRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;

@@ -8,7 +8,7 @@ import com.azure.resourcemanager.network.ApplicationGatewayListener;
 import com.azure.resourcemanager.network.ApplicationGatewayRedirectConfiguration;
 import com.azure.resourcemanager.network.ApplicationGatewayRedirectType;
 import com.azure.resourcemanager.network.ApplicationGatewayRequestRoutingRule;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayRedirectConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

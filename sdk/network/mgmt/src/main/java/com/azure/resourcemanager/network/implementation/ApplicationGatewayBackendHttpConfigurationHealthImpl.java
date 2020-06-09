@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.ApplicationGatewayBackendHealthHttpSett
 import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfiguration;
 import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfigurationHealth;
 import com.azure.resourcemanager.network.ApplicationGatewayBackendServerHealth;
-import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayBackendHealthServerInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import java.util.Collections;
 import java.util.Map;

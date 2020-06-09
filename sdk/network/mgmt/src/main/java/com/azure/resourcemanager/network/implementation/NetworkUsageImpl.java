@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.NetworkUsage;
 import com.azure.resourcemanager.network.NetworkUsageUnit;
 import com.azure.resourcemanager.network.UsageName;
-import com.azure.resourcemanager.network.models.UsageInner;
+import com.azure.resourcemanager.network.fluent.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 

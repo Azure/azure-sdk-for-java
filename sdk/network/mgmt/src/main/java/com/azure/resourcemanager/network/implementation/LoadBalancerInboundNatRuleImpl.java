@@ -10,7 +10,7 @@ import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.Subnet;
 import com.azure.resourcemanager.network.TransportProtocol;
-import com.azure.resourcemanager.network.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.InboundNatRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

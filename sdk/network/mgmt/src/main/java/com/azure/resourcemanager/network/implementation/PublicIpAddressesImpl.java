@@ -5,8 +5,8 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.PublicIpAddress;
 import com.azure.resourcemanager.network.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.PublicIpAddresses;
-import com.azure.resourcemanager.network.models.PublicIpAddressInner;
-import com.azure.resourcemanager.network.models.PublicIpAddressesInner;
+import com.azure.resourcemanager.network.fluent.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.PublicIpAddressesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link PublicIpAddresses}. */

@@ -6,8 +6,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkUsage;
 import com.azure.resourcemanager.network.NetworkUsages;
-import com.azure.resourcemanager.network.models.NetworkManagementClientImpl;
-import com.azure.resourcemanager.network.models.UsageInner;
+import com.azure.resourcemanager.network.fluent.NetworkManagementClientImpl;
+import com.azure.resourcemanager.network.fluent.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 

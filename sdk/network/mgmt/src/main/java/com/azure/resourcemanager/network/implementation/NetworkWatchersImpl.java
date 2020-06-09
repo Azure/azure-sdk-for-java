@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkWatcher;
 import com.azure.resourcemanager.network.NetworkWatchers;
-import com.azure.resourcemanager.network.models.NetworkWatcherInner;
-import com.azure.resourcemanager.network.models.NetworkWatchersInner;
+import com.azure.resourcemanager.network.fluent.NetworkWatcherInner;
+import com.azure.resourcemanager.network.fluent.NetworkWatchersInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for Network Watchers. */

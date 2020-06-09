@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.ServiceEndpointType;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.PrivateEndpointInner;
+import com.azure.resourcemanager.network.fluent.PrivateEndpointInner;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;

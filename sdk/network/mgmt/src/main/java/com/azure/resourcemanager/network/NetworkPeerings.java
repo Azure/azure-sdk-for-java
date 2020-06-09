@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.VirtualNetworkPeeringsInner;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;

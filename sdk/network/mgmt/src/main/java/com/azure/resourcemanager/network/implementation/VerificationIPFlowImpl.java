@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.Direction;
 import com.azure.resourcemanager.network.IpFlowProtocol;
 import com.azure.resourcemanager.network.VerificationIPFlow;
 import com.azure.resourcemanager.network.VerificationIpFlowParameters;
-import com.azure.resourcemanager.network.models.VerificationIpFlowResultInner;
+import com.azure.resourcemanager.network.fluent.VerificationIpFlowResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 

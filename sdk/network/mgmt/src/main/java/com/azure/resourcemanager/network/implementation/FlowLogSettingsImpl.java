@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.FlowLogSettings;
 import com.azure.resourcemanager.network.RetentionPolicyParameters;
-import com.azure.resourcemanager.network.models.FlowLogInformationInner;
+import com.azure.resourcemanager.network.fluent.FlowLogInformationInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;

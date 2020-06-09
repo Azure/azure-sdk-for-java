@@ -12,7 +12,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.NetworkInterface;
 import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
+import com.azure.resourcemanager.network.fluent.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

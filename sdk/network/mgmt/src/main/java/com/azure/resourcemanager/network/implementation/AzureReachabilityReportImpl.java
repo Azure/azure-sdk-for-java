@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.AzureReachabilityReportLocation;
 import com.azure.resourcemanager.network.AzureReachabilityReportParameters;
 import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.models.AzureReachabilityReportInner;
+import com.azure.resourcemanager.network.fluent.AzureReachabilityReportInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;
 import java.util.Arrays;

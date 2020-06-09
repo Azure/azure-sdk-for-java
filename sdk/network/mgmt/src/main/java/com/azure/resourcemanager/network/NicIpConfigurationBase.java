@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.models.HasPrivateIpAddress;
+import com.azure.resourcemanager.network.fluent.HasPrivateIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasSubnet;
 import java.util.Collection;
 import java.util.List;

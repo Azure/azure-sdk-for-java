@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleInner;
-import com.azure.resourcemanager.network.models.HasBackendPort;
-import com.azure.resourcemanager.network.models.HasCookieBasedAffinity;
-import com.azure.resourcemanager.network.models.HasFrontendPort;
-import com.azure.resourcemanager.network.models.HasHostname;
-import com.azure.resourcemanager.network.models.HasPublicIpAddress;
-import com.azure.resourcemanager.network.models.HasServerNameIndication;
-import com.azure.resourcemanager.network.models.HasSslCertificate;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.HasBackendPort;
+import com.azure.resourcemanager.network.fluent.HasCookieBasedAffinity;
+import com.azure.resourcemanager.network.fluent.HasFrontendPort;
+import com.azure.resourcemanager.network.fluent.HasHostname;
+import com.azure.resourcemanager.network.fluent.HasPublicIpAddress;
+import com.azure.resourcemanager.network.fluent.HasServerNameIndication;
+import com.azure.resourcemanager.network.fluent.HasSslCertificate;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;

@@ -6,9 +6,9 @@ import com.azure.resourcemanager.network.AddressSpace;
 import com.azure.resourcemanager.network.DhcpOptions;
 import com.azure.resourcemanager.network.Network;
 import com.azure.resourcemanager.network.Networks;
-import com.azure.resourcemanager.network.models.SubnetInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkInner;
-import com.azure.resourcemanager.network.models.VirtualNetworksInner;
+import com.azure.resourcemanager.network.fluent.SubnetInner;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkInner;
+import com.azure.resourcemanager.network.fluent.VirtualNetworksInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import java.util.ArrayList;
 

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeringInner;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.IndependentChild;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;

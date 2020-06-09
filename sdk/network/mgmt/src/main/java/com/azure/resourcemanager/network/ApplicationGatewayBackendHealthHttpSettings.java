@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewayBackendHealthServerInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

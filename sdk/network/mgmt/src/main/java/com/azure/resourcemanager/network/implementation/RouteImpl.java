@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.resourcemanager.network.Route;
 import com.azure.resourcemanager.network.RouteNextHopType;
 import com.azure.resourcemanager.network.RouteTable;
-import com.azure.resourcemanager.network.models.RouteInner;
+import com.azure.resourcemanager.network.fluent.RouteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /** Implementation of Route. */

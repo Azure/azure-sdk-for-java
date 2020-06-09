@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.ExpressRouteCircuitStats;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitStatsInner;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
