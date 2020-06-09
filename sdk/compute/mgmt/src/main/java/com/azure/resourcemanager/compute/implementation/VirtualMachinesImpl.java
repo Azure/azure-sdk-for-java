@@ -18,7 +18,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -36,7 +36,7 @@ public class VirtualMachinesImpl
     implements VirtualMachines {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager rbacManager;
     private final VirtualMachineSizesImpl vmSizes;
     private final ClientLogger logger = new ClientLogger(VirtualMachinesImpl.class);
 
@@ -44,7 +44,7 @@ public class VirtualMachinesImpl
         ComputeManager computeManager,
         StorageManager storageManager,
         NetworkManager networkManager,
-        GraphRbacManager rbacManager) {
+        AuthorizationManager rbacManager) {
         super(computeManager.inner().getVirtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;

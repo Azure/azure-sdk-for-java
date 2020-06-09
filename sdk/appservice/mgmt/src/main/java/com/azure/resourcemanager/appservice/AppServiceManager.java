@@ -17,7 +17,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceDomains;
 import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -30,7 +30,7 @@ import com.azure.resourcemanager.storage.StorageManager;
 /** Entry point to Azure storage resource management. */
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClient> {
     // Managers
-    private GraphRbacManager rbacManager;
+    private AuthorizationManager rbacManager;
     private KeyVaultManager keyVaultManager;
     private StorageManager storageManager;
     // Collections
@@ -116,11 +116,11 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
             sdkContext);
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
-        rbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        rbacManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /** @return the Graph RBAC manager instance. */
-    public GraphRbacManager rbacManager() {
+    public AuthorizationManager rbacManager() {
         return rbacManager;
     }
 

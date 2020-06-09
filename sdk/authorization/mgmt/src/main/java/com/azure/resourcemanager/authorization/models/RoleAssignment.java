@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleAssignmentInner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 /** An immutable client-side representation of an Azure AD role assignment. */
 @Fluent
 public interface RoleAssignment
-    extends Indexable, HasInner<RoleAssignmentInner>, HasId, HasName, HasManager<GraphRbacManager> {
+    extends Indexable, HasInner<RoleAssignmentInner>, HasId, HasName, HasManager<AuthorizationManager> {
     /** @return the role assignment scope */
     String scope();
 

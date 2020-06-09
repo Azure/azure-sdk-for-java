@@ -60,7 +60,7 @@ import com.azure.resourcemanager.compute.fluent.inner.ProximityPlacementGroupInn
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
@@ -161,7 +161,7 @@ public class VirtualMachineScaleSetImpl
         final ComputeManager computeManager,
         final StorageManager storageManager,
         final NetworkManager networkManager,
-        final GraphRbacManager rbacManager) {
+        final AuthorizationManager rbacManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;

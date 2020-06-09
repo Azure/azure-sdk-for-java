@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
@@ -36,7 +36,7 @@ public class RoleAssignmentHelper {
 
     private static final String CURRENT_RESOURCE_GROUP_SCOPE = "CURRENT_RESOURCE_GROUP";
 
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager rbacManager;
     private final IdProvider idProvider;
     private final TaskGroup preRunTaskGroup;
 
@@ -47,7 +47,7 @@ public class RoleAssignmentHelper {
      * @param taskGroup the pre-run task group after which role assignments create/remove tasks should run
      * @param idProvider the provider that provides service principal id and resource id
      */
-    public RoleAssignmentHelper(final GraphRbacManager rbacManager, TaskGroup taskGroup, IdProvider idProvider) {
+    public RoleAssignmentHelper(final AuthorizationManager rbacManager, TaskGroup taskGroup, IdProvider idProvider) {
         this.rbacManager = Objects.requireNonNull(rbacManager);
         this.idProvider = Objects.requireNonNull(idProvider);
         this.preRunTaskGroup = Objects.requireNonNull(taskGroup);

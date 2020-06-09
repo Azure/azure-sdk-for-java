@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineUpdateInner;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
@@ -42,7 +42,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
      * @param virtualMachine the virtual machine to which MSI extension needs to be installed and for which role
      *     assignments needs to be created
      */
-    VirtualMachineMsiHandler(final GraphRbacManager rbacManager, VirtualMachineImpl virtualMachine) {
+    VirtualMachineMsiHandler(final AuthorizationManager rbacManager, VirtualMachineImpl virtualMachine) {
         super(rbacManager, virtualMachine.taskGroup(), virtualMachine.idProvider());
         this.virtualMachine = virtualMachine;
         this.creatableIdentityKeys = new ArrayList<>();

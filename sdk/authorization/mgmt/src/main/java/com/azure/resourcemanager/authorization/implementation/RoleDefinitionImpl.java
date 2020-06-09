@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.Permission;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.fluent.inner.PermissionInner;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements RoleDefinition {
-    private GraphRbacManager manager;
+    private AuthorizationManager manager;
     // Active Directory identify info
     // private String objectId;
     // private String userName;
@@ -24,7 +24,7 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
     // private String roleDefinitionId;
     // private String roleName;
 
-    RoleDefinitionImpl(RoleDefinitionInner innerObject, GraphRbacManager manager) {
+    RoleDefinitionImpl(RoleDefinitionInner innerObject, AuthorizationManager manager) {
         super(innerObject);
         this.manager = manager;
     }
@@ -64,7 +64,7 @@ class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements Rol
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

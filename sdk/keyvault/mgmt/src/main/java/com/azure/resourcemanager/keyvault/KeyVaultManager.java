@@ -5,7 +5,7 @@ package com.azure.resourcemanager.keyvault;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.implementation.VaultsImpl;
 import com.azure.resourcemanager.keyvault.models.Vaults;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 /** Entry point to Azure KeyVault resource management. */
 public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultManagementClient> {
     // Service managers
-    private GraphRbacManager graphRbacManager;
+    private AuthorizationManager authorizationManager;
     // Collections
     private Vaults vaults;
     // Variables
@@ -101,14 +101,14 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
-        graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
         this.tenantId = profile.tenantId();
     }
 
     /** @return the KeyVault account management API entry point */
     public Vaults vaults() {
         if (vaults == null) {
-            vaults = new VaultsImpl(this, graphRbacManager, tenantId);
+            vaults = new VaultsImpl(this, authorizationManager, tenantId);
         }
         return vaults;
     }

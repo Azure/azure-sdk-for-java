@@ -6,7 +6,7 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
 import com.azure.resourcemanager.authorization.models.RoleDefinitions;
 import com.azure.resourcemanager.authorization.fluent.inner.RoleDefinitionInner;
@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 /** The implementation of RoleDefinitions and its parent interfaces. */
 public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, RoleDefinitionImpl, RoleDefinitionInner>
     implements RoleDefinitions, HasInner<RoleDefinitionsClient> {
-    private final GraphRbacManager manager;
+    private final AuthorizationManager manager;
 
-    public RoleDefinitionsImpl(final GraphRbacManager manager) {
+    public RoleDefinitionsImpl(final AuthorizationManager manager) {
         this.manager = manager;
     }
 
@@ -85,7 +85,7 @@ public class RoleDefinitionsImpl extends ReadableWrappersImpl<RoleDefinition, Ro
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

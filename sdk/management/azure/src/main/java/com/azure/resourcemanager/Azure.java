@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
@@ -247,7 +247,7 @@ public final class Azure {
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
-        private final GraphRbacManager graphRbacManager;
+        private final AuthorizationManager authorizationManager;
         private SdkContext sdkContext;
         private String tenantId;
         private String subscriptionId;
@@ -255,7 +255,7 @@ public final class Azure {
 
         private AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
-            this.graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile);
+            this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
             this.tenantId = profile.tenantId();
             this.subscriptionId = profile.subscriptionId();
@@ -280,32 +280,32 @@ public final class Azure {
 
         @Override
         public ActiveDirectoryUsers activeDirectoryUsers() {
-            return graphRbacManager.users();
+            return authorizationManager.users();
         }
 
         @Override
         public ActiveDirectoryGroups activeDirectoryGroups() {
-            return graphRbacManager.groups();
+            return authorizationManager.groups();
         }
 
         @Override
         public ServicePrincipals servicePrincipals() {
-            return graphRbacManager.servicePrincipals();
+            return authorizationManager.servicePrincipals();
         }
 
         @Override
         public ActiveDirectoryApplications activeDirectoryApplications() {
-            return graphRbacManager.applications();
+            return authorizationManager.applications();
         }
 
         @Override
         public RoleDefinitions roleDefinitions() {
-            return graphRbacManager.roleDefinitions();
+            return authorizationManager.roleDefinitions();
         }
 
         @Override
         public RoleAssignments roleAssignments() {
-            return graphRbacManager.roleAssignments();
+            return authorizationManager.roleAssignments();
         }
 
         @Override

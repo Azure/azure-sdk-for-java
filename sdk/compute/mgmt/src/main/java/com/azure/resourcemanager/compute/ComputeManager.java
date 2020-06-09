@@ -32,7 +32,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineImages;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -47,7 +47,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     // The service managers
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager rbacManager;
 
     // The collections
     private AvailabilitySets availabilitySets;
@@ -138,7 +138,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
             sdkContext);
         storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
         networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
-        rbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        rbacManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     /** @return the availability set resource management API entry point */

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerSkuType;
@@ -39,7 +39,7 @@ public abstract class ComputeManagementTest extends TestBase {
     protected ComputeManager computeManager;
     protected NetworkManager networkManager;
     protected StorageManager storageManager;
-    protected GraphRbacManager rbacManager;
+    protected AuthorizationManager rbacManager;
     protected KeyVaultManager keyVaultManager;
 
     @Override
@@ -55,7 +55,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
         keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
 
-        rbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
+        rbacManager = AuthorizationManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

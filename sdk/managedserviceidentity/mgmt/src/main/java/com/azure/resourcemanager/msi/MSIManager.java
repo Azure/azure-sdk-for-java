@@ -5,7 +5,7 @@ package com.azure.resourcemanager.msi;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.msi.implementation.IdentitesImpl;
 import com.azure.resourcemanager.msi.models.Identities;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -19,7 +19,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
  * Entry point to Azure Managed Service Identity (MSI) resource management.
  */
 public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentityClient> {
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager rbacManager;
 
     private Identities identities;
 
@@ -100,7 +100,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
                 sdkContext);
-        rbacManager = GraphRbacManager.authenticate(httpPipeline,
+        rbacManager = AuthorizationManager.authenticate(httpPipeline,
             profile,
             sdkContext);
     }
@@ -118,7 +118,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
     /**
      * @return the Graph RBAC manager.
      */
-    public GraphRbacManager graphRbacManager() {
+    public AuthorizationManager graphRbacManager() {
         return this.rbacManager;
     }
 }

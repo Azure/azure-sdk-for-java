@@ -17,7 +17,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSets;
 import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
@@ -36,13 +36,13 @@ public class VirtualMachineScaleSetsImpl
     implements VirtualMachineScaleSets {
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager rbacManager;
 
     public VirtualMachineScaleSetsImpl(
         ComputeManager computeManager,
         StorageManager storageManager,
         NetworkManager networkManager,
-        GraphRbacManager rbacManager) {
+        AuthorizationManager rbacManager) {
         super(computeManager.inner().getVirtualMachineScaleSets(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
