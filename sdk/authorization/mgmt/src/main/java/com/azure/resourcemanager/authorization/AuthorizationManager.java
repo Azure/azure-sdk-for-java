@@ -25,7 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure Graph RBAC management. */
-public final class GraphRbacManager implements HasInner<GraphRbacManagementClient> {
+public final class AuthorizationManager implements HasInner<GraphRbacManagementClient> {
     private final String tenantId;
     private final SdkContext sdkContext;
     // The sdk clients
@@ -46,7 +46,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @param profile the profile to use
      * @return the GraphRbacManager instance
      */
-    public static GraphRbacManager authenticate(TokenCredential credential, AzureProfile profile) {
+    public static AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -57,7 +57,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @param profile the profile used in Active Directory
      * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
-    public static GraphRbacManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static AuthorizationManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return authenticate(httpPipeline, profile, new SdkContext());
     }
 
@@ -69,9 +69,9 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @param sdkContext the sdk context
      * @return the interface exposing Graph RBAC management API entry points that work across subscriptions
      */
-    public static GraphRbacManager authenticate(
+    public static AuthorizationManager authenticate(
         HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new GraphRbacManager(httpPipeline, profile, sdkContext);
+        return new AuthorizationManager(httpPipeline, profile, sdkContext);
     }
 
     /**
@@ -80,7 +80,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @return the instance allowing configurations
      */
     public static Configurable configure() {
-        return new GraphRbacManager.ConfigurableImpl();
+        return new AuthorizationManager.ConfigurableImpl();
     }
 
     @Override
@@ -97,18 +97,18 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
          * @param profile the profile to use
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
-        GraphRbacManager authenticate(TokenCredential credential, AzureProfile profile);
+        AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public GraphRbacManager authenticate(TokenCredential credential, AzureProfile profile) {
-            return GraphRbacManager
+        public AuthorizationManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return AuthorizationManager
                 .authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private GraphRbacManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         this.graphRbacManagementClient =
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)

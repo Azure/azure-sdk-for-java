@@ -5,7 +5,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
@@ -19,9 +19,9 @@ import reactor.core.publisher.Mono;
 public class ActiveDirectoryUsersImpl
     extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
     implements ActiveDirectoryUsers, HasInner<UsersClient> {
-    private final GraphRbacManager manager;
+    private final AuthorizationManager manager;
 
-    public ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
+    public ActiveDirectoryUsersImpl(final AuthorizationManager manager) {
         this.manager = manager;
     }
 
@@ -108,7 +108,7 @@ public class ActiveDirectoryUsersImpl
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

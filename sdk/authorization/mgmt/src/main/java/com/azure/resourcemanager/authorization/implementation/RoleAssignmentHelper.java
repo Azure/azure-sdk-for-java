@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.exception.ManagementException;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.RoleDefinition;
@@ -36,19 +36,19 @@ public class RoleAssignmentHelper {
 
     private static final String CURRENT_RESOURCE_GROUP_SCOPE = "CURRENT_RESOURCE_GROUP";
 
-    private final GraphRbacManager rbacManager;
+    private final AuthorizationManager authorizationManager;
     private final IdProvider idProvider;
     private final TaskGroup preRunTaskGroup;
 
     /**
      * Creates RoleAssignmentHelper.
      *
-     * @param rbacManager the graph rbac manager
+     * @param authorizationManager the graph rbac manager
      * @param taskGroup the pre-run task group after which role assignments create/remove tasks should run
      * @param idProvider the provider that provides service principal id and resource id
      */
-    public RoleAssignmentHelper(final GraphRbacManager rbacManager, TaskGroup taskGroup, IdProvider idProvider) {
-        this.rbacManager = Objects.requireNonNull(rbacManager);
+    public RoleAssignmentHelper(final AuthorizationManager authorizationManager, TaskGroup taskGroup, IdProvider idProvider) {
+        this.authorizationManager = Objects.requireNonNull(authorizationManager);
         this.idProvider = Objects.requireNonNull(idProvider);
         this.preRunTaskGroup = Objects.requireNonNull(taskGroup);
     }
@@ -79,14 +79,14 @@ public class RoleAssignmentHelper {
                 if (principalId == null) {
                     return cxt.voidMono();
                 }
-                final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
+                final String roleAssignmentName = authorizationManager.sdkContext().randomUuid();
                 final String resourceScope;
                 if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
                     resourceScope = resourceGroupId(idProvider.resourceId());
                 } else {
                     resourceScope = scope;
                 }
-                return rbacManager
+                return authorizationManager
                     .roleAssignments()
                     .define(roleAssignmentName)
                     .forObjectId(principalId)
@@ -103,7 +103,7 @@ public class RoleAssignmentHelper {
                             return Mono.error(throwable);
                         });
             };
-        this.preRunTaskGroup.addPostRunDependent(creator, rbacManager.sdkContext());
+        this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.sdkContext());
         return this;
     }
 
@@ -133,14 +133,14 @@ public class RoleAssignmentHelper {
                 if (principalId == null) {
                     return cxt.voidMono();
                 }
-                final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
+                final String roleAssignmentName = authorizationManager.sdkContext().randomUuid();
                 final String resourceScope;
                 if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
                     resourceScope = resourceGroupId(idProvider.resourceId());
                 } else {
                     resourceScope = scope;
                 }
-                return rbacManager
+                return authorizationManager
                     .roleAssignments()
                     .define(roleAssignmentName)
                     .forObjectId(principalId)
@@ -157,7 +157,7 @@ public class RoleAssignmentHelper {
                             return Mono.error(throwable);
                         });
             };
-        this.preRunTaskGroup.addPostRunDependent(creator, rbacManager.sdkContext());
+        this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.sdkContext());
         return this;
     }
 
@@ -173,7 +173,7 @@ public class RoleAssignmentHelper {
             return this;
         }
         FunctionalTaskItem remover =
-            cxt -> rbacManager.roleAssignments().deleteByIdAsync(roleAssignment.id()).then(cxt.voidMono());
+            cxt -> authorizationManager.roleAssignments().deleteByIdAsync(roleAssignment.id()).then(cxt.voidMono());
         this.preRunTaskGroup.addPostRunDependent(remover);
         return this;
     }
@@ -188,13 +188,13 @@ public class RoleAssignmentHelper {
     public RoleAssignmentHelper withoutAccessTo(final String scope, final BuiltInRole asRole) {
         FunctionalTaskItem remover =
             cxt ->
-                rbacManager
+                authorizationManager
                     .roleDefinitions()
                     .getByScopeAndRoleNameAsync(scope, asRole.toString())
                     .flatMap(
                         (Function<RoleDefinition, Mono<RoleAssignment>>)
                         roleDefinition ->
-                            rbacManager
+                            authorizationManager
                                 .roleAssignments()
                                 .listByScopeAsync(scope)
                                 .filter(
@@ -214,7 +214,7 @@ public class RoleAssignmentHelper {
                     .flatMap(
                         (Function<RoleAssignment, Mono<Indexable>>)
                         roleAssignment ->
-                            rbacManager
+                            authorizationManager
                                 .roleAssignments()
                                 .deleteByIdAsync(roleAssignment.id())
                                 .then(cxt.voidMono()));

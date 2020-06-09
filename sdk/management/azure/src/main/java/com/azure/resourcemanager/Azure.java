@@ -13,7 +13,7 @@ import com.azure.resourcemanager.appservice.models.AppServicePlans;
 import com.azure.resourcemanager.appservice.models.FunctionApps;
 import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
@@ -39,7 +39,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusters;
-import com.azure.resourcemanager.cosmos.CosmosDBManager;
+import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccounts;
 import com.azure.resourcemanager.dns.models.DnsZones;
 import com.azure.resourcemanager.dns.DnsZoneManager;
@@ -118,7 +118,7 @@ public final class Azure {
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
     //    private final SearchServiceManager searchServiceManager;
-    private final CosmosDBManager cosmosDBManager;
+    private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
     private final MSIManager msiManager;
     private final MonitorManager monitorManager;
@@ -247,7 +247,7 @@ public final class Azure {
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
-        private final GraphRbacManager graphRbacManager;
+        private final AuthorizationManager authorizationManager;
         private SdkContext sdkContext;
         private String tenantId;
         private String subscriptionId;
@@ -255,7 +255,7 @@ public final class Azure {
 
         private AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.resourceManagerAuthenticated = ResourceManager.authenticate(httpPipeline, profile);
-            this.graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile);
+            this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
             this.httpPipeline = httpPipeline;
             this.tenantId = profile.tenantId();
             this.subscriptionId = profile.subscriptionId();
@@ -280,32 +280,32 @@ public final class Azure {
 
         @Override
         public ActiveDirectoryUsers activeDirectoryUsers() {
-            return graphRbacManager.users();
+            return authorizationManager.users();
         }
 
         @Override
         public ActiveDirectoryGroups activeDirectoryGroups() {
-            return graphRbacManager.groups();
+            return authorizationManager.groups();
         }
 
         @Override
         public ServicePrincipals servicePrincipals() {
-            return graphRbacManager.servicePrincipals();
+            return authorizationManager.servicePrincipals();
         }
 
         @Override
         public ActiveDirectoryApplications activeDirectoryApplications() {
-            return graphRbacManager.applications();
+            return authorizationManager.applications();
         }
 
         @Override
         public RoleDefinitions roleDefinitions() {
-            return graphRbacManager.roleDefinitions();
+            return authorizationManager.roleDefinitions();
         }
 
         @Override
         public RoleAssignments roleAssignments() {
-            return graphRbacManager.roleAssignments();
+            return authorizationManager.roleAssignments();
         }
 
         @Override
@@ -360,7 +360,7 @@ public final class Azure {
         // sdkContext);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(httpPipeline, profile, sdkContext);
         this.containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile, sdkContext);
-        this.cosmosDBManager = CosmosDBManager.authenticate(httpPipeline, profile, sdkContext);
+        this.cosmosManager = CosmosManager.authenticate(httpPipeline, profile, sdkContext);
         //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
         //        this.authorizationManager = AuthorizationManager.authenticate(restClient, subscriptionId, sdkContext);
         this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
@@ -704,7 +704,7 @@ public final class Azure {
 
     /** @return entry point to managing Container Regsitries. */
     public CosmosDBAccounts cosmosDBAccounts() {
-        return cosmosDBManager.databaseAccounts();
+        return cosmosManager.databaseAccounts();
     }
 
     //    /**

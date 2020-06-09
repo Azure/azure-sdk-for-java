@@ -17,7 +17,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
         ActiveDirectoryApplication application = null;
         try {
             application =
-                graphRbacManager
+                authorizationManager
                     .applications()
                     .define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)
@@ -46,7 +46,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             Assertions.assertEquals(0, application.passwordCredentials().size());
         } finally {
             if (application != null) {
-                graphRbacManager.applications().deleteById(application.id());
+                authorizationManager.applications().deleteById(application.id());
             }
         }
     }
