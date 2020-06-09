@@ -64,10 +64,14 @@ class ExpressRouteCircuitAuthorizationsImpl extends WrapperImpl<ExpressRouteCirc
     public Observable<ExpressRouteCircuitAuthorization> getAsync(String resourceGroupName, String circuitName, String authorizationName) {
         ExpressRouteCircuitAuthorizationsInner client = this.inner();
         return client.getAsync(resourceGroupName, circuitName, authorizationName)
-        .map(new Func1<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorization>() {
+        .flatMap(new Func1<ExpressRouteCircuitAuthorizationInner, Observable<ExpressRouteCircuitAuthorization>>() {
             @Override
-            public ExpressRouteCircuitAuthorization call(ExpressRouteCircuitAuthorizationInner inner) {
-                return wrapModel(inner);
+            public Observable<ExpressRouteCircuitAuthorization> call(ExpressRouteCircuitAuthorizationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExpressRouteCircuitAuthorization)wrapModel(inner));
+                }
             }
        });
     }
