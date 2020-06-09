@@ -6,13 +6,13 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogsInner;
+import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
 
 /** Entry point for Monitor Activity logs API. */
-public interface ActivityLogs extends HasManager<MonitorManager>, HasInner<ActivityLogsInner> {
+public interface ActivityLogs extends HasManager<MonitorManager>, HasInner<ActivityLogsClient> {
 
     /**
      * Lists available event categories supported in the Activity Logs Service.

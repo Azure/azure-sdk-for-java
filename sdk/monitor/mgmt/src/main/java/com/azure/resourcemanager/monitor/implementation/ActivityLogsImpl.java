@@ -9,7 +9,7 @@ import com.azure.resourcemanager.monitor.models.ActivityLogs;
 import com.azure.resourcemanager.monitor.models.EventData;
 import com.azure.resourcemanager.monitor.models.EventDataPropertyName;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
-import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogsInner;
+import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +40,7 @@ class ActivityLogsImpl implements ActivityLogs, ActivityLogs.ActivityLogsQueryDe
     }
 
     @Override
-    public ActivityLogsInner inner() {
+    public ActivityLogsClient inner() {
         return this.myManager.inner().activityLogs();
     }
 

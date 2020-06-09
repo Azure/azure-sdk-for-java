@@ -12,6 +12,27 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
+import com.azure.resourcemanager.monitor.fluent.ActivityLogAlertsClient;
+import com.azure.resourcemanager.monitor.fluent.ActivityLogsClient;
+import com.azure.resourcemanager.monitor.fluent.AlertRuleIncidentsClient;
+import com.azure.resourcemanager.monitor.fluent.AlertRulesClient;
+import com.azure.resourcemanager.monitor.fluent.AutoscaleSettingsClient;
+import com.azure.resourcemanager.monitor.fluent.BaselinesClient;
+import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsCategorysClient;
+import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
+import com.azure.resourcemanager.monitor.fluent.EventCategoriesClient;
+import com.azure.resourcemanager.monitor.fluent.LogProfilesClient;
+import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
+import com.azure.resourcemanager.monitor.fluent.MetricAlertsStatusClient;
+import com.azure.resourcemanager.monitor.fluent.MetricBaselinesClient;
+import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
+import com.azure.resourcemanager.monitor.fluent.MetricNamespacesClient;
+import com.azure.resourcemanager.monitor.fluent.MetricsClient;
+import com.azure.resourcemanager.monitor.fluent.OperationsClient;
+import com.azure.resourcemanager.monitor.fluent.ScheduledQueryRulesClient;
+import com.azure.resourcemanager.monitor.fluent.TenantActivityLogsClient;
+import com.azure.resourcemanager.monitor.fluent.VMInsightsClient;
 
 /** Initializes a new instance of the MonitorClientImpl type. */
 public final class MonitorClientImpl extends AzureServiceClient {
@@ -76,254 +97,254 @@ public final class MonitorClientImpl extends AzureServiceClient {
     }
 
     /** The AutoscaleSettingsInner object to access its operations. */
-    private final AutoscaleSettingsInner autoscaleSettings;
+    private final AutoscaleSettingsClient autoscaleSettings;
 
     /**
      * Gets the AutoscaleSettingsInner object to access its operations.
      *
      * @return the AutoscaleSettingsInner object.
      */
-    public AutoscaleSettingsInner autoscaleSettings() {
+    public AutoscaleSettingsClient autoscaleSettings() {
         return this.autoscaleSettings;
     }
 
     /** The OperationsInner object to access its operations. */
-    private final OperationsInner operations;
+    private final OperationsClient operations;
 
     /**
      * Gets the OperationsInner object to access its operations.
      *
      * @return the OperationsInner object.
      */
-    public OperationsInner operations() {
+    public OperationsClient operations() {
         return this.operations;
     }
 
     /** The AlertRuleIncidentsInner object to access its operations. */
-    private final AlertRuleIncidentsInner alertRuleIncidents;
+    private final AlertRuleIncidentsClient alertRuleIncidents;
 
     /**
      * Gets the AlertRuleIncidentsInner object to access its operations.
      *
      * @return the AlertRuleIncidentsInner object.
      */
-    public AlertRuleIncidentsInner alertRuleIncidents() {
+    public AlertRuleIncidentsClient alertRuleIncidents() {
         return this.alertRuleIncidents;
     }
 
     /** The AlertRulesInner object to access its operations. */
-    private final AlertRulesInner alertRules;
+    private final AlertRulesClient alertRules;
 
     /**
      * Gets the AlertRulesInner object to access its operations.
      *
      * @return the AlertRulesInner object.
      */
-    public AlertRulesInner alertRules() {
+    public AlertRulesClient alertRules() {
         return this.alertRules;
     }
 
     /** The LogProfilesInner object to access its operations. */
-    private final LogProfilesInner logProfiles;
+    private final LogProfilesClient logProfiles;
 
     /**
      * Gets the LogProfilesInner object to access its operations.
      *
      * @return the LogProfilesInner object.
      */
-    public LogProfilesInner logProfiles() {
+    public LogProfilesClient logProfiles() {
         return this.logProfiles;
     }
 
     /** The DiagnosticSettingsInner object to access its operations. */
-    private final DiagnosticSettingsInner diagnosticSettings;
+    private final DiagnosticSettingsClient diagnosticSettings;
 
     /**
      * Gets the DiagnosticSettingsInner object to access its operations.
      *
      * @return the DiagnosticSettingsInner object.
      */
-    public DiagnosticSettingsInner diagnosticSettings() {
+    public DiagnosticSettingsClient diagnosticSettings() {
         return this.diagnosticSettings;
     }
 
     /** The DiagnosticSettingsCategorysInner object to access its operations. */
-    private final DiagnosticSettingsCategorysInner diagnosticSettingsCategorys;
+    private final DiagnosticSettingsCategorysClient diagnosticSettingsCategorys;
 
     /**
      * Gets the DiagnosticSettingsCategorysInner object to access its operations.
      *
      * @return the DiagnosticSettingsCategorysInner object.
      */
-    public DiagnosticSettingsCategorysInner diagnosticSettingsCategorys() {
+    public DiagnosticSettingsCategorysClient diagnosticSettingsCategorys() {
         return this.diagnosticSettingsCategorys;
     }
 
     /** The ActionGroupsInner object to access its operations. */
-    private final ActionGroupsInner actionGroups;
+    private final ActionGroupsClient actionGroups;
 
     /**
      * Gets the ActionGroupsInner object to access its operations.
      *
      * @return the ActionGroupsInner object.
      */
-    public ActionGroupsInner actionGroups() {
+    public ActionGroupsClient actionGroups() {
         return this.actionGroups;
     }
 
     /** The ActivityLogAlertsInner object to access its operations. */
-    private final ActivityLogAlertsInner activityLogAlerts;
+    private final ActivityLogAlertsClient activityLogAlerts;
 
     /**
      * Gets the ActivityLogAlertsInner object to access its operations.
      *
      * @return the ActivityLogAlertsInner object.
      */
-    public ActivityLogAlertsInner activityLogAlerts() {
+    public ActivityLogAlertsClient activityLogAlerts() {
         return this.activityLogAlerts;
     }
 
     /** The ActivityLogsInner object to access its operations. */
-    private final ActivityLogsInner activityLogs;
+    private final ActivityLogsClient activityLogs;
 
     /**
      * Gets the ActivityLogsInner object to access its operations.
      *
      * @return the ActivityLogsInner object.
      */
-    public ActivityLogsInner activityLogs() {
+    public ActivityLogsClient activityLogs() {
         return this.activityLogs;
     }
 
     /** The EventCategoriesInner object to access its operations. */
-    private final EventCategoriesInner eventCategories;
+    private final EventCategoriesClient eventCategories;
 
     /**
      * Gets the EventCategoriesInner object to access its operations.
      *
      * @return the EventCategoriesInner object.
      */
-    public EventCategoriesInner eventCategories() {
+    public EventCategoriesClient eventCategories() {
         return this.eventCategories;
     }
 
     /** The TenantActivityLogsInner object to access its operations. */
-    private final TenantActivityLogsInner tenantActivityLogs;
+    private final TenantActivityLogsClient tenantActivityLogs;
 
     /**
      * Gets the TenantActivityLogsInner object to access its operations.
      *
      * @return the TenantActivityLogsInner object.
      */
-    public TenantActivityLogsInner tenantActivityLogs() {
+    public TenantActivityLogsClient tenantActivityLogs() {
         return this.tenantActivityLogs;
     }
 
     /** The MetricDefinitionsInner object to access its operations. */
-    private final MetricDefinitionsInner metricDefinitions;
+    private final MetricDefinitionsClient metricDefinitions;
 
     /**
      * Gets the MetricDefinitionsInner object to access its operations.
      *
      * @return the MetricDefinitionsInner object.
      */
-    public MetricDefinitionsInner metricDefinitions() {
+    public MetricDefinitionsClient metricDefinitions() {
         return this.metricDefinitions;
     }
 
     /** The MetricsInner object to access its operations. */
-    private final MetricsInner metrics;
+    private final MetricsClient metrics;
 
     /**
      * Gets the MetricsInner object to access its operations.
      *
      * @return the MetricsInner object.
      */
-    public MetricsInner metrics() {
+    public MetricsClient metrics() {
         return this.metrics;
     }
 
     /** The MetricBaselinesInner object to access its operations. */
-    private final MetricBaselinesInner metricBaselines;
+    private final MetricBaselinesClient metricBaselines;
 
     /**
      * Gets the MetricBaselinesInner object to access its operations.
      *
      * @return the MetricBaselinesInner object.
      */
-    public MetricBaselinesInner metricBaselines() {
+    public MetricBaselinesClient metricBaselines() {
         return this.metricBaselines;
     }
 
     /** The BaselinesInner object to access its operations. */
-    private final BaselinesInner baselines;
+    private final BaselinesClient baselines;
 
     /**
      * Gets the BaselinesInner object to access its operations.
      *
      * @return the BaselinesInner object.
      */
-    public BaselinesInner baselines() {
+    public BaselinesClient baselines() {
         return this.baselines;
     }
 
     /** The MetricAlertsInner object to access its operations. */
-    private final MetricAlertsInner metricAlerts;
+    private final MetricAlertsClient metricAlerts;
 
     /**
      * Gets the MetricAlertsInner object to access its operations.
      *
      * @return the MetricAlertsInner object.
      */
-    public MetricAlertsInner metricAlerts() {
+    public MetricAlertsClient metricAlerts() {
         return this.metricAlerts;
     }
 
     /** The MetricAlertsStatusInner object to access its operations. */
-    private final MetricAlertsStatusInner metricAlertsStatus;
+    private final MetricAlertsStatusClient metricAlertsStatus;
 
     /**
      * Gets the MetricAlertsStatusInner object to access its operations.
      *
      * @return the MetricAlertsStatusInner object.
      */
-    public MetricAlertsStatusInner metricAlertsStatus() {
+    public MetricAlertsStatusClient metricAlertsStatus() {
         return this.metricAlertsStatus;
     }
 
     /** The ScheduledQueryRulesInner object to access its operations. */
-    private final ScheduledQueryRulesInner scheduledQueryRules;
+    private final ScheduledQueryRulesClient scheduledQueryRules;
 
     /**
      * Gets the ScheduledQueryRulesInner object to access its operations.
      *
      * @return the ScheduledQueryRulesInner object.
      */
-    public ScheduledQueryRulesInner scheduledQueryRules() {
+    public ScheduledQueryRulesClient scheduledQueryRules() {
         return this.scheduledQueryRules;
     }
 
     /** The MetricNamespacesInner object to access its operations. */
-    private final MetricNamespacesInner metricNamespaces;
+    private final MetricNamespacesClient metricNamespaces;
 
     /**
      * Gets the MetricNamespacesInner object to access its operations.
      *
      * @return the MetricNamespacesInner object.
      */
-    public MetricNamespacesInner metricNamespaces() {
+    public MetricNamespacesClient metricNamespaces() {
         return this.metricNamespaces;
     }
 
     /** The VMInsightsInner object to access its operations. */
-    private final VMInsightsInner vMInsights;
+    private final VMInsightsClient vMInsights;
 
     /**
      * Gets the VMInsightsInner object to access its operations.
      *
      * @return the VMInsightsInner object.
      */
-    public VMInsightsInner vMInsights() {
+    public VMInsightsClient vMInsights() {
         return this.vMInsights;
     }
 
@@ -352,26 +373,26 @@ public final class MonitorClientImpl extends AzureServiceClient {
     public MonitorClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.autoscaleSettings = new AutoscaleSettingsInner(this);
-        this.operations = new OperationsInner(this);
-        this.alertRuleIncidents = new AlertRuleIncidentsInner(this);
-        this.alertRules = new AlertRulesInner(this);
-        this.logProfiles = new LogProfilesInner(this);
-        this.diagnosticSettings = new DiagnosticSettingsInner(this);
-        this.diagnosticSettingsCategorys = new DiagnosticSettingsCategorysInner(this);
-        this.actionGroups = new ActionGroupsInner(this);
-        this.activityLogAlerts = new ActivityLogAlertsInner(this);
-        this.activityLogs = new ActivityLogsInner(this);
-        this.eventCategories = new EventCategoriesInner(this);
-        this.tenantActivityLogs = new TenantActivityLogsInner(this);
-        this.metricDefinitions = new MetricDefinitionsInner(this);
-        this.metrics = new MetricsInner(this);
-        this.metricBaselines = new MetricBaselinesInner(this);
-        this.baselines = new BaselinesInner(this);
-        this.metricAlerts = new MetricAlertsInner(this);
-        this.metricAlertsStatus = new MetricAlertsStatusInner(this);
-        this.scheduledQueryRules = new ScheduledQueryRulesInner(this);
-        this.metricNamespaces = new MetricNamespacesInner(this);
-        this.vMInsights = new VMInsightsInner(this);
+        this.autoscaleSettings = new AutoscaleSettingsClient(this);
+        this.operations = new OperationsClient(this);
+        this.alertRuleIncidents = new AlertRuleIncidentsClient(this);
+        this.alertRules = new AlertRulesClient(this);
+        this.logProfiles = new LogProfilesClient(this);
+        this.diagnosticSettings = new DiagnosticSettingsClient(this);
+        this.diagnosticSettingsCategorys = new DiagnosticSettingsCategorysClient(this);
+        this.actionGroups = new ActionGroupsClient(this);
+        this.activityLogAlerts = new ActivityLogAlertsClient(this);
+        this.activityLogs = new ActivityLogsClient(this);
+        this.eventCategories = new EventCategoriesClient(this);
+        this.tenantActivityLogs = new TenantActivityLogsClient(this);
+        this.metricDefinitions = new MetricDefinitionsClient(this);
+        this.metrics = new MetricsClient(this);
+        this.metricBaselines = new MetricBaselinesClient(this);
+        this.baselines = new BaselinesClient(this);
+        this.metricAlerts = new MetricAlertsClient(this);
+        this.metricAlertsStatus = new MetricAlertsStatusClient(this);
+        this.scheduledQueryRules = new ScheduledQueryRulesClient(this);
+        this.metricNamespaces = new MetricNamespacesClient(this);
+        this.vMInsights = new VMInsightsClient(this);
     }
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsInner;
+import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
 import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -65,7 +65,7 @@ class DiagnosticSettingsImpl
     }
 
     @Override
-    public DiagnosticSettingsInner inner() {
+    public DiagnosticSettingsClient inner() {
         return this.manager().inner().diagnosticSettings();
     }
 

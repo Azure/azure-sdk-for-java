@@ -6,13 +6,13 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.resourcemanager.monitor.models.AutoscaleSetting;
 import com.azure.resourcemanager.monitor.models.AutoscaleSettings;
 import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingsInner;
+import com.azure.resourcemanager.monitor.fluent.AutoscaleSettingsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link AutoscaleSettings}. */
 class AutoscaleSettingsImpl
     extends TopLevelModifiableResourcesImpl<
-        AutoscaleSetting, AutoscaleSettingImpl, AutoscaleSettingResourceInner, AutoscaleSettingsInner, MonitorManager>
+        AutoscaleSetting, AutoscaleSettingImpl, AutoscaleSettingResourceInner, AutoscaleSettingsClient, MonitorManager>
     implements AutoscaleSettings {
 
     AutoscaleSettingsImpl(final MonitorManager monitorManager) {

@@ -6,14 +6,14 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.resourcemanager.monitor.models.ActionGroup;
 import com.azure.resourcemanager.monitor.models.ActionGroups;
 import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
-import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupsInner;
+import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link ActionGroups}. */
 class ActionGroupsImpl
     extends TopLevelModifiableResourcesImpl<
-        ActionGroup, ActionGroupImpl, ActionGroupResourceInner, ActionGroupsInner, MonitorManager>
+        ActionGroup, ActionGroupImpl, ActionGroupResourceInner, ActionGroupsClient, MonitorManager>
     implements ActionGroups {
 
     ActionGroupsImpl(final MonitorManager monitorManager) {
