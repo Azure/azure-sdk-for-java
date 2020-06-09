@@ -7,9 +7,9 @@ package com.azure.resourcemanager.network.fluent.inner;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.FlowLogFormatParameters;
-import com.azure.resourcemanager.network.RetentionPolicyParameters;
-import com.azure.resourcemanager.network.TrafficAnalyticsProperties;
+import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
+import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
+import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

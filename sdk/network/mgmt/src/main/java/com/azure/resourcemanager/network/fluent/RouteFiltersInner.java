@@ -31,7 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.network.PatchRouteFilter;
+import com.azure.resourcemanager.network.models.PatchRouteFilter;
 import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterListResultInner;

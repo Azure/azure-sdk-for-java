@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.AddressSpace;
-import com.azure.resourcemanager.network.BgpSettings;
-import com.azure.resourcemanager.network.LocalNetworkGateway;
+import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.BgpSettings;
+import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.inner.LocalNetworkGatewayInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

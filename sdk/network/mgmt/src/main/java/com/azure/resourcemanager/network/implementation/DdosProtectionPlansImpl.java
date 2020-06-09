@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.DdosProtectionPlan;
-import com.azure.resourcemanager.network.DdosProtectionPlans;
+import com.azure.resourcemanager.network.models.DdosProtectionPlan;
+import com.azure.resourcemanager.network.models.DdosProtectionPlans;
 import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
 import com.azure.resourcemanager.network.fluent.DdosProtectionPlansInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

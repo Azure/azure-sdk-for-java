@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.AzureReachabilityReport;
-import com.azure.resourcemanager.network.AzureReachabilityReportItem;
-import com.azure.resourcemanager.network.AzureReachabilityReportLocation;
-import com.azure.resourcemanager.network.AzureReachabilityReportParameters;
-import com.azure.resourcemanager.network.NetworkWatcher;
+import com.azure.resourcemanager.network.models.AzureReachabilityReport;
+import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
+import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
+import com.azure.resourcemanager.network.models.AzureReachabilityReportParameters;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.fluent.inner.AzureReachabilityReportInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;

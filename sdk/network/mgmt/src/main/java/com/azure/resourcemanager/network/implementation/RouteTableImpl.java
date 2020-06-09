@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.Route;
-import com.azure.resourcemanager.network.RouteNextHopType;
-import com.azure.resourcemanager.network.RouteTable;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.Route;
+import com.azure.resourcemanager.network.models.RouteNextHopType;
+import com.azure.resourcemanager.network.models.RouteTable;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.fluent.inner.RouteInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;

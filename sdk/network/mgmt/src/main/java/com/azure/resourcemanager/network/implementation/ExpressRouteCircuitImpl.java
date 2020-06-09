@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuit;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeerings;
-import com.azure.resourcemanager.network.ExpressRouteCircuitServiceProviderProperties;
-import com.azure.resourcemanager.network.ExpressRouteCircuitSkuType;
-import com.azure.resourcemanager.network.ServiceProviderProvisioningState;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitSkuType;
+import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitAuthorizationInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitInner;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;

@@ -4,9 +4,9 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkPeering;
-import com.azure.resourcemanager.network.NetworkPeerings;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkPeering;
+import com.azure.resourcemanager.network.models.NetworkPeerings;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;

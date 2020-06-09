@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnection;
-import com.azure.resourcemanager.network.ExpressRouteCrossConnectionPeering;
-import com.azure.resourcemanager.network.ExpressRoutePeeringState;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
+import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;

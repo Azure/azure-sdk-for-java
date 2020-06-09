@@ -6,8 +6,8 @@ package com.azure.resourcemanager.network.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendAddressPool;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHealthHttpSettings;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthHttpSettings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -4,10 +4,10 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancingRule;
-import com.azure.resourcemanager.network.NetworkInterface;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancingRule;
+import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;

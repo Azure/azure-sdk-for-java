@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.Troubleshooting;
-import com.azure.resourcemanager.network.TroubleshootingDetails;
-import com.azure.resourcemanager.network.TroubleshootingParameters;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.Troubleshooting;
+import com.azure.resourcemanager.network.models.TroubleshootingDetails;
+import com.azure.resourcemanager.network.models.TroubleshootingParameters;
 import com.azure.resourcemanager.network.fluent.inner.TroubleshootingResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import java.time.OffsetDateTime;

@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkPeering;
-import com.azure.resourcemanager.network.NetworkPeering.DefinitionStages.WithCreate;
-import com.azure.resourcemanager.network.NetworkPeeringGatewayUse;
-import com.azure.resourcemanager.network.VirtualNetworkPeeringState;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkPeering;
+import com.azure.resourcemanager.network.models.NetworkPeering.DefinitionStages.WithCreate;
+import com.azure.resourcemanager.network.models.NetworkPeeringGatewayUse;
+import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkPeeringInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.IndependentChildImpl;

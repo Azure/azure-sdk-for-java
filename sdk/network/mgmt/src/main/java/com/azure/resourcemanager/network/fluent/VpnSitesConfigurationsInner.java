@@ -23,8 +23,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.network.ErrorException;
-import com.azure.resourcemanager.network.GetVpnSitesConfigurationRequest;
+import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
 import java.nio.ByteBuffer;
 
 import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;

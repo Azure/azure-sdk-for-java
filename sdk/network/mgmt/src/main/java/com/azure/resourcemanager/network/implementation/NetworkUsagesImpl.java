@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.NetworkUsage;
-import com.azure.resourcemanager.network.NetworkUsages;
+import com.azure.resourcemanager.network.models.NetworkUsage;
+import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import com.azure.resourcemanager.network.fluent.inner.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;

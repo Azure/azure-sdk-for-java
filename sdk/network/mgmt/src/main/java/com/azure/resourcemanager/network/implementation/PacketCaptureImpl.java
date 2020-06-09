@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.PCFilter;
-import com.azure.resourcemanager.network.PacketCapture;
-import com.azure.resourcemanager.network.PacketCaptureFilter;
-import com.azure.resourcemanager.network.PacketCaptureStatus;
-import com.azure.resourcemanager.network.PacketCaptureStorageLocation;
-import com.azure.resourcemanager.network.ProvisioningState;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.PCFilter;
+import com.azure.resourcemanager.network.models.PacketCapture;
+import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PacketCaptureStatus;
+import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureInner;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
 import com.azure.resourcemanager.network.fluent.PacketCapturesInner;

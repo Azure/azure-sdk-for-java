@@ -28,7 +28,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
-import com.azure.resourcemanager.network.ErrorException;
+import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysInner;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsInner;
 import com.azure.resourcemanager.network.fluent.AvailableDelegationsInner;

@@ -9,9 +9,9 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.AddressSpace;
-import com.azure.resourcemanager.network.ProvisioningState;
-import com.azure.resourcemanager.network.VpnClientConnectionHealth;
+import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

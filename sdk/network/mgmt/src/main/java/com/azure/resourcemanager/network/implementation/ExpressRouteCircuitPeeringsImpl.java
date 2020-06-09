@@ -4,10 +4,10 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.ExpressRouteCircuit;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeerings;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeerings;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;

@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.DhGroup;
-import com.azure.resourcemanager.network.IkeEncryption;
-import com.azure.resourcemanager.network.IkeIntegrity;
-import com.azure.resourcemanager.network.IpsecEncryption;
-import com.azure.resourcemanager.network.IpsecIntegrity;
-import com.azure.resourcemanager.network.PfsGroup;
+import com.azure.resourcemanager.network.models.DhGroup;
+import com.azure.resourcemanager.network.models.IkeEncryption;
+import com.azure.resourcemanager.network.models.IkeIntegrity;
+import com.azure.resourcemanager.network.models.IpsecEncryption;
+import com.azure.resourcemanager.network.models.IpsecIntegrity;
+import com.azure.resourcemanager.network.models.PfsGroup;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

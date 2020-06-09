@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ConnectionStatus;
-import com.azure.resourcemanager.network.ConnectivityCheck;
-import com.azure.resourcemanager.network.ConnectivityDestination;
-import com.azure.resourcemanager.network.ConnectivityHop;
-import com.azure.resourcemanager.network.ConnectivityParameters;
-import com.azure.resourcemanager.network.ConnectivitySource;
-import com.azure.resourcemanager.network.Protocol;
+import com.azure.resourcemanager.network.models.ConnectionStatus;
+import com.azure.resourcemanager.network.models.ConnectivityCheck;
+import com.azure.resourcemanager.network.models.ConnectivityDestination;
+import com.azure.resourcemanager.network.models.ConnectivityHop;
+import com.azure.resourcemanager.network.models.ConnectivityParameters;
+import com.azure.resourcemanager.network.models.ConnectivitySource;
+import com.azure.resourcemanager.network.models.Protocol;
 import com.azure.resourcemanager.network.fluent.inner.ConnectivityInformationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;

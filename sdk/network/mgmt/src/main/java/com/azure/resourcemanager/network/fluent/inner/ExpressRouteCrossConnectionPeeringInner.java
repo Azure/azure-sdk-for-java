@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.ExpressRoutePeeringState;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

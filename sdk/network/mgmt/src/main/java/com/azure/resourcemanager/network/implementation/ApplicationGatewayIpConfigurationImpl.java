@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayIpConfiguration;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayIpConfiguration;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;

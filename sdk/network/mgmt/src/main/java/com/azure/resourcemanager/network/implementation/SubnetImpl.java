@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.RouteTable;
-import com.azure.resourcemanager.network.ServiceEndpointPropertiesFormat;
-import com.azure.resourcemanager.network.ServiceEndpointType;
-import com.azure.resourcemanager.network.Subnet;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.RouteTable;
+import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
+import com.azure.resourcemanager.network.models.ServiceEndpointType;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.inner.IpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;

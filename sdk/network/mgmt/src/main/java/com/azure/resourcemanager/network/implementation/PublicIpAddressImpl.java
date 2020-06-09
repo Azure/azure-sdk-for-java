@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.IpTag;
-import com.azure.resourcemanager.network.IpVersion;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerPublicFrontend;
-import com.azure.resourcemanager.network.NetworkInterface;
-import com.azure.resourcemanager.network.NicIpConfiguration;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.PublicIpAddressDnsSettings;
-import com.azure.resourcemanager.network.PublicIPSkuType;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.IpTag;
+import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerPublicFrontend;
+import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
+import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.inner.IpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;

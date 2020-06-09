@@ -4,8 +4,8 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.PacketCapture;
-import com.azure.resourcemanager.network.PacketCaptures;
+import com.azure.resourcemanager.network.models.PacketCapture;
+import com.azure.resourcemanager.network.models.PacketCaptures;
 import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
 import com.azure.resourcemanager.network.fluent.PacketCapturesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;

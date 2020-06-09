@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ExpressRouteCircuit;
-import com.azure.resourcemanager.network.IpsecPolicy;
-import com.azure.resourcemanager.network.LocalNetworkGateway;
-import com.azure.resourcemanager.network.TunnelConnectionHealth;
-import com.azure.resourcemanager.network.VirtualNetworkGateway;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnection;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnectionStatus;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnectionType;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
+import com.azure.resourcemanager.network.models.IpsecPolicy;
+import com.azure.resourcemanager.network.models.LocalNetworkGateway;
+import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

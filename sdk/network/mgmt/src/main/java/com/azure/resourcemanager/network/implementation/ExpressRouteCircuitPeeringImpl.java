@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.ExpressRoutePeeringState;
-import com.azure.resourcemanager.network.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
+import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
+import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;

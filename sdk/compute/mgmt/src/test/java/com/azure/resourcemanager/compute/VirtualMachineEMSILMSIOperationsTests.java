@@ -12,7 +12,7 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.msi.MSIManager;
-import com.azure.resourcemanager.network.Network;
+import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.implementation.NetworkManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.core.TestBase;

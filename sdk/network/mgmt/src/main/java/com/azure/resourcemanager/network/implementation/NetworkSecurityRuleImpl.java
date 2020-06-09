@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NetworkSecurityRule;
-import com.azure.resourcemanager.network.SecurityRuleAccess;
-import com.azure.resourcemanager.network.SecurityRuleDirection;
-import com.azure.resourcemanager.network.SecurityRuleProtocol;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NetworkSecurityRule;
+import com.azure.resourcemanager.network.models.SecurityRuleAccess;
+import com.azure.resourcemanager.network.models.SecurityRuleDirection;
+import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;

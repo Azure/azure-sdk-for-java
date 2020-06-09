@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.AddressSpace;
-import com.azure.resourcemanager.network.DhcpOptions;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.Networks;
+import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.DhcpOptions;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
 import com.azure.resourcemanager.network.fluent.VirtualNetworksInner;

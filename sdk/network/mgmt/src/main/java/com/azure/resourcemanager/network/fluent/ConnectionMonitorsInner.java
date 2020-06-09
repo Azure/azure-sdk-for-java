@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.resourcemanager.network.TagsObject;
+import com.azure.resourcemanager.network.models.TagsObject;
 import java.nio.ByteBuffer;
 import java.util.Map;
 

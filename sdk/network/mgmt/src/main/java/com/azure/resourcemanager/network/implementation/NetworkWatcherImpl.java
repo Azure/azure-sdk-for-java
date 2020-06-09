@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.FlowLogSettings;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.SecurityGroupView;
+import com.azure.resourcemanager.network.models.FlowLogSettings;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.AppliableWithTags;
 import com.azure.resourcemanager.network.fluent.inner.FlowLogInformationInner;
 import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherInner;

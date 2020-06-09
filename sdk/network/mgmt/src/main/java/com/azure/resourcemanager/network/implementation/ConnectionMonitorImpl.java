@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ConnectionMonitor;
-import com.azure.resourcemanager.network.ConnectionMonitorDestination;
-import com.azure.resourcemanager.network.ConnectionMonitorQueryResult;
-import com.azure.resourcemanager.network.ConnectionMonitorSource;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.ProvisioningState;
+import com.azure.resourcemanager.network.models.ConnectionMonitor;
+import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
+import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
+import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.fluent.ConnectionMonitorsInner;

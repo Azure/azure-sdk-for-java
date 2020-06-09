@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.RouteFilter;
-import com.azure.resourcemanager.network.RouteFilters;
+import com.azure.resourcemanager.network.models.RouteFilter;
+import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
 import com.azure.resourcemanager.network.fluent.RouteFiltersInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;

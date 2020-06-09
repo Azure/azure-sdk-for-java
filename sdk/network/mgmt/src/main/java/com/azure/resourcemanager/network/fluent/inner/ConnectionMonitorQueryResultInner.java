@@ -6,8 +6,8 @@ package com.azure.resourcemanager.network.fluent.inner;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.ConnectionMonitorSourceStatus;
-import com.azure.resourcemanager.network.ConnectionStateSnapshot;
+import com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus;
+import com.azure.resourcemanager.network.models.ConnectionStateSnapshot;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

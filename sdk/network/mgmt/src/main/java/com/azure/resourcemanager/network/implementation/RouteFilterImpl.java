@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.Access;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
-import com.azure.resourcemanager.network.RouteFilter;
-import com.azure.resourcemanager.network.RouteFilterRule;
-import com.azure.resourcemanager.network.RouteFilterRuleType;
+import com.azure.resourcemanager.network.models.Access;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
+import com.azure.resourcemanager.network.models.RouteFilter;
+import com.azure.resourcemanager.network.models.RouteFilterRule;
+import com.azure.resourcemanager.network.models.RouteFilterRuleType;
 import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
 import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;

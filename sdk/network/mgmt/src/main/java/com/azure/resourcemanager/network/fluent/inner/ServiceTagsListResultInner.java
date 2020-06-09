@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network.fluent.inner;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.ServiceTagInformation;
+import com.azure.resourcemanager.network.models.ServiceTagInformation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;

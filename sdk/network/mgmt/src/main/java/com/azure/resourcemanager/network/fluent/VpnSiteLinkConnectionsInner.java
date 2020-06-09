@@ -20,7 +20,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.ErrorException;
+import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.fluent.inner.NetworkManagementClientImpl;
 import com.azure.resourcemanager.network.fluent.inner.VpnSiteLinkConnectionInner;
 import reactor.core.publisher.Mono;

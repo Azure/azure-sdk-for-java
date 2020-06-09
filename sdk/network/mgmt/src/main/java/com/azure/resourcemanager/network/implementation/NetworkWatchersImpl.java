@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.NetworkWatchers;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.fluent.inner.NetworkWatcherInner;
 import com.azure.resourcemanager.network.fluent.NetworkWatchersInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
