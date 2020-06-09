@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 /**
  * Helper class to build a {@link ChangeFeedProcessor} instance.
- * <p>
+ * 
  * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public class ChangeFeedProcessorBuilder {
@@ -65,7 +65,7 @@ public class ChangeFeedProcessorBuilder {
 
     /**
      * Sets a consumer function which will be called to process changes.
-     * <p>
+     *
      * {@codesnippet com.azure.cosmos.changeFeedProcessor.handleChanges}
      *
      * @param consumer the {@link Consumer} to call for handling the feeds.
@@ -79,7 +79,6 @@ public class ChangeFeedProcessorBuilder {
 
     /**
      * Sets the {@link ChangeFeedProcessorOptions} to be used.
-     * <p>
      * Unless specifically set the default values that will be used are:
      * - maximum items per page or FeedResponse: 100
      * - lease renew interval: 17 seconds

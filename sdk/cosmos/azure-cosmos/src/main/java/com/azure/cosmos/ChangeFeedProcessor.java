@@ -20,7 +20,7 @@ import java.util.Map;
  *    instance name.
  *  - The delegate: the delegate is the code that defines what you, the developer, want to do with each batch of
  *    changes that the change feed processor reads.
- * <p>
+ * </p>
  * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public interface ChangeFeedProcessor {
