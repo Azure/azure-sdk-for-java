@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.models.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.HostnameBindingInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;

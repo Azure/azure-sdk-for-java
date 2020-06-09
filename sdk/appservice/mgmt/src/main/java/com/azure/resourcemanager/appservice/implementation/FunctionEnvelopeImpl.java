@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.resourcemanager.appservice.FunctionEnvelope;
-import com.azure.resourcemanager.appservice.models.FunctionEnvelopeInner;
+import com.azure.resourcemanager.appservice.fluent.FunctionEnvelopeInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.Map;
 

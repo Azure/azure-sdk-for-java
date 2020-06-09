@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.DeploymentSlot;
 import com.azure.resourcemanager.appservice.HostnameBinding;
 import com.azure.resourcemanager.appservice.HostnameType;
 import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.models.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.HostnameBindingInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;

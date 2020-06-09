@@ -6,7 +6,7 @@ import com.azure.resourcemanager.appservice.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.UnauthenticatedClientAction;
 import com.azure.resourcemanager.appservice.WebAppAuthentication;
 import com.azure.resourcemanager.appservice.WebAppBase;
-import com.azure.resourcemanager.appservice.models.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.SiteAuthSettingsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.ArrayList;
 
