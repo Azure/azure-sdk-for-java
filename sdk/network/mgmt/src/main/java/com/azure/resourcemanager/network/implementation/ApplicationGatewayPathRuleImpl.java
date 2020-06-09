@@ -3,13 +3,13 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayBackend;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayPathRule;
-import com.azure.resourcemanager.network.ApplicationGatewayRedirectConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayUrlPathMap;
-import com.azure.resourcemanager.network.models.ApplicationGatewayPathRuleInner;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayPathRule;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPathRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;

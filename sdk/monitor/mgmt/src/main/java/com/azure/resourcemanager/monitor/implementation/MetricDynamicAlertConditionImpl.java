@@ -4,14 +4,14 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.AggregationType;
-import com.azure.resourcemanager.monitor.DynamicMetricCriteria;
-import com.azure.resourcemanager.monitor.DynamicThresholdFailingPeriods;
-import com.azure.resourcemanager.monitor.DynamicThresholdOperator;
-import com.azure.resourcemanager.monitor.DynamicThresholdSensitivity;
-import com.azure.resourcemanager.monitor.MetricAlert;
-import com.azure.resourcemanager.monitor.MetricAlertRuleTimeAggregation;
-import com.azure.resourcemanager.monitor.MetricDynamicAlertCondition;
+import com.azure.resourcemanager.monitor.models.AggregationType;
+import com.azure.resourcemanager.monitor.models.DynamicMetricCriteria;
+import com.azure.resourcemanager.monitor.models.DynamicThresholdFailingPeriods;
+import com.azure.resourcemanager.monitor.models.DynamicThresholdOperator;
+import com.azure.resourcemanager.monitor.models.DynamicThresholdSensitivity;
+import com.azure.resourcemanager.monitor.models.MetricAlert;
+import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
+import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 

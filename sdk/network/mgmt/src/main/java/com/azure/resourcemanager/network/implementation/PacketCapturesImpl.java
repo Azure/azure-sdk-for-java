@@ -4,10 +4,10 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.PacketCapture;
-import com.azure.resourcemanager.network.PacketCaptures;
-import com.azure.resourcemanager.network.models.PacketCaptureResultInner;
-import com.azure.resourcemanager.network.models.PacketCapturesInner;
+import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
+import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.models.PacketCapture;
+import com.azure.resourcemanager.network.models.PacketCaptures;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
@@ -16,14 +16,14 @@ import reactor.core.publisher.Mono;
 class PacketCapturesImpl extends CreatableResourcesImpl<PacketCapture, PacketCaptureImpl, PacketCaptureResultInner>
     implements PacketCaptures {
     private final NetworkWatcherImpl parent;
-    protected final PacketCapturesInner innerCollection;
+    protected final PacketCapturesClient innerCollection;
 
     /**
      * Creates a new PacketCapturesImpl.
      *
      * @param parent the Network Watcher associated with Packet Captures
      */
-    PacketCapturesImpl(PacketCapturesInner innerCollection, NetworkWatcherImpl parent) {
+    PacketCapturesImpl(PacketCapturesClient innerCollection, NetworkWatcherImpl parent) {
         this.parent = parent;
         this.innerCollection = innerCollection;
     }
@@ -74,7 +74,7 @@ class PacketCapturesImpl extends CreatableResourcesImpl<PacketCapture, PacketCap
     }
 
     @Override
-    public PacketCapturesInner inner() {
+    public PacketCapturesClient inner() {
         return innerCollection;
     }
 

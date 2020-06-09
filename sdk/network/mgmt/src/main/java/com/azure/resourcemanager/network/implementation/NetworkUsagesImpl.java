@@ -4,19 +4,19 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.network.NetworkUsage;
-import com.azure.resourcemanager.network.NetworkUsages;
-import com.azure.resourcemanager.network.models.NetworkManagementClientImpl;
-import com.azure.resourcemanager.network.models.UsageInner;
+import com.azure.resourcemanager.network.models.NetworkUsage;
+import com.azure.resourcemanager.network.models.NetworkUsages;
+import com.azure.resourcemanager.network.NetworkManagementClient;
+import com.azure.resourcemanager.network.fluent.inner.UsageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /** The implementation of NetworkUsages. */
-class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
+public class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
     implements NetworkUsages {
-    private final NetworkManagementClientImpl client;
+    private final NetworkManagementClient client;
 
-    NetworkUsagesImpl(NetworkManagementClientImpl client) {
+    public NetworkUsagesImpl(NetworkManagementClient client) {
         this.client = client;
     }
 
@@ -27,7 +27,7 @@ class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageI
 
     @Override
     public PagedIterable<NetworkUsage> listByRegion(String regionName) {
-        return wrapList(client.usages().list(regionName));
+        return wrapList(client.getUsages().list(regionName));
     }
 
     @Override
@@ -37,7 +37,7 @@ class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageI
 
     @Override
     public PagedFlux<NetworkUsage> listByRegionAsync(String regionName) {
-        return wrapPageAsync(client.usages().listAsync(regionName));
+        return wrapPageAsync(client.getUsages().listAsync(regionName));
     }
 
     @Override

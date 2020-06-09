@@ -4,11 +4,11 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentity;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityType;
-import com.azure.resourcemanager.appservice.ManagedServiceIdentityUserAssignedIdentities;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityUserAssignedIdentities;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
 import com.azure.resourcemanager.authorization.GraphRbacManager;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
@@ -76,7 +76,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
             return this;
         } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.NONE);
-        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -224,7 +224,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
                         siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
                     } else if (currentIdentity
                         .type()
-                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
                         siteUpdate.withIdentity(currentIdentity);
                         siteUpdate.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ManagedServiceIdentityType.USER_ASSIGNED)) {
@@ -269,7 +269,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
             || siteInner.identity().type().equals(identityType)) {
             siteInner.identity().withType(identityType);
         } else {
-            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }

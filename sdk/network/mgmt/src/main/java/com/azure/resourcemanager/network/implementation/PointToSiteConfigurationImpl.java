@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.AddressSpace;
-import com.azure.resourcemanager.network.PointToSiteConfiguration;
-import com.azure.resourcemanager.network.VirtualNetworkGateway;
-import com.azure.resourcemanager.network.VpnClientConfiguration;
-import com.azure.resourcemanager.network.VpnClientProtocol;
-import com.azure.resourcemanager.network.VpnClientRevokedCertificate;
-import com.azure.resourcemanager.network.VpnClientRootCertificate;
+import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.PointToSiteConfiguration;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
+import com.azure.resourcemanager.network.models.VpnClientConfiguration;
+import com.azure.resourcemanager.network.models.VpnClientProtocol;
+import com.azure.resourcemanager.network.models.VpnClientRevokedCertificate;
+import com.azure.resourcemanager.network.models.VpnClientRootCertificate;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.io.File;
 import java.io.IOException;

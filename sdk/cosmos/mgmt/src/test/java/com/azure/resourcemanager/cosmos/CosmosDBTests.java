@@ -9,12 +9,12 @@ import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PrivateLinkServiceConnection;
-import com.azure.resourcemanager.network.PrivateLinkServiceConnectionState;
-import com.azure.resourcemanager.network.ServiceEndpointType;
-import com.azure.resourcemanager.network.implementation.NetworkManager;
-import com.azure.resourcemanager.network.models.PrivateEndpointInner;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
+import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.network.models.ServiceEndpointType;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointInner;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
@@ -137,7 +137,7 @@ public class CosmosDBTests extends TestBase {
                 .withSubnet(network.subnets().get(subnetName).inner());
 
         privateEndpoint.withLocation(region.toString());
-        privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
+        privateEndpoint = networkManager.inner().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount
             .update()

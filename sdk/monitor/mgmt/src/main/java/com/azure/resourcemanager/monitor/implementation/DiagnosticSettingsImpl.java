@@ -5,14 +5,15 @@ package com.azure.resourcemanager.monitor.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.DiagnosticSetting;
-import com.azure.resourcemanager.monitor.DiagnosticSettings;
-import com.azure.resourcemanager.monitor.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategoryResourceCollectionInner;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategoryResourceInner;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsInner;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsResourceCollectionInner;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
+import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
+import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceCollectionInner;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceCollectionInner;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -25,7 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Implementation for DiagnosticSettings. */
-class DiagnosticSettingsImpl
+public class DiagnosticSettingsImpl
     extends CreatableResourcesImpl<DiagnosticSetting, DiagnosticSettingImpl, DiagnosticSettingsResourceInner>
     implements DiagnosticSettings {
 
@@ -33,7 +34,7 @@ class DiagnosticSettingsImpl
 
     private final MonitorManager manager;
 
-    DiagnosticSettingsImpl(final MonitorManager manager) {
+    public DiagnosticSettingsImpl(final MonitorManager manager) {
         this.manager = manager;
     }
 
@@ -65,15 +66,15 @@ class DiagnosticSettingsImpl
     }
 
     @Override
-    public DiagnosticSettingsInner inner() {
-        return this.manager().inner().diagnosticSettings();
+    public DiagnosticSettingsClient inner() {
+        return this.manager().inner().getDiagnosticSettings();
     }
 
     @Override
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
         DiagnosticSettingsCategoryResourceCollectionInner collection =
-            this.manager().inner().diagnosticSettingsCategorys().list(resourceId);
+            this.manager().inner().getDiagnosticSettingsCategorys().list(resourceId);
         if (collection != null) {
             for (DiagnosticSettingsCategoryResourceInner category : collection.value()) {
                 categories.add(new DiagnosticSettingsCategoryImpl(category));
@@ -89,7 +90,7 @@ class DiagnosticSettingsImpl
                 this
                     .manager
                     .inner()
-                    .diagnosticSettingsCategorys()
+                    .getDiagnosticSettingsCategorys()
                     .listAsync(resourceId)
                     .map(DiagnosticSettingsCategoryResourceCollectionInner::value))
             .mapPage(DiagnosticSettingsCategoryImpl::new);
@@ -98,7 +99,7 @@ class DiagnosticSettingsImpl
     @Override
     public DiagnosticSettingsCategory getCategory(String resourceId, String name) {
         return new DiagnosticSettingsCategoryImpl(
-            this.manager().inner().diagnosticSettingsCategorys().get(resourceId, name));
+            this.manager().inner().getDiagnosticSettingsCategorys().get(resourceId, name));
     }
 
     @Override
@@ -106,7 +107,7 @@ class DiagnosticSettingsImpl
         return this
             .manager()
             .inner()
-            .diagnosticSettingsCategorys()
+            .getDiagnosticSettingsCategorys()
             .getAsync(resourceId, name)
             .map(DiagnosticSettingsCategoryImpl::new);
     }
@@ -123,7 +124,7 @@ class DiagnosticSettingsImpl
                 this
                     .manager()
                     .inner()
-                    .diagnosticSettings()
+                    .getDiagnosticSettings()
                     .listAsync(resourceId)
                     .map(DiagnosticSettingsResourceCollectionInner::value))
             .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
@@ -131,22 +132,22 @@ class DiagnosticSettingsImpl
 
     @Override
     public void delete(String resourceId, String name) {
-        this.manager().inner().diagnosticSettings().delete(resourceId, name);
+        this.manager().inner().getDiagnosticSettings().delete(resourceId, name);
     }
 
     @Override
     public Mono<Void> deleteAsync(String resourceId, String name) {
-        return this.manager().inner().diagnosticSettings().deleteAsync(resourceId, name);
+        return this.manager().inner().getDiagnosticSettings().deleteAsync(resourceId, name);
     }
 
     @Override
     public DiagnosticSetting get(String resourceId, String name) {
-        return wrapModel(this.manager().inner().diagnosticSettings().get(resourceId, name));
+        return wrapModel(this.manager().inner().getDiagnosticSettings().get(resourceId, name));
     }
 
     @Override
     public Mono<DiagnosticSetting> getAsync(String resourceId, String name) {
-        return this.manager().inner().diagnosticSettings().getAsync(resourceId, name).map(this::wrapModel);
+        return this.manager().inner().getDiagnosticSettings().getAsync(resourceId, name).map(this::wrapModel);
     }
 
     @Override
@@ -154,7 +155,7 @@ class DiagnosticSettingsImpl
         return this
             .manager()
             .inner()
-            .diagnosticSettings()
+            .getDiagnosticSettings()
             .deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
     }
 

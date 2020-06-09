@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.ApplicationSecurityGroup;
-import com.azure.resourcemanager.network.models.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +24,7 @@ class ApplicationSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .applicationSecurityGroups()
+            .getApplicationSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -32,7 +33,7 @@ class ApplicationSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .applicationSecurityGroups()
+            .getApplicationSecurityGroups()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
     }

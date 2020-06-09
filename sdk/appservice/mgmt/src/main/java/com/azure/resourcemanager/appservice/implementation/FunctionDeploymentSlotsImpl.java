@@ -5,13 +5,14 @@ package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.FunctionApp;
-import com.azure.resourcemanager.appservice.FunctionDeploymentSlot;
-import com.azure.resourcemanager.appservice.FunctionDeploymentSlots;
-import com.azure.resourcemanager.appservice.models.SiteConfigResourceInner;
-import com.azure.resourcemanager.appservice.models.SiteInner;
-import com.azure.resourcemanager.appservice.models.SiteLogsConfigInner;
-import com.azure.resourcemanager.appservice.models.WebAppsInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteConfigResourceInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.inner.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
+import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
@@ -19,13 +20,13 @@ import reactor.core.publisher.Mono;
 /** The implementation DeploymentSlots. */
 class FunctionDeploymentSlotsImpl
     extends IndependentChildResourcesImpl<
-        FunctionDeploymentSlot, FunctionDeploymentSlotImpl, SiteInner, WebAppsInner, AppServiceManager, FunctionApp>
+        FunctionDeploymentSlot, FunctionDeploymentSlotImpl, SiteInner, WebAppsClient, AppServiceManager, FunctionApp>
     implements FunctionDeploymentSlots {
 
     private final FunctionAppImpl parent;
 
     FunctionDeploymentSlotsImpl(final FunctionAppImpl parent) {
-        super(parent.manager().inner().webApps(), parent.manager());
+        super(parent.manager().inner().getWebApps(), parent.manager());
 
         this.parent = parent;
     }

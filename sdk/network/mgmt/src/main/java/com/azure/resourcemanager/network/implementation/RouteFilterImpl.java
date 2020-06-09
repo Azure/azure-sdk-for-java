@@ -2,14 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.Access;
-import com.azure.resourcemanager.network.ExpressRouteCircuitPeering;
-import com.azure.resourcemanager.network.RouteFilter;
-import com.azure.resourcemanager.network.RouteFilterRule;
-import com.azure.resourcemanager.network.RouteFilterRuleType;
-import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringInner;
-import com.azure.resourcemanager.network.models.RouteFilterInner;
-import com.azure.resourcemanager.network.models.RouteFilterRuleInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.Access;
+import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeering;
+import com.azure.resourcemanager.network.models.RouteFilter;
+import com.azure.resourcemanager.network.models.RouteFilterRule;
+import com.azure.resourcemanager.network.models.RouteFilterRuleType;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCircuitPeeringInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterInner;
+import com.azure.resourcemanager.network.fluent.inner.RouteFilterRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -35,7 +36,7 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> createInner() {
-        return this.manager().inner().routeFilters().createOrUpdateAsync(resourceGroupName(), name(), inner());
+        return this.manager().inner().getRouteFilters().createOrUpdateAsync(resourceGroupName(), name(), inner());
     }
 
     @Override
@@ -52,7 +53,7 @@ class RouteFilterImpl
             this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
                 ExpressRouteCircuitPeeringInner::name,
                 peering -> new ExpressRouteCircuitPeeringImpl(this, peering,
-                    manager().inner().expressRouteCircuitPeerings(), peering.peeringType())
+                    manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType())
             ));
         } else {
             this.peerings = new HashMap<>();
@@ -69,7 +70,7 @@ class RouteFilterImpl
         return this
             .manager()
             .inner()
-            .routeFilters()
+            .getRouteFilters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
