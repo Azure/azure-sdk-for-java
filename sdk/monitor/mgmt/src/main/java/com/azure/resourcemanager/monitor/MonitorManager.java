@@ -148,7 +148,7 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorClient>
             profile,
             new MonitorClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);

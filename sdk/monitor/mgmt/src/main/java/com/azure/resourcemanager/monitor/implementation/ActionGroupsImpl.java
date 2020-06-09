@@ -12,13 +12,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link ActionGroups}. */
-class ActionGroupsImpl
+public class ActionGroupsImpl
     extends TopLevelModifiableResourcesImpl<
         ActionGroup, ActionGroupImpl, ActionGroupResourceInner, ActionGroupsClient, MonitorManager>
     implements ActionGroups {
 
-    ActionGroupsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().actionGroups(), monitorManager);
+    public ActionGroupsImpl(final MonitorManager monitorManager) {
+        super(monitorManager.inner().getActionGroups(), monitorManager);
     }
 
     @Override

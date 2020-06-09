@@ -178,7 +178,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
         return this
             .manager()
             .inner()
-            .metrics()
+            .getMetrics()
             .listAsync(
                 this.inner.resourceId(),
                 String

@@ -133,14 +133,14 @@ class MetricAlertImpl
         return this
             .manager()
             .inner()
-            .metricAlerts()
+            .getMetricAlerts()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<MetricAlertResourceInner> getInnerAsync() {
-        return this.manager().inner().metricAlerts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getMetricAlerts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

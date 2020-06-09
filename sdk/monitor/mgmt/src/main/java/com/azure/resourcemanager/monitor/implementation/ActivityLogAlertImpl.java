@@ -88,7 +88,7 @@ class ActivityLogAlertImpl
         return this
             .manager()
             .inner()
-            .activityLogAlerts()
+            .getActivityLogAlerts()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
@@ -98,7 +98,7 @@ class ActivityLogAlertImpl
         return this
             .manager()
             .inner()
-            .activityLogAlerts()
+            .getActivityLogAlerts()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 

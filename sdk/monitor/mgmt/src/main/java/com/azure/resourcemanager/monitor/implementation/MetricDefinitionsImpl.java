@@ -11,11 +11,11 @@ import com.azure.resourcemanager.monitor.models.MetricDefinitions;
 import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
 
 /** Implementation for {@link MetricDefinitions}. */
-class MetricDefinitionsImpl implements MetricDefinitions {
+public class MetricDefinitionsImpl implements MetricDefinitions {
 
     private final MonitorManager myManager;
 
-    MetricDefinitionsImpl(final MonitorManager monitorManager) {
+    public MetricDefinitionsImpl(final MonitorManager monitorManager) {
         this.myManager = monitorManager;
     }
 
@@ -26,7 +26,7 @@ class MetricDefinitionsImpl implements MetricDefinitions {
 
     @Override
     public MetricDefinitionsClient inner() {
-        return this.myManager.inner().metricDefinitions();
+        return this.myManager.inner().getMetricDefinitions();
     }
 
     @Override

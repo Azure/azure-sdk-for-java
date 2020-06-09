@@ -224,14 +224,14 @@ class ActionGroupImpl
         return this
             .manager()
             .inner()
-            .actionGroups()
+            .getActionGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ActionGroupResourceInner> getInnerAsync() {
-        return this.manager().inner().actionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getActionGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

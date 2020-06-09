@@ -218,7 +218,7 @@ class AutoscaleSettingImpl
         return this
             .manager()
             .inner()
-            .autoscaleSettings()
+            .getAutoscaleSettings()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
@@ -228,7 +228,7 @@ class AutoscaleSettingImpl
         return this
             .manager()
             .inner()
-            .autoscaleSettings()
+            .getAutoscaleSettings()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 

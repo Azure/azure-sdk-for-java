@@ -9,12 +9,12 @@ import com.azure.resourcemanager.monitor.models.AlertRules;
 import com.azure.resourcemanager.monitor.models.MetricAlerts;
 
 /** Implementation for {@link MetricAlerts}. */
-class AlertRulesImpl implements AlertRules {
+public class AlertRulesImpl implements AlertRules {
 
     private final MetricAlerts metricAlerts;
     private final ActivityLogAlerts activityLogAlerts;
 
-    AlertRulesImpl(final MonitorManager monitorManager) {
+    public AlertRulesImpl(final MonitorManager monitorManager) {
         metricAlerts = new MetricAlertsImpl(monitorManager);
         activityLogAlerts = new ActivityLogAlertsImpl(monitorManager);
     }
