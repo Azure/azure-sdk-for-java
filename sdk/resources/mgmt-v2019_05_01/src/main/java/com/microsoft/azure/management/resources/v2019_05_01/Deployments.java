@@ -8,17 +8,21 @@
 
 package com.microsoft.azure.management.resources.v2019_05_01;
 
-import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.resources.v2019_05_01.implementation.DeploymentInner;
-import com.microsoft.azure.management.resources.v2019_05_01.implementation.DeploymentsInner;
-import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing Deployments.
  */
-public interface Deployments extends SupportsCreating<DeploymentExtended.DefinitionStages.Blank>, HasInner<DeploymentsInner> {
+public interface Deployments {
+    /**
+     * Begins definition for a new Deployment resource.
+     * @param name resource name.
+     * @return the first stage of the new Deployment definition.
+     */
+    DeploymentExtended.DefinitionStages.Blank defineDeployment(String name);
+
     /**
      * Deletes a deployment from the deployment history.
      * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
@@ -250,5 +254,14 @@ public interface Deployments extends SupportsCreating<DeploymentExtended.Definit
      * @return the observable for the request
      */
     Observable<DeploymentExtended> listByResourceGroupAsync(final String resourceGroupName);
+
+    /**
+     * Calculate the hash of the given template.
+     *
+     * @param template The template provided to calculate hash.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<TemplateHashResult> calculateTemplateHashAsync(Object template);
 
 }
