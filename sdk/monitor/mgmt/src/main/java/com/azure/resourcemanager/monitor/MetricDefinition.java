@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.monitor;
 
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.monitor.models.MetricDefinitionInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.time.Duration;

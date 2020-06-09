@@ -13,7 +13,7 @@ import com.azure.resourcemanager.monitor.LogicAppReceiver;
 import com.azure.resourcemanager.monitor.SmsReceiver;
 import com.azure.resourcemanager.monitor.VoiceReceiver;
 import com.azure.resourcemanager.monitor.WebhookReceiver;
-import com.azure.resourcemanager.monitor.models.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.ArrayList;

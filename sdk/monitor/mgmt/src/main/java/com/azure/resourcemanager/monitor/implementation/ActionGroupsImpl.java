@@ -5,8 +5,8 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.ActionGroup;
 import com.azure.resourcemanager.monitor.ActionGroups;
-import com.azure.resourcemanager.monitor.models.ActionGroupResourceInner;
-import com.azure.resourcemanager.monitor.models.ActionGroupsInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 

@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor;
 
-import com.azure.resourcemanager.monitor.models.MetricInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.List;
 

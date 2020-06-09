@@ -11,7 +11,7 @@ import com.azure.resourcemanager.monitor.ScaleDirection;
 import com.azure.resourcemanager.monitor.ScaleRule;
 import com.azure.resourcemanager.monitor.ScaleType;
 import com.azure.resourcemanager.monitor.TimeAggregationType;
-import com.azure.resourcemanager.monitor.models.ScaleRuleInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ScaleRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.Duration;
 

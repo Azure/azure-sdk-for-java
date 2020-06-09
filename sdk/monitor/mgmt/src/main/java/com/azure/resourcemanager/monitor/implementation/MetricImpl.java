@@ -7,7 +7,7 @@ import com.azure.resourcemanager.monitor.LocalizableString;
 import com.azure.resourcemanager.monitor.Metric;
 import com.azure.resourcemanager.monitor.TimeSeriesElement;
 import com.azure.resourcemanager.monitor.Unit;
-import com.azure.resourcemanager.monitor.models.MetricInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 

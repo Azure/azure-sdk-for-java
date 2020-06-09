@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.monitor;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.monitor.models.AutoscaleProfileInner;
+import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleProfileInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;

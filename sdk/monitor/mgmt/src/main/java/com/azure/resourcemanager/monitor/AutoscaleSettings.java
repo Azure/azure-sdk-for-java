@@ -4,7 +4,7 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.monitor.models.AutoscaleSettingsInner;
+import com.azure.resourcemanager.monitor.fluent.inner.AutoscaleSettingsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;

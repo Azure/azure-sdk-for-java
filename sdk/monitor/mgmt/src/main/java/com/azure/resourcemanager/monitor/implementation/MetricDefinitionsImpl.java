@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.monitor.MetricDefinition;
 import com.azure.resourcemanager.monitor.MetricDefinitions;
-import com.azure.resourcemanager.monitor.models.MetricDefinitionsInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionsInner;
 
 /** Implementation for {@link MetricDefinitions}. */
 class MetricDefinitionsImpl implements MetricDefinitions {

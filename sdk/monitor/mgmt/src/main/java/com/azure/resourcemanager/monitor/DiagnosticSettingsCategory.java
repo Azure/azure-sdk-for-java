@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.monitor;
 
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** The Azure event log entries are of type DiagnosticSettingsCategory. */

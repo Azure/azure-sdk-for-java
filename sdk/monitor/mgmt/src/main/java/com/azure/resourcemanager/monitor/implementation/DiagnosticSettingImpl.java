@@ -10,7 +10,7 @@ import com.azure.resourcemanager.monitor.DiagnosticSettingsCategory;
 import com.azure.resourcemanager.monitor.LogSettings;
 import com.azure.resourcemanager.monitor.MetricSettings;
 import com.azure.resourcemanager.monitor.RetentionPolicy;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import java.time.Duration;
 import java.util.ArrayList;

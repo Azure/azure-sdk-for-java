@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.monitor.models.ActivityLogAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;

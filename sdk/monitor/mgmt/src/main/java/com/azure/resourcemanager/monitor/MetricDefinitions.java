@@ -6,7 +6,7 @@ package com.azure.resourcemanager.monitor;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.monitor.models.MetricDefinitionsInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricDefinitionsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 

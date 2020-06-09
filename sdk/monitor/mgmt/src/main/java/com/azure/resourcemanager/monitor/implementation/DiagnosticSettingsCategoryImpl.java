@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.CategoryType;
 import com.azure.resourcemanager.monitor.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsCategoryResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The Azure {@link DiagnosticSettingsCategory} wrapper class implementation. */

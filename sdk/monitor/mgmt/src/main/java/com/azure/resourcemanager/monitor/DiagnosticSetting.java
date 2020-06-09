@@ -5,7 +5,7 @@ package com.azure.resourcemanager.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.monitor.implementation.MonitorManager;
-import com.azure.resourcemanager.monitor.models.DiagnosticSettingsResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.monitor.MetricCollection;
 import com.azure.resourcemanager.monitor.MetricDefinition;
 import com.azure.resourcemanager.monitor.MetricValue;
 import com.azure.resourcemanager.monitor.TimeSeriesElement;
-import com.azure.resourcemanager.monitor.models.MetadataValueInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.monitor.ActivityLogs;
 import com.azure.resourcemanager.monitor.EventData;
 import com.azure.resourcemanager.monitor.EventDataPropertyName;
 import com.azure.resourcemanager.monitor.LocalizableString;
-import com.azure.resourcemanager.monitor.models.ActivityLogsInner;
+import com.azure.resourcemanager.monitor.fluent.inner.ActivityLogsInner;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;

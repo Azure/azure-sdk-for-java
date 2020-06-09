@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.EventLevel;
 import com.azure.resourcemanager.monitor.HttpRequestInfo;
 import com.azure.resourcemanager.monitor.LocalizableString;
 import com.azure.resourcemanager.monitor.SenderAuthorization;
-import com.azure.resourcemanager.monitor.models.EventDataInner;
+import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.Map;

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.monitor.MetricAlertSingleResourceMultipleMetric
 import com.azure.resourcemanager.monitor.MetricCriteria;
 import com.azure.resourcemanager.monitor.MetricDynamicAlertCondition;
 import com.azure.resourcemanager.monitor.MultiMetricCriteria;
-import com.azure.resourcemanager.monitor.models.MetricAlertResourceInner;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricAlertResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
