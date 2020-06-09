@@ -33,14 +33,22 @@ public final class SearchResourceEncryptionKey {
      * might be https://my-keyvault-name.vault.azure.net.
      */
     @JsonProperty(value = "keyVaultUri", required = true)
-    private String vaultUri;
+    private String vaultUrl;
 
     /*
-     * Optional Azure Active Directory credentials used for accessing your
-     * Azure Key Vault. Not required if using managed identity instead.
+     * An AAD Application ID that was granted the required access permissions
+     * to the Azure Key Vault that is to be used when encrypting your data at
+     * rest. The Application ID should not be confused with the Object ID for
+     * your AAD Application.
      */
-    @JsonProperty(value = "accessCredentials")
-    private AzureActiveDirectoryApplicationCredentials accessCredentials;
+    @JsonProperty(value = "applicationId", required = true)
+    private String applicationId;
+
+    /*
+     * The authentication key of the specified AAD application.
+     */
+    @JsonProperty(value = "applicationSecret")
+    private String applicationSecret;
 
     /**
      * Get the keyName property: The name of your Azure Key Vault key to be
@@ -94,8 +102,8 @@ public final class SearchResourceEncryptionKey {
      *
      * @return the vaultUri value.
      */
-    public String getVaultUri() {
-        return this.vaultUri;
+    public String getVaultUrl() {
+        return this.vaultUrl;
     }
 
     /**
@@ -104,36 +112,59 @@ public final class SearchResourceEncryptionKey {
      * your data at rest. An example URI might be
      * https://my-keyvault-name.vault.azure.net.
      *
-     * @param vaultUri the vaultUri value to set.
+     * @param vaultUrl the vaultUri value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setVaultUri(String vaultUri) {
-        this.vaultUri = vaultUri;
+    public SearchResourceEncryptionKey setVaultUrl(String vaultUrl) {
+        this.vaultUrl = vaultUrl;
         return this;
     }
 
     /**
-     * Get the accessCredentials property: Optional Azure Active Directory
-     * credentials used for accessing your Azure Key Vault. Not required if
-     * using managed identity instead.
+     * Get the applicationId property: An AAD Application ID that was granted
+     * the required access permissions to the Azure Key Vault that is to be
+     * used when encrypting your data at rest. The Application ID should not be
+     * confused with the Object ID for your AAD Application.
      *
-     * @return the accessCredentials value.
+     * @return the applicationId value.
      */
-    public AzureActiveDirectoryApplicationCredentials getAccessCredentials() {
-        return this.accessCredentials;
+    public String getApplicationId() {
+        return this.applicationId;
     }
 
     /**
-     * Set the accessCredentials property: Optional Azure Active Directory
-     * credentials used for accessing your Azure Key Vault. Not required if
-     * using managed identity instead.
+     * Set the applicationId property: An AAD Application ID that was granted
+     * the required access permissions to the Azure Key Vault that is to be
+     * used when encrypting your data at rest. The Application ID should not be
+     * confused with the Object ID for your AAD Application.
      *
-     * @param accessCredentials the accessCredentials value to set.
+     * @param applicationId the applicationId value to set.
      * @return the SearchResourceEncryptionKey object itself.
      */
-    public SearchResourceEncryptionKey setAccessCredentials(
-        AzureActiveDirectoryApplicationCredentials accessCredentials) {
-        this.accessCredentials = accessCredentials;
+    public SearchResourceEncryptionKey setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+        return this;
+    }
+
+    /**
+     * Get the applicationSecret property: The authentication key of the
+     * specified AAD application.
+     *
+     * @return the applicationSecret value.
+     */
+    public String getApplicationSecret() {
+        return this.applicationSecret;
+    }
+
+    /**
+     * Set the applicationSecret property: The authentication key of the
+     * specified AAD application.
+     *
+     * @param applicationSecret the applicationSecret value to set.
+     * @return the SearchResourceEncryptionKey object itself.
+     */
+    public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {
+        this.applicationSecret = applicationSecret;
         return this;
     }
 }

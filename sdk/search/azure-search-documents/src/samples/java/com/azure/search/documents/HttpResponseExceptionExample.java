@@ -40,7 +40,7 @@ public class HttpResponseExceptionExample {
      * With the sync client, HttpResponseExceptions are raised on failure
      */
     private static void handleErrorsWithSyncClient() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -71,7 +71,7 @@ public class HttpResponseExceptionExample {
      * With the async client, errors need to be handled when subscribing to the stream
      */
     private static void handleErrorsWithAsyncClient() {
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
+        SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)

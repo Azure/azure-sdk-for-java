@@ -119,11 +119,13 @@ abstract class SyncBenchmark<T> {
         }
         cosmosClient = cosmosClientBuilder.buildClient();
         try {
-            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().getDatabase();
+            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosDatabase.read();
             logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).getDatabase();
+                cosmosClient.createDatabase(cfg.getDatabaseId());
+                cosmosDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                 databaseCreated = true;
             } else {
                 throw e;

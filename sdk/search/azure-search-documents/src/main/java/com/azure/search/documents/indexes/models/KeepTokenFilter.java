@@ -56,7 +56,7 @@ public final class KeepTokenFilter extends TokenFilter {
      *
      * @return the lowerCaseKeepWords value.
      */
-    public Boolean isLowerCaseKeepWords() {
+    public Boolean areLowerCaseKeepWords() {
         return this.lowerCaseKeepWords;
     }
 

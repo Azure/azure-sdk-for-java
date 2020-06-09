@@ -6,13 +6,13 @@ import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.models.CosmosStoredProcedureResponse;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -90,7 +90,7 @@ public class CosmosAsyncScripts {
      * properties or an error.
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures() {
-        return readAllStoredProcedures(new FeedOptions());
+        return readAllStoredProcedures(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -101,12 +101,12 @@ public class CosmosAsyncScripts {
      * procedure properties.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored
      * procedures
      * properties or an error.
      */
-    CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
+    CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -125,14 +125,14 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored
      * procedures or
      * an error.
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
-        FeedOptions options) {
+        CosmosQueryRequestOptions options) {
         return queryStoredProcedures(new SqlQuerySpec(query), options);
     }
 
@@ -144,14 +144,14 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored
      * procedures or
      * an error.
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -186,7 +186,7 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created user defined function or an
      * error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunction(
+    public Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunction(
         CosmosUserDefinedFunctionProperties properties) {
         UserDefinedFunction udf = new UserDefinedFunction();
         udf.setId(properties.getId());
@@ -194,7 +194,7 @@ public class CosmosAsyncScripts {
 
         return database.getDocClientWrapper()
                    .createUserDefinedFunction(container.getLink(), udf, null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, this.container)).single();
+                   .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
     }
 
     /**
@@ -209,7 +209,7 @@ public class CosmosAsyncScripts {
      * error.
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions() {
-        return readAllUserDefinedFunctions(new FeedOptions());
+        return readAllUserDefinedFunctions(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -219,12 +219,12 @@ public class CosmosAsyncScripts {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read user defined functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined
      * functions or an
      * error.
      */
-    CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
+    CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -244,14 +244,14 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         String query,
-        FeedOptions options) {
+        CosmosQueryRequestOptions options) {
         return queryUserDefinedFunctions(new SqlQuerySpec(query), options);
     }
 
@@ -264,14 +264,14 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -304,12 +304,12 @@ public class CosmosAsyncScripts {
      * @param properties the cosmos trigger properties
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
-    public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
+    public Mono<CosmosTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
         Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getResource(properties)));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, this.container))
+                   .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
                    .single();
     }
 
@@ -326,7 +326,7 @@ public class CosmosAsyncScripts {
      * an error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers() {
-        return readAllTriggers(new FeedOptions());
+        return readAllTriggers(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -337,12 +337,12 @@ public class CosmosAsyncScripts {
      * properties.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger
      * properties or
      * an error.
      */
-    CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
+    CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -361,11 +361,11 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained triggers or an
      * error.
      */
-    public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, CosmosQueryRequestOptions options) {
         return queryTriggers(new SqlQuerySpec(query), options);
     }
 
@@ -377,13 +377,13 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained triggers or an
      * error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
-        FeedOptions options) {
+        CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()

@@ -3,6 +3,7 @@
 package com.azure.cosmos.examples.ChangeFeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -94,7 +95,7 @@ public class SampleChangeFeedProcessor {
     }
 
     public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
-        return ChangeFeedProcessor.changeFeedProcessorBuilder()
+        return new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
@@ -112,7 +113,7 @@ public class SampleChangeFeedProcessor {
                 System.out.println("--->handleChanges() END");
 
             })
-            .build();
+            .buildChangeFeedProcessor();
     }
 
     public static CosmosAsyncClient getCosmosClient() {
@@ -127,7 +128,8 @@ public class SampleChangeFeedProcessor {
     }
 
     public static CosmosAsyncDatabase createNewDatabase(CosmosAsyncClient client, String databaseName) {
-        return client.createDatabaseIfNotExists(databaseName).block().getDatabase();
+        client.createDatabaseIfNotExists(databaseName).block();
+        return client.getDatabase(databaseName);
     }
 
     public static void deleteDatabase(CosmosAsyncDatabase cosmosDatabase) {

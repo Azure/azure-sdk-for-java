@@ -3,40 +3,39 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SearchSuggester;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link Suggester}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.Suggester} and {@link SearchSuggester}.
  */
 public final class SuggesterConverter {
-    private static final String SEARCH_MODE = "analyzingInfixMatching";
     /**
-     * Maps from {@link com.azure.search.documents.indexes.implementation.models.Suggester} to {@link Suggester}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.Suggester} to {@link SearchSuggester}.
      */
-    public static Suggester map(com.azure.search.documents.indexes.implementation.models.Suggester obj) {
+    public static SearchSuggester map(com.azure.search.documents.indexes.implementation.models.Suggester obj) {
         if (obj == null) {
             return null;
         }
-        Suggester suggester = new Suggester();
+        SearchSuggester searchSuggester = new SearchSuggester();
 
         if (obj.getSourceFields() != null) {
             List<String> sourceFields = new ArrayList<>(obj.getSourceFields());
-            suggester.setSourceFields(sourceFields);
+            searchSuggester.setSourceFields(sourceFields);
         }
 
         String name = obj.getName();
-        suggester.setName(name);
+        searchSuggester.setName(name);
 
-        return suggester;
+        return searchSuggester;
     }
 
     /**
-     * Maps from {@link Suggester} to {@link com.azure.search.documents.indexes.implementation.models.Suggester}.
+     * Maps from {@link SearchSuggester} to {@link com.azure.search.documents.indexes.implementation.models.Suggester}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.Suggester map(Suggester obj) {
+    public static com.azure.search.documents.indexes.implementation.models.Suggester map(SearchSuggester obj) {
         if (obj == null) {
             return null;
         }
@@ -51,7 +50,6 @@ public final class SuggesterConverter {
         String name = obj.getName();
         suggester.setName(name);
 
-        suggester.setSearchMode(SEARCH_MODE);
         return suggester;
     }
 

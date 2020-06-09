@@ -70,7 +70,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 With above configuration, `azure` client can be authenticated by following code:
 
 ```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
     .build();
@@ -90,6 +90,9 @@ See [Samples][sample] for code snippets and samples.
 The key concepts of Azure Management Libraries includes:
 
 - Fluent interface to manage Azure resources.
+- Dependency across Azure resources.
+- Batch Azure resource provisioning.
+- Integration with Azure role-based access control.
 - Asynchronous operations with [Reactor][reactor].
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 
@@ -108,7 +111,7 @@ The key concepts of Azure Management Libraries includes:
 
 ### Fluent interface
 
-You can create a virtual machine instance, together with required virtual network and ip address.
+You can create a virtual machine instance, together with required virtual network and ip address created automatically.
 
 ```java
 VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
@@ -132,12 +135,78 @@ linuxVM.update()
     .apply();
 ```
 
+### Dependency across Azure resources.
+
+You can create a function app, together with required storage account and app service plan created on specification.
+
+```java
+Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
+    .define(storageAccountName)
+    .withRegion(Region.US_EAST)
+    .withExistingResourceGroup(rgName)
+    .withGeneralPurposeAccountKindV2()
+    .withSku(StorageAccountSkuType.STANDARD_LRS);
+
+Creatable<AppServicePlan> creatableAppServicePlan = azure.appServicePlans()
+    .define(appServicePlanName)
+    .withRegion(Region.US_EAST)
+    .withExistingResourceGroup(rgName)
+    .withPricingTier(PricingTier.STANDARD_S1)
+    .withOperatingSystem(OperatingSystem.LINUX);
+
+FunctionApp linuxFunctionApp = azure.functionApps().define(functionAppName)
+    .withRegion(Region.US_EAST)
+    .withExistingResourceGroup(rgName)
+    .withNewLinuxAppServicePlan(creatableAppServicePlan)
+    .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+    .withNewStorageAccount(creatableStorageAccount)
+    .withHttpsOnly(true)
+    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", functionAppPackageUrl)
+    .create();
+```
+
+### Batch Azure resource provisioning
+
+You can batch create and delete managed disk instances.
+
+```java
+List<String> diskNames = Arrays.asList("datadisk1", "datadisk2");
+
+List<Creatable<Disk>> creatableDisks = diskNames.stream()
+    .map(diskName -> azure.disks()
+        .define(diskName)
+        .withRegion(Region.US_EAST)
+        .withExistingResourceGroup(rgName)
+        .withData()
+        .withSizeInGB(1)
+        .withSku(DiskSkuTypes.STANDARD_LRS))
+    .collect(Collectors.toList());
+
+Collection<Disk> disks = azure.disks().create(creatableDisks).values();
+
+azure.disks().deleteByIds(disks.stream().map(Disk::id).collect(Collectors.toList()));
+```
+
+### Integration with Azure role-based access control
+
+You can assign Contributor for an Azure resource to a service principal.
+
+```java
+String raName = UUID.randomUUID().toString();
+RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
+    .define(raName)
+    .forServicePrincipal(servicePrincipal)
+    .withBuiltInRole(BuiltInRole.CONTRIBUTOR)
+    .withScope(resource.id())
+    .create();
+```
+
 ### Asynchronous operations
 
 You can create storage account, then blob container, in reactive programming. 
 
 ```java
-azure.storageAccounts().define("mystorageaccount")
+azure.storageAccounts().define(storageAccountName)
     .withRegion(Region.US_EAST)
     .withNewResourceGroup(rgName)
     .withSku(StorageAccountSkuType.STANDARD_LRS)
@@ -151,7 +220,16 @@ azure.storageAccounts().define("mystorageaccount")
         .withExistingBlobService(rgName, ((StorageAccount) indexable).name())
         .withPublicAccess(PublicAccess.BLOB)
         .createAsync()
-    ).blockLast();
+    )
+    ...
+```
+
+You can operate on virtual machines in parallel.
+
+```java
+azure.virtualMachines().listByResourceGroupAsync(rgName)
+    .flatMap(VirtualMachine::restartAsync)
+    ...
 ```
 
 ### Configurable client

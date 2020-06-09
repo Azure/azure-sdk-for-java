@@ -6,9 +6,6 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.indexes.models.TextSplitMode;
 
-import static com.azure.search.documents.implementation.util.Constants.ENUM_EXTERNAL_ERROR_MSG;
-import static com.azure.search.documents.implementation.util.Constants.ENUM_INTERNAL_ERROR_MSG;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.TextSplitMode} and {@link TextSplitMode}.
  */
@@ -23,14 +20,7 @@ public final class TextSplitModeConverter {
         if (obj == null) {
             return null;
         }
-        switch (obj) {
-            case PAGES:
-                return TextSplitMode.PAGES;
-            case SENTENCES:
-                return TextSplitMode.SENTENCES;
-            default:
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_EXTERNAL_ERROR_MSG, obj)));
-        }
+        return TextSplitMode.fromString(obj.toString());
     }
 
     /**
@@ -41,14 +31,7 @@ public final class TextSplitModeConverter {
         if (obj == null) {
             return null;
         }
-        switch (obj) {
-            case PAGES:
-                return com.azure.search.documents.indexes.implementation.models.TextSplitMode.PAGES;
-            case SENTENCES:
-                return com.azure.search.documents.indexes.implementation.models.TextSplitMode.SENTENCES;
-            default:
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ENUM_INTERNAL_ERROR_MSG, obj)));
-        }
+        return com.azure.search.documents.indexes.implementation.models.TextSplitMode.fromString(obj.toString());
     }
 
     private TextSplitModeConverter() {

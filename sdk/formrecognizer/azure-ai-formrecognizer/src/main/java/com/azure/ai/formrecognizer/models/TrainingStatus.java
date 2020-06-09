@@ -5,8 +5,6 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /**
  * Define enum values for TrainingStatus.
  */
@@ -36,13 +34,5 @@ public final class TrainingStatus extends ExpandableStringEnum<TrainingStatus> {
     public static TrainingStatus fromString(String value) {
         return fromString(value, TrainingStatus.class);
     }
-
-    /**
-     * @return known {@code TrainingStatus} values.
-     */
-    public static Collection<TrainingStatus> values() {
-        return values(TrainingStatus.class);
-    }
-
 
 }

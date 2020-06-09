@@ -16,13 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class OcrSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which algorithm to use for extracting text. Default
-     * is printed. Possible values include: 'Printed', 'Handwritten'
-     */
-    @JsonProperty(value = "textExtractionAlgorithm")
-    private TextExtractionAlgorithm textExtractionAlgorithm;
-
-    /*
      * A value indicating which language code to use. Default is en. Possible
      * values include: 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi',
      * 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es',
@@ -37,30 +30,6 @@ public final class OcrSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "detectOrientation")
     private Boolean shouldDetectOrientation;
-
-    /**
-     * Get the textExtractionAlgorithm property: A value indicating which
-     * algorithm to use for extracting text. Default is printed. Possible
-     * values include: 'Printed', 'Handwritten'.
-     *
-     * @return the textExtractionAlgorithm value.
-     */
-    public TextExtractionAlgorithm getTextExtractionAlgorithm() {
-        return this.textExtractionAlgorithm;
-    }
-
-    /**
-     * Set the textExtractionAlgorithm property: A value indicating which
-     * algorithm to use for extracting text. Default is printed. Possible
-     * values include: 'Printed', 'Handwritten'.
-     *
-     * @param textExtractionAlgorithm the textExtractionAlgorithm value to set.
-     * @return the OcrSkill object itself.
-     */
-    public OcrSkill setTextExtractionAlgorithm(TextExtractionAlgorithm textExtractionAlgorithm) {
-        this.textExtractionAlgorithm = textExtractionAlgorithm;
-        return this;
-    }
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language
@@ -96,7 +65,7 @@ public final class OcrSkill extends SearchIndexerSkill {
      *
      * @return the shouldDetectOrientation value.
      */
-    public Boolean shouldDetectOrientation() {
+    public Boolean setShouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
 

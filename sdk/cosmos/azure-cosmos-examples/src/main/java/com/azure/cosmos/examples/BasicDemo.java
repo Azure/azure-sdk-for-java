@@ -5,13 +5,12 @@ package com.azure.cosmos.examples;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
@@ -49,9 +48,9 @@ public class BasicDemo {
 
         //CREATE an Item async
 
-        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
+        Mono<CosmosItemResponse<TestObject>> itemResponseMono = container.createItem(testObject);
         //CREATE another Item async
-        Mono<CosmosAsyncItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
+        Mono<CosmosItemResponse<TestObject>> itemResponseMono1 = container.createItem(testObject2);
 
         //Wait for completion
         try {
@@ -102,7 +101,7 @@ public class BasicDemo {
 
         client.createDatabaseIfNotExists(DATABASE_NAME)
             .doOnSuccess(cosmosDatabaseResponse -> log("Database: " + DATABASE_NAME))
-            .flatMap(dbResponse -> dbResponse.getDatabase()
+            .flatMap(dbResponse -> client.getDatabase(DATABASE_NAME)
                 .createContainerIfNotExists(new CosmosContainerProperties(CONTAINER_NAME,
                     "/country")))
             .doOnSuccess(cosmosContainerResponse -> log("Container: " + CONTAINER_NAME))
@@ -114,7 +113,7 @@ public class BasicDemo {
     private void queryItems() {
         log("+ Querying the collection ");
         String query = "SELECT * from root";
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<TestObject> queryFlux = container.queryItems(query, options, TestObject.class);
 
@@ -130,7 +129,7 @@ public class BasicDemo {
     private void queryWithContinuationToken() {
         log("+ Query with paging using continuation token");
         String query = "SELECT * from root r ";
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(true);
         String continuation = null;
         do {

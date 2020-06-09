@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
-import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -43,7 +42,7 @@ final class TestUtils {
     static final String INVALID_SOURCE_URL_ERROR = "Status code 400, \"{\"error\":{\"code\":\"1003\","
         + "\"message\":\"Parameter 'Source' is not a valid Uri.\"}}\"";
     static final String INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
-    static final String NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
+    static final String NULL_SOURCE_URL_ERROR = "'trainingFilesUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample_files/Test/contoso-allinone.jpg";
@@ -61,10 +60,6 @@ final class TestUtils {
     static final String FORM_JPG = "Form_1.jpg";
 
     private TestUtils() {
-    }
-
-    static AccountProperties getExpectedAccountProperties() {
-        return new AccountProperties(14, 5000);
     }
 
     static InputStream getFileData(String fileName) {

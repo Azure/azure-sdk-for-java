@@ -18,8 +18,8 @@ public final class CosmosContainerRequestOptions {
 
     /**
      * Gets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
-     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for document
-     * collection read requests.
+     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for item
+     * container read requests.
      *
      * @return true if quotaInfoEnabled is enabled
      */
@@ -29,8 +29,8 @@ public final class CosmosContainerRequestOptions {
 
     /**
      * Sets the quotaInfoEnabled setting for cosmos container read requests in the Azure Cosmos DB database service.
-     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for document
-     * collection read requests.
+     * quotaInfoEnabled is used to enable/disable getting cosmos container quota related stats for item
+     * container read requests.
      *
      * @param quotaInfoEnabled a boolean value indicating whether quotaInfoEnabled is enabled or not
      * @return the current request options

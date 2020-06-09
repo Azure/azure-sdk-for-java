@@ -70,10 +70,11 @@
             <artifactId>commons-net</artifactId>
             <version>3.6</version>
         </dependency>
+        <!-- Important!!! jgit has gzip error above 4.5 with app services -->
         <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
-            <version>5.7.0.202003110725-r</version>
+            <version>4.5.7.201904151645-r</version>
         </dependency>
         <dependency>
             <groupId>com.github.docker-java</groupId>
@@ -101,12 +102,17 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-cosmos</artifactId>
-            <version>4.0.1-beta.1</version>
+            <version>4.0.1-beta.3</version>
         </dependency>
         <dependency>
             <groupId>io.fabric8</groupId>
             <artifactId>kubernetes-client</artifactId>
             <version>4.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>6.4.0.jre7</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

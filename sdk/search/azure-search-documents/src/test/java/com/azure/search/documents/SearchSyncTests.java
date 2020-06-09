@@ -5,6 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.CoordinateSystem;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.GeoPoint;
@@ -66,13 +67,13 @@ public class SearchSyncTests extends SearchTestBase {
     private final List<String> indexesToDelete = new ArrayList<>();
     private String synonymMapToDelete = "";
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
@@ -83,7 +84,7 @@ public class SearchSyncTests extends SearchTestBase {
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
@@ -580,7 +581,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalResultCount(true),
+        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalCount(true),
             generateRequestOptions(), Context.NONE);
         assertNotNull(results);
         Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
@@ -751,21 +752,21 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         String fieldName = "HotelName";
-        SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
 
         // Create a new SynonymMap
-        synonymMapToDelete = searchServiceClient.createSynonymMap(new SynonymMap()
+        synonymMapToDelete = searchIndexClient.createSynonymMap(new SynonymMap()
             .setName(testResourceNamer.randomName("names", 32))
             .setSynonyms("luxury,fancy")).getName();
 
         // Attach index field to SynonymMap
-        SearchIndex hotelsIndex = searchServiceClient.getIndex(client.getIndexName());
+        SearchIndex hotelsIndex = searchIndexClient.getIndex(client.getIndexName());
         hotelsIndex.getFields().stream()
             .filter(f -> fieldName.equals(f.getName()))
-            .findFirst().get().setSynonymMaps(Collections.singletonList(synonymMapToDelete));
+            .findFirst().get().setSynonymMapNames(Collections.singletonList(synonymMapToDelete));
 
         // Update the index with the SynonymMap
-        searchServiceClient.createOrUpdateIndex(hotelsIndex);
+        searchIndexClient.createOrUpdateIndex(hotelsIndex);
 
         sleepIfRunningAgainstService(10000);
 

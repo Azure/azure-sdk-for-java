@@ -43,43 +43,43 @@ public class CosmosStoredProcedure {
     /**
      * Read cosmos sync stored procedure.
      *
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse read() {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.read());
+                   .blockStoredProcedureResponse(storedProcedure.read());
     }
 
     /**
      * Read cosmos sync stored procedure.
      *
      * @param options the options
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse read(CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.read(options));
+                   .blockStoredProcedureResponse(storedProcedure.read(options));
     }
 
     /**
      * Delete cosmos stored procedure.
      *
-     * @return the cosmos sync response
+     * @return the cosmos response
      */
     public CosmosStoredProcedureResponse delete() {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.delete());
+                   .blockStoredProcedureResponse(storedProcedure.delete());
     }
 
     /**
      * Delete cosmos stored procedure.
      *
      * @param options the options
-     * @return the cosmos sync response
+     * @return the cosmos response
      */
     CosmosStoredProcedureResponse delete(CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.delete(options));
+                   .blockStoredProcedureResponse(storedProcedure.delete(options));
     }
 
     /**
@@ -87,38 +87,38 @@ public class CosmosStoredProcedure {
      *
      * @param procedureParams the procedure params
      * @param options the options
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse execute(
         List<Object> procedureParams,
         CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.execute(procedureParams, options));
+                   .blockStoredProcedureResponse(storedProcedure.execute(procedureParams, options));
     }
 
     /**
      * Replace cosmos sync stored procedure.
      *
-     * @param storedProcedureSettings the stored procedure settings
-     * @return the cosmos sync stored procedure response
+     * @param storedProcedureProperties the stored procedure settings
+     * @return the cosmos stored procedure response
      */
-    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings) {
+    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureProperties) {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings));
+                   .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureProperties));
     }
 
     /**
      * Replace cosmos sync stored procedure.
      *
-     * @param storedProcedureSettings the stored procedure settings
+     * @param storedProcedureProperties the stored procedure settings
      * @param options the options
-     * @return the cosmos sync stored procedure response
+     * @return the cosmos stored procedure response
      */
     public CosmosStoredProcedureResponse replace(
-        CosmosStoredProcedureProperties storedProcedureSettings,
+        CosmosStoredProcedureProperties storedProcedureProperties,
         CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
-                   .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings, options));
+                   .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureProperties, options));
 
     }
 }
