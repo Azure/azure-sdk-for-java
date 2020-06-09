@@ -41,8 +41,6 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
-import com.microsoft.azure.LongRunningFinalState;
-import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
