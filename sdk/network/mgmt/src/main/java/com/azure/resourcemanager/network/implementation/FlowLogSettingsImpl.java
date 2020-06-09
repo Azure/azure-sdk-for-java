@@ -32,7 +32,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.inner())
             .map(
                 flowLogInformationInner ->
@@ -101,7 +101,7 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), inner().targetResourceId());
     }
 

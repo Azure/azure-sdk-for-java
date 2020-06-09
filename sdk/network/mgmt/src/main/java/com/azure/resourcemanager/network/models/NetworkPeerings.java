@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsInner;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -26,7 +26,7 @@ public interface NetworkPeerings
         SupportsDeletingByParent,
         SupportsListing<NetworkPeering>,
         HasManager<NetworkManager>,
-        HasInner<VirtualNetworkPeeringsInner> {
+        HasInner<VirtualNetworkPeeringsClient> {
 
     /**
      * Finds the peering, if any, that is associated with the specified network.

@@ -6,28 +6,29 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayInner;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysInner;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import java.util.Iterator;
-import java.util.function.Function;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
+import java.util.function.Function;
+
 /** Implementation for VirtualNetworkGateways. */
-class VirtualNetworkGatewaysImpl
+public class VirtualNetworkGatewaysImpl
     extends GroupableResourcesImpl<
         VirtualNetworkGateway,
         VirtualNetworkGatewayImpl,
         VirtualNetworkGatewayInner,
-        VirtualNetworkGatewaysInner,
+    VirtualNetworkGatewaysClient,
     NetworkManager>
     implements VirtualNetworkGateways {
 
-    VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().virtualNetworkGateways(), networkManager);
+    public VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getVirtualNetworkGateways(), networkManager);
     }
 
     @Override

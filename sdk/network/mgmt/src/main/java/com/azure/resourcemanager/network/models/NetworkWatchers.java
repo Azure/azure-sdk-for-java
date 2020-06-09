@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.NetworkWatchersInner;
+import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -30,5 +30,5 @@ public interface NetworkWatchers
         SupportsBatchCreation<NetworkWatcher>,
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
-        HasInner<NetworkWatchersInner> {
+        HasInner<NetworkWatchersClient> {
 }

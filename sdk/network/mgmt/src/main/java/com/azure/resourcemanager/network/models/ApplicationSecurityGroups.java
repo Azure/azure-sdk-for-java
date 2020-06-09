@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsInner;
+import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -30,5 +30,5 @@ public interface ApplicationSecurityGroups
         SupportsBatchCreation<ApplicationSecurityGroup>,
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
-        HasInner<ApplicationSecurityGroupsInner> {
+        HasInner<ApplicationSecurityGroupsClient> {
 }

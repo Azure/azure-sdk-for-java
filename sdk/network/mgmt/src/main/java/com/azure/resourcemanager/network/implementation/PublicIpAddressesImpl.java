@@ -3,21 +3,21 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
+import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.network.fluent.inner.PublicIpAddressInner;
-import com.azure.resourcemanager.network.fluent.PublicIpAddressesInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link PublicIpAddresses}. */
-class PublicIpAddressesImpl
+public class PublicIpAddressesImpl
     extends TopLevelModifiableResourcesImpl<
-    PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesInner, NetworkManager>
+    PublicIpAddress, PublicIpAddressImpl, PublicIpAddressInner, PublicIpAddressesClient, NetworkManager>
     implements PublicIpAddresses {
 
-    PublicIpAddressesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().publicIpAddresses(), networkManager);
+    public PublicIpAddressesImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getPublicIpAddresses(), networkManager);
     }
 
     @Override

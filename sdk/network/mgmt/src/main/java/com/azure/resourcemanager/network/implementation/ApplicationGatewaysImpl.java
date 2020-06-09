@@ -3,28 +3,29 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewaysInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ReactorMapper;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 /** Implementation for ApplicationGateways. */
-class ApplicationGatewaysImpl
+public class ApplicationGatewaysImpl
     extends TopLevelModifiableResourcesImpl<
-        ApplicationGateway, ApplicationGatewayImpl, ApplicationGatewayInner, ApplicationGatewaysInner, NetworkManager>
+        ApplicationGateway, ApplicationGatewayImpl, ApplicationGatewayInner, ApplicationGatewaysClient, NetworkManager>
     implements ApplicationGateways {
 
-    ApplicationGatewaysImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().applicationGateways(), networkManager);
+    public ApplicationGatewaysImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getApplicationGateways(), networkManager);
     }
 
     @Override

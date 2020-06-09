@@ -62,7 +62,7 @@ class AzureReachabilityReportImpl extends ExecutableImpl<AzureReachabilityReport
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getAzureReachabilityReportAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(
                 azureReachabilityReportListInner -> {

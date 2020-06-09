@@ -98,7 +98,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getTopologyAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(
                 topologyInner -> {

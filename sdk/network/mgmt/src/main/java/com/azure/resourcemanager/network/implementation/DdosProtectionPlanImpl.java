@@ -26,7 +26,7 @@ class DdosProtectionPlanImpl
         return this
             .manager()
             .inner()
-            .ddosProtectionPlans()
+            .getDdosProtectionPlans()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -35,7 +35,7 @@ class DdosProtectionPlanImpl
         return this
             .manager()
             .inner()
-            .ddosProtectionPlans()
+            .getDdosProtectionPlans()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
     }

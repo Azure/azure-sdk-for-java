@@ -64,7 +64,7 @@ class AvailableProvidersImpl extends ExecutableImpl<AvailableProviders>
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .listAvailableProvidersAsync(parent().resourceGroupName(), parent().name(), parameters)
             .map(
                 availableProvidersListInner -> {

@@ -250,7 +250,7 @@ class NetworkPeeringImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkPeerings()
+            .getVirtualNetworkPeerings()
             .createOrUpdateAsync(this.parent.resourceGroupName(), networkName, this.name(), this.inner())
             // After successful creation, update the inner
             .doOnNext(
@@ -443,7 +443,7 @@ class NetworkPeeringImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkPeerings()
+            .getVirtualNetworkPeerings()
             .getAsync(
                 this.resourceGroupName(), ResourceUtils.nameFromResourceId(this.networkId()), this.inner().name());
     }

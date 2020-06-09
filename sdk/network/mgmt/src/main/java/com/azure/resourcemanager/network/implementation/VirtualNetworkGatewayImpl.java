@@ -180,7 +180,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .resetAsync(resourceGroupName(), name())
             .map(
                 inner -> {
@@ -198,7 +198,7 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().inner().virtualNetworkGateways().listConnectionsAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getVirtualNetworkGateways().listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }
@@ -208,7 +208,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .generateVpnProfile(resourceGroupName(), name(), new VpnClientParameters());
     }
 
@@ -217,7 +217,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .generateVpnProfileAsync(resourceGroupName(), name(), new VpnClientParameters());
     }
 
@@ -226,7 +226,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
@@ -309,7 +309,7 @@ class VirtualNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGateways()
+            .getVirtualNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -440,7 +440,7 @@ class VirtualNetworkGatewayImpl
                         .this
                         .manager()
                         .inner()
-                        .virtualNetworkGateways()
+                        .getVirtualNetworkGateways()
                         .createOrUpdateAsync(resourceGroupName(), name(), inner()));
     }
 

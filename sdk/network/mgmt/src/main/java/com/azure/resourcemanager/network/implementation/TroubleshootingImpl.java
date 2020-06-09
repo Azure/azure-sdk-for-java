@@ -53,7 +53,7 @@ class TroubleshootingImpl extends ExecutableImpl<Troubleshooting>
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .getTroubleshootingAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(
                 troubleshootingResultInner -> {

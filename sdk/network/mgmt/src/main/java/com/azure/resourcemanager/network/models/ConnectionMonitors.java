@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.ConnectionMonitorsInner;
+import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
@@ -17,5 +17,5 @@ public interface ConnectionMonitors
         SupportsListing<ConnectionMonitor>,
         SupportsGettingByName<ConnectionMonitor>,
         SupportsDeletingByName,
-        HasInner<ConnectionMonitorsInner> {
+        HasInner<ConnectionMonitorsClient> {
 }

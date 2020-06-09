@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.DdosProtectionPlansInner;
+import com.azure.resourcemanager.network.fluent.DdosProtectionPlansClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -30,5 +30,5 @@ public interface DdosProtectionPlans
         SupportsBatchCreation<DdosProtectionPlan>,
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
-        HasInner<DdosProtectionPlansInner> {
+        HasInner<DdosProtectionPlansClient> {
 }

@@ -180,7 +180,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .getVirtualMachineScaleSetNetworkInterfaceAsync(
                 this.resourceGroupName,
                 this.scaleSetName,

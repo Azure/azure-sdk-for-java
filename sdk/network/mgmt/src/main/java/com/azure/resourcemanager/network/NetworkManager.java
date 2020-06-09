@@ -4,7 +4,6 @@ package com.azure.resourcemanager.network;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.implementation.ApplicationGatewaysImpl;
 import com.azure.resourcemanager.network.implementation.ApplicationSecurityGroupsImpl;
 import com.azure.resourcemanager.network.implementation.DdosProtectionPlansImpl;
@@ -21,9 +20,6 @@ import com.azure.resourcemanager.network.implementation.PublicIpAddressesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
 import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
 import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
-import com.azure.resourcemanager.network.models.ApplicationGateway;
-import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
-import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.network.models.DdosProtectionPlans;
@@ -31,7 +27,6 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnections;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
-import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
@@ -40,23 +35,13 @@ import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.network.models.RouteTables;
-import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
-import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /** Entry point to Azure network management. */
 public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClient> {
@@ -140,7 +125,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             profile,
             new NetworkManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .host(profile.environment().getResourceManagerEndpoint())
+                .endpoint(profile.environment().getResourceManagerEndpoint())
                 .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
@@ -272,71 +257,5 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsImpl(this);
         }
         return this.expressRouteCrossConnections;
-    }
-
-    // Internal utility function
-    Subnet getAssociatedSubnet(SubResource subnetRef) {
-        if (subnetRef == null) {
-            return null;
-        }
-
-        String vnetId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
-        String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
-
-        if (vnetId == null || subnetName == null) {
-            return null;
-        }
-
-        Network network = this.networks().getById(vnetId);
-        if (network == null) {
-            return null;
-        }
-
-        return network.subnets().get(subnetName);
-    }
-
-    // Internal utility function
-    List<Subnet> listAssociatedSubnets(List<SubnetInner> subnetRefs) {
-        final Map<String, Network> networks = new HashMap<>();
-        final List<Subnet> subnets = new ArrayList<>();
-
-        if (subnetRefs != null) {
-            for (SubnetInner subnetRef : subnetRefs) {
-                String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
-                Network network = networks.get(networkId.toLowerCase(Locale.ROOT));
-                if (network == null) {
-                    network = this.networks().getById(networkId);
-                    networks.put(networkId.toLowerCase(Locale.ROOT), network);
-                }
-
-                String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
-                subnets.add(network.subnets().get(subnetName));
-            }
-        }
-
-        return Collections.unmodifiableList(subnets);
-    }
-
-    // Internal utility function
-    Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends(
-        List<ApplicationGatewayBackendAddressPool> backendRefs) {
-        final Map<String, ApplicationGateway> appGateways = new HashMap<>();
-        final List<ApplicationGatewayBackend> backends = new ArrayList<>();
-
-        if (backendRefs != null) {
-            for (ApplicationGatewayBackendAddressPool backendRef : backendRefs) {
-                String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
-                ApplicationGateway appGateway = appGateways.get(appGatewayId.toLowerCase(Locale.ROOT));
-                if (appGateway == null) {
-                    appGateway = this.applicationGateways().getById(appGatewayId);
-                    appGateways.put(appGatewayId.toLowerCase(Locale.ROOT), appGateway);
-                }
-
-                String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
-                backends.add(appGateway.backends().get(backendName));
-            }
-        }
-
-        return Collections.unmodifiableCollection(backends);
     }
 }

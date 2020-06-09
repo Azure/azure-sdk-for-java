@@ -24,7 +24,7 @@ class ApplicationSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .applicationSecurityGroups()
+            .getApplicationSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -33,7 +33,7 @@ class ApplicationSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .applicationSecurityGroups()
+            .getApplicationSecurityGroups()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
     }

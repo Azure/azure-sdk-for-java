@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.NetworkInterfacesInner;
+import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
@@ -15,7 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 @Fluent
 public interface VirtualMachineScaleSetNetworkInterfaces
     extends SupportsListing<VirtualMachineScaleSetNetworkInterface>,
-        HasInner<NetworkInterfacesInner>,
+        HasInner<NetworkInterfacesClient>,
         HasManager<NetworkManager> {
     /**
      * Gets a network interface associated with a virtual machine scale set instance.

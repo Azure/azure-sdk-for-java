@@ -34,7 +34,7 @@ public class ExpressRouteCrossConnectionImpl
         return this
             .manager()
             .inner()
-            .expressRouteCrossConnections()
+            .getExpressRouteCrossConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
@@ -56,7 +56,7 @@ public class ExpressRouteCrossConnectionImpl
         return this
             .manager()
             .inner()
-            .expressRouteCrossConnections()
+            .getExpressRouteCrossConnections()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -78,7 +78,7 @@ public class ExpressRouteCrossConnectionImpl
         return this
             .manager()
             .inner()
-            .expressRouteCrossConnections()
+            .getExpressRouteCrossConnections()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 

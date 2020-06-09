@@ -5,12 +5,12 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
+import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeering;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeerings;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
-import com.azure.resourcemanager.network.fluent.inner.ExpressRouteCrossConnectionPeeringInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +20,8 @@ class ExpressRouteCrossConnectionPeeringsImpl
         ExpressRouteCrossConnectionPeering,
         ExpressRouteCrossConnectionPeeringImpl,
         ExpressRouteCrossConnectionPeeringInner,
-        ExpressRouteCrossConnectionPeeringsInner,
-    NetworkManager,
+        ExpressRouteCrossConnectionPeeringsClient,
+        NetworkManager,
         ExpressRouteCrossConnection>
     implements ExpressRouteCrossConnectionPeerings {
     private final ExpressRouteCrossConnectionImpl parent;
@@ -32,7 +32,7 @@ class ExpressRouteCrossConnectionPeeringsImpl
      * @param parent the Express Route Circuit associated with ExpressRouteCrossConnectionPeering
      */
     ExpressRouteCrossConnectionPeeringsImpl(ExpressRouteCrossConnectionImpl parent) {
-        super(parent.manager().inner().expressRouteCrossConnectionPeerings(), parent.manager());
+        super(parent.manager().inner().getExpressRouteCrossConnectionPeerings(), parent.manager());
         this.parent = parent;
     }
 

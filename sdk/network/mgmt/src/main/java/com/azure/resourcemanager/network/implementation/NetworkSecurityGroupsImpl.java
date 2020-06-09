@@ -3,26 +3,26 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
+import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
-import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkSecurityGroups. */
-class NetworkSecurityGroupsImpl
+public class NetworkSecurityGroupsImpl
     extends TopLevelModifiableResourcesImpl<
         NetworkSecurityGroup,
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
-        NetworkSecurityGroupsInner,
+    NetworkSecurityGroupsClient,
     NetworkManager>
     implements NetworkSecurityGroups {
 
-    NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().networkSecurityGroups(), networkManager);
+    public NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getNetworkSecurityGroups(), networkManager);
     }
 
     @Override

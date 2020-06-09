@@ -72,13 +72,13 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         return this
             .manager()
             .inner()
-            .virtualNetworks()
+            .getVirtualNetworks()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().inner().virtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().inner().getVirtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -250,7 +250,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         return this
             .manager()
             .inner()
-            .virtualNetworks()
+            .getVirtualNetworks()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(
                 virtualNetworkInner -> {

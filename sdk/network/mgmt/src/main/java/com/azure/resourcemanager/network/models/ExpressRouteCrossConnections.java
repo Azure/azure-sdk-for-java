@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsInner;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
@@ -20,5 +20,5 @@ public interface ExpressRouteCrossConnections
         SupportsGettingByResourceGroup<ExpressRouteCrossConnection>,
         SupportsGettingById<ExpressRouteCrossConnection>,
         HasManager<NetworkManager>,
-        HasInner<ExpressRouteCrossConnectionsInner> {
+        HasInner<ExpressRouteCrossConnectionsClient> {
 }

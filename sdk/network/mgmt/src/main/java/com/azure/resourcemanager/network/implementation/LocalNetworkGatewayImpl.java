@@ -100,7 +100,7 @@ class LocalNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .localNetworkGateways()
+            .getLocalNetworkGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -109,7 +109,7 @@ class LocalNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .localNetworkGateways()
+            .getLocalNetworkGateways()
             .createOrUpdateAsync(resourceGroupName(), name(), inner())
             .map(innerToFluentMap(this));
     }
@@ -136,7 +136,7 @@ class LocalNetworkGatewayImpl
         return this
             .manager()
             .inner()
-            .localNetworkGateways()
+            .getLocalNetworkGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(
                 inner -> {

@@ -92,7 +92,7 @@ class ExpressRouteCircuitImpl
         return this
             .manager()
             .inner()
-            .expressRouteCircuits()
+            .getExpressRouteCircuits()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
@@ -105,7 +105,7 @@ class ExpressRouteCircuitImpl
                     .put(
                         peering.name(),
                         new ExpressRouteCircuitPeeringImpl(
-                            this, peering, manager().inner().expressRouteCircuitPeerings(), peering.peeringType()));
+                            this, peering, manager().inner().getExpressRouteCircuitPeerings(), peering.peeringType()));
             }
         }
     }
@@ -115,7 +115,7 @@ class ExpressRouteCircuitImpl
         return this
             .manager()
             .inner()
-            .expressRouteCircuits()
+            .getExpressRouteCircuits()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -136,7 +136,7 @@ class ExpressRouteCircuitImpl
         return this
             .manager()
             .inner()
-            .expressRouteCircuits()
+            .getExpressRouteCircuits()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 

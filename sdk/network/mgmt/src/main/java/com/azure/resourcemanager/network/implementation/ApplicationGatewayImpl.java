@@ -4,6 +4,15 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
@@ -38,15 +47,6 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewaysInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -114,7 +114,7 @@ class ApplicationGatewayImpl
         return this
             .manager()
             .inner()
-            .applicationGateways()
+            .getApplicationGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -123,7 +123,7 @@ class ApplicationGatewayImpl
         return this
             .manager()
             .inner()
-            .applicationGateways()
+            .getApplicationGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
@@ -565,7 +565,7 @@ class ApplicationGatewayImpl
                         });
         }
 
-        final ApplicationGatewaysInner innerCollection = this.manager().inner().applicationGateways();
+        final ApplicationGatewaysClient innerCollection = this.manager().inner().getApplicationGateways();
         return Flux
             .merge(networkObservable, pipObservable)
             .last(Resource.DUMMY)
@@ -1639,7 +1639,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> startAsync() {
         Mono<Void> startObservable =
-            this.manager().inner().applicationGateways().startAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getApplicationGateways().startAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after start to ensure the app gateway operational state is updated
@@ -1649,7 +1649,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> stopAsync() {
         Mono<Void> stopObservable =
-            this.manager().inner().applicationGateways().stopAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getApplicationGateways().stopAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after stop to ensure the app gateway operational state is updated
@@ -1682,7 +1682,7 @@ class ApplicationGatewayImpl
         return this
             .manager()
             .inner()
-            .applicationGateways()
+            .getApplicationGateways()
             // TODO(not known): Last minutes
             .backendHealthAsync(this.resourceGroupName(), this.name(), null)
             .map(

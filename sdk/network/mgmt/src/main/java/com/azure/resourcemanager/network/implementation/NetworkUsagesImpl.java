@@ -12,11 +12,11 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /** The implementation of NetworkUsages. */
-class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
+public class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
     implements NetworkUsages {
     private final NetworkManagementClient client;
 
-    NetworkUsagesImpl(NetworkManagementClient client) {
+    public NetworkUsagesImpl(NetworkManagementClient client) {
         this.client = client;
     }
 
@@ -27,7 +27,7 @@ class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageI
 
     @Override
     public PagedIterable<NetworkUsage> listByRegion(String regionName) {
-        return wrapList(client.usages().list(regionName));
+        return wrapList(client.getUsages().list(regionName));
     }
 
     @Override
@@ -37,7 +37,7 @@ class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageI
 
     @Override
     public PagedFlux<NetworkUsage> listByRegionAsync(String regionName) {
-        return wrapPageAsync(client.usages().listAsync(regionName));
+        return wrapPageAsync(client.getUsages().listAsync(regionName));
     }
 
     @Override

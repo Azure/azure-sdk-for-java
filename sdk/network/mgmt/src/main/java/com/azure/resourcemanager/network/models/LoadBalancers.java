@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.LoadBalancersInner;
+import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -30,5 +30,5 @@ public interface LoadBalancers
         SupportsBatchCreation<LoadBalancer>,
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
-        HasInner<LoadBalancersInner> {
+        HasInner<LoadBalancersClient> {
 }

@@ -68,7 +68,7 @@ class VirtualNetworkGatewayIpConfigurationImpl
 
     @Override
     public Subnet getSubnet() {
-        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
+        return Utils.getAssociatedSubnet(this.parent().manager(), this.inner().subnet());
     }
 
     @Override

@@ -111,7 +111,7 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .verifyIpFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(
                 verificationIPFlowResultInner -> {

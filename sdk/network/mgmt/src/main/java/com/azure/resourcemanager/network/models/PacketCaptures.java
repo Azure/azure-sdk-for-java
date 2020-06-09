@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.PacketCapturesInner;
+import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
@@ -17,5 +17,5 @@ public interface PacketCaptures
         SupportsListing<PacketCapture>,
         SupportsGettingByName<PacketCapture>,
         SupportsDeletingByName,
-        HasInner<PacketCapturesInner> {
+        HasInner<PacketCapturesClient> {
 }

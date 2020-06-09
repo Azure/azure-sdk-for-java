@@ -198,7 +198,7 @@ public class VirtualNetworkGatewayConnectionImpl
     protected Mono<VirtualNetworkGatewayConnectionInner> getInnerAsync() {
         return myManager
             .inner()
-            .virtualNetworkGatewayConnections()
+            .getVirtualNetworkGatewayConnections()
             .getByResourceGroupAsync(resourceGroupName(), name());
     }
 
@@ -207,7 +207,7 @@ public class VirtualNetworkGatewayConnectionImpl
         beforeCreating();
         return myManager
             .inner()
-            .virtualNetworkGatewayConnections()
+            .getVirtualNetworkGatewayConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
@@ -231,7 +231,7 @@ public class VirtualNetworkGatewayConnectionImpl
         return this
             .manager()
             .inner()
-            .virtualNetworkGatewayConnections()
+            .getVirtualNetworkGatewayConnections()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(inner -> refreshAsync());
     }

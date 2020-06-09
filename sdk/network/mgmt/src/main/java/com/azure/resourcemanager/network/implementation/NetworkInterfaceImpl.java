@@ -72,7 +72,7 @@ class NetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -81,7 +81,7 @@ class NetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
@@ -454,7 +454,7 @@ class NetworkInterfaceImpl
         return this
             .manager()
             .inner()
-            .networkInterfaces()
+            .getNetworkInterfaces()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 

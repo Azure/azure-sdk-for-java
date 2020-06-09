@@ -6,17 +6,17 @@ import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancers;
 import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancersInner;
+import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link LoadBalancers}. */
-class LoadBalancersImpl
+public class LoadBalancersImpl
     extends TopLevelModifiableResourcesImpl<
-        LoadBalancer, LoadBalancerImpl, LoadBalancerInner, LoadBalancersInner, NetworkManager>
+        LoadBalancer, LoadBalancerImpl, LoadBalancerInner, LoadBalancersClient, NetworkManager>
     implements LoadBalancers {
 
-    LoadBalancersImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().loadBalancers(), networkManager);
+    public LoadBalancersImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getLoadBalancers(), networkManager);
     }
 
     @Override

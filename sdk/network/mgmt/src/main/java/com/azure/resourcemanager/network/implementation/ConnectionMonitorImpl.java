@@ -2,30 +2,31 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
+import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
 import com.azure.resourcemanager.network.models.ConnectionMonitor;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorQueryResult;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
+import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorInner;
-import com.azure.resourcemanager.network.fluent.inner.ConnectionMonitorResultInner;
-import com.azure.resourcemanager.network.fluent.ConnectionMonitorsInner;
-import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Connection Monitor and its create and update interfaces. */
 public class ConnectionMonitorImpl
     extends CreatableUpdatableImpl<ConnectionMonitor, ConnectionMonitorResultInner, ConnectionMonitorImpl>
     implements ConnectionMonitor, ConnectionMonitor.Definition {
-    private final ConnectionMonitorsInner client;
+    private final ConnectionMonitorsClient client;
     private final ConnectionMonitorInner createParameters;
     private final NetworkWatcher parent;
 
@@ -33,7 +34,7 @@ public class ConnectionMonitorImpl
         String name,
         NetworkWatcherImpl parent,
         ConnectionMonitorResultInner innerObject,
-        ConnectionMonitorsInner client) {
+        ConnectionMonitorsClient client) {
         super(name, innerObject);
         this.client = client;
         this.parent = parent;

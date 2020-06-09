@@ -44,7 +44,7 @@ class PublicIpAddressImpl
         return this
             .manager()
             .inner()
-            .publicIpAddresses()
+            .getPublicIpAddresses()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
 
@@ -179,7 +179,7 @@ class PublicIpAddressImpl
         return this
             .manager()
             .inner()
-            .publicIpAddresses()
+            .getPublicIpAddresses()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
@@ -267,7 +267,7 @@ class PublicIpAddressImpl
         return this
             .manager()
             .inner()
-            .publicIpAddresses()
+            .getPublicIpAddresses()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(
                 inner -> {
