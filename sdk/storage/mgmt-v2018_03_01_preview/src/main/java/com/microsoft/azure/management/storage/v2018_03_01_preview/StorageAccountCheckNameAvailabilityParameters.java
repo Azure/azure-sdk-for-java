@@ -11,7 +11,7 @@ package com.microsoft.azure.management.storage.v2018_03_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The parameters used to check the availabity of the storage account name.
+ * The parameters used to check the availability of the storage account name.
  */
 public class StorageAccountCheckNameAvailabilityParameters {
     /**
