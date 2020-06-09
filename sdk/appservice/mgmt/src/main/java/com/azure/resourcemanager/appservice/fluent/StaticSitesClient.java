@@ -26,10 +26,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteBuildArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteBuildCollectionInner;
@@ -42,7 +42,6 @@ import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserArmResour
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StaticSiteUserInvitationResponseResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.StringDictionaryInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
@@ -60,14 +59,14 @@ public final class StaticSitesClient
     private final StaticSitesService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of StaticSitesInner.
+     * Initializes an instance of StaticSitesClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    StaticSitesClient(WebSiteManagementClientImpl client) {
+    public StaticSitesClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(StaticSitesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -84,20 +83,18 @@ public final class StaticSitesClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCollectionInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteCollectionInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -105,12 +102,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteArmResourceInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteArmResourceInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -119,12 +116,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteArmResourceInner>> createOrUpdateStaticSite(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteArmResourceInner>> createOrUpdateStaticSite(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -134,12 +131,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteStaticSite(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -148,12 +145,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteArmResourceInner>> updateStaticSite(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteArmResourceInner>> updateStaticSite(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -163,12 +160,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/authproviders/{authprovider}/listUsers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/authproviders/{authprovider}/listUsers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteUserCollectionInner>> listStaticSiteUsers(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteUserCollectionInner>> listStaticSiteUsers(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("authprovider") String authprovider,
@@ -178,12 +175,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/authproviders/{authprovider}/users/{userid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteStaticSiteUser(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("authprovider") String authprovider,
@@ -194,12 +191,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/authproviders/{authprovider}/users/{userid}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteUserArmResourceInner>> updateStaticSiteUser(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUser(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("authprovider") String authprovider,
@@ -211,12 +208,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/builds")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteBuildCollectionInner>> getStaticSiteBuilds(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteBuildCollectionInner>> getStaticSiteBuilds(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -225,12 +222,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/builds/{prId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{prId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuild(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuild(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("prId") String prId,
@@ -240,12 +237,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/builds/{prId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{prId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteStaticSiteBuild(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("prId") String prId,
@@ -255,12 +252,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/builds/{prId}/config/functionappsettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{prId}/config/functionappsettings")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettings(
-            @HostParam("$host") String host,
+        Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettings(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("prId") String prId,
@@ -271,12 +268,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/builds/{prId}/functions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{prId}/functions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteBuildFunctions(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteBuildFunctions(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("prId") String prId,
@@ -286,12 +283,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/builds/{prId}/listFunctionAppSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{prId}/listFunctionAppSettings")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettings(
-            @HostParam("$host") String host,
+        Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettings(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("prId") String prId,
@@ -301,12 +298,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/config/functionappsettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/config/functionappsettings")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettings(
-            @HostParam("$host") String host,
+        Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettings(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -316,12 +313,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/createUserInvitation")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/createUserInvitation")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLink(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLink(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -332,12 +329,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/customDomains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/customDomains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCustomDomainOverviewCollectionInner>> listStaticSiteCustomDomains(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteCustomDomainOverviewCollectionInner>> listStaticSiteCustomDomains(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -346,12 +343,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/customDomains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/customDomains/{domainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCustomDomainOverviewArmResourceInner>> createOrUpdateStaticSiteCustomDomain(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>> createOrUpdateStaticSiteCustomDomain(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("domainName") String domainName,
@@ -361,12 +358,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/customDomains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/customDomains/{domainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteStaticSiteCustomDomain(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("domainName") String domainName,
@@ -376,12 +373,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/customDomains/{domainName}/validate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/customDomains/{domainName}/validate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> validateCustomDomainCanBeAddedToStaticSite(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("domainName") String domainName,
@@ -391,12 +388,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/detach")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/detach")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> detachStaticSite(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -405,12 +402,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/functions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/functions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteFunctions(
-            @HostParam("$host") String host,
+        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteFunctions(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -419,12 +416,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/listFunctionAppSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/listFunctionAppSettings")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteFunctionAppSettings(
-            @HostParam("$host") String host,
+        Mono<Response<StringDictionaryInner>> listStaticSiteFunctionAppSettings(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -433,12 +430,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/listSecrets")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/listSecrets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteSecrets(
-            @HostParam("$host") String host,
+        Mono<Response<StringDictionaryInner>> listStaticSiteSecrets(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -447,12 +444,12 @@ public final class StaticSitesClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/staticSites/{name}/resetapikey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/resetapikey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetStaticSiteApiKey(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -464,49 +461,49 @@ public final class StaticSitesClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCollectionInner>> listNext(
+        Mono<Response<StaticSiteCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCollectionInner>> getStaticSitesByResourceGroupNext(
+        Mono<Response<StaticSiteCollectionInner>> getStaticSitesByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteUserCollectionInner>> listStaticSiteUsersNext(
+        Mono<Response<StaticSiteUserCollectionInner>> listStaticSiteUsersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteBuildCollectionInner>> getStaticSiteBuildsNext(
+        Mono<Response<StaticSiteBuildCollectionInner>> getStaticSiteBuildsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteBuildFunctionsNext(
+        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteBuildFunctionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteCustomDomainOverviewCollectionInner>> listStaticSiteCustomDomainsNext(
+        Mono<Response<StaticSiteCustomDomainOverviewCollectionInner>> listStaticSiteCustomDomainsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteFunctionsNext(
+        Mono<Response<StaticSiteFunctionOverviewCollectionInner>> listStaticSiteFunctionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -519,9 +516,11 @@ public final class StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -534,7 +533,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
@@ -561,9 +560,11 @@ public final class StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -572,7 +573,7 @@ public final class StaticSitesClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -623,6 +624,20 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Get all Static Sites for a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static sites.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteArmResourceInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Description for Gets all static sites in the specified resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -634,9 +649,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteArmResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -653,7 +670,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -683,9 +700,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteArmResourceInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -699,7 +718,7 @@ public final class StaticSitesClient
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
@@ -763,6 +782,21 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets all static sites in the specified resource group.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static sites.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Description for Gets the details of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -773,11 +807,13 @@ public final class StaticSitesClient
      * @return static Site ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -797,7 +833,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -818,11 +854,13 @@ public final class StaticSitesClient
      * @return static Site ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -839,7 +877,7 @@ public final class StaticSitesClient
         }
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -861,7 +899,32 @@ public final class StaticSitesClient
     public Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<StaticSiteArmResourceInner> res) -> {
+                (Response<StaticSiteArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets the details of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteArmResourceInner> getByResourceGroupAsync(
+        String resourceGroupName, String name, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<StaticSiteArmResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -886,6 +949,22 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the details of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteArmResourceInner getByResourceGroup(String resourceGroupName, String name, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Creates a new static site in an existing resource group, or updates an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -897,11 +976,13 @@ public final class StaticSitesClient
      * @return static Site ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteArmResourceInner>> createOrUpdateStaticSiteWithResponseAsync(
+    public Mono<Response<StaticSiteArmResourceInner>> createOrUpdateStaticSiteWithResponseAsync(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -927,7 +1008,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .createOrUpdateStaticSite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -950,11 +1031,13 @@ public final class StaticSitesClient
      * @return static Site ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteArmResourceInner>> createOrUpdateStaticSiteWithResponseAsync(
+    public Mono<Response<StaticSiteArmResourceInner>> createOrUpdateStaticSiteWithResponseAsync(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -977,7 +1060,7 @@ public final class StaticSitesClient
         }
         return service
             .createOrUpdateStaticSite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1002,7 +1085,33 @@ public final class StaticSitesClient
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
         return createOrUpdateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope)
             .flatMap(
-                (SimpleResponse<StaticSiteArmResourceInner> res) -> {
+                (Response<StaticSiteArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to create or update.
+     * @param staticSiteEnvelope Static Site ARM resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
+        return createOrUpdateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context)
+            .flatMap(
+                (Response<StaticSiteArmResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1029,6 +1138,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to create or update.
+     * @param staticSiteEnvelope Static Site ARM resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteArmResourceInner createOrUpdateStaticSite(
+        String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
+        return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
+    }
+
+    /**
      * Description for Deletes a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1040,9 +1167,11 @@ public final class StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1062,7 +1191,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .deleteStaticSite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1085,9 +1214,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1104,7 +1235,7 @@ public final class StaticSitesClient
         }
         return service
             .deleteStaticSite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1132,6 +1263,23 @@ public final class StaticSitesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteStaticSiteAsync(String resourceGroupName, String name, Context context) {
+        return deleteStaticSiteWithResponseAsync(resourceGroupName, name, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Deletes a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1139,6 +1287,21 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSite(String resourceGroupName, String name) {
         deleteStaticSiteAsync(resourceGroupName, name).block();
+    }
+
+    /**
+     * Description for Deletes a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteStaticSite(String resourceGroupName, String name, Context context) {
+        deleteStaticSiteAsync(resourceGroupName, name, context).block();
     }
 
     /**
@@ -1153,11 +1316,13 @@ public final class StaticSitesClient
      * @return static Site ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(
+    public Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(
         String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1183,7 +1348,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .updateStaticSite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1206,11 +1371,13 @@ public final class StaticSitesClient
      * @return static Site ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(
+    public Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(
         String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1233,7 +1400,7 @@ public final class StaticSitesClient
         }
         return service
             .updateStaticSite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1258,7 +1425,33 @@ public final class StaticSitesClient
         String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope) {
         return updateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope)
             .flatMap(
-                (SimpleResponse<StaticSiteArmResourceInner> res) -> {
+                (Response<StaticSiteArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to create or update.
+     * @param staticSiteEnvelope ARM resource for a static site when patching.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteArmResourceInner> updateStaticSiteAsync(
+        String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope, Context context) {
+        return updateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context)
+            .flatMap(
+                (Response<StaticSiteArmResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1285,6 +1478,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to create or update.
+     * @param staticSiteEnvelope ARM resource for a static site when patching.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteArmResourceInner updateStaticSite(
+        String resourceGroupName, String name, StaticSitePatchResource staticSiteEnvelope, Context context) {
+        return updateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
+    }
+
+    /**
      * Description for Gets the list of users of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1298,9 +1509,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersSinglePageAsync(
         String resourceGroupName, String name, String authprovider) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1323,7 +1536,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteUsers(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             authprovider,
@@ -1357,9 +1570,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersSinglePageAsync(
         String resourceGroupName, String name, String authprovider, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1379,7 +1594,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteUsers(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 authprovider,
@@ -1454,6 +1669,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the list of users of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param authprovider The auth provider for the users.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site custom users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(
+        String resourceGroupName, String name, String authprovider, Context context) {
+        return new PagedIterable<>(listStaticSiteUsersAsync(resourceGroupName, name, authprovider, context));
+    }
+
+    /**
      * Description for Deletes the user entry from the static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1468,9 +1701,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteUserWithResponseAsync(
         String resourceGroupName, String name, String authprovider, String userid) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1496,7 +1731,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .deleteStaticSiteUser(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             authprovider,
@@ -1523,9 +1758,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteUserWithResponseAsync(
         String resourceGroupName, String name, String authprovider, String userid, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1548,7 +1785,7 @@ public final class StaticSitesClient
         }
         return service
             .deleteStaticSiteUser(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 authprovider,
@@ -1584,6 +1821,26 @@ public final class StaticSitesClient
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
      * @param userid The user id of the user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteStaticSiteUserAsync(
+        String resourceGroupName, String name, String authprovider, String userid, Context context) {
+        return deleteStaticSiteUserWithResponseAsync(resourceGroupName, name, authprovider, userid, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Deletes the user entry from the static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the staticsite.
+     * @param authprovider The auth provider for this user.
+     * @param userid The user id of the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1591,6 +1848,24 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteUser(String resourceGroupName, String name, String authprovider, String userid) {
         deleteStaticSiteUserAsync(resourceGroupName, name, authprovider, userid).block();
+    }
+
+    /**
+     * Description for Deletes the user entry from the static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the staticsite.
+     * @param authprovider The auth provider for this user.
+     * @param userid The user id of the user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteStaticSiteUser(
+        String resourceGroupName, String name, String authprovider, String userid, Context context) {
+        deleteStaticSiteUserAsync(resourceGroupName, name, authprovider, userid, context).block();
     }
 
     /**
@@ -1607,15 +1882,17 @@ public final class StaticSitesClient
      * @return static Site User ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
+    public Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
         String resourceGroupName,
         String name,
         String authprovider,
         String userid,
         StaticSiteUserArmResourceInner staticSiteUserEnvelope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1648,7 +1925,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .updateStaticSiteUser(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             authprovider,
@@ -1675,16 +1952,18 @@ public final class StaticSitesClient
      * @return static Site User ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
+    public Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
         String resourceGroupName,
         String name,
         String authprovider,
         String userid,
         StaticSiteUserArmResourceInner staticSiteUserEnvelope,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1714,7 +1993,7 @@ public final class StaticSitesClient
         }
         return service
             .updateStaticSiteUser(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 authprovider,
@@ -1748,7 +2027,41 @@ public final class StaticSitesClient
         return updateStaticSiteUserWithResponseAsync(
                 resourceGroupName, name, authprovider, userid, staticSiteUserEnvelope)
             .flatMap(
-                (SimpleResponse<StaticSiteUserArmResourceInner> res) -> {
+                (Response<StaticSiteUserArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Updates a user entry with the listed roles.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param authprovider The auth provider for this user.
+     * @param userid The user id of the user.
+     * @param staticSiteUserEnvelope Static Site User ARM resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteUserArmResourceInner> updateStaticSiteUserAsync(
+        String resourceGroupName,
+        String name,
+        String authprovider,
+        String userid,
+        StaticSiteUserArmResourceInner staticSiteUserEnvelope,
+        Context context) {
+        return updateStaticSiteUserWithResponseAsync(
+                resourceGroupName, name, authprovider, userid, staticSiteUserEnvelope, context)
+            .flatMap(
+                (Response<StaticSiteUserArmResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1781,6 +2094,32 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Updates a user entry with the listed roles.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param authprovider The auth provider for this user.
+     * @param userid The user id of the user.
+     * @param staticSiteUserEnvelope Static Site User ARM resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteUserArmResourceInner updateStaticSiteUser(
+        String resourceGroupName,
+        String name,
+        String authprovider,
+        String userid,
+        StaticSiteUserArmResourceInner staticSiteUserEnvelope,
+        Context context) {
+        return updateStaticSiteUserAsync(resourceGroupName, name, authprovider, userid, staticSiteUserEnvelope, context)
+            .block();
+    }
+
+    /**
      * Description for Gets all static site builds for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1793,9 +2132,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsSinglePageAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1815,7 +2156,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .getStaticSiteBuilds(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1847,9 +2188,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsSinglePageAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1866,7 +2209,7 @@ public final class StaticSitesClient
         }
         return service
             .getStaticSiteBuilds(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1935,6 +2278,23 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets all static site builds for a particular static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site builds.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(getStaticSiteBuildsAsync(resourceGroupName, name, context));
+    }
+
+    /**
      * Description for Gets the details of a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1946,11 +2306,13 @@ public final class StaticSitesClient
      * @return static Site Build ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
+    public Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String prId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1973,7 +2335,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .getStaticSiteBuild(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             prId,
@@ -1996,11 +2358,13 @@ public final class StaticSitesClient
      * @return static Site Build ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
+    public Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String prId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2020,7 +2384,7 @@ public final class StaticSitesClient
         }
         return service
             .getStaticSiteBuild(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 prId,
@@ -2045,7 +2409,33 @@ public final class StaticSitesClient
         String resourceGroupName, String name, String prId) {
         return getStaticSiteBuildWithResponseAsync(resourceGroupName, name, prId)
             .flatMap(
-                (SimpleResponse<StaticSiteBuildArmResourceInner> res) -> {
+                (Response<StaticSiteBuildArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets the details of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Build ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteBuildArmResourceInner> getStaticSiteBuildAsync(
+        String resourceGroupName, String name, String prId, Context context) {
+        return getStaticSiteBuildWithResponseAsync(resourceGroupName, name, prId, context)
+            .flatMap(
+                (Response<StaticSiteBuildArmResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2071,6 +2461,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the details of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Build ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteBuildArmResourceInner getStaticSiteBuild(
+        String resourceGroupName, String name, String prId, Context context) {
+        return getStaticSiteBuildAsync(resourceGroupName, name, prId, context).block();
+    }
+
+    /**
      * Description for Deletes a static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2084,9 +2492,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String prId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2109,7 +2519,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .deleteStaticSiteBuild(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             prId,
@@ -2134,9 +2544,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteBuildWithResponseAsync(
         String resourceGroupName, String name, String prId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2156,7 +2568,7 @@ public final class StaticSitesClient
         }
         return service
             .deleteStaticSiteBuild(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 prId,
@@ -2188,6 +2600,24 @@ public final class StaticSitesClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteStaticSiteBuildAsync(String resourceGroupName, String name, String prId, Context context) {
+        return deleteStaticSiteBuildWithResponseAsync(resourceGroupName, name, prId, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Deletes a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2195,6 +2625,22 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteBuild(String resourceGroupName, String name, String prId) {
         deleteStaticSiteBuildAsync(resourceGroupName, name, prId).block();
+    }
+
+    /**
+     * Description for Deletes a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteStaticSiteBuild(String resourceGroupName, String name, String prId, Context context) {
+        deleteStaticSiteBuildAsync(resourceGroupName, name, prId, context).block();
     }
 
     /**
@@ -2210,12 +2656,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>>
-        createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
-            String resourceGroupName, String name, String prId, StringDictionaryInner appSettings) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
+        String resourceGroupName, String name, String prId, StringDictionaryInner appSettings) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2243,7 +2690,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .createOrUpdateStaticSiteBuildFunctionAppSettings(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             prId,
@@ -2268,12 +2715,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>>
-        createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
-            String resourceGroupName, String name, String prId, StringDictionaryInner appSettings, Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
+        String resourceGroupName, String name, String prId, StringDictionaryInner appSettings, Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2298,7 +2746,7 @@ public final class StaticSitesClient
         }
         return service
             .createOrUpdateStaticSiteBuildFunctionAppSettings(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 prId,
@@ -2326,7 +2774,35 @@ public final class StaticSitesClient
         return createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
                 resourceGroupName, name, prId, appSettings)
             .flatMap(
-                (SimpleResponse<StringDictionaryInner> res) -> {
+                (Response<StringDictionaryInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates or updates the function app settings of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param appSettings String dictionary resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsAsync(
+        String resourceGroupName, String name, String prId, StringDictionaryInner appSettings, Context context) {
+        return createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
+                resourceGroupName, name, prId, appSettings, context)
+            .flatMap(
+                (Response<StringDictionaryInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2355,6 +2831,27 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Creates or updates the function app settings of a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param appSettings String dictionary resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StringDictionaryInner createOrUpdateStaticSiteBuildFunctionAppSettings(
+        String resourceGroupName, String name, String prId, StringDictionaryInner appSettings, Context context) {
+        return createOrUpdateStaticSiteBuildFunctionAppSettingsAsync(
+                resourceGroupName, name, prId, appSettings, context)
+            .block();
+    }
+
+    /**
      * Description for Gets the functions of a particular static site build.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2368,9 +2865,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteBuildFunctionsSinglePageAsync(
         String resourceGroupName, String name, String prId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2393,7 +2892,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteBuildFunctions(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             prId,
@@ -2427,9 +2926,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteBuildFunctionsSinglePageAsync(
         String resourceGroupName, String name, String prId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2449,7 +2950,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteBuildFunctions(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 prId,
@@ -2524,6 +3025,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the functions of a particular static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site functions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctions(
+        String resourceGroupName, String name, String prId, Context context) {
+        return new PagedIterable<>(listStaticSiteBuildFunctionsAsync(resourceGroupName, name, prId, context));
+    }
+
+    /**
      * Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2535,11 +3054,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, String prId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2562,7 +3083,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteBuildFunctionAppSettings(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             prId,
@@ -2585,11 +3106,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, String prId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2609,7 +3132,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteBuildFunctionAppSettings(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 prId,
@@ -2634,7 +3157,33 @@ public final class StaticSitesClient
         String resourceGroupName, String name, String prId) {
         return listStaticSiteBuildFunctionAppSettingsWithResponseAsync(resourceGroupName, name, prId)
             .flatMap(
-                (SimpleResponse<StringDictionaryInner> res) -> {
+                (Response<StringDictionaryInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets the application settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsAsync(
+        String resourceGroupName, String name, String prId, Context context) {
+        return listStaticSiteBuildFunctionAppSettingsWithResponseAsync(resourceGroupName, name, prId, context)
+            .flatMap(
+                (Response<StringDictionaryInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2661,6 +3210,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the application settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param prId The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StringDictionaryInner listStaticSiteBuildFunctionAppSettings(
+        String resourceGroupName, String name, String prId, Context context) {
+        return listStaticSiteBuildFunctionAppSettingsAsync(resourceGroupName, name, prId, context).block();
+    }
+
+    /**
      * Description for Creates or updates the function app settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2672,11 +3239,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, StringDictionaryInner appSettings) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2701,7 +3270,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .createOrUpdateStaticSiteFunctionAppSettings(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -2724,11 +3293,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2750,7 +3321,7 @@ public final class StaticSitesClient
         }
         return service
             .createOrUpdateStaticSiteFunctionAppSettings(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -2775,7 +3346,34 @@ public final class StaticSitesClient
         String resourceGroupName, String name, StringDictionaryInner appSettings) {
         return createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name, appSettings)
             .flatMap(
-                (SimpleResponse<StringDictionaryInner> res) -> {
+                (Response<StringDictionaryInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates or updates the function app settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param appSettings String dictionary resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsAsync(
+        String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
+        return createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
+                resourceGroupName, name, appSettings, context)
+            .flatMap(
+                (Response<StringDictionaryInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2802,6 +3400,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Creates or updates the function app settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param appSettings String dictionary resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StringDictionaryInner createOrUpdateStaticSiteFunctionAppSettings(
+        String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
+        return createOrUpdateStaticSiteFunctionAppSettingsAsync(resourceGroupName, name, appSettings, context).block();
+    }
+
+    /**
      * Description for Creates an invitation link for a user with the role.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2813,14 +3429,15 @@ public final class StaticSitesClient
      * @return static sites user roles invitation link resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteUserInvitationResponseResourceInner>>
-        createUserRolesInvitationLinkWithResponseAsync(
-            String resourceGroupName,
-            String name,
-            StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLinkWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2848,7 +3465,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .createUserRolesInvitationLink(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -2871,15 +3488,16 @@ public final class StaticSitesClient
      * @return static sites user roles invitation link resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteUserInvitationResponseResourceInner>>
-        createUserRolesInvitationLinkWithResponseAsync(
-            String resourceGroupName,
-            String name,
-            StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope,
-            Context context) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLinkWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2904,7 +3522,7 @@ public final class StaticSitesClient
         }
         return service
             .createUserRolesInvitationLink(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -2932,7 +3550,37 @@ public final class StaticSitesClient
         return createUserRolesInvitationLinkWithResponseAsync(
                 resourceGroupName, name, staticSiteUserRolesInvitationEnvelope)
             .flatMap(
-                (SimpleResponse<StaticSiteUserInvitationResponseResourceInner> res) -> {
+                (Response<StaticSiteUserInvitationResponseResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates an invitation link for a user with the role.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static sites user roles invitation link resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkAsync(
+        String resourceGroupName,
+        String name,
+        StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope,
+        Context context) {
+        return createUserRolesInvitationLinkWithResponseAsync(
+                resourceGroupName, name, staticSiteUserRolesInvitationEnvelope, context)
+            .flatMap(
+                (Response<StaticSiteUserInvitationResponseResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2962,6 +3610,29 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Creates an invitation link for a user with the role.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param staticSiteUserRolesInvitationEnvelope Static sites user roles invitation resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static sites user roles invitation link resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteUserInvitationResponseResourceInner createUserRolesInvitationLink(
+        String resourceGroupName,
+        String name,
+        StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope,
+        Context context) {
+        return createUserRolesInvitationLinkAsync(
+                resourceGroupName, name, staticSiteUserRolesInvitationEnvelope, context)
+            .block();
+    }
+
+    /**
      * Description for Gets all static site custom domains for a particular static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2974,9 +3645,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
         listStaticSiteCustomDomainsSinglePageAsync(String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2996,7 +3669,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteCustomDomains(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -3028,9 +3701,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
         listStaticSiteCustomDomainsSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3047,7 +3722,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteCustomDomains(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -3118,6 +3793,23 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets all static site custom domains for a particular static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site resource to search in.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site custom domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner> listStaticSiteCustomDomains(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(listStaticSiteCustomDomainsAsync(resourceGroupName, name, context));
+    }
+
+    /**
      * Description for Creates a new static site custom domain in an existing resource group and static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3129,12 +3821,14 @@ public final class StaticSitesClient
      * @return static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
+    public Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>>
         createOrUpdateStaticSiteCustomDomainWithResponseAsync(
             String resourceGroupName, String name, String domainName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3157,7 +3851,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .createOrUpdateStaticSiteCustomDomain(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             domainName,
@@ -3180,12 +3874,14 @@ public final class StaticSitesClient
      * @return static Site Custom Domain Overview ARM resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
+    public Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>>
         createOrUpdateStaticSiteCustomDomainWithResponseAsync(
             String resourceGroupName, String name, String domainName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3205,7 +3901,7 @@ public final class StaticSitesClient
         }
         return service
             .createOrUpdateStaticSiteCustomDomain(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 domainName,
@@ -3230,7 +3926,33 @@ public final class StaticSitesClient
         String resourceGroupName, String name, String domainName) {
         return createOrUpdateStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName)
             .flatMap(
-                (SimpleResponse<StaticSiteCustomDomainOverviewArmResourceInner> res) -> {
+                (Response<StaticSiteCustomDomainOverviewArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Custom Domain Overview ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteCustomDomainOverviewArmResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
+        String resourceGroupName, String name, String domainName, Context context) {
+        return createOrUpdateStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName, context)
+            .flatMap(
+                (Response<StaticSiteCustomDomainOverviewArmResourceInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3257,6 +3979,24 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to create.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Custom Domain Overview ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteCustomDomainOverviewArmResourceInner createOrUpdateStaticSiteCustomDomain(
+        String resourceGroupName, String name, String domainName, Context context) {
+        return createOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context).block();
+    }
+
+    /**
      * Description for Deletes a custom domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3270,9 +4010,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteCustomDomainWithResponseAsync(
         String resourceGroupName, String name, String domainName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3295,7 +4037,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .deleteStaticSiteCustomDomain(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             domainName,
@@ -3320,9 +4062,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteStaticSiteCustomDomainWithResponseAsync(
         String resourceGroupName, String name, String domainName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3342,7 +4086,7 @@ public final class StaticSitesClient
         }
         return service
             .deleteStaticSiteCustomDomain(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 domainName,
@@ -3374,6 +4118,25 @@ public final class StaticSitesClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteStaticSiteCustomDomainAsync(
+        String resourceGroupName, String name, String domainName, Context context) {
+        return deleteStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Deletes a custom domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3381,6 +4144,23 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName) {
         deleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).block();
+    }
+
+    /**
+     * Description for Deletes a custom domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to delete.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteStaticSiteCustomDomain(
+        String resourceGroupName, String name, String domainName, Context context) {
+        deleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context).block();
     }
 
     /**
@@ -3397,9 +4177,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
         String resourceGroupName, String name, String domainName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3422,7 +4204,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .validateCustomDomainCanBeAddedToStaticSite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             domainName,
@@ -3447,9 +4229,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
         String resourceGroupName, String name, String domainName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3469,7 +4253,7 @@ public final class StaticSitesClient
         }
         return service
             .validateCustomDomainCanBeAddedToStaticSite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 domainName,
@@ -3502,6 +4286,25 @@ public final class StaticSitesClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> validateCustomDomainCanBeAddedToStaticSiteAsync(
+        String resourceGroupName, String name, String domainName, Context context) {
+        return validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(resourceGroupName, name, domainName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Validates a particular custom domain can be added to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3509,6 +4312,23 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName) {
         validateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName).block();
+    }
+
+    /**
+     * Description for Validates a particular custom domain can be added to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateCustomDomainCanBeAddedToStaticSite(
+        String resourceGroupName, String name, String domainName, Context context) {
+        validateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName, context).block();
     }
 
     /**
@@ -3523,9 +4343,11 @@ public final class StaticSitesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> detachStaticSiteWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3545,7 +4367,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .detachStaticSite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -3568,9 +4390,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> detachStaticSiteWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3587,7 +4411,7 @@ public final class StaticSitesClient
         }
         return service
             .detachStaticSite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -3615,6 +4439,23 @@ public final class StaticSitesClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> detachStaticSiteAsync(String resourceGroupName, String name, Context context) {
+        return detachStaticSiteWithResponseAsync(resourceGroupName, name, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Detaches a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3622,6 +4463,21 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachStaticSite(String resourceGroupName, String name) {
         detachStaticSiteAsync(resourceGroupName, name).block();
+    }
+
+    /**
+     * Description for Detaches a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to detach.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void detachStaticSite(String resourceGroupName, String name, Context context) {
+        detachStaticSiteAsync(resourceGroupName, name, context).block();
     }
 
     /**
@@ -3637,9 +4493,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteFunctionsSinglePageAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3659,7 +4517,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteFunctions(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -3691,9 +4549,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteFunctionsSinglePageAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3710,7 +4570,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteFunctions(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -3781,6 +4641,23 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the functions of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site functions.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(listStaticSiteFunctionsAsync(resourceGroupName, name, context));
+    }
+
+    /**
      * Description for Gets the application settings of a static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3791,11 +4668,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteFunctionAppSettingsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> listStaticSiteFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3815,7 +4694,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteFunctionAppSettings(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -3836,11 +4715,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteFunctionAppSettingsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> listStaticSiteFunctionAppSettingsWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3857,7 +4738,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteFunctionAppSettings(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -3879,7 +4760,32 @@ public final class StaticSitesClient
     public Mono<StringDictionaryInner> listStaticSiteFunctionAppSettingsAsync(String resourceGroupName, String name) {
         return listStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<StringDictionaryInner> res) -> {
+                (Response<StringDictionaryInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets the application settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StringDictionaryInner> listStaticSiteFunctionAppSettingsAsync(
+        String resourceGroupName, String name, Context context) {
+        return listStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<StringDictionaryInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3904,6 +4810,23 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Gets the application settings of a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StringDictionaryInner listStaticSiteFunctionAppSettings(
+        String resourceGroupName, String name, Context context) {
+        return listStaticSiteFunctionAppSettingsAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Lists the secrets for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3914,11 +4837,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3938,7 +4863,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .listStaticSiteSecrets(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -3959,11 +4884,13 @@ public final class StaticSitesClient
      * @return string dictionary resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(
+    public Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3980,7 +4907,7 @@ public final class StaticSitesClient
         }
         return service
             .listStaticSiteSecrets(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -4002,7 +4929,32 @@ public final class StaticSitesClient
     public Mono<StringDictionaryInner> listStaticSiteSecretsAsync(String resourceGroupName, String name) {
         return listStaticSiteSecretsWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<StringDictionaryInner> res) -> {
+                (Response<StringDictionaryInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Lists the secrets for an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StringDictionaryInner> listStaticSiteSecretsAsync(
+        String resourceGroupName, String name, Context context) {
+        return listStaticSiteSecretsWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<StringDictionaryInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -4027,6 +4979,22 @@ public final class StaticSitesClient
     }
 
     /**
+     * Description for Lists the secrets for an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StringDictionaryInner listStaticSiteSecrets(String resourceGroupName, String name, Context context) {
+        return listStaticSiteSecretsAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Resets the api key for an existing static site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -4040,9 +5008,11 @@ public final class StaticSitesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(
         String resourceGroupName, String name, StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4069,7 +5039,7 @@ public final class StaticSitesClient
                 context ->
                     service
                         .resetStaticSiteApiKey(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -4097,9 +5067,11 @@ public final class StaticSitesClient
         String name,
         StaticSiteResetPropertiesArmResource resetPropertiesEnvelope,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4123,7 +5095,7 @@ public final class StaticSitesClient
         }
         return service
             .resetStaticSiteApiKey(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -4156,6 +5128,28 @@ public final class StaticSitesClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> resetStaticSiteApiKeyAsync(
+        String resourceGroupName,
+        String name,
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope,
+        Context context) {
+        return resetStaticSiteApiKeyWithResponseAsync(resourceGroupName, name, resetPropertiesEnvelope, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Resets the api key for an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4164,6 +5158,26 @@ public final class StaticSitesClient
     public void resetStaticSiteApiKey(
         String resourceGroupName, String name, StaticSiteResetPropertiesArmResource resetPropertiesEnvelope) {
         resetStaticSiteApiKeyAsync(resourceGroupName, name, resetPropertiesEnvelope).block();
+    }
+
+    /**
+     * Description for Resets the api key for an existing static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param resetPropertiesEnvelope Static Site Reset Properties ARM resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void resetStaticSiteApiKey(
+        String resourceGroupName,
+        String name,
+        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope,
+        Context context) {
+        resetStaticSiteApiKeyAsync(resourceGroupName, name, resetPropertiesEnvelope, context).block();
     }
 
     /**

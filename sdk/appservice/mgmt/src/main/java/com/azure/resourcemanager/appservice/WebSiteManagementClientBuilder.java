@@ -12,8 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the WebSiteManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {WebSiteManagementClientImpl.class})
+/** A builder for creating a new instance of the WebSiteManagementClient type. */
+@ServiceClientBuilder(serviceClients = {WebSiteManagementClient.class})
 public final class WebSiteManagementClientBuilder {
     /*
      * Your Azure subscription ID. This is a GUID-formatted string (e.g.
@@ -35,32 +35,16 @@ public final class WebSiteManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the WebSiteManagementClientBuilder.
      */
-    public WebSiteManagementClientBuilder host(String host) {
-        this.host = host;
-        return this;
-    }
-
-    /*
-     * Api Version
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the WebSiteManagementClientBuilder.
-     */
-    public WebSiteManagementClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public WebSiteManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -97,16 +81,13 @@ public final class WebSiteManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of WebSiteManagementClientImpl with the provided parameters.
+     * Builds an instance of WebSiteManagementClient with the provided parameters.
      *
-     * @return an instance of WebSiteManagementClientImpl.
+     * @return an instance of WebSiteManagementClient.
      */
-    public WebSiteManagementClientImpl buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "2019-08-01";
+    public WebSiteManagementClient buildClient() {
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -117,10 +98,7 @@ public final class WebSiteManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        WebSiteManagementClientImpl client = new WebSiteManagementClientImpl(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
-        client.setApiVersion(this.apiVersion);
+        WebSiteManagementClient client = new WebSiteManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }

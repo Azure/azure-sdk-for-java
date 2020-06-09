@@ -12,7 +12,7 @@ import java.util.Map;
 
 /** The ManagedServiceIdentity model. */
 @Fluent
-public class ManagedServiceIdentity {
+public final class ManagedServiceIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedServiceIdentity.class);
 
     /*
@@ -112,11 +112,14 @@ public class ManagedServiceIdentity {
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities().values().forEach(e -> {
-                if (e != null) {
-                    e.validate();
-                }
-            });
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

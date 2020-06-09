@@ -55,7 +55,14 @@ public class KeyVaultReferenceCollectionInner extends ProxyOnlyResource {
     public void validate() {
         super.validate();
         if (keyToReferenceStatuses() != null) {
-            keyToReferenceStatuses().values().forEach(e -> e.validate());
+            keyToReferenceStatuses()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

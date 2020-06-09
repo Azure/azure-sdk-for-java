@@ -159,7 +159,14 @@ public class WebSiteInstanceStatusInner extends ProxyOnlyResource {
     public void validate() {
         super.validate();
         if (containers() != null) {
-            containers().values().forEach(e -> e.validate());
+            containers()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

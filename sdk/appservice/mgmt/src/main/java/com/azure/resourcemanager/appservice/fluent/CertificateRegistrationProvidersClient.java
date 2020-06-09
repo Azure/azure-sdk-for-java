@@ -19,14 +19,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
@@ -38,14 +38,14 @@ public final class CertificateRegistrationProvidersClient {
     private final CertificateRegistrationProvidersService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of CertificateRegistrationProvidersInner.
+     * Initializes an instance of CertificateRegistrationProvidersClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CertificateRegistrationProvidersClient(WebSiteManagementClientImpl client) {
+    public CertificateRegistrationProvidersClient(WebSiteManagementClient client) {
         this.service =
             RestProxy
                 .create(
@@ -66,14 +66,14 @@ public final class CertificateRegistrationProvidersClient {
         @Get("/providers/Microsoft.CertificateRegistration/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<CsmOperationCollectionInner>> listOperations(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<CsmOperationCollectionInner>> listOperations(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<CsmOperationCollectionInner>> listOperationsNext(
+        Mono<Response<CsmOperationCollectionInner>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -87,12 +87,15 @@ public final class CertificateRegistrationProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listOperations(this.client.getHost(), this.client.getApiVersion(), context))
+            .withContext(
+                context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -117,12 +120,14 @@ public final class CertificateRegistrationProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return service
-            .listOperations(this.client.getHost(), this.client.getApiVersion(), context)
+            .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -175,6 +180,21 @@ public final class CertificateRegistrationProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CsmOperationDescriptionInner> listOperations() {
         return new PagedIterable<>(listOperationsAsync());
+    }
+
+    /**
+     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * provider.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Azure resource manager operation metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CsmOperationDescriptionInner> listOperations(Context context) {
+        return new PagedIterable<>(listOperationsAsync(context));
     }
 
     /**

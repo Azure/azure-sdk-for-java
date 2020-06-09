@@ -103,8 +103,9 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     private String resourceGroup;
 
     /*
-     * If Linux app service plan <code>true</code>, <code>false</code>
-     * otherwise.
+     * This needs to set to <code>true</code> when creating a Linux App Service
+     * Plan, along with <code>kind</code> set to <code>Linux</code>. It should
+     * be <code>false</code> otherwise.
      */
     @JsonProperty(value = "properties.reserved")
     private Boolean reserved;
@@ -348,7 +349,8 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
+     * Get the reserved property: This needs to set to &lt;code&gt;true&lt;/code&gt; when creating a Linux App Service
+     * Plan, along with &lt;code&gt;kind&lt;/code&gt; set to &lt;code&gt;Linux&lt;/code&gt;. It should be
      * &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the reserved value.
@@ -358,7 +360,8 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
+     * Set the reserved property: This needs to set to &lt;code&gt;true&lt;/code&gt; when creating a Linux App Service
+     * Plan, along with &lt;code&gt;kind&lt;/code&gt; set to &lt;code&gt;Linux&lt;/code&gt;. It should be
      * &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param reserved the reserved value to set.

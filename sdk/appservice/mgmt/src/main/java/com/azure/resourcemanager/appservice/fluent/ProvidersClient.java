@@ -19,16 +19,16 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ApplicationStackResourceInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CsmOperationDescriptionInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.ProviderOsTypeSelected;
 import reactor.core.publisher.Mono;
@@ -41,14 +41,14 @@ public final class ProvidersClient {
     private final ProvidersService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of ProvidersInner.
+     * Initializes an instance of ProvidersClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ProvidersClient(WebSiteManagementClientImpl client) {
+    public ProvidersClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(ProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -65,8 +65,8 @@ public final class ProvidersClient {
         @Get("/providers/Microsoft.Web/availableStacks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ApplicationStackCollectionInner>> getAvailableStacks(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationStackCollectionInner>> getAvailableStacks(
+            @HostParam("$host") String endpoint,
             @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -75,15 +75,15 @@ public final class ProvidersClient {
         @Get("/providers/Microsoft.Web/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<CsmOperationCollectionInner>> listOperations(
-            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<CsmOperationCollectionInner>> listOperations(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/availableStacks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ApplicationStackCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ApplicationStackCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("osTypeSelected") ProviderOsTypeSelected osTypeSelected,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -93,21 +93,21 @@ public final class ProvidersClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ApplicationStackCollectionInner>> getAvailableStacksNext(
+        Mono<Response<ApplicationStackCollectionInner>> getAvailableStacksNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<CsmOperationCollectionInner>> listOperationsNext(
+        Mono<Response<CsmOperationCollectionInner>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ApplicationStackCollectionInner>> getAvailableStacksOnPremNext(
+        Mono<Response<ApplicationStackCollectionInner>> getAvailableStacksOnPremNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -123,16 +123,18 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationStackResourceInner>> getAvailableStacksSinglePageAsync(
         ProviderOsTypeSelected osTypeSelected) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .getAvailableStacks(
-                            this.client.getHost(), osTypeSelected, this.client.getApiVersion(), context))
+                            this.client.getEndpoint(), osTypeSelected, this.client.getApiVersion(), context))
             .<PagedResponse<ApplicationStackResourceInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -158,12 +160,14 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationStackResourceInner>> getAvailableStacksSinglePageAsync(
         ProviderOsTypeSelected osTypeSelected, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return service
-            .getAvailableStacks(this.client.getHost(), osTypeSelected, this.client.getApiVersion(), context)
+            .getAvailableStacks(this.client.getEndpoint(), osTypeSelected, this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -242,6 +246,22 @@ public final class ProvidersClient {
     /**
      * Description for Get available application frameworks and their versions.
      *
+     * @param osTypeSelected The osTypeSelected parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Application Stacks.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationStackResourceInner> getAvailableStacks(
+        ProviderOsTypeSelected osTypeSelected, Context context) {
+        return new PagedIterable<>(getAvailableStacksAsync(osTypeSelected, context));
+    }
+
+    /**
+     * Description for Get available application frameworks and their versions.
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Application Stacks.
@@ -263,12 +283,15 @@ public final class ProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listOperations(this.client.getHost(), this.client.getApiVersion(), context))
+            .withContext(
+                context -> service.listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -293,12 +316,14 @@ public final class ProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         return service
-            .listOperations(this.client.getHost(), this.client.getApiVersion(), context)
+            .listOperations(this.client.getEndpoint(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -354,6 +379,21 @@ public final class ProvidersClient {
     }
 
     /**
+     * Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes resource
+     * metric definitions.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Azure resource manager operation metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CsmOperationDescriptionInner> listOperations(Context context) {
+        return new PagedIterable<>(listOperationsAsync(context));
+    }
+
+    /**
      * Description for Get available application frameworks and their versions.
      *
      * @param osTypeSelected The osTypeSelected parameter.
@@ -365,9 +405,11 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationStackResourceInner>> listSinglePageAsync(
         ProviderOsTypeSelected osTypeSelected) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -380,7 +422,7 @@ public final class ProvidersClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             osTypeSelected,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -410,9 +452,11 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationStackResourceInner>> listSinglePageAsync(
         ProviderOsTypeSelected osTypeSelected, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -422,7 +466,7 @@ public final class ProvidersClient {
         }
         return service
             .list(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 osTypeSelected,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
@@ -499,6 +543,21 @@ public final class ProvidersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationStackResourceInner> list(ProviderOsTypeSelected osTypeSelected) {
         return new PagedIterable<>(listAsync(osTypeSelected));
+    }
+
+    /**
+     * Description for Get available application frameworks and their versions.
+     *
+     * @param osTypeSelected The osTypeSelected parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Application Stacks.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationStackResourceInner> list(ProviderOsTypeSelected osTypeSelected, Context context) {
+        return new PagedIterable<>(listAsync(osTypeSelected, context));
     }
 
     /**

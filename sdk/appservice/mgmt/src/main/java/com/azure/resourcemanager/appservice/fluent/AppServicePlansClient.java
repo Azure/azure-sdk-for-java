@@ -26,11 +26,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.AppServicePlanInner;
 import com.azure.resourcemanager.appservice.fluent.inner.CapabilityInner;
@@ -46,7 +48,6 @@ import com.azure.resourcemanager.appservice.fluent.inner.VnetGatewayInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetInfoInner;
 import com.azure.resourcemanager.appservice.fluent.inner.VnetRouteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.WebAppCollectionInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -68,14 +69,14 @@ public final class AppServicePlansClient
     private final AppServicePlansService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of AppServicePlansInner.
+     * Initializes an instance of AppServicePlansClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    AppServicePlansClient(WebSiteManagementClientImpl client) {
+    public AppServicePlansClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(AppServicePlansService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -92,21 +93,19 @@ public final class AppServicePlansClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<AppServicePlanCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @QueryParam("detailed") Boolean detailed,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanCollectionInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<AppServicePlanCollectionInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -114,12 +113,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<AppServicePlanInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -128,12 +127,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -143,12 +142,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -157,12 +156,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<AppServicePlanInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -172,12 +171,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/capabilities")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/capabilities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<List<CapabilityInner>>> listCapabilities(
-            @HostParam("$host") String host,
+        Mono<Response<List<CapabilityInner>>> listCapabilities(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -186,12 +185,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<HybridConnectionInner>> getHybridConnection(
-            @HostParam("$host") String host,
+        Mono<Response<HybridConnectionInner>> getHybridConnection(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName,
@@ -202,12 +201,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteHybridConnection(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName,
@@ -218,12 +217,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<HybridConnectionKeyInner>> listHybridConnectionKeys(
-            @HostParam("$host") String host,
+        Mono<Response<HybridConnectionKeyInner>> listHybridConnectionKeys(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName,
@@ -234,12 +233,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceCollectionInner>> listWebAppsByHybridConnection(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceCollectionInner>> listWebAppsByHybridConnection(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("namespaceName") String namespaceName,
@@ -250,12 +249,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/hybridConnectionPlanLimits/limit")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/hybridConnectionPlanLimits/limit")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<HybridConnectionLimitsInner>> getHybridConnectionPlanLimit(
-            @HostParam("$host") String host,
+        Mono<Response<HybridConnectionLimitsInner>> getHybridConnectionPlanLimit(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -264,12 +263,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/hybridConnectionRelays")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/hybridConnectionRelays")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<HybridConnectionCollectionInner>> listHybridConnections(
-            @HostParam("$host") String host,
+        Mono<Response<HybridConnectionCollectionInner>> listHybridConnections(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -278,12 +277,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/restartSites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/restartSites")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> restartWebApps(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @QueryParam("softRestart") Boolean softRestart,
@@ -293,12 +292,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/sites")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/sites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<WebAppCollectionInner>> listWebApps(
-            @HostParam("$host") String host,
+        Mono<Response<WebAppCollectionInner>> listWebApps(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @QueryParam("$skipToken") String skipToken,
@@ -310,12 +309,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/skus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<Object>> getServerFarmSkus(
-            @HostParam("$host") String host,
+        Mono<Response<Object>> getServerFarmSkus(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -324,12 +323,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/usages")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<CsmUsageQuotaCollectionInner>> listUsages(
-            @HostParam("$host") String host,
+        Mono<Response<CsmUsageQuotaCollectionInner>> listUsages(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @QueryParam(value = "$filter", encoded = true) String filter,
@@ -339,12 +338,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<List<VnetInfoInner>>> listVnets(
-            @HostParam("$host") String host,
+        Mono<Response<List<VnetInfoInner>>> listVnets(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -353,12 +352,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<VnetInfoInner>> getVnetFromServerFarm(
-            @HostParam("$host") String host,
+        Mono<Response<VnetInfoInner>> getVnetFromServerFarm(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -368,12 +367,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<VnetGatewayInner>> getVnetGateway(
-            @HostParam("$host") String host,
+        Mono<Response<VnetGatewayInner>> getVnetGateway(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -384,12 +383,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<VnetGatewayInner>> updateVnetGateway(
-            @HostParam("$host") String host,
+        Mono<Response<VnetGatewayInner>> updateVnetGateway(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -401,12 +400,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/routes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<List<VnetRouteInner>>> listRoutesForVnet(
-            @HostParam("$host") String host,
+        Mono<Response<List<VnetRouteInner>>> listRoutesForVnet(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -416,12 +415,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<List<VnetRouteInner>>> getRouteForVnet(
-            @HostParam("$host") String host,
+        Mono<Response<List<VnetRouteInner>>> getRouteForVnet(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -432,12 +431,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<VnetRouteInner>> createOrUpdateVnetRoute(
-            @HostParam("$host") String host,
+        Mono<Response<VnetRouteInner>> createOrUpdateVnetRoute(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -449,12 +448,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteVnetRoute(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -465,12 +464,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
         @ExpectedResponses({200, 400, 404})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<VnetRouteInner>> updateVnetRoute(
-            @HostParam("$host") String host,
+        Mono<Response<VnetRouteInner>> updateVnetRoute(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("vnetName") String vnetName,
@@ -482,12 +481,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}/workers/{workerName}/reboot")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}/workers/{workerName}/reboot")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> rebootWorker(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("workerName") String workerName,
@@ -497,12 +496,12 @@ public final class AppServicePlansClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
-                + "/serverfarms/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+                + "/{name}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanInner>> beginCreateOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<AppServicePlanInner>> beginCreateOrUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -514,42 +513,42 @@ public final class AppServicePlansClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanCollectionInner>> listNext(
+        Mono<Response<AppServicePlanCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<AppServicePlanCollectionInner>> listByResourceGroupNext(
+        Mono<Response<AppServicePlanCollectionInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceCollectionInner>> listWebAppsByHybridConnectionNext(
+        Mono<Response<ResourceCollectionInner>> listWebAppsByHybridConnectionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<HybridConnectionCollectionInner>> listHybridConnectionsNext(
+        Mono<Response<HybridConnectionCollectionInner>> listHybridConnectionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<WebAppCollectionInner>> listWebAppsNext(
+        Mono<Response<WebAppCollectionInner>> listWebAppsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<CsmUsageQuotaCollectionInner>> listUsagesNext(
+        Mono<Response<CsmUsageQuotaCollectionInner>> listUsagesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -566,9 +565,11 @@ public final class AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AppServicePlanInner>> listSinglePageAsync(Boolean detailed) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -581,7 +582,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             detailed,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -612,9 +613,11 @@ public final class AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AppServicePlanInner>> listSinglePageAsync(Boolean detailed, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -624,7 +627,11 @@ public final class AppServicePlansClient
         }
         return service
             .list(
-                this.client.getHost(), detailed, this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+                this.client.getEndpoint(),
+                detailed,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -703,6 +710,23 @@ public final class AppServicePlansClient
     /**
      * Description for Get all App Service plans for a subscription.
      *
+     * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is
+     *     &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties. Retrieval of all properties may
+     *     increase the API latency.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service plans.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppServicePlanInner> list(Boolean detailed, Context context) {
+        return new PagedIterable<>(listAsync(detailed, context));
+    }
+
+    /**
+     * Description for Get all App Service plans for a subscription.
+     *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of App Service plans.
@@ -725,9 +749,11 @@ public final class AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AppServicePlanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -744,7 +770,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -774,9 +800,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AppServicePlanInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -790,7 +818,7 @@ public final class AppServicePlansClient
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
@@ -854,6 +882,21 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get all App Service plans in a resource group.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service plans.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AppServicePlanInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Description for Get an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -864,11 +907,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AppServicePlanInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<AppServicePlanInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -888,7 +933,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -909,11 +954,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AppServicePlanInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<AppServicePlanInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -930,7 +977,7 @@ public final class AppServicePlansClient
         }
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -952,7 +999,31 @@ public final class AppServicePlansClient
     public Mono<AppServicePlanInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<AppServicePlanInner> res) -> {
+                (Response<AppServicePlanInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppServicePlanInner> getByResourceGroupAsync(String resourceGroupName, String name, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<AppServicePlanInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -977,6 +1048,22 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppServicePlanInner getByResourceGroup(String resourceGroupName, String name, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -988,11 +1075,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1017,7 +1106,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1025,6 +1114,101 @@ public final class AppServicePlansClient
                             appServicePlan,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (appServicePlan == null) {
+            return Mono.error(new IllegalArgumentException("Parameter appServicePlan is required and cannot be null."));
+        } else {
+            appServicePlan.validate();
+        }
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                appServicePlan,
+                context);
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan);
+        return this
+            .client
+            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class);
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<AppServicePlanInner>, AppServicePlanInner> beginCreateOrUpdate(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan, context);
+        return this
+            .client
+            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class);
     }
 
     /**
@@ -1041,8 +1225,33 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AppServicePlanInner> createOrUpdateAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+        Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan);
+        return this
+            .client
+            .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), AppServicePlanInner.class, AppServicePlanInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppServicePlanInner> createOrUpdateAsync(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan, context);
         return this
             .client
             .<AppServicePlanInner, AppServicePlanInner>getLroResultAsync(
@@ -1069,6 +1278,24 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppServicePlanInner createOrUpdate(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        return createOrUpdateAsync(resourceGroupName, name, appServicePlan, context).block();
+    }
+
+    /**
      * Description for Delete an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1080,9 +1307,11 @@ public final class AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1102,7 +1331,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1124,9 +1353,11 @@ public final class AppServicePlansClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1143,7 +1374,7 @@ public final class AppServicePlansClient
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1171,6 +1402,22 @@ public final class AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, name, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Delete an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1178,6 +1425,21 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
         deleteAsync(resourceGroupName, name).block();
+    }
+
+    /**
+     * Description for Delete an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String name, Context context) {
+        deleteAsync(resourceGroupName, name, context).block();
     }
 
     /**
@@ -1192,11 +1454,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AppServicePlanInner>> updateWithResponseAsync(
+    public Mono<Response<AppServicePlanInner>> updateWithResponseAsync(
         String resourceGroupName, String name, AppServicePlanPatchResource appServicePlan) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1221,7 +1485,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1244,11 +1508,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AppServicePlanInner>> updateWithResponseAsync(
+    public Mono<Response<AppServicePlanInner>> updateWithResponseAsync(
         String resourceGroupName, String name, AppServicePlanPatchResource appServicePlan, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1270,7 +1536,7 @@ public final class AppServicePlansClient
         }
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1295,7 +1561,33 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, AppServicePlanPatchResource appServicePlan) {
         return updateWithResponseAsync(resourceGroupName, name, appServicePlan)
             .flatMap(
-                (SimpleResponse<AppServicePlanInner> res) -> {
+                (Response<AppServicePlanInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan ARM resource for a app service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppServicePlanInner> updateAsync(
+        String resourceGroupName, String name, AppServicePlanPatchResource appServicePlan, Context context) {
+        return updateWithResponseAsync(resourceGroupName, name, appServicePlan, context)
+            .flatMap(
+                (Response<AppServicePlanInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1322,6 +1614,24 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan ARM resource for a app service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppServicePlanInner update(
+        String resourceGroupName, String name, AppServicePlanPatchResource appServicePlan, Context context) {
+        return updateAsync(resourceGroupName, name, appServicePlan, context).block();
+    }
+
+    /**
      * Description for List all capabilities of an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1332,11 +1642,13 @@ public final class AppServicePlansClient
      * @return array of Capability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<CapabilityInner>>> listCapabilitiesWithResponseAsync(
+    public Mono<Response<List<CapabilityInner>>> listCapabilitiesWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1356,7 +1668,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listCapabilities(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -1377,11 +1689,13 @@ public final class AppServicePlansClient
      * @return array of Capability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<CapabilityInner>>> listCapabilitiesWithResponseAsync(
+    public Mono<Response<List<CapabilityInner>>> listCapabilitiesWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1398,7 +1712,7 @@ public final class AppServicePlansClient
         }
         return service
             .listCapabilities(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -1420,7 +1734,31 @@ public final class AppServicePlansClient
     public Mono<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name) {
         return listCapabilitiesWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<List<CapabilityInner>> res) -> {
+                (Response<List<CapabilityInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for List all capabilities of an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Capability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name, Context context) {
+        return listCapabilitiesWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<List<CapabilityInner>> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1445,6 +1783,22 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for List all capabilities of an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Capability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<CapabilityInner> listCapabilities(String resourceGroupName, String name, Context context) {
+        return listCapabilitiesAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1457,11 +1811,13 @@ public final class AppServicePlansClient
      * @return hybrid Connection contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<HybridConnectionInner>> getHybridConnectionWithResponseAsync(
+    public Mono<Response<HybridConnectionInner>> getHybridConnectionWithResponseAsync(
         String resourceGroupName, String name, String namespaceName, String relayName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1487,7 +1843,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getHybridConnection(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             namespaceName,
@@ -1512,11 +1868,13 @@ public final class AppServicePlansClient
      * @return hybrid Connection contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<HybridConnectionInner>> getHybridConnectionWithResponseAsync(
+    public Mono<Response<HybridConnectionInner>> getHybridConnectionWithResponseAsync(
         String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1539,7 +1897,7 @@ public final class AppServicePlansClient
         }
         return service
             .getHybridConnection(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 namespaceName,
@@ -1566,7 +1924,34 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String namespaceName, String relayName) {
         return getHybridConnectionWithResponseAsync(resourceGroupName, name, namespaceName, relayName)
             .flatMap(
-                (SimpleResponse<HybridConnectionInner> res) -> {
+                (Response<HybridConnectionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hybrid Connection contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<HybridConnectionInner> getHybridConnectionAsync(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        return getHybridConnectionWithResponseAsync(resourceGroupName, name, namespaceName, relayName, context)
+            .flatMap(
+                (Response<HybridConnectionInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1594,6 +1979,25 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Retrieve a Hybrid Connection in use in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hybrid Connection contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HybridConnectionInner getHybridConnection(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        return getHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName, context).block();
+    }
+
+    /**
      * Description for Delete a Hybrid Connection in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1608,9 +2012,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteHybridConnectionWithResponseAsync(
         String resourceGroupName, String name, String namespaceName, String relayName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1636,7 +2042,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .deleteHybridConnection(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             namespaceName,
@@ -1663,9 +2069,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteHybridConnectionWithResponseAsync(
         String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1688,7 +2096,7 @@ public final class AppServicePlansClient
         }
         return service
             .deleteHybridConnection(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 namespaceName,
@@ -1724,6 +2132,26 @@ public final class AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param namespaceName Name of the Service Bus namespace.
      * @param relayName Name of the Service Bus relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteHybridConnectionAsync(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        return deleteHybridConnectionWithResponseAsync(resourceGroupName, name, namespaceName, relayName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1731,6 +2159,24 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
         deleteHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName).block();
+    }
+
+    /**
+     * Description for Delete a Hybrid Connection in use in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteHybridConnection(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        deleteHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName, context).block();
     }
 
     /**
@@ -1746,11 +2192,13 @@ public final class AppServicePlansClient
      * @return hybrid Connection key contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<HybridConnectionKeyInner>> listHybridConnectionKeysWithResponseAsync(
+    public Mono<Response<HybridConnectionKeyInner>> listHybridConnectionKeysWithResponseAsync(
         String resourceGroupName, String name, String namespaceName, String relayName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1776,7 +2224,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listHybridConnectionKeys(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             namespaceName,
@@ -1801,11 +2249,13 @@ public final class AppServicePlansClient
      * @return hybrid Connection key contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<HybridConnectionKeyInner>> listHybridConnectionKeysWithResponseAsync(
+    public Mono<Response<HybridConnectionKeyInner>> listHybridConnectionKeysWithResponseAsync(
         String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1828,7 +2278,7 @@ public final class AppServicePlansClient
         }
         return service
             .listHybridConnectionKeys(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 namespaceName,
@@ -1855,7 +2305,34 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String namespaceName, String relayName) {
         return listHybridConnectionKeysWithResponseAsync(resourceGroupName, name, namespaceName, relayName)
             .flatMap(
-                (SimpleResponse<HybridConnectionKeyInner> res) -> {
+                (Response<HybridConnectionKeyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get the send key name and value of a Hybrid Connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName The name of the Service Bus namespace.
+     * @param relayName The name of the Service Bus relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hybrid Connection key contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<HybridConnectionKeyInner> listHybridConnectionKeysAsync(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        return listHybridConnectionKeysWithResponseAsync(resourceGroupName, name, namespaceName, relayName, context)
+            .flatMap(
+                (Response<HybridConnectionKeyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1883,6 +2360,25 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get the send key name and value of a Hybrid Connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName The name of the Service Bus namespace.
+     * @param relayName The name of the Service Bus relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hybrid Connection key contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HybridConnectionKeyInner listHybridConnectionKeys(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        return listHybridConnectionKeysAsync(resourceGroupName, name, namespaceName, relayName, context).block();
+    }
+
+    /**
      * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1897,9 +2393,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listWebAppsByHybridConnectionSinglePageAsync(
         String resourceGroupName, String name, String namespaceName, String relayName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1925,7 +2423,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listWebAppsByHybridConnection(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             namespaceName,
@@ -1961,9 +2459,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> listWebAppsByHybridConnectionSinglePageAsync(
         String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1986,7 +2486,7 @@ public final class AppServicePlansClient
         }
         return service
             .listWebAppsByHybridConnection(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 namespaceName,
@@ -2068,6 +2568,26 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get all apps that use a Hybrid Connection in an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Hybrid Connection namespace.
+     * @param relayName Name of the Hybrid Connection relay.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of resources.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listWebAppsByHybridConnection(
+        String resourceGroupName, String name, String namespaceName, String relayName, Context context) {
+        return new PagedIterable<>(
+            listWebAppsByHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName, context));
+    }
+
+    /**
      * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2078,11 +2598,13 @@ public final class AppServicePlansClient
      * @return hybrid Connection limits contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithResponseAsync(
+    public Mono<Response<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2102,7 +2624,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getHybridConnectionPlanLimit(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -2123,11 +2645,13 @@ public final class AppServicePlansClient
      * @return hybrid Connection limits contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithResponseAsync(
+    public Mono<Response<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2144,7 +2668,7 @@ public final class AppServicePlansClient
         }
         return service
             .getHybridConnectionPlanLimit(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -2166,7 +2690,32 @@ public final class AppServicePlansClient
     public Mono<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name) {
         return getHybridConnectionPlanLimitWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<HybridConnectionLimitsInner> res) -> {
+                (Response<HybridConnectionLimitsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hybrid Connection limits contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(
+        String resourceGroupName, String name, Context context) {
+        return getHybridConnectionPlanLimitWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<HybridConnectionLimitsInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2191,6 +2740,23 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hybrid Connection limits contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HybridConnectionLimitsInner getHybridConnectionPlanLimit(
+        String resourceGroupName, String name, Context context) {
+        return getHybridConnectionPlanLimitAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Retrieve all Hybrid Connections in use in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2203,9 +2769,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HybridConnectionInner>> listHybridConnectionsSinglePageAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2225,7 +2793,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listHybridConnections(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -2257,9 +2825,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<HybridConnectionInner>> listHybridConnectionsSinglePageAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2276,7 +2846,7 @@ public final class AppServicePlansClient
         }
         return service
             .listHybridConnections(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -2345,6 +2915,23 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of hostname bindings.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<HybridConnectionInner> listHybridConnections(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(listHybridConnectionsAsync(resourceGroupName, name, context));
+    }
+
+    /**
      * Description for Restart all apps in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2360,9 +2947,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restartWebAppsWithResponseAsync(
         String resourceGroupName, String name, Boolean softRestart) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2382,7 +2971,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .restartWebApps(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             softRestart,
@@ -2409,9 +2998,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restartWebAppsWithResponseAsync(
         String resourceGroupName, String name, Boolean softRestart, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2428,7 +3019,7 @@ public final class AppServicePlansClient
         }
         return service
             .restartWebApps(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 softRestart,
@@ -2453,6 +3044,26 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart) {
         return restartWebAppsWithResponseAsync(resourceGroupName, name, softRestart)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Restart all apps in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
+     *     settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always
+     *     restarts and reprovisions the apps.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, Context context) {
+        return restartWebAppsWithResponseAsync(resourceGroupName, name, softRestart, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -2496,6 +3107,24 @@ public final class AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to perform a soft restart, applies the configuration
+     *     settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always
+     *     restarts and reprovisions the apps.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restartWebApps(String resourceGroupName, String name, Boolean softRestart, Context context) {
+        restartWebAppsAsync(resourceGroupName, name, softRestart, context).block();
+    }
+
+    /**
+     * Description for Restart all apps in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2525,9 +3154,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SiteInner>> listWebAppsSinglePageAsync(
         String resourceGroupName, String name, String skipToken, String filter, String top) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2547,7 +3178,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listWebApps(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             skipToken,
@@ -2587,9 +3218,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SiteInner>> listWebAppsSinglePageAsync(
         String resourceGroupName, String name, String skipToken, String filter, String top, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2606,7 +3239,7 @@ public final class AppServicePlansClient
         }
         return service
             .listWebApps(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 skipToken,
@@ -2720,6 +3353,28 @@ public final class AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
+     * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the
+     *     resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list
+     *     contains web apps from the start of the list.
+     * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running.
+     * @param top List page size. If specified, results are paged.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of App Service apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SiteInner> listWebApps(
+        String resourceGroupName, String name, String skipToken, String filter, String top, Context context) {
+        return new PagedIterable<>(listWebAppsAsync(resourceGroupName, name, skipToken, filter, top, context));
+    }
+
+    /**
+     * Description for Get all apps associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2745,10 +3400,12 @@ public final class AppServicePlansClient
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getServerFarmSkusWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<Object>> getServerFarmSkusWithResponseAsync(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2768,7 +3425,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getServerFarmSkus(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -2789,11 +3446,13 @@ public final class AppServicePlansClient
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getServerFarmSkusWithResponseAsync(
+    public Mono<Response<Object>> getServerFarmSkusWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2810,7 +3469,7 @@ public final class AppServicePlansClient
         }
         return service
             .getServerFarmSkus(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -2832,7 +3491,31 @@ public final class AppServicePlansClient
     public Mono<Object> getServerFarmSkusAsync(String resourceGroupName, String name) {
         return getServerFarmSkusWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<Object> res) -> {
+                (Response<Object> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets all selectable SKUs for a given App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of App Service Plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Object> getServerFarmSkusAsync(String resourceGroupName, String name, Context context) {
+        return getServerFarmSkusWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<Object> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2857,6 +3540,22 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Gets all selectable SKUs for a given App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of App Service Plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Object getServerFarmSkus(String resourceGroupName, String name, Context context) {
+        return getServerFarmSkusAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Gets server farm usage information.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2871,9 +3570,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(
         String resourceGroupName, String name, String filter) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2893,7 +3594,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listUsages(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             filter,
@@ -2928,9 +3629,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmUsageQuotaInner>> listUsagesSinglePageAsync(
         String resourceGroupName, String name, String filter, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2947,7 +3650,7 @@ public final class AppServicePlansClient
         }
         return service
             .listUsages(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 filter,
@@ -3046,6 +3749,25 @@ public final class AppServicePlansClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan.
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
+     *     $filter=(name.value eq 'Metric1' or name.value eq 'Metric2').
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of CSM usage quotas.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CsmUsageQuotaInner> listUsages(
+        String resourceGroupName, String name, String filter, Context context) {
+        return new PagedIterable<>(listUsagesAsync(resourceGroupName, name, filter, context));
+    }
+
+    /**
+     * Description for Gets server farm usage information.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of App Service Plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3069,10 +3791,12 @@ public final class AppServicePlansClient
      * @return array of VnetInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<VnetInfoInner>>> listVnetsWithResponseAsync(String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3092,7 +3816,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listVnets(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -3113,11 +3837,13 @@ public final class AppServicePlansClient
      * @return array of VnetInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<VnetInfoInner>>> listVnetsWithResponseAsync(
+    public Mono<Response<List<VnetInfoInner>>> listVnetsWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3134,7 +3860,7 @@ public final class AppServicePlansClient
         }
         return service
             .listVnets(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -3156,7 +3882,31 @@ public final class AppServicePlansClient
     public Mono<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name) {
         return listVnetsWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<List<VnetInfoInner>> res) -> {
+                (Response<List<VnetInfoInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get all Virtual Networks associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of VnetInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name, Context context) {
+        return listVnetsWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<List<VnetInfoInner>> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3181,6 +3931,22 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get all Virtual Networks associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of VnetInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VnetInfoInner> listVnets(String resourceGroupName, String name, Context context) {
+        return listVnetsAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Get a Virtual Network associated with an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3192,11 +3958,13 @@ public final class AppServicePlansClient
      * @return virtual Network information contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
+    public Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3219,7 +3987,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getVnetFromServerFarm(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -3242,11 +4010,13 @@ public final class AppServicePlansClient
      * @return virtual Network information contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
+    public Mono<Response<VnetInfoInner>> getVnetFromServerFarmWithResponseAsync(
         String resourceGroupName, String name, String vnetName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3266,7 +4036,7 @@ public final class AppServicePlansClient
         }
         return service
             .getVnetFromServerFarm(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -3290,7 +4060,33 @@ public final class AppServicePlansClient
     public Mono<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
         return getVnetFromServerFarmWithResponseAsync(resourceGroupName, name, vnetName)
             .flatMap(
-                (SimpleResponse<VnetInfoInner> res) -> {
+                (Response<VnetInfoInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get a Virtual Network associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network information contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VnetInfoInner> getVnetFromServerFarmAsync(
+        String resourceGroupName, String name, String vnetName, Context context) {
+        return getVnetFromServerFarmWithResponseAsync(resourceGroupName, name, vnetName, context)
+            .flatMap(
+                (Response<VnetInfoInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3316,6 +4112,24 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get a Virtual Network associated with an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network information contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VnetInfoInner getVnetFromServerFarm(
+        String resourceGroupName, String name, String vnetName, Context context) {
+        return getVnetFromServerFarmAsync(resourceGroupName, name, vnetName, context).block();
+    }
+
+    /**
      * Description for Get a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3328,11 +4142,13 @@ public final class AppServicePlansClient
      * @return the Virtual Network gateway contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetGatewayInner>> getVnetGatewayWithResponseAsync(
+    public Mono<Response<VnetGatewayInner>> getVnetGatewayWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String gatewayName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3358,7 +4174,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getVnetGateway(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -3383,11 +4199,13 @@ public final class AppServicePlansClient
      * @return the Virtual Network gateway contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetGatewayInner>> getVnetGatewayWithResponseAsync(
+    public Mono<Response<VnetGatewayInner>> getVnetGatewayWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String gatewayName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3410,7 +4228,7 @@ public final class AppServicePlansClient
         }
         return service
             .getVnetGateway(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -3437,7 +4255,34 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String vnetName, String gatewayName) {
         return getVnetGatewayWithResponseAsync(resourceGroupName, name, vnetName, gatewayName)
             .flatMap(
-                (SimpleResponse<VnetGatewayInner> res) -> {
+                (Response<VnetGatewayInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get a Virtual Network gateway.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Virtual Network gateway contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VnetGatewayInner> getVnetGatewayAsync(
+        String resourceGroupName, String name, String vnetName, String gatewayName, Context context) {
+        return getVnetGatewayWithResponseAsync(resourceGroupName, name, vnetName, gatewayName, context)
+            .flatMap(
+                (Response<VnetGatewayInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3464,6 +4309,25 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get a Virtual Network gateway.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Virtual Network gateway contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VnetGatewayInner getVnetGateway(
+        String resourceGroupName, String name, String vnetName, String gatewayName, Context context) {
+        return getVnetGatewayAsync(resourceGroupName, name, vnetName, gatewayName, context).block();
+    }
+
+    /**
      * Description for Update a Virtual Network gateway.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3478,15 +4342,17 @@ public final class AppServicePlansClient
      * @return the Virtual Network gateway contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetGatewayInner>> updateVnetGatewayWithResponseAsync(
+    public Mono<Response<VnetGatewayInner>> updateVnetGatewayWithResponseAsync(
         String resourceGroupName,
         String name,
         String vnetName,
         String gatewayName,
         VnetGatewayInner connectionEnvelope) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3518,7 +4384,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .updateVnetGateway(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -3546,16 +4412,18 @@ public final class AppServicePlansClient
      * @return the Virtual Network gateway contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetGatewayInner>> updateVnetGatewayWithResponseAsync(
+    public Mono<Response<VnetGatewayInner>> updateVnetGatewayWithResponseAsync(
         String resourceGroupName,
         String name,
         String vnetName,
         String gatewayName,
         VnetGatewayInner connectionEnvelope,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3584,7 +4452,7 @@ public final class AppServicePlansClient
         }
         return service
             .updateVnetGateway(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -3618,7 +4486,42 @@ public final class AppServicePlansClient
         VnetGatewayInner connectionEnvelope) {
         return updateVnetGatewayWithResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope)
             .flatMap(
-                (SimpleResponse<VnetGatewayInner> res) -> {
+                (Response<VnetGatewayInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Update a Virtual Network gateway.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
+     *     access to the VPN package.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Virtual Network gateway contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VnetGatewayInner> updateVnetGatewayAsync(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        String gatewayName,
+        VnetGatewayInner connectionEnvelope,
+        Context context) {
+        return updateVnetGatewayWithResponseAsync(
+                resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, context)
+            .flatMap(
+                (Response<VnetGatewayInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3652,6 +4555,33 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Update a Virtual Network gateway.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param connectionEnvelope The Virtual Network gateway contract. This is used to give the Virtual Network gateway
+     *     access to the VPN package.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Virtual Network gateway contract.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VnetGatewayInner updateVnetGateway(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        String gatewayName,
+        VnetGatewayInner connectionEnvelope,
+        Context context) {
+        return updateVnetGatewayAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope, context)
+            .block();
+    }
+
+    /**
      * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3663,11 +4593,13 @@ public final class AppServicePlansClient
      * @return array of VnetRoute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<VnetRouteInner>>> listRoutesForVnetWithResponseAsync(
+    public Mono<Response<List<VnetRouteInner>>> listRoutesForVnetWithResponseAsync(
         String resourceGroupName, String name, String vnetName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3690,7 +4622,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .listRoutesForVnet(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -3713,11 +4645,13 @@ public final class AppServicePlansClient
      * @return array of VnetRoute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<VnetRouteInner>>> listRoutesForVnetWithResponseAsync(
+    public Mono<Response<List<VnetRouteInner>>> listRoutesForVnetWithResponseAsync(
         String resourceGroupName, String name, String vnetName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3737,7 +4671,7 @@ public final class AppServicePlansClient
         }
         return service
             .listRoutesForVnet(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -3761,7 +4695,33 @@ public final class AppServicePlansClient
     public Mono<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName) {
         return listRoutesForVnetWithResponseAsync(resourceGroupName, name, vnetName)
             .flatMap(
-                (SimpleResponse<List<VnetRouteInner>> res) -> {
+                (Response<List<VnetRouteInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of VnetRoute.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VnetRouteInner>> listRoutesForVnetAsync(
+        String resourceGroupName, String name, String vnetName, Context context) {
+        return listRoutesForVnetWithResponseAsync(resourceGroupName, name, vnetName, context)
+            .flatMap(
+                (Response<List<VnetRouteInner>> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3787,6 +4747,24 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of VnetRoute.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VnetRouteInner> listRoutesForVnet(
+        String resourceGroupName, String name, String vnetName, Context context) {
+        return listRoutesForVnetAsync(resourceGroupName, name, vnetName, context).block();
+    }
+
+    /**
      * Description for Get a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3799,11 +4777,13 @@ public final class AppServicePlansClient
      * @return array of VnetRoute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<VnetRouteInner>>> getRouteForVnetWithResponseAsync(
+    public Mono<Response<List<VnetRouteInner>>> getRouteForVnetWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String routeName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3829,7 +4809,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .getRouteForVnet(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -3854,11 +4834,13 @@ public final class AppServicePlansClient
      * @return array of VnetRoute.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<VnetRouteInner>>> getRouteForVnetWithResponseAsync(
+    public Mono<Response<List<VnetRouteInner>>> getRouteForVnetWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String routeName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3881,7 +4863,7 @@ public final class AppServicePlansClient
         }
         return service
             .getRouteForVnet(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -3908,7 +4890,34 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String vnetName, String routeName) {
         return getRouteForVnetWithResponseAsync(resourceGroupName, name, vnetName, routeName)
             .flatMap(
-                (SimpleResponse<List<VnetRouteInner>> res) -> {
+                (Response<List<VnetRouteInner>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of VnetRoute.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<VnetRouteInner>> getRouteForVnetAsync(
+        String resourceGroupName, String name, String vnetName, String routeName, Context context) {
+        return getRouteForVnetWithResponseAsync(resourceGroupName, name, vnetName, routeName, context)
+            .flatMap(
+                (Response<List<VnetRouteInner>> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -3936,6 +4945,25 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Get a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of VnetRoute.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<VnetRouteInner> getRouteForVnet(
+        String resourceGroupName, String name, String vnetName, String routeName, Context context) {
+        return getRouteForVnetAsync(resourceGroupName, name, vnetName, routeName, context).block();
+    }
+
+    /**
      * Description for Create or update a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -3949,11 +4977,13 @@ public final class AppServicePlansClient
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetRouteInner>> createOrUpdateVnetRouteWithResponseAsync(
+    public Mono<Response<VnetRouteInner>> createOrUpdateVnetRouteWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3984,7 +5014,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .createOrUpdateVnetRoute(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -4011,16 +5041,18 @@ public final class AppServicePlansClient
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetRouteInner>> createOrUpdateVnetRouteWithResponseAsync(
+    public Mono<Response<VnetRouteInner>> createOrUpdateVnetRouteWithResponseAsync(
         String resourceGroupName,
         String name,
         String vnetName,
         String routeName,
         VnetRouteInner route,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4048,7 +5080,7 @@ public final class AppServicePlansClient
         }
         return service
             .createOrUpdateVnetRoute(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -4077,7 +5109,40 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         return createOrUpdateVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, route)
             .flatMap(
-                (SimpleResponse<VnetRouteInner> res) -> {
+                (Response<VnetRouteInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Create or update a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network route contract used to pass routing information for a Virtual Network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VnetRouteInner> createOrUpdateVnetRouteAsync(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        String routeName,
+        VnetRouteInner route,
+        Context context) {
+        return createOrUpdateVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, route, context)
+            .flatMap(
+                (Response<VnetRouteInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -4106,6 +5171,31 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Create or update a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network route contract used to pass routing information for a Virtual Network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VnetRouteInner createOrUpdateVnetRoute(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        String routeName,
+        VnetRouteInner route,
+        Context context) {
+        return createOrUpdateVnetRouteAsync(resourceGroupName, name, vnetName, routeName, route, context).block();
+    }
+
+    /**
      * Description for Delete a Virtual Network route in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -4120,9 +5210,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteVnetRouteWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String routeName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4148,7 +5240,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .deleteVnetRoute(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -4175,9 +5267,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteVnetRouteWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String routeName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4200,7 +5294,7 @@ public final class AppServicePlansClient
         }
         return service
             .deleteVnetRoute(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -4235,6 +5329,26 @@ public final class AppServicePlansClient
      * @param name Name of the App Service plan.
      * @param vnetName Name of the Virtual Network.
      * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteVnetRouteAsync(
+        String resourceGroupName, String name, String vnetName, String routeName, Context context) {
+        return deleteVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Delete a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4242,6 +5356,24 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
         deleteVnetRouteAsync(resourceGroupName, name, vnetName, routeName).block();
+    }
+
+    /**
+     * Description for Delete a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteVnetRoute(
+        String resourceGroupName, String name, String vnetName, String routeName, Context context) {
+        deleteVnetRouteAsync(resourceGroupName, name, vnetName, routeName, context).block();
     }
 
     /**
@@ -4258,11 +5390,13 @@ public final class AppServicePlansClient
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetRouteInner>> updateVnetRouteWithResponseAsync(
+    public Mono<Response<VnetRouteInner>> updateVnetRouteWithResponseAsync(
         String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4293,7 +5427,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .updateVnetRoute(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             vnetName,
@@ -4320,16 +5454,18 @@ public final class AppServicePlansClient
      * @return virtual Network route contract used to pass routing information for a Virtual Network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VnetRouteInner>> updateVnetRouteWithResponseAsync(
+    public Mono<Response<VnetRouteInner>> updateVnetRouteWithResponseAsync(
         String resourceGroupName,
         String name,
         String vnetName,
         String routeName,
         VnetRouteInner route,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4357,7 +5493,7 @@ public final class AppServicePlansClient
         }
         return service
             .updateVnetRoute(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 vnetName,
@@ -4386,7 +5522,40 @@ public final class AppServicePlansClient
         String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         return updateVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, route)
             .flatMap(
-                (SimpleResponse<VnetRouteInner> res) -> {
+                (Response<VnetRouteInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Create or update a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network route contract used to pass routing information for a Virtual Network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VnetRouteInner> updateVnetRouteAsync(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        String routeName,
+        VnetRouteInner route,
+        Context context) {
+        return updateVnetRouteWithResponseAsync(resourceGroupName, name, vnetName, routeName, route, context)
+            .flatMap(
+                (Response<VnetRouteInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -4415,6 +5584,31 @@ public final class AppServicePlansClient
     }
 
     /**
+     * Description for Create or update a Virtual Network route in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Virtual Network route contract used to pass routing information for a Virtual Network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network route contract used to pass routing information for a Virtual Network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VnetRouteInner updateVnetRoute(
+        String resourceGroupName,
+        String name,
+        String vnetName,
+        String routeName,
+        VnetRouteInner route,
+        Context context) {
+        return updateVnetRouteAsync(resourceGroupName, name, vnetName, routeName, route, context).block();
+    }
+
+    /**
      * Description for Reboot a worker machine in an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -4428,9 +5622,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rebootWorkerWithResponseAsync(
         String resourceGroupName, String name, String workerName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4453,7 +5649,7 @@ public final class AppServicePlansClient
                 context ->
                     service
                         .rebootWorker(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             workerName,
@@ -4478,9 +5674,11 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rebootWorkerWithResponseAsync(
         String resourceGroupName, String name, String workerName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4500,7 +5698,7 @@ public final class AppServicePlansClient
         }
         return service
             .rebootWorker(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 workerName,
@@ -4532,6 +5730,24 @@ public final class AppServicePlansClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.
      * @param workerName Name of worker machine, which typically starts with RD.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, Context context) {
+        return rebootWorkerWithResponseAsync(resourceGroupName, name, workerName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Reboot a worker machine in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4539,6 +5755,22 @@ public final class AppServicePlansClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rebootWorker(String resourceGroupName, String name, String workerName) {
         rebootWorkerAsync(resourceGroupName, name, workerName).block();
+    }
+
+    /**
+     * Description for Reboot a worker machine in an App Service plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rebootWorker(String resourceGroupName, String name, String workerName, Context context) {
+        rebootWorkerAsync(resourceGroupName, name, workerName, context).block();
     }
 
     /**
@@ -4553,11 +5785,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AppServicePlanInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<AppServicePlanInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4581,8 +5815,8 @@ public final class AppServicePlansClient
             .withContext(
                 context ->
                     service
-                        .beginCreateOrUpdate(
-                            this.client.getHost(),
+                        .beginCreateOrUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -4605,11 +5839,13 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AppServicePlanInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<AppServicePlanInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4630,8 +5866,8 @@ public final class AppServicePlansClient
             appServicePlan.validate();
         }
         return service
-            .beginCreateOrUpdate(
-                this.client.getHost(),
+            .beginCreateOrUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -4652,11 +5888,37 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AppServicePlanInner> beginCreateOrUpdateAsync(
+    public Mono<AppServicePlanInner> beginCreateOrUpdateWithoutPollingAsync(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, name, appServicePlan)
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, name, appServicePlan)
             .flatMap(
-                (SimpleResponse<AppServicePlanInner> res) -> {
+                (Response<AppServicePlanInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AppServicePlanInner> beginCreateOrUpdateWithoutPollingAsync(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, name, appServicePlan, context)
+            .flatMap(
+                (Response<AppServicePlanInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -4677,9 +5939,27 @@ public final class AppServicePlansClient
      * @return app Service plan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AppServicePlanInner beginCreateOrUpdate(
+    public AppServicePlanInner beginCreateOrUpdateWithoutPolling(
         String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, appServicePlan).block();
+        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, name, appServicePlan).block();
+    }
+
+    /**
+     * Description for Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AppServicePlanInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName, String name, AppServicePlanInner appServicePlan, Context context) {
+        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, name, appServicePlan, context).block();
     }
 
     /**

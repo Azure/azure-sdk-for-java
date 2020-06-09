@@ -26,11 +26,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainAvailabilityCheckResultInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainControlCenterSsoRequestInner;
@@ -39,7 +41,6 @@ import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifi
 import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.NameIdentifierInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.DomainPatchResource;
 import com.azure.resourcemanager.appservice.models.DomainRecommendationSearchParameters;
@@ -59,14 +60,14 @@ public final class DomainsClient
     private final DomainsService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of DomainsInner.
+     * Initializes an instance of DomainsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DomainsClient(WebSiteManagementClientImpl client) {
+    public DomainsClient(WebSiteManagementClient client) {
         this.service = RestProxy.create(DomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -82,8 +83,8 @@ public final class DomainsClient
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainAvailabilityCheckResultInner>> checkAvailability(
-            @HostParam("$host") String host,
+        Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailability(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NameIdentifierInner identifier,
@@ -93,8 +94,8 @@ public final class DomainsClient
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<DomainCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -103,8 +104,8 @@ public final class DomainsClient
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequest(
-            @HostParam("$host") String host,
+        Mono<Response<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequest(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -113,8 +114,8 @@ public final class DomainsClient
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<NameIdentifierCollectionInner>> listRecommendations(
-            @HostParam("$host") String host,
+        Mono<Response<NameIdentifierCollectionInner>> listRecommendations(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DomainRecommendationSearchParameters parameters,
@@ -122,12 +123,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainCollectionInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<DomainCollectionInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -135,12 +136,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainInner>> getByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<DomainInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -149,12 +150,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -164,12 +165,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @QueryParam("forceHardDeleteDomain") Boolean forceHardDeleteDomain,
@@ -179,12 +180,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainInner>> update(
-            @HostParam("$host") String host,
+        Mono<Response<DomainInner>> update(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -194,12 +195,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}/domainOwnershipIdentifiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiers(
-            @HostParam("$host") String host,
+        Mono<Response<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiers(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -208,12 +209,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifier(
-            @HostParam("$host") String host,
+        Mono<Response<DomainOwnershipIdentifierInner>> getOwnershipIdentifier(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("name") String name,
@@ -223,12 +224,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifier(
-            @HostParam("$host") String host,
+        Mono<Response<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifier(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("name") String name,
@@ -239,12 +240,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteOwnershipIdentifier(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("name") String name,
@@ -254,12 +255,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}/domainOwnershipIdentifiers/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainOwnershipIdentifierInner>> updateOwnershipIdentifier(
-            @HostParam("$host") String host,
+        Mono<Response<DomainOwnershipIdentifierInner>> updateOwnershipIdentifier(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("name") String name,
@@ -270,12 +271,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}/renew")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}/renew")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> renew(
-            @HostParam("$host") String host,
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -284,12 +285,12 @@ public final class DomainsClient
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.DomainRegistration/domains/{domainName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration"
+                + "/domains/{domainName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainInner>> beginCreateOrUpdate(
-            @HostParam("$host") String host,
+        Mono<Response<DomainInner>> beginCreateOrUpdateWithoutPolling(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId,
@@ -301,28 +302,28 @@ public final class DomainsClient
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainCollectionInner>> listNext(
+        Mono<Response<DomainCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<NameIdentifierCollectionInner>> listRecommendationsNext(
+        Mono<Response<NameIdentifierCollectionInner>> listRecommendationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainCollectionInner>> listByResourceGroupNext(
+        Mono<Response<DomainCollectionInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiersNext(
+        Mono<Response<DomainOwnershipIdentifierCollectionInner>> listOwnershipIdentifiersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -336,10 +337,12 @@ public final class DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(String name) {
-        if (this.client.getHost() == null) {
+    public Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(String name) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -354,7 +357,7 @@ public final class DomainsClient
                 context ->
                     service
                         .checkAvailability(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             identifier,
@@ -373,11 +376,13 @@ public final class DomainsClient
      * @return domain availability check result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
+    public Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
         String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -389,7 +394,7 @@ public final class DomainsClient
         identifier.withName(name);
         return service
             .checkAvailability(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 identifier,
@@ -409,7 +414,30 @@ public final class DomainsClient
     public Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(String name) {
         return checkAvailabilityWithResponseAsync(name)
             .flatMap(
-                (SimpleResponse<DomainAvailabilityCheckResultInner> res) -> {
+                (Response<DomainAvailabilityCheckResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Check if a domain is available for registration.
+     *
+     * @param name Name of the object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability check result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(String name, Context context) {
+        return checkAvailabilityWithResponseAsync(name, context)
+            .flatMap(
+                (Response<DomainAvailabilityCheckResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -433,6 +461,21 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Check if a domain is available for registration.
+     *
+     * @param name Name of the object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability check result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainAvailabilityCheckResultInner checkAvailability(String name, Context context) {
+        return checkAvailabilityAsync(name, context).block();
+    }
+
+    /**
      * Description for Get all domains in a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -441,9 +484,11 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -456,7 +501,7 @@ public final class DomainsClient
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
@@ -483,9 +528,11 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -494,7 +541,7 @@ public final class DomainsClient
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -545,6 +592,20 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Get all domains in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DomainInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Description for Generate a single sign-on request for the domain management portal.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -552,10 +613,12 @@ public final class DomainsClient
      * @return single sign-on request information for domain management.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync() {
-        if (this.client.getHost() == null) {
+    public Mono<Response<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync() {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -568,7 +631,7 @@ public final class DomainsClient
                 context ->
                     service
                         .getControlCenterSsoRequest(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
@@ -585,11 +648,13 @@ public final class DomainsClient
      * @return single sign-on request information for domain management.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync(
+    public Mono<Response<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync(
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -599,7 +664,7 @@ public final class DomainsClient
         }
         return service
             .getControlCenterSsoRequest(
-                this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+                this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
@@ -613,7 +678,29 @@ public final class DomainsClient
     public Mono<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync() {
         return getControlCenterSsoRequestWithResponseAsync()
             .flatMap(
-                (SimpleResponse<DomainControlCenterSsoRequestInner> res) -> {
+                (Response<DomainControlCenterSsoRequestInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Generate a single sign-on request for the domain management portal.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single sign-on request information for domain management.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync(Context context) {
+        return getControlCenterSsoRequestWithResponseAsync(context)
+            .flatMap(
+                (Response<DomainControlCenterSsoRequestInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -635,6 +722,20 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Generate a single sign-on request for the domain management portal.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single sign-on request information for domain management.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainControlCenterSsoRequestInner getControlCenterSsoRequest(Context context) {
+        return getControlCenterSsoRequestAsync(context).block();
+    }
+
+    /**
      * Description for Get domain name recommendations based on keywords.
      *
      * @param parameters Domain recommendation search parameters.
@@ -646,9 +747,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NameIdentifierInner>> listRecommendationsSinglePageAsync(
         DomainRecommendationSearchParameters parameters) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -666,7 +769,7 @@ public final class DomainsClient
                 context ->
                     service
                         .listRecommendations(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             parameters,
@@ -696,9 +799,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NameIdentifierInner>> listRecommendationsSinglePageAsync(
         DomainRecommendationSearchParameters parameters, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -713,7 +818,7 @@ public final class DomainsClient
         }
         return service
             .listRecommendations(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 parameters,
@@ -778,6 +883,22 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Get domain name recommendations based on keywords.
+     *
+     * @param parameters Domain recommendation search parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain name identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<NameIdentifierInner> listRecommendations(
+        DomainRecommendationSearchParameters parameters, Context context) {
+        return new PagedIterable<>(listRecommendationsAsync(parameters, context));
+    }
+
+    /**
      * Description for Get all domains in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -788,9 +909,11 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -807,7 +930,7 @@ public final class DomainsClient
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -837,9 +960,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -853,7 +978,7 @@ public final class DomainsClient
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
@@ -917,6 +1042,21 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Get all domains in a resource group.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DomainInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Description for Get a domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -927,11 +1067,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String domainName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -951,7 +1093,7 @@ public final class DomainsClient
                 context ->
                     service
                         .getByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             this.client.getSubscriptionId(),
@@ -972,11 +1114,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainInner>> getByResourceGroupWithResponseAsync(
+    public Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String domainName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -993,7 +1137,7 @@ public final class DomainsClient
         }
         return service
             .getByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 this.client.getSubscriptionId(),
@@ -1015,7 +1159,31 @@ public final class DomainsClient
     public Mono<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, domainName)
             .flatMap(
-                (SimpleResponse<DomainInner> res) -> {
+                (Response<DomainInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, domainName, context)
+            .flatMap(
+                (Response<DomainInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1040,6 +1208,22 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Get a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainInner getByResourceGroup(String resourceGroupName, String domainName, Context context) {
+        return getByResourceGroupAsync(resourceGroupName, domainName, context).block();
+    }
+
+    /**
      * Description for Creates or updates a domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1051,11 +1235,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String domainName, DomainInner domain) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1080,7 +1266,7 @@ public final class DomainsClient
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             this.client.getSubscriptionId(),
@@ -1096,6 +1282,100 @@ public final class DomainsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (domain == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domain is required and cannot be null."));
+        } else {
+            domain.validate();
+        }
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                domainName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                domain,
+                context);
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domain) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain);
+        return this
+            .client
+            .<DomainInner, DomainInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class);
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain, context);
+        return this
+            .client
+            .<DomainInner, DomainInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class);
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1103,8 +1383,32 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain);
+        return this
+            .client
+            .<DomainInner, DomainInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), DomainInner.class, DomainInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainInner> createOrUpdateAsync(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, domainName, domain, context);
         return this
             .client
             .<DomainInner, DomainInner>getLroResultAsync(
@@ -1130,6 +1434,24 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainInner createOrUpdate(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        return createOrUpdateAsync(resourceGroupName, domainName, domain, context).block();
+    }
+
+    /**
      * Description for Delete a domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1144,9 +1466,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1166,7 +1490,7 @@ public final class DomainsClient
                 context ->
                     service
                         .delete(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             forceHardDeleteDomain,
@@ -1192,9 +1516,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1211,7 +1537,7 @@ public final class DomainsClient
         }
         return service
             .delete(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 forceHardDeleteDomain,
@@ -1235,6 +1561,26 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain) {
         return deleteWithResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Delete a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
+     *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, domainName, forceHardDeleteDomain, context)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1277,6 +1623,23 @@ public final class DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
+     *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, Context context) {
+        deleteAsync(resourceGroupName, domainName, forceHardDeleteDomain, context).block();
+    }
+
+    /**
+     * Description for Delete a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1300,11 +1663,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainInner>> updateWithResponseAsync(
+    public Mono<Response<DomainInner>> updateWithResponseAsync(
         String resourceGroupName, String domainName, DomainPatchResource domain) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1329,7 +1694,7 @@ public final class DomainsClient
                 context ->
                     service
                         .update(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             this.client.getSubscriptionId(),
@@ -1352,11 +1717,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainInner>> updateWithResponseAsync(
+    public Mono<Response<DomainInner>> updateWithResponseAsync(
         String resourceGroupName, String domainName, DomainPatchResource domain, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1378,7 +1745,7 @@ public final class DomainsClient
         }
         return service
             .update(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 this.client.getSubscriptionId(),
@@ -1402,7 +1769,33 @@ public final class DomainsClient
     public Mono<DomainInner> updateAsync(String resourceGroupName, String domainName, DomainPatchResource domain) {
         return updateWithResponseAsync(resourceGroupName, domainName, domain)
             .flatMap(
-                (SimpleResponse<DomainInner> res) -> {
+                (Response<DomainInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain ARM resource for a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainInner> updateAsync(
+        String resourceGroupName, String domainName, DomainPatchResource domain, Context context) {
+        return updateWithResponseAsync(resourceGroupName, domainName, domain, context)
+            .flatMap(
+                (Response<DomainInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1428,6 +1821,24 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain ARM resource for a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainInner update(
+        String resourceGroupName, String domainName, DomainPatchResource domain, Context context) {
+        return updateAsync(resourceGroupName, domainName, domain, context).block();
+    }
+
+    /**
      * Description for Lists domain ownership identifiers.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1440,9 +1851,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersSinglePageAsync(
         String resourceGroupName, String domainName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1462,7 +1875,7 @@ public final class DomainsClient
                 context ->
                     service
                         .listOwnershipIdentifiers(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             this.client.getSubscriptionId(),
@@ -1494,9 +1907,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersSinglePageAsync(
         String resourceGroupName, String domainName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1513,7 +1928,7 @@ public final class DomainsClient
         }
         return service
             .listOwnershipIdentifiers(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 this.client.getSubscriptionId(),
@@ -1584,6 +1999,23 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Lists domain ownership identifiers.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of domain ownership identifiers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DomainOwnershipIdentifierInner> listOwnershipIdentifiers(
+        String resourceGroupName, String domainName, Context context) {
+        return new PagedIterable<>(listOwnershipIdentifiersAsync(resourceGroupName, domainName, context));
+    }
+
+    /**
      * Description for Get ownership identifier for domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1595,11 +2027,13 @@ public final class DomainsClient
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
+    public Mono<Response<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
         String resourceGroupName, String domainName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1622,7 +2056,7 @@ public final class DomainsClient
                 context ->
                     service
                         .getOwnershipIdentifier(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             name,
@@ -1645,11 +2079,13 @@ public final class DomainsClient
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
+    public Mono<Response<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
         String resourceGroupName, String domainName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1669,7 +2105,7 @@ public final class DomainsClient
         }
         return service
             .getOwnershipIdentifier(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 name,
@@ -1694,7 +2130,33 @@ public final class DomainsClient
         String resourceGroupName, String domainName, String name) {
         return getOwnershipIdentifierWithResponseAsync(resourceGroupName, domainName, name)
             .flatMap(
-                (SimpleResponse<DomainOwnershipIdentifierInner> res) -> {
+                (Response<DomainOwnershipIdentifierInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get ownership identifier for domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(
+        String resourceGroupName, String domainName, String name, Context context) {
+        return getOwnershipIdentifierWithResponseAsync(resourceGroupName, domainName, name, context)
+            .flatMap(
+                (Response<DomainOwnershipIdentifierInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1721,6 +2183,24 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Get ownership identifier for domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainOwnershipIdentifierInner getOwnershipIdentifier(
+        String resourceGroupName, String domainName, String name, Context context) {
+        return getOwnershipIdentifierAsync(resourceGroupName, domainName, name, context).block();
+    }
+
+    /**
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifer.
      *
@@ -1734,14 +2214,16 @@ public final class DomainsClient
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithResponseAsync(
+    public Mono<Response<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithResponseAsync(
         String resourceGroupName,
         String domainName,
         String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1772,7 +2254,7 @@ public final class DomainsClient
                 context ->
                     service
                         .createOrUpdateOwnershipIdentifier(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             name,
@@ -1798,15 +2280,17 @@ public final class DomainsClient
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithResponseAsync(
+    public Mono<Response<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithResponseAsync(
         String resourceGroupName,
         String domainName,
         String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1834,7 +2318,7 @@ public final class DomainsClient
         }
         return service
             .createOrUpdateOwnershipIdentifier(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 name,
@@ -1866,7 +2350,40 @@ public final class DomainsClient
         return createOrUpdateOwnershipIdentifierWithResponseAsync(
                 resourceGroupName, domainName, name, domainOwnershipIdentifier)
             .flatMap(
-                (SimpleResponse<DomainOwnershipIdentifierInner> res) -> {
+                (Response<DomainOwnershipIdentifierInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifer.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(
+        String resourceGroupName,
+        String domainName,
+        String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
+        Context context) {
+        return createOrUpdateOwnershipIdentifierWithResponseAsync(
+                resourceGroupName, domainName, name, domainOwnershipIdentifier, context)
+            .flatMap(
+                (Response<DomainOwnershipIdentifierInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1899,6 +2416,32 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifer.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainOwnershipIdentifierInner createOrUpdateOwnershipIdentifier(
+        String resourceGroupName,
+        String domainName,
+        String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
+        Context context) {
+        return createOrUpdateOwnershipIdentifierAsync(
+                resourceGroupName, domainName, name, domainOwnershipIdentifier, context)
+            .block();
+    }
+
+    /**
      * Description for Delete ownership identifier for domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1912,9 +2455,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteOwnershipIdentifierWithResponseAsync(
         String resourceGroupName, String domainName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1937,7 +2482,7 @@ public final class DomainsClient
                 context ->
                     service
                         .deleteOwnershipIdentifier(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             name,
@@ -1962,9 +2507,11 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteOwnershipIdentifierWithResponseAsync(
         String resourceGroupName, String domainName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1984,7 +2531,7 @@ public final class DomainsClient
         }
         return service
             .deleteOwnershipIdentifier(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 name,
@@ -2016,6 +2563,25 @@ public final class DomainsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteOwnershipIdentifierAsync(
+        String resourceGroupName, String domainName, String name, Context context) {
+        return deleteOwnershipIdentifierWithResponseAsync(resourceGroupName, domainName, name, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Delete ownership identifier for domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2023,6 +2589,22 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteOwnershipIdentifier(String resourceGroupName, String domainName, String name) {
         deleteOwnershipIdentifierAsync(resourceGroupName, domainName, name).block();
+    }
+
+    /**
+     * Description for Delete ownership identifier for domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteOwnershipIdentifier(String resourceGroupName, String domainName, String name, Context context) {
+        deleteOwnershipIdentifierAsync(resourceGroupName, domainName, name, context).block();
     }
 
     /**
@@ -2039,14 +2621,16 @@ public final class DomainsClient
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(
+    public Mono<Response<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(
         String resourceGroupName,
         String domainName,
         String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2077,7 +2661,7 @@ public final class DomainsClient
                 context ->
                     service
                         .updateOwnershipIdentifier(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             name,
@@ -2103,15 +2687,17 @@ public final class DomainsClient
      * @return domain ownership Identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(
+    public Mono<Response<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(
         String resourceGroupName,
         String domainName,
         String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier,
         Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2139,7 +2725,7 @@ public final class DomainsClient
         }
         return service
             .updateOwnershipIdentifier(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 name,
@@ -2171,7 +2757,40 @@ public final class DomainsClient
         return updateOwnershipIdentifierWithResponseAsync(
                 resourceGroupName, domainName, name, domainOwnershipIdentifier)
             .flatMap(
-                (SimpleResponse<DomainOwnershipIdentifierInner> res) -> {
+                (Response<DomainOwnershipIdentifierInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifer.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(
+        String resourceGroupName,
+        String domainName,
+        String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
+        Context context) {
+        return updateOwnershipIdentifierWithResponseAsync(
+                resourceGroupName, domainName, name, domainOwnershipIdentifier, context)
+            .flatMap(
+                (Response<DomainOwnershipIdentifierInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2203,6 +2822,31 @@ public final class DomainsClient
     }
 
     /**
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifer.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier Domain ownership Identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainOwnershipIdentifierInner updateOwnershipIdentifier(
+        String resourceGroupName,
+        String domainName,
+        String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
+        Context context) {
+        return updateOwnershipIdentifierAsync(resourceGroupName, domainName, name, domainOwnershipIdentifier, context)
+            .block();
+    }
+
+    /**
      * Description for Renew a domain.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -2214,9 +2858,11 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String domainName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2236,7 +2882,7 @@ public final class DomainsClient
                 context ->
                     service
                         .renew(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             this.client.getSubscriptionId(),
@@ -2258,9 +2904,11 @@ public final class DomainsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String domainName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2277,7 +2925,7 @@ public final class DomainsClient
         }
         return service
             .renew(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 this.client.getSubscriptionId(),
@@ -2305,6 +2953,23 @@ public final class DomainsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renewAsync(String resourceGroupName, String domainName, Context context) {
+        return renewWithResponseAsync(resourceGroupName, domainName, context)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Description for Renew a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2312,6 +2977,21 @@ public final class DomainsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void renew(String resourceGroupName, String domainName) {
         renewAsync(resourceGroupName, domainName).block();
+    }
+
+    /**
+     * Description for Renew a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renew(String resourceGroupName, String domainName, Context context) {
+        renewAsync(resourceGroupName, domainName, context).block();
     }
 
     /**
@@ -2326,11 +3006,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<DomainInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String domainName, DomainInner domain) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2354,8 +3036,8 @@ public final class DomainsClient
             .withContext(
                 context ->
                     service
-                        .beginCreateOrUpdate(
-                            this.client.getHost(),
+                        .beginCreateOrUpdateWithoutPolling(
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             domainName,
                             this.client.getSubscriptionId(),
@@ -2378,11 +3060,13 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DomainInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<Response<DomainInner>> beginCreateOrUpdateWithoutPollingWithResponseAsync(
         String resourceGroupName, String domainName, DomainInner domain, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2403,8 +3087,8 @@ public final class DomainsClient
             domain.validate();
         }
         return service
-            .beginCreateOrUpdate(
-                this.client.getHost(),
+            .beginCreateOrUpdateWithoutPolling(
+                this.client.getEndpoint(),
                 resourceGroupName,
                 domainName,
                 this.client.getSubscriptionId(),
@@ -2425,10 +3109,37 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainInner> beginCreateOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain) {
-        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, domainName, domain)
+    public Mono<DomainInner> beginCreateOrUpdateWithoutPollingAsync(
+        String resourceGroupName, String domainName, DomainInner domain) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, domainName, domain)
             .flatMap(
-                (SimpleResponse<DomainInner> res) -> {
+                (Response<DomainInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DomainInner> beginCreateOrUpdateWithoutPollingAsync(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        return beginCreateOrUpdateWithoutPollingWithResponseAsync(resourceGroupName, domainName, domain, context)
+            .flatMap(
+                (Response<DomainInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -2449,8 +3160,27 @@ public final class DomainsClient
      * @return information about a domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner beginCreateOrUpdate(String resourceGroupName, String domainName, DomainInner domain) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domain).block();
+    public DomainInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName, String domainName, DomainInner domain) {
+        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, domainName, domain).block();
+    }
+
+    /**
+     * Description for Creates or updates a domain.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Information about a domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainInner beginCreateOrUpdateWithoutPolling(
+        String resourceGroupName, String domainName, DomainInner domain, Context context) {
+        return beginCreateOrUpdateWithoutPollingAsync(resourceGroupName, domainName, domain, context).block();
     }
 
     /**

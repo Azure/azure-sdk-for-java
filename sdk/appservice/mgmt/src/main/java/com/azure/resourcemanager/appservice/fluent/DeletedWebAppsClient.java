@@ -19,14 +19,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.DeletedSiteInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DeletedWebAppCollectionInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
@@ -38,14 +38,14 @@ public final class DeletedWebAppsClient {
     private final DeletedWebAppsService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of DeletedWebAppsInner.
+     * Initializes an instance of DeletedWebAppsClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DeletedWebAppsClient(WebSiteManagementClientImpl client) {
+    public DeletedWebAppsClient(WebSiteManagementClient client) {
         this.service =
             RestProxy.create(DeletedWebAppsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
@@ -62,8 +62,8 @@ public final class DeletedWebAppsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DeletedWebAppCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<DeletedWebAppCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -72,8 +72,8 @@ public final class DeletedWebAppsClient {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DeletedWebAppCollectionInner>> listByLocation(
-            @HostParam("$host") String host,
+        Mono<Response<DeletedWebAppCollectionInner>> listByLocation(
+            @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -81,12 +81,11 @@ public final class DeletedWebAppsClient {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites"
-                + "/{deletedSiteId}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/deletedSites/{deletedSiteId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DeletedSiteInner>> getDeletedWebAppByLocation(
-            @HostParam("$host") String host,
+        Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocation(
+            @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @PathParam("deletedSiteId") String deletedSiteId,
             @PathParam("subscriptionId") String subscriptionId,
@@ -97,14 +96,14 @@ public final class DeletedWebAppsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DeletedWebAppCollectionInner>> listNext(
+        Mono<Response<DeletedWebAppCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<DeletedWebAppCollectionInner>> listByLocationNext(
+        Mono<Response<DeletedWebAppCollectionInner>> listByLocationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -117,9 +116,11 @@ public final class DeletedWebAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedSiteInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -132,7 +133,7 @@ public final class DeletedWebAppsClient {
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
@@ -159,9 +160,11 @@ public final class DeletedWebAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedSiteInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -170,7 +173,7 @@ public final class DeletedWebAppsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -221,6 +224,20 @@ public final class DeletedWebAppsClient {
     }
 
     /**
+     * Description for Get all deleted apps for a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of deleted apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeletedSiteInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
@@ -231,9 +248,11 @@ public final class DeletedWebAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedSiteInner>> listByLocationSinglePageAsync(String location) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -249,7 +268,7 @@ public final class DeletedWebAppsClient {
                 context ->
                     service
                         .listByLocation(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             location,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -278,9 +297,11 @@ public final class DeletedWebAppsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeletedSiteInner>> listByLocationSinglePageAsync(String location, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -293,7 +314,11 @@ public final class DeletedWebAppsClient {
         }
         return service
             .listByLocation(
-                this.client.getHost(), location, this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+                this.client.getEndpoint(),
+                location,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -352,6 +377,21 @@ public final class DeletedWebAppsClient {
     }
 
     /**
+     * Description for Get all deleted apps for a subscription at location.
+     *
+     * @param location The location parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of deleted apps.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DeletedSiteInner> listByLocation(String location, Context context) {
+        return new PagedIterable<>(listByLocationAsync(location, context));
+    }
+
+    /**
      * Description for Get deleted app for a subscription at location.
      *
      * @param location The location parameter.
@@ -362,11 +402,13 @@ public final class DeletedWebAppsClient {
      * @return a deleted app.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(
+    public Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(
         String location, String deletedSiteId) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -385,7 +427,7 @@ public final class DeletedWebAppsClient {
                 context ->
                     service
                         .getDeletedWebAppByLocation(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             location,
                             deletedSiteId,
                             this.client.getSubscriptionId(),
@@ -406,11 +448,13 @@ public final class DeletedWebAppsClient {
      * @return a deleted app.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(
+    public Mono<Response<DeletedSiteInner>> getDeletedWebAppByLocationWithResponseAsync(
         String location, String deletedSiteId, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -426,7 +470,7 @@ public final class DeletedWebAppsClient {
         }
         return service
             .getDeletedWebAppByLocation(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 location,
                 deletedSiteId,
                 this.client.getSubscriptionId(),
@@ -448,7 +492,32 @@ public final class DeletedWebAppsClient {
     public Mono<DeletedSiteInner> getDeletedWebAppByLocationAsync(String location, String deletedSiteId) {
         return getDeletedWebAppByLocationWithResponseAsync(location, deletedSiteId)
             .flatMap(
-                (SimpleResponse<DeletedSiteInner> res) -> {
+                (Response<DeletedSiteInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Get deleted app for a subscription at location.
+     *
+     * @param location The location parameter.
+     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DeletedSiteInner> getDeletedWebAppByLocationAsync(
+        String location, String deletedSiteId, Context context) {
+        return getDeletedWebAppByLocationWithResponseAsync(location, deletedSiteId, context)
+            .flatMap(
+                (Response<DeletedSiteInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -470,6 +539,22 @@ public final class DeletedWebAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSiteInner getDeletedWebAppByLocation(String location, String deletedSiteId) {
         return getDeletedWebAppByLocationAsync(location, deletedSiteId).block();
+    }
+
+    /**
+     * Description for Get deleted app for a subscription at location.
+     *
+     * @param location The location parameter.
+     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedSiteInner getDeletedWebAppByLocation(String location, String deletedSiteId, Context context) {
+        return getDeletedWebAppByLocationAsync(location, deletedSiteId, context).block();
     }
 
     /**

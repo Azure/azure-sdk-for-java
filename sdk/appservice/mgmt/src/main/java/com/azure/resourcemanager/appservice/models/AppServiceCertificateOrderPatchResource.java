@@ -403,7 +403,14 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     public void validate() {
         super.validate();
         if (certificates() != null) {
-            certificates().values().forEach(e -> e.validate());
+            certificates()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
         if (signedCertificate() != null) {
             signedCertificate().validate();

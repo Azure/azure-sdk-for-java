@@ -52,7 +52,14 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     public void validate() {
         super.validate();
         if (properties() != null) {
-            properties().values().forEach(e -> e.validate());
+            properties()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

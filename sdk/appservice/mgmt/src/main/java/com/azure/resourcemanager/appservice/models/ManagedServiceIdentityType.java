@@ -9,9 +9,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for ManagedServiceIdentityType. */
 public enum ManagedServiceIdentityType {
-    /** Enum value None. */
-    NONE("None"),
-
     /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
@@ -19,7 +16,10 @@ public enum ManagedServiceIdentityType {
     USER_ASSIGNED("UserAssigned"),
 
     /** Enum value SystemAssigned, UserAssigned. */
-    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned");
+    SYSTEM_ASSIGNED__USER_ASSIGNED("SystemAssigned, UserAssigned"),
+
+    /** Enum value None. */
+    NONE("None");
 
     /** The actual serialized value for a ManagedServiceIdentityType instance. */
     private final String value;

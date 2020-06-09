@@ -19,14 +19,14 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.WebSiteManagementClient;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataCollectionInner;
 import com.azure.resourcemanager.appservice.fluent.inner.ResourceHealthMetadataInner;
-import com.azure.resourcemanager.appservice.WebSiteManagementClientImpl;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
@@ -39,14 +39,14 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     private final ResourceHealthMetadatasService service;
 
     /** The service client containing this operation class. */
-    private final WebSiteManagementClientImpl client;
+    private final WebSiteManagementClient client;
 
     /**
-     * Initializes an instance of ResourceHealthMetadatasInner.
+     * Initializes an instance of ResourceHealthMetadatasClient.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ResourceHealthMetadatasClient(WebSiteManagementClientImpl client) {
+    public ResourceHealthMetadatasClient(WebSiteManagementClient client) {
         this.service =
             RestProxy
                 .create(ResourceHealthMetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -64,8 +64,8 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> list(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceHealthMetadataCollectionInner>> list(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
@@ -76,8 +76,8 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 + "/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listByResourceGroup(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -85,26 +85,12 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{name}/resourceHealthMetadata")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
+                + "/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listBySite(
-            @HostParam("$host") String host,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{name}/resourceHealthMetadata/default")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataInner>> getBySite(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySite(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
@@ -113,27 +99,26 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{name}/slots/{slot}/resourceHealthMetadata")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
+                + "/resourceHealthMetadata/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listBySiteSlot(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceHealthMetadataInner>> getBySite(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
-            @PathParam("slot") String slot,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-                + "/{name}/slots/{slot}/resourceHealthMetadata/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
+                + "/slots/{slot}/resourceHealthMetadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataInner>> getBySiteSlot(
-            @HostParam("$host") String host,
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySiteSlot(
+            @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("slot") String slot,
@@ -142,31 +127,46 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
+                + "/slots/{slot}/resourceHealthMetadata/default")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<ResourceHealthMetadataInner>> getBySiteSlot(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("slot") String slot,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listNext(
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listByResourceGroupNext(
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listBySiteNext(
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySiteNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<SimpleResponse<ResourceHealthMetadataCollectionInner>> listBySiteSlotNext(
+        Mono<Response<ResourceHealthMetadataCollectionInner>> listBySiteSlotNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -179,9 +179,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listSinglePageAsync() {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -194,7 +196,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 context ->
                     service
                         .list(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             context))
@@ -221,9 +223,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listSinglePageAsync(Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -232,7 +236,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return service
-            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -283,6 +287,20 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     }
 
     /**
+     * Description for List all ResourceHealthMetadata for all sites in the subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of resource health metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceHealthMetadataInner> list(Context context) {
+        return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
      * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -294,9 +312,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -313,7 +333,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 context ->
                     service
                         .listByResourceGroup(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
@@ -343,9 +363,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -359,7 +381,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         }
         return service
             .listByResourceGroup(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
@@ -423,6 +445,21 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     }
 
     /**
+     * Description for List all ResourceHealthMetadata for all sites in the resource group in the subscription.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of resource health metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceHealthMetadataInner> listByResourceGroup(String resourceGroupName, Context context) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    }
+
+    /**
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -435,9 +472,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listBySiteSinglePageAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -457,7 +496,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 context ->
                     service
                         .listBySite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -489,9 +528,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listBySiteSinglePageAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -508,7 +549,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         }
         return service
             .listBySite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -577,6 +618,23 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     }
 
     /**
+     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of resource health metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceHealthMetadataInner> listBySite(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(listBySiteAsync(resourceGroupName, name, context));
+    }
+
+    /**
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -587,11 +645,13 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      * @return used for getting ResourceHealthCheck settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ResourceHealthMetadataInner>> getBySiteWithResponseAsync(
+    public Mono<Response<ResourceHealthMetadataInner>> getBySiteWithResponseAsync(
         String resourceGroupName, String name) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -611,7 +671,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 context ->
                     service
                         .getBySite(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             this.client.getSubscriptionId(),
@@ -632,11 +692,13 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      * @return used for getting ResourceHealthCheck settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ResourceHealthMetadataInner>> getBySiteWithResponseAsync(
+    public Mono<Response<ResourceHealthMetadataInner>> getBySiteWithResponseAsync(
         String resourceGroupName, String name, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -653,7 +715,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         }
         return service
             .getBySite(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 this.client.getSubscriptionId(),
@@ -675,7 +737,31 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     public Mono<ResourceHealthMetadataInner> getBySiteAsync(String resourceGroupName, String name) {
         return getBySiteWithResponseAsync(resourceGroupName, name)
             .flatMap(
-                (SimpleResponse<ResourceHealthMetadataInner> res) -> {
+                (Response<ResourceHealthMetadataInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return used for getting ResourceHealthCheck settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResourceHealthMetadataInner> getBySiteAsync(String resourceGroupName, String name, Context context) {
+        return getBySiteWithResponseAsync(resourceGroupName, name, context)
+            .flatMap(
+                (Response<ResourceHealthMetadataInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -700,6 +786,22 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     }
 
     /**
+     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return used for getting ResourceHealthCheck settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceHealthMetadataInner getBySite(String resourceGroupName, String name, Context context) {
+        return getBySiteAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
      * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -713,9 +815,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listBySiteSlotSinglePageAsync(
         String resourceGroupName, String name, String slot) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -738,7 +842,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 context ->
                     service
                         .listBySiteSlot(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             slot,
@@ -772,9 +876,11 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceHealthMetadataInner>> listBySiteSlotSinglePageAsync(
         String resourceGroupName, String name, String slot, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -794,7 +900,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         }
         return service
             .listBySiteSlot(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 slot,
@@ -869,6 +975,24 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     }
 
     /**
+     * Description for Gets the category of ResourceHealthMetadata to use for the given site as a collection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of resource health metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ResourceHealthMetadataInner> listBySiteSlot(
+        String resourceGroupName, String name, String slot, Context context) {
+        return new PagedIterable<>(listBySiteSlotAsync(resourceGroupName, name, slot, context));
+    }
+
+    /**
      * Description for Gets the category of ResourceHealthMetadata to use for the given site.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -880,11 +1004,13 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      * @return used for getting ResourceHealthCheck settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ResourceHealthMetadataInner>> getBySiteSlotWithResponseAsync(
+    public Mono<Response<ResourceHealthMetadataInner>> getBySiteSlotWithResponseAsync(
         String resourceGroupName, String name, String slot) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -907,7 +1033,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
                 context ->
                     service
                         .getBySiteSlot(
-                            this.client.getHost(),
+                            this.client.getEndpoint(),
                             resourceGroupName,
                             name,
                             slot,
@@ -930,11 +1056,13 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
      * @return used for getting ResourceHealthCheck settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ResourceHealthMetadataInner>> getBySiteSlotWithResponseAsync(
+    public Mono<Response<ResourceHealthMetadataInner>> getBySiteSlotWithResponseAsync(
         String resourceGroupName, String name, String slot, Context context) {
-        if (this.client.getHost() == null) {
+        if (this.client.getEndpoint() == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -954,7 +1082,7 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
         }
         return service
             .getBySiteSlot(
-                this.client.getHost(),
+                this.client.getEndpoint(),
                 resourceGroupName,
                 name,
                 slot,
@@ -978,7 +1106,33 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     public Mono<ResourceHealthMetadataInner> getBySiteSlotAsync(String resourceGroupName, String name, String slot) {
         return getBySiteSlotWithResponseAsync(resourceGroupName, name, slot)
             .flatMap(
-                (SimpleResponse<ResourceHealthMetadataInner> res) -> {
+                (Response<ResourceHealthMetadataInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return used for getting ResourceHealthCheck settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResourceHealthMetadataInner> getBySiteSlotAsync(
+        String resourceGroupName, String name, String slot, Context context) {
+        return getBySiteSlotWithResponseAsync(resourceGroupName, name, slot, context)
+            .flatMap(
+                (Response<ResourceHealthMetadataInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1001,6 +1155,24 @@ public final class ResourceHealthMetadatasClient implements InnerSupportsListing
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceHealthMetadataInner getBySiteSlot(String resourceGroupName, String name, String slot) {
         return getBySiteSlotAsync(resourceGroupName, name, slot).block();
+    }
+
+    /**
+     * Description for Gets the category of ResourceHealthMetadata to use for the given site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param slot Name of web app slot. If not specified then will default to production slot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return used for getting ResourceHealthCheck settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResourceHealthMetadataInner getBySiteSlot(
+        String resourceGroupName, String name, String slot, Context context) {
+        return getBySiteSlotAsync(resourceGroupName, name, slot, context).block();
     }
 
     /**
