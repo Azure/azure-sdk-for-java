@@ -12,10 +12,29 @@ public class ChangeFeedProcessorCodeSnippet {
     public void changeFeedProcessorBuilderCodeSnippet() {
         String hostName = "test-host-name";
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder().buildAsyncClient();
-        CosmosAsyncDatabase cosmosAsyncDatabase = new CosmosAsyncDatabase("testDb", cosmosAsyncClient);
-        CosmosAsyncContainer feedContainer = new CosmosAsyncContainer("feedContainer", cosmosAsyncDatabase);
-        CosmosAsyncContainer leaseContainer = new CosmosAsyncContainer("leaseContainer", cosmosAsyncDatabase);
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
         // BEGIN: com.azure.cosmos.changeFeedProcessor.builder
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .handleChanges(docs -> {
+                for (JsonNode item : docs) {
+                    // Implementation for handling and processing of each JsonNode item goes here
+                }
+            })
+            .buildChangeFeedProcessor();
+        // END: com.azure.cosmos.changeFeedProcessor.builder
+    }
+
+    public void handleChangesCodeSnippet() {
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
@@ -28,7 +47,6 @@ public class ChangeFeedProcessorCodeSnippet {
             })
             // END: com.azure.cosmos.changeFeedProcessor.handleChanges
             .buildChangeFeedProcessor();
-        // END: com.azure.cosmos.changeFeedProcessor.builder
     }
 }
 
