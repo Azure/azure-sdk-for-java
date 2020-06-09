@@ -18,14 +18,14 @@ public final class NatGatewaySku {
      * Name of Nat Gateway SKU.
      */
     @JsonProperty(value = "name")
-    private NatGatewaySkuName name;
+    private PublicIpPrefixSkuName name;
 
     /**
      * Get the name property: Name of Nat Gateway SKU.
      *
      * @return the name value.
      */
-    public NatGatewaySkuName name() {
+    public PublicIpPrefixSkuName name() {
         return this.name;
     }
 
@@ -35,7 +35,7 @@ public final class NatGatewaySku {
      * @param name the name value to set.
      * @return the NatGatewaySku object itself.
      */
-    public NatGatewaySku withName(NatGatewaySkuName name) {
+    public NatGatewaySku withName(PublicIpPrefixSkuName name) {
         this.name = name;
         return this;
     }

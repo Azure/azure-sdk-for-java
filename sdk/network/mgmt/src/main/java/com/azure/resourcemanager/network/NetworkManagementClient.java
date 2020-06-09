@@ -12,110 +12,108 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
+import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
+import com.azure.resourcemanager.network.fluent.AvailableDelegationsClient;
+import com.azure.resourcemanager.network.fluent.AvailableEndpointServicesClient;
+import com.azure.resourcemanager.network.fluent.AvailablePrivateEndpointTypesClient;
+import com.azure.resourcemanager.network.fluent.AvailableResourceGroupDelegationsClient;
+import com.azure.resourcemanager.network.fluent.AzureFirewallFqdnTagsClient;
+import com.azure.resourcemanager.network.fluent.AzureFirewallsClient;
+import com.azure.resourcemanager.network.fluent.BastionHostsClient;
+import com.azure.resourcemanager.network.fluent.BgpServiceCommunitiesClient;
+import com.azure.resourcemanager.network.fluent.ConnectionMonitorsClient;
+import com.azure.resourcemanager.network.fluent.DdosCustomPoliciesClient;
+import com.azure.resourcemanager.network.fluent.DdosProtectionPlansClient;
+import com.azure.resourcemanager.network.fluent.DefaultSecurityRulesClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitAuthorizationsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitConnectionsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteConnectionsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteLinksClient;
+import com.azure.resourcemanager.network.fluent.ExpressRoutePortsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRoutePortsLocationsClient;
+import com.azure.resourcemanager.network.fluent.ExpressRouteServiceProvidersClient;
+import com.azure.resourcemanager.network.fluent.FirewallPoliciesClient;
+import com.azure.resourcemanager.network.fluent.FirewallPolicyRuleGroupsClient;
+import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsClient;
+import com.azure.resourcemanager.network.fluent.InboundNatRulesClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerBackendAddressPoolsClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIpConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerLoadBalancingRulesClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerNetworkInterfacesClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerOutboundRulesClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancerProbesClient;
+import com.azure.resourcemanager.network.fluent.LoadBalancersClient;
+import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysClient;
+import com.azure.resourcemanager.network.fluent.NatGatewaysClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
+import com.azure.resourcemanager.network.fluent.NetworkProfilesClient;
+import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsClient;
+import com.azure.resourcemanager.network.fluent.NetworkWatchersClient;
+import com.azure.resourcemanager.network.fluent.OperationsClient;
+import com.azure.resourcemanager.network.fluent.P2SVpnGatewaysClient;
+import com.azure.resourcemanager.network.fluent.P2SVpnServerConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.PacketCapturesClient;
+import com.azure.resourcemanager.network.fluent.PeerExpressRouteCircuitConnectionsClient;
+import com.azure.resourcemanager.network.fluent.PrivateEndpointsClient;
+import com.azure.resourcemanager.network.fluent.PrivateLinkServicesClient;
+import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
+import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
+import com.azure.resourcemanager.network.fluent.ResourceNavigationLinksClient;
+import com.azure.resourcemanager.network.fluent.RouteFilterRulesClient;
+import com.azure.resourcemanager.network.fluent.RouteFiltersClient;
+import com.azure.resourcemanager.network.fluent.RouteTablesClient;
+import com.azure.resourcemanager.network.fluent.RoutesClient;
+import com.azure.resourcemanager.network.fluent.SecurityRulesClient;
+import com.azure.resourcemanager.network.fluent.ServiceAssociationLinksClient;
+import com.azure.resourcemanager.network.fluent.ServiceEndpointPoliciesClient;
+import com.azure.resourcemanager.network.fluent.ServiceEndpointPolicyDefinitionsClient;
+import com.azure.resourcemanager.network.fluent.ServiceTagsClient;
+import com.azure.resourcemanager.network.fluent.SubnetsClient;
+import com.azure.resourcemanager.network.fluent.UsagesClient;
+import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworkTapsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
+import com.azure.resourcemanager.network.fluent.VirtualWansClient;
+import com.azure.resourcemanager.network.fluent.VpnConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VpnGatewaysClient;
+import com.azure.resourcemanager.network.fluent.VpnLinkConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VpnSiteLinkConnectionsClient;
+import com.azure.resourcemanager.network.fluent.VpnSiteLinksClient;
+import com.azure.resourcemanager.network.fluent.VpnSitesClient;
+import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.WebApplicationFirewallPoliciesClient;
 import com.azure.resourcemanager.network.fluent.inner.DnsNameAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.inner.VirtualWanSecurityProvidersInner;
 import com.azure.resourcemanager.network.models.ErrorException;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewaysInner;
-import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsInner;
-import com.azure.resourcemanager.network.fluent.AvailableDelegationsInner;
-import com.azure.resourcemanager.network.fluent.AvailableEndpointServicesInner;
-import com.azure.resourcemanager.network.fluent.AvailablePrivateEndpointTypesInner;
-import com.azure.resourcemanager.network.fluent.AvailableResourceGroupDelegationsInner;
-import com.azure.resourcemanager.network.fluent.AzureFirewallFqdnTagsInner;
-import com.azure.resourcemanager.network.fluent.AzureFirewallsInner;
-import com.azure.resourcemanager.network.fluent.BastionHostsInner;
-import com.azure.resourcemanager.network.fluent.BgpServiceCommunitiesInner;
-import com.azure.resourcemanager.network.fluent.ConnectionMonitorsInner;
-import com.azure.resourcemanager.network.fluent.DdosCustomPoliciesInner;
-import com.azure.resourcemanager.network.fluent.DdosProtectionPlansInner;
-import com.azure.resourcemanager.network.fluent.DefaultSecurityRulesInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitAuthorizationsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitConnectionsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitPeeringsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCircuitsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteConnectionsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteGatewaysInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteLinksInner;
-import com.azure.resourcemanager.network.fluent.ExpressRoutePortsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRoutePortsLocationsInner;
-import com.azure.resourcemanager.network.fluent.ExpressRouteServiceProvidersInner;
-import com.azure.resourcemanager.network.fluent.FirewallPoliciesInner;
-import com.azure.resourcemanager.network.fluent.FirewallPolicyRuleGroupsInner;
-import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsInner;
-import com.azure.resourcemanager.network.fluent.InboundNatRulesInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancerBackendAddressPoolsInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIpConfigurationsInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancerLoadBalancingRulesInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancerNetworkInterfacesInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancerOutboundRulesInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancerProbesInner;
-import com.azure.resourcemanager.network.fluent.LoadBalancersInner;
-import com.azure.resourcemanager.network.fluent.LocalNetworkGatewaysInner;
-import com.azure.resourcemanager.network.fluent.NatGatewaysInner;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsInner;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersInner;
-import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsInner;
-import com.azure.resourcemanager.network.fluent.NetworkInterfacesInner;
-import com.azure.resourcemanager.network.fluent.NetworkProfilesInner;
-import com.azure.resourcemanager.network.fluent.NetworkSecurityGroupsInner;
-import com.azure.resourcemanager.network.fluent.NetworkWatchersInner;
-import com.azure.resourcemanager.network.fluent.OperationsInner;
-import com.azure.resourcemanager.network.fluent.P2SVpnGatewaysInner;
-import com.azure.resourcemanager.network.fluent.P2SVpnServerConfigurationsInner;
-import com.azure.resourcemanager.network.fluent.PacketCapturesInner;
-import com.azure.resourcemanager.network.fluent.PeerExpressRouteCircuitConnectionsInner;
-import com.azure.resourcemanager.network.fluent.PrivateEndpointsInner;
-import com.azure.resourcemanager.network.fluent.PrivateLinkServicesInner;
-import com.azure.resourcemanager.network.fluent.PublicIpAddressesInner;
-import com.azure.resourcemanager.network.fluent.PublicIpPrefixesInner;
-import com.azure.resourcemanager.network.fluent.ResourceNavigationLinksInner;
-import com.azure.resourcemanager.network.fluent.RouteFilterRulesInner;
-import com.azure.resourcemanager.network.fluent.RouteFiltersInner;
-import com.azure.resourcemanager.network.fluent.RouteTablesInner;
-import com.azure.resourcemanager.network.fluent.RoutesInner;
-import com.azure.resourcemanager.network.fluent.SecurityRulesInner;
-import com.azure.resourcemanager.network.fluent.ServiceAssociationLinksInner;
-import com.azure.resourcemanager.network.fluent.ServiceEndpointPoliciesInner;
-import com.azure.resourcemanager.network.fluent.ServiceEndpointPolicyDefinitionsInner;
-import com.azure.resourcemanager.network.fluent.ServiceTagsInner;
-import com.azure.resourcemanager.network.fluent.SubnetsInner;
-import com.azure.resourcemanager.network.fluent.UsagesInner;
-import com.azure.resourcemanager.network.fluent.VirtualHubsInner;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsInner;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysInner;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsInner;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkTapsInner;
-import com.azure.resourcemanager.network.fluent.VirtualNetworksInner;
-import com.azure.resourcemanager.network.fluent.VirtualWansInner;
-import com.azure.resourcemanager.network.fluent.VpnConnectionsInner;
-import com.azure.resourcemanager.network.fluent.VpnGatewaysInner;
-import com.azure.resourcemanager.network.fluent.VpnLinkConnectionsInner;
-import com.azure.resourcemanager.network.fluent.VpnSiteLinkConnectionsInner;
-import com.azure.resourcemanager.network.fluent.VpnSiteLinksInner;
-import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsInner;
-import com.azure.resourcemanager.network.fluent.VpnSitesInner;
-import com.azure.resourcemanager.network.fluent.WebApplicationFirewallPoliciesInner;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the NetworkManagementClientImpl type. */
+/** Initializes a new instance of the NetworkManagementClient type. */
+@ServiceClient(builder = NetworkManagementClientBuilder.class)
 public final class NetworkManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(NetworkManagementClient.class);
 
@@ -126,7 +124,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
      */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
@@ -138,39 +136,16 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    public NetworkManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String endpoint;
 
     /**
      * Gets server parameter.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
-    }
-
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    public NetworkManagementClient setHost(String host) {
-        this.host = host;
-        return this;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -185,1004 +160,988 @@ public final class NetworkManagementClient extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /** The ApplicationGatewaysInner object to access its operations. */
-    private final ApplicationGatewaysInner applicationGateways;
+    /** The ApplicationGatewaysClient object to access its operations. */
+    private final ApplicationGatewaysClient applicationGateways;
 
     /**
-     * Gets the ApplicationGatewaysInner object to access its operations.
+     * Gets the ApplicationGatewaysClient object to access its operations.
      *
-     * @return the ApplicationGatewaysInner object.
+     * @return the ApplicationGatewaysClient object.
      */
-    public ApplicationGatewaysInner applicationGateways() {
+    public ApplicationGatewaysClient getApplicationGateways() {
         return this.applicationGateways;
     }
 
-    /** The ApplicationSecurityGroupsInner object to access its operations. */
-    private final ApplicationSecurityGroupsInner applicationSecurityGroups;
+    /** The ApplicationSecurityGroupsClient object to access its operations. */
+    private final ApplicationSecurityGroupsClient applicationSecurityGroups;
 
     /**
-     * Gets the ApplicationSecurityGroupsInner object to access its operations.
+     * Gets the ApplicationSecurityGroupsClient object to access its operations.
      *
-     * @return the ApplicationSecurityGroupsInner object.
+     * @return the ApplicationSecurityGroupsClient object.
      */
-    public ApplicationSecurityGroupsInner applicationSecurityGroups() {
+    public ApplicationSecurityGroupsClient getApplicationSecurityGroups() {
         return this.applicationSecurityGroups;
     }
 
-    /** The AvailableDelegationsInner object to access its operations. */
-    private final AvailableDelegationsInner availableDelegations;
+    /** The AvailableDelegationsClient object to access its operations. */
+    private final AvailableDelegationsClient availableDelegations;
 
     /**
-     * Gets the AvailableDelegationsInner object to access its operations.
+     * Gets the AvailableDelegationsClient object to access its operations.
      *
-     * @return the AvailableDelegationsInner object.
+     * @return the AvailableDelegationsClient object.
      */
-    public AvailableDelegationsInner availableDelegations() {
+    public AvailableDelegationsClient getAvailableDelegations() {
         return this.availableDelegations;
     }
 
-    /** The AvailableResourceGroupDelegationsInner object to access its operations. */
-    private final AvailableResourceGroupDelegationsInner availableResourceGroupDelegations;
+    /** The AvailableResourceGroupDelegationsClient object to access its operations. */
+    private final AvailableResourceGroupDelegationsClient availableResourceGroupDelegations;
 
     /**
-     * Gets the AvailableResourceGroupDelegationsInner object to access its operations.
+     * Gets the AvailableResourceGroupDelegationsClient object to access its operations.
      *
-     * @return the AvailableResourceGroupDelegationsInner object.
+     * @return the AvailableResourceGroupDelegationsClient object.
      */
-    public AvailableResourceGroupDelegationsInner availableResourceGroupDelegations() {
+    public AvailableResourceGroupDelegationsClient getAvailableResourceGroupDelegations() {
         return this.availableResourceGroupDelegations;
     }
 
-    /** The AzureFirewallsInner object to access its operations. */
-    private final AzureFirewallsInner azureFirewalls;
+    /** The AzureFirewallsClient object to access its operations. */
+    private final AzureFirewallsClient azureFirewalls;
 
     /**
-     * Gets the AzureFirewallsInner object to access its operations.
+     * Gets the AzureFirewallsClient object to access its operations.
      *
-     * @return the AzureFirewallsInner object.
+     * @return the AzureFirewallsClient object.
      */
-    public AzureFirewallsInner azureFirewalls() {
+    public AzureFirewallsClient getAzureFirewalls() {
         return this.azureFirewalls;
     }
 
-    /** The AzureFirewallFqdnTagsInner object to access its operations. */
-    private final AzureFirewallFqdnTagsInner azureFirewallFqdnTags;
+    /** The AzureFirewallFqdnTagsClient object to access its operations. */
+    private final AzureFirewallFqdnTagsClient azureFirewallFqdnTags;
 
     /**
-     * Gets the AzureFirewallFqdnTagsInner object to access its operations.
+     * Gets the AzureFirewallFqdnTagsClient object to access its operations.
      *
-     * @return the AzureFirewallFqdnTagsInner object.
+     * @return the AzureFirewallFqdnTagsClient object.
      */
-    public AzureFirewallFqdnTagsInner azureFirewallFqdnTags() {
+    public AzureFirewallFqdnTagsClient getAzureFirewallFqdnTags() {
         return this.azureFirewallFqdnTags;
     }
 
-    /** The BastionHostsInner object to access its operations. */
-    private final BastionHostsInner bastionHosts;
+    /** The BastionHostsClient object to access its operations. */
+    private final BastionHostsClient bastionHosts;
 
     /**
-     * Gets the BastionHostsInner object to access its operations.
+     * Gets the BastionHostsClient object to access its operations.
      *
-     * @return the BastionHostsInner object.
+     * @return the BastionHostsClient object.
      */
-    public BastionHostsInner bastionHosts() {
+    public BastionHostsClient getBastionHosts() {
         return this.bastionHosts;
     }
 
-    /** The DdosCustomPoliciesInner object to access its operations. */
-    private final DdosCustomPoliciesInner ddosCustomPolicies;
+    /** The DdosCustomPoliciesClient object to access its operations. */
+    private final DdosCustomPoliciesClient ddosCustomPolicies;
 
     /**
-     * Gets the DdosCustomPoliciesInner object to access its operations.
+     * Gets the DdosCustomPoliciesClient object to access its operations.
      *
-     * @return the DdosCustomPoliciesInner object.
+     * @return the DdosCustomPoliciesClient object.
      */
-    public DdosCustomPoliciesInner ddosCustomPolicies() {
+    public DdosCustomPoliciesClient getDdosCustomPolicies() {
         return this.ddosCustomPolicies;
     }
 
-    /** The DdosProtectionPlansInner object to access its operations. */
-    private final DdosProtectionPlansInner ddosProtectionPlans;
+    /** The DdosProtectionPlansClient object to access its operations. */
+    private final DdosProtectionPlansClient ddosProtectionPlans;
 
     /**
-     * Gets the DdosProtectionPlansInner object to access its operations.
+     * Gets the DdosProtectionPlansClient object to access its operations.
      *
-     * @return the DdosProtectionPlansInner object.
+     * @return the DdosProtectionPlansClient object.
      */
-    public DdosProtectionPlansInner ddosProtectionPlans() {
+    public DdosProtectionPlansClient getDdosProtectionPlans() {
         return this.ddosProtectionPlans;
     }
 
-    /** The AvailableEndpointServicesInner object to access its operations. */
-    private final AvailableEndpointServicesInner availableEndpointServices;
+    /** The AvailableEndpointServicesClient object to access its operations. */
+    private final AvailableEndpointServicesClient availableEndpointServices;
 
     /**
-     * Gets the AvailableEndpointServicesInner object to access its operations.
+     * Gets the AvailableEndpointServicesClient object to access its operations.
      *
-     * @return the AvailableEndpointServicesInner object.
+     * @return the AvailableEndpointServicesClient object.
      */
-    public AvailableEndpointServicesInner availableEndpointServices() {
+    public AvailableEndpointServicesClient getAvailableEndpointServices() {
         return this.availableEndpointServices;
     }
 
-    /** The ExpressRouteCircuitAuthorizationsInner object to access its operations. */
-    private final ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations;
+    /** The ExpressRouteCircuitAuthorizationsClient object to access its operations. */
+    private final ExpressRouteCircuitAuthorizationsClient expressRouteCircuitAuthorizations;
 
     /**
-     * Gets the ExpressRouteCircuitAuthorizationsInner object to access its operations.
+     * Gets the ExpressRouteCircuitAuthorizationsClient object to access its operations.
      *
-     * @return the ExpressRouteCircuitAuthorizationsInner object.
+     * @return the ExpressRouteCircuitAuthorizationsClient object.
      */
-    public ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations() {
+    public ExpressRouteCircuitAuthorizationsClient getExpressRouteCircuitAuthorizations() {
         return this.expressRouteCircuitAuthorizations;
     }
 
-    /** The ExpressRouteCircuitPeeringsInner object to access its operations. */
-    private final ExpressRouteCircuitPeeringsInner expressRouteCircuitPeerings;
+    /** The ExpressRouteCircuitPeeringsClient object to access its operations. */
+    private final ExpressRouteCircuitPeeringsClient expressRouteCircuitPeerings;
 
     /**
-     * Gets the ExpressRouteCircuitPeeringsInner object to access its operations.
+     * Gets the ExpressRouteCircuitPeeringsClient object to access its operations.
      *
-     * @return the ExpressRouteCircuitPeeringsInner object.
+     * @return the ExpressRouteCircuitPeeringsClient object.
      */
-    public ExpressRouteCircuitPeeringsInner expressRouteCircuitPeerings() {
+    public ExpressRouteCircuitPeeringsClient getExpressRouteCircuitPeerings() {
         return this.expressRouteCircuitPeerings;
     }
 
-    /** The ExpressRouteCircuitConnectionsInner object to access its operations. */
-    private final ExpressRouteCircuitConnectionsInner expressRouteCircuitConnections;
+    /** The ExpressRouteCircuitConnectionsClient object to access its operations. */
+    private final ExpressRouteCircuitConnectionsClient expressRouteCircuitConnections;
 
     /**
-     * Gets the ExpressRouteCircuitConnectionsInner object to access its operations.
+     * Gets the ExpressRouteCircuitConnectionsClient object to access its operations.
      *
-     * @return the ExpressRouteCircuitConnectionsInner object.
+     * @return the ExpressRouteCircuitConnectionsClient object.
      */
-    public ExpressRouteCircuitConnectionsInner expressRouteCircuitConnections() {
+    public ExpressRouteCircuitConnectionsClient getExpressRouteCircuitConnections() {
         return this.expressRouteCircuitConnections;
     }
 
-    /** The PeerExpressRouteCircuitConnectionsInner object to access its operations. */
-    private final PeerExpressRouteCircuitConnectionsInner peerExpressRouteCircuitConnections;
+    /** The PeerExpressRouteCircuitConnectionsClient object to access its operations. */
+    private final PeerExpressRouteCircuitConnectionsClient peerExpressRouteCircuitConnections;
 
     /**
-     * Gets the PeerExpressRouteCircuitConnectionsInner object to access its operations.
+     * Gets the PeerExpressRouteCircuitConnectionsClient object to access its operations.
      *
-     * @return the PeerExpressRouteCircuitConnectionsInner object.
+     * @return the PeerExpressRouteCircuitConnectionsClient object.
      */
-    public PeerExpressRouteCircuitConnectionsInner peerExpressRouteCircuitConnections() {
+    public PeerExpressRouteCircuitConnectionsClient getPeerExpressRouteCircuitConnections() {
         return this.peerExpressRouteCircuitConnections;
     }
 
-    /** The ExpressRouteCircuitsInner object to access its operations. */
-    private final ExpressRouteCircuitsInner expressRouteCircuits;
+    /** The ExpressRouteCircuitsClient object to access its operations. */
+    private final ExpressRouteCircuitsClient expressRouteCircuits;
 
     /**
-     * Gets the ExpressRouteCircuitsInner object to access its operations.
+     * Gets the ExpressRouteCircuitsClient object to access its operations.
      *
-     * @return the ExpressRouteCircuitsInner object.
+     * @return the ExpressRouteCircuitsClient object.
      */
-    public ExpressRouteCircuitsInner expressRouteCircuits() {
+    public ExpressRouteCircuitsClient getExpressRouteCircuits() {
         return this.expressRouteCircuits;
     }
 
-    /** The ExpressRouteServiceProvidersInner object to access its operations. */
-    private final ExpressRouteServiceProvidersInner expressRouteServiceProviders;
+    /** The ExpressRouteServiceProvidersClient object to access its operations. */
+    private final ExpressRouteServiceProvidersClient expressRouteServiceProviders;
 
     /**
-     * Gets the ExpressRouteServiceProvidersInner object to access its operations.
+     * Gets the ExpressRouteServiceProvidersClient object to access its operations.
      *
-     * @return the ExpressRouteServiceProvidersInner object.
+     * @return the ExpressRouteServiceProvidersClient object.
      */
-    public ExpressRouteServiceProvidersInner expressRouteServiceProviders() {
+    public ExpressRouteServiceProvidersClient getExpressRouteServiceProviders() {
         return this.expressRouteServiceProviders;
     }
 
-    /** The ExpressRouteCrossConnectionsInner object to access its operations. */
-    private final ExpressRouteCrossConnectionsInner expressRouteCrossConnections;
+    /** The ExpressRouteCrossConnectionsClient object to access its operations. */
+    private final ExpressRouteCrossConnectionsClient expressRouteCrossConnections;
 
     /**
-     * Gets the ExpressRouteCrossConnectionsInner object to access its operations.
+     * Gets the ExpressRouteCrossConnectionsClient object to access its operations.
      *
-     * @return the ExpressRouteCrossConnectionsInner object.
+     * @return the ExpressRouteCrossConnectionsClient object.
      */
-    public ExpressRouteCrossConnectionsInner expressRouteCrossConnections() {
+    public ExpressRouteCrossConnectionsClient getExpressRouteCrossConnections() {
         return this.expressRouteCrossConnections;
     }
 
-    /** The ExpressRouteCrossConnectionPeeringsInner object to access its operations. */
-    private final ExpressRouteCrossConnectionPeeringsInner expressRouteCrossConnectionPeerings;
+    /** The ExpressRouteCrossConnectionPeeringsClient object to access its operations. */
+    private final ExpressRouteCrossConnectionPeeringsClient expressRouteCrossConnectionPeerings;
 
     /**
-     * Gets the ExpressRouteCrossConnectionPeeringsInner object to access its operations.
+     * Gets the ExpressRouteCrossConnectionPeeringsClient object to access its operations.
      *
-     * @return the ExpressRouteCrossConnectionPeeringsInner object.
+     * @return the ExpressRouteCrossConnectionPeeringsClient object.
      */
-    public ExpressRouteCrossConnectionPeeringsInner expressRouteCrossConnectionPeerings() {
+    public ExpressRouteCrossConnectionPeeringsClient getExpressRouteCrossConnectionPeerings() {
         return this.expressRouteCrossConnectionPeerings;
     }
 
-    /** The ExpressRouteGatewaysInner object to access its operations. */
-    private final ExpressRouteGatewaysInner expressRouteGateways;
+    /** The ExpressRouteGatewaysClient object to access its operations. */
+    private final ExpressRouteGatewaysClient expressRouteGateways;
 
     /**
-     * Gets the ExpressRouteGatewaysInner object to access its operations.
+     * Gets the ExpressRouteGatewaysClient object to access its operations.
      *
-     * @return the ExpressRouteGatewaysInner object.
+     * @return the ExpressRouteGatewaysClient object.
      */
-    public ExpressRouteGatewaysInner expressRouteGateways() {
+    public ExpressRouteGatewaysClient getExpressRouteGateways() {
         return this.expressRouteGateways;
     }
 
-    /** The ExpressRouteConnectionsInner object to access its operations. */
-    private final ExpressRouteConnectionsInner expressRouteConnections;
+    /** The ExpressRouteConnectionsClient object to access its operations. */
+    private final ExpressRouteConnectionsClient expressRouteConnections;
 
     /**
-     * Gets the ExpressRouteConnectionsInner object to access its operations.
+     * Gets the ExpressRouteConnectionsClient object to access its operations.
      *
-     * @return the ExpressRouteConnectionsInner object.
+     * @return the ExpressRouteConnectionsClient object.
      */
-    public ExpressRouteConnectionsInner expressRouteConnections() {
+    public ExpressRouteConnectionsClient getExpressRouteConnections() {
         return this.expressRouteConnections;
     }
 
-    /** The ExpressRoutePortsLocationsInner object to access its operations. */
-    private final ExpressRoutePortsLocationsInner expressRoutePortsLocations;
+    /** The ExpressRoutePortsLocationsClient object to access its operations. */
+    private final ExpressRoutePortsLocationsClient expressRoutePortsLocations;
 
     /**
-     * Gets the ExpressRoutePortsLocationsInner object to access its operations.
+     * Gets the ExpressRoutePortsLocationsClient object to access its operations.
      *
-     * @return the ExpressRoutePortsLocationsInner object.
+     * @return the ExpressRoutePortsLocationsClient object.
      */
-    public ExpressRoutePortsLocationsInner expressRoutePortsLocations() {
+    public ExpressRoutePortsLocationsClient getExpressRoutePortsLocations() {
         return this.expressRoutePortsLocations;
     }
 
-    /** The ExpressRoutePortsInner object to access its operations. */
-    private final ExpressRoutePortsInner expressRoutePorts;
+    /** The ExpressRoutePortsClient object to access its operations. */
+    private final ExpressRoutePortsClient expressRoutePorts;
 
     /**
-     * Gets the ExpressRoutePortsInner object to access its operations.
+     * Gets the ExpressRoutePortsClient object to access its operations.
      *
-     * @return the ExpressRoutePortsInner object.
+     * @return the ExpressRoutePortsClient object.
      */
-    public ExpressRoutePortsInner expressRoutePorts() {
+    public ExpressRoutePortsClient getExpressRoutePorts() {
         return this.expressRoutePorts;
     }
 
-    /** The ExpressRouteLinksInner object to access its operations. */
-    private final ExpressRouteLinksInner expressRouteLinks;
+    /** The ExpressRouteLinksClient object to access its operations. */
+    private final ExpressRouteLinksClient expressRouteLinks;
 
     /**
-     * Gets the ExpressRouteLinksInner object to access its operations.
+     * Gets the ExpressRouteLinksClient object to access its operations.
      *
-     * @return the ExpressRouteLinksInner object.
+     * @return the ExpressRouteLinksClient object.
      */
-    public ExpressRouteLinksInner expressRouteLinks() {
+    public ExpressRouteLinksClient getExpressRouteLinks() {
         return this.expressRouteLinks;
     }
 
-    /** The FirewallPoliciesInner object to access its operations. */
-    private final FirewallPoliciesInner firewallPolicies;
+    /** The FirewallPoliciesClient object to access its operations. */
+    private final FirewallPoliciesClient firewallPolicies;
 
     /**
-     * Gets the FirewallPoliciesInner object to access its operations.
+     * Gets the FirewallPoliciesClient object to access its operations.
      *
-     * @return the FirewallPoliciesInner object.
+     * @return the FirewallPoliciesClient object.
      */
-    public FirewallPoliciesInner firewallPolicies() {
+    public FirewallPoliciesClient getFirewallPolicies() {
         return this.firewallPolicies;
     }
 
-    /** The FirewallPolicyRuleGroupsInner object to access its operations. */
-    private final FirewallPolicyRuleGroupsInner firewallPolicyRuleGroups;
+    /** The FirewallPolicyRuleGroupsClient object to access its operations. */
+    private final FirewallPolicyRuleGroupsClient firewallPolicyRuleGroups;
 
     /**
-     * Gets the FirewallPolicyRuleGroupsInner object to access its operations.
+     * Gets the FirewallPolicyRuleGroupsClient object to access its operations.
      *
-     * @return the FirewallPolicyRuleGroupsInner object.
+     * @return the FirewallPolicyRuleGroupsClient object.
      */
-    public FirewallPolicyRuleGroupsInner firewallPolicyRuleGroups() {
+    public FirewallPolicyRuleGroupsClient getFirewallPolicyRuleGroups() {
         return this.firewallPolicyRuleGroups;
     }
 
-    /** The LoadBalancersInner object to access its operations. */
-    private final LoadBalancersInner loadBalancers;
+    /** The LoadBalancersClient object to access its operations. */
+    private final LoadBalancersClient loadBalancers;
 
     /**
-     * Gets the LoadBalancersInner object to access its operations.
+     * Gets the LoadBalancersClient object to access its operations.
      *
-     * @return the LoadBalancersInner object.
+     * @return the LoadBalancersClient object.
      */
-    public LoadBalancersInner loadBalancers() {
+    public LoadBalancersClient getLoadBalancers() {
         return this.loadBalancers;
     }
 
-    /** The LoadBalancerBackendAddressPoolsInner object to access its operations. */
-    private final LoadBalancerBackendAddressPoolsInner loadBalancerBackendAddressPools;
+    /** The LoadBalancerBackendAddressPoolsClient object to access its operations. */
+    private final LoadBalancerBackendAddressPoolsClient loadBalancerBackendAddressPools;
 
     /**
-     * Gets the LoadBalancerBackendAddressPoolsInner object to access its operations.
+     * Gets the LoadBalancerBackendAddressPoolsClient object to access its operations.
      *
-     * @return the LoadBalancerBackendAddressPoolsInner object.
+     * @return the LoadBalancerBackendAddressPoolsClient object.
      */
-    public LoadBalancerBackendAddressPoolsInner loadBalancerBackendAddressPools() {
+    public LoadBalancerBackendAddressPoolsClient getLoadBalancerBackendAddressPools() {
         return this.loadBalancerBackendAddressPools;
     }
 
-    /** The LoadBalancerFrontendIpConfigurationsInner object to access its operations. */
-    private final LoadBalancerFrontendIpConfigurationsInner loadBalancerFrontendIpConfigurations;
+    /** The LoadBalancerFrontendIpConfigurationsClient object to access its operations. */
+    private final LoadBalancerFrontendIpConfigurationsClient loadBalancerFrontendIpConfigurations;
 
     /**
-     * Gets the LoadBalancerFrontendIpConfigurationsInner object to access its operations.
+     * Gets the LoadBalancerFrontendIpConfigurationsClient object to access its operations.
      *
-     * @return the LoadBalancerFrontendIpConfigurationsInner object.
+     * @return the LoadBalancerFrontendIpConfigurationsClient object.
      */
-    public LoadBalancerFrontendIpConfigurationsInner loadBalancerFrontendIpConfigurations() {
+    public LoadBalancerFrontendIpConfigurationsClient getLoadBalancerFrontendIpConfigurations() {
         return this.loadBalancerFrontendIpConfigurations;
     }
 
-    /** The InboundNatRulesInner object to access its operations. */
-    private final InboundNatRulesInner inboundNatRules;
+    /** The InboundNatRulesClient object to access its operations. */
+    private final InboundNatRulesClient inboundNatRules;
 
     /**
-     * Gets the InboundNatRulesInner object to access its operations.
+     * Gets the InboundNatRulesClient object to access its operations.
      *
-     * @return the InboundNatRulesInner object.
+     * @return the InboundNatRulesClient object.
      */
-    public InboundNatRulesInner inboundNatRules() {
+    public InboundNatRulesClient getInboundNatRules() {
         return this.inboundNatRules;
     }
 
-    /** The LoadBalancerLoadBalancingRulesInner object to access its operations. */
-    private final LoadBalancerLoadBalancingRulesInner loadBalancerLoadBalancingRules;
+    /** The LoadBalancerLoadBalancingRulesClient object to access its operations. */
+    private final LoadBalancerLoadBalancingRulesClient loadBalancerLoadBalancingRules;
 
     /**
-     * Gets the LoadBalancerLoadBalancingRulesInner object to access its operations.
+     * Gets the LoadBalancerLoadBalancingRulesClient object to access its operations.
      *
-     * @return the LoadBalancerLoadBalancingRulesInner object.
+     * @return the LoadBalancerLoadBalancingRulesClient object.
      */
-    public LoadBalancerLoadBalancingRulesInner loadBalancerLoadBalancingRules() {
+    public LoadBalancerLoadBalancingRulesClient getLoadBalancerLoadBalancingRules() {
         return this.loadBalancerLoadBalancingRules;
     }
 
-    /** The LoadBalancerOutboundRulesInner object to access its operations. */
-    private final LoadBalancerOutboundRulesInner loadBalancerOutboundRules;
+    /** The LoadBalancerOutboundRulesClient object to access its operations. */
+    private final LoadBalancerOutboundRulesClient loadBalancerOutboundRules;
 
     /**
-     * Gets the LoadBalancerOutboundRulesInner object to access its operations.
+     * Gets the LoadBalancerOutboundRulesClient object to access its operations.
      *
-     * @return the LoadBalancerOutboundRulesInner object.
+     * @return the LoadBalancerOutboundRulesClient object.
      */
-    public LoadBalancerOutboundRulesInner loadBalancerOutboundRules() {
+    public LoadBalancerOutboundRulesClient getLoadBalancerOutboundRules() {
         return this.loadBalancerOutboundRules;
     }
 
-    /** The LoadBalancerNetworkInterfacesInner object to access its operations. */
-    private final LoadBalancerNetworkInterfacesInner loadBalancerNetworkInterfaces;
+    /** The LoadBalancerNetworkInterfacesClient object to access its operations. */
+    private final LoadBalancerNetworkInterfacesClient loadBalancerNetworkInterfaces;
 
     /**
-     * Gets the LoadBalancerNetworkInterfacesInner object to access its operations.
+     * Gets the LoadBalancerNetworkInterfacesClient object to access its operations.
      *
-     * @return the LoadBalancerNetworkInterfacesInner object.
+     * @return the LoadBalancerNetworkInterfacesClient object.
      */
-    public LoadBalancerNetworkInterfacesInner loadBalancerNetworkInterfaces() {
+    public LoadBalancerNetworkInterfacesClient getLoadBalancerNetworkInterfaces() {
         return this.loadBalancerNetworkInterfaces;
     }
 
-    /** The LoadBalancerProbesInner object to access its operations. */
-    private final LoadBalancerProbesInner loadBalancerProbes;
+    /** The LoadBalancerProbesClient object to access its operations. */
+    private final LoadBalancerProbesClient loadBalancerProbes;
 
     /**
-     * Gets the LoadBalancerProbesInner object to access its operations.
+     * Gets the LoadBalancerProbesClient object to access its operations.
      *
-     * @return the LoadBalancerProbesInner object.
+     * @return the LoadBalancerProbesClient object.
      */
-    public LoadBalancerProbesInner loadBalancerProbes() {
+    public LoadBalancerProbesClient getLoadBalancerProbes() {
         return this.loadBalancerProbes;
     }
 
-    /** The NatGatewaysInner object to access its operations. */
-    private final NatGatewaysInner natGateways;
+    /** The NatGatewaysClient object to access its operations. */
+    private final NatGatewaysClient natGateways;
 
     /**
-     * Gets the NatGatewaysInner object to access its operations.
+     * Gets the NatGatewaysClient object to access its operations.
      *
-     * @return the NatGatewaysInner object.
+     * @return the NatGatewaysClient object.
      */
-    public NatGatewaysInner natGateways() {
+    public NatGatewaysClient getNatGateways() {
         return this.natGateways;
     }
 
-    /** The NetworkInterfacesInner object to access its operations. */
-    private final NetworkInterfacesInner networkInterfaces;
+    /** The NetworkInterfacesClient object to access its operations. */
+    private final NetworkInterfacesClient networkInterfaces;
 
     /**
-     * Gets the NetworkInterfacesInner object to access its operations.
+     * Gets the NetworkInterfacesClient object to access its operations.
      *
-     * @return the NetworkInterfacesInner object.
+     * @return the NetworkInterfacesClient object.
      */
-    public NetworkInterfacesInner networkInterfaces() {
+    public NetworkInterfacesClient getNetworkInterfaces() {
         return this.networkInterfaces;
     }
 
-    /** The NetworkInterfaceIpConfigurationsInner object to access its operations. */
-    private final NetworkInterfaceIpConfigurationsInner networkInterfaceIpConfigurations;
+    /** The NetworkInterfaceIpConfigurationsClient object to access its operations. */
+    private final NetworkInterfaceIpConfigurationsClient networkInterfaceIpConfigurations;
 
     /**
-     * Gets the NetworkInterfaceIpConfigurationsInner object to access its operations.
+     * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
      *
-     * @return the NetworkInterfaceIpConfigurationsInner object.
+     * @return the NetworkInterfaceIpConfigurationsClient object.
      */
-    public NetworkInterfaceIpConfigurationsInner networkInterfaceIpConfigurations() {
+    public NetworkInterfaceIpConfigurationsClient getNetworkInterfaceIpConfigurations() {
         return this.networkInterfaceIpConfigurations;
     }
 
-    /** The NetworkInterfaceLoadBalancersInner object to access its operations. */
-    private final NetworkInterfaceLoadBalancersInner networkInterfaceLoadBalancers;
+    /** The NetworkInterfaceLoadBalancersClient object to access its operations. */
+    private final NetworkInterfaceLoadBalancersClient networkInterfaceLoadBalancers;
 
     /**
-     * Gets the NetworkInterfaceLoadBalancersInner object to access its operations.
+     * Gets the NetworkInterfaceLoadBalancersClient object to access its operations.
      *
-     * @return the NetworkInterfaceLoadBalancersInner object.
+     * @return the NetworkInterfaceLoadBalancersClient object.
      */
-    public NetworkInterfaceLoadBalancersInner networkInterfaceLoadBalancers() {
+    public NetworkInterfaceLoadBalancersClient getNetworkInterfaceLoadBalancers() {
         return this.networkInterfaceLoadBalancers;
     }
 
-    /** The NetworkInterfaceTapConfigurationsInner object to access its operations. */
-    private final NetworkInterfaceTapConfigurationsInner networkInterfaceTapConfigurations;
+    /** The NetworkInterfaceTapConfigurationsClient object to access its operations. */
+    private final NetworkInterfaceTapConfigurationsClient networkInterfaceTapConfigurations;
 
     /**
-     * Gets the NetworkInterfaceTapConfigurationsInner object to access its operations.
+     * Gets the NetworkInterfaceTapConfigurationsClient object to access its operations.
      *
-     * @return the NetworkInterfaceTapConfigurationsInner object.
+     * @return the NetworkInterfaceTapConfigurationsClient object.
      */
-    public NetworkInterfaceTapConfigurationsInner networkInterfaceTapConfigurations() {
+    public NetworkInterfaceTapConfigurationsClient getNetworkInterfaceTapConfigurations() {
         return this.networkInterfaceTapConfigurations;
     }
 
-    /** The NetworkProfilesInner object to access its operations. */
-    private final NetworkProfilesInner networkProfiles;
+    /** The NetworkProfilesClient object to access its operations. */
+    private final NetworkProfilesClient networkProfiles;
 
     /**
-     * Gets the NetworkProfilesInner object to access its operations.
+     * Gets the NetworkProfilesClient object to access its operations.
      *
-     * @return the NetworkProfilesInner object.
+     * @return the NetworkProfilesClient object.
      */
-    public NetworkProfilesInner networkProfiles() {
+    public NetworkProfilesClient getNetworkProfiles() {
         return this.networkProfiles;
     }
 
-    /** The NetworkSecurityGroupsInner object to access its operations. */
-    private final NetworkSecurityGroupsInner networkSecurityGroups;
+    /** The NetworkSecurityGroupsClient object to access its operations. */
+    private final NetworkSecurityGroupsClient networkSecurityGroups;
 
     /**
-     * Gets the NetworkSecurityGroupsInner object to access its operations.
+     * Gets the NetworkSecurityGroupsClient object to access its operations.
      *
-     * @return the NetworkSecurityGroupsInner object.
+     * @return the NetworkSecurityGroupsClient object.
      */
-    public NetworkSecurityGroupsInner networkSecurityGroups() {
+    public NetworkSecurityGroupsClient getNetworkSecurityGroups() {
         return this.networkSecurityGroups;
     }
 
-    /** The SecurityRulesInner object to access its operations. */
-    private final SecurityRulesInner securityRules;
+    /** The SecurityRulesClient object to access its operations. */
+    private final SecurityRulesClient securityRules;
 
     /**
-     * Gets the SecurityRulesInner object to access its operations.
+     * Gets the SecurityRulesClient object to access its operations.
      *
-     * @return the SecurityRulesInner object.
+     * @return the SecurityRulesClient object.
      */
-    public SecurityRulesInner securityRules() {
+    public SecurityRulesClient getSecurityRules() {
         return this.securityRules;
     }
 
-    /** The DefaultSecurityRulesInner object to access its operations. */
-    private final DefaultSecurityRulesInner defaultSecurityRules;
+    /** The DefaultSecurityRulesClient object to access its operations. */
+    private final DefaultSecurityRulesClient defaultSecurityRules;
 
     /**
-     * Gets the DefaultSecurityRulesInner object to access its operations.
+     * Gets the DefaultSecurityRulesClient object to access its operations.
      *
-     * @return the DefaultSecurityRulesInner object.
+     * @return the DefaultSecurityRulesClient object.
      */
-    public DefaultSecurityRulesInner defaultSecurityRules() {
+    public DefaultSecurityRulesClient getDefaultSecurityRules() {
         return this.defaultSecurityRules;
     }
 
-    /** The NetworkWatchersInner object to access its operations. */
-    private final NetworkWatchersInner networkWatchers;
+    /** The NetworkWatchersClient object to access its operations. */
+    private final NetworkWatchersClient networkWatchers;
 
     /**
-     * Gets the NetworkWatchersInner object to access its operations.
+     * Gets the NetworkWatchersClient object to access its operations.
      *
-     * @return the NetworkWatchersInner object.
+     * @return the NetworkWatchersClient object.
      */
-    public NetworkWatchersInner networkWatchers() {
+    public NetworkWatchersClient getNetworkWatchers() {
         return this.networkWatchers;
     }
 
-    /** The PacketCapturesInner object to access its operations. */
-    private final PacketCapturesInner packetCaptures;
+    /** The PacketCapturesClient object to access its operations. */
+    private final PacketCapturesClient packetCaptures;
 
     /**
-     * Gets the PacketCapturesInner object to access its operations.
+     * Gets the PacketCapturesClient object to access its operations.
      *
-     * @return the PacketCapturesInner object.
+     * @return the PacketCapturesClient object.
      */
-    public PacketCapturesInner packetCaptures() {
+    public PacketCapturesClient getPacketCaptures() {
         return this.packetCaptures;
     }
 
-    /** The ConnectionMonitorsInner object to access its operations. */
-    private final ConnectionMonitorsInner connectionMonitors;
+    /** The ConnectionMonitorsClient object to access its operations. */
+    private final ConnectionMonitorsClient connectionMonitors;
 
     /**
-     * Gets the ConnectionMonitorsInner object to access its operations.
+     * Gets the ConnectionMonitorsClient object to access its operations.
      *
-     * @return the ConnectionMonitorsInner object.
+     * @return the ConnectionMonitorsClient object.
      */
-    public ConnectionMonitorsInner connectionMonitors() {
+    public ConnectionMonitorsClient getConnectionMonitors() {
         return this.connectionMonitors;
     }
 
-    /** The OperationsInner object to access its operations. */
-    private final OperationsInner operations;
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
 
     /**
-     * Gets the OperationsInner object to access its operations.
+     * Gets the OperationsClient object to access its operations.
      *
-     * @return the OperationsInner object.
+     * @return the OperationsClient object.
      */
-    public OperationsInner operations() {
+    public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The PrivateEndpointsInner object to access its operations. */
-    private final PrivateEndpointsInner privateEndpoints;
+    /** The PrivateEndpointsClient object to access its operations. */
+    private final PrivateEndpointsClient privateEndpoints;
 
     /**
-     * Gets the PrivateEndpointsInner object to access its operations.
+     * Gets the PrivateEndpointsClient object to access its operations.
      *
-     * @return the PrivateEndpointsInner object.
+     * @return the PrivateEndpointsClient object.
      */
-    public PrivateEndpointsInner privateEndpoints() {
+    public PrivateEndpointsClient getPrivateEndpoints() {
         return this.privateEndpoints;
     }
 
-    /** The AvailablePrivateEndpointTypesInner object to access its operations. */
-    private final AvailablePrivateEndpointTypesInner availablePrivateEndpointTypes;
+    /** The AvailablePrivateEndpointTypesClient object to access its operations. */
+    private final AvailablePrivateEndpointTypesClient availablePrivateEndpointTypes;
 
     /**
-     * Gets the AvailablePrivateEndpointTypesInner object to access its operations.
+     * Gets the AvailablePrivateEndpointTypesClient object to access its operations.
      *
-     * @return the AvailablePrivateEndpointTypesInner object.
+     * @return the AvailablePrivateEndpointTypesClient object.
      */
-    public AvailablePrivateEndpointTypesInner availablePrivateEndpointTypes() {
+    public AvailablePrivateEndpointTypesClient getAvailablePrivateEndpointTypes() {
         return this.availablePrivateEndpointTypes;
     }
 
-    /** The PrivateLinkServicesInner object to access its operations. */
-    private final PrivateLinkServicesInner privateLinkServices;
+    /** The PrivateLinkServicesClient object to access its operations. */
+    private final PrivateLinkServicesClient privateLinkServices;
 
     /**
-     * Gets the PrivateLinkServicesInner object to access its operations.
+     * Gets the PrivateLinkServicesClient object to access its operations.
      *
-     * @return the PrivateLinkServicesInner object.
+     * @return the PrivateLinkServicesClient object.
      */
-    public PrivateLinkServicesInner privateLinkServices() {
+    public PrivateLinkServicesClient getPrivateLinkServices() {
         return this.privateLinkServices;
     }
 
-    /** The PublicIpAddressesInner object to access its operations. */
-    private final PublicIpAddressesInner publicIpAddresses;
+    /** The PublicIpAddressesClient object to access its operations. */
+    private final PublicIpAddressesClient publicIpAddresses;
 
     /**
-     * Gets the PublicIpAddressesInner object to access its operations.
+     * Gets the PublicIpAddressesClient object to access its operations.
      *
-     * @return the PublicIpAddressesInner object.
+     * @return the PublicIpAddressesClient object.
      */
-    public PublicIpAddressesInner publicIpAddresses() {
+    public PublicIpAddressesClient getPublicIpAddresses() {
         return this.publicIpAddresses;
     }
 
-    /** The PublicIpPrefixesInner object to access its operations. */
-    private final PublicIpPrefixesInner publicIpPrefixes;
+    /** The PublicIpPrefixesClient object to access its operations. */
+    private final PublicIpPrefixesClient publicIpPrefixes;
 
     /**
-     * Gets the PublicIpPrefixesInner object to access its operations.
+     * Gets the PublicIpPrefixesClient object to access its operations.
      *
-     * @return the PublicIpPrefixesInner object.
+     * @return the PublicIpPrefixesClient object.
      */
-    public PublicIpPrefixesInner publicIpPrefixes() {
+    public PublicIpPrefixesClient getPublicIpPrefixes() {
         return this.publicIpPrefixes;
     }
 
-    /** The RouteFiltersInner object to access its operations. */
-    private final RouteFiltersInner routeFilters;
+    /** The RouteFiltersClient object to access its operations. */
+    private final RouteFiltersClient routeFilters;
 
     /**
-     * Gets the RouteFiltersInner object to access its operations.
+     * Gets the RouteFiltersClient object to access its operations.
      *
-     * @return the RouteFiltersInner object.
+     * @return the RouteFiltersClient object.
      */
-    public RouteFiltersInner routeFilters() {
+    public RouteFiltersClient getRouteFilters() {
         return this.routeFilters;
     }
 
-    /** The RouteFilterRulesInner object to access its operations. */
-    private final RouteFilterRulesInner routeFilterRules;
+    /** The RouteFilterRulesClient object to access its operations. */
+    private final RouteFilterRulesClient routeFilterRules;
 
     /**
-     * Gets the RouteFilterRulesInner object to access its operations.
+     * Gets the RouteFilterRulesClient object to access its operations.
      *
-     * @return the RouteFilterRulesInner object.
+     * @return the RouteFilterRulesClient object.
      */
-    public RouteFilterRulesInner routeFilterRules() {
+    public RouteFilterRulesClient getRouteFilterRules() {
         return this.routeFilterRules;
     }
 
-    /** The RouteTablesInner object to access its operations. */
-    private final RouteTablesInner routeTables;
+    /** The RouteTablesClient object to access its operations. */
+    private final RouteTablesClient routeTables;
 
     /**
-     * Gets the RouteTablesInner object to access its operations.
+     * Gets the RouteTablesClient object to access its operations.
      *
-     * @return the RouteTablesInner object.
+     * @return the RouteTablesClient object.
      */
-    public RouteTablesInner routeTables() {
+    public RouteTablesClient getRouteTables() {
         return this.routeTables;
     }
 
-    /** The RoutesInner object to access its operations. */
-    private final RoutesInner routes;
+    /** The RoutesClient object to access its operations. */
+    private final RoutesClient routes;
 
     /**
-     * Gets the RoutesInner object to access its operations.
+     * Gets the RoutesClient object to access its operations.
      *
-     * @return the RoutesInner object.
+     * @return the RoutesClient object.
      */
-    public RoutesInner routes() {
+    public RoutesClient getRoutes() {
         return this.routes;
     }
 
-    /** The BgpServiceCommunitiesInner object to access its operations. */
-    private final BgpServiceCommunitiesInner bgpServiceCommunities;
+    /** The BgpServiceCommunitiesClient object to access its operations. */
+    private final BgpServiceCommunitiesClient bgpServiceCommunities;
 
     /**
-     * Gets the BgpServiceCommunitiesInner object to access its operations.
+     * Gets the BgpServiceCommunitiesClient object to access its operations.
      *
-     * @return the BgpServiceCommunitiesInner object.
+     * @return the BgpServiceCommunitiesClient object.
      */
-    public BgpServiceCommunitiesInner bgpServiceCommunities() {
+    public BgpServiceCommunitiesClient getBgpServiceCommunities() {
         return this.bgpServiceCommunities;
     }
 
-    /** The ServiceEndpointPoliciesInner object to access its operations. */
-    private final ServiceEndpointPoliciesInner serviceEndpointPolicies;
+    /** The ServiceEndpointPoliciesClient object to access its operations. */
+    private final ServiceEndpointPoliciesClient serviceEndpointPolicies;
 
     /**
-     * Gets the ServiceEndpointPoliciesInner object to access its operations.
+     * Gets the ServiceEndpointPoliciesClient object to access its operations.
      *
-     * @return the ServiceEndpointPoliciesInner object.
+     * @return the ServiceEndpointPoliciesClient object.
      */
-    public ServiceEndpointPoliciesInner serviceEndpointPolicies() {
+    public ServiceEndpointPoliciesClient getServiceEndpointPolicies() {
         return this.serviceEndpointPolicies;
     }
 
-    /** The ServiceEndpointPolicyDefinitionsInner object to access its operations. */
-    private final ServiceEndpointPolicyDefinitionsInner serviceEndpointPolicyDefinitions;
+    /** The ServiceEndpointPolicyDefinitionsClient object to access its operations. */
+    private final ServiceEndpointPolicyDefinitionsClient serviceEndpointPolicyDefinitions;
 
     /**
-     * Gets the ServiceEndpointPolicyDefinitionsInner object to access its operations.
+     * Gets the ServiceEndpointPolicyDefinitionsClient object to access its operations.
      *
-     * @return the ServiceEndpointPolicyDefinitionsInner object.
+     * @return the ServiceEndpointPolicyDefinitionsClient object.
      */
-    public ServiceEndpointPolicyDefinitionsInner serviceEndpointPolicyDefinitions() {
+    public ServiceEndpointPolicyDefinitionsClient getServiceEndpointPolicyDefinitions() {
         return this.serviceEndpointPolicyDefinitions;
     }
 
-    /** The ServiceTagsInner object to access its operations. */
-    private final ServiceTagsInner serviceTags;
+    /** The ServiceTagsClient object to access its operations. */
+    private final ServiceTagsClient serviceTags;
 
     /**
-     * Gets the ServiceTagsInner object to access its operations.
+     * Gets the ServiceTagsClient object to access its operations.
      *
-     * @return the ServiceTagsInner object.
+     * @return the ServiceTagsClient object.
      */
-    public ServiceTagsInner serviceTags() {
+    public ServiceTagsClient getServiceTags() {
         return this.serviceTags;
     }
 
-    /** The UsagesInner object to access its operations. */
-    private final UsagesInner usages;
+    /** The UsagesClient object to access its operations. */
+    private final UsagesClient usages;
 
     /**
-     * Gets the UsagesInner object to access its operations.
+     * Gets the UsagesClient object to access its operations.
      *
-     * @return the UsagesInner object.
+     * @return the UsagesClient object.
      */
-    public UsagesInner usages() {
+    public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The VirtualNetworksInner object to access its operations. */
-    private final VirtualNetworksInner virtualNetworks;
+    /** The VirtualNetworksClient object to access its operations. */
+    private final VirtualNetworksClient virtualNetworks;
 
     /**
-     * Gets the VirtualNetworksInner object to access its operations.
+     * Gets the VirtualNetworksClient object to access its operations.
      *
-     * @return the VirtualNetworksInner object.
+     * @return the VirtualNetworksClient object.
      */
-    public VirtualNetworksInner virtualNetworks() {
+    public VirtualNetworksClient getVirtualNetworks() {
         return this.virtualNetworks;
     }
 
-    /** The SubnetsInner object to access its operations. */
-    private final SubnetsInner subnets;
+    /** The SubnetsClient object to access its operations. */
+    private final SubnetsClient subnets;
 
     /**
-     * Gets the SubnetsInner object to access its operations.
+     * Gets the SubnetsClient object to access its operations.
      *
-     * @return the SubnetsInner object.
+     * @return the SubnetsClient object.
      */
-    public SubnetsInner subnets() {
+    public SubnetsClient getSubnets() {
         return this.subnets;
     }
 
-    /** The ResourceNavigationLinksInner object to access its operations. */
-    private final ResourceNavigationLinksInner resourceNavigationLinks;
+    /** The ResourceNavigationLinksClient object to access its operations. */
+    private final ResourceNavigationLinksClient resourceNavigationLinks;
 
     /**
-     * Gets the ResourceNavigationLinksInner object to access its operations.
+     * Gets the ResourceNavigationLinksClient object to access its operations.
      *
-     * @return the ResourceNavigationLinksInner object.
+     * @return the ResourceNavigationLinksClient object.
      */
-    public ResourceNavigationLinksInner resourceNavigationLinks() {
+    public ResourceNavigationLinksClient getResourceNavigationLinks() {
         return this.resourceNavigationLinks;
     }
 
-    /** The ServiceAssociationLinksInner object to access its operations. */
-    private final ServiceAssociationLinksInner serviceAssociationLinks;
+    /** The ServiceAssociationLinksClient object to access its operations. */
+    private final ServiceAssociationLinksClient serviceAssociationLinks;
 
     /**
-     * Gets the ServiceAssociationLinksInner object to access its operations.
+     * Gets the ServiceAssociationLinksClient object to access its operations.
      *
-     * @return the ServiceAssociationLinksInner object.
+     * @return the ServiceAssociationLinksClient object.
      */
-    public ServiceAssociationLinksInner serviceAssociationLinks() {
+    public ServiceAssociationLinksClient getServiceAssociationLinks() {
         return this.serviceAssociationLinks;
     }
 
-    /** The VirtualNetworkPeeringsInner object to access its operations. */
-    private final VirtualNetworkPeeringsInner virtualNetworkPeerings;
+    /** The VirtualNetworkPeeringsClient object to access its operations. */
+    private final VirtualNetworkPeeringsClient virtualNetworkPeerings;
 
     /**
-     * Gets the VirtualNetworkPeeringsInner object to access its operations.
+     * Gets the VirtualNetworkPeeringsClient object to access its operations.
      *
-     * @return the VirtualNetworkPeeringsInner object.
+     * @return the VirtualNetworkPeeringsClient object.
      */
-    public VirtualNetworkPeeringsInner virtualNetworkPeerings() {
+    public VirtualNetworkPeeringsClient getVirtualNetworkPeerings() {
         return this.virtualNetworkPeerings;
     }
 
-    /** The VirtualNetworkGatewaysInner object to access its operations. */
-    private final VirtualNetworkGatewaysInner virtualNetworkGateways;
+    /** The VirtualNetworkGatewaysClient object to access its operations. */
+    private final VirtualNetworkGatewaysClient virtualNetworkGateways;
 
     /**
-     * Gets the VirtualNetworkGatewaysInner object to access its operations.
+     * Gets the VirtualNetworkGatewaysClient object to access its operations.
      *
-     * @return the VirtualNetworkGatewaysInner object.
+     * @return the VirtualNetworkGatewaysClient object.
      */
-    public VirtualNetworkGatewaysInner virtualNetworkGateways() {
+    public VirtualNetworkGatewaysClient getVirtualNetworkGateways() {
         return this.virtualNetworkGateways;
     }
 
-    /** The VirtualNetworkGatewayConnectionsInner object to access its operations. */
-    private final VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections;
+    /** The VirtualNetworkGatewayConnectionsClient object to access its operations. */
+    private final VirtualNetworkGatewayConnectionsClient virtualNetworkGatewayConnections;
 
     /**
-     * Gets the VirtualNetworkGatewayConnectionsInner object to access its operations.
+     * Gets the VirtualNetworkGatewayConnectionsClient object to access its operations.
      *
-     * @return the VirtualNetworkGatewayConnectionsInner object.
+     * @return the VirtualNetworkGatewayConnectionsClient object.
      */
-    public VirtualNetworkGatewayConnectionsInner virtualNetworkGatewayConnections() {
+    public VirtualNetworkGatewayConnectionsClient getVirtualNetworkGatewayConnections() {
         return this.virtualNetworkGatewayConnections;
     }
 
-    /** The LocalNetworkGatewaysInner object to access its operations. */
-    private final LocalNetworkGatewaysInner localNetworkGateways;
+    /** The LocalNetworkGatewaysClient object to access its operations. */
+    private final LocalNetworkGatewaysClient localNetworkGateways;
 
     /**
-     * Gets the LocalNetworkGatewaysInner object to access its operations.
+     * Gets the LocalNetworkGatewaysClient object to access its operations.
      *
-     * @return the LocalNetworkGatewaysInner object.
+     * @return the LocalNetworkGatewaysClient object.
      */
-    public LocalNetworkGatewaysInner localNetworkGateways() {
+    public LocalNetworkGatewaysClient getLocalNetworkGateways() {
         return this.localNetworkGateways;
     }
 
-    /** The VirtualNetworkTapsInner object to access its operations. */
-    private final VirtualNetworkTapsInner virtualNetworkTaps;
+    /** The VirtualNetworkTapsClient object to access its operations. */
+    private final VirtualNetworkTapsClient virtualNetworkTaps;
 
     /**
-     * Gets the VirtualNetworkTapsInner object to access its operations.
+     * Gets the VirtualNetworkTapsClient object to access its operations.
      *
-     * @return the VirtualNetworkTapsInner object.
+     * @return the VirtualNetworkTapsClient object.
      */
-    public VirtualNetworkTapsInner virtualNetworkTaps() {
+    public VirtualNetworkTapsClient getVirtualNetworkTaps() {
         return this.virtualNetworkTaps;
     }
 
-    /** The VirtualWansInner object to access its operations. */
-    private final VirtualWansInner virtualWans;
+    /** The VirtualWansClient object to access its operations. */
+    private final VirtualWansClient virtualWans;
 
     /**
-     * Gets the VirtualWansInner object to access its operations.
+     * Gets the VirtualWansClient object to access its operations.
      *
-     * @return the VirtualWansInner object.
+     * @return the VirtualWansClient object.
      */
-    public VirtualWansInner virtualWans() {
+    public VirtualWansClient getVirtualWans() {
         return this.virtualWans;
     }
 
-    /** The VpnSitesInner object to access its operations. */
-    private final VpnSitesInner vpnSites;
+    /** The VpnSitesClient object to access its operations. */
+    private final VpnSitesClient vpnSites;
 
     /**
-     * Gets the VpnSitesInner object to access its operations.
+     * Gets the VpnSitesClient object to access its operations.
      *
-     * @return the VpnSitesInner object.
+     * @return the VpnSitesClient object.
      */
-    public VpnSitesInner vpnSites() {
+    public VpnSitesClient getVpnSites() {
         return this.vpnSites;
     }
 
-    /** The VpnSiteLinksInner object to access its operations. */
-    private final VpnSiteLinksInner vpnSiteLinks;
+    /** The VpnSiteLinksClient object to access its operations. */
+    private final VpnSiteLinksClient vpnSiteLinks;
 
     /**
-     * Gets the VpnSiteLinksInner object to access its operations.
+     * Gets the VpnSiteLinksClient object to access its operations.
      *
-     * @return the VpnSiteLinksInner object.
+     * @return the VpnSiteLinksClient object.
      */
-    public VpnSiteLinksInner vpnSiteLinks() {
+    public VpnSiteLinksClient getVpnSiteLinks() {
         return this.vpnSiteLinks;
     }
 
-    /** The VpnSitesConfigurationsInner object to access its operations. */
-    private final VpnSitesConfigurationsInner vpnSitesConfigurations;
+    /** The VpnSitesConfigurationsClient object to access its operations. */
+    private final VpnSitesConfigurationsClient vpnSitesConfigurations;
 
     /**
-     * Gets the VpnSitesConfigurationsInner object to access its operations.
+     * Gets the VpnSitesConfigurationsClient object to access its operations.
      *
-     * @return the VpnSitesConfigurationsInner object.
+     * @return the VpnSitesConfigurationsClient object.
      */
-    public VpnSitesConfigurationsInner vpnSitesConfigurations() {
+    public VpnSitesConfigurationsClient getVpnSitesConfigurations() {
         return this.vpnSitesConfigurations;
     }
 
-    /** The VirtualHubsInner object to access its operations. */
-    private final VirtualHubsInner virtualHubs;
+    /** The VirtualHubsClient object to access its operations. */
+    private final VirtualHubsClient virtualHubs;
 
     /**
-     * Gets the VirtualHubsInner object to access its operations.
+     * Gets the VirtualHubsClient object to access its operations.
      *
-     * @return the VirtualHubsInner object.
+     * @return the VirtualHubsClient object.
      */
-    public VirtualHubsInner virtualHubs() {
+    public VirtualHubsClient getVirtualHubs() {
         return this.virtualHubs;
     }
 
-    /** The HubVirtualNetworkConnectionsInner object to access its operations. */
-    private final HubVirtualNetworkConnectionsInner hubVirtualNetworkConnections;
+    /** The HubVirtualNetworkConnectionsClient object to access its operations. */
+    private final HubVirtualNetworkConnectionsClient hubVirtualNetworkConnections;
 
     /**
-     * Gets the HubVirtualNetworkConnectionsInner object to access its operations.
+     * Gets the HubVirtualNetworkConnectionsClient object to access its operations.
      *
-     * @return the HubVirtualNetworkConnectionsInner object.
+     * @return the HubVirtualNetworkConnectionsClient object.
      */
-    public HubVirtualNetworkConnectionsInner hubVirtualNetworkConnections() {
+    public HubVirtualNetworkConnectionsClient getHubVirtualNetworkConnections() {
         return this.hubVirtualNetworkConnections;
     }
 
-    /** The VpnGatewaysInner object to access its operations. */
-    private final VpnGatewaysInner vpnGateways;
+    /** The VpnGatewaysClient object to access its operations. */
+    private final VpnGatewaysClient vpnGateways;
 
     /**
-     * Gets the VpnGatewaysInner object to access its operations.
+     * Gets the VpnGatewaysClient object to access its operations.
      *
-     * @return the VpnGatewaysInner object.
+     * @return the VpnGatewaysClient object.
      */
-    public VpnGatewaysInner vpnGateways() {
+    public VpnGatewaysClient getVpnGateways() {
         return this.vpnGateways;
     }
 
-    /** The VpnConnectionsInner object to access its operations. */
-    private final VpnConnectionsInner vpnConnections;
+    /** The VpnConnectionsClient object to access its operations. */
+    private final VpnConnectionsClient vpnConnections;
 
     /**
-     * Gets the VpnConnectionsInner object to access its operations.
+     * Gets the VpnConnectionsClient object to access its operations.
      *
-     * @return the VpnConnectionsInner object.
+     * @return the VpnConnectionsClient object.
      */
-    public VpnConnectionsInner vpnConnections() {
+    public VpnConnectionsClient getVpnConnections() {
         return this.vpnConnections;
     }
 
-    /** The VpnSiteLinkConnectionsInner object to access its operations. */
-    private final VpnSiteLinkConnectionsInner vpnSiteLinkConnections;
+    /** The VpnSiteLinkConnectionsClient object to access its operations. */
+    private final VpnSiteLinkConnectionsClient vpnSiteLinkConnections;
 
     /**
-     * Gets the VpnSiteLinkConnectionsInner object to access its operations.
+     * Gets the VpnSiteLinkConnectionsClient object to access its operations.
      *
-     * @return the VpnSiteLinkConnectionsInner object.
+     * @return the VpnSiteLinkConnectionsClient object.
      */
-    public VpnSiteLinkConnectionsInner vpnSiteLinkConnections() {
+    public VpnSiteLinkConnectionsClient getVpnSiteLinkConnections() {
         return this.vpnSiteLinkConnections;
     }
 
-    /** The VpnLinkConnectionsInner object to access its operations. */
-    private final VpnLinkConnectionsInner vpnLinkConnections;
+    /** The VpnLinkConnectionsClient object to access its operations. */
+    private final VpnLinkConnectionsClient vpnLinkConnections;
 
     /**
-     * Gets the VpnLinkConnectionsInner object to access its operations.
+     * Gets the VpnLinkConnectionsClient object to access its operations.
      *
-     * @return the VpnLinkConnectionsInner object.
+     * @return the VpnLinkConnectionsClient object.
      */
-    public VpnLinkConnectionsInner vpnLinkConnections() {
+    public VpnLinkConnectionsClient getVpnLinkConnections() {
         return this.vpnLinkConnections;
     }
 
-    /** The P2SVpnServerConfigurationsInner object to access its operations. */
-    private final P2SVpnServerConfigurationsInner p2SVpnServerConfigurations;
+    /** The P2SVpnServerConfigurationsClient object to access its operations. */
+    private final P2SVpnServerConfigurationsClient p2SVpnServerConfigurations;
 
     /**
-     * Gets the P2SVpnServerConfigurationsInner object to access its operations.
+     * Gets the P2SVpnServerConfigurationsClient object to access its operations.
      *
-     * @return the P2SVpnServerConfigurationsInner object.
+     * @return the P2SVpnServerConfigurationsClient object.
      */
-    public P2SVpnServerConfigurationsInner p2SVpnServerConfigurations() {
+    public P2SVpnServerConfigurationsClient getP2SVpnServerConfigurations() {
         return this.p2SVpnServerConfigurations;
     }
 
-    /** The P2SVpnGatewaysInner object to access its operations. */
-    private final P2SVpnGatewaysInner p2SVpnGateways;
+    /** The P2SVpnGatewaysClient object to access its operations. */
+    private final P2SVpnGatewaysClient p2SVpnGateways;
 
     /**
-     * Gets the P2SVpnGatewaysInner object to access its operations.
+     * Gets the P2SVpnGatewaysClient object to access its operations.
      *
-     * @return the P2SVpnGatewaysInner object.
+     * @return the P2SVpnGatewaysClient object.
      */
-    public P2SVpnGatewaysInner p2SVpnGateways() {
+    public P2SVpnGatewaysClient getP2SVpnGateways() {
         return this.p2SVpnGateways;
     }
 
-    /** The WebApplicationFirewallPoliciesInner object to access its operations. */
-    private final WebApplicationFirewallPoliciesInner webApplicationFirewallPolicies;
+    /** The WebApplicationFirewallPoliciesClient object to access its operations. */
+    private final WebApplicationFirewallPoliciesClient webApplicationFirewallPolicies;
 
     /**
-     * Gets the WebApplicationFirewallPoliciesInner object to access its operations.
+     * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
      *
-     * @return the WebApplicationFirewallPoliciesInner object.
+     * @return the WebApplicationFirewallPoliciesClient object.
      */
-    public WebApplicationFirewallPoliciesInner webApplicationFirewallPolicies() {
+    public WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies() {
         return this.webApplicationFirewallPolicies;
-    }
-
-    /** Initializes an instance of NetworkManagementClient client. */
-    public NetworkManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of NetworkManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public NetworkManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
     }
 
     /**
@@ -1191,91 +1150,94 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    public NetworkManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    NetworkManagementClient(
+        HttpPipeline httpPipeline, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.applicationGateways = new ApplicationGatewaysInner(this);
-        this.applicationSecurityGroups = new ApplicationSecurityGroupsInner(this);
-        this.availableDelegations = new AvailableDelegationsInner(this);
-        this.availableResourceGroupDelegations = new AvailableResourceGroupDelegationsInner(this);
-        this.azureFirewalls = new AzureFirewallsInner(this);
-        this.azureFirewallFqdnTags = new AzureFirewallFqdnTagsInner(this);
-        this.bastionHosts = new BastionHostsInner(this);
-        this.ddosCustomPolicies = new DdosCustomPoliciesInner(this);
-        this.ddosProtectionPlans = new DdosProtectionPlansInner(this);
-        this.availableEndpointServices = new AvailableEndpointServicesInner(this);
-        this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsInner(this);
-        this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsInner(this);
-        this.expressRouteCircuitConnections = new ExpressRouteCircuitConnectionsInner(this);
-        this.peerExpressRouteCircuitConnections = new PeerExpressRouteCircuitConnectionsInner(this);
-        this.expressRouteCircuits = new ExpressRouteCircuitsInner(this);
-        this.expressRouteServiceProviders = new ExpressRouteServiceProvidersInner(this);
-        this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsInner(this);
-        this.expressRouteCrossConnectionPeerings = new ExpressRouteCrossConnectionPeeringsInner(this);
-        this.expressRouteGateways = new ExpressRouteGatewaysInner(this);
-        this.expressRouteConnections = new ExpressRouteConnectionsInner(this);
-        this.expressRoutePortsLocations = new ExpressRoutePortsLocationsInner(this);
-        this.expressRoutePorts = new ExpressRoutePortsInner(this);
-        this.expressRouteLinks = new ExpressRouteLinksInner(this);
-        this.firewallPolicies = new FirewallPoliciesInner(this);
-        this.firewallPolicyRuleGroups = new FirewallPolicyRuleGroupsInner(this);
-        this.loadBalancers = new LoadBalancersInner(this);
-        this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsInner(this);
-        this.loadBalancerFrontendIpConfigurations = new LoadBalancerFrontendIpConfigurationsInner(this);
-        this.inboundNatRules = new InboundNatRulesInner(this);
-        this.loadBalancerLoadBalancingRules = new LoadBalancerLoadBalancingRulesInner(this);
-        this.loadBalancerOutboundRules = new LoadBalancerOutboundRulesInner(this);
-        this.loadBalancerNetworkInterfaces = new LoadBalancerNetworkInterfacesInner(this);
-        this.loadBalancerProbes = new LoadBalancerProbesInner(this);
-        this.natGateways = new NatGatewaysInner(this);
-        this.networkInterfaces = new NetworkInterfacesInner(this);
-        this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsInner(this);
-        this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersInner(this);
-        this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsInner(this);
-        this.networkProfiles = new NetworkProfilesInner(this);
-        this.networkSecurityGroups = new NetworkSecurityGroupsInner(this);
-        this.securityRules = new SecurityRulesInner(this);
-        this.defaultSecurityRules = new DefaultSecurityRulesInner(this);
-        this.networkWatchers = new NetworkWatchersInner(this);
-        this.packetCaptures = new PacketCapturesInner(this);
-        this.connectionMonitors = new ConnectionMonitorsInner(this);
-        this.operations = new OperationsInner(this);
-        this.privateEndpoints = new PrivateEndpointsInner(this);
-        this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesInner(this);
-        this.privateLinkServices = new PrivateLinkServicesInner(this);
-        this.publicIpAddresses = new PublicIpAddressesInner(this);
-        this.publicIpPrefixes = new PublicIpPrefixesInner(this);
-        this.routeFilters = new RouteFiltersInner(this);
-        this.routeFilterRules = new RouteFilterRulesInner(this);
-        this.routeTables = new RouteTablesInner(this);
-        this.routes = new RoutesInner(this);
-        this.bgpServiceCommunities = new BgpServiceCommunitiesInner(this);
-        this.serviceEndpointPolicies = new ServiceEndpointPoliciesInner(this);
-        this.serviceEndpointPolicyDefinitions = new ServiceEndpointPolicyDefinitionsInner(this);
-        this.serviceTags = new ServiceTagsInner(this);
-        this.usages = new UsagesInner(this);
-        this.virtualNetworks = new VirtualNetworksInner(this);
-        this.subnets = new SubnetsInner(this);
-        this.resourceNavigationLinks = new ResourceNavigationLinksInner(this);
-        this.serviceAssociationLinks = new ServiceAssociationLinksInner(this);
-        this.virtualNetworkPeerings = new VirtualNetworkPeeringsInner(this);
-        this.virtualNetworkGateways = new VirtualNetworkGatewaysInner(this);
-        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsInner(this);
-        this.localNetworkGateways = new LocalNetworkGatewaysInner(this);
-        this.virtualNetworkTaps = new VirtualNetworkTapsInner(this);
-        this.virtualWans = new VirtualWansInner(this);
-        this.vpnSites = new VpnSitesInner(this);
-        this.vpnSiteLinks = new VpnSiteLinksInner(this);
-        this.vpnSitesConfigurations = new VpnSitesConfigurationsInner(this);
-        this.virtualHubs = new VirtualHubsInner(this);
-        this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsInner(this);
-        this.vpnGateways = new VpnGatewaysInner(this);
-        this.vpnConnections = new VpnConnectionsInner(this);
-        this.vpnSiteLinkConnections = new VpnSiteLinkConnectionsInner(this);
-        this.vpnLinkConnections = new VpnLinkConnectionsInner(this);
-        this.p2SVpnServerConfigurations = new P2SVpnServerConfigurationsInner(this);
-        this.p2SVpnGateways = new P2SVpnGatewaysInner(this);
-        this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesInner(this);
+        this.subscriptionId = subscriptionId;
+        this.endpoint = endpoint;
+        this.applicationGateways = new ApplicationGatewaysClient(this);
+        this.applicationSecurityGroups = new ApplicationSecurityGroupsClient(this);
+        this.availableDelegations = new AvailableDelegationsClient(this);
+        this.availableResourceGroupDelegations = new AvailableResourceGroupDelegationsClient(this);
+        this.azureFirewalls = new AzureFirewallsClient(this);
+        this.azureFirewallFqdnTags = new AzureFirewallFqdnTagsClient(this);
+        this.bastionHosts = new BastionHostsClient(this);
+        this.ddosCustomPolicies = new DdosCustomPoliciesClient(this);
+        this.ddosProtectionPlans = new DdosProtectionPlansClient(this);
+        this.availableEndpointServices = new AvailableEndpointServicesClient(this);
+        this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsClient(this);
+        this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsClient(this);
+        this.expressRouteCircuitConnections = new ExpressRouteCircuitConnectionsClient(this);
+        this.peerExpressRouteCircuitConnections = new PeerExpressRouteCircuitConnectionsClient(this);
+        this.expressRouteCircuits = new ExpressRouteCircuitsClient(this);
+        this.expressRouteServiceProviders = new ExpressRouteServiceProvidersClient(this);
+        this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsClient(this);
+        this.expressRouteCrossConnectionPeerings = new ExpressRouteCrossConnectionPeeringsClient(this);
+        this.expressRouteGateways = new ExpressRouteGatewaysClient(this);
+        this.expressRouteConnections = new ExpressRouteConnectionsClient(this);
+        this.expressRoutePortsLocations = new ExpressRoutePortsLocationsClient(this);
+        this.expressRoutePorts = new ExpressRoutePortsClient(this);
+        this.expressRouteLinks = new ExpressRouteLinksClient(this);
+        this.firewallPolicies = new FirewallPoliciesClient(this);
+        this.firewallPolicyRuleGroups = new FirewallPolicyRuleGroupsClient(this);
+        this.loadBalancers = new LoadBalancersClient(this);
+        this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsClient(this);
+        this.loadBalancerFrontendIpConfigurations = new LoadBalancerFrontendIpConfigurationsClient(this);
+        this.inboundNatRules = new InboundNatRulesClient(this);
+        this.loadBalancerLoadBalancingRules = new LoadBalancerLoadBalancingRulesClient(this);
+        this.loadBalancerOutboundRules = new LoadBalancerOutboundRulesClient(this);
+        this.loadBalancerNetworkInterfaces = new LoadBalancerNetworkInterfacesClient(this);
+        this.loadBalancerProbes = new LoadBalancerProbesClient(this);
+        this.natGateways = new NatGatewaysClient(this);
+        this.networkInterfaces = new NetworkInterfacesClient(this);
+        this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsClient(this);
+        this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersClient(this);
+        this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsClient(this);
+        this.networkProfiles = new NetworkProfilesClient(this);
+        this.networkSecurityGroups = new NetworkSecurityGroupsClient(this);
+        this.securityRules = new SecurityRulesClient(this);
+        this.defaultSecurityRules = new DefaultSecurityRulesClient(this);
+        this.networkWatchers = new NetworkWatchersClient(this);
+        this.packetCaptures = new PacketCapturesClient(this);
+        this.connectionMonitors = new ConnectionMonitorsClient(this);
+        this.operations = new OperationsClient(this);
+        this.privateEndpoints = new PrivateEndpointsClient(this);
+        this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesClient(this);
+        this.privateLinkServices = new PrivateLinkServicesClient(this);
+        this.publicIpAddresses = new PublicIpAddressesClient(this);
+        this.publicIpPrefixes = new PublicIpPrefixesClient(this);
+        this.routeFilters = new RouteFiltersClient(this);
+        this.routeFilterRules = new RouteFilterRulesClient(this);
+        this.routeTables = new RouteTablesClient(this);
+        this.routes = new RoutesClient(this);
+        this.bgpServiceCommunities = new BgpServiceCommunitiesClient(this);
+        this.serviceEndpointPolicies = new ServiceEndpointPoliciesClient(this);
+        this.serviceEndpointPolicyDefinitions = new ServiceEndpointPolicyDefinitionsClient(this);
+        this.serviceTags = new ServiceTagsClient(this);
+        this.usages = new UsagesClient(this);
+        this.virtualNetworks = new VirtualNetworksClient(this);
+        this.subnets = new SubnetsClient(this);
+        this.resourceNavigationLinks = new ResourceNavigationLinksClient(this);
+        this.serviceAssociationLinks = new ServiceAssociationLinksClient(this);
+        this.virtualNetworkPeerings = new VirtualNetworkPeeringsClient(this);
+        this.virtualNetworkGateways = new VirtualNetworkGatewaysClient(this);
+        this.virtualNetworkGatewayConnections = new VirtualNetworkGatewayConnectionsClient(this);
+        this.localNetworkGateways = new LocalNetworkGatewaysClient(this);
+        this.virtualNetworkTaps = new VirtualNetworkTapsClient(this);
+        this.virtualWans = new VirtualWansClient(this);
+        this.vpnSites = new VpnSitesClient(this);
+        this.vpnSiteLinks = new VpnSiteLinksClient(this);
+        this.vpnSitesConfigurations = new VpnSitesConfigurationsClient(this);
+        this.virtualHubs = new VirtualHubsClient(this);
+        this.hubVirtualNetworkConnections = new HubVirtualNetworkConnectionsClient(this);
+        this.vpnGateways = new VpnGatewaysClient(this);
+        this.vpnConnections = new VpnConnectionsClient(this);
+        this.vpnSiteLinkConnections = new VpnSiteLinkConnectionsClient(this);
+        this.vpnLinkConnections = new VpnLinkConnectionsClient(this);
+        this.p2SVpnServerConfigurations = new P2SVpnServerConfigurationsClient(this);
+        this.p2SVpnGateways = new P2SVpnGatewaysClient(this);
+        this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesClient(this);
         this.service =
             RestProxy.create(NetworkManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -1292,8 +1254,8 @@ public final class NetworkManagementClient extends AzureServiceClient {
             "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailability(
-            @HostParam("$host") String host,
+        Mono<Response<DnsNameAvailabilityResultInner>> checkDnsNameAvailability(
+            @HostParam("$host") String endpoint,
             @PathParam("location") String location,
             @QueryParam("domainNameLabel") String domainNameLabel,
             @QueryParam("api-version") String apiVersion,
@@ -1306,8 +1268,8 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 + "/{virtualWANName}/supportedSecurityProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProviders(
-            @HostParam("$host") String host,
+        Mono<Response<VirtualWanSecurityProvidersInner>> supportedSecurityProviders(
+            @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualWANName") String virtualWanName,
@@ -1327,10 +1289,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @return response for the CheckDnsNameAvailability API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
+    public Mono<Response<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
         String location, String domainNameLabel) {
-        if (this.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -1350,7 +1313,12 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 context ->
                     service
                         .checkDnsNameAvailability(
-                            this.getHost(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), context))
+                            this.getEndpoint(),
+                            location,
+                            domainNameLabel,
+                            apiVersion,
+                            this.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
 
@@ -1367,10 +1335,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @return response for the CheckDnsNameAvailability API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
+    public Mono<Response<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
         String location, String domainNameLabel, Context context) {
-        if (this.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -1387,7 +1356,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         final String apiVersion = "2019-06-01";
         return service
             .checkDnsNameAvailability(
-                this.getHost(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), context);
+                this.getEndpoint(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), context);
     }
 
     /**
@@ -1405,7 +1374,33 @@ public final class NetworkManagementClient extends AzureServiceClient {
     public Mono<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(String location, String domainNameLabel) {
         return checkDnsNameAvailabilityWithResponseAsync(location, domainNameLabel)
             .flatMap(
-                (SimpleResponse<DnsNameAvailabilityResultInner> res) -> {
+                (Response<DnsNameAvailabilityResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
+     *
+     * @param location The location of the domain name.
+     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
+     *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the CheckDnsNameAvailability API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DnsNameAvailabilityResultInner> checkDnsNameAvailabilityAsync(
+        String location, String domainNameLabel, Context context) {
+        return checkDnsNameAvailabilityWithResponseAsync(location, domainNameLabel, context)
+            .flatMap(
+                (Response<DnsNameAvailabilityResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1431,6 +1426,24 @@ public final class NetworkManagementClient extends AzureServiceClient {
     }
 
     /**
+     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
+     *
+     * @param location The location of the domain name.
+     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
+     *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the CheckDnsNameAvailability API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DnsNameAvailabilityResultInner checkDnsNameAvailability(
+        String location, String domainNameLabel, Context context) {
+        return checkDnsNameAvailabilityAsync(location, domainNameLabel, context).block();
+    }
+
+    /**
      * Gives the supported security providers for the virtual wan.
      *
      * @param resourceGroupName The resource group name.
@@ -1441,10 +1454,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @return collection of SecurityProviders.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
+    public Mono<Response<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
         String resourceGroupName, String virtualWanName) {
-        if (this.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
             return Mono
@@ -1464,7 +1478,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
                 context ->
                     service
                         .supportedSecurityProviders(
-                            this.getHost(),
+                            this.getEndpoint(),
                             this.getSubscriptionId(),
                             resourceGroupName,
                             virtualWanName,
@@ -1485,10 +1499,11 @@ public final class NetworkManagementClient extends AzureServiceClient {
      * @return collection of SecurityProviders.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
+    public Mono<Response<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
         String resourceGroupName, String virtualWanName, Context context) {
-        if (this.getHost() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        if (this.getEndpoint() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
         }
         if (this.getSubscriptionId() == null) {
             return Mono
@@ -1505,7 +1520,7 @@ public final class NetworkManagementClient extends AzureServiceClient {
         final String apiVersion = "2019-06-01";
         return service
             .supportedSecurityProviders(
-                this.getHost(), this.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, context);
+                this.getEndpoint(), this.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, context);
     }
 
     /**
@@ -1523,7 +1538,32 @@ public final class NetworkManagementClient extends AzureServiceClient {
         String resourceGroupName, String virtualWanName) {
         return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWanName)
             .flatMap(
-                (SimpleResponse<VirtualWanSecurityProvidersInner> res) -> {
+                (Response<VirtualWanSecurityProvidersInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Gives the supported security providers for the virtual wan.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SecurityProviders.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VirtualWanSecurityProvidersInner> supportedSecurityProvidersAsync(
+        String resourceGroupName, String virtualWanName, Context context) {
+        return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWanName, context)
+            .flatMap(
+                (Response<VirtualWanSecurityProvidersInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1546,5 +1586,22 @@ public final class NetworkManagementClient extends AzureServiceClient {
     public VirtualWanSecurityProvidersInner supportedSecurityProviders(
         String resourceGroupName, String virtualWanName) {
         return supportedSecurityProvidersAsync(resourceGroupName, virtualWanName).block();
+    }
+
+    /**
+     * Gives the supported security providers for the virtual wan.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SecurityProviders.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VirtualWanSecurityProvidersInner supportedSecurityProviders(
+        String resourceGroupName, String virtualWanName, Context context) {
+        return supportedSecurityProvidersAsync(resourceGroupName, virtualWanName, context).block();
     }
 }

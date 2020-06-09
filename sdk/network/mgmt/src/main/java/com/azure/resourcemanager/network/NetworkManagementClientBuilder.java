@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/** A builder for creating a new instance of the NetworkManagementClientImpl type. */
+/** A builder for creating a new instance of the NetworkManagementClient type. */
 @ServiceClientBuilder(serviceClients = {NetworkManagementClient.class})
 public final class NetworkManagementClientBuilder {
     /*
@@ -37,16 +37,16 @@ public final class NetworkManagementClientBuilder {
     /*
      * server parameter
      */
-    private String host;
+    private String endpoint;
 
     /**
      * Sets server parameter.
      *
-     * @param host the host value.
+     * @param endpoint the endpoint value.
      * @return the NetworkManagementClientBuilder.
      */
-    public NetworkManagementClientBuilder host(String host) {
-        this.host = host;
+    public NetworkManagementClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -83,13 +83,13 @@ public final class NetworkManagementClientBuilder {
     }
 
     /**
-     * Builds an instance of NetworkManagementClientImpl with the provided parameters.
+     * Builds an instance of NetworkManagementClient with the provided parameters.
      *
-     * @return an instance of NetworkManagementClientImpl.
+     * @return an instance of NetworkManagementClient.
      */
     public NetworkManagementClient buildClient() {
-        if (host == null) {
-            this.host = "https://management.azure.com";
+        if (endpoint == null) {
+            this.endpoint = "https://management.azure.com";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
@@ -100,9 +100,7 @@ public final class NetworkManagementClientBuilder {
                     .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
-        NetworkManagementClient client = new NetworkManagementClient(pipeline, environment);
-        client.setSubscriptionId(this.subscriptionId);
-        client.setHost(this.host);
+        NetworkManagementClient client = new NetworkManagementClient(pipeline, environment, subscriptionId, endpoint);
         return client;
     }
 }
