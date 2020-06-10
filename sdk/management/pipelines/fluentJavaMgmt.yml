@@ -80,7 +80,7 @@ jobs:
         displayName: 'install'
         inputs:
           mavenPomFile: sdk/management/pom.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -pl !samples javadoc:aggregate -DskipTests=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          options: '$(DefaultOptions) $(ProfileFlag) javadoc:aggregate -DskipTests=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -104,7 +104,7 @@ jobs:
         displayName: 'Run Tests on Java 8'
         inputs:
           mavenPomFile: sdk/management/pom.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-management-parent -amd -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
+          options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-resourcemanager-parent -amd -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
