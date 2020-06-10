@@ -14,6 +14,7 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
+  <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
