@@ -26,14 +26,12 @@ This sample project demonstrates how to use Service Bus with Spring Boot.
 2. Fill in the `connection-string`, `queue-name`, `topic-name`, and `subscription-name`. 
 
 ### Run with Maven
-
-1. Change directory to folder `azure-spring-boot-sample-servicebus`.
-2. Run below commands. 
-
-    ```
-    mvn package
-    java -jar target/azure-spring-boot-sample-servicebus-1.0.0.jar
-    ```
+```
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
+cd azure-spring-boot-samples/azure-spring-boot-sample-servicebus
+mvn spring-boot:run
+```
 
 ## Troubleshooting
 ## Next steps

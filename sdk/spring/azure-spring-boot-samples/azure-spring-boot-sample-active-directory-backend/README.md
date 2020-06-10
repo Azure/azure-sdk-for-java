@@ -28,10 +28,9 @@ azure.activedirectory.active-directory-groups=group1, group2
 
 ### Run with Maven
 ```shell
-# Under azure-spring-boot project root directory
+# Under sdk/spring project root directory
 mvn clean install -DskipTests
-cd azure-spring-boot-samples
-cd azure-spring-boot-sample-active-directory-backend
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend
 mvn spring-boot:run
 ```
 
