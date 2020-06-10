@@ -248,3 +248,4 @@ storage_com.microsoft.azure:azure-storage;8.4.0
 # sdk\spring\azure-spring-boot\pom.xml
 spring_io.micrometer:micrometer-core;1.3.0
 spring_io.micrometer:micrometer-registry-azure-monitor;1.3.0
+spring_com.microsoft.azure:azure;1.34.0

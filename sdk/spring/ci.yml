@@ -76,3 +76,7 @@ stages:
           groupId: com.microsoft.azure
         - name: azure-spring-boot-sample-active-directory-stateless
           groupId: com.microsoft.azure
+      EnvVars:
+          SKIP_INTEGRATION_TEST: true
+
+
