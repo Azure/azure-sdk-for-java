@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An object containing the example's text.
+ * An object containing the example utterance's text.
  */
 public class LabelTextObject {
     /**

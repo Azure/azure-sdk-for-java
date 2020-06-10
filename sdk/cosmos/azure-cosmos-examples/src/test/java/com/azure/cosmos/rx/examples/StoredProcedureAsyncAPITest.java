@@ -3,24 +3,21 @@
 
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.StoredProcedure;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.StoredProcedure;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -50,13 +47,14 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_StoredProcedureAsyncAPITest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 
@@ -106,7 +104,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new Object[]{})
+        client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new ArrayList<>())
               .subscribe(storedProcedureResponse -> {
                     String logResult = "The value of x is 1.";
                     try {
@@ -151,7 +149,9 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[]{"a", 123};
+        List<Object> storedProcedureArgs = new ArrayList<>();
+        storedProcedureArgs.add("a");
+        storedProcedureArgs.add(123);
         client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
               .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -197,7 +197,8 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         SamplePojo samplePojo = new SamplePojo();
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[]{samplePojo};
+        List<Object> storedProcedureArgs = new ArrayList<>();
+        storedProcedureArgs.add(samplePojo);
         client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
               .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -227,17 +228,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<IncludedPath>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        List<Index> indexes = new ArrayList<Index>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
-        indexes.add(numberIndex);
-        includedPath.setIndexes(indexes);
+        IncludedPath includedPath = new IncludedPath("/*");
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
         collectionDefinition.setIndexingPolicy(indexingPolicy);

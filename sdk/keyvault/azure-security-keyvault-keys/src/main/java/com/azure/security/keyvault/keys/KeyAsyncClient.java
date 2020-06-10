@@ -1173,8 +1173,7 @@ public final class KeyAsyncClient {
      * @param name The name of the key.
      * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the versions of the specified key in the vault.
      *     Flux is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpRequestException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyProperties> listPropertiesOfKeyVersions(String name) {
@@ -1199,7 +1198,7 @@ public final class KeyAsyncClient {
                 CONTENT_TYPE_HEADER_VALUE, context)
                 .doOnRequest(ignored -> logger.info("Listing key versions - {}", name))
                 .doOnSuccess(response -> logger.info("Listed key versions - {}", name))
-                .doOnError(error -> logger.warning(String.format("Failed to list key versions - {}", name), error));
+                .doOnError(error -> logger.warning(String.format("Failed to list key versions - %s", name), error));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

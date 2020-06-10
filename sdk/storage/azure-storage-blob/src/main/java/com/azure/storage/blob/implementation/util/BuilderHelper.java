@@ -81,7 +81,7 @@ public final class BuilderHelper {
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", endpoint));
+                String.format("%s/.default", getPrimaryEndpointForTokenAuth(endpoint)));
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
@@ -106,6 +106,19 @@ public final class BuilderHelper {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
+    }
+
+    /**
+     *
+     * @param endpoint The endpoint passed by the customer.
+     * @return The primary endpoint for the account. It may be the same endpoint passed if it is already a primary or it
+     * may have had "-secondary" stripped from the end of the account name.
+     */
+    private static String getPrimaryEndpointForTokenAuth(String endpoint) {
+        String[] parts = endpoint.split("\\.");
+        parts[0] = parts[0].endsWith("-secondary") ? parts[0].substring(0, parts[0].length() - "-secondary".length())
+            : parts[0];
+        return String.join(".", parts);
     }
 
     /**

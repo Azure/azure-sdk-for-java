@@ -17,7 +17,7 @@ public class UpdateSettingsOptionalParameter {
      * Setting your application as public allows other people to use your
      * application's endpoint using their own keys.
      */
-    private boolean publicParameter;
+    private boolean isPublic;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -25,22 +25,22 @@ public class UpdateSettingsOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the publicParameter value.
+     * Get the isPublic value.
      *
-     * @return the publicParameter value
+     * @return the isPublic value
      */
-    public boolean publicParameter() {
-        return this.publicParameter;
+    public boolean isPublic() {
+        return this.isPublic;
     }
 
     /**
-     * Set the publicParameter value.
+     * Set the isPublic value.
      *
-     * @param publicParameter the publicParameter value to set
+     * @param isPublic the isPublic value to set
      * @return the UpdateSettingsOptionalParameter object itself.
      */
-    public UpdateSettingsOptionalParameter withPublicParameter(boolean publicParameter) {
-        this.publicParameter = publicParameter;
+    public UpdateSettingsOptionalParameter withIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
         return this;
     }
 

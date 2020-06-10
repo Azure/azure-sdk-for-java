@@ -4,10 +4,12 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 
 public class AnalyticalStorageCodeSnippet {
+
+    private static final String DATABASE_NAME = "testDB";
+    private static final String CONTAINER_NAME = "testContainer";
 
     public static void main(String[] args) throws Exception {
 
@@ -16,11 +18,10 @@ public class AnalyticalStorageCodeSnippet {
             .key(TestConfigurations.MASTER_KEY)
             .buildAsyncClient();
 
-        CosmosAsyncDatabaseResponse database = client.createDatabaseIfNotExists("testDB").block();
-        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties("testContainer", "/id");
+        client.createDatabaseIfNotExists(DATABASE_NAME).block();
+        CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(CONTAINER_NAME, "/id");
         cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(-1);
-
-        database.getDatabase().createContainer(cosmosContainerProperties).block();
+        client.getDatabase(DATABASE_NAME).createContainer(cosmosContainerProperties).block();
 
         client.close();
     }

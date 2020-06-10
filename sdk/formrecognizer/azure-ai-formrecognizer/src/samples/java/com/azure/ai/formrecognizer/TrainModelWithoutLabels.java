@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -21,10 +23,10 @@ public class TrainModelWithoutLabels {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
 
-        FormTrainingClient client = new FormRecognizerClientBuilder()
+        FormTrainingClient client = new FormTrainingClientBuilder()
             .credential(new AzureKeyCredential("{api_Key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildClient().getFormTrainingClient();
+            .buildClient();
 
         // Train custom model
         String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
@@ -35,15 +37,15 @@ public class TrainModelWithoutLabels {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
-        System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
+        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
 
         System.out.println("Recognized Fields:");
         // looping through the sub-models, which contains the fields they were trained on
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
-        customFormModel.getSubModels().forEach(customFormSubModel -> {
+        customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            customFormSubModel.getFieldMap().forEach((field, customFormModelField) ->
+            customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
                 System.out.printf("Field: %s Field Label: %s%n",
                     field, customFormModelField.getLabel()));
         });

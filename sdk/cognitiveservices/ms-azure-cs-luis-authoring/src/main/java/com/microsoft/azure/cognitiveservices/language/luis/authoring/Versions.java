@@ -16,6 +16,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Erro
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.VersionInfo;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -26,7 +27,7 @@ import rx.Observable;
  */
 public interface Versions {
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -36,11 +37,10 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    @Deprecated
     String clone(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -48,11 +48,10 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    @Deprecated
     Observable<String> cloneAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @return the first stage of the clone call
      */
@@ -128,7 +127,7 @@ public interface Versions {
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -137,22 +136,20 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VersionInfo&gt; object if successful.
      */
-    @Deprecated
     List<VersionInfo> list(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VersionInfo&gt; object
      */
-    @Deprecated
     Observable<List<VersionInfo>> listAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @return the first stage of the list call
      */
@@ -224,7 +221,8 @@ public interface Versions {
 
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of
+      *  intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -236,7 +234,8 @@ public interface Versions {
     VersionInfo get(UUID appId, String versionId);
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of
+      *  intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -257,7 +256,6 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus update(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -269,7 +267,6 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -407,7 +404,6 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    @Deprecated
     String importMethod(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -419,7 +415,6 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    @Deprecated
     Observable<String> importMethodAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -500,7 +495,7 @@ public interface Versions {
 
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -513,7 +508,7 @@ public interface Versions {
     OperationStatus deleteUnlabelledUtterance(UUID appId, String versionId, String utterance);
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.

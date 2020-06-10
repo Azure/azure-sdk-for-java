@@ -4,14 +4,15 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
@@ -21,6 +22,7 @@ import com.azure.search.documents.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,8 +36,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertToType;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,25 +50,39 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class IndexingSyncTests extends SearchIndexClientTestBase {
-    private static final String INDEX_NAME = "hotels";
-    private static final String BOOKS_INDEX_NAME = "books";
+public class IndexingSyncTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
 
-    private SearchIndexClient client;
+    private final List<String> indexesToDelete = new ArrayList<>();
+    private SearchClient client;
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
+        for (String index : indexesToDelete) {
+            serviceClient.deleteIndex(index);
+        }
+    }
+
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
+        String indexName = indexSupplier.get();
+        indexesToDelete.add(indexName);
+
+        return getSearchIndexClientBuilder(indexName).buildClient();
+    }
 
     @Test
     public void countingDocsOfNewIndexGivesZero() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         assertEquals(0L, client.getDocumentCount());
     }
 
     @Test
     public void indexDoesNotThrowWhenAllActionsSucceed() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         String expectedHotelId = "1";
         List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
@@ -75,8 +96,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canIndexWithPascalCaseFields() {
-        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = setupClient(() -> setupIndexFromJsonFile(BOOKS_INDEX_JSON));
 
         List<Book> books = new ArrayList<>();
         books.add(new Book()
@@ -96,8 +116,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canDeleteBatchByKeys() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         client.uploadDocuments(Arrays.asList(
             new Hotel().hotelId("1"),
@@ -121,8 +140,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFields() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<Hotel> hotels = new ArrayList<>();
         Hotel hotel = new Hotel()
@@ -145,8 +163,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFields() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<SearchDocument> docs = new ArrayList<>();
 
@@ -171,8 +188,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canIndexStaticallyTypedDocuments() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         Hotel hotel1 = prepareStaticallyTypedHotel("1");
         Hotel hotel2 = prepareStaticallyTypedHotel("2");
@@ -215,8 +231,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canIndexDynamicDocuments() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         SearchDocument hotel1 = prepareDynamicallyTypedHotel("1");
         SearchDocument hotel2 = prepareDynamicallyTypedHotel("2");
@@ -259,15 +274,14 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void indexWithInvalidDocumentThrowsException() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<SearchDocument> docs = new ArrayList<>();
         docs.add(new SearchDocument());
 
         assertHttpResponseException(
             () -> client.uploadDocuments(docs),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
         );
     }
@@ -275,18 +289,17 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
     @Test
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
-        Index indexWithReservedName = new Index()
+        SearchIndex indexWithReservedName = new SearchIndex()
             .setName(indexName)
-            .setFields(Collections.singletonList(new Field()
+            .setFields(Collections.singletonList(new SearchField()
                 .setName("ID")
-                .setType(DataType.EDM_STRING)
+                .setType(SearchFieldDataType.STRING)
                 .setKey(Boolean.TRUE)
             ));
 
-        if (!interceptorManager.isPlaybackMode()) {
-            SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-            searchServiceClient.createOrUpdateIndex(indexWithReservedName);
-        }
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        searchIndexClient.createOrUpdateIndex(indexWithReservedName);
+        indexesToDelete.add(indexWithReservedName.getName());
 
         client = getSearchIndexClientBuilder(indexName).buildClient();
 
@@ -303,8 +316,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canRoundtripBoundaryValues() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
@@ -321,8 +333,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void dynamicDocumentDateTimesRoundTripAsUtc() {
-        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = setupClient(() -> setupIndexFromJsonFile(BOOKS_INDEX_JSON));
 
         OffsetDateTime utcTime = OffsetDateTime.of(
             LocalDateTime.of(2010, 1, 1, 0, 0, 0),
@@ -359,8 +370,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void staticallyTypedDateTimesRoundTripAsUtc() {
-        setupIndexFromJsonFile(BOOKS_INDEX_JSON);
-        client = getSearchIndexClientBuilder(BOOKS_INDEX_NAME).buildClient();
+        client = setupClient(() -> setupIndexFromJsonFile(BOOKS_INDEX_JSON));
 
         List<Book> books = Arrays.asList(
             new Book()
@@ -389,8 +399,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canMergeStaticallyTypedDocuments() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         // Define commonly used values
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -423,7 +432,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("vcr/dvd")),
+                    .tags(new String[] { "vcr/dvd" }),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -432,7 +441,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+                    .tags(new String[] {"vcr/dvd", "jacuzzi tub"})
             ));
 
         // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
@@ -454,7 +463,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         // Fields whose values get updated are updated, and whose values get erased remain the same.
@@ -483,7 +492,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         List<Hotel> originalDocs = new ArrayList<>();
@@ -501,8 +510,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void mergeDocumentWithoutExistingKeyThrowsIndexingException() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<Hotel> hotels = new ArrayList<>();
         hotels.add(prepareStaticallyTypedHotel("1"));
@@ -522,8 +530,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
@@ -554,7 +561,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("vcr/dvd")),
+                    .tags(new String[] { "vcr/dvd" }),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -563,7 +570,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
@@ -582,7 +589,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .type("Budget Room")
                     .baseRate(10.5)
                     .smokingAllowed(false)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
@@ -614,7 +621,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
                     .bedOptions(null)
                     .sleepsCount(null)
                     .smokingAllowed(false)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         List<LoudHotel> originalDocs = new ArrayList<>();
@@ -641,8 +648,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canMergeDynamicDocuments() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
@@ -767,8 +773,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canIndexAndAccessResponse() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         List<Hotel> hotelsToUpload = new ArrayList<>();
         hotelsToUpload.add(new Hotel()
@@ -953,7 +958,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             new Hotel()
                 .hotelId("1")
                 .category("")
-                .lastRenovationDate(DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
+                .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
                 .location(GeoPoint.create(-90, -180))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
@@ -967,7 +972,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
+                .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
                 .location(GeoPoint.create(90, 180))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)

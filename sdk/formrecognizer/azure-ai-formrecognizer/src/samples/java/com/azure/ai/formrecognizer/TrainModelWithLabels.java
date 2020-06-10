@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -21,10 +23,10 @@ public class TrainModelWithLabels {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
 
-        FormTrainingClient client = new FormRecognizerClientBuilder()
+        FormTrainingClient client = new FormTrainingClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildClient().getFormTrainingClient();
+            .buildClient();
 
         // Train custom model
         String trainingSetSource = "{labeled_training_set_SAS_URL}";
@@ -35,16 +37,16 @@ public class TrainModelWithLabels {
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-        System.out.printf("Model created on: %s%n", customFormModel.getCreatedOn());
-        System.out.printf("Model last updated: %s%n%n", customFormModel.getLastUpdatedOn());
+        System.out.printf("Model requested on: %s%n", customFormModel.getRequestedOn());
+        System.out.printf("Model training completed on: %s%n%n", customFormModel.getCompletedOn());
 
         // looping through the sub-models, which contains the fields they were trained on
         // The labels are based on the ones you gave the training document.
         System.out.println("Recognized Fields:");
         // Since the data is labeled, we are able to return the accuracy of the model
-        customFormModel.getSubModels().forEach(customFormSubModel -> {
-            System.out.printf("Sub-model accuracy: %.2f%n", customFormSubModel.getAccuracy());
-            customFormSubModel.getFieldMap().forEach((label, customFormModelField) ->
+        customFormModel.getSubmodels().forEach(customFormSubmodel -> {
+            System.out.printf("Sub-model accuracy: %.2f%n", customFormSubmodel.getAccuracy());
+            customFormSubmodel.getFieldMap().forEach((label, customFormModelField) ->
                 System.out.printf("Field: %s Field Name: %s Field Accuracy: %.2f%n",
                     label, customFormModelField.getName(), customFormModelField.getAccuracy()));
         });

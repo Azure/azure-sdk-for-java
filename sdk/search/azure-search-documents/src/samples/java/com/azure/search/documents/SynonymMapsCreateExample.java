@@ -5,10 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +29,7 @@ public class SynonymMapsCreateExample {
     private static final String API_ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ADMIN_KEY");
 
     public static void main(String[] args) {
-        SearchServiceClient serviceClient = new SearchServiceClientBuilder()
+        SearchIndexClient serviceClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_ADMIN_KEY))
             .buildClient();
@@ -46,7 +48,7 @@ public class SynonymMapsCreateExample {
         serviceClient.deleteSynonymMap(synonymMapName);
     }
 
-    private static void createSynonymMap(SearchServiceClient serviceClient, String synonymMapName) {
+    private static void createSynonymMap(SearchIndexClient serviceClient, String synonymMapName) {
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
             .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
@@ -54,17 +56,17 @@ public class SynonymMapsCreateExample {
     }
 
     private static void assignSynonymMapToIndex(String synonymMapName) {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("hotels")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("HotelId")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true),
-                new Field()
+                new SearchField()
                     .setName("HotelName")
-                    .setType(DataType.EDM_STRING)
-                    .setSynonymMaps(Collections.singletonList(synonymMapName))
+                    .setType(SearchFieldDataType.STRING)
+                    .setSynonymMapNames(Collections.singletonList(synonymMapName))
             ));
     }
 }

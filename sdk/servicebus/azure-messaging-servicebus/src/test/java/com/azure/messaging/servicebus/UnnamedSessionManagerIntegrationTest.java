@@ -8,7 +8,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Integration tests for {@link UnnamedSessionManager}.
  */
+@Tag("integration")
 class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
@@ -59,24 +60,24 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("messagingEntityProvider")
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void singleUnnamedSession(MessagingEntityType entityType) {
         // Arrange
+        final int entityIndex = 0;
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
-        final String contents = "hello world";
+        final String contents = "Some-contents";
         final int numberToSend = 5;
-        final ReceiveAsyncOptions receiveOptions = new ReceiveAsyncOptions()
-            .setMaxAutoLockRenewalDuration(Duration.ofMinutes(2))
-            .setIsAutoCompleteEnabled(true);
 
-        setSenderAndReceiver(entityType, TIMEOUT, Function.identity());
+        setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
+            builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
             .flatMap(index -> {
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(sessionId);
+                messagesPending.incrementAndGet();
                 return sender.send(message).thenReturn(index);
             }).subscribe(
                 number -> logger.info("sessionId[{}] sent[{}] Message sent.", sessionId, number),
@@ -85,7 +86,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(receiver.receive(receiveOptions))
+            StepVerifier.create(receiver.receive())
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
@@ -104,6 +105,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     @Test
     void multipleSessions() {
         // Arrange
+        final int entityIndex = 0;
         final String messageId = "singleUnnamedSession";
         final String now = Instant.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)
@@ -115,17 +117,14 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
             logger.info("[{}]: {}", i, sessionIds.get(i));
         }
 
-        final String contents = "hello world";
+        final String contents = "Some-contents";
         final int numberToSend = 3;
         final int maxMessages = numberToSend * sessionIds.size();
         final int maxConcurrency = 2;
         final Set<String> set = new HashSet<>();
-        final ReceiveAsyncOptions receiveOptions = new ReceiveAsyncOptions()
-            .setMaxAutoLockRenewalDuration(Duration.ofMinutes(2))
-            .setIsAutoCompleteEnabled(true);
 
-        setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(maxConcurrency));
+        setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, entityIndex, Duration.ofSeconds(20),
+            builder -> builder.maxConcurrentSessions(maxConcurrency).maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(maxMessages)
@@ -134,6 +133,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 final String id = sessionIds.get(i);
                 final ServiceBusMessage message = getServiceBusMessage(contents, messageId)
                     .setSessionId(id);
+                messagesPending.incrementAndGet();
                 return sender.send(message).thenReturn(
                     String.format("sessionId[%s] sent[%s] Message sent.", id, index));
             }).subscribe(
@@ -143,7 +143,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(receiver.receive(receiveOptions))
+            StepVerifier.create(receiver.receive())
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
@@ -181,14 +181,15 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, Duration operationTimeout,
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, Duration operationTimeout,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
-        this.sender = getSenderBuilder(false, entityType, true).buildAsyncClient();
-        this.receiver = getSessionReceiverBuilder(false, entityType,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)),
-            builder -> onBuild.apply(builder))
+        this.sender = getSenderBuilder(false, entityType, entityIndex, true, false)
             .buildAsyncClient();
+        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
+            entityType, entityIndex,
+            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)), false);
+        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,

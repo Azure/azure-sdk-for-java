@@ -171,7 +171,9 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long}
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned
+     * OutputStream.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @return The information of the uploaded block blob.
@@ -192,7 +194,9 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long-boolean}
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -221,7 +225,9 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context}
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param headers {@link BlobHttpHeaders}
@@ -268,7 +274,9 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
-     * @param data The data to write to the block.
+     * @param data The data to write to the block. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
@@ -287,7 +295,9 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
-     * @param data The data to write to the block.
+     * @param data The data to write to the block. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
@@ -306,6 +316,7 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         Objects.requireNonNull(data);
+
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 

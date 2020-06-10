@@ -3,6 +3,8 @@ trigger: none
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
+      TimeoutInMinutes: 240
+      MaxParallel: 6
       ServiceDirectory: keyvault
       EnvVars:
         AZURE_TEST_MODE: RECORD

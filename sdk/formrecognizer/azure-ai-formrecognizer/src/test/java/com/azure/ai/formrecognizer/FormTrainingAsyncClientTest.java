@@ -3,28 +3,40 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.models.CustomFormModelStatus;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.core.util.Context;
+import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
+import com.azure.core.http.HttpClient;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 
+import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
+    static final String EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION = "Status code 400, \"{\"error\":{\"code\":\"1002\",\"message\":\"Copy request is invalid. Field 'TargetResourceRegion' must be a valid Azure region name.\"}}\"";
     private FormTrainingAsyncClient client;
 
     @BeforeAll
@@ -37,29 +49,28 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
-    @Override
-    protected void beforeTest() {
-        FormRecognizerAsyncClient formRecognizerAsyncClient = clientSetup(httpPipeline ->
-            new FormRecognizerClientBuilder()
-                .endpoint(getEndpoint())
-                .pipeline(httpPipeline)
-                .buildAsyncClient());
-        client = formRecognizerAsyncClient.getFormTrainingAsyncClient();
+    private FormTrainingAsyncClient getFormTrainingAsyncClient(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        return getFormTrainingClientBuilder(httpClient, serviceVersion).buildAsyncClient();
     }
 
     /**
      * Verifies that an exception is thrown for null model Id parameter.
      */
-    @Test
-    void getCustomModelNullModelId() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void getCustomModelNullModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getCustomModel(null)).verifyError();
     }
 
     /**
      * Verifies that an exception is thrown for invalid model Id.
      */
-    @Test
-    void getCustomModelInvalidModelId() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void getCustomModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         getCustomModelInvalidModelIdRunner(invalidModelId -> StepVerifier.create(client.getCustomModel(invalidModelId))
             .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                 && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
@@ -68,30 +79,33 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies custom model info returned with response for a valid model Id.
      */
-    @Test
-    void getCustomModelWithResponse() {
-        beginTrainingUnlabeledRunner((trainingDataSASUrl, useLabelFile) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingDataSASUrl,
-                useLabelFile).getSyncPoller();
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller = client.beginTraining(trainingFilesUrl,
+                useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel trainedModel = syncPoller.getFinalResult();
 
-            StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId(),
-                Context.NONE)).assertNext(customFormModelResponse -> {
-                    assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                    validateCustomModelData(syncPoller.getFinalResult(), false);
-                });
+            StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId())).assertNext(customFormModelResponse -> {
+                assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                validateCustomModelData(syncPoller.getFinalResult(), false);
+            });
         });
     }
 
     /**
      * Verifies unlabeled custom model info returned with response for a valid model Id.
      */
-    @Test
-    void getCustomModelUnlabeled() {
-        beginTrainingUnlabeledRunner((trainingDataSASUrl, useLabelFile) -> {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void getCustomModelUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingDataSASUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel trainedUnlabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedUnlabeledModel.getModelId()))
@@ -103,11 +117,13 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies labeled custom model info returned with response for a valid model Id.
      */
-    @Test
-    void getCustomModelLabeled() {
-        beginTrainingLabeledRunner((trainingDataSASUrl, useLabelFile) -> {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(trainingDataSASUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel trainedLabeledModel = syncPoller.getFinalResult();
             StepVerifier.create(client.getCustomModel(trainedLabeledModel.getModelId()))
@@ -119,41 +135,47 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies account properties returned for a subscription account.
      */
-    @Test
-    void validGetAccountProperties() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void validGetAccountProperties(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAccountProperties())
-            .assertNext(accountProperties -> validateAccountProperties(getExpectedAccountProperties(),
-                accountProperties))
+            .assertNext(accountProperties -> validateAccountProperties(accountProperties))
             .verifyComplete();
     }
 
     /**
      * Verifies account properties returned with an Http Response for a subscription account.
      */
-    @Test
-    void validGetAccountPropertiesWithResponse() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void validGetAccountPropertiesWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getAccountProperties())
-            .assertNext(accountProperties ->
-                validateAccountProperties(getExpectedAccountProperties(), accountProperties))
+            .assertNext(accountProperties -> validateAccountProperties(accountProperties))
             .verifyComplete();
     }
 
     /**
      * Verifies that an exception is thrown for invalid status model Id.
      */
-    @Test
-    void deleteModelInvalidModelId() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void deleteModelInvalidModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.deleteModel(INVALID_MODEL_ID))
             .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                 && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
             .verify();
     }
 
-    @Test
-    void deleteModelValidModelIdWithResponse() {
-        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -164,39 +186,31 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
             StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable ->
-                    throwable.getMessage().contains(HttpResponseStatus.NOT_FOUND.toString()));
+                    assertTrue(throwable.getMessage().contains("404")));
         });
     }
 
     /**
      * Test for listing all models information.
      */
-    @Test
-    void getModelInfos() {
-        StepVerifier.create(client.getModelInfos())
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        StepVerifier.create(client.listCustomModels())
             .thenConsumeWhile(customFormModelInfo ->
-                customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
-                    && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
-            .verifyComplete();
-    }
-
-    /**
-     * Test for listing all models information with {@link Context}.
-     */
-    @Test
-    void getModelInfosWithContext() {
-        StepVerifier.create(client.getModelInfos(Context.NONE))
-            .thenConsumeWhile(modelInfo ->
-                modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                    && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)
+                customFormModelInfo.getModelId() != null && customFormModelInfo.getRequestedOn() != null
+                    && customFormModelInfo.getCompletedOn() != null && customFormModelInfo.getStatus() != null)
             .verifyComplete();
     }
 
     /**
      * Verifies that an exception is thrown for null source url input.
      */
-    @Test
-    void beginTrainingNullInput() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
         NullPointerException thrown = assertThrows(
             NullPointerException.class,
             () -> client.beginTraining(null, false).getSyncPoller().getFinalResult());
@@ -207,11 +221,13 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies the result of the training operation for a valid labeled model Id and training set Url.
      */
-    @Test
-    void beginTrainingLabeledResult() {
-        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingLabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             validateCustomModelData(syncPoller.getFinalResult(), true);
         });
@@ -220,13 +236,124 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies the result of the training operation for a valid unlabeled model Id and training set Url.
      */
-    @Test
-    void beginTrainingUnlabeledResult() {
-        beginTrainingUnlabeledRunner((storageSASUrl, useLabelFile) -> {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingUnlabeledResult(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
             syncPoller.waitForCompletion();
             validateCustomModelData(syncPoller.getFinalResult(), false);
+        });
+    }
+
+    /**
+     * Verifies the result of the copy operation for valid parameters.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
+
+            beginCopyRunner((resourceId, resourceRegion) -> {
+                CopyAuthorization target = client.getCopyAuthorization(resourceId, resourceRegion).block();
+                PollerFlux<OperationResult, CustomFormModelInfo> copyPoller =
+                    client.beginCopyModel(actualModel.getModelId(), target);
+                CustomFormModelInfo copyModel = copyPoller.getSyncPoller().getFinalResult();
+                assertNotNull(target.getModelId(), copyModel.getModelId());
+                assertNotNull(actualModel.getRequestedOn());
+                assertNotNull(actualModel.getCompletedOn());
+                assertEquals(CustomFormModelStatus.READY, copyModel.getStatus());
+            });
+        });
+    }
+
+    /**
+     * Verifies the Invalid region ErrorResponseException is thrown for invalid region input to copy operation.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginCopyInvalidRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
+
+            beginCopyInvalidRegionRunner((resourceId, resourceRegion) -> {
+                Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
+                PollerFlux<OperationResult,
+                    CustomFormModelInfo> copyPoller = client.beginCopyModel(actualModel.getModelId(), target.block());
+
+                Exception thrown = assertThrows(ErrorResponseException.class,
+                    () -> copyPoller.getSyncPoller().getFinalResult());
+                assertEquals(EXPECTED_COPY_REQUEST_INVALID_TARGET_RESOURCE_REGION, thrown.getMessage());
+            });
+        });
+    }
+
+    /**
+     * Verifies {@link FormRecognizerException} is thrown for invalid region input to copy operation.
+     */
+    @SuppressWarnings("unchecked")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginCopyIncorrectRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                client.beginTraining(trainingFilesUrl, useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel actualModel = syncPoller.getFinalResult();
+
+            beginCopyIncorrectRegionRunner((resourceId, resourceRegion) -> {
+                Mono<CopyAuthorization> target = client.getCopyAuthorization(resourceId, resourceRegion);
+                FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
+                    () -> client.beginCopyModel(actualModel.getModelId(), target.block())
+                        .getSyncPoller().getFinalResult());
+                ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
+                assertEquals(RESOURCE_RESOLVER_ERROR, errorInformation.getCode());
+                assertTrue(formRecognizerException.getMessage().startsWith(COPY_OPERATION_FAILED_STATUS_MESSAGE));
+            });
+        });
+    }
+
+    /**
+     * Verifies the result of the copy authorization for valid parameters.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void copyAuthorization(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginCopyRunner((resourceId, resourceRegion) ->
+            StepVerifier.create(client.getCopyAuthorization(resourceId, resourceRegion))
+                .assertNext(copyAuthorization ->
+                    validateCopyAuthorizationResult(resourceId, resourceRegion, copyAuthorization))
+                .verifyComplete()
+        );
+    }
+
+    /**
+     * Verifies the training operation throws FormRecognizerException when an invalid status model is returned.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void beginTrainingInvalidModelStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
+        beginTrainingInvalidModelStatusRunner((invalidTrainingFilesUrl, useTrainingLabels) -> {
+            FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
+                () -> client.beginTraining(invalidTrainingFilesUrl, useTrainingLabels).getSyncPoller().getFinalResult());
+            ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
+            assertEquals(EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE, errorInformation.getCode());
+            assertEquals(EXPECTED_INVALID_MODEL_ERROR, errorInformation.getMessage());
+            assertTrue(formRecognizerException.getMessage().contains(EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE));
         });
     }
 }
