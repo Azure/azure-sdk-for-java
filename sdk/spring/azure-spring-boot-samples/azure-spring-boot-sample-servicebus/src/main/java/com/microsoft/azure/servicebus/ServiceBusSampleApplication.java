@@ -60,7 +60,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveQueueMessage() throws InterruptedException {
         queueReceiver.receive().subscribe(message ->
-            System.out.println("Received Message: " + new String(message.getBody())));
+            System.out.println("Received Message: " + new String(message.getMessage().getBody())));
 
         TimeUnit.SECONDS.sleep(5);
 
@@ -83,7 +83,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveSubscriptionMessage() throws InterruptedException {
         topicSubscriber.receive().subscribe(message ->
-            System.out.println("Received Message: " + new String(message.getBody())));
+            System.out.println("Received Message: " + new String(message.getMessage().getBody())));
 
         TimeUnit.SECONDS.sleep(10);
 
