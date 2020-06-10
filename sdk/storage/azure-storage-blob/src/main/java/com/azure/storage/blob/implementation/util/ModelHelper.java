@@ -81,7 +81,7 @@ public class ModelHelper {
 
         return new com.azure.storage.common.ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(maxConcurrency)
+            .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }

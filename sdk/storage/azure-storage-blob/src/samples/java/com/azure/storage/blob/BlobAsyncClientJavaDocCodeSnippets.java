@@ -42,7 +42,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     private String url = "https://sample.com";
     private String file = "file";
     private long blockSize = 50;
-    private int numBuffers = 2;
+    private int maxConcurrency = 2;
     private String filePath = "filePath";
     private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
@@ -400,7 +400,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers);
+            .setMaxConcurrency(maxConcurrency);
         client.upload(data, parallelTransferOptions).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
@@ -414,7 +414,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobAsyncClient.upload#Flux-ParallelTransferOptions-boolean
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers);
+            .setMaxConcurrency(maxConcurrency);
         boolean overwrite = false; // Default behavior
         client.upload(data, parallelTransferOptions, overwrite).subscribe(response ->
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -439,7 +439,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers);
+            .setMaxConcurrency(maxConcurrency);
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions)
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
@@ -464,7 +464,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers)
+            .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, AccessTier.HOT, requestConditions)
@@ -490,7 +490,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers).setProgressReceiver(bytesTransferred ->
+            .setMaxConcurrency(maxConcurrency).setProgressReceiver(bytesTransferred ->
                 System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(data, new BlobParallelUploadOptions()
