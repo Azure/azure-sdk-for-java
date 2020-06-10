@@ -117,11 +117,15 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * @throws IllegalArgumentException if credential is not set.
      */
     public SchemaRegistryAvroSerializer buildSyncClient() {
-        CachedSchemaRegistryClient client = new CachedSchemaRegistryClientBuilder()
+        CachedSchemaRegistryClientBuilder builder = new CachedSchemaRegistryClientBuilder()
             .endpoint(registryUrl)
-            .credential(credential)
-            .maxSchemaMapSize(maxSchemaMapSize)
-            .buildClient();
+            .credential(credential);
+
+        if (maxSchemaMapSize != null) {
+            builder.maxSchemaMapSize(maxSchemaMapSize);
+        }
+
+        CachedSchemaRegistryClient client = builder.buildClient();
 
         return new SchemaRegistryAvroSerializer(client, this.schemaGroup, this.autoRegisterSchemas);
     }
