@@ -65,7 +65,14 @@ stages:
         - name: azure-servicebus-jms-spring-boot-starter
           groupId: com.microsoft.azure
           safeName: azurespringbootstarterservicebusjms
-
-
-
-
+      AdditionalModules:
+        - name: azure-spring-boot-samples
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-active-directory
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-active-directory-backend
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-active-directory-backend-v2
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-active-directory-stateless
+          groupId: com.microsoft.azure
