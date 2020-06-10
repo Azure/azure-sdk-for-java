@@ -71,7 +71,7 @@ public class GetBoundingBoxesAsync {
                 for (int i1 = 0; i1 < pages.size(); i1++) {
                     final FormPage formPage = pages.get(i1);
                     System.out.printf("-------Recognizing Page %s of Form -------%n", i1);
-                    System.out.printf("Has width %s , angle %s, height %s %n", formPage.getWidth(),
+                    System.out.printf("Has width %f , angle %s, height %f %n", formPage.getWidth(),
                         formPage.getTextAngle(), formPage.getHeight());
                     // Table information
                     System.out.println("Recognized Tables: ");

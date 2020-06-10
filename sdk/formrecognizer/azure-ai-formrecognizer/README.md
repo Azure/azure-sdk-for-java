@@ -198,11 +198,11 @@ List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
 for (int i = 0; i < recognizedForms.size(); i++) {
     RecognizedForm form = recognizedForms.get(i);
-    System.out.printf("----------- Recognized Form %s%n-----------", i);
+    System.out.printf("----------- Recognized Form %s-----------%n", i);
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
-        System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
-            formField.getFieldValue(),
+        System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
+            formField.getValueText().getText(),
             formField.getConfidence());
     });
     System.out.print("-----------------------------------");
@@ -221,9 +221,9 @@ List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
 for (int i = 0; i < contentPageResults.size(); i++) {
     FormPage formPage = contentPageResults.get(i);
-    System.out.printf("----Recognizing content for page %s%n----", i);
+    System.out.printf("----Recognizing content for page %s----%n", i);
     // Table information
-    System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
+    System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
         formPage.getUnit());
     formPage.getTables().forEach(formTable -> {
@@ -343,11 +343,11 @@ customModels.forEach(customFormModelInfo -> {
     System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
     customModel.getSubmodels().forEach(customFormSubmodel -> {
         System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
-        System.out.printf("Custom Model Accuracy: %d%n", customFormSubmodel.getAccuracy());
+        System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
         if (customFormSubmodel.getFieldMap() != null) {
             customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
                 System.out.printf("Field Text: %s%n", fieldText);
-                System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
+                System.out.printf("Field Accuracy: %f%n", customFormModelField.getAccuracy());
             });
         }
     });
