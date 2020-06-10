@@ -11,9 +11,9 @@
 # 2. There are no duplicate entries in the external_dependencies.txt file
 # 3. POM file verification across the repo which includes the following:
 #    a. There are no <dependencyManagement> sections
-#    a. Every <dependency> and <plugin> has a <groupId>, <artifactId> and <version>
-#    b. Every <version> has the appropriate x-version-update tag
-#    c. The <version>'s value is the same as the value in the version_*txt file or external_dependency
+#    b. Every <dependency> and <plugin> has a <groupId>, <artifactId> and <version>
+#    c. Every <version> has the appropriate x-version-update tag
+#    d. The <version>'s value is the same as the value in the version_*txt file or external_dependency
 #
 # Output:
 # This script will process the entire repo. If any errors are encountered, it will report them at
