@@ -130,9 +130,11 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      - name: OSVmImage
+        value: 'windows-2019'
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: $(OSVmImage)
 
     steps:
       - pwsh: |

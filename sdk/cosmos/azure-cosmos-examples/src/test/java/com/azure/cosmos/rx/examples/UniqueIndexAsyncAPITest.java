@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKey;
@@ -44,8 +43,7 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/field"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/field"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
@@ -76,11 +74,11 @@ public class UniqueIndexAsyncAPITest extends DocumentClientTest {
         docCreation.subscribe(subscriber);
 
         subscriber.awaitTerminalEvent();
-        subscriber.assertError(CosmosClientException.class);
+        subscriber.assertError(CosmosException.class);
         assertThat(subscriber.errorCount(), Matchers.equalTo(1));
 
         // error code for failure is conflict
-        assertThat(((CosmosClientException) subscriber.getEvents().get(1).get(0)).getStatusCode(), equalTo(409));
+        assertThat(((CosmosException) subscriber.getEvents().get(1).get(0)).getStatusCode(), equalTo(409));
     }
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)

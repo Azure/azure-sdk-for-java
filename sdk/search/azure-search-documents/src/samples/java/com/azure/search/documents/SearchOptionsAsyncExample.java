@@ -36,7 +36,7 @@ public class SearchOptionsAsyncExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
+        SearchAsyncClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -52,7 +52,7 @@ public class SearchOptionsAsyncExample {
         searchResultsFacetsFromPage(searchClient);
     }
 
-    private static void searchResultsFacetsFromPage(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsFacetsFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
@@ -73,7 +73,7 @@ public class SearchOptionsAsyncExample {
         });
     }
 
-    private static void searchResultsFacetsFromStream(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsFacetsFromStream(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Accessing Facets property with stream
         SearchPagedFlux results = searchClient.search("*",
@@ -96,7 +96,7 @@ public class SearchOptionsAsyncExample {
         );
     }
 
-    private static void searchResultsCoverageFromPage(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsCoverageFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
@@ -109,7 +109,7 @@ public class SearchOptionsAsyncExample {
             .map(SearchPagedResponse::getCoverage).blockLast());
     }
 
-    private static void searchResultsCoverage(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsCoverage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
         SearchPagedFlux results = searchClient.search("*",
@@ -121,12 +121,12 @@ public class SearchOptionsAsyncExample {
             .map(SearchPagedResponse::getCoverage).blockLast());
     }
 
-    private static void searchResultsCountFromPage(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsCountFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true),
+            new SearchOptions().setIncludeTotalCount(true),
             new RequestOptions());
 
         System.out.println("Count = " + results.byPage()
@@ -134,12 +134,12 @@ public class SearchOptionsAsyncExample {
             .map(SearchPagedResponse::getCount).blockLast());
     }
 
-    private static void searchResultsCountFromStream(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsCountFromStream(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the count value
         // Get total search results count by accessing the SearchPagedResponse
         // Access Count property when iterating by page
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true),
+            new SearchOptions().setIncludeTotalCount(true),
             new RequestOptions());
 
         Stream<Long> countStream = results.byPage().map(SearchPagedResponse::getCount).toStream();
@@ -147,7 +147,7 @@ public class SearchOptionsAsyncExample {
 
     }
 
-    private static void searchResultAsStreamOfPagedResponse(SearchIndexAsyncClient searchClient) {
+    private static void searchResultAsStreamOfPagedResponse(SearchAsyncClient searchClient) {
         // Converting search results to stream
         Stream<SearchPagedResponse> streamResponse = searchClient.search("*")
             .byPage().toStream();
@@ -159,7 +159,7 @@ public class SearchOptionsAsyncExample {
         });
     }
 
-    private static void searchResultsAsList(SearchIndexAsyncClient searchClient) {
+    private static void searchResultsAsList(SearchAsyncClient searchClient) {
         // Converting search results to list
         List<SearchResult> searchResults = searchClient.search("*")
             .log()

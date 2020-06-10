@@ -19,6 +19,7 @@ public class ReceiveMessageAzureIdentityAsyncSample {
      * Service Bus Subscription for a Topic.
      *
      * @param args Unused arguments to the program.
+     *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
@@ -47,12 +48,15 @@ public class ReceiveMessageAzureIdentityAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiverAsyncClient.receive()
-            .subscribe(context -> {
+            .flatMap(context -> {
                 ServiceBusReceivedMessage message = context.getMessage();
 
                 System.out.println("Received Message Id:" + message.getMessageId());
                 System.out.println("Received Message:" + new String(message.getBody()));
-            },
+
+                return receiverAsyncClient.complete(message);
+            })
+            .subscribe(aVoid -> System.out.println("Processed message."),
                 error -> System.err.println("Error occurred while receiving message: " + error),
                 () -> System.out.println("Receiving complete."));
 

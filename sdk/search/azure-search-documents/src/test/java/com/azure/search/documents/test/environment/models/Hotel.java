@@ -17,10 +17,11 @@ public class Hotel {
     @JsonProperty(value = "HotelId")
     private String hotelId;
 
-    @SearchableFieldProperty(isSortable = true, analyzer = "en.lucene")
+    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     private String hotelName;
 
+    @SimpleFieldProperty
     @JsonProperty(value = "Description")
     private String description;
 
@@ -28,6 +29,7 @@ public class Hotel {
     @JsonProperty(value = "Description_fr")
     private String descriptionFr;
 
+    @SimpleFieldProperty
     @JsonProperty(value = "Category")
     private String category;
 

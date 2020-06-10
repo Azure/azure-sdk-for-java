@@ -39,9 +39,8 @@ public class ThroughputTests extends TestSuiteBase{
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
         ThroughputProperties properties = ThroughputProperties.createAutoscaledThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName, properties)
-                                           .block()
-                                           .getDatabase();
+        client.createDatabase(databaseName, properties).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
 
         ThroughputResponse readThroughputResponse = database.readThroughput().block();
         assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
@@ -61,9 +60,8 @@ public class ThroughputTests extends TestSuiteBase{
         final String databaseName = CosmosDatabaseForTest.generateId();
         int initalThroughput = 5000;
         ThroughputProperties properties = ThroughputProperties.createManualThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName, properties)
-                                           .block()
-                                           .getDatabase();
+        client.createDatabase(databaseName, properties).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
 
         ThroughputResponse readThroughputResponse = database.readThroughput().block();
         assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
@@ -82,15 +80,15 @@ public class ThroughputTests extends TestSuiteBase{
         int initalThroughput = 5000;
         ThroughputProperties throughputProperties =
             ThroughputProperties.createManualThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName)
-                                           .block()
-                                           .getDatabase();
+        client.createDatabase(databaseName).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
-                                                                  new CosmosContainerRequestOptions())
-                                             .block()
-                                             .getContainer();
+        database.createContainer(
+            containerProperties,
+            throughputProperties,
+            new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
 
         // Read
         ThroughputResponse readThroughputResponse = container.readThroughput().block();
@@ -111,16 +109,16 @@ public class ThroughputTests extends TestSuiteBase{
         int initalThroughput = 5000;
         ThroughputProperties throughputProperties =
             ThroughputProperties.createAutoscaledThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName)
-                                           .block()
-                                           .getDatabase();
+        client.createDatabase(databaseName).block();
+        CosmosAsyncDatabase database = client.getDatabase(databaseName);
         String collectionId = UUID.randomUUID().toString();
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionId, "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
-                                                                  new CosmosContainerRequestOptions())
-                                             .block()
-                                             .getContainer();
+        database.createContainer(
+            containerProperties,
+            throughputProperties,
+            new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerProperties.getId());
 
         // Read
         ThroughputResponse readThroughputResponse = container.readThroughput().block();

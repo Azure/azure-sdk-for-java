@@ -10,6 +10,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementa
 
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListAppsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodAppsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeleteAppsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateSettingsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps;
@@ -125,7 +126,7 @@ public class AppsImpl implements Apps {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps delete" })
         @HTTP(path = "apps/{appId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Query("force") Boolean force, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps publish" })
         @POST("apps/{appId}/publish")
@@ -163,12 +164,22 @@ public class AppsImpl implements Apps {
         @GET("apps/customprebuiltdomains/{culture}")
         Observable<Response<ResponseBody>> listAvailableCustomPrebuiltDomainsForCulture(@Path("culture") String culture, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps packagePublishedApplicationAsGzip" })
+        @GET("package/{appId}/slot/{slotName}/gzip")
+        @Streaming
+        Observable<Response<ResponseBody>> packagePublishedApplicationAsGzip(@Path("appId") UUID appId, @Path("slotName") String slotName, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps packageTrainedApplicationAsGzip" })
+        @GET("package/{appId}/versions/{versionId}/gzip")
+        @Streaming
+        Observable<Response<ResponseBody>> packageTrainedApplicationAsGzip(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
     }
 
     /**
      * Creates a new LUIS app.
      *
-     * @param applicationCreateObject A model containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is 0.1. Note: the culture cannot be changed after the app is created.
+     * @param applicationCreateObject An application containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is "0.1". Note: the culture cannot be changed after the app is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -181,7 +192,7 @@ public class AppsImpl implements Apps {
     /**
      * Creates a new LUIS app.
      *
-     * @param applicationCreateObject A model containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is 0.1. Note: the culture cannot be changed after the app is created.
+     * @param applicationCreateObject An application containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is "0.1". Note: the culture cannot be changed after the app is created.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -193,7 +204,7 @@ public class AppsImpl implements Apps {
     /**
      * Creates a new LUIS app.
      *
-     * @param applicationCreateObject A model containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is 0.1. Note: the culture cannot be changed after the app is created.
+     * @param applicationCreateObject An application containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is "0.1". Note: the culture cannot be changed after the app is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -209,7 +220,7 @@ public class AppsImpl implements Apps {
     /**
      * Creates a new LUIS app.
      *
-     * @param applicationCreateObject A model containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is 0.1. Note: the culture cannot be changed after the app is created.
+     * @param applicationCreateObject An application containing Name, Description (optional), Culture, Usage Scenario (optional), Domain (optional) and initial version ID (optional) of the application. Default value for the version ID is "0.1". Note: the culture cannot be changed after the app is created.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -245,7 +256,7 @@ public class AppsImpl implements Apps {
 
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -258,7 +269,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -270,7 +281,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -286,7 +297,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -303,7 +314,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Lists all of the user applications.
+     * Lists all of the user's applications.
      *
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
@@ -387,7 +398,7 @@ public class AppsImpl implements Apps {
 
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
      * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -401,7 +412,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
      * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -414,7 +425,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
      * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -431,7 +442,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
      * @param importMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -452,10 +463,10 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Imports an application to LUIS, the application's structure should be included in in the request body.
+     * Imports an application to LUIS, the application's structure is included in the request body.
      *
      * @param luisApp A LUIS application structure.
-     * @param appName The application name to create. If not specified, the application name will be read from the imported object.
+     * @param appName The application name to create. If not specified, the application name will be read from the imported object. If the application name already exists, an error is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -749,7 +760,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the supported application cultures.
+     * Gets a list of supported cultures. Cultures are equivalent to the written language and locale. For example,"en-us" represents the U.S. variation of English.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -761,7 +772,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the supported application cultures.
+     * Gets a list of supported cultures. Cultures are equivalent to the written language and locale. For example,"en-us" represents the U.S. variation of English.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -772,7 +783,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the supported application cultures.
+     * Gets a list of supported cultures. Cultures are equivalent to the written language and locale. For example,"en-us" represents the U.S. variation of English.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AvailableCulture&gt; object
@@ -787,7 +798,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the supported application cultures.
+     * Gets a list of supported cultures. Cultures are equivalent to the written language and locale. For example,"en-us" represents the U.S. variation of English.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;AvailableCulture&gt; object
@@ -819,7 +830,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the query logs of the past month for the application.
+     * Gets the logs of the past month's endpoint queries for the application.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -832,7 +843,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the query logs of the past month for the application.
+     * Gets the logs of the past month's endpoint queries for the application.
      *
      * @param appId The application ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -844,7 +855,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the query logs of the past month for the application.
+     * Gets the logs of the past month's endpoint queries for the application.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -860,7 +871,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets the query logs of the past month for the application.
+     * Gets the logs of the past month's endpoint queries for the application.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1057,40 +1068,44 @@ public class AppsImpl implements Apps {
                 .build(response);
     }
 
+
     /**
      * Deletes an application.
      *
      * @param appId The application ID.
+     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus delete(UUID appId) {
-        return deleteWithServiceResponseAsync(appId).toBlocking().single().body();
+    public OperationStatus delete(UUID appId, DeleteAppsOptionalParameter deleteOptionalParameter) {
+        return deleteWithServiceResponseAsync(appId, deleteOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * Deletes an application.
      *
      * @param appId The application ID.
+     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationStatus> deleteAsync(UUID appId, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(appId), serviceCallback);
+    public ServiceFuture<OperationStatus> deleteAsync(UUID appId, DeleteAppsOptionalParameter deleteOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(appId, deleteOptionalParameter), serviceCallback);
     }
 
     /**
      * Deletes an application.
      *
      * @param appId The application ID.
+     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<OperationStatus> deleteAsync(UUID appId) {
-        return deleteWithServiceResponseAsync(appId).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+    public Observable<OperationStatus> deleteAsync(UUID appId, DeleteAppsOptionalParameter deleteOptionalParameter) {
+        return deleteWithServiceResponseAsync(appId, deleteOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
             @Override
             public OperationStatus call(ServiceResponse<OperationStatus> response) {
                 return response.body();
@@ -1102,10 +1117,31 @@ public class AppsImpl implements Apps {
      * Deletes an application.
      *
      * @param appId The application ID.
+     * @param deleteOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId) {
+    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, DeleteAppsOptionalParameter deleteOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        final Boolean force = deleteOptionalParameter != null ? deleteOptionalParameter.force() : null;
+
+        return deleteWithServiceResponseAsync(appId, force);
+    }
+
+    /**
+     * Deletes an application.
+     *
+     * @param appId The application ID.
+     * @param force A flag to indicate whether to force an operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, Boolean force) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1113,7 +1149,7 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.delete(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.delete(appId, force, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -1132,6 +1168,55 @@ public class AppsImpl implements Apps {
                 .register(200, new TypeToken<OperationStatus>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
+    }
+
+    @Override
+    public AppsDeleteParameters delete() {
+        return new AppsDeleteParameters(this);
+    }
+
+    /**
+     * Internal class implementing AppsDeleteDefinition.
+     */
+    class AppsDeleteParameters implements AppsDeleteDefinition {
+        private AppsImpl parent;
+        private UUID appId;
+        private Boolean force;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        AppsDeleteParameters(AppsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public AppsDeleteParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public AppsDeleteParameters withForce(Boolean force) {
+            this.force = force;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return deleteWithServiceResponseAsync(appId, force).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return deleteWithServiceResponseAsync(appId, force).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
     }
 
     /**
@@ -1215,12 +1300,13 @@ public class AppsImpl implements Apps {
     private ServiceResponse<ProductionOrStagingEndpointInfo> publishDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ProductionOrStagingEndpointInfo, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ProductionOrStagingEndpointInfo>() { }.getType())
+                .register(207, new TypeToken<ProductionOrStagingEndpointInfo>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
     /**
-     * Get the application settings.
+     * Get the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1233,7 +1319,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application settings.
+     * Get the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1245,7 +1331,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application settings.
+     * Get the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1261,7 +1347,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application settings.
+     * Get the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1298,7 +1384,7 @@ public class AppsImpl implements Apps {
 
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -1312,7 +1398,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -1325,7 +1411,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -1342,7 +1428,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param updateSettingsOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -1356,20 +1442,20 @@ public class AppsImpl implements Apps {
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        final boolean publicParameter = updateSettingsOptionalParameter != null ? updateSettingsOptionalParameter.publicParameter() : false;
+        final boolean isPublic = updateSettingsOptionalParameter != null ? updateSettingsOptionalParameter.isPublic() : false;
 
-        return updateSettingsWithServiceResponseAsync(appId, publicParameter);
+        return updateSettingsWithServiceResponseAsync(appId, isPublic);
     }
 
     /**
-     * Updates the application settings.
+     * Updates the application settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
-     * @param publicParameter Setting your application as public allows other people to use your application's endpoint using their own keys.
+     * @param isPublic Setting your application as public allows other people to use your application's endpoint using their own keys.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> updateSettingsWithServiceResponseAsync(UUID appId, boolean publicParameter) {
+    public Observable<ServiceResponse<OperationStatus>> updateSettingsWithServiceResponseAsync(UUID appId, boolean isPublic) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1377,7 +1463,7 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         ApplicationSettingUpdateObject applicationSettingUpdateObject = new ApplicationSettingUpdateObject();
-        applicationSettingUpdateObject.withPublicProperty(publicParameter);
+        applicationSettingUpdateObject.withIsPublic(isPublic);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateSettings(appId, this.client.acceptLanguage(), applicationSettingUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
@@ -1411,7 +1497,7 @@ public class AppsImpl implements Apps {
     class AppsUpdateSettingsParameters implements AppsUpdateSettingsDefinition {
         private AppsImpl parent;
         private UUID appId;
-        private boolean publicParameter;
+        private boolean isPublic;
 
         /**
          * Constructor.
@@ -1428,19 +1514,19 @@ public class AppsImpl implements Apps {
         }
 
         @Override
-        public AppsUpdateSettingsParameters withPublicParameter(boolean publicParameter) {
-            this.publicParameter = publicParameter;
+        public AppsUpdateSettingsParameters withIsPublic(boolean isPublic) {
+            this.isPublic = isPublic;
             return this;
         }
 
         @Override
         public OperationStatus execute() {
-        return updateSettingsWithServiceResponseAsync(appId, publicParameter).toBlocking().single().body();
+        return updateSettingsWithServiceResponseAsync(appId, isPublic).toBlocking().single().body();
     }
 
         @Override
         public Observable<OperationStatus> executeAsync() {
-            return updateSettingsWithServiceResponseAsync(appId, publicParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            return updateSettingsWithServiceResponseAsync(appId, isPublic).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
                 @Override
                 public OperationStatus call(ServiceResponse<OperationStatus> response) {
                     return response.body();
@@ -1450,7 +1536,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application publish settings.
+     * Get the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1463,7 +1549,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application publish settings.
+     * Get the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1475,7 +1561,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application publish settings.
+     * Get the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1491,7 +1577,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Get the application publish settings.
+     * Get the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1527,7 +1613,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application publish settings.
+     * Updates the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param publishSettingUpdateObject An object containing the new publish application settings.
@@ -1541,7 +1627,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application publish settings.
+     * Updates the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param publishSettingUpdateObject An object containing the new publish application settings.
@@ -1554,7 +1640,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application publish settings.
+     * Updates the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param publishSettingUpdateObject An object containing the new publish application settings.
@@ -1571,7 +1657,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Updates the application publish settings.
+     * Updates the application publish settings including 'UseAllTrainingData'.
      *
      * @param appId The application ID.
      * @param publishSettingUpdateObject An object containing the new publish application settings.
@@ -1759,7 +1845,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Adds a prebuilt domain along with its models as a new application.
+     * Adds a prebuilt domain along with its intent and entity models as a new application.
      *
      * @param prebuiltDomainCreateObject A prebuilt domain create object containing the name and culture of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1772,7 +1858,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Adds a prebuilt domain along with its models as a new application.
+     * Adds a prebuilt domain along with its intent and entity models as a new application.
      *
      * @param prebuiltDomainCreateObject A prebuilt domain create object containing the name and culture of the domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1784,7 +1870,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Adds a prebuilt domain along with its models as a new application.
+     * Adds a prebuilt domain along with its intent and entity models as a new application.
      *
      * @param prebuiltDomainCreateObject A prebuilt domain create object containing the name and culture of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1800,7 +1886,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Adds a prebuilt domain along with its models as a new application.
+     * Adds a prebuilt domain along with its intent and entity models as a new application.
      *
      * @param prebuiltDomainCreateObject A prebuilt domain create object containing the name and culture of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1837,7 +1923,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets all the available custom prebuilt domains for a specific culture.
+     * Gets all the available prebuilt domains for a specific culture.
      *
      * @param culture Culture.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1850,7 +1936,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets all the available custom prebuilt domains for a specific culture.
+     * Gets all the available prebuilt domains for a specific culture.
      *
      * @param culture Culture.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1862,7 +1948,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets all the available custom prebuilt domains for a specific culture.
+     * Gets all the available prebuilt domains for a specific culture.
      *
      * @param culture Culture.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1878,7 +1964,7 @@ public class AppsImpl implements Apps {
     }
 
     /**
-     * Gets all the available custom prebuilt domains for a specific culture.
+     * Gets all the available prebuilt domains for a specific culture.
      *
      * @param culture Culture.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1909,6 +1995,182 @@ public class AppsImpl implements Apps {
     private ServiceResponse<List<PrebuiltDomain>> listAvailableCustomPrebuiltDomainsForCultureDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<PrebuiltDomain>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<PrebuiltDomain>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * package - Gets published LUIS application package in binary stream GZip format.
+     * Packages a published LUIS application as a GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param slotName The publishing slot name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    public InputStream packagePublishedApplicationAsGzip(UUID appId, String slotName) {
+        return packagePublishedApplicationAsGzipWithServiceResponseAsync(appId, slotName).toBlocking().single().body();
+    }
+
+    /**
+     * package - Gets published LUIS application package in binary stream GZip format.
+     * Packages a published LUIS application as a GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param slotName The publishing slot name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<InputStream> packagePublishedApplicationAsGzipAsync(UUID appId, String slotName, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(packagePublishedApplicationAsGzipWithServiceResponseAsync(appId, slotName), serviceCallback);
+    }
+
+    /**
+     * package - Gets published LUIS application package in binary stream GZip format.
+     * Packages a published LUIS application as a GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param slotName The publishing slot name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    public Observable<InputStream> packagePublishedApplicationAsGzipAsync(UUID appId, String slotName) {
+        return packagePublishedApplicationAsGzipWithServiceResponseAsync(appId, slotName).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * package - Gets published LUIS application package in binary stream GZip format.
+     * Packages a published LUIS application as a GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param slotName The publishing slot name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> packagePublishedApplicationAsGzipWithServiceResponseAsync(UUID appId, String slotName) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (slotName == null) {
+            throw new IllegalArgumentException("Parameter slotName is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.packagePublishedApplicationAsGzip(appId, slotName, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
+                @Override
+                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<InputStream> clientResponse = packagePublishedApplicationAsGzipDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<InputStream> packagePublishedApplicationAsGzipDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<InputStream, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<InputStream>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * package - Gets trained LUIS application package in binary stream GZip format.
+     * Packages trained LUIS application as GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    public InputStream packageTrainedApplicationAsGzip(UUID appId, String versionId) {
+        return packageTrainedApplicationAsGzipWithServiceResponseAsync(appId, versionId).toBlocking().single().body();
+    }
+
+    /**
+     * package - Gets trained LUIS application package in binary stream GZip format.
+     * Packages trained LUIS application as GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<InputStream> packageTrainedApplicationAsGzipAsync(UUID appId, String versionId, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceFuture.fromResponse(packageTrainedApplicationAsGzipWithServiceResponseAsync(appId, versionId), serviceCallback);
+    }
+
+    /**
+     * package - Gets trained LUIS application package in binary stream GZip format.
+     * Packages trained LUIS application as GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    public Observable<InputStream> packageTrainedApplicationAsGzipAsync(UUID appId, String versionId) {
+        return packageTrainedApplicationAsGzipWithServiceResponseAsync(appId, versionId).map(new Func1<ServiceResponse<InputStream>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponse<InputStream> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * package - Gets trained LUIS application package in binary stream GZip format.
+     * Packages trained LUIS application as GZip file to be used in the LUIS container.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponse<InputStream>> packageTrainedApplicationAsGzipWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.packageTrainedApplicationAsGzip(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
+                @Override
+                public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<InputStream> clientResponse = packageTrainedApplicationAsGzipDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<InputStream> packageTrainedApplicationAsGzipDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<InputStream, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<InputStream>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

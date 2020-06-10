@@ -34,11 +34,11 @@ public class SearchForDynamicDocumentsExample {
     }
 
     /**
-     * Minimal search with {@link SearchIndexClient}
+     * Minimal search with {@link SearchClient}
      * Search for luxury hotels print all results to the console
      */
     private static void searchWithSyncClient() {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -58,11 +58,11 @@ public class SearchForDynamicDocumentsExample {
     }
 
     /**
-     * Additional search options and results processing using {@link SearchIndexAsyncClient}
+     * Additional search options and results processing using {@link SearchAsyncClient}
      * Search for the top 5 rated luxury hotels near Redmond and print all results to the console
      */
     private static void searchWithAsyncClient() {
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
+        SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -74,7 +74,7 @@ public class SearchForDynamicDocumentsExample {
             .setFacets("Tags,sort:value")
             .setOrderBy("Rating")
             .setTop(5)
-            .setIncludeTotalResultCount(true);
+            .setIncludeTotalCount(true);
 
         // Perform a search and subscribe to the results and log additional information
         Flux<SearchResult> results = client.search("hotel", parameters, new RequestOptions())

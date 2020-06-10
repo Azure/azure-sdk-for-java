@@ -29,4 +29,20 @@ public final class KnownAuthorityHosts {
      * The host of the Azure Active Directory authority for tenants in the Azure US Government Cloud.
      */
     public static final String AZURE_US_GOVERNMENT = "https://login.microsoftonline.us/";
+
+
+    static String getDefaultScope(String authorityHost) {
+        switch (authorityHost) {
+            case AZURE_CLOUD:
+                return "https://management.core.windows.net//.default";
+            case AZURE_CHINA_CLOUD:
+                return "https://management.core.chinacloudapi.cn//.default";
+            case AZURE_GERMAN_CLOUD:
+                return "https://management.core.cloudapi.de//.default";
+            case AZURE_US_GOVERNMENT:
+                return "https://management.core.usgovcloudapi.net//.default";
+            default:
+                return null;
+        }
+    }
 }

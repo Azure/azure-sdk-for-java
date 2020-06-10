@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A composite entity.
+ * A composite entity extractor.
  */
 public class CompositeEntityModel {
     /**

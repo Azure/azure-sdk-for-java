@@ -9,11 +9,13 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.codahale.metrics.ConsoleReporter;
+import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
@@ -81,10 +83,14 @@ abstract class AsyncBenchmark<T> {
         logger = LoggerFactory.getLogger(this.getClass());
 
         try {
-            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
-        } catch (CosmosClientException e) {
+            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosAsyncDatabase.read().doOnError(error ->
+                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+            ).block();
+        } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosAsyncDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).block().getDatabase();
+                cosmosClient.createDatabase(cfg.getDatabaseId()).block();
+                cosmosAsyncDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
                 databaseCreated = true;
             } else {
@@ -93,11 +99,21 @@ abstract class AsyncBenchmark<T> {
         }
 
         try {
-            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
-        } catch (CosmosClientException e) {
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+
+            cosmosAsyncContainer.read().doOnError(error ->
+                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+            ).block();
+
+        } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosAsyncContainer =
-                    cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).block().getContainer();
+                cosmosAsyncDatabase.createContainer(
+                    this.configuration.getCollectionId(),
+                    Configuration.DEFAULT_PARTITION_KEY_PATH,
+                    ThroughputProperties.createManualThroughput(this.configuration.getThroughput())
+                ).block();
+
+                cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
@@ -115,19 +131,20 @@ abstract class AsyncBenchmark<T> {
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
                 && configuration.getOperationType() != Configuration.Operation.WriteThroughput
                 && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
+            logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
                 PojoizedJson newDoc = generateDocument(uuid, dataFieldValue);
 
                 Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
-                                                                                         PojoizedJson x =
-                                                                                             resp.getItem();
-                                                                                         return x;
-                                                                                     }
-                ).flux();
+                    PojoizedJson x =
+                        resp.getItem();
+                    return x;
+                }).flux();
                 createDocumentObservables.add(obs);
             }
+            logger.info("Finished pre-populating {} documents", cfg.getNumberOfPreCreatedDocuments());
         }
 
         docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
@@ -140,16 +157,25 @@ abstract class AsyncBenchmark<T> {
         }
 
         if (configuration.getGraphiteEndpoint() != null) {
-            final Graphite graphite = new Graphite(new InetSocketAddress(configuration.getGraphiteEndpoint(), configuration.getGraphiteEndpointPort()));
+            final Graphite graphite = new Graphite(new InetSocketAddress(
+                    configuration.getGraphiteEndpoint(),
+                    configuration.getGraphiteEndpointPort()));
             reporter = GraphiteReporter.forRegistry(metricsRegistry)
-                                       .prefixedWith(configuration.getOperationType().name())
-                                       .convertRatesTo(TimeUnit.SECONDS)
-                                       .convertDurationsTo(TimeUnit.MILLISECONDS)
-                                       .filter(MetricFilter.ALL)
-                                       .build(graphite);
+                .prefixedWith(configuration.getOperationType().name())
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .filter(MetricFilter.ALL)
+                .build(graphite);
+        } else if (configuration.getReportingDirectory() != null) {
+            reporter = CsvReporter.forRegistry(metricsRegistry)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build(configuration.getReportingDirectory());
         } else {
-            reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
-                                      .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+            reporter = ConsoleReporter.forRegistry(metricsRegistry)
+                .convertDurationsTo(TimeUnit.MILLISECONDS)
+                .convertRatesTo(TimeUnit.SECONDS)
+                .build();
         }
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();

@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +35,7 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,6 +50,8 @@ class ServiceBusReceiverClientTest {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
+
+    private Duration maxAutoLockRenewalDuration;
     private ServiceBusReceiverClient client;
 
     @Mock
@@ -58,6 +60,8 @@ class ServiceBusReceiverClientTest {
     private MessageLockToken messageLockToken;
     @Mock
     private Map<String, Object> propertiesToModify;
+    @Mock
+    ServiceBusTransactionContext transactionContext;
 
     @BeforeEach
     void setup() {
@@ -65,7 +69,8 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
+            maxAutoLockRenewalDuration));
 
         when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
@@ -87,6 +92,18 @@ class ServiceBusReceiverClientTest {
     void properties() {
         assertEquals(NAMESPACE, client.getFullyQualifiedNamespace());
         assertEquals(ENTITY_PATH, client.getEntityPath());
+    }
+
+    @Test
+    void abandonMessageWithTransaction() {
+        // Arrange
+        when(asyncClient.abandon(any(MessageLockToken.class), isNull(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+
+        // Act
+        client.abandon(messageLockToken, null, transactionContext);
+
+        // Assert
+        verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals), isNull(), eq(transactionContext));
     }
 
     @Test
@@ -115,6 +132,18 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    void completeMessageWithTransaction() {
+        // Arrange
+        when(asyncClient.complete(any(MessageLockToken.class), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+
+        // Act
+        client.complete(messageLockToken, transactionContext);
+
+        // Assert
+        verify(asyncClient).complete(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(transactionContext));
+    }
+
+    @Test
     void completeMessage() {
         // Arrange
         when(asyncClient.complete(any(MessageLockToken.class))).thenReturn(Mono.empty());
@@ -136,6 +165,19 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+    }
+
+    @Test
+    void deferMessageWithPropertiesWithTransaction() {
+        // Arrange
+        when(asyncClient.defer(any(MessageLockToken.class), anyMap(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+
+        // Act
+        client.defer(messageLockToken, propertiesToModify, transactionContext);
+
+        // Assert
+        verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify), eq(transactionContext));
     }
 
     @Test
@@ -161,6 +203,24 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+    }
+
+    @Test
+    void deadLetterMessageWithOptionsWithTransaction() {
+        // Arrange
+        final DeadLetterOptions options = new DeadLetterOptions()
+            .setDeadLetterErrorDescription("foo")
+            .setDeadLetterReason("bar")
+            .setPropertiesToModify(propertiesToModify);
+
+        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
+            .thenReturn(Mono.empty());
+
+        // Act
+        client.deadLetter(messageLockToken, options, transactionContext);
+
+        // Assert
+        verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(options), eq(transactionContext));
     }
 
     @Test
@@ -411,7 +471,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages, receiveTimeout);
@@ -457,7 +517,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
@@ -503,7 +563,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
