@@ -202,7 +202,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
         final String vmName = generateRandomResourceName("vm7-", 20);
         final String storageAccountName = generateRandomResourceName("stg", 17);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
 
         VirtualMachine nativeVm =
             computeManager
@@ -342,7 +342,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
     private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(
         String rgName, String vmName, Region region, ComputeManager computeManager) {
         final String uname = "javauser";
-        final String password = "12NewPA$$w0rd!";
+        final String password = password();
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 

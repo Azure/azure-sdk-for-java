@@ -76,7 +76,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String syncGroupName = "groupName";
         final String syncMemberName = "memberName";
         final String administratorLogin = "sqladmin";
-        final String administratorPassword = "N0t@P@ssw0rd!";
+        final String administratorPassword = password();
 
         // Create
         SqlServer sqlPrimaryServer =
@@ -155,7 +155,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String dbSyncName = "dbSync";
         final String syncGroupName = "groupName";
         final String administratorLogin = "sqladmin";
-        final String administratorPassword = "N0t@P@ssw0rd!";
+        final String administratorPassword = password();
 
         // Create
         SqlServer sqlPrimaryServer =
@@ -218,7 +218,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String epName = "epSample";
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin";
-        final String administratorPassword = "N0t@P@ssw0rd!";
+        final String administratorPassword = password();
 
         // Create
         SqlServer sqlPrimaryServer =
@@ -271,7 +271,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String failoverGroupName2 = sdkContext.randomResourceName("fg2", 22);
         final String dbName = "dbSample";
         final String administratorLogin = "sqladmin";
-        final String administratorPassword = "N0t@P@ssw0rd!";
+        final String administratorPassword = password();
 
         // Create
         SqlServer sqlPrimaryServer =
@@ -406,7 +406,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canChangeSqlServerAndDatabaseAutomaticTuning() throws Exception {
         String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = "N0t@P@ssw0rd!";
+        String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
         String id = sdkContext.randomUuid();
         String storageName = sdkContext.randomResourceName(sqlServerName, 22);
@@ -508,7 +508,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerName1 = sqlServerName + "1";
         String sqlServerName2 = sqlServerName + "2";
         String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = "N0t@P@ssw0rd!";
+        String sqlServerAdminPassword = password();
 
         // Create
         SqlServer sqlServer1 =
@@ -564,7 +564,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = "N0t@P@ssw0rd!";
+        String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
         RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
@@ -624,7 +624,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
 
         String sqlServerAdminName = "sqladmin";
-        String sqlServerAdminPassword = "N0t@P@ssw0rd!";
+        String sqlServerAdminPassword = password();
         String id = sdkContext.randomUuid();
         String storageName = sdkContext.randomResourceName(sqlServerName, 22);
 
@@ -714,7 +714,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword("N0t@P@ssw0rd!")
+                .withAdministratorPassword(password())
                 .withActiveDirectoryAdministrator("DSEng", id)
                 .withoutAccessFromAzureServices()
                 .defineFirewallRule("somefirewallrule1")
