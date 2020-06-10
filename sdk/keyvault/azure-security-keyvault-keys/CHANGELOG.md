@@ -2,7 +2,7 @@
 
 ## 4.1.4 (2020-06-10)
 - Updated version for azure-core, azure-identity and external dependencies.
-- In case of a response with status code `404`, `listPropertiesOfKeyVersions` in `KeyAsyncClient` and `KeyClient` now throw a `ResourceNotFoundException`.
+- `404` responses from `listPropertiesOfKeyVersions` in `KeyAsyncClient` and `KeyClient` now throw a `ResourceNotFoundException`.
 
 ## 4.1.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
