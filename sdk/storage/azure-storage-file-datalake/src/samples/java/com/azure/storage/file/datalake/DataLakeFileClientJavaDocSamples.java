@@ -306,7 +306,7 @@ public class DataLakeFileClientJavaDocSamples {
      * Code snippet for {@link DataLakeFileClient#queryWithResponse(OutputStream, FileQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-String-FileQueryOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT * from BlobStorage";
         FileQueryJsonSerialization input = new FileQueryJsonSerialization()

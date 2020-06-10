@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 @Fluent
 public class BlobQueryOptions {
 
-    private String expression;
+    private final String expression;
     private BlobQuerySerialization inputSerialization;
     private BlobQuerySerialization outputSerialization;
     private BlobRequestConditions requestConditions;

@@ -14,7 +14,7 @@ import java.util.function.Consumer;
 @Fluent
 public class FileQueryOptions {
 
-    private String expression;
+    private final String expression;
     private FileQuerySerialization inputSerialization;
     private FileQuerySerialization outputSerialization;
     private DataLakeRequestConditions requestConditions;
