@@ -24,31 +24,6 @@ import java.util.Map;
  */
 public interface CassandraTableGetResults extends HasInner<CassandraTableGetResultsInner>, Indexable, Refreshable<CassandraTableGetResults>, Updatable<CassandraTableGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
-     * @return the cassandraTableGetResultsId value.
-     */
-    String cassandraTableGetResultsId();
-
-    /**
-     * @return the defaultTtl value.
-     */
-    Integer defaultTtl();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -64,9 +39,9 @@ public interface CassandraTableGetResults extends HasInner<CassandraTableGetResu
     String name();
 
     /**
-     * @return the schema value.
+     * @return the resource value.
      */
-    CassandraSchema schema();
+    CassandraTableGetPropertiesResource resource();
 
     /**
      * @return the tags value.
