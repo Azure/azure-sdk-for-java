@@ -18,6 +18,7 @@
     <module>azure-spring-boot-starter-keyvault-secrets</module>
     <module>azure-spring-boot-starter-metrics</module>
     <module>azure-spring-boot-starter-servicebus-jms</module>
+    <module>azure-spring-boot-samples</module>
   </modules>
 
 </project>

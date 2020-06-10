@@ -3,13 +3,13 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayFrontend;
-import com.azure.resourcemanager.network.ApplicationGatewayHttpListener;
-import com.azure.resourcemanager.network.ApplicationGatewayListener;
-import com.azure.resourcemanager.network.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.ApplicationGatewaySslCertificate;
-import com.azure.resourcemanager.network.PublicIpAddress;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFrontend;
+import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
+import com.azure.resourcemanager.network.models.ApplicationGatewayListener;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;

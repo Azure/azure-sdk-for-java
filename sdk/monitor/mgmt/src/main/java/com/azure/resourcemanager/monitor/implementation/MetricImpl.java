@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.LocalizableString;
-import com.azure.resourcemanager.monitor.Metric;
-import com.azure.resourcemanager.monitor.TimeSeriesElement;
-import com.azure.resourcemanager.monitor.Unit;
-import com.azure.resourcemanager.monitor.models.MetricInner;
+import com.azure.resourcemanager.monitor.models.LocalizableString;
+import com.azure.resourcemanager.monitor.models.Metric;
+import com.azure.resourcemanager.monitor.models.TimeSeriesElement;
+import com.azure.resourcemanager.monitor.models.Unit;
+import com.azure.resourcemanager.monitor.fluent.inner.MetricInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 

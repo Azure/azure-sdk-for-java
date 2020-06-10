@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.azure</groupId>
-        <artifactId>azure-management-parent</artifactId>
+        <artifactId>azure-resourcemanager-parent</artifactId>
         <version>2.0.0-SNAPSHOT</version>
         <relativePath>../../management/pom.xml</relativePath>
     </parent>
 
-    <artifactId>azure-mgmt-monitor</artifactId>
+    <artifactId>azure-resourcemanager-monitor</artifactId>
   <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -45,7 +45,7 @@
     <dependencies>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
+            <artifactId>azure-resourcemanager-resources</artifactId>
             <version>2.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -70,32 +70,32 @@
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-compute</artifactId>
+            <artifactId>azure-resourcemanager-compute</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-appservice</artifactId>
+            <artifactId>azure-resourcemanager-appservice</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
+            <artifactId>azure-resourcemanager-resources</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-storage</artifactId>
+            <artifactId>azure-resourcemanager-storage</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-compute</artifactId>
+            <artifactId>azure-resourcemanager-compute</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
@@ -107,7 +107,7 @@
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.azure</groupId>-->
-<!--            <artifactId>azure-mgmt-eventhub</artifactId>-->
+<!--            <artifactId>azure-resourcemanager-eventhub</artifactId>-->
 <!--            <version>2.0.0-SNAPSHOT</version>-->
 <!--            <scope>test</scope>-->
 <!--        </dependency>-->

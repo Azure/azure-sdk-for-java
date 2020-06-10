@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.Access;
-import com.azure.resourcemanager.network.Direction;
-import com.azure.resourcemanager.network.IpFlowProtocol;
-import com.azure.resourcemanager.network.VerificationIPFlow;
-import com.azure.resourcemanager.network.VerificationIpFlowParameters;
-import com.azure.resourcemanager.network.models.VerificationIpFlowResultInner;
+import com.azure.resourcemanager.network.models.Access;
+import com.azure.resourcemanager.network.models.Direction;
+import com.azure.resourcemanager.network.models.IpFlowProtocol;
+import com.azure.resourcemanager.network.models.VerificationIPFlow;
+import com.azure.resourcemanager.network.models.VerificationIpFlowParameters;
+import com.azure.resourcemanager.network.fluent.inner.VerificationIpFlowResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
@@ -111,7 +111,7 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
             .parent()
             .manager()
             .inner()
-            .networkWatchers()
+            .getNetworkWatchers()
             .verifyIpFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(
                 verificationIPFlowResultInner -> {

@@ -3,21 +3,22 @@
 
 package com.azure.resourcemanager.monitor.implementation;
 
-import com.azure.resourcemanager.monitor.ActionGroup;
-import com.azure.resourcemanager.monitor.ActionGroups;
-import com.azure.resourcemanager.monitor.models.ActionGroupResourceInner;
-import com.azure.resourcemanager.monitor.models.ActionGroupsInner;
+import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.models.ActionGroup;
+import com.azure.resourcemanager.monitor.models.ActionGroups;
+import com.azure.resourcemanager.monitor.fluent.inner.ActionGroupResourceInner;
+import com.azure.resourcemanager.monitor.fluent.ActionGroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 /** Implementation for {@link ActionGroups}. */
-class ActionGroupsImpl
+public class ActionGroupsImpl
     extends TopLevelModifiableResourcesImpl<
-        ActionGroup, ActionGroupImpl, ActionGroupResourceInner, ActionGroupsInner, MonitorManager>
+        ActionGroup, ActionGroupImpl, ActionGroupResourceInner, ActionGroupsClient, MonitorManager>
     implements ActionGroups {
 
-    ActionGroupsImpl(final MonitorManager monitorManager) {
-        super(monitorManager.inner().actionGroups(), monitorManager);
+    public ActionGroupsImpl(final MonitorManager monitorManager) {
+        super(monitorManager.inner().getActionGroups(), monitorManager);
     }
 
     @Override

@@ -3,50 +3,50 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGateway;
-import com.azure.resourcemanager.network.ApplicationGatewayAuthenticationCertificate;
-import com.azure.resourcemanager.network.ApplicationGatewayAutoscaleConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayBackend;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendAddressPool;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHealth;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHealthPool;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayBackendHttpSettings;
-import com.azure.resourcemanager.network.ApplicationGatewayFirewallMode;
-import com.azure.resourcemanager.network.ApplicationGatewayFrontend;
-import com.azure.resourcemanager.network.ApplicationGatewayFrontendIpConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayFrontendPort;
-import com.azure.resourcemanager.network.ApplicationGatewayHttpListener;
-import com.azure.resourcemanager.network.ApplicationGatewayIpConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayListener;
-import com.azure.resourcemanager.network.ApplicationGatewayOperationalState;
-import com.azure.resourcemanager.network.ApplicationGatewayProbe;
-import com.azure.resourcemanager.network.ApplicationGatewayRedirectConfiguration;
-import com.azure.resourcemanager.network.ApplicationGatewayRequestRoutingRule;
-import com.azure.resourcemanager.network.ApplicationGatewayRequestRoutingRuleType;
-import com.azure.resourcemanager.network.ApplicationGatewaySku;
-import com.azure.resourcemanager.network.ApplicationGatewaySkuName;
-import com.azure.resourcemanager.network.ApplicationGatewaySslCertificate;
-import com.azure.resourcemanager.network.ApplicationGatewaySslPolicy;
-import com.azure.resourcemanager.network.ApplicationGatewaySslProtocol;
-import com.azure.resourcemanager.network.ApplicationGatewayTier;
-import com.azure.resourcemanager.network.ApplicationGatewayUrlPathMap;
-import com.azure.resourcemanager.network.ApplicationGatewayWebApplicationFirewallConfiguration;
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.ManagedServiceIdentity;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.PublicIpAddress;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificateInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayIpConfigurationInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayProbeInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfigurationInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificateInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMapInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewaysInner;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayAuthenticationCertificateInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRequestRoutingRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewaySslCertificateInner;
+import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayUrlPathMapInner;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAuthenticationCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealth;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthPool;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpSettings;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFrontend;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendIpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayFrontendPort;
+import com.azure.resourcemanager.network.models.ApplicationGatewayHttpListener;
+import com.azure.resourcemanager.network.models.ApplicationGatewayIpConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayListener;
+import com.azure.resourcemanager.network.models.ApplicationGatewayOperationalState;
+import com.azure.resourcemanager.network.models.ApplicationGatewayProbe;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRule;
+import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySkuName;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslCertificate;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
+import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTier;
+import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
+import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
+import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -114,7 +114,7 @@ class ApplicationGatewayImpl
         return this
             .manager()
             .inner()
-            .applicationGateways()
+            .getApplicationGateways()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -123,7 +123,7 @@ class ApplicationGatewayImpl
         return this
             .manager()
             .inner()
-            .applicationGateways()
+            .getApplicationGateways()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
@@ -565,7 +565,7 @@ class ApplicationGatewayImpl
                         });
         }
 
-        final ApplicationGatewaysInner innerCollection = this.manager().inner().applicationGateways();
+        final ApplicationGatewaysClient innerCollection = this.manager().inner().getApplicationGateways();
         return Flux
             .merge(networkObservable, pipObservable)
             .last(Resource.DUMMY)
@@ -1639,7 +1639,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> startAsync() {
         Mono<Void> startObservable =
-            this.manager().inner().applicationGateways().startAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getApplicationGateways().startAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after start to ensure the app gateway operational state is updated
@@ -1649,7 +1649,7 @@ class ApplicationGatewayImpl
     @Override
     public Mono<Void> stopAsync() {
         Mono<Void> stopObservable =
-            this.manager().inner().applicationGateways().stopAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getApplicationGateways().stopAsync(this.resourceGroupName(), this.name());
         Mono<ApplicationGateway> refreshObservable = refreshAsync();
 
         // Refresh after stop to ensure the app gateway operational state is updated
@@ -1682,7 +1682,7 @@ class ApplicationGatewayImpl
         return this
             .manager()
             .inner()
-            .applicationGateways()
+            .getApplicationGateways()
             // TODO(not known): Last minutes
             .backendHealthAsync(this.resourceGroupName(), this.name(), null)
             .map(

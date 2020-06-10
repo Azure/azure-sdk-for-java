@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NetworkSecurityRule;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.resourcemanager.network.models.NetworkInterfaceInner;
-import com.azure.resourcemanager.network.models.NetworkSecurityGroupInner;
-import com.azure.resourcemanager.network.models.SecurityRuleInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkSecurityGroupInner;
+import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NetworkSecurityRule;
+import com.azure.resourcemanager.network.models.Subnet;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import reactor.core.publisher.Mono;
 
 /** Implementation for NetworkSecurityGroup and its create and update interfaces. */
 class NetworkSecurityGroupImpl
@@ -83,7 +84,7 @@ class NetworkSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .networkSecurityGroups()
+            .getNetworkSecurityGroups()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -92,13 +93,13 @@ class NetworkSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .networkSecurityGroups()
+            .getNetworkSecurityGroups()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
     public List<Subnet> listAssociatedSubnets() {
-        return this.myManager.listAssociatedSubnets(this.inner().subnets());
+        return Utils.listAssociatedSubnets(this.myManager, this.inner().subnets());
     }
 
     // Setters (fluent)
@@ -148,7 +149,7 @@ class NetworkSecurityGroupImpl
         return this
             .manager()
             .inner()
-            .networkSecurityGroups()
+            .getNetworkSecurityGroups()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }

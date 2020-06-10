@@ -14,7 +14,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

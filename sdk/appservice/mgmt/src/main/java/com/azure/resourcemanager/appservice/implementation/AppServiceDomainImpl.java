@@ -3,16 +3,17 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.Contact;
-import com.azure.resourcemanager.appservice.DomainPurchaseConsent;
-import com.azure.resourcemanager.appservice.DomainStatus;
-import com.azure.resourcemanager.appservice.Hostname;
-import com.azure.resourcemanager.appservice.TopLevelDomainAgreementOption;
-import com.azure.resourcemanager.appservice.models.DomainInner;
-import com.azure.resourcemanager.appservice.models.DomainOwnershipIdentifierInner;
-import com.azure.resourcemanager.appservice.models.DomainsInner;
-import com.azure.resourcemanager.appservice.models.TldLegalAgreementInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.Contact;
+import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
+import com.azure.resourcemanager.appservice.models.DomainStatus;
+import com.azure.resourcemanager.appservice.models.Hostname;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
+import com.azure.resourcemanager.appservice.fluent.DomainsClient;
+import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.net.Inet4Address;
@@ -45,11 +46,11 @@ class AppServiceDomainImpl
     public Mono<AppServiceDomain> createResourceAsync() {
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        final DomainsInner client = this.manager().inner().domains();
+        final DomainsClient client = this.manager().inner().getDomains();
         return this
             .manager()
             .inner()
-            .topLevelDomains()
+            .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
             // Step 1: Consent to agreements
             .mapPage(TldLegalAgreementInner::agreementKey)
@@ -74,7 +75,7 @@ class AppServiceDomainImpl
 
     @Override
     protected Mono<DomainInner> getInnerAsync() {
-        return this.manager().inner().domains().getByResourceGroupAsync(resourceGroupName(), name());
+        return this.manager().inner().getDomains().getByResourceGroupAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -162,7 +163,7 @@ class AppServiceDomainImpl
         return this
             .manager()
             .inner()
-            .domains()
+            .getDomains()
             .createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
             .then(Mono.empty());
     }

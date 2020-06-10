@@ -5,7 +5,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.authorization.GraphRbacManager;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 public class ActiveDirectoryGroupsImpl
     extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, ADGroupInner>
     implements ActiveDirectoryGroups {
-    private final GraphRbacManager manager;
+    private final AuthorizationManager manager;
 
-    public ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
+    public ActiveDirectoryGroupsImpl(final AuthorizationManager manager) {
         this.manager = manager;
     }
 
@@ -88,7 +88,7 @@ public class ActiveDirectoryGroupsImpl
     }
 
     @Override
-    public GraphRbacManager manager() {
+    public AuthorizationManager manager() {
         return this.manager;
     }
 

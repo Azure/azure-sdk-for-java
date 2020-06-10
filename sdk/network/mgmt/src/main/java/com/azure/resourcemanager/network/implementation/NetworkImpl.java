@@ -5,16 +5,16 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.AddressSpace;
-import com.azure.resourcemanager.network.DdosProtectionPlan;
-import com.azure.resourcemanager.network.DhcpOptions;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkPeerings;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.resourcemanager.network.models.IpAddressAvailabilityResultInner;
-import com.azure.resourcemanager.network.models.SubnetInner;
-import com.azure.resourcemanager.network.models.VirtualNetworkInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.AddressSpace;
+import com.azure.resourcemanager.network.models.DdosProtectionPlan;
+import com.azure.resourcemanager.network.models.DhcpOptions;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkPeerings;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.fluent.inner.IpAddressAvailabilityResultInner;
+import com.azure.resourcemanager.network.fluent.inner.SubnetInner;
+import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.util.ArrayList;
@@ -72,13 +72,13 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         return this
             .manager()
             .inner()
-            .virtualNetworks()
+            .getVirtualNetworks()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().inner().virtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this.manager().inner().getVirtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -250,7 +250,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
         return this
             .manager()
             .inner()
-            .virtualNetworks()
+            .getVirtualNetworks()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(
                 virtualNetworkInner -> {

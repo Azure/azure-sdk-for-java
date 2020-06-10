@@ -4,11 +4,11 @@
 package com.azure.resourcemanager;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.resourcemanager.network.NetworkWatcher;
-import com.azure.resourcemanager.network.Troubleshooting;
-import com.azure.resourcemanager.network.VirtualNetworkGateway;
-import com.azure.resourcemanager.network.VirtualNetworkGatewayConnection;
-import com.azure.resourcemanager.network.VirtualNetworkGatewaySkuName;
+import com.azure.resourcemanager.network.models.NetworkWatcher;
+import com.azure.resourcemanager.network.models.Troubleshooting;
+import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;

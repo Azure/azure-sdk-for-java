@@ -2,20 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
-import com.azure.resourcemanager.network.RouteTable;
-import com.azure.resourcemanager.network.RouteTables;
-import com.azure.resourcemanager.network.models.RouteTableInner;
-import com.azure.resourcemanager.network.models.RouteTablesInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.RouteTablesClient;
+import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
+import com.azure.resourcemanager.network.models.RouteTable;
+import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteTables. */
-class RouteTablesImpl
+public class RouteTablesImpl
     extends TopLevelModifiableResourcesImpl<
-        RouteTable, RouteTableImpl, RouteTableInner, RouteTablesInner, NetworkManager>
+        RouteTable, RouteTableImpl, RouteTableInner, RouteTablesClient, NetworkManager>
     implements RouteTables {
 
-    RouteTablesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().routeTables(), networkManager);
+    public RouteTablesImpl(final NetworkManager networkManager) {
+        super(networkManager.inner().getRouteTables(), networkManager);
     }
 
     @Override

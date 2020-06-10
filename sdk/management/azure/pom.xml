@@ -7,12 +7,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-management-parent</artifactId>
+    <artifactId>azure-resourcemanager-parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-management</artifactId>
+  <artifactId>azure-resourcemanager</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK</name>
@@ -56,72 +56,72 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-resources</artifactId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-storage</artifactId>
+      <artifactId>azure-resourcemanager-storage</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-compute</artifactId>
+      <artifactId>azure-resourcemanager-compute</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-network</artifactId>
+      <artifactId>azure-resourcemanager-network</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-keyvault</artifactId>
+      <artifactId>azure-resourcemanager-keyvault</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-msi</artifactId>
+      <artifactId>azure-resourcemanager-msi</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-sql</artifactId>
+      <artifactId>azure-resourcemanager-sql</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-graph-rbac</artifactId>
+      <artifactId>azure-resourcemanager-authorization</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-appservice</artifactId>
+      <artifactId>azure-resourcemanager-appservice</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-cosmosdb</artifactId>
+      <artifactId>azure-resourcemanager-cosmos</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-containerservice</artifactId>
+      <artifactId>azure-resourcemanager-containerservice</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-monitor</artifactId>
+      <artifactId>azure-resourcemanager-monitor</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-containerregistry</artifactId>
+      <artifactId>azure-resourcemanager-containerregistry</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-dns</artifactId>
+      <artifactId>azure-resourcemanager-dns</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -146,7 +146,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-resources</artifactId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
       <scope>test</scope>

@@ -4,19 +4,20 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.ApplicationGatewayBackend;
-import com.azure.resourcemanager.network.IpAllocationMethod;
-import com.azure.resourcemanager.network.IpVersion;
-import com.azure.resourcemanager.network.LoadBalancer;
-import com.azure.resourcemanager.network.LoadBalancerBackend;
-import com.azure.resourcemanager.network.LoadBalancerInboundNatRule;
-import com.azure.resourcemanager.network.Network;
-import com.azure.resourcemanager.network.NetworkSecurityGroup;
-import com.azure.resourcemanager.network.NicIpConfigurationBase;
-import com.azure.resourcemanager.network.Subnet;
-import com.azure.resourcemanager.network.models.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.models.InboundNatRuleInner;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
+import com.azure.resourcemanager.network.models.IpAllocationMethod;
+import com.azure.resourcemanager.network.models.IpVersion;
+import com.azure.resourcemanager.network.models.LoadBalancer;
+import com.azure.resourcemanager.network.models.LoadBalancerBackend;
+import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
+import com.azure.resourcemanager.network.models.NicIpConfigurationBase;
+import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -117,10 +118,9 @@ abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends() {
-        return this
-            .parent()
-            .manager()
-            .listAssociatedApplicationGatewayBackends(this.inner().applicationGatewayBackendAddressPools());
+        return com.azure.resourcemanager.network.implementation.Utils.listAssociatedApplicationGatewayBackends(
+            this.parent().manager(), this.inner().applicationGatewayBackendAddressPools()
+        );
     }
 
     @Override

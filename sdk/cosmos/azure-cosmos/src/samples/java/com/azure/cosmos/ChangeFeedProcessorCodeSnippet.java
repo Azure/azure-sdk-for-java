@@ -2,25 +2,51 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 /**
  * Code snippets for {@link ChangeFeedProcessor}
  */
 public class ChangeFeedProcessorCodeSnippet {
 
     public void changeFeedProcessorBuilderCodeSnippet() {
-        String hostName = null;
-        CosmosAsyncContainer feedContainer = null;
-        CosmosAsyncContainer leaseContainer = null;
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
         // BEGIN: com.azure.cosmos.changeFeedProcessor.builder
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
             .handleChanges(docs -> {
-                // Implementation for handling and processing CosmosItemProperties list goes here
+                for (JsonNode item : docs) {
+                    // Implementation for handling and processing of each JsonNode item goes here
+                }
             })
             .buildChangeFeedProcessor();
         // END: com.azure.cosmos.changeFeedProcessor.builder
+    }
+
+    public void handleChangesCodeSnippet() {
+        String hostName = "test-host-name";
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder().buildAsyncClient();
+        CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
+        CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
+        CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
+        ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            // BEGIN: com.azure.cosmos.changeFeedProcessor.handleChanges
+            .handleChanges(docs -> {
+                for (JsonNode item : docs) {
+                    // Implementation for handling and processing of each JsonNode item goes here
+                }
+            })
+            // END: com.azure.cosmos.changeFeedProcessor.handleChanges
+            .buildChangeFeedProcessor();
     }
 }
 

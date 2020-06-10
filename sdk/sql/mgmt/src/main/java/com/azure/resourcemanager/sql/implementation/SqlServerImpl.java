@@ -215,8 +215,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public ServiceObjective getServiceObjective(String serviceObjectiveName) {
-        ServiceObjectiveInner inner =
-            this.manager().inner().getServiceObjectives().get(this.resourceGroupName(), this.name(), serviceObjectiveName);
+        ServiceObjectiveInner inner = this.manager().inner().getServiceObjectives()
+            .get(this.resourceGroupName(), this.name(), serviceObjectiveName);
         return (inner != null) ? new ServiceObjectiveImpl(inner, this) : null;
     }
 

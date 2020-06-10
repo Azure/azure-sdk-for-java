@@ -4,22 +4,23 @@
 package com.azure.resourcemanager.appservice.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.appservice.AppServiceDomain;
-import com.azure.resourcemanager.appservice.AppServiceDomains;
-import com.azure.resourcemanager.appservice.DomainLegalAgreement;
-import com.azure.resourcemanager.appservice.TopLevelDomainAgreementOption;
-import com.azure.resourcemanager.appservice.models.DomainInner;
-import com.azure.resourcemanager.appservice.models.DomainsInner;
+import com.azure.resourcemanager.appservice.AppServiceManager;
+import com.azure.resourcemanager.appservice.models.AppServiceDomain;
+import com.azure.resourcemanager.appservice.models.AppServiceDomains;
+import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
+import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
+import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for AppServiceDomains. */
-class AppServiceDomainsImpl
+public class AppServiceDomainsImpl
     extends TopLevelModifiableResourcesImpl<
-        AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsInner, AppServiceManager>
+        AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsClient, AppServiceManager>
     implements AppServiceDomains {
 
-    AppServiceDomainsImpl(AppServiceManager manager) {
-        super(manager.inner().domains(), manager);
+    public AppServiceDomainsImpl(AppServiceManager manager) {
+        super(manager.inner().getDomains(), manager);
     }
 
     @Override
@@ -45,7 +46,7 @@ class AppServiceDomainsImpl
         return this
             .manager()
             .inner()
-            .topLevelDomains()
+            .getTopLevelDomains()
             .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption())
             .mapPage(DomainLegalAgreementImpl::new);
     }
