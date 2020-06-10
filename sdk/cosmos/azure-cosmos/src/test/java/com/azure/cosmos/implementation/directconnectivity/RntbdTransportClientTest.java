@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
@@ -617,7 +617,7 @@ public final class RntbdTransportClientTest {
         try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
 
             final BaseAuthorizationTokenProvider authorizationTokenProvider = new BaseAuthorizationTokenProvider(
-                new CosmosKeyCredential(RntbdTestConfiguration.AccountKey)
+                new AzureKeyCredential(RntbdTestConfiguration.AccountKey)
             );
 
             final Uri physicalAddress = new Uri("rntbd://"
@@ -675,7 +675,7 @@ public final class RntbdTransportClientTest {
     public void verifyNetworkFailure(
         final FailureValidator.Builder builder,
         final RxDocumentServiceRequest request,
-        final CosmosClientException exception
+        final CosmosException exception
     ) {
         // TODO: DANOBLE: Implement RntbdTransportClientTest.verifyNetworkFailure
         //  Links:

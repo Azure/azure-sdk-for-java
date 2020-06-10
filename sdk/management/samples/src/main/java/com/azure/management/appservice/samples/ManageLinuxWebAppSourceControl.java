@@ -76,7 +76,7 @@ public final class ManageLinuxWebAppSourceControl {
 
             System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
 
-            Utils.uploadFileToWebApp(app1.getPublishingProfile(), "helloworld.war", ManageLinuxWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+            Utils.uploadFileViaFtp(app1.getPublishingProfile(), "helloworld.war", ManageLinuxWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
 
             System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
             Utils.print(app1);
@@ -210,7 +210,7 @@ public final class ManageLinuxWebAppSourceControl {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

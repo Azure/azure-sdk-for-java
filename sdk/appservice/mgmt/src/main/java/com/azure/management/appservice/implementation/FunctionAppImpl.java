@@ -38,9 +38,9 @@ import com.azure.management.appservice.models.SiteInner;
 import com.azure.management.appservice.models.SiteLogsConfigInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountKey;
-import com.azure.management.storage.StorageAccountSkuType;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccountKey;
+import com.azure.management.storage.models.StorageAccountSkuType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.File;
 import java.io.IOException;
@@ -216,7 +216,7 @@ class FunctionAppImpl
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().getSdkContext().randomResourceName(name(), 32));
+                                        this.manager().sdkContext().randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
                             }))
@@ -297,7 +297,7 @@ class FunctionAppImpl
     }
 
     @Override
-    public FunctionAppImpl withNewStorageAccount(String name, com.azure.management.storage.SkuName sku) {
+    public FunctionAppImpl withNewStorageAccount(String name, com.azure.management.storage.models.SkuName sku) {
         StorageAccount.DefinitionStages.WithGroup storageDefine =
             manager().storageManager().storageAccounts().define(name).withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
@@ -328,6 +328,13 @@ class FunctionAppImpl
                     .withGeneralPurposeAccountKind()
                     .withSku(sku);
         }
+        this.addDependency(storageAccountCreatable);
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withNewStorageAccount(Creatable<StorageAccount> storageAccount) {
+        storageAccountCreatable = storageAccount;
         this.addDependency(storageAccountCreatable);
         return this;
     }
@@ -631,8 +638,8 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().getSdkContext().randomResourceName(name(), 20),
-                    com.azure.management.storage.SkuName.STANDARD_GRS);
+                    this.manager().sdkContext().randomResourceName(name(), 20),
+                    com.azure.management.storage.models.SkuName.STANDARD_GRS);
             }
         }
         return super.createAsync();

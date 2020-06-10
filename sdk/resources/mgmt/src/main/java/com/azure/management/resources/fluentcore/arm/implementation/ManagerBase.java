@@ -67,7 +67,7 @@ public abstract class ManagerBase {
     /**
      * @return the {@link SdkContext} associated with this manager
      */
-    public SdkContext getSdkContext() {
+    public SdkContext sdkContext() {
         return this.sdkContext;
     }
 }

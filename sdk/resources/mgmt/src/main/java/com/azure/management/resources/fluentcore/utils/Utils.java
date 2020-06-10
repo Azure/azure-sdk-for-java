@@ -7,17 +7,24 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.resources.Subscription;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Defines a few utilities.
  */
 public final class Utils {
+    private Utils() {
+    }
+
     /**
      * Converts an object Boolean to a primitive boolean.
      *
@@ -179,6 +186,32 @@ public final class Utils {
         Mono<HttpResponse> download(@PathParam("url") String url);
     }
 
-    private Utils() {
+    /**
+     * Gets the only subscription as the default one in the tenant if applicable.
+     *
+     * @param subscriptions the list of subscriptions
+     * @throws IllegalStateException when no subscription or more than one subscription found
+     * @return the only subscription existing in the tenant
+     */
+    public static String defaultSubscription(PagedIterable<Subscription> subscriptions) {
+        List<Subscription> subscriptionList = new ArrayList<>();
+        subscriptions.forEach(subscription -> {
+            subscriptionList.add(subscription);
+        });
+        if (subscriptionList.size() == 0) {
+            throw new ClientLogger(Utils.class).logExceptionAsError(
+                new IllegalStateException("Please create a subscription before you start resource management. "
+                + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
+        } else if (subscriptionList.size() > 1) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("More than one subscription found in your tenant. "
+                + "Please specify which one below is desired for resource management.");
+            subscriptionList.forEach(subscription -> {
+                stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
+            });
+            throw new ClientLogger(Utils.class).logExceptionAsError(
+                new IllegalStateException(stringBuilder.toString()));
+        }
+        return subscriptionList.get(0).subscriptionId();
     }
 }

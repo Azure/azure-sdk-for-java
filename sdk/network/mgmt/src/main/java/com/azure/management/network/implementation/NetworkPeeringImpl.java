@@ -373,7 +373,7 @@ class NetworkPeeringImpl
                                     () -> {
                                         // No matching remote peering, so create one on the remote network
                                         String peeringName =
-                                            this.manager().getSdkContext().randomResourceName("peer", 15);
+                                            this.manager().sdkContext().randomResourceName("peer", 15);
 
                                         WithCreate remotePeeringDefinition =
                                             remoteNetwork

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Resource;
@@ -26,12 +26,14 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
     private IDocumentQueryExecutionComponent<T> component;
     private int actualPageSize;
     private UUID correlatedActivityId;
+    private QueryInfo queryInfo;
 
     private PipelinedDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int actualPageSize,
-            UUID correlatedActivityId) {
+            UUID correlatedActivityId, QueryInfo queryInfo) {
         this.component = component;
         this.actualPageSize = actualPageSize;
         this.correlatedActivityId = correlatedActivityId;
+        this.queryInfo = queryInfo;
 
         // this.executeNextSchedulingMetrics = new SchedulingStopwatch();
         // this.executeNextSchedulingMetrics.Ready();
@@ -45,7 +47,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
     public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createAsync(
             IDocumentQueryClient client, ResourceType resourceTypeEnum, Class<T> resourceType, SqlQuerySpec expression,
-            FeedOptions feedOptions, String resourceLink, String collectionRid,
+            QueryRequestOptions queryRequestOptions, String resourceLink, String collectionRid,
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, List<PartitionKeyRange> targetRanges,
             int initialPageSize, boolean isContinuationExpected, boolean getLazyFeedResponse,
             UUID correlatedActivityId) {
@@ -56,19 +58,19 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken) -> {
-                FeedOptions orderByFeedOptions = new FeedOptions(feedOptions);
-                ModelBridgeInternal.setFeedOptionsContinuationToken(orderByFeedOptions, continuationToken);
+                QueryRequestOptions orderByQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
+                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByQueryRequestOptions, continuationToken);
                 return OrderByDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
-                        expression, orderByFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
+                        expression, orderByQueryRequestOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
                         targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
                         correlatedActivityId);
             };
         } else {
             createBaseComponentFunction = (continuationToken) -> {
-                FeedOptions parallelFeedOptions = new FeedOptions(feedOptions);
-                ModelBridgeInternal.setFeedOptionsContinuationToken(parallelFeedOptions, continuationToken);
+                QueryRequestOptions parallelQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
+                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelQueryRequestOptions, continuationToken);
                 return ParallelDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
-                        expression, parallelFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
+                        expression, parallelQueryRequestOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
                         targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
                         correlatedActivityId);
             };
@@ -131,7 +133,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             createTakeComponentFunction = createTopComponentFunction;
         }
 
-        int actualPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(),
+        int actualPageSize = Utils.getValueOrDefault(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(queryRequestOptions),
                 ParallelQueryConfig.ClientInternalPageSize);
 
         if (actualPageSize == -1) {
@@ -139,23 +141,23 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         }
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
-        return createTakeComponentFunction.apply(feedOptions.getRequestContinuation())
-                .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId));
+        return createTakeComponentFunction.apply(ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(queryRequestOptions))
+                .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId, queryInfo));
     }
 
     public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createReadManyAsync(
         IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
-        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, QueryRequestOptions queryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
         Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux = ParallelDocumentQueryExecutionContext
                                                                                             .createReadManyQueryAsync(queryClient,
                                                                                                                       collectionResourceId, sqlQuery, rangeQueryMap,
-                                                                                                                      feedOptions, resourceId, collectionLink, activityId, klass, resourceTypeEnum);
+                                                                                                                      queryRequestOptions, resourceId, collectionLink, activityId, klass, resourceTypeEnum);
 
         // TODO: Making pagesize -1. Should be reviewed
         return documentQueryExecutionComponentFlux.map(c -> new PipelinedDocumentQueryExecutionContext<>(c, -1,
-                                                                                                  activityId));
+                                                                                                  activityId, null));
     }
 
     @Override
@@ -164,5 +166,9 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         // TODO add more code here
         return this.component.drainAsync(actualPageSize);
+    }
+
+    public QueryInfo getQueryInfo() {
+        return this.queryInfo;
     }
 }

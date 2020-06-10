@@ -1372,6 +1372,9 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Encryption uploadIS numBlocks"() {
         setup:
+        if (numBlocks > 0 && !liveMode()) {
+            return // Multipart upload paths use randomly generated block ids that can't be recorded and played back.
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 

@@ -4,11 +4,11 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.VirtualMachineExtensionImageType;
-import com.azure.management.compute.VirtualMachineExtensionImageVersion;
-import com.azure.management.compute.VirtualMachineExtensionImageVersions;
-import com.azure.management.compute.models.VirtualMachineExtensionImageInner;
-import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
+import com.azure.management.compute.models.VirtualMachineExtensionImageType;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersions;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.management.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 
@@ -17,11 +17,11 @@ public class VirtualMachineExtensionImageVersionsImpl
     extends ReadableWrappersImpl<
         VirtualMachineExtensionImageVersion, VirtualMachineExtensionImageVersionImpl, VirtualMachineExtensionImageInner>
     implements VirtualMachineExtensionImageVersions {
-    private final VirtualMachineExtensionImagesInner client;
+    private final VirtualMachineExtensionImagesClient client;
     private final VirtualMachineExtensionImageType type;
 
     VirtualMachineExtensionImageVersionsImpl(
-        VirtualMachineExtensionImagesInner client, VirtualMachineExtensionImageType type) {
+        VirtualMachineExtensionImagesClient client, VirtualMachineExtensionImageType type) {
         this.client = client;
         this.type = type;
     }

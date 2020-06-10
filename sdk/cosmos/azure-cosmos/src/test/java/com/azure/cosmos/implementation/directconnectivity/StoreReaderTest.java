@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -103,11 +103,11 @@ public class StoreReaderTest {
     }
 
     @Test(groups = "unit", dataProvider = "verifyCanContinueOnExceptionArgProvider")
-    public void verifyCanContinueOnException(CosmosClientException dce, Boolean shouldVerify) {
-        CosmosClientException capturedFailure = null;
+    public void verifyCanContinueOnException(CosmosException dce, Boolean shouldVerify) {
+        CosmosException capturedFailure = null;
         try {
             StoreReader.verifyCanContinueOnException(dce);
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             capturedFailure = e;
         }
 

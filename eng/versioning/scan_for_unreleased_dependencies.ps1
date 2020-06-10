@@ -34,7 +34,7 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
         $script:FoundPomFile = $true
         Write-Host "Found pom file with matching groupId($($inputGroupId))/artifactId($($inputArtifactId)), pomFile=$($pomFile)"
         $version = $xmlPomFile.project.version
-        if ($version -like '*-beta.*')
+        if ($version -match '.*-beta(\.\d*)?')
         {
             $libraryIsBeta = $true
             Write-Host "Library is releasing as Beta, version=$($version)"
@@ -99,7 +99,7 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                     }
                     # If this isn't an external dependency then ensure that if the dependency
                     # version is beta, that we're releasing a beta, otherwise fail
-                    if ($versionNode.InnerText -like '*-beta.*') 
+                    if ($versionNode.InnerText -match '.*-beta(\.\d*)?')
                     {
                         if (!$libraryIsBeta)
                         {

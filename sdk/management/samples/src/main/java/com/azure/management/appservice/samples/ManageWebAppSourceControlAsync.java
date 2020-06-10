@@ -79,7 +79,7 @@ public final class ManageWebAppSourceControlAsync {
                                     app.getPublishingProfileAsync()
                                     .map(publishingProfile -> {
                                         System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
-                                        Utils.uploadFileToWebApp(publishingProfile,
+                                        Utils.uploadFileViaFtp(publishingProfile,
                                                 "helloworld.war",
                                                 ManageWebAppSourceControlAsync.class.getResourceAsStream("/helloworld.war"));
 
@@ -211,7 +211,7 @@ public final class ManageWebAppSourceControlAsync {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

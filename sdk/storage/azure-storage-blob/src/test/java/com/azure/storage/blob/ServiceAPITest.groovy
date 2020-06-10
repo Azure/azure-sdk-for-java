@@ -31,6 +31,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -900,5 +901,30 @@ class ServiceAPITest extends APISpec {
 
         then:
         notThrown(Exception)
+    }
+
+    @Unroll
+    def "sas token does not show up on invalid uri"() {
+        setup:
+        /* random sas token. this does not actually authenticate anything. */
+        def mockSas = "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter"
+
+        when:
+        BlobServiceClient client = new BlobServiceClientBuilder()
+            .endpoint(service)
+            .sasToken(mockSas)
+            .buildClient();
+        client.getBlobContainerClient(container)
+            .getBlobClient("blobname")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        !e.getMessage().contains(mockSas)
+
+        where:
+        service                                       | container        || _
+        "https://doesntmatter. blob.core.windows.net" | "containername"  || _
+        "https://doesntmatter.blob.core.windows.net"  | "container name" || _
+        /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 }

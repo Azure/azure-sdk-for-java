@@ -8,7 +8,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -37,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Integration tests for {@link UnnamedSessionManager}.
  */
+@Tag("integration")
 class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
@@ -66,11 +67,8 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "hello world";
         final int numberToSend = 5;
-        final ReceiveAsyncOptions receiveOptions = new ReceiveAsyncOptions()
-            .setMaxAutoLockRenewalDuration(Duration.ofMinutes(2))
-            .setIsAutoCompleteEnabled(true);
 
-        setSenderAndReceiver(entityType, TIMEOUT, Function.identity());
+        setSenderAndReceiver(entityType, TIMEOUT, builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(numberToSend)
@@ -85,7 +83,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(receiver.receive(receiveOptions))
+            StepVerifier.create(receiver.receive())
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
@@ -120,12 +118,9 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final int maxMessages = numberToSend * sessionIds.size();
         final int maxConcurrency = 2;
         final Set<String> set = new HashSet<>();
-        final ReceiveAsyncOptions receiveOptions = new ReceiveAsyncOptions()
-            .setMaxAutoLockRenewalDuration(Duration.ofMinutes(2))
-            .setIsAutoCompleteEnabled(true);
 
         setSenderAndReceiver(MessagingEntityType.SUBSCRIPTION, Duration.ofSeconds(20),
-            builder -> builder.maxConcurrentSessions(maxConcurrency));
+            builder -> builder.maxConcurrentSessions(maxConcurrency).maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
 
         final Disposable subscription = Flux.interval(Duration.ofMillis(500))
             .take(maxMessages)
@@ -143,7 +138,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(receiver.receive(receiveOptions))
+            StepVerifier.create(receiver.receive())
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
                 .assertNext(context -> assertFromSession(sessionIds, set, maxConcurrency, messageId, contents, context))
@@ -185,10 +180,10 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
         this.sender = getSenderBuilder(false, entityType, true).buildAsyncClient();
-        this.receiver = getSessionReceiverBuilder(false, entityType,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)),
-            builder -> onBuild.apply(builder))
-            .buildAsyncClient();
+        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false, entityType,
+            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)));
+
+        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,

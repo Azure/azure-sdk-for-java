@@ -12,6 +12,12 @@
     <module>azure-spring-boot</module>
     <module>azure-spring-boot-starter</module>
     <module>azure-spring-boot-starter-active-directory</module>
+    <module>azure-spring-boot-starter-active-directory-b2c</module>
+    <module>azure-spring-boot-starter-cosmosdb</module>
+    <module>azure-spring-boot-starter-data-gremlin</module>
+    <module>azure-spring-boot-starter-keyvault-secrets</module>
+    <module>azure-spring-boot-starter-metrics</module>
+    <module>azure-spring-boot-starter-servicebus-jms</module>
   </modules>
 
 </project>

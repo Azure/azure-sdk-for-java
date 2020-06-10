@@ -9,10 +9,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.VirtualMachineExtensionImage;
-import com.azure.management.compute.VirtualMachineExtensionImageType;
-import com.azure.management.compute.VirtualMachineExtensionImageVersion;
-import com.azure.management.compute.VirtualMachinePublisher;
+import com.azure.management.compute.models.VirtualMachineExtensionImage;
+import com.azure.management.compute.models.VirtualMachineExtensionImageType;
+import com.azure.management.compute.models.VirtualMachineExtensionImageVersion;
+import com.azure.management.compute.models.VirtualMachinePublisher;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
@@ -90,7 +90,7 @@ public final class ListVirtualMachineExtensionImages {
             //=================================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

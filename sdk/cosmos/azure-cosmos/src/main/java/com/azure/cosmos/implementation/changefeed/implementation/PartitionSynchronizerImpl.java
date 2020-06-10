@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -102,10 +102,10 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     private Flux<PartitionKeyRange> enumPartitionKeyRanges() {
         String partitionKeyRangesPath = extractContainerSelfLink(this.collectionSelfLink);
-        FeedOptions feedOptions = new FeedOptions();
-        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(feedOptions, null, this.maxBatchSize);
+        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(queryRequestOptions, null, this.maxBatchSize);
 
-        return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, feedOptions)
+        return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, queryRequestOptions)
             .map(partitionKeyRangeFeedResponse -> partitionKeyRangeFeedResponse.getResults())
             .flatMap(partitionKeyRangeList -> Flux.fromIterable(partitionKeyRangeList))
             .onErrorResume(throwable -> {

@@ -3,10 +3,10 @@
 
 package com.azure.management;
 
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachines;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachines;
 import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.resources.core.TestBase;
@@ -24,7 +24,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
 
         final String sshKey =
             "ssh-rsa"

@@ -3,11 +3,11 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.DataDisk;
-import com.azure.management.compute.DiskCreateOptionTypes;
-import com.azure.management.compute.StorageAccountTypes;
-import com.azure.management.compute.VirtualMachineDataDisk;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.DataDisk;
+import com.azure.management.compute.models.DiskCreateOptionTypes;
+import com.azure.management.compute.models.StorageAccountTypes;
+import com.azure.management.compute.models.VirtualMachineDataDisk;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 

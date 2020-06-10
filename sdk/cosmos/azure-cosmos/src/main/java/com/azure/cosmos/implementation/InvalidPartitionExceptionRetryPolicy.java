@@ -4,8 +4,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -19,7 +20,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     private final RxCollectionCache clientCollectionCache;
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
-    private final FeedOptions feedOptions;
+    private final QueryRequestOptions queryRequestOptions;
     private RxDocumentServiceRequest request;
 
     private volatile boolean retried = false;
@@ -27,14 +28,14 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     public InvalidPartitionExceptionRetryPolicy(RxCollectionCache collectionCache,
             DocumentClientRetryPolicy nextPolicy,
             String resourceFullName,
-            FeedOptions feedOptions) {
+            QueryRequestOptions queryRequestOptions) {
 
         this.clientCollectionCache = collectionCache;
         this.nextPolicy = nextPolicy;
 
         // TODO the resource address should be inferred from exception
         this.collectionLink = Utils.getCollectionName(resourceFullName);
-        this.feedOptions = feedOptions;
+        this.queryRequestOptions = queryRequestOptions;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
-        CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+        CosmosException clientException = Utils.as(e, CosmosException.class);
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE)) {
@@ -53,14 +54,14 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 // TODO: resource address should be accessible from the exception
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
-                if(this.feedOptions != null) {
+                if(this.queryRequestOptions != null) {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
-                        this.feedOptions.getProperties());
+                        ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.queryRequestOptions));
                 } else {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
                         null);
                 }
