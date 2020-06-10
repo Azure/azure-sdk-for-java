@@ -108,21 +108,6 @@ public final class ParallelTransferOptions {
     }
 
     /**
-     * For buffered upload only, the number of buffers is the maximum number of buffers this method
-     * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
-     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
-     * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
-     *
-     * @param numBuffers The number of buffers.
-     * @return The ParallelTransferOptions object itself.
-     * @deprecated Use {@link #setMaxConcurrency(Integer)}
-     */
-    @Deprecated
-    public ParallelTransferOptions setNumBuffers(Integer numBuffers) {
-        return this.setMaxConcurrency(numBuffers);
-    }
-
-    /**
      * Gets the Progress receiver for parallel reporting
      * @return The progress reporter
      */
