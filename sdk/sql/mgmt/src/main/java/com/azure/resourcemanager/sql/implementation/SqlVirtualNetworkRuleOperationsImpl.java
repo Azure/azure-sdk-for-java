@@ -93,7 +93,8 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.sqlServerManager.inner().getVirtualNetworkRules().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this.sqlServerManager.inner().getVirtualNetworkRules()
+            .deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override

@@ -30,7 +30,8 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     private final AuthorizationManager authorizationManager;
     private final String tenantId;
 
-    public VaultsImpl(final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager, final String tenantId) {
+    public VaultsImpl(
+        final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager, final String tenantId) {
         super(keyVaultManager.inner().getVaults(), keyVaultManager);
         this.authorizationManager = authorizationManager;
         this.tenantId = tenantId;

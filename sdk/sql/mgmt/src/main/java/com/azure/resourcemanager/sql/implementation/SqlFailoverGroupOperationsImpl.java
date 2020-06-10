@@ -111,8 +111,8 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
     @Override
     public List<SqlFailoverGroup> listBySqlServer(final SqlServer sqlServer) {
         List<SqlFailoverGroup> failoverGroups = new ArrayList<>();
-        PagedIterable<FailoverGroupInner> failoverGroupInners =
-            sqlServer.manager().inner().getFailoverGroups().listByServer(sqlServer.resourceGroupName(), sqlServer.name());
+        PagedIterable<FailoverGroupInner> failoverGroupInners = sqlServer.manager().inner().getFailoverGroups()
+            .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
         for (FailoverGroupInner inner : failoverGroupInners) {
             failoverGroups
                 .add(
@@ -211,8 +211,8 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
 
     @Override
     public SqlFailoverGroup failover(String resourceGroupName, String serverName, String failoverGroupName) {
-        FailoverGroupInner failoverGroupInner =
-            this.sqlServerManager.inner().getFailoverGroups().failover(resourceGroupName, serverName, failoverGroupName);
+        FailoverGroupInner failoverGroupInner = this.sqlServerManager.inner().getFailoverGroups()
+            .failover(resourceGroupName, serverName, failoverGroupName);
         return failoverGroupInner != null
             ? new SqlFailoverGroupImpl(failoverGroupInner.name(), failoverGroupInner, this.sqlServerManager)
             : null;

@@ -306,7 +306,8 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                                 String
                                                     .format(
                                                         "User principal name %s is not found in tenant %s",
-                                                        accessPolicy.userPrincipalName(), authorizationManager.tenantId()),
+                                                        accessPolicy.userPrincipalName(),
+                                                        authorizationManager.tenantId()),
                                                 null))));
                 } else if (accessPolicy.servicePrincipalName() != null) {
                     observables

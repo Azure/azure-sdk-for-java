@@ -283,7 +283,8 @@ abstract class DeploymentSlotBaseImpl<
 
     @Override
     Mono<ConnectionStringDictionaryInner> listConnectionStrings() {
-        return manager().inner().getWebApps().listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
+        return manager().inner().getWebApps()
+            .listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
@@ -434,7 +435,8 @@ abstract class DeploymentSlotBaseImpl<
     public Mono<byte[]> getContainerLogsZipAsync() {
         return FluxUtil
             .collectBytesInByteBufferStream(
-                manager().inner().getWebApps().getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name()));
+                manager().inner().getWebApps()
+                    .getContainerLogsZipSlotAsync(resourceGroupName(), parent().name(), name()));
     }
 
     @Override

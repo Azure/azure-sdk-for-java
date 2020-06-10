@@ -18,7 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 /** Entry point to Azure KeyVault resource management. */
 public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultManagementClient> {
     // Service managers
-    private AuthorizationManager authorizationManager;
+    private final AuthorizationManager authorizationManager;
     // Collections
     private Vaults vaults;
     // Variables

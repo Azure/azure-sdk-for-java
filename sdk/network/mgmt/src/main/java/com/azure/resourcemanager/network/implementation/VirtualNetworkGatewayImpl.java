@@ -198,7 +198,8 @@ class VirtualNetworkGatewayImpl
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listConnectionsAsync() {
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
-            this.manager().inner().getVirtualNetworkGateways().listConnectionsAsync(this.resourceGroupName(), this.name());
+            this.manager().inner().getVirtualNetworkGateways()
+            .listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
             .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }

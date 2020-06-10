@@ -20,7 +20,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     private SqlServers sqlServers;
     private final String tenantId;
 
-    private StorageManager storageManager;
+    private final StorageManager storageManager;
 
     protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
