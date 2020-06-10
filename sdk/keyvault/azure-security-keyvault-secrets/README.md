@@ -17,7 +17,7 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.3</version>
+    <version>4.1.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
