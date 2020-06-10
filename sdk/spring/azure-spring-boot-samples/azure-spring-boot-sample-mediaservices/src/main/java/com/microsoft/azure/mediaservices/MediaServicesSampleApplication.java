@@ -30,7 +30,7 @@ public class MediaServicesSampleApplication implements CommandLineRunner {
     // Note: Here is the minimum sample code that demonstrates how MediaContract is
     // autowired and used.
     // More information can be found at
-    // https://docs.microsoft.com/en-us/azure/media-services/media-services-java-how-to-use
+    // https://docs.microsoft.com/azure/media-services/media-services-java-how-to-use
     @Override
     public void run(String... args) throws Exception {
         // Upload a local file to an Asset
