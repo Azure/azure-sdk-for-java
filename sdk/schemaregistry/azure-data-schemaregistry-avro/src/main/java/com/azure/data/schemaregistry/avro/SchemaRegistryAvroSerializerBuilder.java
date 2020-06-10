@@ -24,7 +24,7 @@ public final class SchemaRegistryAvroSerializerBuilder {
      * Instantiates instance of Builder class.
      * Supplies client defaults.
      */
-    private SchemaRegistryAvroSerializerBuilder() {
+    public SchemaRegistryAvroSerializerBuilder() {
         this.registryUrl = null;
         this.credential = null;
         this.autoRegisterSchemas = AbstractDataSerializer.AUTO_REGISTER_SCHEMAS_DEFAULT;
