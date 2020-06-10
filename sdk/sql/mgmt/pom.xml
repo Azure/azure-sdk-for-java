@@ -7,12 +7,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-management-parent</artifactId>
+    <artifactId>azure-resourcemanager-parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <relativePath>../../management/pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure-mgmt-sql</artifactId>
+  <artifactId>azure-resourcemanager-sql</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Sql Management</name>
@@ -56,12 +56,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-resources</artifactId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-storage</artifactId>
+      <artifactId>azure-resourcemanager-storage</artifactId>
       <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -81,7 +81,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-mgmt-resources</artifactId>
+      <artifactId>azure-resourcemanager-resources</artifactId>
       <version>2.0.0-SNAPSHOT</version>
       <type>test-jar</type>
       <scope>test</scope>

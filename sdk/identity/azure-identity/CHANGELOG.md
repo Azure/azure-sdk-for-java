@@ -1,6 +1,22 @@
 # Release History
 
-## 1.1.0-beta.5 (Unreleased)
+## 1.1.0-beta.6 (Unreleased)
+
+
+## 1.1.0-beta.5 (2020-06-09)
+
+### New Features
+- Added option to write to shared token cache from `ClientSecretCredential`, `ClientCertificateCredential`.
+- Added new developer credentials `IntelliJCredential`, `VsCodeCredential` and `AzureCliCredential`.
+- New APIs for authenticating users with `DeviceCodeCredential`,  `InteractiveBrowserCredential` and `UsernamePasswordCredential`.
+    - Added method `authenticate` which pro-actively interacts with the user to authenticate if necessary and returns a serializable `AuthenticationRecord`
+- Added following configurable options in classes `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`
+    - `authenticationRecord` enables initializing a credential with an `AuthenticationRecord` returned from a prior call to `Authenticate`
+    - `disableAutomaticAuthentication` disables automatic user interaction causing the credential to throw an `AuthenticationRequiredException` when interactive authentication is necessary.
+
+### Breaking Changes
+- Removed support to exclude specific credentials in `DefaultAzureCredential` authentication flow.
+
 
 ## 1.1.0-beta.4 (2020-05-06)
 - Added `IntelliJCredential` support in `DefaultAzureCredential`.
