@@ -137,8 +137,9 @@ public final class ParallelTransferOptions {
      *
      * @param numBuffers The number of buffers.
      * @return The ParallelTransferOptions object itself.
-     * @deprecated Use #se
+     * @deprecated Use {@link #setMaxConcurrency(Integer)}
      */
+    @Deprecated
     public ParallelTransferOptions setNumBuffers(Integer numBuffers) {
         return this.setMaxConcurrency(numBuffers);
     }
@@ -209,7 +210,6 @@ public final class ParallelTransferOptions {
      * allocated as part of the transfer will be {@code maxConcurrency + 1}. In those cases, memory will be allocated
      * lazily as needed. The amount of memory consumed by methods which buffer may be up to blockSize * maxConcurrency.
      * In general, upload methods which do not accept a length parameter must perform some buffering.
-     * @return The ParallelTransferOptions object itself.
      * @return The max concurrency value.
      */
     public Integer getMaxConcurrency() {
@@ -230,7 +230,7 @@ public final class ParallelTransferOptions {
         if (maxConcurrency != null) {
             StorageImplUtils.assertInBounds("numBuffers", maxConcurrency, 1, Integer.MAX_VALUE);
         }
-        this.maxConcurrency= maxConcurrency;
+        this.maxConcurrency = maxConcurrency;
         return this;
     }
 }
