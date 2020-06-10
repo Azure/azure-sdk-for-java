@@ -93,9 +93,14 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
 
     /**
-     * Expected type: Integer
+     * Expected type: Long
      */
     public static final String AZURE_STORAGE_UPLOAD_BLOCK_SIZE = "AzureStorageUploadBlockSize";
+
+    /**
+     * Expected type: Long
+     */
+    public static final String AZURE_STORAGE_PUT_BLOB_THRESHOLD = "AzureStoragePutBlobThreshold";
 
     /**
      * Expected type: Integer
@@ -117,16 +122,15 @@ public final class AzureFileSystem extends FileSystem {
 
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
-        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
-        map.put(BasicFileAttributeView.class, "basic");
-        map.put(UserDefinedFileAttributeView.class, "user");
-        map.put(AzureStorageFileAttributeView.class, "azureStorage");
-        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
+        SUPPORTED_ATTRIBUTE_VIEWS = Map.of(BasicFileAttributeView.class, "basic",
+            UserDefinedFileAttributeView.class, "user",
+            AzureStorageFileAttributeView.class, "azureStorage");
     }
 
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
-    private final Integer blockSize;
+    private final Long blockSize;
+    private final Long putBlobThreshold;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;
@@ -144,7 +148,8 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-            this.blockSize = (Integer) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
 
             // Initialize and ensure access to FileStores.
@@ -404,5 +409,13 @@ public final class AzureFileSystem extends FileSystem {
             throw LoggingUtility.logError(logger, new IOException("Invalid file store: " + name));
         }
         return store;
+    }
+
+    Long getBlockSize() {
+        return this.blockSize;
+    }
+
+    Long getPutBlobThreshold() {
+        return this.putBlobThreshold;
     }
 }

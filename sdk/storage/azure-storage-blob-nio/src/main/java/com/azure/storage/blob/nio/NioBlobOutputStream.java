@@ -19,7 +19,7 @@ public class NioBlobOutputStream extends OutputStream {
     }
 
     @Override
-    public void write(int i) throws IOException {
+    public synchronized void write(int i) throws IOException {
         try {
             this.blobOutputStream.write(i);
             /*
@@ -32,7 +32,7 @@ public class NioBlobOutputStream extends OutputStream {
     }
 
     @Override
-    public void write(byte[] b) throws IOException {
+    public synchronized void write(byte[] b) throws IOException {
         try {
             this.blobOutputStream.write(b);
             /*
@@ -45,7 +45,7 @@ public class NioBlobOutputStream extends OutputStream {
     }
 
     @Override
-    public void write(byte[] b, int off, int len) throws IOException {
+    public synchronized void write(byte[] b, int off, int len) throws IOException {
         try {
             this.blobOutputStream.write(b, off, len);
             /*
@@ -53,12 +53,15 @@ public class NioBlobOutputStream extends OutputStream {
             so we can't do any better than re-wrapping it in an IOException.
              */
         } catch (RuntimeException e) {
+            if (e instanceof IndexOutOfBoundsException) {
+                throw LoggingUtility.logError(logger, e);
+            }
             throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
 
     @Override
-    public void flush() throws IOException {
+    public synchronized void flush() throws IOException {
         try {
             this.blobOutputStream.flush();
             /*
@@ -71,14 +74,14 @@ public class NioBlobOutputStream extends OutputStream {
     }
 
     @Override
-    public void close() throws IOException {
+    public synchronized void close() throws IOException {
         try {
             this.blobOutputStream.close();
             /*
             BlobOutputStream only throws RuntimeException, and it doesn't preserve the cause, it only takes the message,
             so we can't do any better than re-wrapping it in an IOException.
              */
-        } catch (RuntimeException e) { 
+        } catch (RuntimeException e) {
             throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
