@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+
 ## 1.0.0-beta.3 (2020-06-10)
 ### New Features
 - Support to copy a custom model from one Form Recognizer resource to another
