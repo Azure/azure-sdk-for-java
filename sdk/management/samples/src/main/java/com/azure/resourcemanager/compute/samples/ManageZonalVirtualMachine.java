@@ -41,8 +41,7 @@ public final class ManageZonalVirtualMachine {
         final String pipName2 = azure.sdkContext().randomResourceName("pip2", 15);
         final String diskName = azure.sdkContext().randomResourceName("ds", 15);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA23w0rd!";
+        final String password = Utils.password();
 
         try {
 

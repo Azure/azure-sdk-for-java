@@ -127,8 +127,7 @@ public class DeployVirtualMachineUsingARMTemplate {
 
     private static String getTemplate(Azure azure) throws IllegalAccessException, JsonProcessingException, IOException {
         final String adminUsername = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String adminPassword = "12NewPA$$w0rd!";
+        final String adminPassword = Utils.password();
         final String osDiskName = azure.sdkContext().randomResourceName("osdisk-", 24);
 
         try (InputStream embeddedTemplate = DeployUsingARMTemplateWithProgress.class.getResourceAsStream("/virtualMachineWithManagedDisksTemplate.json")) {

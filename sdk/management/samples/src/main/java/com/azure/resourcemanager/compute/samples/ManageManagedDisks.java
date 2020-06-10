@@ -382,8 +382,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
         final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 
@@ -421,8 +420,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedManagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
         final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 

@@ -111,8 +111,7 @@
 //        String name = authenticated.sdkContext().randomResourceName("adapp-sample", 20);
 //        //create a self-sighed certificate
 //        String domainName = name + ".com";
-//        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//        String certPassword = "StrongPass!12";
+//        String certPassword = Utils.password();
 //        Certificate certificate = Certificate.createSelfSigned(domainName, certPassword);
 //
 //        // create Active Directory application
@@ -121,8 +120,7 @@
 //                    .withSignOnUrl("https://github.com/Azure/azure-sdk-for-java/" + name)
 //                    // password credentials definition
 //                    .definePasswordCredential("password")
-//                        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//                        .withPasswordValue("P@ssw0rd")
+//                        .withPasswordValue(Utils.password())
 //                        .withDuration(Duration.ofDays(700))
 //                        .attach()
 //                    // certificate credentials definition
@@ -145,8 +143,7 @@
 //        String name = authenticated.sdkContext().randomResourceName("sp-sample", 20);
 //        //create a self-sighed certificate
 //        String domainName = name + ".com";
-//        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//        String certPassword = "StrongPass!12";
+//        String certPassword = Utils.password();
 //        Certificate certificate = Certificate.createSelfSigned(domainName, certPassword);
 //
 //        // create  a Service Principal and assign it to a subscription with the role Contributor
@@ -155,8 +152,7 @@
 //                    .withExistingApplication(activeDirectoryApplication)
 //                    // password credentials definition
 //                    .definePasswordCredential("ServicePrincipalAzureSample")
-//                    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//                        .withPasswordValue("StrongPass!12")
+//                        .withPasswordValue(Utils.password())
 //                        .attach()
 //                    // certificate credentials definition
 //                    .defineCertificateCredential("spcert")

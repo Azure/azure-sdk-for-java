@@ -42,8 +42,7 @@ public final class ManageVirtualMachinesInParallel {
         final String networkName = azure.sdkContext().randomResourceName("vnetCOMV", 24);
         final String storageAccountName = azure.sdkContext().randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         try {
             // Create a resource group [Where all resources gets created]
             ResourceGroup resourceGroup = azure.resourceGroups()
