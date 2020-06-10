@@ -176,7 +176,7 @@ public final class BlobContainerAsyncClient {
      * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
-    public BlobAsyncClient getBlobAsyncClientWithVersion(String blobName, String versionId) {
+    public BlobAsyncClient getBlobVersionAsyncClient(String blobName, String versionId) {
         return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
             Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
             getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
