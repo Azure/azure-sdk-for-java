@@ -31,16 +31,19 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
 
     @Override
     public RecognizeCustomFormsOptions setContentType(FormContentType contentType) {
-        return (RecognizeCustomFormsOptions) super.setContentType(contentType);
+        super.setContentType(contentType);
+        return this;
     }
 
     @Override
-    public RecognizeOptions setIncludeTextContent(boolean includeTextContent) {
-        return super.setIncludeTextContent(includeTextContent);
+    public RecognizeCustomFormsOptions setIncludeTextContent(boolean includeTextContent) {
+        super.setIncludeTextContent(includeTextContent);
+        return this;
     }
 
     @Override
-    public RecognizeOptions setPollInterval(Duration pollInterval) {
-        return super.setPollInterval(pollInterval);
+    public RecognizeCustomFormsOptions setPollInterval(Duration pollInterval) {
+        super.setPollInterval(pollInterval);
+        return this;
     }
 }

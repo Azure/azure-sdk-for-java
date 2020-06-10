@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
@@ -68,7 +69,7 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId, false, null);
+        return beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(formUrl, modelId));
     }
 
     /**
@@ -80,11 +81,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
      *
-     * @param formUrl The source URL to the input form.
-     * @param modelId The UUID string format custom trained model Id to be used.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeCustomFormsOptions The source URL to the input form.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -94,10 +91,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(String formUrl, String modelId, boolean includeTextDetails,
-        Duration pollInterval) {
-        return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, includeTextDetails, pollInterval)
-            .getSyncPoller();
+        beginRecognizeCustomFormsFromUrl(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
+        return client.beginRecognizeCustomFormsFromUrl(recognizeCustomFormsOptions).getSyncPoller();
     }
 
     /**
@@ -112,7 +107,6 @@ public final class FormRecognizerClient {
      * @param form The data of the form to recognize form information from.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -122,8 +116,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, String modelId, long length, FormContentType formContentType) {
-        return beginRecognizeCustomForms(form, modelId, length, formContentType, false, null);
+        beginRecognizeCustomForms(InputStream form, String modelId, long length) {
+        return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId));
     }
 
     /**
@@ -135,13 +129,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType-boolean-Duration}
      *
-     * @param form The data of the form to recognize form information from.
-     * @param modelId The UUID string format custom trained model Id to be used.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeCustomFormsOptions The data of the form to recognize form information from.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -151,11 +139,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, String modelId, long length, FormContentType formContentType,
-        boolean includeTextDetails, Duration pollInterval) {
-        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
-        return client.beginRecognizeCustomForms(buffer, modelId, length, formContentType,
-            includeTextDetails, pollInterval).getSyncPoller();
+        beginRecognizeCustomForms(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
+        return client.beginRecognizeCustomForms(recognizeCustomFormsOptions).getSyncPoller();
     }
 
     /**

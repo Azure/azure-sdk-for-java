@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
+import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
@@ -95,7 +96,7 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(formUrl, modelId);
+        return beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(formUrl, modelId));
     }
 
     /**
@@ -107,11 +108,7 @@ public final class FormRecognizerAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
      *
-     * @param formUrl The source URL to the input form.
-     * @param modelId The UUID string format custom trained model Id to be used.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeCustomFormsOptions The source URL to the input form.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -147,7 +144,6 @@ public final class FormRecognizerAsyncClient {
      * @param form The data of the form to recognize form information from.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -173,13 +169,7 @@ public final class FormRecognizerAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType-boolean-Duration}
      *
-     * @param form The data of the form to recognize form information from.
-     * @param modelId The UUID string format custom trained model Id to be used.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeCustomFormsOptions The configureable options.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -191,9 +181,15 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
         final String modelId = recognizeCustomFormsOptions.getModelId();
+        Flux<ByteBuffer> buffer;
+        if (recognizeCustomFormsOptions.getForm() != null) {
+            buffer = Utility.toFluxByteBuffer(recognizeCustomFormsOptions.getForm());
+        } else {
+            buffer = recognizeCustomFormsOptions.getFormData();
+        }
         return new PollerFlux<OperationResult, List<RecognizedForm>>(
             recognizeCustomFormsOptions.getPollInterval(),
-            analyzeFormStreamActivationOperation(recognizeCustomFormsOptions.getFormData(), modelId,
+            analyzeFormStreamActivationOperation(buffer, modelId,
                 recognizeCustomFormsOptions.getLength(), recognizeCustomFormsOptions.getContentType(),
                 recognizeCustomFormsOptions.isIncludeTextContent()),
             createAnalyzeFormPollOperation(modelId),
