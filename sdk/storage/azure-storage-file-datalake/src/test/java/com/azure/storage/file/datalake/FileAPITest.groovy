@@ -2133,7 +2133,7 @@ class FileAPITest extends APISpec {
         def uploadReporter = new FileUploadReporter()
         def file = getRandomFile(size)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setNumBuffers(bufferCount)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
             .setProgressReceiver(uploadReporter).setMaxSingleUploadSizeLong(blockSize - 1)
 
         then:
@@ -2219,7 +2219,7 @@ class FileAPITest extends APISpec {
 
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setNumBuffers(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setMaxConcurrency(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
         fac.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
@@ -2287,7 +2287,7 @@ class FileAPITest extends APISpec {
         when:
         def uploadReporter = new Reporter(blockSize)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setNumBuffers(bufferCount)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
             .setProgressReceiver(uploadReporter).setMaxSingleUploadSizeLong(4 * Constants.MB)
 
         then:
@@ -2320,7 +2320,7 @@ class FileAPITest extends APISpec {
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
          */
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setNumBuffers(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setMaxConcurrency(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
 
         for (def size : dataSizeList) {
@@ -2398,7 +2398,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setNumBuffers(4), true))
+        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -2451,7 +2451,7 @@ class FileAPITest extends APISpec {
         }
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10).setNumBuffers(10)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10).setMaxConcurrency(10)
         def uploadOperation = fac.uploadWithResponse(Flux.just(getRandomData(10)),
             parallelTransferOptions, null, metadata, null)
 
@@ -2570,7 +2570,7 @@ class FileAPITest extends APISpec {
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers)
+            .setMaxConcurrency(numBuffers)
 
         then:
         StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),
