@@ -123,6 +123,13 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
     private List<VirtualNetworkRule> virtualNetworkRules;
 
     /**
+     * List of Private Endpoint Connections configured for the Cosmos DB
+     * account.
+     */
+    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /**
      * Enables the account to write in multiple locations.
      */
     @JsonProperty(value = "properties.enableMultipleWriteLocations")
@@ -373,6 +380,15 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
     public DatabaseAccountGetResultsInner withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
         return this;
+    }
+
+    /**
+     * Get list of Private Endpoint Connections configured for the Cosmos DB account.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
     /**

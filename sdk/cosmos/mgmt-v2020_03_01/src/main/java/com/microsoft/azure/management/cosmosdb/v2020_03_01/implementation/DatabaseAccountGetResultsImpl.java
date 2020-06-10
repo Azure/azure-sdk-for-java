@@ -21,6 +21,8 @@ import com.microsoft.azure.management.cosmosdb.v2020_03_01.DatabaseAccountOfferT
 import com.microsoft.azure.management.cosmosdb.v2020_03_01.FailoverPolicy;
 import com.microsoft.azure.management.cosmosdb.v2020_03_01.DatabaseAccountKind;
 import com.microsoft.azure.management.cosmosdb.v2020_03_01.Location;
+import java.util.ArrayList;
+import com.microsoft.azure.management.cosmosdb.v2020_03_01.PrivateEndpointConnection;
 import com.microsoft.azure.management.cosmosdb.v2020_03_01.PublicNetworkAccess;
 import com.microsoft.azure.management.cosmosdb.v2020_03_01.VirtualNetworkRule;
 import rx.functions.Func1;
@@ -153,6 +155,17 @@ class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAc
     @Override
     public List<Location> locations() {
         return this.inner().locations();
+    }
+
+    @Override
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
+        if (this.inner().privateEndpointConnections() != null) {
+            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
+                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
     }
 
     @Override

@@ -177,7 +177,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -191,7 +191,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -204,7 +204,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountGetResultsInner object
@@ -221,7 +221,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountGetResultsInner object
@@ -262,7 +262,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -277,7 +277,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -291,7 +291,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -309,7 +309,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -337,7 +337,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -352,7 +352,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -366,7 +366,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -384,7 +384,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -429,7 +429,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -444,7 +444,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -458,7 +458,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -476,7 +476,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -504,7 +504,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -519,7 +519,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -533,7 +533,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -551,7 +551,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters The parameters to provide for the current database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -596,7 +596,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -609,7 +609,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -622,7 +622,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -639,7 +639,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -662,7 +662,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -675,7 +675,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -688,7 +688,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -705,7 +705,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -746,7 +746,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -760,7 +760,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -774,7 +774,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -792,7 +792,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -822,7 +822,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -836,7 +836,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -850,7 +850,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -868,7 +868,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -995,7 +995,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @return the PagedList<DatabaseAccountGetResultsInner> object if successful.
      */
     public PagedList<DatabaseAccountGetResultsInner> listByResourceGroup(String resourceGroupName) {
@@ -1013,7 +1013,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceFuture} object
      */
@@ -1024,7 +1024,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @return the observable to the List&lt;DatabaseAccountGetResultsInner&gt; object
      */
     public Observable<Page<DatabaseAccountGetResultsInner>> listByResourceGroupAsync(String resourceGroupName) {
@@ -1041,7 +1041,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @return the observable to the List&lt;DatabaseAccountGetResultsInner&gt; object
      */
     public Observable<ServiceResponse<List<DatabaseAccountGetResultsInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
@@ -1081,7 +1081,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1095,7 +1095,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1108,7 +1108,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListKeysResultInner object
@@ -1125,7 +1125,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListKeysResultInner object
@@ -1165,7 +1165,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1179,7 +1179,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1192,7 +1192,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListConnectionStringsResultInner object
@@ -1209,7 +1209,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListConnectionStringsResultInner object
@@ -1249,7 +1249,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1263,7 +1263,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1277,7 +1277,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1295,7 +1295,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1324,7 +1324,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1338,7 +1338,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1352,7 +1352,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1370,7 +1370,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1417,7 +1417,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1431,7 +1431,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1445,7 +1445,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1463,7 +1463,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1492,7 +1492,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1506,7 +1506,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1520,7 +1520,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1538,7 +1538,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1585,7 +1585,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1599,7 +1599,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1612,7 +1612,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListReadOnlyKeysResultInner object
@@ -1629,7 +1629,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListReadOnlyKeysResultInner object
@@ -1669,7 +1669,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1683,7 +1683,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1696,7 +1696,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListReadOnlyKeysResultInner object
@@ -1713,7 +1713,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountListReadOnlyKeysResultInner object
@@ -1753,7 +1753,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1767,7 +1767,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1781,7 +1781,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1799,7 +1799,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1828,7 +1828,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1842,7 +1842,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1856,7 +1856,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1874,7 +1874,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate. Possible values include: 'primary', 'secondary', 'primaryReadonly', 'secondaryReadonly'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1996,7 +1996,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2011,7 +2011,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2025,7 +2025,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2043,7 +2043,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2092,7 +2092,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -2106,7 +2106,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2119,7 +2119,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;UsageInner&gt; object
@@ -2136,7 +2136,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;UsageInner&gt; object
@@ -2175,7 +2175,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2190,7 +2190,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2204,7 +2204,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2222,7 +2222,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2268,7 +2268,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -2282,7 +2282,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2295,7 +2295,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;MetricDefinitionInner&gt; object
@@ -2312,7 +2312,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountGe
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;MetricDefinitionInner&gt; object
