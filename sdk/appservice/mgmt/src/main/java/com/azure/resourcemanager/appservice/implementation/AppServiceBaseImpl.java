@@ -128,7 +128,8 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
-        return this.manager().inner().getWebApps().updateSlotConfigurationNamesAsync(resourceGroupName(), name(), inner);
+        return this.manager().inner().getWebApps()
+            .updateSlotConfigurationNamesAsync(resourceGroupName(), name(), inner);
     }
 
     @Override

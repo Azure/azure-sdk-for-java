@@ -47,7 +47,8 @@ public class RoleAssignmentHelper {
      * @param taskGroup the pre-run task group after which role assignments create/remove tasks should run
      * @param idProvider the provider that provides service principal id and resource id
      */
-    public RoleAssignmentHelper(final AuthorizationManager authorizationManager, TaskGroup taskGroup, IdProvider idProvider) {
+    public RoleAssignmentHelper(
+        final AuthorizationManager authorizationManager, TaskGroup taskGroup, IdProvider idProvider) {
         this.authorizationManager = Objects.requireNonNull(authorizationManager);
         this.idProvider = Objects.requireNonNull(idProvider);
         this.preRunTaskGroup = Objects.requireNonNull(taskGroup);

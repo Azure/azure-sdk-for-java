@@ -14,7 +14,8 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure AD role definition. */
 @Fluent
-public interface RoleDefinition extends HasInner<RoleDefinitionInner>, HasId, HasName, HasManager<AuthorizationManager> {
+public interface RoleDefinition 
+    extends HasInner<RoleDefinitionInner>, HasId, HasName, HasManager<AuthorizationManager> {
     /** @return the role name */
     String roleName();
 

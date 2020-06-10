@@ -23,7 +23,8 @@ public class ServicePrincipalsImpl
     private ServicePrincipalsClient innerCollection;
     private AuthorizationManager manager;
 
-    public ServicePrincipalsImpl(final ServicePrincipalsClient client, final AuthorizationManager authorizationManager) {
+    public ServicePrincipalsImpl(
+        final ServicePrincipalsClient client, final AuthorizationManager authorizationManager) {
         this.innerCollection = client;
         this.manager = authorizationManager;
     }
