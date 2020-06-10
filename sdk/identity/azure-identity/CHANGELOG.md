@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.5 (Unreleased)
+## 1.1.0-beta.5 (2020-06-09)
 
 ### New Features
 - Added option to write to shared token cache from `ClientSecretCredential`, `ClientCertificateCredential`.
