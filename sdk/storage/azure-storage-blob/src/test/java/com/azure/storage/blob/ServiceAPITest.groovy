@@ -6,7 +6,6 @@ package com.azure.storage.blob
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -752,8 +751,8 @@ class ServiceAPITest extends APISpec {
 
         when:
         def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(),
-            new UndeleteBlobContainerOptions().setDestinationContainerName(generateContainerName()),
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(generateContainerName()),
             null, Context.NONE)
             .getValue()
 
@@ -882,8 +881,9 @@ class ServiceAPITest extends APISpec {
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        primaryBlobServiceClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion(),
-            new UndeleteBlobContainerOptions().setDestinationContainerName(cc2.getBlobContainerName()),
+        primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(cc2.getBlobContainerName()),
             null, Context.NONE)
 
         then:

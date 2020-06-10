@@ -10,7 +10,38 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class UndeleteBlobContainerOptions {
+    private final String deletedContainerName;
+    private final String deletedContainerVersion;
     private String destinationContainerName;
+
+    /**
+     * Constructs a {@link UndeleteBlobContainerOptions}.
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     */
+    public UndeleteBlobContainerOptions(String deletedContainerName, String deletedContainerVersion) {
+        this.deletedContainerName = deletedContainerName;
+        this.deletedContainerVersion = deletedContainerVersion;
+    }
+
+    /**
+     * Gets the deleted blob container name.
+     *
+     * @return The name of the previously deleted container.
+     */
+    public String getDeletedContainerName() {
+        return deletedContainerName;
+    }
+
+    /**
+     * Gets the deleted blob container version.
+     *
+     * @return The version of the previously deleted container.
+     */
+    public String getDeletedContainerVersion() {
+        return deletedContainerVersion;
+    }
 
     /**
      * Gets the destination blob container name.
