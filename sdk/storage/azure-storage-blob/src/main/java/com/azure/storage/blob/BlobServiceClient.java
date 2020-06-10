@@ -485,8 +485,7 @@ public final class BlobServiceClient {
         UndeleteBlobContainerOptions options, Duration timeout, Context context) {
         Mono<Response<BlobContainerClient>> response =
             this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                options.getDeletedContainerName(), options.getDeletedContainerVersion(),
-                options.getDestinationContainerName(), context)
+                options, context)
             .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
 
         return blockWithOptionalTimeout(response, timeout);

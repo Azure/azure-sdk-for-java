@@ -870,21 +870,22 @@ public final class BlobServiceAsyncClient {
         try {
             return withContext(context ->
                 undeleteBlobContainerWithResponse(
-                    options.getDeletedContainerName(), options.getDeletedContainerVersion(),
-                    options.getDestinationContainerName(), context));
+                    options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, String destinationContainerName,
+        UndeleteBlobContainerOptions options,
         Context context) {
-        boolean hasOptionalDestinationContainerName = destinationContainerName != null;
+        StorageImplUtils.assertNotNull("options", options);
+        boolean hasOptionalDestinationContainerName = options.getDestinationContainerName() != null;
         String finalDestinationContainerName =
-            hasOptionalDestinationContainerName ? destinationContainerName : deletedContainerName;
+            hasOptionalDestinationContainerName ? options.getDestinationContainerName()
+                : options.getDeletedContainerName();
         return this.azureBlobStorage.containers().restoreWithRestResponseAsync(finalDestinationContainerName, null,
-            null, deletedContainerName, deletedContainerVersion,
+            null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * Extended options that may be passed when restoring a blob container.
@@ -21,6 +22,8 @@ public class UndeleteBlobContainerOptions {
      * @param deletedContainerVersion The version of the previously deleted container.
      */
     public UndeleteBlobContainerOptions(String deletedContainerName, String deletedContainerVersion) {
+        StorageImplUtils.assertNotNull("deletedContainerName", deletedContainerName);
+        StorageImplUtils.assertNotNull("deletedContainerVersion", deletedContainerVersion);
         this.deletedContainerName = deletedContainerName;
         this.deletedContainerVersion = deletedContainerVersion;
     }
