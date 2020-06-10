@@ -67,7 +67,7 @@ public class RecognizeCustomFormsAsync {
         recognizeFormResult.subscribe(recognizedForms -> {
             for (int i = 0; i < recognizedForms.size(); i++) {
                 final RecognizedForm form = recognizedForms.get(i);
-                System.out.printf("----------- Recognized Form page %s -----------%n", i);
+                System.out.printf("----------- Recognized Form page %d -----------%n", i);
                 System.out.printf("Form type: %s%n", form.getFormType());
                 form.getFields().forEach((label, formField) -> {
                     System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,

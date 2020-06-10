@@ -71,11 +71,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
     private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
     private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
-    static final String GENERIC_ERROR_DURING_PREDICTION = "Generic error during prediction.";
+    static final String OCR_EXTRACTION_INVALID_URL_ERROR = "OCR extraction error: [Wrong response code: "
+        + "InvalidImageURL. Message: Image URL is badly formatted..]";
     static final String EXPECTED_INVALID_URL_ERROR_CODE = "3014";
     static final String EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE =
         "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
-            + "message: " + GENERIC_ERROR_DURING_PREDICTION;
+            + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
 
     FormRecognizerClientBuilder getFormRecognizerClientBuilder(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {

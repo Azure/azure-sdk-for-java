@@ -57,7 +57,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
-    static final String AUTHORIZATION_ERROR = "AuthorizationError";
+    static final String RESOURCE_RESOLVER_ERROR = "ResourceResolverError";
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {

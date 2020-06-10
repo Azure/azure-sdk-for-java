@@ -64,7 +64,7 @@ public class GetBoundingBoxes {
                 final List<FormTable> tables = formPage.getTables();
                 for (int i2 = 0; i2 < tables.size(); i2++) {
                     final FormTable formTable = tables.get(i2);
-                    System.out.printf("Table %s%n", i2);
+                    System.out.printf("Table %d%n", i2);
                     formTable.getCells().forEach(formTableCell -> {
                         System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
                         // textContent only exists if you set includeTextContent to True in your

@@ -49,7 +49,7 @@ public class RecognizeContentAsync {
         contentPageResults.subscribe(formPages -> {
             for (int i = 0; i < formPages.size(); i++) {
                 final FormPage formPage = formPages.get(i);
-                System.out.printf("----Recognizing content for page %s ----%n", i);
+                System.out.printf("----Recognizing content for page %d ----%n", i);
                 System.out.printf("Has width: %f and height: %f, measured with unit: %s%n", formPage.getWidth(),
                     formPage.getHeight(),
                     formPage.getUnit());
