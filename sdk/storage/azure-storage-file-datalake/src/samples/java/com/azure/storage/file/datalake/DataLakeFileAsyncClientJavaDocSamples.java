@@ -315,11 +315,11 @@ public class DataLakeFileAsyncClientJavaDocSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileAsyncClient#queryWithResponse(String, FileQueryOptions)}
+     * Code snippet for {@link DataLakeFileAsyncClient#queryWithResponse(FileQueryOptions)}
      * @throws UncheckedIOException for IOExceptions.
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions
         String expression = "SELECT * from BlobStorage";
         FileQueryJsonSerialization input = new FileQueryJsonSerialization()
             .setRecordSeparator('\n');
@@ -333,14 +333,14 @@ public class DataLakeFileAsyncClientJavaDocSamples {
         Consumer<FileQueryError> errorConsumer = System.out::println;
         Consumer<FileQueryProgress> progressConsumer = progress -> System.out.println("total file bytes read: "
             + progress.getBytesScanned());
-        FileQueryOptions queryOptions = new FileQueryOptions()
+        FileQueryOptions queryOptions = new FileQueryOptions(expression)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        client.queryWithResponse(expression, queryOptions)
+        client.queryWithResponse(queryOptions)
             .subscribe(response -> {
                 ByteArrayOutputStream queryData = new ByteArrayOutputStream();
                 response.getValue().subscribe(piece -> {
@@ -351,7 +351,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
                     }
                 });
             });
-        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions
+        // END: com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions
     }
 
 }

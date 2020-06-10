@@ -4,6 +4,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.function.Consumer;
 
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 @Fluent
 public class BlobQueryOptions {
 
+    private String expression;
     private BlobQuerySerialization inputSerialization;
     private BlobQuerySerialization outputSerialization;
     private BlobRequestConditions requestConditions;
@@ -21,8 +23,20 @@ public class BlobQueryOptions {
 
     /**
      * Constructs a {@link BlobQueryOptions}.
+     * @param expression The query expression.
      */
-    public BlobQueryOptions() {
+    public BlobQueryOptions(String expression) {
+        StorageImplUtils.assertNotNull("expression", expression);
+        this.expression = expression;
+    }
+
+    /**
+     * Gets the query expression.
+     *
+     * @return the query expression.
+     */
+    public String getExpression() {
+        return expression;
     }
 
     /**

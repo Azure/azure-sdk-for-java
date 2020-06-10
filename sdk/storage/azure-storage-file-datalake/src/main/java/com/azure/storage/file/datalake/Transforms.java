@@ -550,7 +550,7 @@ class Transforms {
             .setContentType(h.getContentType())
             .setContentRange(h.getContentRange())
             .setETag(h.getETag())
-            .setContentMd5(h.getContentMD5())
+            .setContentMd5(h.getContentMd5())
             .setContentEncoding(h.getContentEncoding())
             .setCacheControl(h.getCacheControl())
             .setContentDisposition(h.getContentDisposition())
@@ -571,7 +571,7 @@ class Transforms {
             .setDateProperty(h.getDateProperty())
             .setServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
-            .setFileContentMd5(h.getBlobContentMD5())
+            .setFileContentMd5(h.getContentMd5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode());
     }
@@ -580,7 +580,7 @@ class Transforms {
         if (options == null) {
             return null;
         }
-        return new BlobQueryOptions()
+        return new BlobQueryOptions(options.getExpression())
             .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
             .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
             .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))

@@ -527,7 +527,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
-    public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side"));
     }

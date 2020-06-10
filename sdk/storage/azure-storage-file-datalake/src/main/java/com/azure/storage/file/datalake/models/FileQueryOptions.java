@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.function.Consumer;
 
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 @Fluent
 public class FileQueryOptions {
 
+    private String expression;
     private FileQuerySerialization inputSerialization;
     private FileQuerySerialization outputSerialization;
     private DataLakeRequestConditions requestConditions;
@@ -22,7 +24,18 @@ public class FileQueryOptions {
     /**
      * Constructs a {@link FileQueryOptions}.
      */
-    public FileQueryOptions() {
+    public FileQueryOptions(String expression) {
+        StorageImplUtils.assertNotNull("expression", expression);
+        this.expression = expression;
+    }
+
+    /**
+     * Gets the query expression.
+     *
+     * @return the query expression.
+     */
+    public String getExpression() {
+        return expression;
     }
 
     /**

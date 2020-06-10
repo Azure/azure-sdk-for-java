@@ -900,7 +900,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A reactive response containing the queried data.
      */
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(expression, null)
+        return queryWithResponse(new FileQueryOptions(expression))
             .flatMapMany(FileQueryAsyncResponse::getValue);
     }
 
@@ -912,14 +912,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions}
      *
-     * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}
      * @return A reactive response containing the queried data.
      */
-    public Mono<FileQueryAsyncResponse> queryWithResponse(String expression, FileQueryOptions queryOptions) {
-        return blockBlobAsyncClient.queryWithResponse(expression, Transforms.toBlobQueryOptions(queryOptions))
+    public Mono<FileQueryAsyncResponse> queryWithResponse(FileQueryOptions queryOptions) {
+        return blockBlobAsyncClient.queryWithResponse(Transforms.toBlobQueryOptions(queryOptions))
             .map(Transforms::toFileQueryAsyncResponse)
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }

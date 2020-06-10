@@ -1073,7 +1073,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(expression, null);
+        return openQueryInputStream(new BlobQueryOptions(expression));
     }
 
     /**
@@ -1084,16 +1084,15 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions}
      *
-     * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    public InputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
+    public InputStream openQueryInputStream(BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
-        BlobQueryAsyncResponse response = client.queryWithResponse(expression, queryOptions)
+        BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions)
             .block();
 
         // Create input stream from the data.
@@ -1119,7 +1118,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, expression, null, null, Context.NONE);
+        queryWithResponse(stream, new BlobQueryOptions(expression), null, Context.NONE);
     }
 
     /**
@@ -1130,10 +1129,9 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-BlobQueryOptions-Duration-Context}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
-     * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1141,11 +1139,11 @@ public class BlobClientBase {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public BlobQueryResponse queryWithResponse(OutputStream stream, String expression, BlobQueryOptions queryOptions,
+    public BlobQueryResponse queryWithResponse(OutputStream stream, BlobQueryOptions queryOptions,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobQueryResponse> download = client
-            .queryWithResponse(expression, queryOptions, context)
+            .queryWithResponse(queryOptions, context)
             .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));

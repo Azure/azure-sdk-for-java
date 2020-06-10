@@ -1363,6 +1363,12 @@ directive:
       $.post.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
       $.post.parameters.splice(1, 0, { "$ref": path + "Blob" });
     }
+    $.post.responses["200"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.post.responses["206"].headers["Content-MD5"]["x-ms-client-name"] = "contentMd5";
+    $.post.responses["200"].headers["x-ms-blob-content-md5"]["x-ms-client-name"] = "blobContentMd5";
+    $.post.responses["206"].headers["x-ms-blob-content-md5"]["x-ms-client-name"] = "blobContentMd5";
+    $.post.responses["200"].headers["x-ms-server-encrypted"]["x-ms-client-name"] = "serverEncrypted";
+    $.post.responses["206"].headers["x-ms-server-encrypted"]["x-ms-client-name"] = "serverEncrypted";
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
