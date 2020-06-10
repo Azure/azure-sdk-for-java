@@ -7,7 +7,7 @@ package com.azure.cosmos.rx.examples.multimaster.samples;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -85,7 +85,7 @@ public class Worker {
                 FeedResponse<Document> response = null;
                 do {
 
-                    QueryRequestOptions options = new QueryRequestOptions();
+                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
                     ModelBridgeInternal.setQueryRequestOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
                     response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
@@ -122,7 +122,7 @@ public class Worker {
         FeedResponse<Document> response = null;
         do {
 
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             ModelBridgeInternal.setQueryRequestOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
             response = this.client.readDocuments(this.documentCollectionUri, options).take(1)

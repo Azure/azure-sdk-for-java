@@ -56,6 +56,7 @@
     "namespaceDomainNameSuffix": "servicebus.windows.net",
     "queueName": "queue",
     "queueSessionName": "queue-session",
+    "numberOfInstances": 10,
     "subscriptionName": "subscription",
     "subscriptionSessionName": "subscription-session",
     "serviceBusDataOwnerRoleId": "090c5cfd-751d-490a-894a-3ce6f1109419",
@@ -74,76 +75,6 @@
       "properties": {},
       "resources": [
         {
-          "type": "topics",
-          "apiVersion": "2017-04-01",
-          "name": "[variables('topicName')]",
-          "properties": {
-            "maxSizeInMegabytes": 1024,
-            "enablePartitioning": false
-          },
-          "dependsOn": [
-            "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
-          ],
-          "resources": [
-            {
-              "type": "subscriptions",
-              "apiVersion": "2017-04-01",
-              "name": "[variables('subscriptionName')]",
-              "dependsOn": [
-                "[variables('topicName')]"
-              ],
-              "properties": {
-                "requiresSession": false,
-                "maxDeliveryCount": 5
-              }
-            },
-            {
-              "type": "subscriptions",
-              "apiVersion": "2017-04-01",
-              "name": "[variables('subscriptionSessionName')]",
-              "dependsOn": [
-                "[variables('topicName')]"
-              ],
-              "properties": {
-                "requiresSession": true,
-                "maxDeliveryCount": 5
-              }
-            }
-          ]
-        },
-        {
-          "apiVersion": "2017-04-01",
-          "type": "queues",
-          "name": "[variables('queueName')]",
-          "dependsOn": [
-            "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
-          ],
-          "properties": {
-            "enablePartitioning": false,
-            "path": "[variables('queueName')]",
-            "maxDeliveryCount": 10,
-            "maxSizeInMegabytes": 1024,
-            "requiresDuplicateDetection": false,
-            "requiresSession": false
-          }
-        },
-        {
-          "apiVersion": "2017-04-01",
-          "type": "queues",
-          "name": "[variables('queueSessionName')]",
-          "dependsOn": [
-            "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
-          ],
-          "properties": {
-            "enablePartitioning": false,
-            "path": "[variables('queueSessionName')]",
-            "maxDeliveryCount": 10,
-            "maxSizeInMegabytes": 1024,
-            "requiresDuplicateDetection": false,
-            "requiresSession": true
-          }
-        },
-        {
           "apiVersion": "2017-04-01",
           "type": "AuthorizationRules",
           "name": "[variables('sharedAccessKeyName')]",
@@ -161,16 +92,84 @@
       ]
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2018-09-01-preview",
-      "name": "[guid(concat('serviceBusDataOwnerRoleId', variables('namespaceName')))]",
+      "type": "Microsoft.ServiceBus/namespaces/topics",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'))]",
+      "properties": {
+        "maxSizeInMegabytes": 1024,
+        "enablePartitioning": false
+      },
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('namespaceName'))]"
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaceName'), '/', variables('queueName'), '-', copyIndex())]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
       ],
       "properties": {
-        "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('serviceBusDataOwnerRoleId'))]",
-        "principalId": "[parameters('testApplicationOid')]",
-        "scope": "[resourceGroup().id]"
+        "maxDeliveryCount": 5,
+        "requiresDuplicateDetection": false,
+        "requiresSession": false,
+        "lockDuration": "PT15S"
+      },
+      "copy": {
+        "name": "queueCopy",
+        "count": "[variables('numberOfInstances')]"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/queues",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaceName'), '/', variables('queueSessionName'), '-', copyIndex())]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+      ],
+      "properties": {
+        "maxDeliveryCount": 5,
+        "requiresSession": true,
+        "lockDuration": "PT15S"
+      },
+      "copy": {
+        "name": "queueSessionCopy",
+        "count": "[variables('numberOfInstances')]"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '/', variables('subscriptionName'), '-', copyIndex())]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'))]"
+      ],
+      "properties": {
+        "requiresSession": false,
+        "maxDeliveryCount": 5,
+        "lockDuration": "PT15S"
+      },
+      "copy": {
+        "name": "subscriptionCopy",
+        "count": "[variables('numberOfInstances')]"
+      }
+    },
+    {
+      "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '/', variables('subscriptionSessionName'), '-', copyIndex())]",
+      "dependsOn": [
+        "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'))]"
+      ],
+      "properties": {
+        "requiresSession": true,
+        "maxDeliveryCount": 5,
+        "lockDuration": "PT15S"
+      },
+      "copy": {
+        "name": "subscriptionSessionCopy",
+        "count": "[variables('numberOfInstances')]"
       }
     }
   ],

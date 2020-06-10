@@ -12,7 +12,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -31,10 +31,10 @@ public interface ChangeFeedContextClient {
      * Reads the feed (sequence) of {@link PartitionKeyRange} for a database account from the Azure Cosmos DB service as an asynchronous operation.
      *
      * @param partitionKeyRangesOrCollectionLink the link of the resources to be read, or owner collection link, SelfLink or AltLink. E.g. /dbs/db_rid/colls/coll_rid/pkranges.
-     * @param queryRequestOptions the options for the request; it can be set as null.
+     * @param cosmosQueryRequestOptions the options for the request; it can be set as null.
      * @return an a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
-    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, QueryRequestOptions queryRequestOptions);
+    Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRangeFeed(String partitionKeyRangesOrCollectionLink, CosmosQueryRequestOptions cosmosQueryRequestOptions);
 
     /**
      * Method to create a change feed query for documents.
@@ -116,7 +116,7 @@ public interface ChangeFeedContextClient {
      * @param options        the query request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
-    <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec, QueryRequestOptions options, Class<T> klass);
+    <T> Flux<FeedResponse<T>> queryItems(CosmosAsyncContainer containerLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> klass);
 
     /**
      * @return the Cosmos client's service endpoint.

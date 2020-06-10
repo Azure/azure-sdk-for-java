@@ -232,6 +232,7 @@ public class TestCommons {
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
         long deliveryCount = receivedMessage.getDeliveryCount();
+        Assert.assertEquals("Wrong delivery count for received message", 1, deliveryCount);
         receiver.abandon(receivedMessage.getLockToken());
         receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
@@ -516,6 +517,7 @@ public class TestCommons {
         Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
         Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
         long deliveryCount = receivedMessage.getDeliveryCount();
+        Assert.assertEquals("Wrong delivery count for received message", 2, deliveryCount);
         receiver.abandon(receivedMessage.getLockToken());
 
         // Try to receive by sequence number again

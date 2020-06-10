@@ -13,7 +13,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.Resource;
@@ -74,7 +74,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             + " ORDER BY r.propInt"
             , ModelBridgeInternal.getStringFromJsonSerializable(expectedDocument,"propStr"));
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(qmEnabled);
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -102,7 +102,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocuments_NoResults() throws Exception {
         String query = "SELECT * from root r where r.id = '2' ORDER BY r.propInt";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -125,7 +125,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderBy(String sortOrder) throws Exception {
         String query = String.format("SELECT * FROM r ORDER BY r.propInt %s", sortOrder);
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -152,7 +152,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
     public void queryOrderByWithValue(String sortOrder) throws Exception {
         String query = String.format("SELECT value r.propInt FROM r ORDER BY r.propInt %s", sortOrder);
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
         CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,
@@ -184,7 +184,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryOrderByInt() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propInt";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -207,7 +207,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryOrderByString() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propStr";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -236,7 +236,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider =  "topValue")
     public void queryOrderWithTop(int topValue) throws Exception {
         String query = String.format("SELECT TOP %d * FROM r ORDER BY r.propInt", topValue);
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         int pageSize = 3;
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
@@ -280,7 +280,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryScopedToSinglePartition_StartWithContinuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propScopedPartitionInt ASC";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey("duplicateParitionKeyValue"));
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -479,7 +479,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private void assertInvalidContinuationToken(String query, int[] pageSize, List<String> expectedIds) {
         String requestContinuation = null;
         do {
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
             options.setMaxDegreeOfParallelism(2);
             OrderByContinuationToken orderByContinuationToken = new OrderByContinuationToken(
@@ -517,7 +517,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         List<String> continuationTokens = new ArrayList<String>();
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
         do {
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
             options.setMaxDegreeOfParallelism(2);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query,

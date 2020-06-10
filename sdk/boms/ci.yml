@@ -40,3 +40,6 @@ stages:
         - name: azure-sdk-bom
           groupId: com.azure
           safeName: azuresdkbom
+        - name: azure-spring-boot-bom
+          groupID: com.microsoft.azure
+          safeName: azurespringbootbom

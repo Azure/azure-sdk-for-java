@@ -38,7 +38,7 @@ public final class FormPage {
      * The unit used by the width, height and boundingBox properties. For
      * images, the unit is "pixel". For PDF, the unit is "inch".
      */
-    private final DimensionUnit unit;
+    private final LengthUnit unit;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
@@ -61,7 +61,7 @@ public final class FormPage {
      * @param tables List of data tables extracted from the page.
      * @param pageNumber the 1-based page number in the input document.
      */
-    public FormPage(final float height, final float textAngle, final DimensionUnit unit,
+    public FormPage(final float height, final float textAngle, final LengthUnit unit,
         final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
         this.height = height;
         this.textAngle = textAngle;
@@ -117,7 +117,7 @@ public final class FormPage {
      *
      * @return the unit value.
      */
-    public DimensionUnit getUnit() {
+    public LengthUnit getUnit() {
         return this.unit;
     }
 

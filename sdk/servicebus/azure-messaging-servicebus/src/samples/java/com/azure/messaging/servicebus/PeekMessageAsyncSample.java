@@ -32,7 +32,7 @@ public class PeekMessageAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        receiver.browse().subscribe(
+        receiver.peek().subscribe(
             message -> {
                 System.out.println("Received Message Id: " + message.getMessageId());
                 System.out.println("Received Message: " + new String(message.getBody()));

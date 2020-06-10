@@ -15,7 +15,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -392,10 +392,10 @@ public final class CosmosAsyncClient implements Closeable {
      * The {@link CosmosPagedFlux} will contain one or several feed response of the read databases.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options {@link QueryRequestOptions}
+     * @param options {@link CosmosQueryRequestOptions}
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(QueryRequestOptions options) {
+    CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
@@ -416,7 +416,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases() {
-        return readAllDatabases(new QueryRequestOptions());
+        return readAllDatabases(new CosmosQueryRequestOptions());
     }
 
 
@@ -431,7 +431,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, QueryRequestOptions options) {
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, CosmosQueryRequestOptions options) {
         return queryDatabases(new SqlQuerySpec(query), options);
     }
 
@@ -446,7 +446,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
-    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, QueryRequestOptions options) {
+    public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)

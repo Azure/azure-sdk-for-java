@@ -11,14 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class SynonymMap {
-
-    /*
-     * The format of the synonym map. Only the 'solr' format is currently
-     * supported.
-     */
-    @JsonProperty(value = "format", required = true)
-    private static final String FORMAT = "solr";
-
     /*
      * The name of the synonym map.
      */

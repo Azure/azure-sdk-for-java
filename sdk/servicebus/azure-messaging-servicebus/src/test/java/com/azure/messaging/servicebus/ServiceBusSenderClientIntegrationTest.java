@@ -68,11 +68,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionQueueSendMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, 0);
 
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Assert & Act
         sender.send(message);
@@ -87,11 +86,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionMessageBatch(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, 0);
 
         final String messageId = UUID.randomUUID().toString();
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(1024);
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(3, messageId, CONTENTS_BYTES);
 
         // Assert & Act
         ServiceBusMessageBatch batch = sender.createBatch(options);
@@ -113,9 +112,9 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionEntitySendMessageList(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, 0);
         int count = 3;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
         sender.send(messages);
@@ -130,12 +129,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionScheduleMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, 0);
 
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Act
         long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
@@ -153,12 +151,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void nonSessionCancelScheduleMessage(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, 0);
 
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(20);
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
         // Assert & Act
         long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime);
@@ -169,10 +166,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         messagesPending.incrementAndGet();
     }
 
-    void setSenderAndReceiver(MessagingEntityType entityType) {
+    void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex) {
         switch (entityType) {
             case QUEUE:
-                final String queueName = getQueueName();
+                final String queueName = getQueueName(entityIndex);
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
@@ -186,7 +183,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
+                final String subscriptionName = getSubscriptionName(entityIndex);
 
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");

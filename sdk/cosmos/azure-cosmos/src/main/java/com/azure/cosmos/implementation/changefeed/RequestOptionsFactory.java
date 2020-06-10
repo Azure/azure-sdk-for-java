@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 
 /**
  * Defines request options for lease requests to use with {@link LeaseStoreManager}.
@@ -12,5 +12,5 @@ public interface RequestOptionsFactory {
 
     CosmosItemRequestOptions createItemRequestOptions(Lease lease);
 
-    QueryRequestOptions createQueryRequestOptions();
+    CosmosQueryRequestOptions createQueryRequestOptions();
 }

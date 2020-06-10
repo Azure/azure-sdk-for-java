@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
@@ -71,7 +70,7 @@ public class CachedSchemaRegistryClientTest {
             client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         verify(restService, times(1))
-            .createSchema(anyString(), anyString(), anyString(), anyString());
+            .createSchema(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
     }
 
     @Test
@@ -89,7 +88,7 @@ public class CachedSchemaRegistryClientTest {
 
     @Test
     public void testGetSchemaThenGuidCacheHit() throws Exception {
-        UUID mockId = UUID.randomUUID();
+        String mockId = "mock-id---";
         GetSchemaByIdHeaders mockHeaders = new GetSchemaByIdHeaders();
         mockHeaders.setXSchemaType(MOCK_SERIALIZATION);
         when(restService.getSchemaByIdWithResponseAsync(mockId))
@@ -133,6 +132,6 @@ public class CachedSchemaRegistryClientTest {
             client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         verify(restService, times(2))
-            .createSchema(anyString(), anyString(), anyString(), anyString());
+            .createSchema(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
     }
 }
