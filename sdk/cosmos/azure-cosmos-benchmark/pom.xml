@@ -32,6 +32,7 @@ Licensed under the MIT License.
 
   <!-- CosmosSkip - Needed temporary values to 10% not fail. -->
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
