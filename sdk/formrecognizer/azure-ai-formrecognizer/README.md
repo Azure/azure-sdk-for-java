@@ -198,7 +198,7 @@ List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
 for (int i = 0; i < recognizedForms.size(); i++) {
     RecognizedForm form = recognizedForms.get(i);
-    System.out.printf("----------- Recognized Form %s-----------%n", i);
+    System.out.printf("----------- Recognized Form %d-----------%n", i);
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
         System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
@@ -221,7 +221,7 @@ List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
 for (int i = 0; i < contentPageResults.size(); i++) {
     FormPage formPage = contentPageResults.get(i);
-    System.out.printf("----Recognizing content for page %s----%n", i);
+    System.out.printf("----Recognizing content for page %d----%n", i);
     // Table information
     System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
@@ -251,7 +251,7 @@ List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 for (int i = 0; i < receiptPageResults.size(); i++) {
     RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
     Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-    System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+    System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
     FormField merchantNameField = recognizedFields.get("MerchantName");
     if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
         System.out.printf("Merchant Name: %s, confidence: %.2f%n",
@@ -280,7 +280,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
                     }
                     if (key.equals("Quantity")) {
                         if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                            System.out.printf("Quantity: %s, confidence: %.2f%n",
+                            System.out.printf("Quantity: %d, confidence: %.2f%n",
                                 formField.getFieldValue().asInteger(), formField.getConfidence());
                         }
                     }
@@ -327,7 +327,7 @@ Manage the custom models attached to your account.
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
 AccountProperties accountProperties = formTrainingClient.getAccountProperties();
-System.out.printf("The account has %s custom models, and we can have at most %s custom models",
+System.out.printf("The account has %d custom models, and we can have at most %d custom models",
     accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
 // Next, we get a paged list of all of our custom models
