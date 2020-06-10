@@ -3068,7 +3068,7 @@ class FileAPITest extends APISpec {
         /* Output Stream. */
         when:
         receiver = new MockErrorReceiver("InvalidColumnOrdinal")
-        options = new FileQueryOptions()
+        options = new FileQueryOptions(expression)
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
             .setErrorConsumer(receiver)
@@ -3141,7 +3141,7 @@ class FileAPITest extends APISpec {
         /* Output Stream. */
         when:
         mockReceiver = new MockProgressReceiver()
-        options = new FileQueryOptions()
+        options = new FileQueryOptions(expression)
             .setProgressConsumer(mockReceiver as Consumer)
         fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
