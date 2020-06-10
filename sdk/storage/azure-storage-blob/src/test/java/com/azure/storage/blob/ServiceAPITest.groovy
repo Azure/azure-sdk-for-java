@@ -780,7 +780,7 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(), null,
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
             Duration.ofMinutes(1), Context.NONE)
         def restoredContainerClient = response.getValue()
 
@@ -840,7 +840,7 @@ class ServiceAPITest extends APISpec {
         when:
         def responseMono = blobContainerItemMono.flatMap {
             blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                blobContainerItem.getName(), blobContainerItem.getVersion(), null)
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
         }
 
         then:

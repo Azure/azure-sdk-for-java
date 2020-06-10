@@ -887,6 +887,6 @@ public final class BlobServiceAsyncClient {
             null, deletedContainerName, deletedContainerVersion,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
-                getBlobContainerAsyncClient(destinationContainerName)));
+                getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
 }
