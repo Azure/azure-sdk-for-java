@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Task details based on specific task type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = TaskTypeDetails.class)
 @JsonTypeName("TaskTypeDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AutomationRunbookTaskDetails", value = AutomationRunbookTaskDetails.class),

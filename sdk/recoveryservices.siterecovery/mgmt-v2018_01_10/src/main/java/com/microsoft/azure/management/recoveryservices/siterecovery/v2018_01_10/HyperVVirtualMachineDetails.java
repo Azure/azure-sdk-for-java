@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Single Host fabric provider specific VM settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVVirtualMachineDetails.class)
 @JsonTypeName("HyperVVirtualMachine")
 public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /**

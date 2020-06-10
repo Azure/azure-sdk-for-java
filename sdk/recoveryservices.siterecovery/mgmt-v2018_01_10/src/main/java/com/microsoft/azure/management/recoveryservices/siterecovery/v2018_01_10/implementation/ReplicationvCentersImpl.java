@@ -82,10 +82,14 @@ class ReplicationvCentersImpl extends WrapperImpl<ReplicationvCentersInner> impl
     public Observable<VCenter> getAsync(String fabricName, String vCenterName) {
         ReplicationvCentersInner client = this.inner();
         return client.getAsync(fabricName, vCenterName)
-        .map(new Func1<VCenterInner, VCenter>() {
+        .flatMap(new Func1<VCenterInner, Observable<VCenter>>() {
             @Override
-            public VCenter call(VCenterInner inner) {
-                return wrapModel(inner);
+            public Observable<VCenter> call(VCenterInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VCenter)wrapModel(inner));
+                }
             }
        });
     }

@@ -88,10 +88,14 @@ class ReplicationProtectionContainerMappingsImpl extends WrapperImpl<Replication
     public Observable<ProtectionContainerMapping> getAsync(String fabricName, String protectionContainerName, String mappingName) {
         ReplicationProtectionContainerMappingsInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName, mappingName)
-        .map(new Func1<ProtectionContainerMappingInner, ProtectionContainerMapping>() {
+        .flatMap(new Func1<ProtectionContainerMappingInner, Observable<ProtectionContainerMapping>>() {
             @Override
-            public ProtectionContainerMapping call(ProtectionContainerMappingInner inner) {
-                return wrapModel(inner);
+            public Observable<ProtectionContainerMapping> call(ProtectionContainerMappingInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ProtectionContainerMapping)wrapModel(inner));
+                }
             }
        });
     }

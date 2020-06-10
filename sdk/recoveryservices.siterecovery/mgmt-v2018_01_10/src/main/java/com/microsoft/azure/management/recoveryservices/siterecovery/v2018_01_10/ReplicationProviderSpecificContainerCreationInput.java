@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Provider specific input for container creation operation.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ReplicationProviderSpecificContainerCreationInput.class)
 @JsonTypeName("ReplicationProviderSpecificContainerCreationInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AContainerCreationInput.class),
-    @JsonSubTypes.Type(name = "6c7da455-506f-43ff-a16a-8eb101aebb70", value = VMwareCbtContainerCreationInput.class)
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtContainerCreationInput.class)
 })
 public class ReplicationProviderSpecificContainerCreationInput {
 }

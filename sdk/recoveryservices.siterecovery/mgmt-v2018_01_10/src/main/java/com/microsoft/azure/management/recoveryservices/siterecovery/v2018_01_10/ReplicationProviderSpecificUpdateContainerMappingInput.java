@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Provider specific input for update pairing operations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ReplicationProviderSpecificUpdateContainerMappingInput.class)
 @JsonTypeName("ReplicationProviderSpecificUpdateContainerMappingInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AUpdateContainerMappingInput.class)

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Container mapping provider specific details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ProtectionContainerMappingProviderSpecificDetails.class)
 @JsonTypeName("ProtectionContainerMappingProviderSpecificDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AProtectionContainerMappingDetails.class),

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Base class for provider specific input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = PolicyProviderSpecificInput.class)
 @JsonTypeName("PolicyProviderSpecificInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2APolicyCreationInput.class),

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * This class represents the fabric replication group task details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = FabricReplicationGroupTaskDetails.class)
 @JsonTypeName("FabricReplicationGroupTaskDetails")
 public class FabricReplicationGroupTaskDetails extends TaskTypeDetails {
     /**

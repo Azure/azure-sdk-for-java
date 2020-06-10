@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Update replication protected item provider specific input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = UpdateReplicationProtectedItemProviderInput.class)
 @JsonTypeName("UpdateReplicationProtectedItemProviderInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AUpdateReplicationProtectedItemInput.class),

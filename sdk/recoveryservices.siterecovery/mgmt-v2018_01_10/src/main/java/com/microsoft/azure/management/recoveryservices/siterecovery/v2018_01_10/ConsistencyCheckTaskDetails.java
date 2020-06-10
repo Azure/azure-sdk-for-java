@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * This class contains monitoring details of all the inconsistent Protected
  * Entities in Vmm.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ConsistencyCheckTaskDetails.class)
 @JsonTypeName("ConsistencyCheckTaskDetails")
 public class ConsistencyCheckTaskDetails extends TaskTypeDetails {
     /**
