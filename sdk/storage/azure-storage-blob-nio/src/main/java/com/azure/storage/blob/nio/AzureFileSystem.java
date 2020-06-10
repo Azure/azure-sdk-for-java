@@ -98,6 +98,11 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_UPLOAD_BLOCK_SIZE = "AzureStorageUploadBlockSize";
 
     /**
+     * Expected type: Integer
+     */
+    public static final String AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST = "AzureStorageMaxConcurrencyPerRequest";
+
+    /**
      * Expected type: Long
      */
     public static final String AZURE_STORAGE_PUT_BLOB_THRESHOLD = "AzureStoragePutBlobThreshold";
@@ -131,6 +136,7 @@ public final class AzureFileSystem extends FileSystem {
     private final BlobServiceClient blobServiceClient;
     private final Long blockSize;
     private final Long putBlobThreshold;
+    private final Integer maxConccurencyPerRequest;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;
@@ -150,6 +156,7 @@ public final class AzureFileSystem extends FileSystem {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
             this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
             this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
+            this.maxConccurencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
 
             // Initialize and ensure access to FileStores.
@@ -417,5 +424,9 @@ public final class AzureFileSystem extends FileSystem {
 
     Long getPutBlobThreshold() {
         return this.putBlobThreshold;
+    }
+
+    Integer getMaxConcurrencyPerRequest() {
+        return this.maxConccurencyPerRequest;
     }
 }

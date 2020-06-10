@@ -1,6 +1,5 @@
 package com.azure.storage.blob.nio
 
-import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
@@ -11,11 +10,14 @@ import spock.lang.Unroll
 class NioBlobOutputStreamTest extends APISpec {
     BlockBlobClient bc
     NioBlobOutputStream nioStream
+    def blockSize = 50
+    def maxSingleUploadSize = 200
 
     def setup() {
         cc.create()
         bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        nioStream = new NioBlobOutputStream(bc.getBlobOutputStream())
+        nioStream = new NioBlobOutputStream(bc.getBlobOutputStream(new ParallelTransferOptions(blockSize, null, null,
+            maxSingleUploadSize), null, null, null, null))
     }
 
     def cleanup() {
@@ -39,7 +41,23 @@ class NioBlobOutputStreamTest extends APISpec {
     }
 
     def "Write min error"() {
+        // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
+        // writing that there was an error
+        setup:
+        def abc = cc.getBlobClient(bc.getBlobName()).getAppendBlobClient()
+        abc.create()
 
+        // Write enough data to force making network requests.
+        nioStream.write(getRandomByteArray(maxSingleUploadSize + 1))
+        // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
+        // time to round trip.
+        bc.getProperties()
+
+        when:
+        nioStream.write(1)
+
+        then:
+        thrown(IOException)
     }
 
     def "Write array"() {
@@ -62,7 +80,23 @@ class NioBlobOutputStreamTest extends APISpec {
     }
 
     def "Write array error"() {
+        // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
+        // writing that there was an error
+        setup:
+        def abc = cc.getBlobClient(bc.getBlobName()).getAppendBlobClient()
+        abc.create()
 
+        // Write enough data to force making network requests.
+        nioStream.write(getRandomByteArray(maxSingleUploadSize + 1))
+        // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
+        // time to round trip.
+        bc.getProperties()
+
+        when:
+        nioStream.write(new byte[1])
+
+        then:
+        thrown(IOException)
     }
 
     @Unroll
@@ -101,10 +135,26 @@ class NioBlobOutputStreamTest extends APISpec {
     }
 
     def "Write offset len network error"() {
+        // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
+        // writing that there was an error
+        setup:
+        def abc = cc.getBlobClient(bc.getBlobName()).getAppendBlobClient()
+        abc.create()
 
+        // Write enough data to force making network requests.
+        nioStream.write(getRandomByteArray(maxSingleUploadSize + 1))
+        // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
+        // time to round trip.
+        bc.getProperties()
+
+        when:
+        nioStream.write(new byte[1], 0, 1)
+
+        then:
+        thrown(IOException)
     }
 
-    // Flush is a no-op right now
+    // Flush does not actually flush data right now
     def "Flush"() {
         setup:
         nioStream.write(1)
@@ -118,27 +168,43 @@ class NioBlobOutputStreamTest extends APISpec {
         e.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND
     }
 
-    /*
-     Since this isn't really useful (closed state only gets checked on close and flush, which is also a no-op, maybe we
-     should just doc close as a no-op and swallow errors. Can't do that really because it's how we manifest errors we
-     got while writing.
-     */
+    // Flush should at least check the stream state
+    def "Flush error"() {
+        // Create an append blob at the destination to ensure writes fail. Customers should eventually be notified via
+        // writing that there was an error
+        setup:
+        def abc = cc.getBlobClient(bc.getBlobName()).getAppendBlobClient()
+        abc.create()
+
+        // Write enough data to force making network requests.
+        nioStream.write(getRandomByteArray(maxSingleUploadSize + 1))
+        // Issue a spurious request: A more reliable way than sleeping to ensure the previous stage block has enough
+        // time to round trip.
+        bc.getProperties()
+
+        when:
+        nioStream.flush()
+
+        then:
+        thrown(IOException)
+    }
+
     def "Close"() {
         when:
         nioStream.close()
         nioStream.write(1)
-        // TODO: Fix. Decide on behavior
+
         then:
         thrown(IOException)
     }
 
     def "Close error"() {
+        when:
+        nioStream.close()
+        nioStream.close()
 
+        then:
+        thrown(IOException)
     }
-
-    // all overloads of write
-    // all overloads of write throwing an error
-    // close (manifesting errors, throwing an error upon writing again)
-    // flush. Should stage a block
 }
 

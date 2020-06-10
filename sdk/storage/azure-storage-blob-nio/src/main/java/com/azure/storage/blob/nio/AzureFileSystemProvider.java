@@ -98,6 +98,7 @@ import java.util.concurrent.ConcurrentMap;
  *     <li>{@code AzureStorageSecondaryHost:}{@link Integer}</li>
  *     <li>{@code AzureStorageBlockSize:}{@link Long}</li>
  *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
+ *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
  *     <li>{@code AzureStorageFileStores:}{@link Iterable}&lt;String&gt;}</li>
@@ -232,16 +233,35 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Opens an {@link OutputStream} to the given path.
+     * Opens an {@link OutputStream} to the given path. The resulting file will be stored as a block blob.
+     * <p>
+     * The only supported options are {@link StandardOpenOption#CREATE}, {@link StandardOpenOption#CREATE_NEW},
+     * {@link StandardOpenOption#WRITE}, {@link StandardOpenOption#TRUNCATE_EXISTING}. Any other options will throw an
+     * {@link UnsupportedOperationException}. {@code WRITE} and {@code TRUNCATE_EXISTING} must be specified or an
+     * {@link IllegalArgumentException} will be thrown. Hence, files cannot be updated, only overwritten completely.
+     * <p>
+     * This stream will not attempt to buffer the entire file, however some buffering will be done for potential
+     * optimizations and to avoid network thrashing. Specifically, up to
+     * {@link AzureFileSystem#AZURE_STORAGE_PUT_BLOB_THRESHOLD} bytes will be buffered initially. If that threshold is
+     * exceeded, the data will be broken into chunks and sent in blocks, and writes will be buffered into sizes of
+     * {@link AzureFileSystem#AZURE_STORAGE_UPLOAD_BLOCK_SIZE}. The maximum number of buffers of this size to be
+     * allocated is defined by {@link AzureFileSystem#AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST}, which also configures
+     * the level of parallelism with which we may write and thus may affect write speeds as ell.
+     * <p>
+     * The data is only committed when the steam is closed. Hence data cannot be read from the destination until the
+     * stream is closed. When the close method returns, it is guaranteed that, barring any errors, the data is finalized
+     * and available for reading.
+     * <p>
+     * Writing happens asynchronously. Bytes passed for writing are stored until either the threshold or block size are
+     * met at which time they are sent to the service. When the write method returns, there is no guarantee about which
+     * phase of this process the data is in other than it has been accepted and will be written. Again, closing will
+     * guarantee that the data is written and available.
+     * <p>
+     * Flush is a no-op as regards data transfers, but it can be used to check the state of the stream for errors.
+     * This can be a useful tool because writing happens asynchronously, and therefore an error from a previous write
+     * may not otherwise be thrown unless the stream is flushed, closed, or written to again.
      *
-     *
-     *
-     * Which options are supported in what combinations.
-     *
-     * @param path
-     * @param options
-     * @return
-     * @throws IOException
+     * {@inheritDoc}
      */
     @Override
     public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException {
@@ -267,15 +287,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             }
         }
 
+        // Write and truncate must be specified
         if (!optionsList.contains(StandardOpenOption.WRITE)
             || !optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
             throw new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream");
         }
-
-        // Requires write. And truncate existing?
-        // Won't support deleteOnClose or Append right now. or anything else besides the creates.
-        // Could support append by downloading the existing block list on open.
-        // Maybe add an option to actually disable buffering? Same for InputStream.
 
         AzureResource resource = new AzureResource(path);
         DirectoryStatus status = resource.checkDirStatus();
@@ -300,10 +316,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 + "CREATE_NEW was specified. Path: " + path.toString()));
         }
 
+        // Create options based on file system config
         AzureFileSystem fs = (AzureFileSystem)(path.getFileSystem());
         Integer blockSize = fs.getBlockSize() == null ? null : fs.getBlockSize().intValue();
         Integer putBlobThreshold = fs.getPutBlobThreshold() == null ? null : fs.getPutBlobThreshold().intValue();
-        ParallelTransferOptions pto = new ParallelTransferOptions(blockSize, null, null, putBlobThreshold);
+        ParallelTransferOptions pto = new ParallelTransferOptions(blockSize, fs.getMaxConcurrencyPerRequest(), null,
+            putBlobThreshold);
+
+        // Add an extra etag check for create new
         BlobRequestConditions rq = null;
         if (optionsList.contains(StandardOpenOption.CREATE_NEW)) {
             rq = new BlobRequestConditions().setIfNoneMatch("*");
