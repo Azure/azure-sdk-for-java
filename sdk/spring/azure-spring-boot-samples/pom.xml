@@ -72,8 +72,8 @@
     <module>azure-spring-boot-sample-keyvault-secrets</module>
     <module>azure-spring-boot-sample-mediaservices</module>
     <module>azure-spring-boot-sample-servicebus</module>
-<!--    <module>azure-spring-boot-sample-servicebus-jms-queue</module>-->
-<!--    <module>azure-spring-boot-sample-servicebus-jms-topic</module>-->
+    <module>azure-spring-boot-sample-servicebus-jms-queue</module>
+    <module>azure-spring-boot-sample-servicebus-jms-topic</module>
     <module>azure-spring-boot-sample-storage-blob</module>
   </modules>
 
