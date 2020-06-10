@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package sample.aad.security;
+package com.microsoft.azure.aad.btoc.security;
 
 import com.microsoft.azure.spring.autoconfigure.btoc.AADB2COidcLoginConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

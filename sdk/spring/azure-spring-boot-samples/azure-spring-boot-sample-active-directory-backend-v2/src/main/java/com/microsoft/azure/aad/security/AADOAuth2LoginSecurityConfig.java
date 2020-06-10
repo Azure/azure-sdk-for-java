@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package microsoft.azure.aad.security;
+package com.microsoft.azure.aad.security;
 
 import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFailureHandler;
 import com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2AuthorizationRequestResolver;
