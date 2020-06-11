@@ -841,8 +841,9 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(deletedContainerName,
-            deletedContainerVersion, null).flatMap(FluxUtil::toMono);
+        return this.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion)
+        ).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -858,35 +859,35 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#String-String-UndeleteBlobContainerOptions}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions}
      *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
      * @param options {@link UndeleteBlobContainerOptions}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
     public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options) {
+        UndeleteBlobContainerOptions options) {
         try {
             return withContext(context ->
                 undeleteBlobContainerWithResponse(
-                    deletedContainerName, deletedContainerVersion, options, context));
+                    options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options,
+        UndeleteBlobContainerOptions options,
         Context context) {
-        boolean hasOptionalDestinationContainerName = options != null && options.getDestinationContainerName() != null;
-        String destinationContainerName =
-            hasOptionalDestinationContainerName ? options.getDestinationContainerName() : deletedContainerName;
-        return this.azureBlobStorage.containers().restoreWithRestResponseAsync(destinationContainerName, null,
-            null, deletedContainerName, deletedContainerVersion,
+        StorageImplUtils.assertNotNull("options", options);
+        boolean hasOptionalDestinationContainerName = options.getDestinationContainerName() != null;
+        String finalDestinationContainerName =
+            hasOptionalDestinationContainerName ? options.getDestinationContainerName()
+                : options.getDeletedContainerName();
+        return this.azureBlobStorage.containers().restoreWithRestResponseAsync(finalDestinationContainerName, null,
+            null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
-                getBlobContainerAsyncClient(destinationContainerName)));
+                getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
 }

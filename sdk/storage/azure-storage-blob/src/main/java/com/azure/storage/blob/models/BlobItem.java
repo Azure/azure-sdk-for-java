@@ -252,7 +252,7 @@ public final class BlobItem {
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
+    public BlobItem setCurrentVersion(Boolean isCurrentVersion) {
         this.isCurrentVersion = isCurrentVersion;
         return this;
     }
