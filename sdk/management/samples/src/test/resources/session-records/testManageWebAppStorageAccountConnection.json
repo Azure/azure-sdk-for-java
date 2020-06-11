@@ -119,7 +119,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "dff31f87-4972-4e99-b2bc-772b07bda37a",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"Y3y+nmD104Kw28OlUoMB2/1GOt8ilZE0wzjy+0UtK7Pr4T0x2WN1jgnNRjsRxibW8Y0RNy6TEY/+B1p0n3V2eg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"oTLR3F5VrDntC4234UAMR2tglW7ovz9c96s0/J9cx2o5IEQPFR9wOsmTWerOda5BvQ0kfY9gFysfZh9UUYsPAg==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",
@@ -441,7 +441,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "ce7ee904-7070-48cc-b09a-c0b212fb0131",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_6784645828e2/providers/Microsoft.Web/sites/webapp1-40312517e2/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore41e537212;AccountKey=Y3y+nmD104Kw28OlUoMB2/1GOt8ilZE0wzjy+0UtK7Pr4T0x2WN1jgnNRjsRxibW8Y0RNy6TEY/+B1p0n3V2eg==\",\"type\":\"Custom\"}}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_6784645828e2/providers/Microsoft.Web/sites/webapp1-40312517e2/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore41e537212;AccountKey=***REMOVED***\",\"type\":\"Custom\"}}}"
     }
   }, {
     "Method" : "POST",
@@ -599,7 +599,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "6c1a2a3e-a38d-40c8-a328-673d743e96ed",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_6784645828e2/providers/Microsoft.Web/sites/webapp1-40312517e2/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore41e537212;AccountKey=Y3y+nmD104Kw28OlUoMB2/1GOt8ilZE0wzjy+0UtK7Pr4T0x2WN1jgnNRjsRxibW8Y0RNy6TEY/+B1p0n3V2eg==\",\"type\":\"Custom\"}}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_6784645828e2/providers/Microsoft.Web/sites/webapp1-40312517e2/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore41e537212;AccountKey=***REMOVED***\",\"type\":\"Custom\"}}}"
     }
   } ],
   "variables" : [ "webapp1-40312517e2", "jsdkstore41e537212", "jcontainerdc656401f", "rg1nemv_6784645828e2", "webapp1-40312517e2plan20b16921b" ]

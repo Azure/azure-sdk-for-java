@@ -5,40 +5,40 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.ServiceCounters;
 import com.azure.search.documents.indexes.models.ServiceLimits;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics} and
- * {@link ServiceStatistics}.
+ * {@link SearchServiceStatistics}.
  */
 public final class ServiceStatisticsConverter {
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics} to
-     * {@link ServiceStatistics}.
+     * {@link SearchServiceStatistics}.
      */
-    public static ServiceStatistics map(com.azure.search.documents.indexes.implementation.models.ServiceStatistics obj) {
+    public static SearchServiceStatistics map(com.azure.search.documents.indexes.implementation.models.ServiceStatistics obj) {
         if (obj == null) {
             return null;
         }
-        ServiceStatistics serviceStatistics = new ServiceStatistics();
+        SearchServiceStatistics searchServiceStatistics = new SearchServiceStatistics();
 
         if (obj.getCounters() != null) {
             ServiceCounters counters = ServiceCountersConverter.map(obj.getCounters());
-            serviceStatistics.setCounters(counters);
+            searchServiceStatistics.setCounters(counters);
         }
 
         if (obj.getLimits() != null) {
             ServiceLimits limits = ServiceLimitsConverter.map(obj.getLimits());
-            serviceStatistics.setLimits(limits);
+            searchServiceStatistics.setLimits(limits);
         }
-        return serviceStatistics;
+        return searchServiceStatistics;
     }
 
     /**
-     * Maps from {@link ServiceStatistics} to
+     * Maps from {@link SearchServiceStatistics} to
      * {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics}.
      */
-    public static com.azure.search.documents.indexes.implementation.models.ServiceStatistics map(ServiceStatistics obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ServiceStatistics map(SearchServiceStatistics obj) {
         if (obj == null) {
             return null;
         }

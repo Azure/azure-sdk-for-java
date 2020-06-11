@@ -11,7 +11,7 @@ import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
 import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
 import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
@@ -21,7 +21,7 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SearchSuggester;
 import com.azure.search.documents.indexes.models.TagScoringFunction;
 import com.azure.search.documents.indexes.models.TagScoringParameters;
@@ -54,12 +54,12 @@ public class IndexAndServiceStatisticsExample {
     }
 
     private static void getServiceStatistics(SearchIndexClient client) {
-        ServiceStatistics serviceStatistics = client.getServiceStatistics();
+        SearchServiceStatistics searchServiceStatistics = client.getServiceStatistics();
 
-        System.out.println(":" + serviceStatistics);
+        System.out.println(":" + searchServiceStatistics);
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String jsonStr = objectMapper.writeValueAsString(serviceStatistics);
+            String jsonStr = objectMapper.writeValueAsString(searchServiceStatistics);
             System.out.println(jsonStr);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -106,7 +106,7 @@ public class IndexAndServiceStatisticsExample {
     private static void getIndexStatistics(SearchIndexClient client) {
         SearchIndex testIndex = createTestIndex();
         SearchIndex index = client.createOrUpdateIndex(testIndex);
-        GetIndexStatisticsResult result = client.getIndexStatistics(index.getName());
+        SearchIndexStatistics result = client.getIndexStatistics(index.getName());
         long documentCount = result.getDocumentCount();
         long storageSize = result.getStorageSize();
 
@@ -412,7 +412,7 @@ public class IndexAndServiceStatisticsExample {
             .setCorsOptions(new CorsOptions()
                 .setAllowedOrigins("http://tempuri.org", "http://localhost:80")
                 .setMaxAgeInSeconds(60L))
-            .setSearchSuggesters(Collections.singletonList(new SearchSuggester()
+            .setSuggesters(Collections.singletonList(new SearchSuggester()
                 .setName("FancySuggester")
                 .setSourceFields(Collections.singletonList("HotelName"))));
     }

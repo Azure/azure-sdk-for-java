@@ -14,7 +14,7 @@ import java.time.ZoneOffset;
  */
 public final class MsalToken extends IdentityToken {
 
-    private IAccount account;
+    private IAuthenticationResult authenticationResult;
 
     /**
      * Creates an access token instance.
@@ -25,13 +25,22 @@ public final class MsalToken extends IdentityToken {
         super(msalResult.accessToken(),
                 OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
                 options);
-        this.account = msalResult.account();
+        authenticationResult = msalResult;
     }
 
     /**
      * @return the signed in account
      */
     public IAccount getAccount() {
-        return account;
+        return authenticationResult.account();
+    }
+
+    /**
+     * Get the MSAL Authentication result.
+     *
+     * @return the authentication result.
+     */
+    public IAuthenticationResult getAuthenticationResult() {
+        return authenticationResult;
     }
 }

@@ -129,7 +129,8 @@ class MessageConverter {
         }
 
         // Header
-        brokeredMessage.setDeliveryCount(amqpMessage.getDeliveryCount());
+        // Delivery count for service bus starts from 1, for AMQP it starts from 0.
+        brokeredMessage.setDeliveryCount(amqpMessage.getDeliveryCount() + 1);
         brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
         
 

@@ -18,7 +18,7 @@ public class RequestOptionsIndexesConverter {
         RequestOptions requestOptions = new RequestOptions();
 
         UUID xMsClientRequestId = obj.getXMsClientRequestId();
-        requestOptions.setXMsClientRequestId(xMsClientRequestId);
+        requestOptions.setClientRequestId(xMsClientRequestId);
         return requestOptions;
     }
 
@@ -32,7 +32,7 @@ public class RequestOptionsIndexesConverter {
         com.azure.search.documents.indexes.implementation.models.RequestOptions requestOptions =
             new com.azure.search.documents.indexes.implementation.models.RequestOptions();
 
-        UUID xMsClientRequestId = obj.getXMsClientRequestId();
+        UUID xMsClientRequestId = obj.getClientRequestId();
         requestOptions.setXMsClientRequestId(xMsClientRequestId);
         return requestOptions;
     }

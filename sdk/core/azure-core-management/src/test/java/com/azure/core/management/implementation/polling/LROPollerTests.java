@@ -19,11 +19,9 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -32,6 +30,8 @@ import com.github.tomakehurst.wiremock.common.FileSource;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.extension.Parameters;
 import com.github.tomakehurst.wiremock.extension.ResponseTransformer;
+import com.github.tomakehurst.wiremock.http.HttpHeader;
+import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.http.Request;
 import com.github.tomakehurst.wiremock.http.RequestMethod;
 import org.junit.jupiter.api.AfterEach;
@@ -49,15 +49,15 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
 public class LROPollerTests {
+
     private static final SerializerAdapter SERIALIZER = new AzureJacksonAdapter();
 
     private static final Duration POLLING_DURATION = Duration.ofMillis(100);
@@ -81,58 +81,12 @@ public class LROPollerTests {
 
     @Test
     public void lroBasedOnProvisioningState() {
-        final String resourceEndpoint = "/resource/1";
-        ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
-            private int[] getCallCount = new int[1];
-
-            @Override
-            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
-                                                                           com.github.tomakehurst.wiremock.http.Response response,
-                                                                           FileSource fileSource,
-                                                                           Parameters parameters) {
-
-                if (!request.getUrl().endsWith(resourceEndpoint)) {
-                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                        .status(500)
-                        .body("Unsupported path:" + request.getUrl())
-                        .build();
-                }
-                if (request.getMethod().isOneOf(RequestMethod.PUT)) {
-                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                        .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
-                        .build();
-                }
-                if (request.getMethod().isOneOf(RequestMethod.GET)) {
-                    getCallCount[0]++;
-                    if (getCallCount[0] == 1) {
-                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                            .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
-                            .build();
-                    } else if (getCallCount[0] == 2) {
-                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                            .body(toJson(new FooWithProvisioningState("SUCCEEDED", UUID.randomUUID().toString())))
-                            .build();
-                    }
-                }
-                return response;
-            }
-
-            @Override
-            public String getName() {
-                return "LroService";
-            }
-        };
-
-        WireMockServer lroServer = createServer(provisioningStateLroService, resourceEndpoint);
-        lroServer.start();
+        WireMockServer lroServer = startServer();
 
         try {
             final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
-
-            Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
-                lroInitFunction = newLroInitFunction(client, FooWithProvisioningState.class);
 
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
@@ -140,7 +94,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, FooWithProvisioningState.class));
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -149,16 +103,12 @@ public class LROPollerTests {
                 Assertions.assertNotNull(pollResult.getValue());
                 onNextCallCount[0]++;
                 if (onNextCallCount[0] == 1) {
-                    Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.IN_PROGRESS);
+                    Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS,
+                        response.getStatus());
                     Assertions.assertNull(pollResult.getValue().getResourceId());
                 } else if (onNextCallCount[0] == 2) {
-                    Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.IN_PROGRESS);
-                    Assertions.assertNull(pollResult.getValue().getResourceId());
-                } else if (onNextCallCount[0] == 3) {
-                    Assertions.assertEquals(response.getStatus(),
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                    Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                        response.getStatus());
                     Assertions.assertNotNull(pollResult.getValue().getResourceId());
                 } else {
                     throw new IllegalStateException("Poller emitted more than expected value.");
@@ -212,24 +162,25 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<Resource>>, Mono<PollResult<Resource>>>
-                lroInitFunction = newLroInitFunction(client, Resource.class);
-
             PollerFlux<PollResult<Resource>, Resource> lroFlux
                 = PollerFactory.create(SERIALIZER,
                 new HttpPipelineBuilder().build(),
                 Resource.class,
                 Resource.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, Resource.class));
 
-            AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.doOnNext(response -> {
-                PollResult<Resource> pollResult = response.getValue();
-                Assertions.assertNotNull(pollResult);
-                Assertions.assertNotNull(pollResult.getValue());
-                Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                Assertions.assertNotNull(pollResult.getValue().id());
-            }).blockLast();
+            StepVerifier.create(lroFlux)
+                .expectSubscription()
+                .expectNextMatches(response -> {
+                    PollResult<Resource> pollResult = response.getValue();
+                    return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                        && pollResult != null
+                        && pollResult.getValue() != null
+                        && pollResult.getValue().id() != null;
+                }).verifyComplete();
+
+            AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.blockLast();
             Assertions.assertNotNull(asyncPollResponse);
 
             Resource result = asyncPollResponse.getFinalResult().block();
@@ -288,16 +239,13 @@ public class LROPollerTests {
                 createHttpPipeline(lroServer.port()),
                 SERIALIZER);
 
-            Function<PollingContext<PollResult<FooWithProvisioningState>>, Mono<PollResult<FooWithProvisioningState>>>
-                lroInitFunction = newLroInitFunction(client, FooWithProvisioningState.class);
-
             PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
                 = PollerFactory.create(SERIALIZER,
                 new HttpPipelineBuilder().build(),
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                lroInitFunction);
+                newLroInitFunction(client, FooWithProvisioningState.class));
 
             Mono<FooWithProvisioningState> resultMonoWithTimeout = lroFlux.last()
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -322,6 +270,113 @@ public class LROPollerTests {
                 lroServer.shutdown();
             }
         }
+    }
+
+    @Test
+    public void lroRetryAfter() {
+        ServerConfigure configure = new ServerConfigure();
+        Duration expectedPollingDuration = Duration.ofSeconds(3);
+        configure.pollingCountTillSuccess = 3;
+        configure.additionalHeaders = new HttpHeaders(new HttpHeader("Retry-After", "1"));  // 1 second
+        WireMockServer lroServer = startServer(configure);
+        lroServer.start();
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                createHttpPipeline(lroServer.port()),
+                SERIALIZER);
+
+            PollerFlux<PollResult<FooWithProvisioningState>, FooWithProvisioningState> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                new HttpPipelineBuilder().build(),
+                FooWithProvisioningState.class,
+                FooWithProvisioningState.class,
+                POLLING_DURATION,
+                newLroInitFunction(client, FooWithProvisioningState.class));
+
+            long nanoTime = System.nanoTime();
+
+            FooWithProvisioningState result = lroFlux
+                .doOnNext(response -> {
+                    System.out.println(String.format("[%s] status %s",
+                        OffsetDateTime.now().toString(), response.getStatus().toString()));
+                }).blockLast()
+                .getFinalResult().block();
+            Assertions.assertNotNull(result);
+
+            Duration pollingDuration = Duration.ofNanos(System.nanoTime() - nanoTime);
+            Assertions.assertTrue(pollingDuration.compareTo(expectedPollingDuration) > 0);
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    private static class ServerConfigure {
+        private int pollingCountTillSuccess = 2;
+        private HttpHeaders additionalHeaders = HttpHeaders.noHeaders();
+    }
+
+    private static WireMockServer startServer() {
+        return startServer(new ServerConfigure());
+    }
+
+    private static WireMockServer startServer(ServerConfigure serverConfigure) {
+        final String resourceEndpoint = "/resource/1";
+        ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
+            private int[] getCallCount = new int[1];
+
+            @Override
+            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
+                                                                           com.github.tomakehurst.wiremock.http.Response response,
+                                                                           FileSource fileSource,
+                                                                           Parameters parameters) {
+
+                if (!request.getUrl().endsWith(resourceEndpoint)) {
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .status(500)
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    System.out.println(String.format("[%s] PUT status %s",
+                        OffsetDateTime.now().toString(), "IN_PROGRESS"));
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .headers(serverConfigure.additionalHeaders)
+                        .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.GET)) {
+                    getCallCount[0]++;
+                    if (getCallCount[0] < serverConfigure.pollingCountTillSuccess) {
+                        System.out.println(String.format("[%s] GET status %s",
+                            OffsetDateTime.now().toString(), "IN_PROGRESS"));
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                            .headers(serverConfigure.additionalHeaders)
+                            .body(toJson(new FooWithProvisioningState("IN_PROGRESS")))
+                            .build();
+                    } else if (getCallCount[0] == serverConfigure.pollingCountTillSuccess) {
+                        System.out.println(String.format("[%s] GET status %s",
+                            OffsetDateTime.now().toString(), "SUCCEEDED"));
+                        return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                            .body(toJson(new FooWithProvisioningState("SUCCEEDED", UUID.randomUUID().toString())))
+                            .build();
+                    }
+                }
+                return response;
+            }
+
+            @Override
+            public String getName() {
+                return "LroService";
+            }
+        };
+
+        WireMockServer lroServer = createServer(provisioningStateLroService, resourceEndpoint);
+        lroServer.start();
+
+        return lroServer;
     }
 
     private static WireMockServer createServer(ResponseTransformer transformer,
@@ -361,37 +416,13 @@ public class LROPollerTests {
             .build();
     }
 
-    private static <T> Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> newLroInitFunction(ProvisioningStateLroServiceClient client, Type type) {
-        return context -> client.startLro()
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .map(bytes -> {
-                    String content = new String(bytes, StandardCharsets.UTF_8);
-                    //
-                    PollingState state = PollingState.create(SERIALIZER,
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        content);
-                    state.store(context);
-                    //
-                    T entity
-                        = fromJson(content, type);
-                    return new PollResult<>(entity);
-                }));
+    private Mono<Response<Flux<ByteBuffer>>> newLroInitFunction(ProvisioningStateLroServiceClient client, Type type) {
+        return client.startLro();
     }
-
 
     private static String toJson(Object object) {
         try {
             return SERIALIZER.serialize(object, SerializerEncoding.JSON);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-    }
-
-    private static <T> T fromJson(String json, Type type) {
-        try {
-            return SERIALIZER.deserialize(json, type, SerializerEncoding.JSON);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
         }

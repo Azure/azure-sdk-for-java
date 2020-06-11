@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -105,7 +105,7 @@ public class ConflictAPITest extends DocumentClientTest {
     public void readConflicts_toBlocking_toIterator() {
         // read all conflicts
         int requestPageSize = 3;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
@@ -135,7 +135,7 @@ public class ConflictAPITest extends DocumentClientTest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Conflict>> conflictReadFeedObservable = client
