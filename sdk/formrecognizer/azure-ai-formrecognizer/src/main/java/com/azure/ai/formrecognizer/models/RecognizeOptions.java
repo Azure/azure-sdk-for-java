@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Fluent
 public class RecognizeOptions {
-    private FormContentType contentType;
+    private FormContentType formContentType;
     private boolean includeTextContent;
     private Duration pollInterval;
     private InputStream form;
@@ -33,8 +33,8 @@ public class RecognizeOptions {
         this.formUrl = Objects.requireNonNull(formUrl, "'formUrl' cannot be null");
     }
 
-    public FormContentType getContentType() {
-        return contentType;
+    public FormContentType getFormContentType() {
+        return formContentType;
     }
 
     public boolean isIncludeTextContent() {
@@ -61,8 +61,8 @@ public class RecognizeOptions {
         return formData;
     }
 
-    public RecognizeOptions setContentType(final FormContentType contentType) {
-        this.contentType = contentType;
+    public RecognizeOptions setFormContentType(final FormContentType formContentType) {
+        this.formContentType = formContentType;
         return this;
     }
 

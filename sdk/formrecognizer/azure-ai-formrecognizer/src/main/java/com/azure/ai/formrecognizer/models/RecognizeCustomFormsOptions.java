@@ -30,8 +30,8 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
     }
 
     @Override
-    public RecognizeCustomFormsOptions setContentType(FormContentType contentType) {
-        super.setContentType(contentType);
+    public RecognizeCustomFormsOptions setFormContentType(FormContentType formContentType) {
+        super.setFormContentType(formContentType);
         return this;
     }
 

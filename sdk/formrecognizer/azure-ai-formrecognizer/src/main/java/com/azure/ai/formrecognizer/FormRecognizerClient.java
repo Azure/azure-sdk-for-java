@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -11,17 +10,15 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
+import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.polling.SyncPoller;
-import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.List;
 
 /**
@@ -162,7 +159,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
-        return beginRecognizeContentFromUrl(formUrl, null);
+        return beginRecognizeContentFromUrl(new RecognizeOptions(formUrl));
     }
 
     /**
@@ -173,9 +170,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration}
      *
-     * @param formUrl The source URL to the input form.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeOptions The source URL to the input form.
      *
      * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed, has
      * failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -185,8 +180,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(String formUrl, Duration pollInterval) {
-        return client.beginRecognizeContentFromUrl(formUrl, pollInterval).getSyncPoller();
+        beginRecognizeContentFromUrl(RecognizeOptions recognizeOptions) {
+        return client.beginRecognizeContentFromUrl(recognizeOptions).getSyncPoller();
     }
 
     /**
@@ -210,7 +205,7 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
         beginRecognizeContent(InputStream form, long length, FormContentType formContentType) {
-        return beginRecognizeContent(form, length, formContentType, null);
+        return beginRecognizeContent(new RecognizeOptions(form, length).setFormContentType(formContentType));
     }
 
     /**
@@ -222,11 +217,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration}
      *
-     * @param form The data of the form to recognize content information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeOptions The data of the form to recognize content information from.
      *
      * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -236,10 +227,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>>
-        beginRecognizeContent(InputStream form, long length, FormContentType formContentType, Duration pollInterval) {
-        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(form);
-        return client.beginRecognizeContent(buffer, length, formContentType, pollInterval)
-            .getSyncPoller();
+        beginRecognizeContent(RecognizeOptions recognizeOptions) {
+        return client.beginRecognizeContent(recognizeOptions).getSyncPoller();
     }
 
     /**
@@ -262,7 +251,7 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String receiptUrl) {
-        return beginRecognizeReceiptsFromUrl(receiptUrl, false, null);
+        return beginRecognizeReceiptsFromUrl(new RecognizeOptions(receiptUrl).setIncludeTextContent(false));
     }
 
     /**
@@ -274,10 +263,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
      *
-     * @param receiptUrl The source URL to the input receipt.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeOptions The source URL to the input receipt.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -287,8 +273,8 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(String receiptUrl, boolean includeTextDetails, Duration pollInterval) {
-        return client.beginRecognizeReceiptsFromUrl(receiptUrl, includeTextDetails, pollInterval).getSyncPoller();
+        beginRecognizeReceiptsFromUrl(RecognizeOptions recognizeOptions) {
+        return client.beginRecognizeReceiptsFromUrl(recognizeOptions).getSyncPoller();
     }
 
     /**
@@ -313,7 +299,8 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream receipt, long length, FormContentType formContentType) {
-        return beginRecognizeReceipts(receipt, length, formContentType, false, null);
+        return beginRecognizeReceipts(new RecognizeOptions(receipt, length)
+            .setFormContentType(formContentType).setIncludeTextContent( false));
     }
 
     /**
@@ -325,12 +312,7 @@ public final class FormRecognizerClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration}
      *
-     * @param receipt The data of the receipt to recognize receipt information from.
-     * @param length The exact length of the data. Size of the file must be less than 50 MB.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
+     * @param recognizeOptions The data of the receipt to recognize receipt information from.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -340,10 +322,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
-        beginRecognizeReceipts(InputStream receipt, long length, FormContentType formContentType,
-        boolean includeTextDetails, Duration pollInterval) {
-        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(receipt);
-        return client.beginRecognizeReceipts(buffer, length, formContentType, includeTextDetails, pollInterval)
-            .getSyncPoller();
+        beginRecognizeReceipts(RecognizeOptions recognizeOptions) {
+        return client.beginRecognizeReceipts(recognizeOptions).getSyncPoller();
     }
 }
