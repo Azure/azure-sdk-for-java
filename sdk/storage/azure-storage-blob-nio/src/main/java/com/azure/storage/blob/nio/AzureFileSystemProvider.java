@@ -246,7 +246,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * exceeded, the data will be broken into chunks and sent in blocks, and writes will be buffered into sizes of
      * {@link AzureFileSystem#AZURE_STORAGE_UPLOAD_BLOCK_SIZE}. The maximum number of buffers of this size to be
      * allocated is defined by {@link AzureFileSystem#AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST}, which also configures
-     * the level of parallelism with which we may write and thus may affect write speeds as ell.
+     * the level of parallelism with which we may write and thus may affect write speeds as well.
      * <p>
      * The data is only committed when the steam is closed. Hence data cannot be read from the destination until the
      * stream is closed. When the close method returns, it is guaranteed that, barring any errors, the data is finalized

@@ -127,9 +127,11 @@ public final class AzureFileSystem extends FileSystem {
 
     static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
-        SUPPORTED_ATTRIBUTE_VIEWS = Map.of(BasicFileAttributeView.class, "basic",
-            UserDefinedFileAttributeView.class, "user",
-            AzureStorageFileAttributeView.class, "azureStorage");
+        Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
+        map.put(BasicFileAttributeView.class, "basic");
+        map.put(UserDefinedFileAttributeView.class, "user");
+        map.put(AzureStorageFileAttributeView.class, "azureStorage");
+        SUPPORTED_ATTRIBUTE_VIEWS = Collections.unmodifiableMap(map);
     }
 
     private final AzureFileSystemProvider parentFileSystemProvider;
