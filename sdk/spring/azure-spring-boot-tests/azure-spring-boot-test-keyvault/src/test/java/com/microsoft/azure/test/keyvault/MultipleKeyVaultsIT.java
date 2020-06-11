@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.test.keyvault;
 
-import com.microsoft.azure.test.mgmt.ClientSecretAccess;
+import com.microsoft.azure.test.management.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

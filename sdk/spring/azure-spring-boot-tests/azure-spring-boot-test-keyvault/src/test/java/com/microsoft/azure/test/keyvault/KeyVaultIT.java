@@ -8,7 +8,7 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.compute.RunCommandInput;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.test.mgmt.ClientSecretAccess;
+import com.microsoft.azure.test.management.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.utils.MavenBasedProject;
 import com.microsoft.azure.test.utils.SSHShell;
