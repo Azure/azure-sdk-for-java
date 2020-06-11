@@ -343,6 +343,7 @@
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy.java"/>
@@ -360,12 +361,23 @@
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]models[/\\]"/>
   <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\]models[/\\]"/>
+  <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]implementation[/\\]converters[/\\]"/>
   <suppress checks="."
-            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](DataSourcesImpl|DocumentsImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
+            files=".*[/\\]search[/\\]documents[/\\]implementation[/\\](DocumentsImpl|SearchIndexRestClientBuilder|SearchIndexRestClientImpl)"/>
+  <suppress checks="."
+            files=".*[/\\]search[/\\]documents[/\\]indexes[/\\]implementation[/\\](DataSourcesImpl|IndexersImpl|IndexesImpl|SkillsetsImpl|SynonymMapsImpl|SearchServiceRestClientBuilder|SearchServiceRestClientImpl)"/>
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(CoordinateSystem|GeoPoint|IndexBatch|ValueFacetResult|RangeFacetResult|ComplexField|SearchableField|SimpleField|SearchFieldBase|IndexBatchException|ScoringParameter)).*)"/>
   <suppress checks="GoodLoggingCheck" files="com.azure.search.documents.implementation.util.PrivateFieldAccessHelper.java"/>
+
+  <!-- Removed this rule after the issue gets fixed: https://github.com/Azure/azure-sdk-for-java/issues/11651-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexAsyncClient.java"/>
+<!--  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.SearchAsyncClient.java"/>-->
 
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -385,6 +397,7 @@
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
+  <suppress checks="." files="com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
@@ -442,4 +455,8 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+
+  <!-- Checkstyle suppressions for azure-test-watch package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.testing.AzureTestWatcher.java"/>
 </suppressions>

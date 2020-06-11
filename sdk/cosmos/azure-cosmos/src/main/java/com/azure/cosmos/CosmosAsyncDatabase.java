@@ -9,14 +9,14 @@ import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -48,9 +48,9 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Get the id of the CosmosAsyncDatabase
+     * Get the id of the CosmosAsyncDatabase.
      *
-     * @return the id of the CosmosAsyncDatabase
+     * @return the id of the CosmosAsyncDatabase.
      */
     public String getId() {
         return id;
@@ -66,7 +66,7 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single cosmos database respone with
      * the read database or an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> read() {
+    public Mono<CosmosDatabaseResponse> read() {
         return read(new CosmosDatabaseRequestOptions());
     }
 
@@ -81,7 +81,7 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single cosmos database response with
      * the read database or an error.
      */
-    public Mono<CosmosAsyncDatabaseResponse> read(CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> read(CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
@@ -100,9 +100,9 @@ public class CosmosAsyncDatabase {
      * successful completion will contain a cosmos database response with the
      * deleted database. In case of failure the {@link Mono} will error.
      *
-     * @return an {@link Mono} containing the single cosmos database response
+     * @return an {@link Mono} containing the single cosmos database response.
      */
-    public Mono<CosmosAsyncDatabaseResponse> delete() {
+    public Mono<CosmosDatabaseResponse> delete() {
         return delete(new CosmosDatabaseRequestOptions());
     }
 
@@ -113,10 +113,10 @@ public class CosmosAsyncDatabase {
      * successful completion will contain a cosmos database response with the
      * deleted database. In case of failure the {@link Mono} will error.
      *
-     * @param options the request options
-     * @return an {@link Mono} containing the single cosmos database response
+     * @param options the request options.
+     * @return an {@link Mono} containing the single cosmos database response.
      */
-    public Mono<CosmosAsyncDatabaseResponse> delete(CosmosDatabaseRequestOptions options) {
+    public Mono<CosmosDatabaseResponse> delete(CosmosDatabaseRequestOptions options) {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
@@ -131,7 +131,7 @@ public class CosmosAsyncDatabase {
     /* CosmosAsyncContainer operations */
 
     /**
-     * Creates a document container.
+     * Creates a Cosmos container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
@@ -140,66 +140,66 @@ public class CosmosAsyncDatabase {
      * @param containerProperties the container properties.
      * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
-     * @throws IllegalArgumentException containerProperties cannot be null
+     * @throws IllegalArgumentException containerProperties cannot be null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(CosmosContainerProperties containerProperties) {
+    public Mono<CosmosContainerResponse> createContainer(CosmosContainerProperties containerProperties) {
         return createContainer(containerProperties, new CosmosContainerRequestOptions());
     }
 
     /**
-     * Creates a document container.
+     * Creates a Cosmos container with custom throughput properties.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
      * @param containerProperties the container properties.
-     * @param throughput the throughput for the container
+     * @param throughputProperties the throughput properties for the container.
      * @return a {@link Mono} containing the single cosmos container response with
      * the created container or an error.
-     * @throws IllegalArgumentException thown if containerProerties are null
+     * @throws IllegalArgumentException thown if containerProerties are null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
-        int throughput) {
+        ThroughputProperties throughputProperties) {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         return createContainer(containerProperties, options);
     }
 
     /**
      * Creates a container.
      *
-     * @param containerProperties the container properties
-     * @param throughputProperties the throughput properties
-     * @param options the request options
-     * @return the mono
+     * @param containerProperties the container properties.
+     * @param throughputProperties the throughput properties.
+     * @param options the request options.
+     * @return the mono.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         ThroughputProperties throughputProperties,
         CosmosContainerRequestOptions options){
-        ModelBridgeInternal.setOfferProperties(options, throughputProperties);
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         return createContainer(containerProperties, options);
     }
 
     /**
-     * Creates a document container.
+     * Creates a Cosmos container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
      * @param containerProperties the containerProperties.
-     * @param options the cosmos container request options
+     * @param options the cosmos container request options.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
-     * @throws IllegalArgumentException containerProperties can not be null
+     * @throws IllegalArgumentException containerProperties can not be null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    public Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
         if (containerProperties == null) {
@@ -217,70 +217,68 @@ public class CosmosAsyncDatabase {
         return withContext(context -> createContainerInternal(containerProperties, requestOptions, context));
     }
 
-
-
     /**
-     * Creates a document container.
+     * Creates a Cosmos container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
      * @param containerProperties the containerProperties.
-     * @param throughput the throughput for the container
-     * @param options the cosmos container request options
+     * @param throughput the throughput for the container.
+     * @param options the cosmos container request options.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
-     * @throws IllegalArgumentException containerProperties cannot be null
+     * @throws IllegalArgumentException containerProperties cannot be null.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(
+    Mono<CosmosContainerResponse> createContainer(
         CosmosContainerProperties containerProperties,
         int throughput,
         CosmosContainerRequestOptions options) {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         return createContainer(containerProperties, options);
     }
 
     /**
-     * Creates a document container.
+     * Creates a Cosmos container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
-     * @param id the cosmos container id
-     * @param partitionKeyPath the partition key path
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath) {
+    public Mono<CosmosContainerResponse> createContainer(String id, String partitionKeyPath) {
         return createContainer(new CosmosContainerProperties(id, partitionKeyPath));
     }
 
     /**
-     * Creates a document container.
+     * Creates a Cosmos container.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
-     * @param id the cosmos container id
-     * @param partitionKeyPath the partition key path
-     * @param throughput the throughput for the container
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughputProperties the throughput properties for the container.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainer(String id, String partitionKeyPath, int throughput) {
+    public Mono<CosmosContainerResponse> createContainer(String id, String partitionKeyPath, ThroughputProperties throughputProperties) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         return createContainer(new CosmosContainerProperties(id, partitionKeyPath), options);
     }
 
     /**
-     * Creates a document container if it does not exist on the service.
+     * Creates a Cosmos container if it does not exist on the service.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
@@ -291,12 +289,11 @@ public class CosmosAsyncDatabase {
      * @return a {@link Mono} containing the cosmos container response with the
      * created or existing container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties) {
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, container,
-                null);
+            return createContainerIfNotExistsInternal(container.read(), containerProperties, null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, null,
@@ -304,26 +301,29 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Creates a document container if it does not exist on the service.
+     * Creates a Cosmos container if it does not exist on the service.
      * <p>
+     * The throughput setting will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created or existing container. In case of failure the {@link Mono} will
      * error.
      *
-     * @param containerProperties the container properties
-     * @param throughput the throughput for the container
+     * @param containerProperties the container properties.
+     * @param throughput the throughput for the container.
      * @return a {@link Mono} containing the cosmos container response with the
      * created or existing container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    Mono<CosmosContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties,
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, container, options);
+            return createContainerIfNotExistsInternal(container.read(), containerProperties, options);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
@@ -331,22 +331,51 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Creates a document container if it does not exist on the service.
+     * Creates a Cosmos container if it does not exist on the service.
+     * <p>
+     * The throughput properties will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a cosmos container response with the
+     * created or existing container. In case of failure the {@link Mono} will
+     * error.
+     *
+     * @param containerProperties the container properties.
+     * @param throughputProperties the throughput properties for the container.
+     * @return a {@link Mono} containing the cosmos container response with the
+     * created or existing container or an error.
+     */
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(
+        CosmosContainerProperties containerProperties,
+        ThroughputProperties throughputProperties) {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
+        CosmosAsyncContainer container = getContainer(containerProperties.getId());
+        if (!client.getTracerProvider().isEnabled()) {
+            return createContainerIfNotExistsInternal(container.read(), containerProperties, options);
+        }
+
+        return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
+            context));
+    }
+
+    /**
+     * Creates a Cosmos container if it does not exist on the service.
      * <p>
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
-     * @param id the cosmos container id
-     * @param partitionKeyPath the partition key path
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
         CosmosAsyncContainer container = getContainer(id);
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), container,
-                null);
+            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container, null,
@@ -354,26 +383,59 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Creates a document container if it does not exist on the service.
+     * Creates a Cosmos container if it does not exist on the service.
      * <p>
+     * The throughput properties will only be used if the specified container
+     * does not exist and therefor a new container will be created.
+     *
      * After subscription the operation will be performed. The {@link Mono} upon
      * successful completion will contain a cosmos container response with the
      * created container. In case of failure the {@link Mono} will error.
      *
-     * @param id the cosmos container id
-     * @param partitionKeyPath the partition key path
-     * @param throughput the throughput for the container
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughputProperties the throughput properties for the container.
      * @return a {@link Mono} containing the cosmos container response with the
      * created container or an error.
      */
-    public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(
+        String id, String partitionKeyPath,
+        ThroughputProperties throughputProperties) {
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+        ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
+        CosmosAsyncContainer container = getContainer(id);
+        if (!client.getTracerProvider().isEnabled()) {
+            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), options);
+        }
+
+        return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
+            partitionKeyPath), container, options, context));
+    }
+
+    /**
+     * Creates a Cosmos container if it does not exist on the service.
+     * <p>
+     * The throughput setting will only be used if the specified container
+     * does not exist and a new container will be created.
+     *
+     * After subscription the operation will be performed. The {@link Mono} upon
+     * successful completion will contain a cosmos container response with the
+     * created container. In case of failure the {@link Mono} will error.
+     *
+     * @param id the cosmos container id.
+     * @param partitionKeyPath the partition key path.
+     * @param throughput the throughput for the container.
+     * @return a {@link Mono} containing the cosmos container response with the
+     * created container or an error.
+     */
+    Mono<CosmosContainerResponse> createContainerIfNotExists(
         String id, String partitionKeyPath,
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-        ModelBridgeInternal.setOfferThroughput(options, throughput);
+        ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         CosmosAsyncContainer container = getContainer(id);
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), container,
+            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath),
                 options);
         }
 
@@ -388,11 +450,11 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the read containers. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options {@link FeedOptions}
+     * @param options {@link CosmosQueryRequestOptions}
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read
      * containers or an error.
      */
-    public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> readAllContainers(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllContainers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
@@ -416,22 +478,7 @@ public class CosmosAsyncDatabase {
      * containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> readAllContainers() {
-        return readAllContainers(new FeedOptions());
-    }
-
-    /**
-     * Query for cosmos containers in a cosmos database.
-     * <p>
-     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
-     * contain one or several feed response of the obtained containers. In case of
-     * failure the {@link CosmosPagedFlux} will error.
-     *
-     * @param query the query
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
-     * obtained containers or an error.
-     */
-    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query) {
-        return queryContainersInternal(new SqlQuerySpec(query), new FeedOptions());
+        return readAllContainers(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -442,11 +489,26 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
-     * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
-    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query) {
+        return queryContainersInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions());
+    }
+
+    /**
+     * Query for cosmos containers in a cosmos database.
+     * <p>
+     * After subscription the operation will be performed. The {@link CosmosPagedFlux} will
+     * contain one or several feed response of the obtained containers. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param query the query.
+     * @param options the query request options.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
+     * obtained containers or an error.
+     */
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, CosmosQueryRequestOptions options) {
         return queryContainersInternal(new SqlQuerySpec(query), options);
     }
 
@@ -462,7 +524,7 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
-        return queryContainersInternal(querySpec, new FeedOptions());
+        return queryContainersInternal(querySpec, new CosmosQueryRequestOptions());
     }
 
     /**
@@ -473,12 +535,12 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec
-        , FeedOptions options) {
+        , CosmosQueryRequestOptions options) {
         return queryContainersInternal(querySpec, options);
     }
 
@@ -492,8 +554,6 @@ public class CosmosAsyncDatabase {
         return new CosmosAsyncContainer(id, this);
     }
 
-    /** User operations **/
-
     /**
      * Creates a user After subscription the operation will be performed. The
      * {@link Mono} upon successful completion will contain a single resource
@@ -504,13 +564,12 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single resource response with the
      * created cosmos user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> createUser(CosmosUserProperties userProperties) {
+    public Mono<CosmosUserResponse> createUser(CosmosUserProperties userProperties) {
         if (!client.getTracerProvider().isEnabled()) {
             return createUserInternal(userProperties);
         }
         return withContext(context -> createUserInternal(userProperties, context));
     }
-
 
     /**
      * Upsert a user. Upsert will create a new user if it doesn't exist, or replace
@@ -523,7 +582,7 @@ public class CosmosAsyncDatabase {
      * @return an {@link Mono} containing the single resource response with the
      * upserted user or an error.
      */
-    public Mono<CosmosAsyncUserResponse> upsertUser(CosmosUserProperties userProperties) {
+    public Mono<CosmosUserResponse> upsertUser(CosmosUserProperties userProperties) {
         if (!client.getTracerProvider().isEnabled()) {
             return upsertUserInternal(userProperties);
         }
@@ -542,7 +601,7 @@ public class CosmosAsyncDatabase {
      * read cosmos users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> readAllUsers() {
-        return readAllUsers(new FeedOptions());
+        return readAllUsers(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -552,11 +611,11 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the read cosmos users. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * read cosmos users or an error.
      */
-    public CosmosPagedFlux<CosmosUserProperties> readAllUsers(FeedOptions options) {
+    CosmosPagedFlux<CosmosUserProperties> readAllUsers(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "readAllUsers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
@@ -576,12 +635,12 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the obtained users. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param query query as string
+     * @param query query as string.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query) {
-        return queryUsers(query, new FeedOptions());
+        return queryUsers(query, new CosmosQueryRequestOptions());
     }
 
     /**
@@ -591,12 +650,12 @@ public class CosmosAsyncDatabase {
      * contain one or several feed response of the obtained users. In case of
      * failure the {@link CosmosPagedFlux} will error.
      *
-     * @param query query as string
-     * @param options the feed options
+     * @param query query as string.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, CosmosQueryRequestOptions options) {
         return queryUsersInternal(new SqlQuerySpec(query), options);
     }
 
@@ -612,7 +671,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
-        return queryUsersInternal(querySpec, new FeedOptions());
+        return queryUsersInternal(querySpec, new CosmosQueryRequestOptions());
     }
 
     /**
@@ -623,11 +682,11 @@ public class CosmosAsyncDatabase {
      * failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options the feed options.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained users or an error.
      */
-    public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
+    public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
         return queryUsersInternal(querySpec, options);
     }
 
@@ -642,40 +701,11 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Gets the throughput of the database
-     *
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> readProvisionedThroughput() {
-        if(!client.getTracerProvider().isEnabled()) {
-            return readProvisionedThroughputInternal(this.read());
-        }
-
-        return withContext(context -> readProvisionedThroughputInternal(context));
-    }
-
-    /**
      * Sets throughput provisioned for a container in measurement of
      * Requests-per-Unit in the Azure Cosmos service.
      *
-     * @param requestUnitsPerSecond the cosmos container throughput, expressed in
-     * Request Units per second
-     * @return a {@link Mono} containing throughput or an error.
-     */
-    public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
-        if (!client.getTracerProvider().isEnabled()) {
-            return replaceProvisionedThroughputInternal(this.read(), requestUnitsPerSecond);
-        }
-
-        return withContext(context -> replaceProvisionedThroughputInternal(requestUnitsPerSecond, context));
-    }
-
-    /**
-     * Sets throughput provisioned for a container in measurement of
-     * Requests-per-Unit in the Azure Cosmos service.
-     *
-     * @param throughputProperties the throughput properties
-     * @return the mono
+     * @param throughputProperties the throughput properties.
+     * @return the mono.
      */
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
        if(!this.client.getTracerProvider().isEnabled()) {
@@ -686,9 +716,9 @@ public class CosmosAsyncDatabase {
     }
 
     /**
-     * Gets the throughput of the database
+     * Gets the throughput of the database.
      *
-     * @return the mono containing throughput response
+     * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> readThroughput() {
         if(!this.client.getTracerProvider().isEnabled()) {
@@ -727,8 +757,8 @@ public class CosmosAsyncDatabase {
         return this.link;
     }
 
-    public CosmosPagedFlux<CosmosContainerProperties> queryContainersInternal(SqlQuerySpec querySpec
-        , FeedOptions options) {
+    private CosmosPagedFlux<CosmosContainerProperties> queryContainersInternal(SqlQuerySpec querySpec
+        , CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryContainers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
@@ -741,7 +771,7 @@ public class CosmosAsyncDatabase {
         }, this.getClient().getTracerProvider().isEnabled());
     }
 
-    private CosmosPagedFlux<CosmosUserProperties> queryUsersInternal(SqlQuerySpec querySpec, FeedOptions options) {
+    private CosmosPagedFlux<CosmosUserProperties> queryUsersInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             String spanName = "queryUsers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
@@ -754,7 +784,7 @@ public class CosmosAsyncDatabase {
         }, this.getClient().getTracerProvider().isEnabled());
     }
 
-    private Mono<CosmosAsyncContainerResponse> createContainerIfNotExistsInternal(
+    private Mono<CosmosContainerResponse> createContainerIfNotExistsInternal(
         CosmosContainerProperties containerProperties,
         CosmosAsyncContainer container,
         CosmosContainerRequestOptions options,
@@ -765,15 +795,14 @@ public class CosmosAsyncDatabase {
             options = new CosmosContainerRequestOptions();
         }
 
-        Mono<CosmosAsyncContainerResponse> responseMono = createContainerIfNotExistsInternal(container.read(options, nestedContext), containerProperties, container, options);
+        Mono<CosmosContainerResponse> responseMono = createContainerIfNotExistsInternal(container.read(options, nestedContext), containerProperties, options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncContainerResponse> createContainerIfNotExistsInternal(
-        Mono<CosmosAsyncContainerResponse> responseMono,
+    private Mono<CosmosContainerResponse> createContainerIfNotExistsInternal(
+        Mono<CosmosContainerResponse> responseMono,
         CosmosContainerProperties containerProperties,
-        CosmosAsyncContainer container,
         CosmosContainerRequestOptions options) {
         return responseMono.onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
@@ -787,138 +816,73 @@ public class CosmosAsyncDatabase {
         });
     }
 
-    private Mono<CosmosAsyncContainerResponse> createContainerInternal(
+    private Mono<CosmosContainerResponse> createContainerInternal(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options,
         Context context) {
         String spanName = "createContainer." + containerProperties.getId();
-        Mono<CosmosAsyncContainerResponse> responseMono = createContainerInternal(containerProperties, options);
+        Mono<CosmosContainerResponse> responseMono = createContainerInternal(containerProperties, options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncContainerResponse> createContainerInternal(
+    private Mono<CosmosContainerResponse> createContainerInternal(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
         return getDocClientWrapper()
             .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                 ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
+            .map(response -> ModelBridgeInternal.createCosmosContainerResponse(response)).single();
     }
 
-    Mono<CosmosAsyncDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options, Context context) {
+    Mono<CosmosDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "readDatabase." + this.getId();
-        Mono<CosmosAsyncDatabaseResponse> responseMono = readInternal(options);
+        Mono<CosmosDatabaseResponse> responseMono = readInternal(options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options) {
+    private Mono<CosmosDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options) {
         return getDocClientWrapper().readDatabase(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
-    private Mono<CosmosAsyncDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options, Context context) {
+    private Mono<CosmosDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options, Context context) {
         String spanName = "deleteDatabase." + this.getId();
-        Mono<CosmosAsyncDatabaseResponse> responseMono = deleteInternal(options);
+        Mono<CosmosDatabaseResponse> responseMono = deleteInternal(options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options) {
+    private Mono<CosmosDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options) {
         return getDocClientWrapper().deleteDatabase(getLink(),
             ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+            .map(response -> ModelBridgeInternal.createCosmosDatabaseResponse(response)).single();
     }
 
-    private Mono<Integer> replaceProvisionedThroughputInternal(int requestUnitsPerSecond, Context context) {
-        String spanName = "replaceOffer." + this.getId();
-        Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
-        Mono<Integer> responseMono = replaceProvisionedThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext), requestUnitsPerSecond);
-        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono, context, spanName
-            , getId(), getClient().getServiceEndpoint());
-    }
-
-    private Mono<Integer> replaceProvisionedThroughputInternal(Mono<CosmosAsyncDatabaseResponse> responseMono, int requestUnitsPerSecond) {
-        return responseMono
-            .flatMap(cosmosDatabaseResponse -> this.getDocClientWrapper()
-                .queryOffers("select * from c where c.offerResourceId = '"
-                    + cosmosDatabaseResponse.getProperties()
-                    .getResourceId()
-                    + "'", new FeedOptions())
-                .single()
-                .flatMap(offerFeedResponse -> {
-                    if (offerFeedResponse.getResults().isEmpty()) {
-                        return Mono.error(BridgeInternal
-                            .createCosmosException(
-                                HttpConstants.StatusCodes.BADREQUEST,
-                                "No offers found for the resource"));
-                    }
-                    Offer offer = offerFeedResponse.getResults().get(0);
-                    offer.setThroughput(requestUnitsPerSecond);
-                    return this.getDocClientWrapper().replaceOffer(offer)
-                        .single();
-                }).map(offerResourceResponse -> offerResourceResponse
-                    .getResource()
-                    .getThroughput()));
-    }
-
-    private Mono<Integer> readProvisionedThroughputInternal(Context context) {
-        String spanName = "readProvisionedThroughput." + this.getId();
-        Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
-        Mono<Integer> responseMono = readProvisionedThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext));
-        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono
-            , context, spanName, getId(), getClient().getServiceEndpoint());
-    }
-
-    private Mono<Integer> readProvisionedThroughputInternal(Mono<CosmosAsyncDatabaseResponse> responseMono) {
-        return responseMono
-            .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
-                .queryOffers("select * from c where c.offerResourceId = '"
-                        + cosmosDatabaseResponse.getProperties()
-                        .getResourceId() + "'",
-                    new FeedOptions())
-                .single()
-                .flatMap(offerFeedResponse -> {
-                    if (offerFeedResponse.getResults().isEmpty()) {
-                        return Mono.error(BridgeInternal
-                            .createCosmosException(
-                                HttpConstants.StatusCodes.BADREQUEST,
-                                "No offers found for the resource"));
-                    }
-                    return getDocClientWrapper()
-                        .readOffer(offerFeedResponse.getResults()
-                            .get(0)
-                            .getSelfLink())
-                        .single();
-                }).map(cosmosContainerResponse1 -> cosmosContainerResponse1
-                    .getResource()
-                    .getThroughput()));
-    }
-
-    private Mono<CosmosAsyncUserResponse> createUserInternal(CosmosUserProperties userProperties, Context context) {
+    private Mono<CosmosUserResponse> createUserInternal(CosmosUserProperties userProperties, Context context) {
         String spanName = "createUser." + this.getId();
-        Mono<CosmosAsyncUserResponse> responseMono = createUserInternal(userProperties);
+        Mono<CosmosUserResponse> responseMono = createUserInternal(userProperties);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncUserResponse> createUserInternal(CosmosUserProperties userProperties) {
+    private Mono<CosmosUserResponse> createUserInternal(CosmosUserProperties userProperties) {
        return getDocClientWrapper().createUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, this)).single();
+            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
-    private Mono<CosmosAsyncUserResponse> upsertUserInternal(CosmosUserProperties userProperties, Context context) {
+    private Mono<CosmosUserResponse> upsertUserInternal(CosmosUserProperties userProperties, Context context) {
         String spanName = "upsertUser." + this.getId();
-        Mono<CosmosAsyncUserResponse> responseMono = upsertUserInternal(userProperties);
+        Mono<CosmosUserResponse> responseMono = upsertUserInternal(userProperties);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncUserResponse> upsertUserInternal(CosmosUserProperties userProperties) {
+    private Mono<CosmosUserResponse> upsertUserInternal(CosmosUserProperties userProperties) {
         return getDocClientWrapper().upsertUser(this.getLink(), ModelBridgeInternal.getV2User(userProperties), null)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncUserResponse(response, this)).single();
+            .map(response -> ModelBridgeInternal.createCosmosUserResponse(response)).single();
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(ThroughputProperties throughputProperties, Context context){
@@ -929,11 +893,11 @@ public class CosmosAsyncDatabase {
             , context, spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosAsyncDatabaseResponse> responseMono, ThroughputProperties throughputProperties) {
+    private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosDatabaseResponse> responseMono, ThroughputProperties throughputProperties) {
         return responseMono
             .flatMap(response -> this.getDocClientWrapper()
                 .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                    new FeedOptions())
+                    new CosmosQueryRequestOptions())
                 .single()
                 .flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.getResults().isEmpty()) {
@@ -964,11 +928,11 @@ public class CosmosAsyncDatabase {
             , context, spanName, getId(), getClient().getServiceEndpoint());
     }
 
-    private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosAsyncDatabaseResponse> responseMono) {
+    private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosDatabaseResponse> responseMono) {
         return responseMono
             .flatMap(response -> getDocClientWrapper()
                 .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
-                    new FeedOptions())
+                    new CosmosQueryRequestOptions())
                 .single()
                 .flatMap(offerFeedResponse -> {
                     if (offerFeedResponse.getResults().isEmpty()) {

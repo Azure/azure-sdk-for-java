@@ -359,14 +359,13 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     private Mono<Response<BlockBlobItem>> uploadInChunks(BlockBlobAsyncClient blockBlobAsyncClient,
         Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions) {
-        // TODO: Parallelism parameter? Or let Reactor handle it?
         // TODO: Sample/api reference
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
             parallelTransferOptions.getBlockSize(), BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
@@ -384,7 +383,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
-
                 return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, buffer.remaining(),
                     null, requestConditions.getLeaseId())
                     // We only care about the stageBlock insofar as it was successful,
@@ -392,7 +390,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .map(x -> blockId)
                     .doFinally(x -> pool.returnBuffer(buffer))
                     .flux();
-            }) // TODO: parallelism?
+            }, parallelTransferOptions.getMaxConcurrency())
             .collect(Collectors.toList())
             .flatMap(ids ->
                 blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, metadata, tier, requestConditions));
@@ -538,7 +536,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                 return client.stageBlockWithResponse(blockId, progressData, chunk.getCount(), null,
                     finalRequestConditions.getLeaseId());
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), headers, metadata, tier, finalRequestConditions)))
             .then();

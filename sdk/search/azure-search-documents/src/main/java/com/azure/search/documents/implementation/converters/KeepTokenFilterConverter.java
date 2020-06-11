@@ -3,20 +3,20 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.KeepTokenFilter;
+import com.azure.search.documents.indexes.models.KeepTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.KeepTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.KeepTokenFilter} and
  * {@link KeepTokenFilter}.
  */
 public final class KeepTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.KeepTokenFilter} to {@link KeepTokenFilter}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.KeepTokenFilter} to {@link KeepTokenFilter}.
      */
-    public static KeepTokenFilter map(com.azure.search.documents.implementation.models.KeepTokenFilter obj) {
+    public static KeepTokenFilter map(com.azure.search.documents.indexes.implementation.models.KeepTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -36,14 +36,14 @@ public final class KeepTokenFilterConverter {
     }
 
     /**
-     * Maps from {@link KeepTokenFilter} to {@link com.azure.search.documents.implementation.models.KeepTokenFilter}.
+     * Maps from {@link KeepTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.KeepTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.KeepTokenFilter map(KeepTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.KeepTokenFilter map(KeepTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.KeepTokenFilter keepTokenFilter =
-            new com.azure.search.documents.implementation.models.KeepTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.KeepTokenFilter keepTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.KeepTokenFilter();
 
         String name = obj.getName();
         keepTokenFilter.setName(name);
@@ -53,7 +53,7 @@ public final class KeepTokenFilterConverter {
             keepTokenFilter.setKeepWords(keepWords);
         }
 
-        Boolean lowerCaseKeepWords = obj.isLowerCaseKeepWords();
+        Boolean lowerCaseKeepWords = obj.areLowerCaseKeepWords();
         keepTokenFilter.setLowerCaseKeepWords(lowerCaseKeepWords);
         return keepTokenFilter;
     }

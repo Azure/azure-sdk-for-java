@@ -24,10 +24,6 @@ module com.azure.cosmos {
     requires micrometer.core;
     //  This is only required by guava shaded libraries
     requires java.logging;
-    requires reactor.core;
-    requires org.reactivestreams;
-    requires com.fasterxml.jackson.databind;
-    requires org.slf4j;
 
     // public API surface area
     exports com.azure.cosmos;
@@ -35,7 +31,6 @@ module com.azure.cosmos {
     exports com.azure.cosmos.util;
 
     // exporting some packages specifically for Jackson
-    opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
@@ -50,6 +45,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;

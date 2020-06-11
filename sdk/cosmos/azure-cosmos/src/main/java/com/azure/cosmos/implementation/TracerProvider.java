@@ -5,25 +5,20 @@ package com.azure.cosmos.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-
 public class TracerProvider {
-    private final List<Tracer> tracers = new ArrayList<>();
-    private final boolean isEnabled;
+    private Tracer tracer;
     public final static String DB_TYPE_VALUE = "Cosmos";
     public final static String DB_TYPE = "db.type";
     public final static String DB_INSTANCE = "db.instance";
@@ -34,16 +29,17 @@ public class TracerProvider {
     public static final String ERROR_STACK = "error.stack";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
-    public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
+    public static final int ERROR_CODE = 0;
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
-        tracers.forEach(this.tracers::add);
-        isEnabled = this.tracers.size() > 0;
+        if (tracers.iterator().hasNext()) {
+            tracer = tracers.iterator().next();
+        }
     }
 
     public boolean isEnabled() {
-        return isEnabled;
+        return tracer != null;
     }
 
     /**
@@ -58,18 +54,14 @@ public class TracerProvider {
      */
     public Context startSpan(String methodName, String databaseId, String endpoint, Context context) {
         Context local = Objects.requireNonNull(context, "'context' cannot be null.");
-        for (Tracer tracer : tracers) {
-            local = tracer.start(methodName, local); // start the span and return the started span
-            if (databaseId != null) {
-                tracer.setAttribute(TracerProvider.DB_INSTANCE, databaseId, local);
-            }
-
-            tracer.setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME, local);
-            tracer.setAttribute(TracerProvider.DB_TYPE, DB_TYPE_VALUE, local);
-            tracer.setAttribute(TracerProvider.DB_URL, endpoint, local);
-            tracer.setAttribute(TracerProvider.DB_STATEMENT, methodName, local);
+        local = tracer.start(methodName, local); // start the span and return the started span
+        if (databaseId != null) {
+            tracer.setAttribute(TracerProvider.DB_INSTANCE, databaseId, local);
         }
 
+        tracer.setAttribute(TracerProvider.DB_TYPE, DB_TYPE_VALUE, local);
+        tracer.setAttribute(TracerProvider.DB_URL, endpoint, local);
+        tracer.setAttribute(TracerProvider.DB_STATEMENT, methodName, local);
         return local;
     }
 
@@ -96,7 +88,6 @@ public class TracerProvider {
 
                     if (throwable instanceof CosmosException) {
                         CosmosException exception = (CosmosException) throwable;
-                        // confirm ?
                         statusCode = exception.getStatusCode();
                     }
                 }
@@ -125,13 +116,13 @@ public class TracerProvider {
         return traceEnabledPublisher(resultPublisher,  context, spanName, databaseId, endpoint, (T response) -> HttpConstants.StatusCodes.OK);
     }
 
-    public <T> Mono<CosmosAsyncItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosAsyncItemResponse<T>> resultPublisher,
-                                                                                        Context context,
-                                                                                        String spanName,
-                                                                                        String databaseId,
-                                                                                        String endpoint) {
+    public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosItemResponse<T>> resultPublisher,
+                                                                                   Context context,
+                                                                                   String spanName,
+                                                                                   String databaseId,
+                                                                                   String endpoint) {
         return traceEnabledPublisher(resultPublisher, context, spanName,databaseId, endpoint,
-            CosmosAsyncItemResponse::getStatusCode);
+            CosmosItemResponse::getStatusCode);
     }
 
     public <T> Mono<T> traceEnabledPublisher(Mono<T> resultPublisher,
@@ -155,21 +146,19 @@ public class TracerProvider {
                 }
             }).doOnError(throwable -> {
                 if (!isNestedCall) {
-                    this.endSpan(parentContext.get(), Signal.error(throwable), 0);
+                    this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });
     }
 
     private void end(int statusCode, Throwable throwable, Context context) {
-        for (Tracer tracer : tracers) {
-            if (throwable != null) {
-                tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
-                tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
-                StringWriter errorStack = new StringWriter();
-                throwable.printStackTrace(new PrintWriter(errorStack));
-                tracer.setAttribute(TracerProvider.ERROR_STACK, errorStack.toString(), context);
-            }
-            tracer.end(statusCode, throwable, context);
+        if (throwable != null) {
+            tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
+            tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+            StringWriter errorStack = new StringWriter();
+            throwable.printStackTrace(new PrintWriter(errorStack));
+            tracer.setAttribute(TracerProvider.ERROR_STACK, errorStack.toString(), context);
         }
+        tracer.end(statusCode, throwable, context);
     }
 }

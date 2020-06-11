@@ -4,8 +4,12 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.HashIndex;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.IndexKind;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RangeIndex;
+import com.azure.cosmos.implementation.SpatialIndex;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -65,7 +69,7 @@ public final class IncludedPath {
      *
      * @return the included paths.
      */
-    public List<Index> getIndexes() {
+    List<Index> getIndexes() {
         if (this.indexes == null) {
             this.indexes = this.getIndexCollection();
 
@@ -83,7 +87,7 @@ public final class IncludedPath {
      * @param indexes the indexes
      * @return the indexes
      */
-    public IncludedPath setIndexes(List<Index> indexes) {
+    IncludedPath setIndexes(List<Index> indexes) {
         this.indexes = indexes;
         return this;
     }

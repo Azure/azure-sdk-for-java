@@ -9,6 +9,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
@@ -34,43 +35,44 @@ import java.util.function.Function;
 public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
 
     private final Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction;
-    private final boolean isTracerEnable;
+    private final boolean isTracerEnabled;
 
-    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction, boolean isTracerEnable) {
+    CosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> optionsFluxFunction,
+                    boolean isTracerEnable) {
         this.optionsFluxFunction = optionsFluxFunction;
-        this.isTracerEnable = isTracerEnable;
+        this.isTracerEnabled = isTracerEnable;
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
-        if (!this.isTracerEnable) {
+        if (!this.isTracerEnabled) {
             return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
         }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(String continuationToken) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
-        if (!this.isTracerEnable) {
+        if (!this.isTracerEnabled) {
             return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
         }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
     public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        if (!this.isTracerEnable) {
+        if (!this.isTracerEnabled) {
             return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
         }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     @Override
@@ -78,11 +80,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
-        if (!this.isTracerEnable) {
+        if (!this.isTracerEnabled) {
             return this.optionsFluxFunction.apply(cosmosPagedFluxOptions);
         }
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context));
+        return FluxUtil.fluxContext(context -> byPage(cosmosPagedFluxOptions, context));
     }
 
     /**
@@ -114,7 +116,8 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(),
                 HttpConstants.StatusCodes.OK);
         }).doOnError(throwable -> {
-            pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+            pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable),
+                TracerProvider.ERROR_CODE);
         });
     }
 }

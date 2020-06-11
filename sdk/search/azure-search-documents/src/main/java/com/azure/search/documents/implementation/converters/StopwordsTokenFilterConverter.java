@@ -3,23 +3,22 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.StopwordsList;
-import com.azure.search.documents.models.StopwordsTokenFilter;
+import com.azure.search.documents.indexes.models.StopwordsList;
+import com.azure.search.documents.indexes.models.StopwordsTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.StopwordsTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter} and
  * {@link StopwordsTokenFilter}.
  */
 public final class StopwordsTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.StopwordsTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter} to
      * {@link StopwordsTokenFilter}.
      */
-    public static StopwordsTokenFilter map(com.azure.search.documents.implementation.models.StopwordsTokenFilter obj) {
+    public static StopwordsTokenFilter map(com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -29,10 +28,10 @@ public final class StopwordsTokenFilterConverter {
         stopwordsTokenFilter.setName(name);
 
         Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
-        stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
+        stopwordsTokenFilter.setTrailingStopWordsRemoved(removeTrailingStopWords);
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        stopwordsTokenFilter.setIgnoreCase(ignoreCase);
+        stopwordsTokenFilter.setCaseIgnored(ignoreCase);
 
         if (obj.getStopwords() != null) {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
@@ -48,22 +47,22 @@ public final class StopwordsTokenFilterConverter {
 
     /**
      * Maps from {@link StopwordsTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.StopwordsTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.StopwordsTokenFilter map(StopwordsTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter map(StopwordsTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.StopwordsTokenFilter stopwordsTokenFilter =
-            new com.azure.search.documents.implementation.models.StopwordsTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter stopwordsTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.StopwordsTokenFilter();
 
         String name = obj.getName();
         stopwordsTokenFilter.setName(name);
 
-        Boolean removeTrailingStopWords = obj.isRemoveTrailingStopWords();
+        Boolean removeTrailingStopWords = obj.areTrailingStopWordsRemoved();
         stopwordsTokenFilter.setRemoveTrailingStopWords(removeTrailingStopWords);
 
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         stopwordsTokenFilter.setIgnoreCase(ignoreCase);
 
         if (obj.getStopwords() != null) {
@@ -72,7 +71,7 @@ public final class StopwordsTokenFilterConverter {
         }
 
         if (obj.getStopwordsList() != null) {
-            com.azure.search.documents.implementation.models.StopwordsList stopwordsList =
+            com.azure.search.documents.indexes.implementation.models.StopwordsList stopwordsList =
                 StopwordsListConverter.map(obj.getStopwordsList());
             stopwordsTokenFilter.setStopwordsList(stopwordsList);
         }

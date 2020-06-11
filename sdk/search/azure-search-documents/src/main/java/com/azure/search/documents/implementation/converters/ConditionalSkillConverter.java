@@ -3,22 +3,22 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.ConditionalSkill;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.ConditionalSkill;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ConditionalSkill} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ConditionalSkill} and
  * {@link ConditionalSkill}.
  */
 public final class ConditionalSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ConditionalSkill} to {@link ConditionalSkill}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ConditionalSkill} to {@link ConditionalSkill}.
      */
-    public static ConditionalSkill map(com.azure.search.documents.implementation.models.ConditionalSkill obj) {
+    public static ConditionalSkill map(com.azure.search.documents.indexes.implementation.models.ConditionalSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -48,23 +48,23 @@ public final class ConditionalSkillConverter {
     }
 
     /**
-     * Maps from {@link ConditionalSkill} to {@link com.azure.search.documents.implementation.models.ConditionalSkill}.
+     * Maps from {@link ConditionalSkill} to {@link com.azure.search.documents.indexes.implementation.models.ConditionalSkill}.
      */
-    public static com.azure.search.documents.implementation.models.ConditionalSkill map(ConditionalSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ConditionalSkill map(ConditionalSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ConditionalSkill conditionalSkill =
-            new com.azure.search.documents.implementation.models.ConditionalSkill();
+        com.azure.search.documents.indexes.implementation.models.ConditionalSkill conditionalSkill =
+            new com.azure.search.documents.indexes.implementation.models.ConditionalSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             conditionalSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             conditionalSkill.setInputs(inputs);
         }

@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.DictionaryDecompounderTokenFilter;
+import com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter} and
  * {@link DictionaryDecompounderTokenFilter}.
  */
 public final class DictionaryDecompounderTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter} to
      * {@link DictionaryDecompounderTokenFilter}.
      */
-    public static DictionaryDecompounderTokenFilter map(com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter obj) {
+    public static DictionaryDecompounderTokenFilter map(com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -30,7 +30,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
         dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
 
         Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
-        dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
+        dictionaryDecompounderTokenFilter.setOnlyLongestMatched(onlyLongestMatch);
 
         Integer maxSubwordSize = obj.getMaxSubwordSize();
         dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
@@ -47,13 +47,13 @@ public final class DictionaryDecompounderTokenFilterConverter {
 
     /**
      * Maps from {@link DictionaryDecompounderTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter map(DictionaryDecompounderTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter map(DictionaryDecompounderTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter = new com.azure.search.documents.implementation.models.DictionaryDecompounderTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter = new com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter();
 
         String name = obj.getName();
         dictionaryDecompounderTokenFilter.setName(name);
@@ -61,7 +61,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
         Integer minSubwordSize = obj.getMinSubwordSize();
         dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
 
-        Boolean onlyLongestMatch = obj.isOnlyLongestMatch();
+        Boolean onlyLongestMatch = obj.isOnlyLongestMatched();
         dictionaryDecompounderTokenFilter.setOnlyLongestMatch(onlyLongestMatch);
 
         Integer maxSubwordSize = obj.getMaxSubwordSize();

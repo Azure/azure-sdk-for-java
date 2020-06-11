@@ -3,22 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.ShaperSkill;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.ShaperSkill;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ShaperSkill} and {@link ShaperSkill}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ShaperSkill} and {@link ShaperSkill}.
  */
 public final class ShaperSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ShaperSkill} to {@link ShaperSkill}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ShaperSkill} to {@link ShaperSkill}.
      */
-    public static ShaperSkill map(com.azure.search.documents.implementation.models.ShaperSkill obj) {
+    public static ShaperSkill map(com.azure.search.documents.indexes.implementation.models.ShaperSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -48,23 +47,23 @@ public final class ShaperSkillConverter {
     }
 
     /**
-     * Maps from {@link ShaperSkill} to {@link com.azure.search.documents.implementation.models.ShaperSkill}.
+     * Maps from {@link ShaperSkill} to {@link com.azure.search.documents.indexes.implementation.models.ShaperSkill}.
      */
-    public static com.azure.search.documents.implementation.models.ShaperSkill map(ShaperSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ShaperSkill map(ShaperSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ShaperSkill shaperSkill =
-            new com.azure.search.documents.implementation.models.ShaperSkill();
+        com.azure.search.documents.indexes.implementation.models.ShaperSkill shaperSkill =
+            new com.azure.search.documents.indexes.implementation.models.ShaperSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             shaperSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             shaperSkill.setInputs(inputs);
         }

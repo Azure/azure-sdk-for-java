@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
@@ -27,23 +26,6 @@ public enum QueryType {
 
     QueryType(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a QueryType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed QueryType object, or null if unable to parse.
-     */
-    @JsonCreator
-    public static QueryType fromString(String value) {
-        QueryType[] items = QueryType.values();
-        for (QueryType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @JsonValue

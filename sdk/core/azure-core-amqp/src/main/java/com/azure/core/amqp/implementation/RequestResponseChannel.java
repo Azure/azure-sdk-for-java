@@ -15,6 +15,7 @@ import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -23,6 +24,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -191,6 +193,18 @@ public class RequestResponseChannel implements Disposable {
      * @return An AMQP message representing the service's response to the message.
      */
     public Mono<Message> sendWithAck(final Message message) {
+        return sendWithAck(message, null);
+    }
+
+    /**
+     * Sends a message to the message broker using the {@code dispatcher} and gets the response.
+     *
+     * @param message AMQP message to send.
+     * @param deliveryState Delivery state to be sent to service bus with message.
+     *
+     * @return An AMQP message representing the service's response to the message.
+     */
+    public Mono<Message> sendWithAck(final Message message, DeliveryState deliveryState) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(
                 "Cannot send a message when request response channel is disposed."));
@@ -223,8 +237,14 @@ public class RequestResponseChannel implements Disposable {
                         // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
                         // condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            sendLink.delivery(UUID.randomUUID().toString()
+                            Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
                                 .replace("-", "").getBytes(UTF_8));
+
+                            if (deliveryState != null) {
+                                logger.verbose("Setting delivery state as [{}].", deliveryState);
+                                delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
+                                delivery.disposition(deliveryState);
+                            }
 
                             final int payloadSize = messageSerializer.getSize(message)
                                 + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
@@ -232,6 +252,7 @@ public class RequestResponseChannel implements Disposable {
                             final int encodedSize = message.encode(bytes, 0, payloadSize);
                             receiveLink.flow(1);
                             sendLink.send(bytes, 0, encodedSize);
+                            delivery.settle();
                             sendLink.advance();
                         });
                     } catch (IOException e) {

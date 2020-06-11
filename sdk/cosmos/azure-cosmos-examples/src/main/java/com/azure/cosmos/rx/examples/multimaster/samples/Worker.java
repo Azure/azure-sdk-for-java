@@ -7,7 +7,7 @@ package com.azure.cosmos.rx.examples.multimaster.samples;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
@@ -85,8 +85,8 @@ public class Worker {
                 FeedResponse<Document> response = null;
                 do {
 
-                    FeedOptions options = new FeedOptions();
-                    ModelBridgeInternal.setFeedOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
+                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                    ModelBridgeInternal.setQueryRequestOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
                     response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                             .subscribeOn(schedulerForBlockingWork).single().block();
@@ -122,8 +122,8 @@ public class Worker {
         FeedResponse<Document> response = null;
         do {
 
-            FeedOptions options = new FeedOptions();
-            ModelBridgeInternal.setFeedOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
             response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                     .subscribeOn(schedulerForBlockingWork).single().block();

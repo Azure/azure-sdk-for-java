@@ -3,17 +3,17 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.FieldMapping;
-import com.azure.search.documents.models.FieldMappingFunction;
+import com.azure.search.documents.indexes.models.FieldMapping;
+import com.azure.search.documents.indexes.models.FieldMappingFunction;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.FieldMapping} and {@link FieldMapping}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.FieldMapping} and {@link FieldMapping}.
  */
 public final class FieldMappingConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.FieldMapping} to {@link FieldMapping}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.FieldMapping} to {@link FieldMapping}.
      */
-    public static FieldMapping map(com.azure.search.documents.implementation.models.FieldMapping obj) {
+    public static FieldMapping map(com.azure.search.documents.indexes.implementation.models.FieldMapping obj) {
         if (obj == null) {
             return null;
         }
@@ -33,14 +33,14 @@ public final class FieldMappingConverter {
     }
 
     /**
-     * Maps from {@link FieldMapping} to {@link com.azure.search.documents.implementation.models.FieldMapping}.
+     * Maps from {@link FieldMapping} to {@link com.azure.search.documents.indexes.implementation.models.FieldMapping}.
      */
-    public static com.azure.search.documents.implementation.models.FieldMapping map(FieldMapping obj) {
+    public static com.azure.search.documents.indexes.implementation.models.FieldMapping map(FieldMapping obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.FieldMapping fieldMapping =
-            new com.azure.search.documents.implementation.models.FieldMapping();
+        com.azure.search.documents.indexes.implementation.models.FieldMapping fieldMapping =
+            new com.azure.search.documents.indexes.implementation.models.FieldMapping();
 
         String sourceFieldName = obj.getSourceFieldName();
         fieldMapping.setSourceFieldName(sourceFieldName);
@@ -49,7 +49,7 @@ public final class FieldMappingConverter {
         fieldMapping.setTargetFieldName(targetFieldName);
 
         if (obj.getMappingFunction() != null) {
-            com.azure.search.documents.implementation.models.FieldMappingFunction mappingFunction =
+            com.azure.search.documents.indexes.implementation.models.FieldMappingFunction mappingFunction =
                 FieldMappingFunctionConverter.map(obj.getMappingFunction());
             fieldMapping.setMappingFunction(mappingFunction);
         }

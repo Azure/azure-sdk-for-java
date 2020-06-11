@@ -4,8 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.TracerProvider;
-import com.azure.cosmos.models.CosmosAsyncPermissionResponse;
+import com.azure.cosmos.models.CosmosPermissionResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -56,7 +55,7 @@ public class CosmosAsyncPermission {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the read permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> read(CosmosPermissionRequestOptions options) {
+    public Mono<CosmosPermissionResponse> read(CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
@@ -80,8 +79,8 @@ public class CosmosAsyncPermission {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the replaced permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> replace(CosmosPermissionProperties permissionProperties,
-                                                       CosmosPermissionRequestOptions options) {
+    public Mono<CosmosPermissionResponse> replace(CosmosPermissionProperties permissionProperties,
+                                                  CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
@@ -104,7 +103,7 @@ public class CosmosAsyncPermission {
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response for the deleted permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> delete(CosmosPermissionRequestOptions options) {
+    public Mono<CosmosPermissionResponse> delete(CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
@@ -135,58 +134,59 @@ public class CosmosAsyncPermission {
         return builder.toString();
     }
 
-    private Mono<CosmosAsyncPermissionResponse> readInternal(CosmosPermissionRequestOptions options, Context context) {
+    private Mono<CosmosPermissionResponse> readInternal(CosmosPermissionRequestOptions options, Context context) {
 
         String spanName = "readPermission." + cosmosUser.getId();
-        Mono<CosmosAsyncPermissionResponse> responseMono = readInternal(options);
+        Mono<CosmosPermissionResponse> responseMono = readInternal(options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncPermissionResponse> readInternal(CosmosPermissionRequestOptions options) {
+    private Mono<CosmosPermissionResponse> readInternal(CosmosPermissionRequestOptions options) {
 
         return cosmosUser.getDatabase()
             .getDocClientWrapper()
             .readPermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
+            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
             .single();
     }
 
-    private Mono<CosmosAsyncPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
+    private Mono<CosmosPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
                                                                 CosmosPermissionRequestOptions options,
                                                                 Context context) {
 
         String spanName = "replacePermission." + cosmosUser.getId();
-        Mono<CosmosAsyncPermissionResponse> responseMono = replaceInternal(permissionProperties, options);
+        Mono<CosmosPermissionResponse> responseMono = replaceInternal(permissionProperties, options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
+    private Mono<CosmosPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
                                                                 CosmosPermissionRequestOptions options) {
+        CosmosAsyncDatabase databaseContext = cosmosUser.getDatabase();
         return cosmosUser.getDatabase()
             .getDocClientWrapper()
-            .replacePermission(ModelBridgeInternal.getV2Permissions(permissionProperties),
+            .replacePermission(ModelBridgeInternal.getPermission(permissionProperties, databaseContext.getId()),
                 ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
+            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
             .single();
     }
 
-    private Mono<CosmosAsyncPermissionResponse> deleteInternal(CosmosPermissionRequestOptions options,
+    private Mono<CosmosPermissionResponse> deleteInternal(CosmosPermissionRequestOptions options,
                                                                Context context) {
 
         String spanName = "deletePermission." + cosmosUser.getId();
-        Mono<CosmosAsyncPermissionResponse> responseMono = deleteInternal(options);
+        Mono<CosmosPermissionResponse> responseMono = deleteInternal(options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncPermissionResponse> deleteInternal(CosmosPermissionRequestOptions options) {
+    private Mono<CosmosPermissionResponse> deleteInternal(CosmosPermissionRequestOptions options) {
 
         return cosmosUser.getDatabase()
             .getDocClientWrapper()
             .deletePermission(getLink(), ModelBridgeInternal.toRequestOptions(options))
-            .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
+            .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
             .single();
     }
 

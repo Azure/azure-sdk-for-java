@@ -10,10 +10,10 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
@@ -54,12 +54,12 @@ public class CosmosTracerTest extends TestSuiteBase {
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        client.readAllDatabases(new FeedOptions()).byPage().single().block();
+        client.readAllDatabases(new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
         String query = "select * from c where c.id = '" + cosmosAsyncDatabase.getId() + "'";
-        client.queryDatabases(query, new FeedOptions()).byPage().single().block();
+        client.queryDatabases(query, new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
     }
@@ -75,7 +75,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             Matchers.anyString(), Matchers.any(Context.class));
 
         try {
-            cosmosAsyncDatabase.readProvisionedThroughput().block();
+            cosmosAsyncDatabase.readThroughput().block();
         } catch (CosmosException ex) {
             //do nothing
         }
@@ -102,7 +102,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             Matchers.anyString(), Matchers.any(Context.class));
 
         try {
-            cosmosAsyncContainer.readProvisionedThroughput().block();
+            cosmosAsyncContainer.readThroughput().block();
         } catch (CosmosException ex) {
             //do nothing
         }
@@ -128,12 +128,12 @@ public class CosmosTracerTest extends TestSuiteBase {
         cosmosAsyncContainer.deleteItem(ITEM_ID, PartitionKey.NONE).block();
         Mockito.verify(tracer, Mockito.times(6)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
-        cosmosAsyncContainer.readAllItems(new FeedOptions(), CosmosItemRequestOptions.class).byPage().single().block();
+        cosmosAsyncContainer.readAllItems(new CosmosQueryRequestOptions(), CosmosItemRequestOptions.class).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(7)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
         String query = "select * from c where c.id = '" + ITEM_ID + "'";
-        cosmosAsyncContainer.queryItems(query, new FeedOptions(), CosmosItemRequestOptions.class).byPage().single().block();
+        cosmosAsyncContainer.queryItems(query, new CosmosQueryRequestOptions(), CosmosItemRequestOptions.class).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(8)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
     }
@@ -143,15 +143,15 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerProvider tracer = Mockito.spy(new TracerProvider(ServiceLoader.load(Tracer.class)));
         ReflectionUtils.setTracerProvider(client, tracer);
 
-        cosmosAsyncContainer.getScripts().readAllStoredProcedures(new FeedOptions()).byPage().single().block();
+        cosmosAsyncContainer.getScripts().readAllStoredProcedures(new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        cosmosAsyncContainer.getScripts().readAllTriggers(new FeedOptions()).byPage().single().block();
+        cosmosAsyncContainer.getScripts().readAllTriggers(new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new FeedOptions()).byPage().single().block();
+        cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
@@ -171,7 +171,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         Mockito.verify(tracer, Mockito.times(6)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new FeedOptions()).byPage().single().block();
+        cosmosAsyncContainer.getScripts().readAllUserDefinedFunctions(new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(7)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
@@ -192,7 +192,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         cosmosAsyncContainer.getScripts().getTrigger(cosmosTriggerProperties.getId()).replace(resultTrigger).block();
         Mockito.verify(tracer, Mockito.times(11)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
-        cosmosAsyncContainer.getScripts().readAllTriggers(new FeedOptions()).byPage().single().block();
+        cosmosAsyncContainer.getScripts().readAllTriggers(new CosmosQueryRequestOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(12)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
@@ -214,7 +214,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         Mockito.verify(tracer, Mockito.times(16)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
 
-        cosmosAsyncContainer.getScripts().readAllStoredProcedures(new FeedOptions()).byPage().single().block();
+        cosmosAsyncContainer.getScripts().readAllStoredProcedures(new CosmosQueryRequestOptions()).byPage().single().block();
 
         cosmosAsyncContainer.getScripts().getStoredProcedure(procedureProperties.getId()).delete().block();
         Mockito.verify(tracer, Mockito.times(18)).startSpan(Matchers.anyString(), Matchers.anyString(),
@@ -227,25 +227,19 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private static CosmosUserDefinedFunctionProperties getCosmosUserDefinedFunctionProperties() {
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
         return udf;
     }
 
     private static CosmosTriggerProperties getCosmosTriggerProperties() {
-        CosmosTriggerProperties trigger = new CosmosTriggerProperties();
-        trigger.setId(UUID.randomUUID().toString());
-        trigger.setBody("function() {var x = 10;}");
+        CosmosTriggerProperties trigger = new CosmosTriggerProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
         trigger.setTriggerOperation(TriggerOperation.CREATE);
         trigger.setTriggerType(TriggerType.PRE);
         return trigger;
     }
 
     private static CosmosStoredProcedureProperties getCosmosStoredProcedureProperties() {
-        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties();
-        storedProcedureDef.setId(UUID.randomUUID().toString());
-        storedProcedureDef.setBody("function() {var x = 10;}");
+        CosmosStoredProcedureProperties storedProcedureDef = new CosmosStoredProcedureProperties(UUID.randomUUID().toString(), "function() {var x = 10;}");
         return storedProcedureDef;
     }
 }

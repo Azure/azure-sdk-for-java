@@ -3,22 +3,22 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.EdgeNGramTokenizer;
-import com.azure.search.documents.models.TokenCharacterKind;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
+import com.azure.search.documents.indexes.models.TokenCharacterKind;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.EdgeNGramTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer} and
  * {@link EdgeNGramTokenizer}.
  */
 public final class EdgeNGramTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.EdgeNGramTokenizer} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer} to
      * {@link EdgeNGramTokenizer}.
      */
-    public static EdgeNGramTokenizer map(com.azure.search.documents.implementation.models.EdgeNGramTokenizer obj) {
+    public static EdgeNGramTokenizer map(com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -43,14 +43,14 @@ public final class EdgeNGramTokenizerConverter {
 
     /**
      * Maps from {@link EdgeNGramTokenizer} to
-     * {@link com.azure.search.documents.implementation.models.EdgeNGramTokenizer}.
+     * {@link com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.EdgeNGramTokenizer map(EdgeNGramTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer map(EdgeNGramTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.EdgeNGramTokenizer edgeNGramTokenizer =
-            new com.azure.search.documents.implementation.models.EdgeNGramTokenizer();
+        com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer edgeNGramTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenizer();
 
         String name = obj.getName();
         edgeNGramTokenizer.setName(name);
@@ -59,7 +59,7 @@ public final class EdgeNGramTokenizerConverter {
         edgeNGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            List<com.azure.search.documents.implementation.models.TokenCharacterKind> tokenChars =
+            List<com.azure.search.documents.indexes.implementation.models.TokenCharacterKind> tokenChars =
                 obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
             edgeNGramTokenizer.setTokenChars(tokenChars);
         }

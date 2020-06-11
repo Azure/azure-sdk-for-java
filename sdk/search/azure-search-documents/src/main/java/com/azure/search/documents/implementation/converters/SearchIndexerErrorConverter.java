@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.SearchIndexerError;
+import com.azure.search.documents.indexes.models.SearchIndexerError;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SearchIndexerError} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerError} and
  * {@link SearchIndexerError}.
  */
 public final class SearchIndexerErrorConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerError} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerError} to
      * {@link SearchIndexerError}.
      */
-    public static SearchIndexerError map(com.azure.search.documents.implementation.models.SearchIndexerError obj) {
+    public static SearchIndexerError map(com.azure.search.documents.indexes.implementation.models.SearchIndexerError obj) {
         if (obj == null) {
             return null;
         }
@@ -44,14 +43,14 @@ public final class SearchIndexerErrorConverter {
 
     /**
      * Maps from {@link SearchIndexerError} to
-     * {@link com.azure.search.documents.implementation.models.SearchIndexerError}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerError}.
      */
-    public static com.azure.search.documents.implementation.models.SearchIndexerError map(SearchIndexerError obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SearchIndexerError map(SearchIndexerError obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SearchIndexerError searchIndexerError =
-            new com.azure.search.documents.implementation.models.SearchIndexerError();
+        com.azure.search.documents.indexes.implementation.models.SearchIndexerError searchIndexerError =
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerError();
 
         String errorMessage = obj.getErrorMessage();
         PrivateFieldAccessHelper.set(searchIndexerError, "errorMessage", errorMessage);

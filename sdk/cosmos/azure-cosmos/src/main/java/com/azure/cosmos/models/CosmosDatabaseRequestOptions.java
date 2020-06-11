@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.RequestOptions;
  * Encapsulates options that can be specified for a request issued to cosmos database.
  */
 public final class CosmosDatabaseRequestOptions {
-    private Integer offerThroughput;
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
@@ -53,26 +52,6 @@ public final class CosmosDatabaseRequestOptions {
         return this;
     }
 
-    /**
-     * Gets the throughput in the form of Request Units per second when creating a cosmos database.
-     *
-     * @return the throughput value.
-     */
-    Integer getOfferThroughput() {
-        return offerThroughput;
-    }
-
-    /**
-     * Sets the throughput in the form of Request Units per second when creating a cosmos database.
-     *
-     * @param offerThroughput the throughput value.
-     * @return the current request options
-     */
-    CosmosDatabaseRequestOptions setOfferThroughput(Integer offerThroughput) {
-        this.offerThroughput = offerThroughput;
-        return this;
-    }
-
     CosmosDatabaseRequestOptions setThroughputProperties(ThroughputProperties throughputProperties) {
         this.throughputProperties = throughputProperties;
         return this;
@@ -82,7 +61,6 @@ public final class CosmosDatabaseRequestOptions {
         RequestOptions options = new RequestOptions();
         options.setIfMatchETag(getIfMatchETag());
         options.setIfNoneMatchETag(getIfNoneMatchETag());
-        options.setOfferThroughput(offerThroughput);
         options.setThroughputProperties(this.throughputProperties);
         return options;
     }

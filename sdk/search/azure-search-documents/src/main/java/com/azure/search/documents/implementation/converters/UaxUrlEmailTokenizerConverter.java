@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.UaxUrlEmailTokenizer;
+import com.azure.search.documents.indexes.models.UaxUrlEmailTokenizer;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer} and
  * {@link UaxUrlEmailTokenizer}.
  */
 public final class UaxUrlEmailTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer} to
      * {@link UaxUrlEmailTokenizer}.
      */
-    public static UaxUrlEmailTokenizer map(com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer obj) {
+    public static UaxUrlEmailTokenizer map(com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -31,14 +30,14 @@ public final class UaxUrlEmailTokenizerConverter {
 
     /**
      * Maps from {@link UaxUrlEmailTokenizer} to
-     * {@link com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer}.
+     * {@link com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer map(UaxUrlEmailTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer map(UaxUrlEmailTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer uaxUrlEmailTokenizer =
-            new com.azure.search.documents.implementation.models.UaxUrlEmailTokenizer();
+        com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer uaxUrlEmailTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.UaxUrlEmailTokenizer();
 
         String name = obj.getName();
         uaxUrlEmailTokenizer.setName(name);

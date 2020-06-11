@@ -4,7 +4,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The FormTableCell model.
@@ -41,7 +42,7 @@ public final class FormTableCell extends FormContent {
      * When includeTextDetails is set to true, a list of references to the text
      * elements constituting this table cell.
      */
-    private final IterableStream<FormContent> elements;
+    private final List<FormContent> elements;
 
     /*
      * Is the current cell a header cell?
@@ -71,7 +72,7 @@ public final class FormTableCell extends FormContent {
     public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
         final Integer columnSpan, final String text, final BoundingBox boundingBox,
         final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
-        final IterableStream<FormContent> textContent) {
+        final List<FormContent> textContent) {
         super(text, boundingBox, pageNumber, null);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
@@ -159,7 +160,7 @@ public final class FormTableCell extends FormContent {
      *
      * @return the elements value.
      */
-    public IterableStream<FormContent> getElements() {
+    public List<FormContent> getElements() {
         return this.elements;
     }
 

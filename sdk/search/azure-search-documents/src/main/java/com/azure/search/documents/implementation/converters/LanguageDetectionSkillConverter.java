@@ -3,24 +3,23 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.LanguageDetectionSkill;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.LanguageDetectionSkill;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.LanguageDetectionSkill} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill} and
  * {@link LanguageDetectionSkill}.
  */
 public final class LanguageDetectionSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.LanguageDetectionSkill} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill} to
      * {@link LanguageDetectionSkill}.
      */
-    public static LanguageDetectionSkill map(com.azure.search.documents.implementation.models.LanguageDetectionSkill obj) {
+    public static LanguageDetectionSkill map(com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -51,23 +50,23 @@ public final class LanguageDetectionSkillConverter {
 
     /**
      * Maps from {@link LanguageDetectionSkill} to
-     * {@link com.azure.search.documents.implementation.models.LanguageDetectionSkill}.
+     * {@link com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill}.
      */
-    public static com.azure.search.documents.implementation.models.LanguageDetectionSkill map(LanguageDetectionSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill map(LanguageDetectionSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.LanguageDetectionSkill languageDetectionSkill =
-            new com.azure.search.documents.implementation.models.LanguageDetectionSkill();
+        com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill languageDetectionSkill =
+            new com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             languageDetectionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             languageDetectionSkill.setInputs(inputs);
         }

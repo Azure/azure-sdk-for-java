@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.WordDelimiterTokenFilter;
+import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} and
  * {@link WordDelimiterTokenFilter}.
  */
 public final class WordDelimiterTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter} to
      * {@link WordDelimiterTokenFilter}.
      */
-    public static WordDelimiterTokenFilter map(com.azure.search.documents.implementation.models.WordDelimiterTokenFilter obj) {
+    public static WordDelimiterTokenFilter map(com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -27,7 +27,7 @@ public final class WordDelimiterTokenFilterConverter {
         wordDelimiterTokenFilter.setName(name);
 
         Boolean catenateNumbers = obj.isCatenateNumbers();
-        wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
+        wordDelimiterTokenFilter.setNumbersCatenated(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
             List<String> protectedWords = new ArrayList<>(obj.getProtectedWords());
@@ -56,25 +56,25 @@ public final class WordDelimiterTokenFilterConverter {
         wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
         Boolean catenateWords = obj.isCatenateWords();
-        wordDelimiterTokenFilter.setCatenateWords(catenateWords);
+        wordDelimiterTokenFilter.setWordsCatenated(catenateWords);
         return wordDelimiterTokenFilter;
     }
 
     /**
      * Maps from {@link WordDelimiterTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.WordDelimiterTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.WordDelimiterTokenFilter map(WordDelimiterTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter map(WordDelimiterTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.WordDelimiterTokenFilter wordDelimiterTokenFilter =
-            new com.azure.search.documents.implementation.models.WordDelimiterTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter wordDelimiterTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.WordDelimiterTokenFilter();
 
         String name = obj.getName();
         wordDelimiterTokenFilter.setName(name);
 
-        Boolean catenateNumbers = obj.isCatenateNumbers();
+        Boolean catenateNumbers = obj.areNumbersCatenated();
         wordDelimiterTokenFilter.setCatenateNumbers(catenateNumbers);
 
         if (obj.getProtectedWords() != null) {
@@ -88,22 +88,22 @@ public final class WordDelimiterTokenFilterConverter {
         Boolean stemEnglishPossessive = obj.isStemEnglishPossessive();
         wordDelimiterTokenFilter.setStemEnglishPossessive(stemEnglishPossessive);
 
-        Boolean splitOnCaseChange = obj.isSplitOnCaseChange();
+        Boolean splitOnCaseChange = obj.splitOnCaseChange();
         wordDelimiterTokenFilter.setSplitOnCaseChange(splitOnCaseChange);
 
         Boolean generateWordParts = obj.generateWordParts();
         wordDelimiterTokenFilter.setGenerateWordParts(generateWordParts);
 
-        Boolean splitOnNumerics = obj.isSplitOnNumerics();
+        Boolean splitOnNumerics = obj.splitOnNumerics();
         wordDelimiterTokenFilter.setSplitOnNumerics(splitOnNumerics);
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
         wordDelimiterTokenFilter.setPreserveOriginal(preserveOriginal);
 
-        Boolean catenateAll = obj.isCatenateAll();
+        Boolean catenateAll = obj.catenateAll();
         wordDelimiterTokenFilter.setCatenateAll(catenateAll);
 
-        Boolean catenateWords = obj.isCatenateWords();
+        Boolean catenateWords = obj.areWordsCatenated();
         wordDelimiterTokenFilter.setCatenateWords(catenateWords);
         return wordDelimiterTokenFilter;
     }

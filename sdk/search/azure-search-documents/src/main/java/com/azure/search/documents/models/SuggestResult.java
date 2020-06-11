@@ -2,11 +2,9 @@
 // Licensed under the MIT License.
 
 package com.azure.search.documents.models;
-import com.azure.search.documents.SearchDocument;
-
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.SearchDocument;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Map;
 
 /**
  * A result containing a document found by a suggestion query, plus associated

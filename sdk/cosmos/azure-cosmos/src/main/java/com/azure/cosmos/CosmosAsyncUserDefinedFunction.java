@@ -4,9 +4,8 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.Paths;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserDefinedFunction;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
@@ -57,7 +56,7 @@ public class CosmosAsyncUserDefinedFunction {
      *
      * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> read() {
+    public Mono<CosmosUserDefinedFunctionResponse> read() {
         if(!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
             return readInternal();
         }
@@ -77,7 +76,7 @@ public class CosmosAsyncUserDefinedFunction {
      * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function
      * or an error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
+    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
         if(!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
             return replaceInternal(udfSettings);
         }
@@ -96,7 +95,7 @@ public class CosmosAsyncUserDefinedFunction {
      * @return an {@link Mono} containing the single resource response for the deleted cosmos user defined function or
      * an error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> delete() {
+    public Mono<CosmosUserDefinedFunctionResponse> delete() {
         if(!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
             return deleteInternal();
         }
@@ -122,44 +121,44 @@ public class CosmosAsyncUserDefinedFunction {
         return builder.toString();
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> readInternal(Context context) {
+    private Mono<CosmosUserDefinedFunctionResponse> readInternal(Context context) {
         String spanName = "readUDF." + container.getId();
-        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = readInternal();
+        Mono<CosmosUserDefinedFunctionResponse> responseMono = readInternal();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, container.getDatabase().getId(), container.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> readInternal() {
+    private Mono<CosmosUserDefinedFunctionResponse> readInternal() {
        return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
-                .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container)).single();
+                .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings,
+    private Mono<CosmosUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings,
                                                                  Context context) {
         String spanName = "replaceUDF." + container.getId();
-        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = replaceInternal(udfSettings);
+        Mono<CosmosUserDefinedFunctionResponse> responseMono = replaceInternal(udfSettings);
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, container.getDatabase().getId(), container.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings) {
+    private Mono<CosmosUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings) {
         return container.getDatabase()
             .getDocClientWrapper()
             .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(
                 ModelBridgeInternal.getResource(udfSettings))), null)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
+            .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response))
             .single();
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> deleteInternal(Context context) {
+    private Mono<CosmosUserDefinedFunctionResponse> deleteInternal(Context context) {
         String spanName = "deleteUDF." + container.getId();
-        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = deleteInternal();
+        Mono<CosmosUserDefinedFunctionResponse> responseMono = deleteInternal();
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, container.getDatabase().getId(), container.getDatabase().getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> deleteInternal() {
+    private Mono<CosmosUserDefinedFunctionResponse> deleteInternal() {
         return container.getDatabase()
             .getDocClientWrapper()
             .deleteUserDefinedFunction(this.getLink(), null)
-            .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
+            .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response))
             .single();
     }
 }

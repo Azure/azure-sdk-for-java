@@ -3,22 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.SearchIndexerLimits;
+import com.azure.search.documents.indexes.models.SearchIndexerLimits;
 
 import java.time.Duration;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SearchIndexerLimits} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits} and
  * {@link SearchIndexerLimits}.
  */
 public final class SearchIndexerLimitsConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SearchIndexerLimits} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits} to
      * {@link SearchIndexerLimits}.
      */
-    public static SearchIndexerLimits map(com.azure.search.documents.implementation.models.SearchIndexerLimits obj) {
+    public static SearchIndexerLimits map(com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits obj) {
         if (obj == null) {
             return null;
         }
@@ -38,14 +37,14 @@ public final class SearchIndexerLimitsConverter {
 
     /**
      * Maps from {@link SearchIndexerLimits} to
-     * {@link com.azure.search.documents.implementation.models.SearchIndexerLimits}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits}.
      */
-    public static com.azure.search.documents.implementation.models.SearchIndexerLimits map(SearchIndexerLimits obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits map(SearchIndexerLimits obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SearchIndexerLimits searchIndexerLimits =
-            new com.azure.search.documents.implementation.models.SearchIndexerLimits();
+        com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits searchIndexerLimits =
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerLimits();
 
         Duration maxRunTime = obj.getMaxRunTime();
         PrivateFieldAccessHelper.set(searchIndexerLimits, "maxRunTime", maxRunTime);

@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.SnowballTokenFilter;
-import com.azure.search.documents.models.SnowballTokenFilterLanguage;
+import com.azure.search.documents.indexes.models.SnowballTokenFilter;
+import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.SnowballTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter} and
  * {@link SnowballTokenFilter}.
  */
 public final class SnowballTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.SnowballTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter} to
      * {@link SnowballTokenFilter}.
      */
-    public static SnowballTokenFilter map(com.azure.search.documents.implementation.models.SnowballTokenFilter obj) {
+    public static SnowballTokenFilter map(com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -34,20 +33,20 @@ public final class SnowballTokenFilterConverter {
 
     /**
      * Maps from {@link SnowballTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.SnowballTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.SnowballTokenFilter map(SnowballTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter map(SnowballTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.SnowballTokenFilter snowballTokenFilter =
-            new com.azure.search.documents.implementation.models.SnowballTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter snowballTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.SnowballTokenFilter();
 
         String name = obj.getName();
         snowballTokenFilter.setName(name);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.SnowballTokenFilterLanguage language =
+            com.azure.search.documents.indexes.implementation.models.SnowballTokenFilterLanguage language =
                 SnowballTokenFilterLanguageConverter.map(obj.getLanguage());
             snowballTokenFilter.setLanguage(language);
         }

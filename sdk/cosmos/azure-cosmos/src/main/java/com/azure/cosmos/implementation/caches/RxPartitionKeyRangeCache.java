@@ -10,7 +10,8 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -26,8 +27,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -223,16 +223,16 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return collectionObs.flatMap(coll -> {
 
-            FeedOptions feedOptions = new FeedOptions();
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             if (properties != null) {
-                feedOptions.setProperties(properties);
+                ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
-            ZonedDateTime addressCallStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-            return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
+            Instant addressCallStartTime = Instant.now();
+            return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {
-                            ZonedDateTime addressCallEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                            Instant addressCallEndTime = Instant.now();
                             MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
                                 addressCallEndTime,
                                 MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
