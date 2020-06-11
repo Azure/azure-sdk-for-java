@@ -80,8 +80,6 @@ jobs:
 
 
     steps:
-      - template: /eng/pipelines/templates/steps/update-version-fix.yml
-
       - task: Maven@3
         displayName: Use the latest package version from the dev feed
         inputs:

@@ -5,7 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -108,10 +108,10 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         container.getScripts().createUserDefinedFunction(udf);
 
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator3 =
-                container.getScripts().readAllUserDefinedFunctions(queryRequestOptions);
+                container.getScripts().readAllUserDefinedFunctions(cosmosQueryRequestOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -121,16 +121,16 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         container.getScripts().createUserDefinedFunction(properties);
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
 
         CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator1 =
-                container.getScripts().queryUserDefinedFunctions(query, queryRequestOptions);
+                container.getScripts().queryUserDefinedFunctions(query, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator2 =
-                container.getScripts().queryUserDefinedFunctions(query, queryRequestOptions);
+                container.getScripts().queryUserDefinedFunctions(query, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
     }
 

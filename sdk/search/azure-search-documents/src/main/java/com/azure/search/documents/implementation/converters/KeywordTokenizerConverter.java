@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
+import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.KeywordTokenizer;
 
 /**
@@ -10,6 +11,10 @@ import com.azure.search.documents.indexes.models.KeywordTokenizer;
  * {@link KeywordTokenizer}.
  */
 public final class KeywordTokenizerConverter {
+    private static final String V1_ODATA_TYPE = "#Microsoft.Azure.Search.KeywordTokenizer";
+    private static final String V2_ODATA_TYPE = "#Microsoft.Azure.Search.KeywordTokenizerV2";
+    private static final String ODATA_FIELD_NAME = "odataType";
+
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2} to
      * {@link KeywordTokenizer}.
@@ -19,6 +24,7 @@ public final class KeywordTokenizerConverter {
             return null;
         }
         KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
+        PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
 
         String name = obj.getName();
         keywordTokenizer.setName(name);
@@ -38,6 +44,7 @@ public final class KeywordTokenizerConverter {
         }
         KeywordTokenizer keywordTokenizer = new KeywordTokenizer();
 
+        PrivateFieldAccessHelper.set(keywordTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
         String name = obj.getName();
         keywordTokenizer.setName(name);
 
@@ -48,21 +55,22 @@ public final class KeywordTokenizerConverter {
 
     /**
      * Maps from {@link KeywordTokenizer} to
-     * {@link com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2}.
+     * {@link com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2} or
+     * @link com.azure.search.documents.indexes.implementation.models.KeywordTokenizer} depends on @odata.type.
      */
-    public static com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2 map(KeywordTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.LexicalTokenizer map(KeywordTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2 keywordTokenizerV2 =
-            new com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2();
 
-        String name = obj.getName();
-        keywordTokenizerV2.setName(name);
-
-        Integer maxTokenLength = obj.getMaxTokenLength();
-        keywordTokenizerV2.setMaxTokenLength(maxTokenLength);
-        return keywordTokenizerV2;
+        String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
+        if (V1_ODATA_TYPE.equals(identifier)) {
+            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizer()
+                .setBufferSize(obj.getMaxTokenLength()).setName(obj.getName());
+        } else {
+            return new com.azure.search.documents.indexes.implementation.models.KeywordTokenizerV2()
+                .setMaxTokenLength(obj.getMaxTokenLength()).setName(obj.getName());
+        }
     }
 
     private KeywordTokenizerConverter() {

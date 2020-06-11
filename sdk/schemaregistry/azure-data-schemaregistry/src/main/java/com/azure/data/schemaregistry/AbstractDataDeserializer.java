@@ -12,7 +12,7 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Common implementation for all registry-based deserializers.
@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
     private final ClientLogger logger = new ClientLogger(AbstractDataDeserializer.class);
 
-    private final Map<String, ByteDecoder> byteDecoderMap = new ConcurrentHashMap<>();
+    private final Map<String, ByteDecoder> byteDecoderMap = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
     /**
      * Constructor called by all concrete implementation constructors.
@@ -89,7 +89,7 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
         if (decoder == null) {
             throw logger.logExceptionAsError(
                 new SerializationException(
-                    String.format("No decoder class found for schema type '%s'", registryObject.getSchemaType())
+                    String.format("No decoder class found for schema type '%s'.", registryObject.getSchemaType())
                 ));
         }
         return decoder;

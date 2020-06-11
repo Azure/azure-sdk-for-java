@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -45,35 +46,14 @@ public final class PollOperation {
         return context -> {
             PollingState pollingState = PollingState.from(serializerAdapter, context);
             if (pollingState.getOperationStatus().isComplete()) {
-                if (pollingState.getOperationStatus() == LongRunningOperationStatus.FAILED
-                    || pollingState.getOperationStatus() == LRO_CANCELLED) {
-                    // Failed|Cancelled
-                    Error lroInitError = pollingState.getSynchronouslyFailedLroError();
-                    if (lroInitError != null) {
-                        return errorPollResponseMono(pollingState.getOperationStatus(), lroInitError);
-                    }
-                    Error pollError = pollingState.getPollError();
-                    if (pollError != null) {
-                        return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
-                    }
-                    throw new IllegalStateException("Either LroError or PollError must"
-                        + "be set when OperationStatus is in Failed|Cancelled State.");
-                } else {
-                    // Succeeded
-                    return pollResponseMono(serializerAdapter,
-                        pollingState.getOperationStatus(),
-                        pollingState.getLastResponseBody(),
-                        pollResultType);
-                }
+                return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, pollingState);
             } else {
                 // InProgress|NonTerminal-Status
-                Mono<PollResponse<PollResult<T>>> pollResponse = pollResponseMono(serializerAdapter,
-                    pollingState.getOperationStatus(),
-                    pollingState.getLastResponseBody(),
-                    pollResultType);
                 return doSinglePoll(pipeline, pollingState)
-                    .doOnNext(updatedState -> updatedState.store(context))
-                    .then(pollResponse);
+                    .flatMap(updatedState -> {
+                        updatedState.store(context);
+                        return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, updatedState);
+                    });
             }
         };
     }
@@ -86,13 +66,7 @@ public final class PollOperation {
      */
     public static <T>
         BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>> cancelFunction() {
-        return new BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>>() {
-            @Override
-            public Mono<PollResult<T>> apply(PollingContext<PollResult<T>> context,
-                                             PollResponse<PollResult<T>> response) {
-                return Mono.empty();
-            }
-        };
+        return (context, response) -> Mono.empty();
     }
 
     /**
@@ -160,9 +134,10 @@ public final class PollOperation {
     private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMono(SerializerAdapter serializerAdapter,
                                                                           LongRunningOperationStatus opStatus,
                                                                           String pollResponseBody,
-                                                                          Type pollResultType) {
+                                                                          Type pollResultType,
+                                                                          Duration pollDelay) {
         T result = deserialize(serializerAdapter, pollResponseBody, pollResultType);
-        return Mono.just(new PollResponse<>(opStatus, new PollResult<T>(result)));
+        return Mono.just(new PollResponse<>(opStatus, new PollResult<T>(result), pollDelay));
     }
 
     /**
@@ -181,6 +156,40 @@ public final class PollOperation {
                         response.getHeaders(),
                         null));
                 })));
+    }
+
+    private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(
+        SerializerAdapter serializerAdapter, Type pollResultType, PollingState pollingState) {
+        if (pollingState.getOperationStatus().isComplete()) {
+            if (pollingState.getOperationStatus() == LongRunningOperationStatus.FAILED
+                || pollingState.getOperationStatus() == LRO_CANCELLED) {
+                // Failed|Cancelled
+                Error lroInitError = pollingState.getSynchronouslyFailedLroError();
+                if (lroInitError != null) {
+                    return errorPollResponseMono(pollingState.getOperationStatus(), lroInitError);
+                }
+                Error pollError = pollingState.getPollError();
+                if (pollError != null) {
+                    return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
+                }
+                throw new IllegalStateException("Either LroError or PollError must"
+                    + "be set when OperationStatus is in Failed|Cancelled State.");
+            } else {
+                // Succeeded
+                return pollResponseMono(serializerAdapter,
+                    pollingState.getOperationStatus(),
+                    pollingState.getLastResponseBody(),
+                    pollResultType,
+                    pollingState.getPollDelay());
+            }
+        } else {
+            // InProgress|NonTerminal-Status
+            return pollResponseMono(serializerAdapter,
+                pollingState.getOperationStatus(),
+                pollingState.getLastResponseBody(),
+                pollResultType,
+                pollingState.getPollDelay());
+        }
     }
 
     /**

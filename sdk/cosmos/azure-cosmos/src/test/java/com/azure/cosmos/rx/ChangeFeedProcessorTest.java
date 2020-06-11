@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -13,7 +14,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -85,7 +86,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
-            changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollection)
@@ -100,7 +101,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
@@ -141,7 +142,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<CosmosItemProperties> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -163,7 +164,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setMinScaleCount(1)
                     .setMaxScaleCount(3)
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
@@ -207,7 +208,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<CosmosItemProperties> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
@@ -218,7 +219,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 })
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
@@ -287,7 +288,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         try {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
-            ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorFirst = new ChangeFeedProcessorBuilder()
                 .hostName(ownerFirst)
                 .handleChanges(docs -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
@@ -298,9 +299,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .options(new ChangeFeedProcessorOptions()
                     .setLeasePrefix(leasePrefix)
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
-            ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            ChangeFeedProcessor changeFeedProcessorSecond = new ChangeFeedProcessorBuilder()
                 .hostName(ownerSecond)
                 .handleChanges((List<JsonNode> docs) -> {
                     ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
@@ -321,7 +322,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             try {
                 changeFeedProcessorFirst.start().subscribeOn(Schedulers.elastic())
@@ -346,24 +347,24 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         SqlQuerySpec querySpec = new SqlQuerySpec(
                             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
-                        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+                        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-                        createdLeaseCollection.queryItems(querySpec, queryRequestOptions, CosmosItemProperties.class).byPage()
-                            .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
-                            .flatMap(doc -> {
+                        createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, CosmosItemProperties.class).byPage()
+                                              .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
+                                              .flatMap(doc -> {
                                 ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
                                 leaseDocument.setOwner("TEMP_OWNER");
                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                                 return createdLeaseCollection.replaceItem(doc, doc.getId(), new PartitionKey(doc.getId()), options)
                                     .map(itemResponse -> BridgeInternal.getProperties(itemResponse));
                             })
-                            .map(ServiceItemLease::fromDocument)
-                            .map(leaseDocument -> {
+                                              .map(ServiceItemLease::fromDocument)
+                                              .map(leaseDocument -> {
                                 ChangeFeedProcessorTest.log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
                                 return leaseDocument;
                             })
-                            .last()
-                            .flatMap(leaseDocument -> {
+                                              .last()
+                                              .flatMap(leaseDocument -> {
                                 ChangeFeedProcessorTest.log.info("Start creating documents");
                                 List<CosmosItemProperties> docDefList = new ArrayList<>();
 
@@ -380,7 +381,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                                     });
                             })
-                            .subscribe();
+                                              .subscribe();
                     })
                     .subscribe();
             } catch (Exception ex) {
@@ -425,7 +426,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
-            changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
@@ -435,7 +436,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxItemCount(10)
                 )
-                .build();
+                .buildChangeFeedProcessor();
 
             changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
                 .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))

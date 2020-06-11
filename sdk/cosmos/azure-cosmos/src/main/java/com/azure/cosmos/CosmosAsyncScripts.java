@@ -12,7 +12,7 @@ import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -90,7 +90,7 @@ public class CosmosAsyncScripts {
      * properties or an error.
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures() {
-        return readAllStoredProcedures(new QueryRequestOptions());
+        return readAllStoredProcedures(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -106,7 +106,7 @@ public class CosmosAsyncScripts {
      * procedures
      * properties or an error.
      */
-    CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(QueryRequestOptions options) {
+    CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -132,7 +132,7 @@ public class CosmosAsyncScripts {
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
-        QueryRequestOptions options) {
+        CosmosQueryRequestOptions options) {
         return queryStoredProcedures(new SqlQuerySpec(query), options);
     }
 
@@ -151,7 +151,7 @@ public class CosmosAsyncScripts {
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
-        QueryRequestOptions options) {
+        CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -209,7 +209,7 @@ public class CosmosAsyncScripts {
      * error.
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions() {
-        return readAllUserDefinedFunctions(new QueryRequestOptions());
+        return readAllUserDefinedFunctions(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -224,7 +224,7 @@ public class CosmosAsyncScripts {
      * functions or an
      * error.
      */
-    CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(QueryRequestOptions options) {
+    CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -251,7 +251,7 @@ public class CosmosAsyncScripts {
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         String query,
-        QueryRequestOptions options) {
+        CosmosQueryRequestOptions options) {
         return queryUserDefinedFunctions(new SqlQuerySpec(query), options);
     }
 
@@ -271,7 +271,7 @@ public class CosmosAsyncScripts {
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
-        QueryRequestOptions options) {
+        CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -326,7 +326,7 @@ public class CosmosAsyncScripts {
      * an error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers() {
-        return readAllTriggers(new QueryRequestOptions());
+        return readAllTriggers(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -342,7 +342,7 @@ public class CosmosAsyncScripts {
      * properties or
      * an error.
      */
-    CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(QueryRequestOptions options) {
+    CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
@@ -365,7 +365,7 @@ public class CosmosAsyncScripts {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained triggers or an
      * error.
      */
-    public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, QueryRequestOptions options) {
+    public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(String query, CosmosQueryRequestOptions options) {
         return queryTriggers(new SqlQuerySpec(query), options);
     }
 
@@ -383,7 +383,7 @@ public class CosmosAsyncScripts {
      */
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
-        QueryRequestOptions options) {
+        CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()

@@ -40,7 +40,7 @@ public final class SearchIndexConverter {
         if (obj.getSuggesters() != null) {
             List<SearchSuggester> searchSuggesters =
                 obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
-            searchIndex.setSearchSuggesters(searchSuggesters);
+            searchIndex.setSuggesters(searchSuggesters);
         }
 
         if (obj.getCharFilters() != null) {
@@ -72,7 +72,7 @@ public final class SearchIndexConverter {
 
         if (obj.getSimilarity() != null) {
             SimilarityAlgorithm similarityAlgorithm = SimilarityConverter.map(obj.getSimilarity());
-            searchIndex.setSimilarityAlgorithm(similarityAlgorithm);
+            searchIndex.setSimilarity(similarityAlgorithm);
         }
 
         String name = obj.getName();
@@ -116,9 +116,9 @@ public final class SearchIndexConverter {
             searchIndex.setTokenizers(tokenizers);
         }
 
-        if (obj.getSearchSuggesters() != null) {
+        if (obj.getSuggesters() != null) {
             List<com.azure.search.documents.indexes.implementation.models.Suggester> suggesters =
-                obj.getSearchSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
+                obj.getSuggesters().stream().map(SuggesterConverter::map).collect(Collectors.toList());
             searchIndex.setSuggesters(suggesters);
         }
 
@@ -149,9 +149,9 @@ public final class SearchIndexConverter {
             searchIndex.setAnalyzers(analyzers);
         }
 
-        if (obj.getSimilarityAlgorithm() != null) {
+        if (obj.getSimilarity() != null) {
             com.azure.search.documents.indexes.implementation.models.Similarity similarity =
-                SimilarityConverter.map(obj.getSimilarityAlgorithm());
+                SimilarityConverter.map(obj.getSimilarity());
             searchIndex.setSimilarity(similarity);
         }
 

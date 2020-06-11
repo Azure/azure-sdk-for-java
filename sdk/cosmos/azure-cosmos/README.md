@@ -9,12 +9,12 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 ## Getting started
 ### Include the package
 
-[//]: # ({x-version-update-start;com.microsoft.azure:azure-cosmos;current})
+[//]: # ({x-version-update-start;com.azure:azure-cosmos;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.0.1-beta.3</version>
+  <version>4.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
