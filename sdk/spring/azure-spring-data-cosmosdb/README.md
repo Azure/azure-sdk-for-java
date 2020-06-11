@@ -324,7 +324,7 @@ To suggest a new feature or changes that could be made, file an issue the same w
 
 ## How To Contribute
 
-Contribution is welcome. Please follow [this instruction](./HowToContribute.md) to contribute code.
+Contribution is welcome. Please follow [this instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to contribute code.
 
 ## Code of Conduct
 

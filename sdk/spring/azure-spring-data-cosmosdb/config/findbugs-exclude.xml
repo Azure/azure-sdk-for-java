@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter>
+    <Class name="com.microsoft.azure.spring.data.cosmosdb.common.MacAddress"/>
+    <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
+    <Bug pattern="Unwritten field"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_NEEDS_THIS"/>
+
+    <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+
+</FindBugsFilter>
