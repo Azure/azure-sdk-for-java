@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -793,10 +794,6 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
-    // Test options
-    // Test configs
-    // Test opening to a directory
-
     def "OutputStream options default"() {
         setup:
         def fs = createFS(config)
@@ -911,6 +908,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
+    @Requires({ liveMode() }) // Because we upload in blocks
     def "OutputStream file system config"() {
         setup:
         def blockSize = 50L
