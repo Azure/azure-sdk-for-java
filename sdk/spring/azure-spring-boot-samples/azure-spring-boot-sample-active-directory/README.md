@@ -137,16 +137,10 @@ msalProvider.init(
    - Use Maven 
 
      ```
+     # Under sdk/spring project root directory
      mvn clean install
-     cd azure-spring-boot-sample-active-directory
+     cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory
      mvn spring-boot:run
-     ```
-
-   - Use Gradle 
-   
-     ```
-     gradle clean bootRepackage
-     java -jar build/libs/azure-spring-boot-sample-active-directory-0.0.1-beta.1.jar
      ```
 
 * If running locally, browse to `http://localhost:8080` and click `Login` or `Todo List`, your browser will be redirected to `https://login.microsoftonline.com/` for authentication.
