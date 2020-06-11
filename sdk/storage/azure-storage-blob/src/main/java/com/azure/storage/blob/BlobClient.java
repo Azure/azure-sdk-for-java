@@ -24,12 +24,15 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
@@ -182,33 +185,26 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        this.uploadWithResponse(data, length, new BlobParallelUploadOptions()
+        this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
-            .setRequestConditions(requestConditions), timeout, context);
+            .setRequestConditions(requestConditions).setTimeout(timeout), context);
     }
 
     /**
      * Creates a new blob, or updates the content of an existing blob.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
      * @param options {@link BlobParallelUploadOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
      */
-    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobParallelUploadOptions options,
-        Duration timeout, Context context) {
-
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(Utility.convertStreamToByteBuffer(data, length,
-            BLOB_DEFAULT_UPLOAD_BLOCK_SIZE), options)
+    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context) {
+        Objects.requireNonNull(options);
+        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
             .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
