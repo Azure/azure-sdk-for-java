@@ -28,4 +28,8 @@
     <module>azure-spring-boot-test-keyvault</module>
   </modules>
 
+  <properties>
+    <skipSpringITs>true</skipSpringITs>
+  </properties>
+
 </project>

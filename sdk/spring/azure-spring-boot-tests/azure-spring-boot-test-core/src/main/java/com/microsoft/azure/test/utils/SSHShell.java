@@ -74,6 +74,7 @@ public final class SSHShell implements Closeable {
      * @return the shell
      * @throws JSchException exception thrown
      * @throws IOException IO exception thrown
+     * @throws MalformedPatternException MalformedPatternException thrown
      */
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException, MalformedPatternException {
