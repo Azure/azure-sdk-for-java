@@ -15,12 +15,12 @@ that is optimized for ease of use, succinctness and consistency.
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-management;current})
+[//]: # ({x-version-update-start;com.azure:azure-resourcemanager;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-management</artifactId>
-  <version>2.0.0</version>
+  <artifactId>azure-resourcemanager</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,7 +50,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.0</version>
+  <version>1.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -251,12 +251,12 @@ Instead of include the complete Azure Management Libraries, you can choose to in
 
 For example, here is sample maven dependency for Compute package.
 
-[//]: # ({x-version-update-start;com.azure:azure-mgmt-compute;current})
+[//]: # ({x-version-update-start;com.azure:azure-resourcemanager-compute;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-mgmt-compute</artifactId>
-  <version>2.0.0</version>
+  <artifactId>azure-resourcemanager-compute</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
