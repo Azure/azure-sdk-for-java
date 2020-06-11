@@ -35,7 +35,7 @@ public interface Products extends HasInner<ProductsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProductList> getProductsAsync(String resourceGroup, String registrationName, DeviceConfiguration deviceConfiguration);
+    Observable<ProductList> getProductsAsync(String resourceGroup, String registrationName);
 
     /**
      * Returns the specified product.
@@ -46,7 +46,7 @@ public interface Products extends HasInner<ProductsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Product> getProductAsync(String resourceGroup, String registrationName, String productName, DeviceConfiguration deviceConfiguration);
+    Observable<Product> getProductAsync(String resourceGroup, String registrationName, String productName);
 
     /**
      * Returns the specified product.
@@ -57,7 +57,7 @@ public interface Products extends HasInner<ProductsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProductLog> uploadLogAsync(String resourceGroup, String registrationName, String productName, MarketplaceProductLogUpdate marketplaceProductLogUpdate);
+    Observable<ProductLog> uploadLogAsync(String resourceGroup, String registrationName, String productName);
 
     /**
      * Returns the specified product.

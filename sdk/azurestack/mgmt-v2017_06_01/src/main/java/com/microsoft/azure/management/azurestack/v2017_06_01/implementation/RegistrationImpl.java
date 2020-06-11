@@ -9,45 +9,27 @@
 package com.microsoft.azure.management.azurestack.v2017_06_01.implementation;
 
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
-import com.microsoft.azure.management.azurestack.v2017_06_01.Location;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Registration;
 import rx.Observable;
-import com.microsoft.azure.management.azurestack.v2017_06_01.RegistrationParameter;
-import rx.functions.Func1;
 
 class RegistrationImpl extends GroupableResourceCoreImpl<Registration, RegistrationInner, RegistrationImpl, AzureStackManager> implements Registration, Registration.Definition, Registration.Update {
-    private RegistrationParameter createOrUpdateParameter;
+    private String cregistrationToken;
+    private String uregistrationToken;
     RegistrationImpl(String name, RegistrationInner inner, AzureStackManager manager) {
         super(name, inner, manager);
-        this.createOrUpdateParameter = new RegistrationParameter();
     }
 
     @Override
     public Observable<Registration> createResourceAsync() {
         RegistrationsInner client = this.manager().inner().registrations();
-        this.createOrUpdateParameter.withLocation(Location.fromString(inner().location()));
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
-            .map(new Func1<RegistrationInner, RegistrationInner>() {
-               @Override
-               public RegistrationInner call(RegistrationInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.cregistrationToken)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<Registration> updateResourceAsync() {
         RegistrationsInner client = this.manager().inner().registrations();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.createOrUpdateParameter)
-            .map(new Func1<RegistrationInner, RegistrationInner>() {
-               @Override
-               public RegistrationInner call(RegistrationInner resource) {
-                   resetCreateUpdateParameters();
-                   return resource;
-               }
-            })
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.uregistrationToken)
             .map(innerToFluentMap(this));
     }
 
@@ -62,9 +44,6 @@ class RegistrationImpl extends GroupableResourceCoreImpl<Registration, Registrat
         return this.inner().id() == null;
     }
 
-    private void resetCreateUpdateParameters() {
-        this.createOrUpdateParameter = new RegistrationParameter();
-    }
 
     @Override
     public String billingModel() {
@@ -88,7 +67,11 @@ class RegistrationImpl extends GroupableResourceCoreImpl<Registration, Registrat
 
     @Override
     public RegistrationImpl withRegistrationToken(String registrationToken) {
-        this.createOrUpdateParameter.withRegistrationToken(registrationToken);
+        if (isInCreateMode()) {
+            this.cregistrationToken = registrationToken;
+        } else {
+            this.uregistrationToken = registrationToken;
+        }
         return this;
     }
 

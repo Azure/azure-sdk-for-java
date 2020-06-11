@@ -22,7 +22,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -81,11 +80,11 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Registrations createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Query("api-version") String apiVersion, @Body RegistrationParameter token, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RegistrationParameter token, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Registrations update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Query("api-version") String apiVersion, @Body RegistrationParameter token, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroup") String resourceGroup, @Path("registrationName") String registrationName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RegistrationParameter token, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.azurestack.v2017_06_01.Registrations getActivationKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AzureStack/registrations/{registrationName}/getactivationkey")
@@ -389,14 +388,14 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RegistrationInner object if successful.
      */
-    public RegistrationInner createOrUpdate(String resourceGroup, String registrationName, RegistrationParameter token) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroup, registrationName, token).toBlocking().single().body();
+    public RegistrationInner createOrUpdate(String resourceGroup, String registrationName, String registrationToken) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroup, registrationName, registrationToken).toBlocking().single().body();
     }
 
     /**
@@ -404,13 +403,13 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistrationInner> createOrUpdateAsync(String resourceGroup, String registrationName, RegistrationParameter token, final ServiceCallback<RegistrationInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroup, registrationName, token), serviceCallback);
+    public ServiceFuture<RegistrationInner> createOrUpdateAsync(String resourceGroup, String registrationName, String registrationToken, final ServiceCallback<RegistrationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(resourceGroup, registrationName, registrationToken), serviceCallback);
     }
 
     /**
@@ -418,12 +417,12 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegistrationInner object
      */
-    public Observable<RegistrationInner> createOrUpdateAsync(String resourceGroup, String registrationName, RegistrationParameter token) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroup, registrationName, token).map(new Func1<ServiceResponse<RegistrationInner>, RegistrationInner>() {
+    public Observable<RegistrationInner> createOrUpdateAsync(String resourceGroup, String registrationName, String registrationToken) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroup, registrationName, registrationToken).map(new Func1<ServiceResponse<RegistrationInner>, RegistrationInner>() {
             @Override
             public RegistrationInner call(ServiceResponse<RegistrationInner> response) {
                 return response.body();
@@ -436,11 +435,11 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegistrationInner object
      */
-    public Observable<ServiceResponse<RegistrationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroup, String registrationName, RegistrationParameter token) {
+    public Observable<ServiceResponse<RegistrationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroup, String registrationName, String registrationToken) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -453,11 +452,12 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (token == null) {
-            throw new IllegalArgumentException("Parameter token is required and cannot be null.");
+        if (registrationToken == null) {
+            throw new IllegalArgumentException("Parameter registrationToken is required and cannot be null.");
         }
-        Validator.validate(token);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroup, registrationName, this.client.apiVersion(), token, this.client.acceptLanguage(), this.client.userAgent())
+        RegistrationParameter token = new RegistrationParameter();
+        token.withRegistrationToken(registrationToken);
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroup, registrationName, this.client.apiVersion(), this.client.acceptLanguage(), token, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistrationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RegistrationInner>> call(Response<ResponseBody> response) {
@@ -484,14 +484,14 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RegistrationInner object if successful.
      */
-    public RegistrationInner update(String resourceGroup, String registrationName, RegistrationParameter token) {
-        return updateWithServiceResponseAsync(resourceGroup, registrationName, token).toBlocking().single().body();
+    public RegistrationInner update(String resourceGroup, String registrationName, String registrationToken) {
+        return updateWithServiceResponseAsync(resourceGroup, registrationName, registrationToken).toBlocking().single().body();
     }
 
     /**
@@ -499,13 +499,13 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistrationInner> updateAsync(String resourceGroup, String registrationName, RegistrationParameter token, final ServiceCallback<RegistrationInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroup, registrationName, token), serviceCallback);
+    public ServiceFuture<RegistrationInner> updateAsync(String resourceGroup, String registrationName, String registrationToken, final ServiceCallback<RegistrationInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroup, registrationName, registrationToken), serviceCallback);
     }
 
     /**
@@ -513,12 +513,12 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegistrationInner object
      */
-    public Observable<RegistrationInner> updateAsync(String resourceGroup, String registrationName, RegistrationParameter token) {
-        return updateWithServiceResponseAsync(resourceGroup, registrationName, token).map(new Func1<ServiceResponse<RegistrationInner>, RegistrationInner>() {
+    public Observable<RegistrationInner> updateAsync(String resourceGroup, String registrationName, String registrationToken) {
+        return updateWithServiceResponseAsync(resourceGroup, registrationName, registrationToken).map(new Func1<ServiceResponse<RegistrationInner>, RegistrationInner>() {
             @Override
             public RegistrationInner call(ServiceResponse<RegistrationInner> response) {
                 return response.body();
@@ -531,11 +531,11 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
      *
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
-     * @param token Registration token
+     * @param registrationToken The token identifying registered Azure Stack
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegistrationInner object
      */
-    public Observable<ServiceResponse<RegistrationInner>> updateWithServiceResponseAsync(String resourceGroup, String registrationName, RegistrationParameter token) {
+    public Observable<ServiceResponse<RegistrationInner>> updateWithServiceResponseAsync(String resourceGroup, String registrationName, String registrationToken) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -548,11 +548,12 @@ public class RegistrationsInner implements InnerSupportsGet<RegistrationInner>, 
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (token == null) {
-            throw new IllegalArgumentException("Parameter token is required and cannot be null.");
+        if (registrationToken == null) {
+            throw new IllegalArgumentException("Parameter registrationToken is required and cannot be null.");
         }
-        Validator.validate(token);
-        return service.update(this.client.subscriptionId(), resourceGroup, registrationName, this.client.apiVersion(), token, this.client.acceptLanguage(), this.client.userAgent())
+        RegistrationParameter token = new RegistrationParameter();
+        token.withRegistrationToken(registrationToken);
+        return service.update(this.client.subscriptionId(), resourceGroup, registrationName, this.client.apiVersion(), this.client.acceptLanguage(), token, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistrationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RegistrationInner>> call(Response<ResponseBody> response) {

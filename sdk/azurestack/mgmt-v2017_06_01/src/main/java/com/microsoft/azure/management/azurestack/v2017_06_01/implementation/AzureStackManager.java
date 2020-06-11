@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Operations;
+import com.microsoft.azure.management.azurestack.v2017_06_01.CloudManifestFiles;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Products;
 import com.microsoft.azure.management.azurestack.v2017_06_01.Registrations;
 import com.microsoft.azure.management.azurestack.v2017_06_01.CustomerSubscriptions;
@@ -28,6 +29,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class AzureStackManager extends ManagerCore<AzureStackManager, AzureStackManagementClientImpl> {
     private Operations operations;
+    private CloudManifestFiles cloudManifestFiles;
     private Products products;
     private Registrations registrations;
     private CustomerSubscriptions customerSubscriptions;
@@ -86,6 +88,16 @@ public final class AzureStackManager extends ManagerCore<AzureStackManager, Azur
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage CloudManifestFiles.
+     */
+    public CloudManifestFiles cloudManifestFiles() {
+        if (this.cloudManifestFiles == null) {
+            this.cloudManifestFiles = new CloudManifestFilesImpl(this);
+        }
+        return this.cloudManifestFiles;
     }
 
     /**

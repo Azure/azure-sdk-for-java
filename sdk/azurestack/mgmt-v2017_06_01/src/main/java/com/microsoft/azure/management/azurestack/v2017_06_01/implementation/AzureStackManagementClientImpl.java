@@ -146,6 +146,19 @@ public class AzureStackManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The CloudManifestFilesInner object to access its operations.
+     */
+    private CloudManifestFilesInner cloudManifestFiles;
+
+    /**
+     * Gets the CloudManifestFilesInner object to access its operations.
+     * @return the CloudManifestFilesInner object.
+     */
+    public CloudManifestFilesInner cloudManifestFiles() {
+        return this.cloudManifestFiles;
+    }
+
+    /**
      * The ProductsInner object to access its operations.
      */
     private ProductsInner products;
@@ -220,6 +233,7 @@ public class AzureStackManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.cloudManifestFiles = new CloudManifestFilesInner(restClient().retrofit(), this);
         this.products = new ProductsInner(restClient().retrofit(), this);
         this.registrations = new RegistrationsInner(restClient().retrofit(), this);
         this.customerSubscriptions = new CustomerSubscriptionsInner(restClient().retrofit(), this);

@@ -89,12 +89,24 @@ public interface Registration extends HasInner<RegistrationInner>, Resource, Gro
     /**
      * The template for a Registration update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Registration>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<Registration>, Resource.UpdateWithTags<Update>, UpdateStages.WithRegistrationToken {
     }
 
     /**
      * Grouping of Registration update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the registration update allowing to specify RegistrationToken.
+         */
+        interface WithRegistrationToken {
+            /**
+             * Specifies registrationToken.
+             * @param registrationToken The token identifying registered Azure Stack
+             * @return the next update stage
+             */
+            Update withRegistrationToken(String registrationToken);
+        }
+
     }
 }

@@ -23,10 +23,18 @@ public class RegistrationParameter {
     private String registrationToken;
 
     /**
-     * Location of the resource. Possible values include: 'global'.
+     * Location of the resource.
      */
-    @JsonProperty(value = "location")
-    private Location location;
+    @JsonProperty(value = "location", required = true)
+    private String location;
+
+    /**
+     * Creates an instance of RegistrationParameter class.
+     * @param registrationToken the token identifying registered Azure Stack.
+     */
+    public RegistrationParameter() {
+        location = "global";
+    }
 
     /**
      * Get the token identifying registered Azure Stack.
@@ -49,21 +57,21 @@ public class RegistrationParameter {
     }
 
     /**
-     * Get location of the resource. Possible values include: 'global'.
+     * Get location of the resource.
      *
      * @return the location value
      */
-    public Location location() {
+    public String location() {
         return this.location;
     }
 
     /**
-     * Set location of the resource. Possible values include: 'global'.
+     * Set location of the resource.
      *
      * @param location the location value to set
      * @return the RegistrationParameter object itself.
      */
-    public RegistrationParameter withLocation(Location location) {
+    public RegistrationParameter withLocation(String location) {
         this.location = location;
         return this;
     }
