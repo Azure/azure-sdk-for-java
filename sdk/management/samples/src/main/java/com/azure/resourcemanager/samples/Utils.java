@@ -193,7 +193,7 @@ public final class Utils {
     /** @return a generated password */
     public static String password() {
         String password = new SdkContext().randomResourceName("Pa5$", 12);
-        System.out.printf("Password: %s\n", password);
+        System.out.printf("Password: %s%n", password);
         return password;
     }
 
