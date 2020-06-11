@@ -93,7 +93,7 @@ The key concepts of Azure Management Libraries includes:
 - Dependency across Azure resources.
 - Batch Azure resource provisioning.
 - Integration with Azure role-based access control.
-- Asynchronous operations with [Reactor][reactor].
+- Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 
 ### Service features
@@ -201,9 +201,9 @@ RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
     .create();
 ```
 
-### Asynchronous operations
+### Asynchronous operations (Preview)
 
-You can create storage account, then blob container, in reactive programming. 
+You can create storage account, then blob container, in reactive programming.
 
 ```java
 azure.storageAccounts().define(storageAccountName)
