@@ -22,7 +22,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
     @SuppressWarnings("unchecked")
     public EntityMetadata<?> getEntityInformation() {
         final Class<Object> domainType = (Class<Object>) getDomainClass();
-        final CosmosEntityInformation entityInformation =
+        final CosmosEntityInformation<Object, String> entityInformation =
                 new CosmosEntityInformation<Object, String>(domainType);
 
         this.metadata = new SimpleReactiveCosmosEntityMetadata<Object>(domainType, entityInformation);

@@ -47,6 +47,7 @@ javax.annotation:javax.annotation-api;1.3.2
 javax.servlet:javax.servlet-api;4.0.1
 javax.validation:validation-api;2.0.1.Final
 net.minidev:json-smart;2.3
+org.apache.ant:ant;1.9.4
 org.apache.avro:avro;1.9.2
 org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
@@ -193,7 +194,9 @@ org.apache.maven.plugins:maven-source-plugin;3.0.1
 org.apache.maven.plugins:maven-surefire-plugin;3.0.0-M3
 org.apidesign.javadoc:codesnippet-doclet;0.53
 org.codehaus.mojo:build-helper-maven-plugin;3.0.0
+org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;1.2.1
+org.codehaus.mojo:findbugs-maven-plugin;3.0.5
 org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0
 org.eclipse.jetty:jetty-maven-plugin;9.3.22.v20171030
@@ -275,3 +278,6 @@ spring_org.powermock:powermock-api-mockito2;1.7.1
 spring_org.springframework.boot:spring-boot-starter-test;2.3.0.RELEASE
 spring_io.projectreactor:reactor-test;3.3.0.RELEASE
 spring_com.google.code.gson:gson;2.8.4
+spring_org.apache.maven.plugins:maven-surefire-plugin;2.12.4
+spring_org.apache.maven.plugins:maven-help-plugin;3.1.0
+spring_org.apache.maven.plugins:maven-source-plugin;2.2.1

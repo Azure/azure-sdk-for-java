@@ -29,6 +29,7 @@ import java.util.Date;
 
 import static com.microsoft.azure.spring.data.cosmosdb.Constants.ISO_8601_COMPATIBLE_DATE_PATTERN;
 
+@SuppressWarnings("unchecked")
 public class MappingCosmosConverter
     implements EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty,
     Object, CosmosItemProperties>,
@@ -100,7 +101,7 @@ public class MappingCosmosConverter
             throw new MappingException("no mapping metadata for entity type: " + sourceEntity.getClass().getName());
         }
 
-        final ConvertingPropertyAccessor accessor = getPropertyAccessor(sourceEntity);
+        final ConvertingPropertyAccessor<?> accessor = getPropertyAccessor(sourceEntity);
         final CosmosPersistentProperty idProperty = persistentEntity.getIdProperty();
         final CosmosItemProperties cosmosItemProperties;
 
@@ -139,13 +140,13 @@ public class MappingCosmosConverter
     }
 
 
-    private ConvertingPropertyAccessor getPropertyAccessor(Object entity) {
+    private ConvertingPropertyAccessor<?> getPropertyAccessor(Object entity) {
         final CosmosPersistentEntity<?> entityInformation =
             mappingContext.getPersistentEntity(entity.getClass());
 
         Assert.notNull(entityInformation, "EntityInformation should not be null.");
-        final PersistentPropertyAccessor accessor = entityInformation.getPropertyAccessor(entity);
-        return new ConvertingPropertyAccessor(accessor, conversionService);
+        final PersistentPropertyAccessor<?> accessor = entityInformation.getPropertyAccessor(entity);
+        return new ConvertingPropertyAccessor<> (accessor, conversionService);
     }
 
     /**

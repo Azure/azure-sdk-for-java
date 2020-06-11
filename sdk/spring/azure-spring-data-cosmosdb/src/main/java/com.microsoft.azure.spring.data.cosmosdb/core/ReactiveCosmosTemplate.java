@@ -42,6 +42,7 @@ import static com.microsoft.azure.spring.data.cosmosdb.common.CosmosdbUtils.fill
 import static com.microsoft.azure.spring.data.cosmosdb.exception.CosmosDBExceptionUtils.exceptionHandler;
 import static com.microsoft.azure.spring.data.cosmosdb.exception.CosmosDBExceptionUtils.findAPIExceptionHandler;
 
+@SuppressWarnings("unchecked")
 public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, ApplicationContextAware {
     private static final String COUNT_VALUE_KEY = "_aggregate";
 

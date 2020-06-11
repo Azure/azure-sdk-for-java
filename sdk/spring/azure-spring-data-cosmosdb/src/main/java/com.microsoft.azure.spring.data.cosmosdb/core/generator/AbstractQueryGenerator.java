@@ -89,7 +89,7 @@ public abstract class AbstractQueryGenerator {
             throw new IllegalQueryException("IN keyword requires Collection type in parameters");
         }
         final List<String> inRangeValues = new ArrayList<>();
-        final Collection values = (Collection) criteria.getSubjectValues().get(0);
+        final Collection<Object> values = (Collection<Object>) criteria.getSubjectValues().get(0);
 
         values.forEach(o -> {
             if (o instanceof Integer || o instanceof Long) {
