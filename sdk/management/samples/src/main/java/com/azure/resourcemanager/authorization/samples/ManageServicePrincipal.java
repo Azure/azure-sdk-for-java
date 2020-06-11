@@ -112,7 +112,7 @@
 //        //create a self-sighed certificate
 //        String domainName = name + ".com";
 //        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//        final String certPassword = "StrongPass!12";
+//        String certPassword = "StrongPass!12";
 //        Certificate certificate = Certificate.createSelfSigned(domainName, certPassword);
 //
 //        // create Active Directory application
@@ -145,7 +145,7 @@
 //        //create a self-sighed certificate
 //        String domainName = name + ".com";
 //        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-//        final String certPassword = "StrongPass!12";
+//        String certPassword = "StrongPass!12";
 //        Certificate certificate = Certificate.createSelfSigned(domainName, certPassword);
 //
 //        // create  a Service Principal and assign it to a subscription with the role Contributor
