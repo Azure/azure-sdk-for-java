@@ -33,7 +33,7 @@ public class ResourceSkuCosts {
     private String extendedUnit;
 
     /**
-     * Get the meterID value.
+     * Get used for querying price from commerce.
      *
      * @return the meterID value
      */
@@ -42,7 +42,7 @@ public class ResourceSkuCosts {
     }
 
     /**
-     * Get the quantity value.
+     * Get the multiplier is needed to extend the base metered cost.
      *
      * @return the quantity value
      */
@@ -51,7 +51,7 @@ public class ResourceSkuCosts {
     }
 
     /**
-     * Get the extendedUnit value.
+     * Get an invariant to show the extended unit.
      *
      * @return the extendedUnit value
      */
