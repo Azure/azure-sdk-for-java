@@ -12,8 +12,9 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
-import com.azure.ai.formrecognizer.models.DimensionUnit;
+import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.FieldText;
+import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -79,7 +80,7 @@ final class Transforms {
                     formPageRange = new FormPageRange(1, 1);
                 }
 
-                Map<String, FormField<?>> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
+                Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(documentResultItem, readResults,
                     includeTextDetails);
                 extractedFormList.add(new RecognizedForm(
                     extractedFieldMap,
@@ -96,7 +97,7 @@ final class Transforms {
                 if (clusterId != null) {
                     formType.append(clusterId);
                 }
-                Map<String, FormField<?>> extractedFieldMap = getLabeledFieldMap(includeTextDetails, readResults,
+                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(includeTextDetails, readResults,
                     pageResultItem, pageNumber);
 
                 extractedFormList.add(new RecognizedForm(
@@ -120,7 +121,7 @@ final class Transforms {
     static List<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         return toRecognizedForm(analyzeResult, includeTextDetails)
             .stream()
-            .map(recognizedForm -> new RecognizedReceipt("en-US", recognizedForm))
+            .map(recognizedForm -> new RecognizedReceipt(recognizedForm))
             .collect(Collectors.toList());
     }
 
@@ -212,9 +213,9 @@ final class Transforms {
      *
      * @return The {@code RecognizedForm#getFields}.
      */
-    private static Map<String, FormField<?>> getUnlabeledFieldMap(DocumentResult documentResultItem,
+    private static Map<String, FormField> getUnlabeledFieldMap(DocumentResult documentResultItem,
         List<ReadResult> readResults, boolean includeTextDetails) {
-        Map<String, FormField<?>> extractedFieldMap = new TreeMap<>();
+        Map<String, FormField> extractedFieldMap = new TreeMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
@@ -232,7 +233,7 @@ final class Transforms {
                         readResults));
                 } else {
                     FieldText labelText = new FieldText(key, null, null, null);
-                    extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
+                    extractedFieldMap.put(key, new FormField(DEFAULT_CONFIDENCE_VALUE, labelText,
                         key, null, null));
                 }
             });
@@ -253,44 +254,51 @@ final class Transforms {
      *
      * @return The strongly typed {@link FormField} for the field input.
      */
-    private static FormField<?> setFormField(FieldText labelText, String key, FieldValue fieldValue,
+    private static FormField setFormField(FieldText labelText, String key, FieldValue fieldValue,
         FieldText valueText, Integer pageNumber, List<ReadResult> readResults) {
-        FormField<?> value;
+        FormField value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValuePhoneNumber(), valueText);
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.PHONE_NUMBER).
+                    setFormFieldPhoneNumber(fieldValue.getValuePhoneNumber()), valueText);
                 break;
             case STRING:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueString(), valueText);
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.STRING)
+                    .setFormFieldString(fieldValue.getValueString()), valueText);
                 break;
             case TIME:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueTime() == null
-                    ? null
-                    : LocalTime.parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss")),
-                    valueText);
+                LocalTime fieldTime = fieldValue.getValueTime() == null ? null : LocalTime
+                    .parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.TIME)
+                    .setFormFieldTime(fieldTime), valueText);
                 break;
             case DATE:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueDate(), valueText);
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.DATE)
+                    .setFormFieldDate(fieldValue.getValueDate()), valueText);
                 break;
             case INTEGER:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueInteger(), valueText);
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.INTEGER)
+                    .setFormFieldInteger(fieldValue.getValueInteger()), valueText);
                 break;
             case NUMBER:
-                value = new FormField<Number>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, fieldValue.getValueNumber(), valueText);
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.FLOAT)
+                    .setFormFieldFloat(fieldValue.getValueNumber()), valueText);
                 break;
             case ARRAY:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), null, key,
-                    toFormFieldArray(fieldValue.getValueArray(), readResults), null);
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), null, key,
+                    new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.LIST)
+                        .setFormFieldList(toFormFieldArray(fieldValue.getValueArray(), readResults)), null);
                 break;
             case OBJECT:
-                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
-                    key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText
+                value = new FormField(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
+                    key, new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.MAP)
+                    .setFormFieldMap(toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults)), valueText
                 );
                 break;
             default:
@@ -319,9 +327,9 @@ final class Transforms {
      *
      * @return The Map of {@link FormField}.
      */
-    private static Map<String, FormField<?>> toFormFieldObject(Map<String, FieldValue> valueObject,
+    private static Map<String, FormField> toFormFieldObject(Map<String, FieldValue> valueObject,
         Integer pageNumber, List<ReadResult> readResults) {
-        Map<String, FormField<?>> fieldValueObjectMap = new TreeMap<>();
+        Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) ->
             fieldValueObjectMap.put(key, setFormField(null, key, fieldValue,
                 new FieldText(fieldValue.getText(),
@@ -342,7 +350,7 @@ final class Transforms {
      *
      * @return The List of {@link FormField}.
      */
-    private static List<FormField<?>> toFormFieldArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
+    private static List<FormField> toFormFieldArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
         return valueArray.stream()
             .map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage(), readResults))
             .collect(Collectors.toList());
@@ -362,7 +370,7 @@ final class Transforms {
         return new FormPage(
             readResultItem.getHeight(),
             readResultItem.getAngle(),
-            DimensionUnit.fromString(readResultItem.getUnit().toString()),
+            LengthUnit.fromString(readResultItem.getUnit().toString()),
             readResultItem.getWidth(),
             perPageLineList,
             perPageTableList,
@@ -380,10 +388,10 @@ final class Transforms {
      *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
-    private static Map<String, FormField<?>> getLabeledFieldMap(boolean includeTextDetails,
+    private static Map<String, FormField> getLabeledFieldMap(boolean includeTextDetails,
         List<ReadResult> readResults,
         PageResult pageResultItem, Integer pageNumber) {
-        Map<String, FormField<?>> formFieldMap = new TreeMap<>();
+        Map<String, FormField> formFieldMap = new TreeMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
             List<FormContent> formKeyContentList = null;
@@ -399,8 +407,10 @@ final class Transforms {
                 toBoundingBox(keyValuePair.getValue().getBoundingBox()), pageNumber, formValueContentList);
 
             String fieldName = "field-" + index;
-            FormField<String> formField = new FormField<>(setDefaultConfidenceValue(keyValuePair.getConfidence()),
-                labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText);
+            FormField formField = new FormField(setDefaultConfidenceValue(keyValuePair.getConfidence()),
+                labelFieldText, fieldName,
+                new com.azure.ai.formrecognizer.models.FieldValue(FieldValueType.STRING)
+                    .setFormFieldString(keyValuePair.getValue().getText()), valueText);
             formFieldMap.put(fieldName, formField);
         }));
         return formFieldMap;

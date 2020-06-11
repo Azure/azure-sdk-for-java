@@ -1,13 +1,15 @@
 ---
-topic: sample
+page_type: sample
 languages:
   - java
 products:
   - azure
-  - azure-cognitive-service
+  - azure-cognitive-services
+  - azure-text-analytics
+urlFragment: textanalytics-java-samples
 ---
 
-# Azure Text Analytics client library for Java Samples
+# Azure Text Analytics client library samples for Java
 
 Azure Text Analytics samples are a set of self-contained Java programs that demonstrate interacting with Azure Text Analytics service
 using the client library. Each sample focuses on a specific scenario and can be executed independently. 
@@ -31,8 +33,8 @@ The following sections provide several code snippets covering some of the most c
 - [Extract key phrases in a document with asynchronous client][async_sample_key_phrases]
 - [Analyze sentiment in a document][sample_sentiment]
 - [Analyze sentiment in a document with asynchronous client][async_sample_sentiment]
-- [Rotate API key][sample_rotate_key]
-- [Rotate API key with asynchronous client][async_sample_rotate_key]
+- [Rotate key credential][sample_rotate_key]
+- [Rotate key credential with asynchronous client][async_sample_rotate_key]
 
 Batch Samples:
 - [Detect language for a batch of documents][sample_detect_language_batch]
@@ -66,46 +68,46 @@ See [Next steps][SDK_README_NEXT_STEPS].
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[KEYS_SDK_README]: ../../README.md
-[SDK_README_CONTRIBUTING]: ../../README.md#contributing
-[SDK_README_GETTING_STARTED]: ../../README.md#getting-started
-[SDK_README_TROUBLESHOOTING]: ../../README.md#troubleshooting
-[SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
-[SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
-[SDK_README_NEXT_STEPS]: ../../README.md#next-steps
+[KEYS_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md#contributing
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md#getting-started
+[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md#troubleshooting
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md#key-concepts
+[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md#adding-the-package-to-your-product
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/README.md#next-steps
 
-[async_sample_detect_language]: java/com/azure/ai/textanalytics/DetectLanguageAsync.java
-[async_sample_detect_language_batch]: java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocumentsAsync.java
-[async_sample_detect_language_batch_convenience]: java/com/azure/ai/textanalytics/batch/DetectLanguageBatchStringDocumentsAsync.java
-[async_sample_entities]: java/com/azure/ai/textanalytics/RecognizeEntitiesAsync.java
-[async_sample_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocumentsAsync.java
-[async_sample_entities_batch_convenience]: java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocumentsAsync.java
-[async_sample_linked_entities]: java/com/azure/ai/textanalytics/RecognizeLinkedEntitiesAsync.java
-[async_sample_linked_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocumentsAsync.java
-[async_sample_linked_entities_batch_convenience]: java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchStringDocumentsAsync.java
-[async_sample_key_phrases]: java/com/azure/ai/textanalytics/ExtractKeyPhrasesAsync.java
-[async_sample_key_phrases_batch]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocumentsAsync.java
-[async_sample_key_phrases_batch_convenience]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchStringDocumentsAsync.java
-[async_sample_rotate_key]: java/com/azure/ai/textanalytics/RotateApiKeyAsync.java
-[async_sample_sentiment]: java/com/azure/ai/textanalytics/AnalyzeSentimentAsync.java
-[async_sample_sentiment_batch]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsAsync.java
-[async_sample_sentiment_batch_convenience]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocumentsAsync.java
+[async_sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguageAsync.java
+[async_sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocumentsAsync.java
+[async_sample_detect_language_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchStringDocumentsAsync.java
+[async_sample_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeEntitiesAsync.java
+[async_sample_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocumentsAsync.java
+[async_sample_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocumentsAsync.java
+[async_sample_linked_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeLinkedEntitiesAsync.java
+[async_sample_linked_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocumentsAsync.java
+[async_sample_linked_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchStringDocumentsAsync.java
+[async_sample_key_phrases]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/ExtractKeyPhrasesAsync.java
+[async_sample_key_phrases_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocumentsAsync.java
+[async_sample_key_phrases_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchStringDocumentsAsync.java
+[async_sample_rotate_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RotateAzureKeyCredentialAsync.java
+[async_sample_sentiment]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentimentAsync.java
+[async_sample_sentiment_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocumentsAsync.java
+[async_sample_sentiment_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocumentsAsync.java
 
-[sample_detect_language]: java/com/azure/ai/textanalytics/DetectLanguage.java
-[sample_detect_language_batch]: java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
-[sample_detect_language_batch_convenience]: java/com/azure/ai/textanalytics/batch/DetectLanguageBatchStringDocuments.java
-[sample_entities]: java/com/azure/ai/textanalytics/RecognizeEntities.java
-[sample_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
-[sample_entities_batch_convenience]: java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocuments.java
-[sample_linked_entities]: java/com/azure/ai/textanalytics/RecognizeLinkedEntities.java
-[sample_linked_entities_batch]: java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
-[sample_linked_entities_batch_convenience]: java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchStringDocuments.java
-[sample_key_phrases]: java/com/azure/ai/textanalytics/ExtractKeyPhrases.java
-[sample_key_phrases_batch]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
-[sample_key_phrases_batch_convenience]: java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchStringDocuments.java
-[sample_rotate_key]: java/com/azure/ai/textanalytics/RotateApiKey.java
-[sample_sentiment]: java/com/azure/ai/textanalytics/AnalyzeSentiment.java
-[sample_sentiment_batch]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
-[sample_sentiment_batch_convenience]: java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocuments.java
+[sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguage.java
+[sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
+[sample_detect_language_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchStringDocuments.java
+[sample_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeEntities.java
+[sample_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[sample_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchStringDocuments.java
+[sample_linked_entities]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RecognizeLinkedEntities.java
+[sample_linked_entities_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[sample_linked_entities_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchStringDocuments.java
+[sample_key_phrases]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/ExtractKeyPhrases.java
+[sample_key_phrases_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
+[sample_key_phrases_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchStringDocuments.java
+[sample_rotate_key]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/RotateAzureKeyCredential.java
+[sample_sentiment]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/AnalyzeSentiment.java
+[sample_sentiment_batch]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
+[sample_sentiment_batch_convenience]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchStringDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

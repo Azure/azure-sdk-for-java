@@ -13,12 +13,6 @@ import java.util.List;
 @Fluent
 public final class SearchSuggester {
     /*
-     * A value indicating the capabilities of the suggester.
-     */
-    @JsonProperty(value = "searchMode", required = true)
-    private static final String SEARCH_MODE = "analyzingInfixMatching";
-
-    /*
      * The name of the suggester.
      */
     @JsonProperty(value = "name", required = true)

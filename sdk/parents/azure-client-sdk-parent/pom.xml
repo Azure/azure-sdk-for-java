@@ -537,7 +537,9 @@
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
-              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <groups>
@@ -819,6 +821,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java

@@ -13,12 +13,18 @@ import com.azure.ai.formrecognizer.models.CustomFormSubmodel;
 import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -27,6 +33,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
@@ -35,18 +42,22 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormTrainingClientTestBase extends TestBase {
+    private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
+    private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+
+    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
+    static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
+    static final String COPY_OPERATION_FAILED_STATUS_MESSAGE = "Copy operation returned with a failed status";
+    static final String EXPECTED_INVALID_MODEL_ERROR = "Unable to list blobs on the Azure blob storage account.";
+    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID";
+    static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
+    static final String EXPECTED_INVALID_STATUS_EXCEPTION_MESSAGE = ", errorCode: [" + EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE + "], "
+            + "message: " + EXPECTED_INVALID_MODEL_ERROR;
     static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL";
-    static final String AZURE_FORM_RECOGNIZER_API_KEY = "AZURE_FORM_RECOGNIZER_API_KEY";
-    static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    static final String EXPECTED_INVALID_MODEL_STATUS_MESSAGE = "Invalid model created with ID: cae9d062-71e0-44a3-8630-70b32ae94f4d";
-    static final String EXPECTED_INVALID_MODEL_STATUS_ERROR_CODE = "2012";
-    static final String EXPECTED_INVALID_STATUS_ERROR_INFORMATION = "Unable to list blobs on the Azure blob storage account.";
-
-    private static final String RESOURCE_ID = "FORM_RECOGNIZER_TARGET_RESOURCE_ID";
-    private static final String RESOURCE_REGION = "FORM_RECOGNIZER_TARGET_RESOURCE_REGION";
+    static final String RESOURCE_RESOLVER_ERROR = "ResourceResolverError";
 
     void validateCopyAuthorizationResult(String expectedResourceId, String expectedResourceRegion,
         CopyAuthorization actualResult) {
@@ -55,6 +66,23 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         assertNotNull(actualResult.getExpiresOn());
         assertEquals(expectedResourceRegion, actualResult.getResourceRegion());
         assertEquals(expectedResourceId, actualResult.getResourceId());
+    }
+
+    FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
+            .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(INVALID_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        return builder;
     }
 
     private static void validateTrainingDocumentsData(List<com.azure.ai.formrecognizer.implementation.models.TrainingDocumentInfo> expectedTrainingDocuments,
@@ -85,9 +113,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    static void validateAccountProperties(AccountProperties expectedAccountProperties,
-        AccountProperties actualAccountProperties) {
-        assertEquals(expectedAccountProperties.getCustomModelLimit(), actualAccountProperties.getCustomModelLimit());
+    static void validateAccountProperties(AccountProperties actualAccountProperties) {
+        assertNotNull(actualAccountProperties.getCustomModelLimit());
         assertNotNull(actualAccountProperties.getCustomModelCount());
     }
 

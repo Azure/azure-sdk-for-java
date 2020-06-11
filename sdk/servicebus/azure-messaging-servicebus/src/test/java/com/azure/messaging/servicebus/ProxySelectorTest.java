@@ -45,7 +45,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
     @Disabled("Fix when proxy error is propagated back up to receiver.")
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
-        final String queueName = getQueueName();
+        final String queueName = getQueueName(9);
 
         Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
 

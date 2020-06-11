@@ -6,11 +6,12 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.ErrorInformation;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
@@ -86,7 +87,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
      */
@@ -113,7 +114,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
      */
@@ -149,7 +150,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
      */
@@ -181,7 +182,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
      */
@@ -211,7 +212,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is {@code null}.
      */
@@ -235,7 +236,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is {@code null}.
      */
@@ -269,7 +270,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is {@code null}.
      */
@@ -299,7 +300,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is {@code null}.
      */
@@ -328,7 +329,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
@@ -354,7 +355,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
@@ -388,7 +389,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is {@code null}.
      */
@@ -419,7 +420,7 @@ public final class FormRecognizerAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
-     * @throws HttpResponseException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
+     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is {@code null}.
      */
@@ -595,7 +596,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Helper method that throws a {@link HttpResponseException} if {@link AnalyzeOperationResult#getStatus()} is
+     * Helper method that throws a {@link FormRecognizerException} if {@link AnalyzeOperationResult#getStatus()} is
      * {@link OperationStatus#FAILED}.
      *
      * @param analyzeResponse The response returned from the service.
@@ -604,7 +605,7 @@ public final class FormRecognizerAsyncClient {
         if (OperationStatus.FAILED.equals(analyzeResponse.getStatus())) {
             List<ErrorInformation> errorInformationList = analyzeResponse.getAnalyzeResult().getErrors();
             if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-                throw logger.logExceptionAsError(new HttpResponseException("Analyze operation failed.", null,
+                throw logger.logExceptionAsError(new FormRecognizerException("Analyze operation failed",
                     errorInformationList));
             }
         }

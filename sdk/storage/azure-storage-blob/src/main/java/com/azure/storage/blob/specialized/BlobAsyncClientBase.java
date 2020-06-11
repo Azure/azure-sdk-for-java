@@ -905,7 +905,7 @@ public class BlobAsyncClientBase {
                             .flatMap(response ->
                                 writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
                                     totalProgress));
-                    })
+                    }, finalParallelTransferOptions.getMaxConcurrency())
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });

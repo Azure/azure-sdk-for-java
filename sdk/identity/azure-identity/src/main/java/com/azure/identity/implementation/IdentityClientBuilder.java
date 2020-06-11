@@ -3,6 +3,8 @@
 
 package com.azure.identity.implementation;
 
+import com.azure.identity.SharedTokenCacheCredential;
+
 /**
  * Fluent client builder for instantiating an {@link IdentityClient}.
  *
@@ -15,6 +17,7 @@ public final class IdentityClientBuilder {
     private String clientSecret;
     private String certificatePath;
     private String certificatePassword;
+    private boolean sharedTokenCacheCred;
 
     /**
      * Sets the tenant ID for the client.
@@ -80,10 +83,21 @@ public final class IdentityClientBuilder {
     }
 
     /**
+     * Indicate whether the credential is {@link SharedTokenCacheCredential} or not.
+     *
+     * @param isSharedTokenCacheCred the shared token cache credential status.
+     * @return the updated IdentityClientBuilder.
+     */
+    public IdentityClientBuilder sharedTokenCacheCredential(boolean isSharedTokenCacheCred) {
+        this.sharedTokenCacheCred = isSharedTokenCacheCred;
+        return this;
+    }
+
+    /**
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
         return new IdentityClient(tenantId, clientId, clientSecret, certificatePath,
-            certificatePassword, identityClientOptions);
+            certificatePassword, sharedTokenCacheCred, identityClientOptions);
     }
 }

@@ -10,12 +10,12 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -79,7 +79,7 @@ public final class FormTrainingClient {
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns a {@link CustomFormModel}.
-     * @throws HttpResponseException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -108,7 +108,7 @@ public final class FormTrainingClient {
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link CustomFormModel}.
-     * @throws HttpResponseException If training fails and model with {@link ModelStatus#INVALID} is created.
+     * @throws FormRecognizerException If training fails and model with {@link ModelStatus#INVALID} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

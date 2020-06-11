@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -25,6 +27,8 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -37,25 +41,29 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
+
 /**
  * Helper class to buildAsyncClient {@link ChangeFeedProcessor} instances
  * as logical representation of the Azure Cosmos DB database service.
  *
  * <pre>
  * {@code
- *  ChangeFeedProcessor.Builder()
- *     .setHostName(setHostName)
- *     .setFeedContainer(setFeedContainer)
- *     .setLeaseContainer(setLeaseContainer)
- *     .setHandleChanges(docs -> {
- *         // Implementation for handling and processing CosmosItemProperties list goes here
- *      })
- *     .observer(SampleObserverImpl.class)
- *     .buildAsyncClient();
+ * ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+ *     .hostName(hostName)
+ *     .feedContainer(feedContainer)
+ *     .leaseContainer(leaseContainer)
+ *     .handleChanges(docs -> {
+ *         for (JsonNode item : docs) {
+ *             // Implementation for handling and processing of each JsonNode item goes here
+ *         }
+ *     })
+ *     .buildChangeFeedProcessor();
  * }
  * </pre>
  */
-public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.BuilderDefinition, ChangeFeedProcessor, AutoCloseable {
+public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
+    private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
     private final Duration lockTime = Duration.ofSeconds(30);
@@ -177,9 +185,16 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                             return Pair.of(ownerValue + "_" + lease.getLeaseToken(), 0);
                         }
 
-                        Integer currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
-                        Integer estimatedLag = Integer.valueOf(latestLsn);
-                        estimatedLag = estimatedLag - currentLsn + 1;
+                        Integer currentLsn = 0;
+                        Integer estimatedLag = 0;
+                        try {
+                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
+                            estimatedLag = Integer.valueOf(latestLsn);
+                            estimatedLag = estimatedLag - currentLsn + 1;
+                        } catch (NumberFormatException ex) {
+                            logger.warn("Unexpected Cosmos LSN found", ex);
+                            estimatedLag = -1;
+                        }
 
                         return Pair.of(ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn, estimatedLag);
                     });
@@ -192,16 +207,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
                 }
                 return result;
             });
-
-//        this.options = new ChangeFeedOptions();
-//        this.options.setMaxItemCount(settings.getMaxItemCount());
-//        this.options.setPartitionKeyRangeId(settings.getPartitionKeyRangeId());
-//        // this.setOptions.getSessionToken(getProperties.getSessionToken());
-//        this.options.setStartFromBeginning(settings.isStartFromBeginning());
-//        this.options.setRequestContinuation(settings.getStartContinuation());
-//        this.options.setStartDateTime(settings.getStartTime());
-//            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
-//            this.options)
     }
 
     /**
@@ -210,7 +215,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl hostName(String hostName) {
         this.hostName = hostName;
         return this;
@@ -222,7 +226,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param feedDocumentClient the instance of {@link CosmosAsyncContainer} to be used.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl feedContainer(CosmosAsyncContainer feedDocumentClient) {
         if (feedDocumentClient == null) {
             throw new IllegalArgumentException("feedContextClient");
@@ -238,7 +241,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      * @param changeFeedProcessorOptions the change feed processor options to use.
      * @return current Builder.
      */
-    @Override
     public ChangeFeedProcessorBuilderImpl options(ChangeFeedProcessorOptions changeFeedProcessorOptions) {
         if (changeFeedProcessorOptions == null) {
             throw new IllegalArgumentException("changeFeedProcessorOptions");
@@ -279,7 +281,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
         return this;
     }
 
-    @Override
     public ChangeFeedProcessorBuilderImpl handleChanges(Consumer<List<JsonNode>> consumer) {
         return this.observerFactory(new DefaultObserverFactory(consumer));
     }
@@ -308,16 +309,25 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     /**
      * Sets an existing {@link CosmosAsyncContainer} to be used to read from the leases collection.
      *
-     * @param leaseDocumentClient the instance of {@link CosmosAsyncContainer} to use.
+     * @param leaseClient the instance of {@link CosmosAsyncContainer} to use.
      * @return current Builder.
      */
-    @Override
-    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseDocumentClient) {
-        if (leaseDocumentClient == null) {
-            throw new IllegalArgumentException("leaseContextClient");
+    public ChangeFeedProcessorBuilderImpl leaseContainer(CosmosAsyncContainer leaseClient) {
+        if (leaseClient == null) {
+            throw new IllegalArgumentException("leaseClient");
         }
 
-        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseDocumentClient);
+        if (!getContextClient(leaseClient).isContentResponseOnWriteEnabled()) {
+            throw new IllegalArgumentException("leaseClient: content response on write setting must be enabled");
+        }
+
+        ConsistencyLevel consistencyLevel = getContextClient(leaseClient).getConsistencyLevel();
+        if (consistencyLevel == ConsistencyLevel.CONSISTENT_PREFIX || consistencyLevel == ConsistencyLevel.EVENTUAL) {
+            logger.warn("leaseClient consistency level setting are less then expected which is SESSION");
+        }
+
+        this.leaseContextClient = new ChangeFeedContextClientImpl(leaseClient);
+
         return this;
     }
 
@@ -386,7 +396,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
      *
      * @return an instance of {@link ChangeFeedProcessor}.
      */
-    @Override
     public ChangeFeedProcessor build() {
         if (this.hostName == null) {
             throw new IllegalArgumentException("Host name was not specified");
