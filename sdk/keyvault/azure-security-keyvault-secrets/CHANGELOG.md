@@ -1,7 +1,8 @@
 # Release History
 
-## 4.2.0-beta.3 (Unreleased)
-
+## 4.2.0-beta.3 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+- Fixed `ByteBuff` resource leak in `KeyVaultCredentialPolicy`.
 
 ## 4.2.0-beta.2 (2020-04-09)
 - Update azure-core dependency to version 1.4.0.
