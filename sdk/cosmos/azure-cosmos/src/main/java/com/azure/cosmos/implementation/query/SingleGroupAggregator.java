@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Undefined;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.query.aggregation.Aggregator;
 import com.azure.cosmos.implementation.query.aggregation.AverageAggregator;
@@ -14,11 +13,7 @@ import com.azure.cosmos.implementation.query.aggregation.CountAggregator;
 import com.azure.cosmos.implementation.query.aggregation.MaxAggregator;
 import com.azure.cosmos.implementation.query.aggregation.MinAggregator;
 import com.azure.cosmos.implementation.query.aggregation.SumAggregator;
-import com.azure.cosmos.implementation.Resource;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +125,7 @@ public abstract class SingleGroupAggregator {
      * For each grouping drained from the backend we merge it with the results here.
      * At the end this class will form a JSON object with the correct aliases and grouping result.
      */
-    public static class SelectListAggregateValues extends SingleGroupAggregator {
+    public static final class SelectListAggregateValues extends SingleGroupAggregator {
         Map<String, AggregateValue> aliasToValue;
         List<String> orderedAliases;
 

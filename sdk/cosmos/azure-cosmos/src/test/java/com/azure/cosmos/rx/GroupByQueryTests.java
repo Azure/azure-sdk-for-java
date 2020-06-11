@@ -7,9 +7,9 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.rx.pojos.City;
 import com.azure.cosmos.rx.pojos.Person;
 import com.azure.cosmos.rx.pojos.Pet;
@@ -76,7 +76,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         boolean qmEnabled = true;
 
         String query = "SELECT sum(c.age) as sum_age, c.city FROM c group by c.city";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 35);
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
@@ -151,6 +151,13 @@ public class GroupByQueryTests extends TestSuiteBase {
         Pet pet = getRandomPet(rand);
         UUID guid = UUID.randomUUID();
         return new Person(name, city, income, people, age, pet, guid);
+    }
+
+    void generateQueryConfig(){
+        Map<City, Integer> resultMap = personList.stream()
+                                           .collect(Collectors.groupingBy(Person::getCity,
+                                                                          Collectors.summingInt(Person::getAge)));
+
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

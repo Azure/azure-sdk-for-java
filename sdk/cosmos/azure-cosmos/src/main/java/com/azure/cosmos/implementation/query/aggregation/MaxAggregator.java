@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 public class MaxAggregator implements Aggregator {
+    private static final String MAX_PROPERTY_NAME = "max";
     private Object value;
 
     public MaxAggregator() {
@@ -39,16 +40,16 @@ public class MaxAggregator implements Aggregator {
 
         if (item instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode) item;
-            if (objectNode.hasNonNull("count")) {
-                long count = objectNode.get("count").asLong();
+            if (objectNode.hasNonNull(MinAggregator.COUNT_PROPERTY_NAME)) {
+                long count = objectNode.get(MinAggregator.COUNT_PROPERTY_NAME).asLong();
                 if (count == 0) {
                     // Ignore the value since the continuation / partition had no results that matched the filter
                     // so min/max is undefined.
                     return;
                 }
 
-                if (objectNode.has("max")) {
-                    item = getValue(objectNode.get("max"));
+                if (objectNode.has(MAX_PROPERTY_NAME)) {
+                    item = getValue(objectNode.get(MAX_PROPERTY_NAME));
                 } else {
                     item = Undefined.value();
                 }
