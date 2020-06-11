@@ -317,7 +317,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         // Create options based on file system config
-        AzureFileSystem fs = (AzureFileSystem)(path.getFileSystem());
+        AzureFileSystem fs = (AzureFileSystem) (path.getFileSystem());
         Integer blockSize = fs.getBlockSize() == null ? null : fs.getBlockSize().intValue();
         Integer putBlobThreshold = fs.getPutBlobThreshold() == null ? null : fs.getPutBlobThreshold().intValue();
         ParallelTransferOptions pto = new ParallelTransferOptions(blockSize, fs.getMaxConcurrencyPerRequest(), null,
