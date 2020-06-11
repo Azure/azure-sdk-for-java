@@ -8,10 +8,8 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
 
@@ -30,6 +28,8 @@ public class BlobParallelUploadOptions {
     private Duration timeout;
 
     /**
+     * Constructs a new {@code BlobParalleUploadOptions}.
+     *
      * @param dataStream The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
@@ -40,6 +40,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the data source.
+     *
      * @return The data to write to the blob.
      */
     public InputStream getDataStream() {
@@ -47,6 +49,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the length of the data.
+     *
      * @return The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
@@ -55,6 +59,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the {@link ParallelTransferOptions}.
+     *
      * @return {@link ParallelTransferOptions}
      */
     public ParallelTransferOptions getParallelTransferOptions() {
@@ -62,6 +68,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the {@link ParallelTransferOptions}.
+     *
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
@@ -71,6 +79,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the {@link BlobHttpHeaders}.
+     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders getHeaders() {
@@ -78,6 +88,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the {@link BlobHttpHeaders}.
+     *
      * @param headers {@link BlobHttpHeaders}
      * @return The updated options
      */
@@ -87,6 +99,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the metadata.
+     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -94,6 +108,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the metadata.
+     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options.
      */
@@ -103,6 +119,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the {@link AccessTier}.
+     *
      * @return {@link AccessTier}
      */
     public AccessTier getTier() {
@@ -110,6 +128,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the {@link AccessTier}.
+     *
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
@@ -119,6 +139,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -126,6 +148,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -134,11 +158,18 @@ public class BlobParallelUploadOptions {
         return this;
     }
 
+    /**
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     */
     public Duration getTimeout() {
         return this.timeout;
     }
 
     /**
+     * Sets the timeout.
+     *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The updated options.
      */
