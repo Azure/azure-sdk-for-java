@@ -272,7 +272,9 @@ public class CosmosAsyncUser {
         String spanName = "readUser." + getId();
         Mono<CosmosUserResponse> responseMono = readInternal();
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, database.getId(), database.getClient().getServiceEndpoint());
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosUserResponse> readInternal() {
@@ -285,7 +287,9 @@ public class CosmosAsyncUser {
         String spanName = "replaceUser." + getId();
         Mono<CosmosUserResponse> responseMono = replaceInternal(userSettings);
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, database.getId(), database.getClient().getServiceEndpoint());
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosUserResponse> replaceInternal(CosmosUserProperties userSettings) {
@@ -298,7 +302,9 @@ public class CosmosAsyncUser {
         String spanName = "deleteUser." + getId();
         Mono<CosmosUserResponse> responseMono = deleteInternal();
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, database.getId(), database.getClient().getServiceEndpoint());
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosUserResponse> deleteInternal() {
@@ -314,7 +320,9 @@ public class CosmosAsyncUser {
         String spanName = "createPermission." + getId();
         Mono<CosmosPermissionResponse> responseMono = createPermissionInternal(permission, options);
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, database.getId(), database.getClient().getServiceEndpoint());
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosPermissionResponse> createPermissionInternal(
@@ -333,7 +341,9 @@ public class CosmosAsyncUser {
         String spanName = "upsertPermission." + getId();
         Mono<CosmosPermissionResponse> responseMono = upsertPermissionInternal(permission, options);
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, database.getId(), database.getClient().getServiceEndpoint());
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosPermissionResponse> upsertPermissionInternal(

@@ -139,7 +139,9 @@ public class CosmosAsyncPermission {
         String spanName = "readPermission." + cosmosUser.getId();
         Mono<CosmosPermissionResponse> responseMono = readInternal(options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
+            spanName,
+            cosmosUser.getDatabase().getId(),
+            cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosPermissionResponse> readInternal(CosmosPermissionRequestOptions options) {
@@ -158,7 +160,9 @@ public class CosmosAsyncPermission {
         String spanName = "replacePermission." + cosmosUser.getId();
         Mono<CosmosPermissionResponse> responseMono = replaceInternal(permissionProperties, options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
+            spanName,
+            cosmosUser.getDatabase().getId(),
+            cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosPermissionResponse> replaceInternal(CosmosPermissionProperties permissionProperties,
@@ -178,7 +182,9 @@ public class CosmosAsyncPermission {
         String spanName = "deletePermission." + cosmosUser.getId();
         Mono<CosmosPermissionResponse> responseMono = deleteInternal(options);
         return cosmosUser.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, cosmosUser.getDatabase().getId(), cosmosUser.getDatabase().getClient().getServiceEndpoint());
+            spanName,
+            cosmosUser.getDatabase().getId(),
+            cosmosUser.getDatabase().getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosPermissionResponse> deleteInternal(CosmosPermissionRequestOptions options) {

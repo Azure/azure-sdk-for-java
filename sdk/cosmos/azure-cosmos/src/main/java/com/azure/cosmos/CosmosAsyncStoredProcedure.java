@@ -194,7 +194,11 @@ public class CosmosAsyncStoredProcedure {
                                                           Context context) {
         String spanName = "readStoredProcedure." + cosmosContainer.getId();
         Mono<CosmosStoredProcedureResponse> responseMono = readInternal(options);
-        return this.cosmosContainer.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, cosmosContainer.getDatabase().getId(), cosmosContainer.getDatabase().getClient().getServiceEndpoint());
+        return this.cosmosContainer.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getDatabase().getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosStoredProcedureResponse> readInternal(CosmosStoredProcedureRequestOptions options) {
@@ -210,7 +214,11 @@ public class CosmosAsyncStoredProcedure {
                                                             Context context) {
         String spanName = "deleteStoredProcedure." + cosmosContainer.getId();
         Mono<CosmosStoredProcedureResponse> responseMono = deleteInternal(options);
-        return this.cosmosContainer.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, cosmosContainer.getDatabase().getId(), cosmosContainer.getDatabase().getClient().getServiceEndpoint());
+        return this.cosmosContainer.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            cosmosContainer.getDatabase().getId(),
+            cosmosContainer.getDatabase().getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosStoredProcedureResponse> deleteInternal(CosmosStoredProcedureRequestOptions options) {

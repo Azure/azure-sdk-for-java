@@ -293,7 +293,7 @@ public class CosmosAsyncDatabase {
         CosmosContainerProperties containerProperties) {
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, null);
+            return createContainerIfNotExistsInternal(container.read(), containerProperties, null, null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, null,
@@ -323,7 +323,7 @@ public class CosmosAsyncDatabase {
         ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, options);
+            return createContainerIfNotExistsInternal(container.read(), containerProperties, options, null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
@@ -353,7 +353,7 @@ public class CosmosAsyncDatabase {
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), containerProperties, options);
+            return createContainerIfNotExistsInternal(container.read(), containerProperties, options, null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
@@ -375,10 +375,12 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
         CosmosAsyncContainer container = getContainer(id);
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), null);
+            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id,
+                partitionKeyPath), null, null);
         }
 
-        return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container, null,
+        return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
+                partitionKeyPath), container, null,
             context));
     }
 
@@ -405,7 +407,7 @@ public class CosmosAsyncDatabase {
         ModelBridgeInternal.setThroughputProperties(options, throughputProperties);
         CosmosAsyncContainer container = getContainer(id);
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), options);
+            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath), options, null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
@@ -435,8 +437,9 @@ public class CosmosAsyncDatabase {
         ModelBridgeInternal.setThroughputProperties(options, ThroughputProperties.createManualThroughput(throughput));
         CosmosAsyncContainer container = getContainer(id);
         if (!client.getTracerProvider().isEnabled()) {
-            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id, partitionKeyPath),
-                options);
+            return createContainerIfNotExistsInternal(container.read(), new CosmosContainerProperties(id,
+                    partitionKeyPath),
+                options, null);
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
@@ -795,20 +798,27 @@ public class CosmosAsyncDatabase {
             options = new CosmosContainerRequestOptions();
         }
 
-        Mono<CosmosContainerResponse> responseMono = createContainerIfNotExistsInternal(container.read(options, nestedContext), containerProperties, options);
+        Mono<CosmosContainerResponse> responseMono = createContainerIfNotExistsInternal(container.read(options, nestedContext), containerProperties, options, nestedContext);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, getId(), getClient().getServiceEndpoint());
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> createContainerIfNotExistsInternal(
         Mono<CosmosContainerResponse> responseMono,
         CosmosContainerProperties containerProperties,
-        CosmosContainerRequestOptions options) {
+        CosmosContainerRequestOptions options,
+        Context context) {
         return responseMono.onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosException) {
                 final CosmosException cosmosException = (CosmosException) unwrappedException;
                 if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                    if(context != null) {
+                        return createContainerInternal(containerProperties, options, context);
+                    }
+
                     return createContainer(containerProperties, options);
                 }
             }
@@ -823,7 +833,9 @@ public class CosmosAsyncDatabase {
         String spanName = "createContainer." + containerProperties.getId();
         Mono<CosmosContainerResponse> responseMono = createContainerInternal(containerProperties, options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, getId(), getClient().getServiceEndpoint());
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> createContainerInternal(
@@ -839,7 +851,9 @@ public class CosmosAsyncDatabase {
         String spanName = "readDatabase." + this.getId();
         Mono<CosmosDatabaseResponse> responseMono = readInternal(options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, getId(), getClient().getServiceEndpoint());
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosDatabaseResponse> readInternal(CosmosDatabaseRequestOptions options) {
@@ -852,7 +866,9 @@ public class CosmosAsyncDatabase {
         String spanName = "deleteDatabase." + this.getId();
         Mono<CosmosDatabaseResponse> responseMono = deleteInternal(options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, getId(), getClient().getServiceEndpoint());
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosDatabaseResponse> deleteInternal(CosmosDatabaseRequestOptions options) {
@@ -865,7 +881,9 @@ public class CosmosAsyncDatabase {
         String spanName = "createUser." + this.getId();
         Mono<CosmosUserResponse> responseMono = createUserInternal(userProperties);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
-            spanName, getId(), getClient().getServiceEndpoint());
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosUserResponse> createUserInternal(CosmosUserProperties userProperties) {
@@ -889,8 +907,11 @@ public class CosmosAsyncDatabase {
         String spanName = "replaceThroughput." + this.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         Mono<ThroughputResponse> responseMono = replaceThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext), throughputProperties);
-        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono
-            , context, spanName, getId(), getClient().getServiceEndpoint());
+        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosDatabaseResponse> responseMono, ThroughputProperties throughputProperties) {
@@ -924,8 +945,11 @@ public class CosmosAsyncDatabase {
         String spanName = "readThroughput." + this.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         Mono<ThroughputResponse> responseMono = readThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext));
-        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono
-            , context, spanName, getId(), getClient().getServiceEndpoint());
+        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            getId(),
+            getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosDatabaseResponse> responseMono) {

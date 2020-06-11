@@ -61,7 +61,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link Mono} will error.
      *
      * @param properties the cosmos stored procedure properties.
-     * @param options    the stored procedure request options.
+     * @param options the stored procedure request options.
      * @return an {@link Mono} containing the single cosmos stored procedure resource response or an error.
      */
     public Mono<CosmosStoredProcedureResponse> createStoredProcedure(
@@ -364,8 +364,8 @@ public class CosmosAsyncScripts {
      * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained triggers.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
-     * @param query   the query.
-     * @param options the feed options.
+     * @param query the query.
+     * @param options the query request options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained triggers or an
      * error.
      */
@@ -467,7 +467,11 @@ public class CosmosAsyncScripts {
                                                                            Context context) {
         String spanName = "createStoredProcedure." + container.getId();
         Mono<CosmosStoredProcedureResponse> responseMono = createStoredProcedureInternal(sProc, options);
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,
@@ -482,7 +486,11 @@ public class CosmosAsyncScripts {
         Context context) {
         String spanName = "createUserDefinedFunction." + container.getId();
         Mono<CosmosUserDefinedFunctionResponse> responseMono = createUserDefinedFunctionInternal(udf);
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
@@ -494,7 +502,11 @@ public class CosmosAsyncScripts {
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties, Context context) {
         String spanName = "createTrigger." + container.getId();
         Mono<CosmosTriggerResponse> responseMono = createTriggerInternal(properties);
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
+            context,
+            spanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {

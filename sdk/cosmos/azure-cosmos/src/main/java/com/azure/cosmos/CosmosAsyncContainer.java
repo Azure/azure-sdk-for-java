@@ -754,7 +754,10 @@ public class CosmosAsyncContainer {
         Context context) {
         Mono<CosmosItemResponse<Object>> responseMono = deleteItemInternal(itemId, requestOptions);
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context, this.deleteItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.deleteItemSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosItemResponse<Object>> deleteItemInternal(
@@ -793,7 +796,10 @@ public class CosmosAsyncContainer {
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
         Mono<CosmosItemResponse<T>> responseMono = upsertItemInternal(item, options);
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context, this.upsertItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.upsertItemSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options) {
@@ -813,7 +819,10 @@ public class CosmosAsyncContainer {
         Context context) {
         Mono<CosmosItemResponse<T>> responseMono = readItemInternal(itemId, requestOptions, itemType);
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context, this.readItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.readItemSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private <T> Mono<CosmosItemResponse<T>> readItemInternal(
@@ -828,7 +837,10 @@ public class CosmosAsyncContainer {
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = readInternal(options);
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context, this.readContainerSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.readContainerSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> readInternal(CosmosContainerRequestOptions options) {
@@ -840,7 +852,10 @@ public class CosmosAsyncContainer {
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options, Context context) {
         Mono<CosmosContainerResponse> responseMono = deleteInternal(options);
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context, this.deleteContainerSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.deleteContainerSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> deleteInternal(CosmosContainerRequestOptions options) {
@@ -854,7 +869,10 @@ public class CosmosAsyncContainer {
                                                                Context context) {
         Mono<CosmosContainerResponse> responseMono = replaceInternal(containerProperties, options);
         return database.getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
-            context, this.replaceContainerSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.replaceContainerSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<CosmosContainerResponse> replaceInternal(CosmosContainerProperties containerProperties,
@@ -869,8 +887,11 @@ public class CosmosAsyncContainer {
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         Mono<ThroughputResponse> responseMono = readThroughputInternal(this.read(new CosmosContainerRequestOptions(),
             nestedContext));
-        return this.getDatabase().getClient().getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono
-            , context, this.readThroughputSpanName, database.getId(), database.getClient().getServiceEndpoint());
+        return this.getDatabase().getClient().getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono,
+            context,
+            this.readThroughputSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> readThroughputInternal(Mono<CosmosContainerResponse> responseMono) {
@@ -903,8 +924,11 @@ public class CosmosAsyncContainer {
         Mono<ThroughputResponse> responseMono =
             replaceThroughputInternal(this.read(new CosmosContainerRequestOptions(), nestedContext),
                 throughputProperties);
-        return this.getDatabase().getClient().getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono
-            , context, this.replaceThroughputSpanName, database.getId(), database.getClient().getServiceEndpoint());
+        return this.getDatabase().getClient().getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono,
+            context,
+            this.replaceThroughputSpanName,
+            database.getId(),
+            database.getClient().getServiceEndpoint());
     }
 
     private Mono<ThroughputResponse> replaceThroughputInternal(Mono<CosmosContainerResponse> responseMono,
