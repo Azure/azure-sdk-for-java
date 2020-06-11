@@ -907,7 +907,7 @@ public class CosmosAsyncDatabase {
         String spanName = "replaceThroughput." + this.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         Mono<ThroughputResponse> responseMono = replaceThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext), throughputProperties);
-        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono,
+        return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
             getId(),
@@ -945,7 +945,7 @@ public class CosmosAsyncDatabase {
         String spanName = "readThroughput." + this.getId();
         Context nestedContext = context.addData(TracerProvider.COSMOS_CALL_DEPTH, TracerProvider.COSMOS_CALL_DEPTH_VAL);
         Mono<ThroughputResponse> responseMono = readThroughputInternal(this.readInternal(new CosmosDatabaseRequestOptions(), nestedContext));
-        return this.client.getTracerProvider().traceEnabledNonCosmosResponsePublisher(responseMono,
+        return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono,
             context,
             spanName,
             getId(),

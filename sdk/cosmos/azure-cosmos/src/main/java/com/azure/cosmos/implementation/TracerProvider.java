@@ -17,6 +17,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+
 public class TracerProvider {
     private Tracer tracer;
     public final static String DB_TYPE_VALUE = "Cosmos";
@@ -30,6 +32,7 @@ public class TracerProvider {
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
+    public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
@@ -59,6 +62,7 @@ public class TracerProvider {
             tracer.setAttribute(TracerProvider.DB_INSTANCE, databaseId, local);
         }
 
+        tracer.setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME, local);
         tracer.setAttribute(TracerProvider.DB_TYPE, DB_TYPE_VALUE, local);
         tracer.setAttribute(TracerProvider.DB_URL, endpoint, local);
         tracer.setAttribute(TracerProvider.DB_STATEMENT, methodName, local);
@@ -108,14 +112,6 @@ public class TracerProvider {
             (T response) -> response.getStatusCode());
     }
 
-    public <T> Mono<T> traceEnabledNonCosmosResponsePublisher(Mono<T> resultPublisher,
-                                                              Context context,
-                                                              String spanName,
-                                                              String databaseId,
-                                                              String endpoint) {
-        return traceEnabledPublisher(resultPublisher,  context, spanName, databaseId, endpoint, (T response) -> HttpConstants.StatusCodes.OK);
-    }
-
     public <T> Mono<CosmosItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosItemResponse<T>> resultPublisher,
                                                                                    Context context,
                                                                                    String spanName,
@@ -155,9 +151,6 @@ public class TracerProvider {
         if (throwable != null) {
             tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
             tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
-            StringWriter errorStack = new StringWriter();
-            throwable.printStackTrace(new PrintWriter(errorStack));
-            tracer.setAttribute(TracerProvider.ERROR_STACK, errorStack.toString(), context);
         }
         tracer.end(statusCode, throwable, context);
     }
