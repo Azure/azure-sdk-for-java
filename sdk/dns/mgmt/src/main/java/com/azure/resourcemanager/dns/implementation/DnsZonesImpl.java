@@ -12,7 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation of DnsZones. */
-public class DnsZonesImpl extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager>
+public class DnsZonesImpl 
+    extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesClient, DnsZoneManager>
     implements DnsZones {
 
     public DnsZonesImpl(final DnsZoneManager dnsZoneManager) {

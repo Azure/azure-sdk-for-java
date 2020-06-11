@@ -156,24 +156,6 @@
         "code": "java.method.finalMethodAddedToNonFinalClass",
         "new": "method <V> reactor.core.publisher.Flux<V> reactor.core.publisher.Flux<T>::switchOnFirst(java.util.function.BiFunction<reactor.core.publisher.Signal<? extends T>, reactor.core.publisher.Flux<T>, org.reactivestreams.Publisher<? extends V>>, boolean) @ com.azure.core.util.paging.ContinuablePagedFluxCore<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>",
         "justification": "Reactor added new final APIs to Flux."
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method reactor.core.publisher.Mono<java.lang.Void> com.azure.core.amqp.AmqpSession::commitTransaction(com.azure.core.amqp.AmqpTransaction)",
-        "justification": "Added new API to handle transaction in amqp package.",
-        "package": "com.azure.core.amqp"
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method reactor.core.publisher.Mono<com.azure.core.amqp.AmqpTransaction> com.azure.core.amqp.AmqpSession::createTransaction()",
-        "justification": "Added new API to handle transaction in amqp package.",
-        "package": "com.azure.core.amqp"
-      },
-      {
-        "code": "java.method.addedToInterface",
-        "new": "method reactor.core.publisher.Mono<java.lang.Void> com.azure.core.amqp.AmqpSession::rollbackTransaction(com.azure.core.amqp.AmqpTransaction)",
-        "justification": "Added new API to handle transaction in amqp package.",
-        "package": "com.azure.core.amqp"
       }
     ]
   }

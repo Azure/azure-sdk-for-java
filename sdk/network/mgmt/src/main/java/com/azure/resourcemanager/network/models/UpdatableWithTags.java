@@ -3,8 +3,6 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.resourcemanager.network.models.AppliableWithTags;
-
 import java.util.Map;
 
 /**

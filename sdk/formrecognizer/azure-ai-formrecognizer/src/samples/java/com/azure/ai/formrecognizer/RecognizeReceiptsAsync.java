@@ -66,7 +66,7 @@ public class RecognizeReceiptsAsync {
         for (int i = 0; i < receiptPageResults.size(); i++) {
             RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
             Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-            System.out.printf("----------- Recognized Receipt page %s -----------%n", i);
+            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
             FormField merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
                 if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
@@ -108,20 +108,20 @@ public class RecognizeReceiptsAsync {
                                 }
                                 if (key.equals("Quantity")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                        System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                        System.out.printf("Quantity: %d, confidence: %.2f%n",
                                             formField.getFieldValue().asInteger(), formField.getConfidence());
                                     }
                                 }
                                 if (key.equals("Price")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.FLOAT) {
-                                        System.out.printf("Price: %s, confidence: %.2f%n",
+                                        System.out.printf("Price: %f, confidence: %.2f%n",
                                             formField.getFieldValue().asFloat(),
                                             formField.getConfidence());
                                     }
                                 }
                                 if (key.equals("TotalPrice")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.FLOAT) {
-                                        System.out.printf("Total Price: %s, confidence: %.2f%n",
+                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
                                             formField.getFieldValue().asFloat(),
                                             formField.getConfidence());
                                     }

@@ -60,8 +60,8 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
     @Override
     public SqlServerDnsAlias getBySqlServer(SqlServer sqlServer, String name) {
         Objects.requireNonNull(sqlServer);
-        ServerDnsAliasInner serverDnsAliasInner =
-            sqlServer.manager().inner().getServerDnsAliases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+        ServerDnsAliasInner serverDnsAliasInner = sqlServer.manager().inner().getServerDnsAliases()
+            .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return serverDnsAliasInner != null
             ? new SqlServerDnsAliasImpl(name, (SqlServerImpl) sqlServer, serverDnsAliasInner, sqlServer.manager())
             : null;

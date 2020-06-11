@@ -117,7 +117,8 @@ class NetworkWatcherImpl
 
     @Override
     protected Mono<NetworkWatcherInner> getInnerAsync() {
-        return this.manager().inner().getNetworkWatchers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getNetworkWatchers()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

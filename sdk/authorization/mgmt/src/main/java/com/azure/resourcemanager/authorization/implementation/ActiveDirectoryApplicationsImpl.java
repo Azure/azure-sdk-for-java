@@ -24,7 +24,8 @@ public class ActiveDirectoryApplicationsImpl
     private ApplicationsClient innerCollection;
     private AuthorizationManager manager;
 
-    public ActiveDirectoryApplicationsImpl(final ApplicationsClient client, final AuthorizationManager authorizationManager) {
+    public ActiveDirectoryApplicationsImpl(
+        final ApplicationsClient client, final AuthorizationManager authorizationManager) {
         this.innerCollection = client;
         this.manager = authorizationManager;
     }

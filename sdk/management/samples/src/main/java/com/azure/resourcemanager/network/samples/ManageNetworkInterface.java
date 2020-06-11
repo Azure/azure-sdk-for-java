@@ -49,8 +49,7 @@ public final class ManageNetworkInterface {
         final String vmName = azure.sdkContext().randomResourceName("vm", 8);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMI", 24);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = azure.sdkContext().randomResourceName("Pa5$", 24);
+        final String password = Utils.password();
         try {
 
             //============================================================

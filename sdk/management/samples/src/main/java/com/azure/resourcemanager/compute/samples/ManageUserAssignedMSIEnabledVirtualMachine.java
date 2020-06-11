@@ -47,8 +47,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         final String linuxVMName = azure.sdkContext().randomResourceName("VM1", 15);
         final String pipName = azure.sdkContext().randomResourceName("pip1", 15);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPAwX0rd!";
+        final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
 
 

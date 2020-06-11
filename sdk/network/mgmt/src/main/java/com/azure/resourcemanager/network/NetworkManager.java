@@ -95,6 +95,14 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         return authenticate(httpPipeline, profile, new SdkContext());
     }
 
+    /**
+     * Creates an instance of NetworkManager that exposes network resource management API entry points.
+     *
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
+     * @param sdkContext the sdk context
+     * @return the NetworkManager
+     */
     public static NetworkManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         return new NetworkManager(httpPipeline, profile, sdkContext);
     }

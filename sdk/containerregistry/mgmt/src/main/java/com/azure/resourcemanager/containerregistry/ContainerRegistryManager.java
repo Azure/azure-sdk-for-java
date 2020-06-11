@@ -25,7 +25,7 @@ public final class ContainerRegistryManager
     extends Manager<ContainerRegistryManager, ContainerRegistryManagementClient> {
     // The service managers
     private RegistriesImpl registries;
-    private StorageManager storageManager;
+    private final StorageManager storageManager;
     private RegistryTasksImpl tasks;
     private RegistryTaskRunsImpl registryTaskRuns;
 
