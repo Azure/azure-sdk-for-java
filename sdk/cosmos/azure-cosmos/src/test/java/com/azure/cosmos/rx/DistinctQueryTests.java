@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
 import com.azure.cosmos.implementation.routing.UInt128;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.QueryRequestOptions;
@@ -81,7 +83,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable =
@@ -199,7 +201,7 @@ public class DistinctQueryTests extends TestSuiteBase {
 
         for (String query : queries) {
             logger.info("Current distinct query: " + query);
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
 
             List<JsonNode> documentsFromWithDistinct = new ArrayList<>();
@@ -242,7 +244,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,

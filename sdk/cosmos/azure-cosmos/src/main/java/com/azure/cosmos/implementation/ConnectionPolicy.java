@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -39,7 +40,7 @@ public final class ConnectionPolicy {
     private ProxyOptions proxy;
 
     //  Direct connection config properties
-    private Duration connectionTimeout;
+    private Duration connectTimeout;
     private Duration idleEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
@@ -51,18 +52,18 @@ public final class ConnectionPolicy {
         this(ConnectionMode.GATEWAY);
         this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
-        this.requestTimeout = gatewayConnectionConfig.getRequestTimeout();
+        this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
         this(ConnectionMode.DIRECT);
-        this.connectionTimeout = directConnectionConfig.getConnectionTimeout();
+        this.connectTimeout = directConnectionConfig.getConnectTimeout();
         this.idleConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
-        this.requestTimeout = directConnectionConfig.getRequestTimeout();
+        this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -373,20 +374,20 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the direct connection timeout
-     * @return direct connection timeout
+     * Gets the direct connect timeout
+     * @return direct connect timeout
      */
-    public Duration getConnectionTimeout() {
-        return connectionTimeout;
+    public Duration getConnectTimeout() {
+        return connectTimeout;
     }
 
     /**
-     *  Sets the direct connection timeout
-     * @param connectionTimeout the connection timeout
+     *  Sets the direct connect timeout
+     * @param connectTimeout the connect timeout
      * @return the {@link ConnectionPolicy}
      */
-    public ConnectionPolicy setConnectionTimeout(Duration connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+    public ConnectionPolicy setConnectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
         return this;
     }
 
@@ -456,10 +457,10 @@ public final class ConnectionPolicy {
             ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
             ", preferredRegions=" + preferredRegions +
             ", multipleWriteRegionsEnabled=" + multipleWriteRegionsEnabled +
-            ", proxyType=" + proxy.getType() +
-            ", inetSocketProxyAddress=" + proxy.getAddress() +
+            ", proxyType=" + (proxy != null ? proxy.getType() : null) +
+            ", inetSocketProxyAddress=" + (proxy != null ? proxy.getAddress() : null) +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
-            ", connectionTimeout=" + connectionTimeout +
+            ", connectTimeout=" + connectTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +

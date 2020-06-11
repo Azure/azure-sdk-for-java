@@ -15,8 +15,8 @@ public final class RequestOptions {
     /*
      * The tracking ID sent with the request to help with debugging.
      */
-    @JsonProperty(value = "")
-    private UUID xMsClientRequestId;
+    @JsonProperty(value = "xMsClientRequestId")
+    private UUID clientRequestId;
 
     /**
      * Get the xMsClientRequestId property: The tracking ID sent with the
@@ -24,19 +24,19 @@ public final class RequestOptions {
      *
      * @return the xMsClientRequestId value.
      */
-    public UUID getXMsClientRequestId() {
-        return this.xMsClientRequestId;
+    public UUID getClientRequestId() {
+        return this.clientRequestId;
     }
 
     /**
-     * Set the xMsClientRequestId property: The tracking ID sent with the
+     * Set the clientRequestId property: The tracking ID sent with the
      * request to help with debugging.
      *
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
+     * @param clientRequestId the clientRequestId value to set.
      * @return the RequestOptions object itself.
      */
-    public RequestOptions setXMsClientRequestId(UUID xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
+    public RequestOptions setClientRequestId(UUID clientRequestId) {
+        this.clientRequestId = clientRequestId;
         return this;
     }
 }

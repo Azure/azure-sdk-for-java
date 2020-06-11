@@ -38,7 +38,7 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * one of the pre-defined types will not be surfaced.
      */
     @JsonProperty(value = "includeTypelessEntities")
-    private Boolean includeTypelessEntities;
+    private Boolean typelessEntitiesIncluded;
 
     /*
      * A value between 0 and 1 that be used to only include entities whose
@@ -105,8 +105,8 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      *
      * @return the includeTypelessEntities value.
      */
-    public Boolean isIncludeTypelessEntities() {
-        return this.includeTypelessEntities;
+    public Boolean areTypelessEntitiesIncluded() {
+        return this.typelessEntitiesIncluded;
     }
 
     /**
@@ -116,11 +116,11 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * false, entities which don't conform to one of the pre-defined types will
      * not be surfaced.
      *
-     * @param includeTypelessEntities the includeTypelessEntities value to set.
+     * @param typelessEntitiesIncluded the includeTypelessEntities value to set.
      * @return the EntityRecognitionSkill object itself.
      */
-    public EntityRecognitionSkill setIncludeTypelessEntities(Boolean includeTypelessEntities) {
-        this.includeTypelessEntities = includeTypelessEntities;
+    public EntityRecognitionSkill setTypelessEntitiesIncluded(Boolean typelessEntitiesIncluded) {
+        this.typelessEntitiesIncluded = typelessEntitiesIncluded;
         return this;
     }
 

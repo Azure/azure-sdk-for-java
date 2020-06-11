@@ -60,7 +60,7 @@ public final class PatternAnalyzerConverter {
         String name = obj.getName();
         patternAnalyzer.setName(name);
 
-        Boolean lowerCaseTerms = obj.isLowerCaseTerms();
+        Boolean lowerCaseTerms = obj.areLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
 
         String pattern = obj.getPattern();

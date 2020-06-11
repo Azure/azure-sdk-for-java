@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -1036,8 +1036,8 @@ public class RxDocumentServiceRequest implements Cloneable {
             return null;
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
-        } else if (options instanceof QueryRequestOptions) {
-            return ModelBridgeInternal.getPropertiesFromQueryRequestOptions((QueryRequestOptions) options);
+        } else if (options instanceof CosmosQueryRequestOptions) {
+            return ModelBridgeInternal.getPropertiesFromQueryRequestOptions((CosmosQueryRequestOptions) options);
         } else if (options instanceof ChangeFeedOptions) {
             return ((ChangeFeedOptions) options).getProperties();
         } else {

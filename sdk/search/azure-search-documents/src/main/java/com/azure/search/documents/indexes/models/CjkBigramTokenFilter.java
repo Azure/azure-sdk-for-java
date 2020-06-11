@@ -57,7 +57,7 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      *
      * @return the outputUnigrams value.
      */
-    public Boolean isOutputUnigrams() {
+    public Boolean areOutputUnigrams() {
         return this.outputUnigrams;
     }
 

@@ -8,7 +8,7 @@ package com.azure.identity;
  *
  * @see AzureCliCredential
  */
-class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCredentialBuilder> {
+public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCredentialBuilder> {
      /**
      * Creates a new {@link AzureCliCredential} with the current configurations.
      *

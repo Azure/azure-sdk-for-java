@@ -237,7 +237,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b13bf986-602d-4df0-8572-54e347d96928",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"mGc8boTjy8j/Ufai9mYB5fktZJKLoNP1sj00HV2laiPOSRhAb1kuMrLKr2d+vPOV8AnT8K81EqlgvJmmqnRTgg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"/xgv5Kb+uCYzNTZBRq09XqZ+DU6usCnKMLeRwzoRVtNHYwKR40ssOsS9d8iFXo07+k4MreZwb5Qi1t97D0vA9w==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -293,7 +293,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "417fecd1-f9c9-4a78-adff-99bc423a9529",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg043322922/providers/Microsoft.Web/sites/java-func-902291304/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=a069fd2d04734282aa0d;AccountKey=mGc8boTjy8j/Ufai9mYB5fktZJKLoNP1sj00HV2laiPOSRhAb1kuMrLKr2d+vPOV8AnT8K81EqlgvJmmqnRTgg==\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=a069fd2d04734282aa0d;AccountKey=mGc8boTjy8j/Ufai9mYB5fktZJKLoNP1sj00HV2laiPOSRhAb1kuMrLKr2d+vPOV8AnT8K81EqlgvJmmqnRTgg==\",\"WEBSITE_CONTENTSHARE\":\"java-func-90229130439960561dc\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=a069fd2d04734282aa0d;AccountKey=mGc8boTjy8j/Ufai9mYB5fktZJKLoNP1sj00HV2laiPOSRhAb1kuMrLKr2d+vPOV8AnT8K81EqlgvJmmqnRTgg==\"}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg043322922/providers/Microsoft.Web/sites/java-func-902291304/config/appsettings\",\"name\":\"appsettings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"FUNCTIONS_EXTENSION_VERSION\":\"~1\",\"AzureWebJobsDashboard\":\"DefaultEndpointsProtocol=https;AccountName=a069fd2d04734282aa0d;AccountKey=***REMOVED***\",\"AzureWebJobsStorage\":\"DefaultEndpointsProtocol=https;AccountName=a069fd2d04734282aa0d;AccountKey=***REMOVED***\",\"WEBSITE_CONTENTSHARE\":\"java-func-90229130439960561dc\",\"WEBSITE_CONTENTAZUREFILECONNECTIONSTRING\":\"DefaultEndpointsProtocol=https;AccountName=a069fd2d04734282aa0d;AccountKey=***REMOVED***\"}}"
     }
   }, {
     "Method" : "POST",

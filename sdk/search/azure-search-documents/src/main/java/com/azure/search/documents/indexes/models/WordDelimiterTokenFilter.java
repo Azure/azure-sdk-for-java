@@ -37,7 +37,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * "AzureSearch". Default is false.
      */
     @JsonProperty(value = "catenateWords")
-    private Boolean catenateWords;
+    private Boolean wordsCatenated;
 
     /*
      * A value indicating whether maximum runs of number parts will be
@@ -45,7 +45,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * Default is false.
      */
     @JsonProperty(value = "catenateNumbers")
-    private Boolean catenateNumbers;
+    private Boolean numbersCatenated;
 
     /*
      * A value indicating whether all subword parts will be catenated. For
@@ -144,8 +144,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateWords value.
      */
-    public Boolean isCatenateWords() {
-        return this.catenateWords;
+    public Boolean areWordsCatenated() {
+        return this.wordsCatenated;
     }
 
     /**
@@ -153,11 +153,11 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * of word parts will be catenated. For example, if this is set to true,
      * "Azure-Search" becomes "AzureSearch". Default is false.
      *
-     * @param catenateWords the catenateWords value to set.
+     * @param wordsCatenated the catenateWords value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter setCatenateWords(Boolean catenateWords) {
-        this.catenateWords = catenateWords;
+    public WordDelimiterTokenFilter setWordsCatenated(Boolean wordsCatenated) {
+        this.wordsCatenated = wordsCatenated;
         return this;
     }
 
@@ -168,8 +168,8 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateNumbers value.
      */
-    public Boolean isCatenateNumbers() {
-        return this.catenateNumbers;
+    public Boolean areNumbersCatenated() {
+        return this.numbersCatenated;
     }
 
     /**
@@ -177,11 +177,11 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      * runs of number parts will be catenated. For example, if this is set to
      * true, "1-2" becomes "12". Default is false.
      *
-     * @param catenateNumbers the catenateNumbers value to set.
+     * @param numbersCatenated the catenateNumbers value to set.
      * @return the WordDelimiterTokenFilter object itself.
      */
-    public WordDelimiterTokenFilter setCatenateNumbers(Boolean catenateNumbers) {
-        this.catenateNumbers = catenateNumbers;
+    public WordDelimiterTokenFilter setNumbersCatenated(Boolean numbersCatenated) {
+        this.numbersCatenated = numbersCatenated;
         return this;
     }
 
@@ -192,7 +192,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the catenateAll value.
      */
-    public Boolean isCatenateAll() {
+    public Boolean catenateAll() {
         return this.catenateAll;
     }
 
@@ -216,7 +216,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnCaseChange value.
      */
-    public Boolean isSplitOnCaseChange() {
+    public Boolean splitOnCaseChange() {
         return this.splitOnCaseChange;
     }
 
@@ -262,7 +262,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the splitOnNumerics value.
      */
-    public Boolean isSplitOnNumerics() {
+    public Boolean splitOnNumerics() {
         return this.splitOnNumerics;
     }
 

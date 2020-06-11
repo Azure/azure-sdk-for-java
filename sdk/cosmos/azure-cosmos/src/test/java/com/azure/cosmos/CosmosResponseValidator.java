@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.ContainerChildResourceType;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosPermissionResponse;
@@ -301,12 +302,34 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
 
         }
 
-        public Builder<T> withPermissionResourceLink(String resourceLink) {
+        public Builder<T> withPermissionContainerName(String containerName) {
             validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
 
                 @Override
                 public void validate(CosmosPermissionResponse resourceResponse) {
-                    assertThat(resourceResponse.getProperties().getResourceLink()).isEqualTo(resourceLink);
+                    assertThat(resourceResponse.getProperties().getContainerName()).isEqualTo(containerName);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withPermissionResourceName(String resourceName) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
+
+                @Override
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.getProperties().getResourceName()).isEqualTo(resourceName);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withPermissionResourceKind(ContainerChildResourceType resourceKind) {
+            validators.add(new CosmosResponseValidator<CosmosPermissionResponse>() {
+
+                @Override
+                public void validate(CosmosPermissionResponse resourceResponse) {
+                    assertThat(resourceResponse.getProperties().getResourceKind()).isEqualTo(resourceKind);
                 }
             });
             return this;

@@ -111,7 +111,7 @@ function codegen(project, cb) {
     const readmeFile = specRoot + '/' + mappings[project].source;
 
     console.log('Generating "' + project + '" from spec file ' + readmeFile);
-    var generator = '--fluent=true';
+    var generator = '--fluent';
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = '';
     }
@@ -120,13 +120,13 @@ function codegen(project, cb) {
         ? `--use=${path.resolve(args['autorest-java'])} `
         : '';
 
-    const regenManager = args['regenerate-manager'] ? ' --regenerate-manager=true ' : '';
+    const regenManager = args['regenerate-manager'] ? ' --regenerate-manager ' : '';
 
     const outDir = path.resolve(mappings[project].dir);
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
-                        ' --azure-arm=true ' +
-                        ' --track1-naming=true --generate-client-as-impl=true --implementation-subpackage=models --sync-methods=all --required-parameter-client-methods=true --add-context-parameter=true --context-client-method-parameter=true --client-side-validations=true --client-logger=true ' +
+                        ' --azure-arm ' +
+                        ' --track1-naming --implementation-subpackage=fluent --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +
@@ -165,7 +165,7 @@ function deleteFolderRecursive(path) {
 };
 
 async function prepareBuild() {
-    return shell.task('mvn package javadoc:aggregate -DskipTests=true -q');
+    return shell.task('mvn package javadoc:aggregate -DskipTests -q');
 }
 
 async function prepareStage() {
