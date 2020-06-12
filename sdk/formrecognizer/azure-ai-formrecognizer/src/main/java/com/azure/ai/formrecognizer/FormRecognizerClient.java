@@ -65,31 +65,8 @@ public final class FormRecognizerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String formUrl, String modelId) {
-        return beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(formUrl, modelId));
-    }
-
-    /**
-     * Recognizes receipt data from documents using optical character recognition (OCR)
-     * and a custom trained model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#recognizeCustomFormsOptions}
-     *
-     * @param @param recognizeCustomFormsOptions The configurable {@code RecognizeCustomFormsOptions options} that
-     * may be passed when recognizing custom form.
-     *
-     * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
-     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
-     * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl}, {@code modelId} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomFormsFromUrl(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
-        return client.beginRecognizeCustomFormsFromUrl(recognizeCustomFormsOptions).getSyncPoller();
+        return client.beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(formUrl, modelId))
+            .getSyncPoller();
     }
 
     /**
@@ -162,30 +139,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
-        return beginRecognizeContentFromUrl(new RecognizeOptions(formUrl));
-    }
-
-    /**
-     * Recognizes layout data using optical character recognition (OCR) and a custom trained model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support.</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#recognizeOptions}
-     *
-     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
-     * content on a form.
-     *
-     * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed, has
-     * failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
-     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
-     * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code formUrl} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<FormPage>>
-        beginRecognizeContentFromUrl(RecognizeOptions recognizeOptions) {
-        return client.beginRecognizeContentFromUrl(recognizeOptions).getSyncPoller();
+        return client.beginRecognizeContentFromUrl(new RecognizeOptions(formUrl)).getSyncPoller();
     }
 
     /**
@@ -231,8 +185,7 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code form} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<FormPage>>
-        beginRecognizeContent(RecognizeOptions recognizeOptions) {
+    public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContent(RecognizeOptions recognizeOptions) {
         return client.beginRecognizeContent(recognizeOptions).getSyncPoller();
     }
 
@@ -254,33 +207,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(String receiptUrl) {
-        return beginRecognizeReceiptsFromUrl(new RecognizeOptions(receiptUrl).setIncludeTextContent(false));
-    }
-
-    /**
-     * Recognizes receipt data from documents using optical character recognition (OCR) and a
-     * prebuilt receipt trained model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support</p>
-     *
-     * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#recognizeOptions}
-     *
-     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
-     * receipt data on the provided receipt document.
-     *
-     * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
-     * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
-     * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receiptUrl} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, List<RecognizedReceipt>>
-        beginRecognizeReceiptsFromUrl(RecognizeOptions recognizeOptions) {
-        return client.beginRecognizeReceiptsFromUrl(recognizeOptions).getSyncPoller();
+    public SyncPoller<OperationResult, List<RecognizedReceipt>> beginRecognizeReceiptsFromUrl(String receiptUrl) {
+        return client.beginRecognizeReceiptsFromUrl(new RecognizeOptions(receiptUrl)).getSyncPoller();
     }
 
     /**
@@ -306,7 +234,7 @@ public final class FormRecognizerClient {
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream receipt, long length, FormContentType formContentType) {
         return beginRecognizeReceipts(new RecognizeOptions(receipt, length)
-            .setFormContentType(formContentType).setIncludeTextContent( false));
+            .setFormContentType(formContentType).setIncludeTextContent(false));
     }
 
     /**

@@ -35,7 +35,7 @@ public class GetBoundingBoxes {
         String modelId = "{model_Id}";
         String filePath = "{analyze_file_path}";
         SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(filePath, modelId)
+            client.beginRecognizeCustomForms(new RecognizeCustomFormsOptions(filePath, modelId)
                 .setIncludeTextContent(true));
 
         List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();

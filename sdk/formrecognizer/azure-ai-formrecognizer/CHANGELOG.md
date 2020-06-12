@@ -2,8 +2,10 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
+- Add `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
+- Rename `includeTextDetails` to `includeTextContent`
 - Change `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
-- Rename `fieldMap` property to `fields` on `CustomFormSubmodel` model 
+- Rename `fieldMap` property to `fields` on `CustomFormSubmodel` model
 - Rename `elements` property on model `FormTableCell` to `textContent`
 - Remove `TextContentType` model and use `instanceOf` to detect the FormContent type
 

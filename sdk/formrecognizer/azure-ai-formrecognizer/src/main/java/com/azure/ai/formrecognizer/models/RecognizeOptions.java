@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
@@ -13,14 +15,14 @@ import java.util.Objects;
  */
 @Fluent
 public class RecognizeOptions {
+    private final InputStream form;
+    private final Flux<ByteBuffer> formData;
+    private final long length;
+    private final String formUrl;
     private FormContentType formContentType;
     private boolean includeTextContent;
-    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
-    private InputStream form;
-    private Flux<ByteBuffer> formData;
-    private long length;
-    private String formUrl;
+    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     /**
      * Create a {@code RecognizeOptions option} object.
@@ -31,6 +33,8 @@ public class RecognizeOptions {
     public RecognizeOptions(final InputStream form, final long length) {
         this.form = Objects.requireNonNull(form, "'form' cannot be null");
         this.length = length;
+        this.formData = null;
+        this.formUrl = null;
     }
 
     /**
@@ -42,6 +46,8 @@ public class RecognizeOptions {
     public RecognizeOptions(final Flux<ByteBuffer> formData, final long length) {
         this.formData = Objects.requireNonNull(formData, "'formData' cannot be null");
         this.length = length;
+        this.form = null;
+        this.formUrl = null;
     }
 
     /**
@@ -51,6 +57,9 @@ public class RecognizeOptions {
      */
     public RecognizeOptions(final String formUrl) {
         this.formUrl = Objects.requireNonNull(formUrl, "'formUrl' cannot be null");
+        this.form = null;
+        this.formData = null;
+        this.length = 0;
     }
 
     /**
@@ -117,10 +126,13 @@ public class RecognizeOptions {
         return formData;
     }
 
+
     /**
      * Set the type of the form. Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      *
-     * @return the {@code RecognizeOptions} object itself.
+     * @param formContentType the provided form content type.
+     *
+     * @return the updated {@code RecognizeOptions} value.
      */
     public RecognizeOptions setFormContentType(final FormContentType formContentType) {
         this.formContentType = formContentType;
@@ -130,7 +142,9 @@ public class RecognizeOptions {
     /**
      * Set the boolean which specifies if to include text lines and element references in the result.
      *
-     * @return the {@code isIncludeTextContent} value.
+     * @param includeTextContent the boolean to specify if to include text and line references in the result.
+     *
+     * @return the updated {@code RecognizeOptions} value.
      */
     public RecognizeOptions setIncludeTextContent(final boolean includeTextContent) {
         this.includeTextContent = includeTextContent;
@@ -141,7 +155,9 @@ public class RecognizeOptions {
      * Set the duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return the {@code pollInterval} value.
+     * @param pollInterval the duration to specify between each poll for the operation status.
+     *
+     * @return the updated {@code RecognizeOptions} value.
      */
     public RecognizeOptions setPollInterval(final Duration pollInterval) {
         this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;

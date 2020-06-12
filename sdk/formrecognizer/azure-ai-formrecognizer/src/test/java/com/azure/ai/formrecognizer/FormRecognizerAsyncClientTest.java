@@ -91,7 +91,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextContent) -> {
             SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(new RecognizeOptions(sourceUrl).setIncludeTextContent(includeTextContent))
+                client.beginRecognizeReceipts(new RecognizeOptions(sourceUrl).setIncludeTextContent(includeTextContent))
                     .getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), includeTextContent);

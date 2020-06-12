@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Fluent;
@@ -59,27 +61,19 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
         return modelId;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     @Override
     public RecognizeCustomFormsOptions setFormContentType(FormContentType formContentType) {
         super.setFormContentType(formContentType);
         return this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     @Override
     public RecognizeCustomFormsOptions setIncludeTextContent(boolean includeTextContent) {
         super.setIncludeTextContent(includeTextContent);
         return this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     @Override
     public RecognizeCustomFormsOptions setPollInterval(Duration pollInterval) {
         super.setPollInterval(pollInterval);
