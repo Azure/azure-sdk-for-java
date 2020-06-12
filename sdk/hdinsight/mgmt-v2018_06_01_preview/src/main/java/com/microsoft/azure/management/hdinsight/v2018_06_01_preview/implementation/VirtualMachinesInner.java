@@ -76,9 +76,9 @@ public class VirtualMachinesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the HostInfoListResultInner object if successful.
+     * @return the List&lt;HostInfoInner&gt; object if successful.
      */
-    public HostInfoListResultInner listHosts(String resourceGroupName, String clusterName) {
+    public List<HostInfoInner> listHosts(String resourceGroupName, String clusterName) {
         return listHostsWithServiceResponseAsync(resourceGroupName, clusterName).toBlocking().single().body();
     }
 
@@ -91,7 +91,7 @@ public class VirtualMachinesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<HostInfoListResultInner> listHostsAsync(String resourceGroupName, String clusterName, final ServiceCallback<HostInfoListResultInner> serviceCallback) {
+    public ServiceFuture<List<HostInfoInner>> listHostsAsync(String resourceGroupName, String clusterName, final ServiceCallback<List<HostInfoInner>> serviceCallback) {
         return ServiceFuture.fromResponse(listHostsWithServiceResponseAsync(resourceGroupName, clusterName), serviceCallback);
     }
 
@@ -101,12 +101,12 @@ public class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the HostInfoListResultInner object
+     * @return the observable to the List&lt;HostInfoInner&gt; object
      */
-    public Observable<HostInfoListResultInner> listHostsAsync(String resourceGroupName, String clusterName) {
-        return listHostsWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<HostInfoListResultInner>, HostInfoListResultInner>() {
+    public Observable<List<HostInfoInner>> listHostsAsync(String resourceGroupName, String clusterName) {
+        return listHostsWithServiceResponseAsync(resourceGroupName, clusterName).map(new Func1<ServiceResponse<List<HostInfoInner>>, List<HostInfoInner>>() {
             @Override
-            public HostInfoListResultInner call(ServiceResponse<HostInfoListResultInner> response) {
+            public List<HostInfoInner> call(ServiceResponse<List<HostInfoInner>> response) {
                 return response.body();
             }
         });
@@ -118,9 +118,9 @@ public class VirtualMachinesInner {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the HostInfoListResultInner object
+     * @return the observable to the List&lt;HostInfoInner&gt; object
      */
-    public Observable<ServiceResponse<HostInfoListResultInner>> listHostsWithServiceResponseAsync(String resourceGroupName, String clusterName) {
+    public Observable<ServiceResponse<List<HostInfoInner>>> listHostsWithServiceResponseAsync(String resourceGroupName, String clusterName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -134,11 +134,11 @@ public class VirtualMachinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listHosts(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostInfoListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<HostInfoInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<HostInfoListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<HostInfoInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<HostInfoListResultInner> clientResponse = listHostsDelegate(response);
+                        ServiceResponse<List<HostInfoInner>> clientResponse = listHostsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -147,9 +147,9 @@ public class VirtualMachinesInner {
             });
     }
 
-    private ServiceResponse<HostInfoListResultInner> listHostsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<HostInfoListResultInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<HostInfoListResultInner>() { }.getType())
+    private ServiceResponse<List<HostInfoInner>> listHostsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<HostInfoInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<HostInfoInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

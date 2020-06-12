@@ -8,14 +8,12 @@
 
 package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementation;
 
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.HostInfoListResult;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import java.util.List;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.HostInfo;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
-class HostInfoListResultImpl extends WrapperImpl<HostInfoListResultInner> implements HostInfoListResult {
+class HostInfoImpl extends WrapperImpl<HostInfoInner> implements HostInfo {
     private final HDInsightManager manager;
-    HostInfoListResultImpl(HostInfoListResultInner inner, HDInsightManager manager) {
+    HostInfoImpl(HostInfoInner inner, HDInsightManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -26,8 +24,8 @@ class HostInfoListResultImpl extends WrapperImpl<HostInfoListResultInner> implem
     }
 
     @Override
-    public List<HostInfo> value() {
-        return this.inner().value();
+    public String name() {
+        return this.inner().name();
     }
 
 }
