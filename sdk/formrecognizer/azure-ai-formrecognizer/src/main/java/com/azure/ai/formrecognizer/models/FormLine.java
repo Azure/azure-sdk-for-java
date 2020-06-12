@@ -20,7 +20,7 @@ public final class FormLine extends FormContent {
 
     /**
      * Creates raw OCR item.
-     * When includeTextDetails is set to true, a list of recognized text lines.
+     * When includeTextContent is set to true, a list of recognized text lines.
      *
      * @param text The text content of recognized field.
      * @param boundingBox The BoundingBox of the recognized field.

@@ -46,10 +46,9 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes receipt data from documents using optical character recognition (OCR)
-     * and a custom trained model.
-     * <p>The service does not support cancellation of the long running operation and returns with an
-     * error message indicating absence of cancellation support</p>
+     * Recognizes receipt data from documents using optical character recognition (OCR) and a custom trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an error message
+     * indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string}
@@ -76,9 +75,10 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomFormsFromUrl#recognizeCustomFormsOptions}
      *
-     * @param recognizeCustomFormsOptions The source URL to the input form.
+     * @param @param recognizeCustomFormsOptions The configurable {@code RecognizeCustomFormsOptions options} that
+     * may be passed when recognizing custom form.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -104,6 +104,8 @@ public final class FormRecognizerClient {
      * @param form The data of the form to recognize form information from.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
+     * .tiff type file stream.
      *
      * @return A {@link SyncPoller} that polls the recognize custom form operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -113,8 +115,9 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, String modelId, long length) {
-        return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId));
+        beginRecognizeCustomForms(InputStream form, String modelId, long length, FormContentType formContentType) {
+        return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId)
+            .setFormContentType(formContentType));
     }
 
     /**
@@ -124,7 +127,7 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#recognizeCustomFormsOptions}
      *
      * @param recognizeCustomFormsOptions The data of the form to recognize form information from.
      *
@@ -168,9 +171,10 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#string-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContentFromUrl#recognizeOptions}
      *
-     * @param recognizeOptions The source URL to the input form.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * content on a form.
      *
      * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed, has
      * failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -215,9 +219,10 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#InputStream-long-FormContentType-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeContent#recognizeOptions}
      *
-     * @param recognizeOptions The data of the form to recognize content information from.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * content on a form.
      *
      * @return A {@link SyncPoller} that polls the recognize layout operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -232,8 +237,8 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes receipt data from document using optical character recognition (OCR) and a
-     * prebuilt receipt trained model.
+     * Recognizes receipt data from document using optical character recognition (OCR) and a prebuilt receipt trained
+     * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
@@ -261,9 +266,10 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#recognizeOptions}
      *
-     * @param recognizeOptions The source URL to the input receipt.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * receipt data on the provided receipt document.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -304,15 +310,16 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes data from the providedd document data using optical character recognition (OCR)
-     * and a prebuilt trained receipt model.
+     * Recognizes data from the provided document data using optical character recognition (OCR) and a prebuilt
+     * trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-FormContentType-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#recognizeOptions}
      *
-     * @param recognizeOptions The data of the receipt to recognize receipt information from.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * receipt data on the provided receipt document.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.

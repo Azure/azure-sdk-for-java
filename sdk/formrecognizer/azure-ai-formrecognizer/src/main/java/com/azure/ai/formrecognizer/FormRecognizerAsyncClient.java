@@ -33,6 +33,7 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
@@ -105,9 +106,10 @@ public final class FormRecognizerAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#string-string-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomFormsFromUrl#recognizeCustomFormsOptions}
      *
-     * @param recognizeCustomFormsOptions The source URL to the input form.
+     * @param @param recognizeCustomFormsOptions The configurable {@code RecognizeCustomFormsOptions options} that
+     * may be passed when recognizing custom form.
      *
      * @return A {@link PollerFlux} that polls the recognize custom form operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -143,6 +145,8 @@ public final class FormRecognizerAsyncClient {
      * @param form The data of the form to recognize form information from.
      * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
+     * .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -152,8 +156,9 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length) {
-        return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId).setIncludeTextContent(false));
+        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType) {
+        return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId)
+            .setFormContentType(formContentType));
     }
 
     /**
@@ -166,9 +171,10 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#recognizeCustomFormsOptions}
      *
-     * @param recognizeCustomFormsOptions The configureable options.
+     * @param recognizeCustomFormsOptions The configurable {@code RecognizeCustomFormsOptions options} that may be
+     * passed when recognizing custom form.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
@@ -180,12 +186,8 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
         final String modelId = recognizeCustomFormsOptions.getModelId();
-        Flux<ByteBuffer> buffer;
-        if (recognizeCustomFormsOptions.getForm() != null) {
-            buffer = Utility.toFluxByteBuffer(recognizeCustomFormsOptions.getForm());
-        } else {
-            buffer = recognizeCustomFormsOptions.getFormData();
-        }
+        Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeCustomFormsOptions.getForm(),
+            recognizeCustomFormsOptions.getFormData());
         return new PollerFlux<OperationResult, List<RecognizedForm>>(
             recognizeCustomFormsOptions.getPollInterval(),
             analyzeFormStreamActivationOperation(buffer, modelId,
@@ -219,15 +221,15 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt trained
-     * model.
+     * Recognizes layout data using optical character recognition (OCR) and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#string-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContentFromUrl#recognizeOptions}
      *
-     * @param recognizeOptions The source URL to the input form.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * content on a form.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -260,6 +262,8 @@ public final class FormRecognizerAsyncClient {
      *
      * @param form The data of the form to recognize content information from.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
+     * .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -269,8 +273,8 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(
-        Flux<ByteBuffer> form, long length) {
-        return beginRecognizeContent(new RecognizeOptions(form, length));
+        Flux<ByteBuffer> form, long length, FormContentType formContentType) {
+        return beginRecognizeContent(new RecognizeOptions(form, length).setFormContentType(formContentType));
     }
 
     /**
@@ -283,9 +287,10 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#Flux-long-FormContentType-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeContent#recognizeOptions}
      *
-     * @param recognizeOptions The data of the form to recognize content information from.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * content on a form.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
@@ -295,19 +300,13 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(RecognizeOptions recognizeOptions) {
-        Flux<ByteBuffer> buffer;
-        if (recognizeOptions.getForm() != null) {
-            buffer = Utility.toFluxByteBuffer(recognizeOptions.getForm());
-        } else {
-            buffer = recognizeOptions.getFormData();
-        }
+        Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeOptions.getForm(), recognizeOptions.getFormData());
         return new PollerFlux<>(
             recognizeOptions.getPollInterval(),
             contentStreamActivationOperation(buffer, recognizeOptions.getLength(),
                 recognizeOptions.getFormContentType()),
             extractContentPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
+            (activationResponse, context) -> monoError(logger, new RuntimeException("Cancellation is not supported")),
             fetchExtractContentResult());
     }
 
@@ -335,15 +334,15 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Recognizes receipt data using optical character recognition (OCR) and a prebuilt receipt trained
-     * model.
+     * Recognizes receipt data using optical character recognition (OCR) and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#string-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceiptsFromUrl#recognizeOptions}
      *
-     * @param recognizeOptions The source URL to the input receipt.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * receipt data on the provided receipt document.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -376,6 +375,8 @@ public final class FormRecognizerAsyncClient {
      *
      * @param receipt The data of the document to recognize receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
+     * .tiff type file stream.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -385,8 +386,8 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>> beginRecognizeReceipts(
-        Flux<ByteBuffer> receipt, long length) {
-        return beginRecognizeReceipts(new RecognizeOptions(receipt, length).setIncludeTextContent(false));
+        Flux<ByteBuffer> receipt, long length, FormContentType formContentType) {
+        return beginRecognizeReceipts(new RecognizeOptions(receipt, length).setFormContentType(formContentType));
     }
 
     /**
@@ -399,9 +400,10 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#Flux-long-FormContentType-boolean-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeReceipts#recognizeOptions}
      *
-     * @param recognizeOptions The data of the receipt to recognize receipt information from.
+     * @param recognizeOptions The configurable {@code RecognizeOptions options} that may be passed when recognizing
+     * receipt data on the provided receipt document.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
@@ -412,12 +414,7 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
     beginRecognizeReceipts(RecognizeOptions recognizeOptions) {
-        Flux<ByteBuffer> buffer;
-        if (recognizeOptions.getForm() != null) {
-            buffer = Utility.toFluxByteBuffer(recognizeOptions.getForm());
-        } else {
-            buffer = recognizeOptions.getFormData();
-        }
+        Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeOptions.getForm(), recognizeOptions.getFormData());
         return new PollerFlux<>(
             recognizeOptions.getPollInterval(),
             receiptStreamActivationOperation(buffer, recognizeOptions.getLength(),
@@ -683,5 +680,15 @@ public final class FormRecognizerAsyncClient {
                 break;
         }
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+    }
+
+    private static Flux<ByteBuffer> getByteBufferFlux(InputStream form, Flux<ByteBuffer> formData) {
+        Flux<ByteBuffer> buffer;
+        if (form != null) {
+            buffer = Utility.toFluxByteBuffer(form);
+        } else {
+            buffer = formData;
+        }
+        return buffer;
     }
 }
