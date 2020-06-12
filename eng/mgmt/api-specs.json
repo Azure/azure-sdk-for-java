@@ -138,6 +138,10 @@
     "source": "specification/hdinsight/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "imagebuilder/resource-manager": {
+    "source": "specification/imagebuilder/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
     "args": "--multiapi --fluent",
