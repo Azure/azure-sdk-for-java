@@ -1,6 +1,6 @@
 # Release History
 
-## 12.5.0-beta.1 (2020-06-15)
+## 12.5.0 (2020-06-12)
 - Fixed bug in ShareFileClient.uploadRangeFromUrl and ShareFileClient.beginCopy where sourceUrl was not getting encoded.
 - Updated azure-storage-common and azure-core dependencies. 
 
@@ -139,5 +139,4 @@ demonstrate the new API.
     - `azure-storage-file` contains a `FileServiceClient`,  `FileServiceAsyncClient`, `ShareClient`, `ShareAsyncClient`, `DirectoryClient`, `DirectoryAsyncClient`, `FileClient` and `FileAsyncClient` for storage file operations.
 - Client instances are scoped to storage file service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
 
