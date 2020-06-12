@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.ProvisioningState;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.Status;
 import com.microsoft.azure.management.containerregistry.v2017_10_01.StorageAccountProperties;
+import com.microsoft.azure.management.containerregistry.v2017_10_01.NetworkRuleSet;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -67,6 +68,12 @@ public class RegistryInner extends Resource {
      */
     @JsonProperty(value = "properties.storageAccount")
     private StorageAccountProperties storageAccount;
+
+    /**
+     * The network rule set for a container registry.
+     */
+    @JsonProperty(value = "properties.networkRuleSet")
+    private NetworkRuleSet networkRuleSet;
 
     /**
      * Get the SKU of the container registry.
@@ -161,6 +168,26 @@ public class RegistryInner extends Resource {
      */
     public RegistryInner withStorageAccount(StorageAccountProperties storageAccount) {
         this.storageAccount = storageAccount;
+        return this;
+    }
+
+    /**
+     * Get the network rule set for a container registry.
+     *
+     * @return the networkRuleSet value
+     */
+    public NetworkRuleSet networkRuleSet() {
+        return this.networkRuleSet;
+    }
+
+    /**
+     * Set the network rule set for a container registry.
+     *
+     * @param networkRuleSet the networkRuleSet value to set
+     * @return the RegistryInner object itself.
+     */
+    public RegistryInner withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
+        this.networkRuleSet = networkRuleSet;
         return this;
     }
 
