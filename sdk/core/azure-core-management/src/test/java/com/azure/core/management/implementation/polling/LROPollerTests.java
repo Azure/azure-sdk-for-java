@@ -19,6 +19,8 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -45,12 +47,15 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -76,7 +81,7 @@ public class LROPollerTests {
     @ServiceInterface(name = "ProvisioningStateLroService")
     interface ProvisioningStateLroServiceClient {
         @Put("/resource/1")
-        Mono<Response<Flux<ByteBuffer>>> startLro();
+        Mono<Response<Flux<ByteBuffer>>> startLro(Context context);
     }
 
     @Test
@@ -94,7 +99,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client, FooWithProvisioningState.class));
+                newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             lroFlux.doOnNext(response -> {
@@ -168,7 +173,7 @@ public class LROPollerTests {
                 Resource.class,
                 Resource.class,
                 POLLING_DURATION,
-                newLroInitFunction(client, Resource.class));
+                newLroInitFunction(client));
 
             StepVerifier.create(lroFlux)
                 .expectSubscription()
@@ -245,7 +250,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client, FooWithProvisioningState.class));
+                newLroInitFunction(client));
 
             Mono<FooWithProvisioningState> resultMonoWithTimeout = lroFlux.last()
                 .flatMap(AsyncPollResponse::getFinalResult)
@@ -292,7 +297,7 @@ public class LROPollerTests {
                 FooWithProvisioningState.class,
                 FooWithProvisioningState.class,
                 POLLING_DURATION,
-                newLroInitFunction(client, FooWithProvisioningState.class));
+                newLroInitFunction(client));
 
             long nanoTime = System.nanoTime();
 
@@ -306,6 +311,46 @@ public class LROPollerTests {
 
             Duration pollingDuration = Duration.ofNanos(System.nanoTime() - nanoTime);
             Assertions.assertTrue(pollingDuration.compareTo(expectedPollingDuration) > 0);
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
+    public void lroContext() {
+        WireMockServer lroServer = startServer();
+        lroServer.start();
+
+        HttpPipelinePolicy contextVerifyPolicy = (context, next) -> {
+            Optional<Object> valueOpt = context.getData("key1");
+            if (valueOpt.isPresent() && "value1".equals(valueOpt.get())) {
+                return next.process();
+            } else {
+                return Mono.error(new AssertionError());
+            }
+        };
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                createHttpPipeline(lroServer.port(), Collections.singletonList(contextVerifyPolicy)),
+                SERIALIZER);
+
+            Flux<AsyncPollResponse<PollResult<FooWithProvisioningState>, FooWithProvisioningState>> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                new HttpPipelineBuilder().build(),
+                FooWithProvisioningState.class,
+                FooWithProvisioningState.class,
+                POLLING_DURATION,
+                newLroInitFunction(client));
+            lroFlux = lroFlux.subscriberContext(context -> context.put("key1", "value1"));
+
+            FooWithProvisioningState result = lroFlux
+                .blockLast()
+                .getFinalResult()
+                .block();
+            Assertions.assertNotNull(result);
         } finally {
             if (lroServer.isRunning()) {
                 lroServer.shutdown();
@@ -394,30 +439,36 @@ public class LROPollerTests {
     }
 
     private static HttpPipeline createHttpPipeline(int port) {
-        return new HttpPipelineBuilder()
-            .policies(new HttpPipelinePolicy() {
-                @Override
-                public Mono<HttpResponse> process(HttpPipelineCallContext context,
-                                                  HttpPipelineNextPolicy next) {
-                    HttpRequest request = context.getHttpRequest();
-                    request.setUrl(updatePort(request.getUrl(), port));
-                    context.setHttpRequest(request);
-                    return next.process();
-                }
+        return createHttpPipeline(port, Collections.emptyList());
+    }
 
-                private URL updatePort(URL url, int port) {
-                    try {
-                        return new URL(url.getProtocol(), url.getHost(), port, url.getFile());
-                    } catch (MalformedURLException mue) {
-                        throw new RuntimeException(mue);
-                    }
+    private static HttpPipeline createHttpPipeline(int port, List<HttpPipelinePolicy> additionalPolicies) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>(additionalPolicies);
+        policies.add(new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context,
+                                              HttpPipelineNextPolicy next) {
+                HttpRequest request = context.getHttpRequest();
+                request.setUrl(updatePort(request.getUrl(), port));
+                context.setHttpRequest(request);
+                return next.process();
+            }
+
+            private URL updatePort(URL url, int port) {
+                try {
+                    return new URL(url.getProtocol(), url.getHost(), port, url.getFile());
+                } catch (MalformedURLException mue) {
+                    throw new RuntimeException(mue);
                 }
-            })
+            }
+        });
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }
 
-    private Mono<Response<Flux<ByteBuffer>>> newLroInitFunction(ProvisioningStateLroServiceClient client, Type type) {
-        return client.startLro();
+    private Mono<Response<Flux<ByteBuffer>>> newLroInitFunction(ProvisioningStateLroServiceClient client) {
+        return FluxUtil.fluxContext(context -> client.startLro(context).flux()).next();
     }
 
     private static String toJson(Object object) {
