@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -28,6 +29,9 @@ import java.util.function.Function;
 public final class ResourceGroupsImpl
         extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
         implements ResourceGroups {
+
+    private final ClientLogger logger = new ClientLogger(ResourceGroupsImpl.class);
+
     private final ResourceGroupsClient client;
     private final ResourceManagementClient serviceClient;
 
@@ -103,12 +107,16 @@ public final class ResourceGroupsImpl
     @Override
     public Accepted<Void> beginDeleteByName(String name) {
         Response<Flux<ByteBuffer>> activationResponse = client.deleteWithResponseAsync(name).block();
-        return new AcceptedImpl<Void, Void>(activationResponse,
-            serviceClient.getSerializerAdapter(),
-            serviceClient.getHttpPipeline(),
-            Void.class,
-            Void.class,
-            Function.identity());
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            return new AcceptedImpl<Void, Void>(activationResponse,
+                serviceClient.getSerializerAdapter(),
+                serviceClient.getHttpPipeline(),
+                Void.class,
+                Void.class,
+                Function.identity());
+        }
     }
 
 //    @Override

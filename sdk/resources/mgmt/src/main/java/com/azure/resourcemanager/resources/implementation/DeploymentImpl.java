@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
@@ -54,6 +55,8 @@ public final class DeploymentImpl extends
         Deployment.Definition,
         Deployment.Update,
         Deployment.Execution {
+
+    private final ClientLogger logger = new ClientLogger(DeploymentImpl.class);
 
     private final ResourceManager resourceManager;
     private String resourceGroupName;
@@ -309,15 +312,19 @@ public final class DeploymentImpl extends
 
         Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getDeployments()
             .createOrUpdateWithResponseAsync(resourceGroupName(), name(), createRequestFromInner()).block();
-        Accepted<Deployment> accepted = new AcceptedImpl<DeploymentExtendedInner, Deployment>(activationResponse,
-            this.manager().inner().getSerializerAdapter(),
-            this.manager().inner().getHttpPipeline(),
-            DeploymentExtendedInner.class,
-            DeploymentExtendedInner.class,
-            inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            Accepted<Deployment> accepted = new AcceptedImpl<DeploymentExtendedInner, Deployment>(activationResponse,
+                this.manager().inner().getSerializerAdapter(),
+                this.manager().inner().getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
 
-        setInner(accepted.getAcceptedResult().inner());
-        return accepted;
+            setInner(accepted.getAcceptedResult().inner());
+            return accepted;
+        }
     }
 
     @Override
