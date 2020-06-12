@@ -255,7 +255,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, data, length, null, options.getContentMd5(), options.getMetadata(), requestConditions.getLeaseId(),
             options.getTier(), requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()),
-            options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+            options.getHeaders(), getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
@@ -470,7 +470,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId, Context context) {
 
         return this.azureBlobStorage.blockBlobs().getBlockListWithRestResponseAsync(
-            null, null, listType, getSnapshotId(), null, leaseId, null, context)
+            null, null, listType, getSnapshotId(), null, leaseId, null, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -593,7 +593,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()), options.getHeaders(),
-            getCustomerProvidedKey(), encryptionScope,
+            getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
