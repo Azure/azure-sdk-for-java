@@ -65,6 +65,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      * Unsupported. To resume with the continuation token, call {@link BlobChangefeedAsyncClient#getEvents(String)} or
      * {@link BlobChangefeedClient#getEvents(String)}.
      * @param continuationToken Unsupported.
+     * @return Unsupported.
      * @throws UnsupportedOperationException if a continuation token is specified.
      */
     @Override
@@ -84,7 +85,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      * The service may or may not honor the preferred page size therefore the client <em>MUST</em> be prepared to handle
      * pages with different page sizes.
      *
-     * @param continuationToken @param continuationToken Unsupported. To resume with the continuation token, call
+     * @param continuationToken Unsupported. To resume with the continuation token, call
      * {@link BlobChangefeedAsyncClient#getEvents(String)} or {@link BlobChangefeedClient#getEvents(String)}.
      * @param preferredPageSize The preferred page size.
      * @return A {@link Flux} of {@link ContinuablePage}.
