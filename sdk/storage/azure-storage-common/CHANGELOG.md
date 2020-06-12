@@ -1,6 +1,6 @@
 # Release History
 
-## 12.7.0-beta.2 (2020-06-15)
+## 12.7.0 (2020-06-12)
 - Updated azure-core dependency.
 
 ## 12.7.0-beta.1 (2020-06-08)
@@ -45,4 +45,3 @@
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports common functionality needed for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
