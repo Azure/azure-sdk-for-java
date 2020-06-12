@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The parameters for a docker quick build.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = DockerBuildRequest.class)
 @JsonTypeName("DockerBuildRequest")
 public class DockerBuildRequest extends RunRequest {
     /**
@@ -46,6 +46,12 @@ public class DockerBuildRequest extends RunRequest {
     private String dockerFilePath;
 
     /**
+     * The name of the target build stage for the docker build.
+     */
+    @JsonProperty(value = "target")
+    private String target;
+
+    /**
      * The collection of override arguments to be used when executing the run.
      */
     @JsonProperty(value = "arguments")
@@ -71,12 +77,19 @@ public class DockerBuildRequest extends RunRequest {
 
     /**
      * The URL(absolute or relative) of the source context. It can be an URL to
-     * a tar or git repoistory.
+     * a tar or git repository.
      * If it is relative URL, the relative path should be obtained from calling
      * listBuildSourceUploadUrl API.
      */
     @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
+
+    /**
+     * The properties that describes a set of credentials that will be used
+     * when this run is invoked.
+     */
+    @JsonProperty(value = "credentials")
+    private Credentials credentials;
 
     /**
      * Get the fully qualified image names including the repository and tag.
@@ -155,6 +168,26 @@ public class DockerBuildRequest extends RunRequest {
      */
     public DockerBuildRequest withDockerFilePath(String dockerFilePath) {
         this.dockerFilePath = dockerFilePath;
+        return this;
+    }
+
+    /**
+     * Get the name of the target build stage for the docker build.
+     *
+     * @return the target value
+     */
+    public String target() {
+        return this.target;
+    }
+
+    /**
+     * Set the name of the target build stage for the docker build.
+     *
+     * @param target the target value to set
+     * @return the DockerBuildRequest object itself.
+     */
+    public DockerBuildRequest withTarget(String target) {
+        this.target = target;
         return this;
     }
 
@@ -239,7 +272,7 @@ public class DockerBuildRequest extends RunRequest {
     }
 
     /**
-     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      *
      * @return the sourceLocation value
@@ -249,7 +282,7 @@ public class DockerBuildRequest extends RunRequest {
     }
 
     /**
-     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      *
      * @param sourceLocation the sourceLocation value to set
@@ -257,6 +290,26 @@ public class DockerBuildRequest extends RunRequest {
      */
     public DockerBuildRequest withSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;
+        return this;
+    }
+
+    /**
+     * Get the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @return the credentials value
+     */
+    public Credentials credentials() {
+        return this.credentials;
+    }
+
+    /**
+     * Set the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @param credentials the credentials value to set
+     * @return the DockerBuildRequest object itself.
+     */
+    public DockerBuildRequest withCredentials(Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 
