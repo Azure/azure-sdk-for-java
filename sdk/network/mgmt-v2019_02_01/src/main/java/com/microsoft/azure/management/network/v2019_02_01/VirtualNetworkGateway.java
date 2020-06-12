@@ -143,7 +143,7 @@ public interface VirtualNetworkGateway extends HasInner<VirtualNetworkGatewayInn
         interface WithCustomRoutes {
             /**
              * Specifies customRoutes.
-             * @param customRoutes The reference of the address space resource which represents the custom routes address space specified by the the customer for virtual network gateway and VpnClient
+             * @param customRoutes The reference of the address space resource which represents the custom routes address space specified by the customer for virtual network gateway and VpnClient
              * @return the next definition stage
              */
             WithCreate withCustomRoutes(AddressSpace customRoutes);
@@ -305,7 +305,7 @@ public interface VirtualNetworkGateway extends HasInner<VirtualNetworkGatewayInn
         interface WithCustomRoutes {
             /**
              * Specifies customRoutes.
-             * @param customRoutes The reference of the address space resource which represents the custom routes address space specified by the the customer for virtual network gateway and VpnClient
+             * @param customRoutes The reference of the address space resource which represents the custom routes address space specified by the customer for virtual network gateway and VpnClient
              * @return the next update stage
              */
             Update withCustomRoutes(AddressSpace customRoutes);
