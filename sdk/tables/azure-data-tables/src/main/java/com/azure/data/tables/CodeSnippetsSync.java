@@ -10,16 +10,21 @@ public class CodeSnippetsSync {
 
     public static void methods(){
 
-        //client-builder pattern
-        TableClientBuilder tableClientBuilder = new TableClientBuilder();
+        //create a tableServiceClient
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
+            .connectionString("connectionString")
+            .build();
+
+        //create TableClient
         TableClient tableClient = new TableClientBuilder()
             .connectionString("connectionString")
+            .tableName("OfficeSupplies")
             .build();
 
 
         //create a table
         try {
-            tableClient.createTable("OfficeSupplies");
+            tableServiceClient.createTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
             //use azure core errors? based on
             System.out.println("Create Table Unsuccessful. Error: " + e);
@@ -27,19 +32,17 @@ public class CodeSnippetsSync {
 
         //delete  table
         try {
-            //equivilant to pass in string var vs string so each person can choose
-            tableClient.deleteTable("OfficeSupplies");
+            tableServiceClient.deleteTable("OfficeSupplies");
         } catch (TableServiceErrorException e) {
             System.out.println("Delete Table Unsuccessful. Error: " + e);
         }
 
         //query tables
         String filterString = "$filter= name eq 'OfficeSupplies'";
-        //TODO: remove selectString since it is not queried with tables
-        String selectString = "$select= Product, Price";
+
         try {
             //TODO: create Table class TableName is the odata feild
-            List<String> responseTables = tableClient.queryTables(selectString, filterString);
+            List<AzureTable> responseTables = tableServiceClient.queryTables(filterString);
         } catch (HttpResponseException e){
             System.out.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -59,7 +62,7 @@ public class CodeSnippetsSync {
 
 
         //update entity
-        //TODO: let the customer specify if it is a replacement or a merge?
+        //TODO: let the customer specify if it is a replacement or a merge
         tableEntity.addProperty("Seller","Crayola");
         try {
             tableClient.updateEntity(tableEntity);
@@ -69,7 +72,6 @@ public class CodeSnippetsSync {
 
 
         //upsert entity
-        //TODO: which upsert do we want to reflect? Replace or merge? Update vs Merge as well
         tableEntity.addProperty("Price","$5");
         try {
             tableEntity = tableClient.upsertEntity(tableEntity);

@@ -7,19 +7,7 @@ import java.util.Map;
 
 public class TableAsyncClient {
 
-    public TableAsyncClient(){
-
-    }
-
-    public Mono<Void> createTable(String name){return  Mono.empty(); }
-
-    public Mono<Void> createTableIfNotExist(String name) {return  Mono.empty(); }
-
-    public Mono<Void> deleteTable(String name) {return  Mono.empty(); }
-
-    public Flux<String> queryTables(String selectString, String filterString){
-        return null;
-    }
+    public TableAsyncClient(String tableName){ }
 
     public Flux<TableEntity> queryEntity(String az, String selectString, String filterString){
         return null;

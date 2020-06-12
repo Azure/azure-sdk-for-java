@@ -13,14 +13,19 @@ public class CodeSnippetsAysnc {
 
     public void AsyncSnippets() {
 
-        //client-builder pattern
-        TableAsyncClientBuilder tableAsyncClientBuilder = new TableAsyncClientBuilder();
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
+        //build service client
+        TableAsyncServiceClient tableAsyncServiceClient = new TableAsyncServiceClientBuilder()
             .connectionString("connectionString")
             .build();
 
+        //build table client
+        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
+            .connectionString("connectionString")
+            .tableName("OfficeSupplies")
+            .build();
+
         //add table
-        Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
+        Mono<Void> createTableMono = tableAsyncServiceClient.createTable("OfficeSupplies");
 
         createTableMono.subscribe(Void -> {
             System.out.println("Table creation successful.");
@@ -29,7 +34,7 @@ public class CodeSnippetsAysnc {
         });
 
         //delete a table
-        Mono<Void> deleteTableMono = tableAsyncClient.deleteTable("tableName");
+        Mono<Void> deleteTableMono = tableAsyncServiceClient.deleteTable("OfficeSupplies");
 
         deleteTableMono.subscribe(Void -> {
             System.out.println("Table deletion successful");
@@ -39,9 +44,9 @@ public class CodeSnippetsAysnc {
 
 
         //query tables
-        String filterString = "$filter= name eq 'Office Supplies'";
+        String filterString = "$filter= name eq 'OfficeSupplies'";
         String selectString = "$select= Product, Price";
-        Flux<String> queryTableFlux = tableAsyncClient.queryTables(selectString, filterString);
+        Flux<String> queryTableFlux = tableAsyncServiceClient.queryTables(filterString);
         Disposable subscription = queryTableFlux.subscribe(s -> {
             System.out.println(s);
         }, error -> {
@@ -58,7 +63,7 @@ public class CodeSnippetsAysnc {
             .build();
 
 
-        Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
+        Mono<Void> createTableMono = tableAsyncClient.createTable("OfficeSupplies");
 
         createTableMono.flatMap(Void -> {
             System.out.println("Table creation successful.");
