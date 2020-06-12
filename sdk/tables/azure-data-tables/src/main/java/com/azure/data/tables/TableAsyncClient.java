@@ -1,9 +1,8 @@
-package com.azure.data.tables.implementation;
+package com.azure.data.tables;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Map;
 
 public class TableAsyncClient {

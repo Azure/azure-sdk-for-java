@@ -1,4 +1,4 @@
-package com.azure.data.tables.implementation;
+package com.azure.data.tables;
 
 public class TableAsyncClientBuilder {
 

@@ -1,6 +1,5 @@
-package com.azure.data.tables.implementation;
+package com.azure.data.tables;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class TableClient {
     public TableEntity insertEntity(TableEntity te){
         return te;
     }
-    public void deleteEntity(String tableName, TableEntity tableEntity){ }
+    public void deleteEntity(TableEntity tableEntity){ }
 
     public void updateEntity(TableEntity te){ }
     public TableEntity upsertEntity(TableEntity te){ return new TableEntity(); }

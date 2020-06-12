@@ -1,4 +1,4 @@
-package com.azure.data.tables.implementation;
+package com.azure.data.tables;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package com.azure.data.tables.implementation;
+package com.azure.data.tables;
 
 import com.azure.core.exception.HttpResponseException;
 import reactor.core.Disposable;
@@ -6,7 +6,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
-import java.util.List;
 
 
 public class CodeSnippetsAysnc {
@@ -186,19 +185,18 @@ public class CodeSnippetsAysnc {
 
 
         Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
-        createTableMono.flatMap(Void -> {
-            System.out.println("Table creation successful.");
+        createTableMono.then(Mono.fromCallable(()-> {
+                System.out.println("Table creation successful.");
 
-            String filterString2 = "$filter = Product eq 'markers'";
-            String selectString2 = "$select = Seller eq 'crayola'";
-            Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("tableName", filterString2, selectString2);
-            return queryTableEntity;
-        }).subscribe(tableEntity1 -> {
-            System.out.println("Table Entity: " + tableEntity1);
-        }, error -> {
-            System.out.println("There was an error querying the table. Error: " + error);
-        });
+                String filterString2 = "$filter = Product eq 'markers'";
+                String selectString2 = "$select = Seller eq 'crayola'";
+                Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("tableName", filterString2, selectString2);
+                return queryTableEntity;
+            })).subscribe(tableEntity1 -> {
+                System.out.println("Table Entity: " + tableEntity1);
+            }, error -> {
+                System.out.println("There was an error querying the table. Error: " + error);
+            });
+        }
 
     }
-
-}
