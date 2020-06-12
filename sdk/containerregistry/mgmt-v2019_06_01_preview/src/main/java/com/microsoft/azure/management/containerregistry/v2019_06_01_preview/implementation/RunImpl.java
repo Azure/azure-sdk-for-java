@@ -86,6 +86,11 @@ class RunImpl extends CreatableUpdatableImpl<Run, RunInner, RunImpl> implements 
     }
 
     @Override
+    public String agentPoolName() {
+        return this.inner().agentPoolName();
+    }
+
+    @Override
     public DateTime createTime() {
         return this.inner().createTime();
     }
