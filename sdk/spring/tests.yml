@@ -6,13 +6,6 @@ jobs:
         TimeoutInMinutes: 240
         MaxParallel: 2
         ServiceDirectory: spring
-        Matrix:
-          Linux - Java 8 (AzureCloud):
-            OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.8'
-            DisplayName: 'Linux - Java 8'
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-            AZURE_TEST_HTTP_CLIENTS: netty
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
