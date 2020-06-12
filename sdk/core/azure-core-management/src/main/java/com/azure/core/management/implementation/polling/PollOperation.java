@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -94,7 +95,9 @@ public final class PollOperation {
                     U result = deserialize(serializerAdapter, value, finalResultType);
                     return result != null ? Mono.just(result) : Mono.empty();
                 } else {
-                    return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, finalResult.getResultUri())))
+                    return FluxUtil.fluxContext(fluxContext ->
+                        pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, finalResult.getResultUri())),
+                            fluxContext).flux()).next()
                         .flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
                         .flatMap(body -> {
                             U result = deserialize(serializerAdapter, body, finalResultType);
@@ -148,7 +151,9 @@ public final class PollOperation {
      * @return a Mono emitting PollingState updated from the poll operation response
      */
     private static Mono<PollingState> doSinglePoll(HttpPipeline pipeline, PollingState pollingState) {
-        return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())))
+        return FluxUtil.fluxContext(fluxContext ->
+                pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())),
+                    fluxContext).flux()).next()
             .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
                 .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
                 .switchIfEmpty(Mono.defer(() -> {
