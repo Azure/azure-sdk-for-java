@@ -6,11 +6,11 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
-import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBeginDeletingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingByTag;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 
 /**
  * Entry point to resource group management API.
@@ -22,7 +22,7 @@ public interface ResourceGroups extends
         SupportsGettingByName<ResourceGroup>,
         SupportsCreating<ResourceGroup.DefinitionStages.Blank>,
         SupportsDeletingByName,
-        SupportsBeginDeletingByName,
+        //SupportsBeginDeletingByName,
         SupportsBatchCreation<ResourceGroup> {
 
     /**
@@ -32,4 +32,12 @@ public interface ResourceGroups extends
      * @return true of exists, otherwise false
      */
     boolean contain(String name);
+
+    /**
+     * Begins deleting a resource from Azure, identifying it by its resource name.
+     *
+     * @param name the resource name
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByName(String name);
 }

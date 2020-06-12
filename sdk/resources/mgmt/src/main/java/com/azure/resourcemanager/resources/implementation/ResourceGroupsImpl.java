@@ -5,6 +5,9 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -13,7 +16,11 @@ import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.resources.fluent.inner.ResourceGroupInner;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.ResourceManagementClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.function.Function;
 
 /**
  * The implementation for ResourceGroups.
@@ -94,15 +101,21 @@ public final class ResourceGroupsImpl
     }
 
     @Override
-    public void beginDeleteByName(String id) {
-        beginDeleteByNameAsync(id).block();
+    public Accepted<Void> beginDeleteByName(String name) {
+        Response<Flux<ByteBuffer>> activationResponse = client.deleteWithResponseAsync(name).block();
+        return new AcceptedImpl<Void, Void>(activationResponse,
+            serviceClient.getSerializerAdapter(),
+            serviceClient.getHttpPipeline(),
+            Void.class,
+            Void.class,
+            Function.identity());
     }
 
-    @Override
-    public Mono<Void> beginDeleteByNameAsync(String name) {
-        // DELETE
-        return client.beginDeleteWithoutPollingAsync(name);
-    }
+//    @Override
+//    public Mono<Void> beginDeleteByNameAsync(String name) {
+//        // DELETE
+//        return client.beginDeleteWithoutPollingAsync(name);
+//    }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {

@@ -9,6 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResour
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
@@ -260,9 +261,14 @@ public interface Deployment extends
          * deployment in the cloud, but exposing additional optional inputs to specify.
          */
         interface WithCreate extends Creatable<Deployment> {
-            Deployment beginCreate();
+            /**
+             * Begins creating the deployment resource.
+             *
+             * @return the accepted create operation
+             */
+            Accepted<Deployment> beginCreate();
 
-            Mono<Deployment> beginCreateAsync();
+            //Mono<Deployment> beginCreateAsync();
         }
     }
 
