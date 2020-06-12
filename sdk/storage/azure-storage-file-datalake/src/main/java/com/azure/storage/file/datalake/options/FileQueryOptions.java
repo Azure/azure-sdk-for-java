@@ -1,10 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.models;
+package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.FileQueryError;
+import com.azure.storage.file.datalake.models.FileQueryProgress;
+import com.azure.storage.file.datalake.models.FileQuerySerialization;
 
 import java.util.function.Consumer;
 

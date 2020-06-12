@@ -11,6 +11,7 @@ import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.options.FileQueryOptions
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks

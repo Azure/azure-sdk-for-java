@@ -3,6 +3,7 @@ package com.azure.storage.blob.specialized
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
+import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import spock.lang.Requires
