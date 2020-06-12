@@ -1,0 +1,9 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: spring
+      EnvVars:
+        AZURE_TEST_MODE: LIVE
+      Artifacts: []
