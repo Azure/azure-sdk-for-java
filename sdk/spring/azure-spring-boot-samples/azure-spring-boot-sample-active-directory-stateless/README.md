@@ -88,7 +88,10 @@ data: {
 ### Run with Maven
 
 ```shell
-mvn clean package spring-boot:run
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-stateless
+mvn spring-boot:run
 ```
 
 ### Check the authentication and authorization

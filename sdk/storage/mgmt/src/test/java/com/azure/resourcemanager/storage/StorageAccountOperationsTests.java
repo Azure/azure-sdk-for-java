@@ -90,7 +90,9 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertTrue(updatedKeys.size() > 0);
         for (StorageAccountKey updatedKey : updatedKeys) {
             if (updatedKey.keyName().equalsIgnoreCase(oldKey.keyName())) {
-                Assertions.assertNotEquals(oldKey.value(), updatedKey.value());
+                if (!isPlaybackMode()) {
+                    Assertions.assertNotEquals(oldKey.value(), updatedKey.value());
+                }
                 break;
             }
         }

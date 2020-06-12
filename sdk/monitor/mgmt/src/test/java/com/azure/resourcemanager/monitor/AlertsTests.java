@@ -333,7 +333,7 @@ public class AlertsTests extends MonitorManagementTest {
     public void canCRUDMultipleResourceMetricAlerts() throws Exception {
         try {
             final String userName = "tirekicker";
-            final String password = "12NewPA$$w0rd!";
+            final String password = password();
 
             String alertName = generateRandomResourceName("jMonitorMA", 18);
             String vmName1 = generateRandomResourceName("jMonitorVM1", 18);

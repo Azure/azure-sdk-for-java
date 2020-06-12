@@ -40,12 +40,33 @@ public class SftpReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /**
+     * Indicates whether to enable partition discovery.
+     */
+    @JsonProperty(value = "enablePartitionDiscovery")
+    private Boolean enablePartitionDiscovery;
+
+    /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
      * Point to a text file that lists each file (relative path to the path
      * configured in the dataset) that you want to copy. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "fileListPath")
     private Object fileListPath;
+
+    /**
+     * Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
+     */
+    @JsonProperty(value = "deleteFilesAfterCompletion")
+    private Object deleteFilesAfterCompletion;
 
     /**
      * The start of file's modified datetime. Type: string (or Expression with
@@ -122,6 +143,46 @@ public class SftpReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get indicates whether to enable partition discovery.
+     *
+     * @return the enablePartitionDiscovery value
+     */
+    public Boolean enablePartitionDiscovery() {
+        return this.enablePartitionDiscovery;
+    }
+
+    /**
+     * Set indicates whether to enable partition discovery.
+     *
+     * @param enablePartitionDiscovery the enablePartitionDiscovery value to set
+     * @return the SftpReadSettings object itself.
+     */
+    public SftpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+        this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the SftpReadSettings object itself.
+     */
+    public SftpReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
+        return this;
+    }
+
+    /**
      * Get point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
      *
      * @return the fileListPath value
@@ -138,6 +199,26 @@ public class SftpReadSettings extends StoreReadSettings {
      */
     public SftpReadSettings withFileListPath(Object fileListPath) {
         this.fileListPath = fileListPath;
+        return this;
+    }
+
+    /**
+     * Get indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the deleteFilesAfterCompletion value
+     */
+    public Object deleteFilesAfterCompletion() {
+        return this.deleteFilesAfterCompletion;
+    }
+
+    /**
+     * Set indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set
+     * @return the SftpReadSettings object itself.
+     */
+    public SftpReadSettings withDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
+        this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
     }
 
