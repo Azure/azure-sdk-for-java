@@ -1,6 +1,6 @@
 # Release History
 
-## 12.6.0-beta.1 (2020-06-15)
+## 12.5.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
 
 ## 12.5.1 (2020-05-06)
@@ -110,4 +110,3 @@ demonstrate the new API.
     - `azure-storage-queue` contains a `QueueServiceClient`, `QueueServiceAsyncClient`, `QueueClient` and `QueueAsyncClient` for storage queue operations.
 - Client instances are scoped to storage queue service.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-
