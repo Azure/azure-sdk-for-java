@@ -5,15 +5,15 @@ package com.azure.management;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.management.compute.CachingTypes;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.PowerState;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineImage;
-import com.azure.management.compute.VirtualMachineOffer;
-import com.azure.management.compute.VirtualMachinePublisher;
-import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.compute.VirtualMachineSku;
+import com.azure.management.compute.models.CachingTypes;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.PowerState;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineOffer;
+import com.azure.management.compute.models.VirtualMachinePublisher;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.VirtualMachineSku;
 import com.azure.management.msi.implementation.MSIManager;
 import com.azure.management.network.Access;
 import com.azure.management.network.ConnectionMonitor;
@@ -43,8 +43,8 @@ import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.storage.SkuName;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.SkuName;
+import com.azure.management.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -184,7 +184,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testDeployments() throws Exception {
-        String testId = azure.deployments().manager().getSdkContext().randomResourceName("", 8);
+        String testId = azure.deployments().manager().sdkContext().randomResourceName("", 8);
         PagedIterable<Deployment> deployments = azure.deployments().list();
         System.out.println("Deployments: " + TestUtilities.getSize(deployments));
         Deployment deployment =
@@ -216,13 +216,13 @@ public class AzureTests extends TestBase {
         NetworkSecurityGroup nsg =
             azure
                 .networkSecurityGroups()
-                .define(azure.networkSecurityGroups().manager().getSdkContext().randomResourceName("nsg", 13))
+                .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("nsg", 13))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .create();
         azure
             .publicIpAddresses()
-            .define(azure.networkSecurityGroups().manager().getSdkContext().randomResourceName("pip", 13))
+            .define(azure.networkSecurityGroups().manager().sdkContext().randomResourceName("pip", 13))
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
@@ -559,7 +559,7 @@ public class AzureTests extends TestBase {
 
     @Test
     public void testManagedDiskVMUpdate() throws Exception {
-        SdkContext context = azure.disks().manager().getSdkContext();
+        SdkContext context = azure.disks().manager().sdkContext();
         final String rgName = context.randomResourceName("rg", 13);
         final String linuxVM2Name = context.randomResourceName("vm" + "-", 10);
         final String linuxVM2Pip = context.randomResourceName("pip" + "-", 18);

@@ -7,10 +7,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -28,7 +25,7 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,7 +53,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         Resource writeResource = resourceToWorkWith;
         while (numberOfTestIteration-- > 0) //Write from a client and do point read through second client and ensure TS matches.
         {
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000); //Timestamp is in granularity of seconds.
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof User) {
@@ -140,7 +137,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         int numberOfTestIteration = 5;
         Document writeDocument = documentToWorkWith;
         while (numberOfTestIteration-- > 0) {
-            OffsetDateTime sourceTimestamp = writeDocument.getTimestamp();
+            Instant sourceTimestamp = writeDocument.getTimestamp();
             Thread.sleep(1000);//Timestamp is in granularity of seconds.
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentToWorkWith, "mypk")));
@@ -234,12 +231,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     boolean validateConsistentPrefix(Resource resourceToWorkWith) throws InterruptedException {
         int numberOfTestIteration = 5;
-        OffsetDateTime lastReadDateTime = resourceToWorkWith.getTimestamp();
+        Instant lastReadDateTime = resourceToWorkWith.getTimestamp();
         boolean readLagging = false;
         Resource writeResource = resourceToWorkWith;
 
         while (numberOfTestIteration-- > 0) { //Write from a client and do point read through second client and ensure TS monotonically increases.
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000); //Timestamp is in granularity of seconds.
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof User) {
@@ -279,12 +276,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     boolean validateReadSession(Resource resourceToWorkWith) throws InterruptedException {
         int numberOfTestIteration = 5;
-        OffsetDateTime lastReadDateTime = OffsetDateTime.MIN;
+        Instant lastReadDateTime = Instant.MIN;
         boolean readLagging = false;
         Resource writeResource = resourceToWorkWith;
 
         while (numberOfTestIteration-- > 0) {
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000);
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof Document) {
@@ -315,12 +312,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     boolean validateWriteSession(Resource resourceToWorkWith) throws InterruptedException {
         int numberOfTestIteration = 5;
-        OffsetDateTime lastReadDateTime = OffsetDateTime.MIN;
+        Instant lastReadDateTime = Instant.MIN;
         boolean readLagging = false;
         Resource writeResource = resourceToWorkWith;
 
         while (numberOfTestIteration-- > 0) {
-            OffsetDateTime sourceTimestamp = writeResource.getTimestamp();
+            Instant sourceTimestamp = writeResource.getTimestamp();
             Thread.sleep(1000);
             Resource updatedResource = null;
             if (resourceToWorkWith instanceof Document) {
@@ -518,12 +515,9 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     writeClient.upsertDocument(BridgeInternal.getAltLink(createdCollection), documentResponse.getResource(), requestOptions, true).block();
 
             // create a conditioned read request, with first write request's etag, so the read fails with PreconditionFailure
-            AccessCondition ac = new AccessCondition();
-            ac.setCondition(documentResponse.getResource().getETag());
-            ac.setType(AccessConditionType.IF_MATCH);
             RequestOptions requestOptions1 = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(documentResponse.getResource(), "mypk")));
-            requestOptions1.setAccessCondition(ac);
+            requestOptions1.setIfMatchETag(documentResponse.getResource().getETag());
             Mono<ResourceResponse<Document>> preConditionFailureResponseObservable = validationClient.upsertDocument(BridgeInternal.getAltLink(createdCollection),
                     documentResponse.getResource(), requestOptions1, true);
             FailureValidator failureValidator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.PRECONDITION_FAILED).build();

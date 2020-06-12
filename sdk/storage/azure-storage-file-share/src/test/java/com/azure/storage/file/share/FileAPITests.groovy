@@ -439,8 +439,10 @@ class FileAPITests extends APISpec {
         FileTestHelper.deleteFilesIfExists(testFolder.getPath())
     }
 
+    @Unroll
     def "Upload range from URL"() {
         given:
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath + pathSuffix).buildFileClient()
         primaryFileClient.create(1024)
         def data = "The quick brown fox jumps over the lazy dog"
         def sourceOffset = 5
@@ -458,7 +460,7 @@ class FileAPITests extends APISpec {
             .encode()
 
         when:
-        ShareFileClient client = fileBuilderHelper(interceptorManager, shareName, "destination")
+        ShareFileClient client = fileBuilderHelper(interceptorManager, shareName, "destination" + pathSuffix)
             .endpoint(primaryFileClient.getFileUrl().toString())
             .buildFileClient()
 
@@ -473,10 +475,16 @@ class FileAPITests extends APISpec {
         for(int i = 0; i < length; i++) {
             result.charAt(destinationOffset + i) == data.charAt(sourceOffset + i)
         }
+        where:
+        pathSuffix || _
+        ""         || _
+        "ü1ü"      || _ /* Something that needs to be url encoded. */
     }
 
+    @Unroll
     def "Start copy"() {
         given:
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath + pathSuffix).buildFileClient()
         primaryFileClient.create(1024)
         // TODO: Need another test account if using SAS token for authentication.
         // TODO: SasToken auth cannot be used until the logging redaction
@@ -491,6 +499,11 @@ class FileAPITests extends APISpec {
 
         then:
         assert pollResponse.getValue().getCopyId() != null
+
+        where:
+        pathSuffix || _
+        ""         || _
+        "ü1ü"      || _ /* Something that needs to be url encoded. */
     }
 
     @Unroll

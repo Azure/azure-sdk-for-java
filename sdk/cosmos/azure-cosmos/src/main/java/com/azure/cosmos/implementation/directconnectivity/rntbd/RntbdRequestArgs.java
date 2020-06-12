@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 
 import java.net.URI;
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public final class RntbdRequestArgs {
 
     private final Sample sample;
     private final UUID activityId;
-    private final OffsetDateTime timeCreated;
+    private final Instant timeCreated;
     private final long nanoTimeCreated;
     private final Stopwatch lifetime;
     private final String origin;
@@ -48,7 +48,7 @@ public final class RntbdRequestArgs {
     public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest, final URI physicalAddress) {
         this.sample = Timer.start();
         this.activityId = serviceRequest.getActivityId();
-        this.timeCreated = OffsetDateTime.now();
+        this.timeCreated = Instant.now();
         this.nanoTimeCreated = System.nanoTime();
         this.lifetime = Stopwatch.createStarted();
         this.origin = physicalAddress.getScheme() + "://" + physicalAddress.getAuthority();
@@ -97,7 +97,7 @@ public final class RntbdRequestArgs {
     }
 
     @JsonProperty
-    public OffsetDateTime timeCreated() {
+    public Instant timeCreated() {
         return this.timeCreated;
     }
 

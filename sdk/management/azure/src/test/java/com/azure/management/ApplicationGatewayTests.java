@@ -4,8 +4,8 @@ package com.azure.management;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayBackend;
 import com.azure.management.network.ApplicationGatewayBackendHealth;
@@ -67,10 +67,10 @@ public class ApplicationGatewayTests extends TestBase {
 
     @Test
     public void testAppGatewayBackendHealthCheck() throws Exception {
-        String testId = azure.applicationGateways().manager().getSdkContext().randomResourceName("", 15);
+        String testId = azure.applicationGateways().manager().sdkContext().randomResourceName("", 15);
         String name = "ag" + testId;
         Region region = Region.US_EAST;
-        String password = azure.applicationGateways().manager().getSdkContext().randomResourceName("Abc.123", 12);
+        String password = azure.applicationGateways().manager().sdkContext().randomResourceName("Abc.123", 12);
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
 
@@ -278,7 +278,7 @@ public class ApplicationGatewayTests extends TestBase {
 
     @Test
     public void testApplicationGatewaysInParallel() throws Exception {
-        String rgName = azure.applicationGateways().manager().getSdkContext().randomResourceName("rg", 13);
+        String rgName = azure.applicationGateways().manager().sdkContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
         Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName).withRegion(region);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
@@ -287,7 +287,7 @@ public class ApplicationGatewayTests extends TestBase {
             .add(
                 azure
                     .applicationGateways()
-                    .define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
+                    .define(azure.applicationGateways().manager().sdkContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
@@ -302,7 +302,7 @@ public class ApplicationGatewayTests extends TestBase {
             .add(
                 azure
                     .applicationGateways()
-                    .define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
+                    .define(azure.applicationGateways().manager().sdkContext().randomResourceName("ag", 13))
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")

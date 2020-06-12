@@ -3,9 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.QueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -57,7 +58,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             ResourceType resourceTypeEnum,
             Class<T> klass,
             SqlQuerySpec query,
-            FeedOptions feedOptions,
+            QueryRequestOptions queryRequestOptions,
             String resourceLink,
             String rewrittenQuery,
             boolean isContinuationExpected,
@@ -65,7 +66,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             OrderbyRowComparer<T> consumeComparer,
             String collectionRid,
             UUID correlatedActivityId) {
-        super(client, partitionKeyRanges, resourceTypeEnum, klass, query, feedOptions, resourceLink, rewrittenQuery,
+        super(client, partitionKeyRanges, resourceTypeEnum, klass, query, queryRequestOptions, resourceLink, rewrittenQuery,
                 isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
@@ -79,7 +80,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec expression,
-            FeedOptions feedOptions,
+            QueryRequestOptions queryRequestOptions,
             String resourceLink,
             String collectionRid,
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
@@ -94,7 +95,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 resourceTypeEnum,
                 resourceType,
                 expression,
-                feedOptions,
+                queryRequestOptions,
                 resourceLink,
                 partitionedQueryExecutionInfo.getQueryInfo().getRewrittenQuery(),
                 isContinuationExpected,
@@ -108,10 +109,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                     initialPageSize,
-                    feedOptions.getRequestContinuation());
+                    ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(queryRequestOptions));
 
             return Flux.just(context);
-        } catch (CosmosClientException dce) {
+        } catch (CosmosException dce) {
             return Flux.error(dce);
         }
     }
@@ -121,7 +122,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions,
             int initialPageSize,
-            String continuationToken) throws CosmosClientException {
+            String continuationToken) throws CosmosException {
         if (continuationToken == null) {
             // First iteration so use null continuation tokens and "true" filters
             Map<PartitionKeyRange, String> partitionKeyRangeToContinuationToken = new HashMap<PartitionKeyRange, String>();
@@ -144,7 +145,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     outOrderByContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for OrderBy~Context",
                         continuationToken);
-                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 
@@ -156,7 +157,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             if (compositeContinuationToken.getRange().isEmpty()) {
                 String message = String.format("INVALID RANGE in the continuation token %s for OrderBy~Context.",
                         continuationToken);
-                throw BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
             }
 
@@ -233,7 +234,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             OrderByContinuationToken orderByContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
-            Collection<String> orderByExpressions) throws CosmosClientException {
+            Collection<String> orderByExpressions) {
         // Find the partition key range we left off on
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 orderByContinuationToken.getCompositeContinuationToken().getRange());
@@ -360,7 +361,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             PartitionKeyRange targetRange,
             String continuationToken,
             int initialPageSize,
-            FeedOptions feedOptions,
+            QueryRequestOptions queryRequestOptions,
             SqlQuerySpec querySpecForInit,
             Map<String, String> commonRequestHeaders,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -369,7 +370,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         return new OrderByDocumentProducer<T>(consumeComparer,
                 client,
                 collectionRid,
-                feedOptions,
+                queryRequestOptions,
                 createRequestFunc,
                 executeFunc,
                 targetRange,
@@ -547,7 +548,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
-        return drainAsync(feedOptions.getMaxItemCount());
+        return drainAsync(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(queryRequestOptions));
     }
 
     private String getContinuationToken(

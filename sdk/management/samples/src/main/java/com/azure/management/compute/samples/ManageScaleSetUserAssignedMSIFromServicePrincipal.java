@@ -12,10 +12,10 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
-import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineScaleSet;
+import com.azure.management.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.management.compute.ComputeManager;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.msi.Identity;
@@ -117,7 +117,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
                 .clientSecret("\"StrongPass!12\"")
                 .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
                 .build();
-            AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, false).withSubscriptionId(subscription);
+            AzureProfile profile = new AzureProfile(null, subscription, AzureEnvironment.AZURE);
             ComputeManager computeManager1 = ComputeManager.authenticate(credential, profile);
 
             VirtualMachineScaleSet vmss = computeManager1.virtualMachineScaleSets().getById(virtualMachineScaleSet1.id());
@@ -170,7 +170,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

@@ -212,7 +212,6 @@ class APISpec extends Specification {
         interceptorManager.close()
     }
 
-    //TODO: Should this go in core.
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }

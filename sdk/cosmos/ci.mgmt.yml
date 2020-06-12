@@ -18,6 +18,7 @@ trigger:
       - sdk/cosmos/azure-cosmos
       - sdk/cosmos/azure-cosmos-benchmark
       - sdk/cosmos/azure-cosmos-examples
+      - sdk/cosmos/azure-cosmos-table
 
 pr:
   branches:
@@ -33,6 +34,7 @@ pr:
       - sdk/cosmos/azure-cosmos
       - sdk/cosmos/azure-cosmos-benchmark
       - sdk/cosmos/azure-cosmos-examples
+      - sdk/cosmos/azure-cosmos-table
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

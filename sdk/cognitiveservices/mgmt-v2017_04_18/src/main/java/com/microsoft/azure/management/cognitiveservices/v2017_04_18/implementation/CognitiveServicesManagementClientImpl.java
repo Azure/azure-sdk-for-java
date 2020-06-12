@@ -50,11 +50,11 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Azure Subscription ID. */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
-     * Gets Azure Subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -63,7 +63,7 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Azure Subscription ID.
+     * Sets The ID of the target subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -73,11 +73,11 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Version of the API to be used with the client request. Current version is 2017-04-18. */
+    /** The API version to use for this operation. */
     private String apiVersion;
 
     /**
-     * Gets Version of the API to be used with the client request. Current version is 2017-04-18.
+     * Gets The API version to use for this operation.
      *
      * @return the apiVersion value.
      */
@@ -194,6 +194,32 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PrivateEndpointConnectionsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsInner privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsInner object.
+     */
+    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * The PrivateLinkResourcesInner object to access its operations.
+     */
+    private PrivateLinkResourcesInner privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * @return the PrivateLinkResourcesInner object.
+     */
+    public PrivateLinkResourcesInner privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
      * Initializes an instance of CognitiveServicesManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -231,6 +257,8 @@ public class CognitiveServicesManagementClientImpl extends AzureServiceClient {
         this.accounts = new AccountsInner(restClient().retrofit(), this);
         this.resourceSkus = new ResourceSkusInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
+        this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }

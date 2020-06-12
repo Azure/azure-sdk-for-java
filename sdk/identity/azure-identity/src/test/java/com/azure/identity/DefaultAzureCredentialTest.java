@@ -21,6 +21,8 @@ import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -48,8 +50,9 @@ public class DefaultAzureCredentialTest {
 
             // mock
             IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateWithClientSecret(secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-            PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+            when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+            when(identityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+            PowerMockito.whenNew(IdentityClient.class).withArguments(eq(tenantId), eq(clientId), eq(secret), isNull(), isNull(), any()).thenReturn(identityClient);
 
             IntelliJCredential intelliJCredential = PowerMockito.mock(IntelliJCredential.class);
             when(intelliJCredential.getToken(request1))

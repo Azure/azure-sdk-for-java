@@ -12,8 +12,8 @@ import com.azure.management.Azure;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccounts;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccounts;
 import reactor.core.publisher.Flux;
 
 /**
@@ -116,7 +116,7 @@ public final class ManageStorageAccountAsync {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

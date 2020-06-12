@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TextWord model.
- */
+/** The TextWord model. */
 @Fluent
 public final class TextWord {
     /*
@@ -33,7 +31,7 @@ public final class TextWord {
 
     /**
      * Get the text property: The text content of the word.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -42,7 +40,7 @@ public final class TextWord {
 
     /**
      * Set the text property: The text content of the word.
-     * 
+     *
      * @param text the text value to set.
      * @return the TextWord object itself.
      */
@@ -53,7 +51,7 @@ public final class TextWord {
 
     /**
      * Get the boundingBox property: Bounding box of an extracted word.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -62,7 +60,7 @@ public final class TextWord {
 
     /**
      * Set the boundingBox property: Bounding box of an extracted word.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the TextWord object itself.
      */
@@ -73,7 +71,7 @@ public final class TextWord {
 
     /**
      * Get the confidence property: Confidence value.
-     * 
+     *
      * @return the confidence value.
      */
     public Float getConfidence() {
@@ -82,7 +80,7 @@ public final class TextWord {
 
     /**
      * Set the confidence property: Confidence value.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @return the TextWord object itself.
      */

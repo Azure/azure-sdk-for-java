@@ -3,7 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.OperatingSystemTypes;
+import com.azure.management.compute.models.OperatingSystemTypes;
 
 /** An internal type expose utility methods around encryption extension identifier. */
 class EncryptionExtensionIdentifier {

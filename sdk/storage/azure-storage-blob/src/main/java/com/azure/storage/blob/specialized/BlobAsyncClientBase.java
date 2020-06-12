@@ -62,11 +62,13 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
@@ -174,11 +176,18 @@ public class BlobAsyncClientBase {
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-                                  String accountName, String containerName, String blobName, String snapshot,
-                                  CpkInfo customerProvidedKey, EncryptionScope encryptionScope, String versionId) {
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId) {
         if (snapshot != null && versionId != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(url);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
         }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
@@ -534,7 +543,7 @@ public class BlobAsyncClientBase {
                 sourceModifiedRequestConditions.getIfNoneMatch(), destinationRequestConditions.getIfModifiedSince(),
                 destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
                 destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getLeaseId(), null,
-                tagsToString(tags), null, context))
+                tagsToString(tags), null, null, null, context))
             .map(response -> {
                 final BlobStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
 
@@ -753,7 +762,7 @@ public class BlobAsyncClientBase {
             sourceModifiedRequestConditions.getIfNoneMatch(), destRequestConditions.getIfModifiedSince(),
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getLeaseId(), null, null,
-            tagsToString(options.getTags()), null, context)
+            tagsToString(options.getTags()), null, null, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getCopyId()));
     }
 
@@ -827,7 +836,7 @@ public class BlobAsyncClientBase {
         return azureBlobStorage.blobs().downloadWithRestResponseAsync(null, null, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, context)
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, null, context)
             .map(response -> {
                 info.setETag(response.getDeserializedHeaders().getETag());
                 return new ReliableDownload(response, options, info, updatedInfo ->
@@ -1024,7 +1033,8 @@ public class BlobAsyncClientBase {
                         finalRange, downloadRetryOptions, finalParallelTransferOptions, finalConditions,
                         rangeGetContentMd5, newCount,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressLock, totalProgress).flux()))
+                            progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
+
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });
@@ -1139,7 +1149,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, context)
+            requestConditions.getIfNoneMatch(), null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1192,7 +1202,7 @@ public class BlobAsyncClientBase {
             null, null, snapshot, versionId, null, requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey,
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlobGetPropertiesHeaders hd = rb.getDeserializedHeaders();
@@ -1264,7 +1274,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
             null, null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, context)
+            requestConditions.getIfNoneMatch(), null, headers, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1322,7 +1332,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, customerProvidedKey, encryptionScope,
+            requestConditions.getIfNoneMatch(), null, customerProvidedKey, encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -1366,7 +1376,7 @@ public class BlobAsyncClientBase {
 
     Mono<Response<Map<String, String>>> getTagsWithResponse(Context context) {
         return this.azureBlobStorage.blobs().getTagsWithRestResponseAsync(null, null, null, null, snapshot,
-            versionId, context)
+            versionId, null, context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
                 for (BlobTag tag : response.getValue().getBlobTagSet()) {
@@ -1426,7 +1436,7 @@ public class BlobAsyncClientBase {
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         return this.azureBlobStorage.blobs().setTagsWithRestResponseAsync(null, null, null, versionId, null, null, null,
-            t, context)
+            t, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1483,7 +1493,7 @@ public class BlobAsyncClientBase {
             null, null, null, metadata, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getLeaseId(), null, customerProvidedKey,
-            encryptionScope, context)
+            encryptionScope, null, context)
             .map(rb -> new SimpleResponse<>(rb, this.getSnapshotClient(rb.getDeserializedHeaders().getSnapshot())));
     }
 

@@ -6,7 +6,6 @@ package com.azure.storage.blob
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -31,6 +30,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -751,8 +751,8 @@ class ServiceAPITest extends APISpec {
 
         when:
         def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(),
-            new UndeleteBlobContainerOptions().setDestinationContainerName(generateContainerName()),
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(generateContainerName()),
             null, Context.NONE)
             .getValue()
 
@@ -780,7 +780,7 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(), null,
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
             Duration.ofMinutes(1), Context.NONE)
         def restoredContainerClient = response.getValue()
 
@@ -840,7 +840,7 @@ class ServiceAPITest extends APISpec {
         when:
         def responseMono = blobContainerItemMono.flatMap {
             blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                blobContainerItem.getName(), blobContainerItem.getVersion(), null)
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
         }
 
         then:
@@ -881,8 +881,9 @@ class ServiceAPITest extends APISpec {
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        primaryBlobServiceClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion(),
-            new UndeleteBlobContainerOptions().setDestinationContainerName(cc2.getBlobContainerName()),
+        primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(cc2.getBlobContainerName()),
             null, Context.NONE)
 
         then:
@@ -900,5 +901,30 @@ class ServiceAPITest extends APISpec {
 
         then:
         notThrown(Exception)
+    }
+
+    @Unroll
+    def "sas token does not show up on invalid uri"() {
+        setup:
+        /* random sas token. this does not actually authenticate anything. */
+        def mockSas = "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter"
+
+        when:
+        BlobServiceClient client = new BlobServiceClientBuilder()
+            .endpoint(service)
+            .sasToken(mockSas)
+            .buildClient();
+        client.getBlobContainerClient(container)
+            .getBlobClient("blobname")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        !e.getMessage().contains(mockSas)
+
+        where:
+        service                                       | container        || _
+        "https://doesntmatter. blob.core.windows.net" | "containername"  || _
+        "https://doesntmatter.blob.core.windows.net"  | "container name" || _
+        /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 }

@@ -13,11 +13,11 @@ import com.azure.management.Azure;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountEncryptionStatus;
-import com.azure.management.storage.StorageAccountKey;
-import com.azure.management.storage.StorageAccounts;
-import com.azure.management.storage.StorageService;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccountEncryptionStatus;
+import com.azure.management.storage.models.StorageAccountKey;
+import com.azure.management.storage.models.StorageAccounts;
+import com.azure.management.storage.models.StorageService;
 
 import java.util.List;
 import java.util.Map;
@@ -161,7 +161,7 @@ public final class ManageStorageAccount {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

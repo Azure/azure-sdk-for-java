@@ -92,13 +92,13 @@ jobs:
         displayName: 'Run StyleCheck'
         inputs:
           mavenPomFile: sdk/management/pom.xml
-          options: '$(DefaultOptions) $(ProfileFlag)'
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests=true'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'checkstyle:check'
+          goals: 'verify'
 
       - task: Maven@3
         displayName: 'Run Tests on Java 8'

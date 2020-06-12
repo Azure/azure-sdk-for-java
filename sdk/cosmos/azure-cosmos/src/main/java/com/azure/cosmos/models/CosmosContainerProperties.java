@@ -5,13 +5,13 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Resource;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Represents a item container in the Azure Cosmos DB database service. A cosmos container is a named logical container
+ * Represents a container in the Azure Cosmos DB database service. A cosmos container is a named logical container
  * for cosmos items.
  * <p>
  * A database may contain zero or more named containers and each container consists of zero or more JSON items.
@@ -55,7 +55,7 @@ public final class CosmosContainerProperties {
         this.documentCollection = new DocumentCollection(json);
     }
 
-    // Converting document collection to CosmosContainerProperties
+    // Converting container to CosmosContainerProperties
     CosmosContainerProperties(DocumentCollection collection) {
         this.documentCollection = new DocumentCollection(collection.toJson());
     }
@@ -78,7 +78,6 @@ public final class CosmosContainerProperties {
      *
      * @param indexingPolicy {@link IndexingPolicy} the indexing policy
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setIndexingPolicy(IndexingPolicy indexingPolicy) {
         this.documentCollection.setIndexingPolicy(indexingPolicy);
@@ -99,7 +98,6 @@ public final class CosmosContainerProperties {
      *
      * @param uniqueKeyPolicy the unique key policy
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
         this.documentCollection.setUniqueKeyPolicy(uniqueKeyPolicy);
@@ -120,7 +118,6 @@ public final class CosmosContainerProperties {
      *
      * @param partitionKeyDefinition the partition key definition.
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.documentCollection.setPartitionKey(partitionKeyDefinition);
@@ -129,7 +126,7 @@ public final class CosmosContainerProperties {
 
     /**
      * Gets the conflictResolutionPolicy that is used for resolving conflicting writes
-     * on documents in different regions, in a collection in the Azure Cosmos DB service.
+     * on items in different regions, in a container in the Azure Cosmos DB service.
      *
      * @return ConflictResolutionPolicy
      */
@@ -139,11 +136,10 @@ public final class CosmosContainerProperties {
 
     /**
      * Sets the conflictResolutionPolicy that is used for resolving conflicting writes
-     * on documents in different regions, in a collection in the Azure Cosmos DB service.
+     * on items in different regions, in a container in the Azure Cosmos DB service.
      *
      * @param value ConflictResolutionPolicy to be used.
      * @return the CosmosContainerProperties.
-     * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setConflictResolutionPolicy(ConflictResolutionPolicy value) {
         this.documentCollection.setConflictResolutionPolicy(value);
@@ -151,7 +147,7 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Gets the collection's default time-to-live value.
+     * Gets the container's default time-to-live value.
      *
      * @return the default time-to-live value in seconds.
      */
@@ -160,23 +156,23 @@ public final class CosmosContainerProperties {
     }
 
     /**
-     * Sets the collection's default time-to-live value.
+     * Sets the container's default time-to-live value.
      * <p>
-     * The default time-to-live value on a collection is an optional property. If set, the documents within the
-     * collection
+     * The default time-to-live value on a container is an optional property. If set, the items within the
+     * container
      * expires after the specified number of seconds since their last write time. The value of this property should
      * be one of the following:
      * <p>
-     * null - indicates evaluation of time-to-live is disabled and documents within the collection will never expire,
+     * null - indicates evaluation of time-to-live is disabled and items within the container will never expire,
      * regardless whether
-     * individual documents have their time-to-live set.
+     * individual items have their time-to-live set.
      * <p>
-     * nonzero positive integer - indicates the default time-to-live value for all documents within the collection.
+     * nonzero positive integer - indicates the default time-to-live value for all items within the container.
      * This value can be overridden
-     * by individual documents' time-to-live value.
+     * by individual items time-to-live value.
      * <p>
-     * -1 - indicates by default all documents within the collection never expire. This value can be overridden by
-     * individual documents'
+     * -1 - indicates by default all items within the container never expire. This value can be overridden by
+     * individual items
      * time-to-live value.
      *
      * @param timeToLive the default time-to-live value in seconds.
@@ -195,7 +191,7 @@ public final class CosmosContainerProperties {
      *
      * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
      * By default, AnalyticalStoreTimeToLive is set to 0 meaning the analytical store is turned off for the container;
-     * -1 means documents in analytical store never expire.
+     * -1 means items in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
      * @param timeToLive the analytical store time to live in seconds.
@@ -212,7 +208,7 @@ public final class CosmosContainerProperties {
      *
      * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
      * By default, AnalyticalStoreTimeToLive is set to 0 meaning the analytical store is turned off for the container;
-     * -1 means documents in analytical store never expire.
+     * -1 means items in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
      * @return analytical ttl
@@ -252,15 +248,17 @@ public final class CosmosContainerProperties {
 
     /**
      * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the timestamp.
      */
-    public OffsetDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.documentCollection.getTimestamp();
     }
 
     /**
      * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
      *
      * @return the e tag.
      */

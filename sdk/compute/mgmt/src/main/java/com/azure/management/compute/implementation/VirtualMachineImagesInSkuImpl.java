@@ -4,20 +4,20 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.VirtualMachineImage;
-import com.azure.management.compute.VirtualMachineImagesInSku;
-import com.azure.management.compute.VirtualMachineSku;
-import com.azure.management.compute.models.VirtualMachineImagesInner;
+import com.azure.management.compute.models.VirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachineImagesInSku;
+import com.azure.management.compute.models.VirtualMachineSku;
+import com.azure.management.compute.fluent.VirtualMachineImagesClient;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 
 /** The implementation for {@link VirtualMachineImagesInSku}. */
 class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
 
-    private final VirtualMachineImagesInner innerCollection;
+    private final VirtualMachineImagesClient innerCollection;
     private final VirtualMachineSku sku;
 
-    VirtualMachineImagesInSkuImpl(VirtualMachineSku sku, VirtualMachineImagesInner innerCollection) {
+    VirtualMachineImagesInSkuImpl(VirtualMachineSku sku, VirtualMachineImagesClient innerCollection) {
         this.sku = sku;
         this.innerCollection = innerCollection;
     }

@@ -17,6 +17,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.Resource;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -145,20 +146,20 @@ public class LROPollerTests {
             lroFlux.doOnNext(response -> {
                 PollResult<FooWithProvisioningState> pollResult = response.getValue();
                 Assertions.assertNotNull(pollResult);
-                Assertions.assertNotNull(pollResult.value());
+                Assertions.assertNotNull(pollResult.getValue());
                 onNextCallCount[0]++;
                 if (onNextCallCount[0] == 1) {
                     Assertions.assertEquals(response.getStatus(),
                         LongRunningOperationStatus.IN_PROGRESS);
-                    Assertions.assertNull(pollResult.value().getResourceId());
+                    Assertions.assertNull(pollResult.getValue().getResourceId());
                 } else if (onNextCallCount[0] == 2) {
                     Assertions.assertEquals(response.getStatus(),
                         LongRunningOperationStatus.IN_PROGRESS);
-                    Assertions.assertNull(pollResult.value().getResourceId());
+                    Assertions.assertNull(pollResult.getValue().getResourceId());
                 } else if (onNextCallCount[0] == 3) {
                     Assertions.assertEquals(response.getStatus(),
                         LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-                    Assertions.assertNotNull(pollResult.value().getResourceId());
+                    Assertions.assertNotNull(pollResult.getValue().getResourceId());
                 } else {
                     throw new IllegalStateException("Poller emitted more than expected value.");
                 }
@@ -225,9 +226,9 @@ public class LROPollerTests {
             AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.doOnNext(response -> {
                 PollResult<Resource> pollResult = response.getValue();
                 Assertions.assertNotNull(pollResult);
-                Assertions.assertNotNull(pollResult.value());
+                Assertions.assertNotNull(pollResult.getValue());
                 Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                Assertions.assertNotNull(pollResult.value().id());
+                Assertions.assertNotNull(pollResult.getValue().id());
             }).blockLast();
             Assertions.assertNotNull(asyncPollResponse);
 

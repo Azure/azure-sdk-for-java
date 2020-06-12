@@ -5,6 +5,9 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.compute.models.ComputeResourceType;
+import com.azure.management.compute.models.ComputeSku;
+import com.azure.management.compute.models.EncryptionStatus;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;

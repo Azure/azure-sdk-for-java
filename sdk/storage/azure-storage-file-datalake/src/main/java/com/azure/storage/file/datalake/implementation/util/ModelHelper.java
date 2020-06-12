@@ -60,9 +60,9 @@ public class ModelHelper {
             blockSize = FILE_DEFAULT_UPLOAD_BLOCK_SIZE;
         }
 
-        Integer numBuffers = other.getNumBuffers();
-        if (numBuffers == null) {
-            numBuffers = FILE_DEFAULT_NUMBER_OF_BUFFERS;
+        Integer maxConcurrency = other.getMaxConcurrency();
+        if (maxConcurrency == null) {
+            maxConcurrency = FILE_DEFAULT_NUMBER_OF_BUFFERS;
         }
 
         Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
@@ -72,7 +72,7 @@ public class ModelHelper {
 
         return new ParallelTransferOptions()
             .setBlockSizeLong(blockSize)
-            .setNumBuffers(numBuffers)
+            .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(other.getProgressReceiver())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }

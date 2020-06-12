@@ -25,8 +25,6 @@ import java.util.Objects;
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
-    private final String clientCertificate;
-    private final String clientCertificatePassword;
     private final IdentityClient identityClient;
 
     /**
@@ -40,22 +38,19 @@ public class ClientCertificateCredential implements TokenCredential {
     ClientCertificateCredential(String tenantId, String clientId, String certificatePath, String certificatePassword,
                                 IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath, "'certificatePath' cannot be null.");
-        this.clientCertificate = certificatePath;
-        this.clientCertificatePassword = certificatePassword;
-        identityClient =
-            new IdentityClientBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .identityClientOptions(identityClientOptions)
-                .build();
+        identityClient = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .certificatePath(certificatePath)
+            .certificatePassword(certificatePassword)
+            .identityClientOptions(identityClientOptions)
+            .build();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        if (clientCertificatePassword != null) {
-            return identityClient.authenticateWithPfxCertificate(clientCertificate, clientCertificatePassword, request);
-        } else {
-            return identityClient.authenticateWithPemCertificate(clientCertificate, request);
-        }
+        return identityClient.authenticateWithConfidentialClientCache(request)
+            .onErrorResume(t -> Mono.empty())
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)));
     }
 }

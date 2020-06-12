@@ -12,9 +12,9 @@ import com.azure.management.Azure;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.appservice.CustomHostnameDnsRecordType;
 import com.azure.management.appservice.WebApp;
-import com.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.compute.VirtualMachineSizeTypes;
+import com.azure.management.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.management.compute.models.VirtualMachine;
+import com.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.azure.management.dns.ARecordSet;
 import com.azure.management.dns.CNameRecordSet;
 import com.azure.management.dns.DnsRecordSet;
@@ -283,7 +283,7 @@ public class ManageDns {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

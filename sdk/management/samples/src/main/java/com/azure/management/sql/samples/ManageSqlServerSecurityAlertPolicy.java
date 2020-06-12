@@ -15,7 +15,7 @@ import com.azure.management.sql.SecurityAlertPolicyState;
 import com.azure.management.sql.SqlDatabaseStandardServiceObjective;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlServerSecurityAlertPolicy;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 
 /**
  * Azure SQL sample for managing SQL Server Security Alert Policy
@@ -124,7 +124,7 @@ public class ManageSqlServerSecurityAlertPolicy {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.environment().getActiveDirectoryEndpoint())
                 .build();

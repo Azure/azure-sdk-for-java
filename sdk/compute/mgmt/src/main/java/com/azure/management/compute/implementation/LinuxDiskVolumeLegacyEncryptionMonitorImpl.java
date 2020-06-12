@@ -3,11 +3,12 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.DiskVolumeEncryptionMonitor;
-import com.azure.management.compute.EncryptionStatus;
-import com.azure.management.compute.InstanceViewStatus;
-import com.azure.management.compute.OperatingSystemTypes;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
+import com.azure.management.compute.ComputeManager;
+import com.azure.management.compute.models.DiskVolumeEncryptionMonitor;
+import com.azure.management.compute.models.EncryptionStatus;
+import com.azure.management.compute.models.InstanceViewStatus;
+import com.azure.management.compute.models.OperatingSystemTypes;
+import com.azure.management.compute.fluent.inner.VirtualMachineExtensionInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import java.util.HashMap;
 import java.util.Map;
@@ -115,7 +116,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
         VirtualMachineExtensionInner extension) {
         return computeManager
             .inner()
-            .virtualMachineExtensions()
+            .getVirtualMachineExtensions()
             .getAsync(rgName, vmName, extension.name(), "instanceView")
             .onErrorResume(e -> Mono.empty());
     }
@@ -130,7 +131,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
     private Mono<VirtualMachineExtensionInner> retrieveEncryptExtensionWithInstanceViewFromVMAsync() {
         return computeManager
             .inner()
-            .virtualMachines()
+            .getVirtualMachines()
             .getByResourceGroupAsync(rgName, vmName)
             .onErrorResume(
                 e ->
