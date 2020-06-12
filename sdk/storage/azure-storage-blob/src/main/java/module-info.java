@@ -24,6 +24,10 @@ module com.azure.storage.blob {
         com.azure.storage.blob.cryptography,
         com.azure.storage.file.datalake;
 
+    exports com.azure.storage.blob.options to
+        com.azure.storage.blob.cryptography,
+            com.azure.storage.file.datalake;
+
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
@@ -33,5 +37,4 @@ module com.azure.storage.blob {
     opens com.azure.storage.blob.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
-    exports com.azure.storage.blob.options;
 }
