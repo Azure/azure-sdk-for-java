@@ -89,7 +89,8 @@ public class BlobChangefeedClient {
      *
      * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String}
      *
-     * @param cursor Identifies the portion of the events to be returned with the next get operation.
+     * @param cursor Identifies the portion of the events to be returned with the next get operation. Events that
+     * take place after the event identified by the cursor will be returned.
      * @return The changefeed events.
      */
     public BlobChangefeedPagedIterable getEvents(String cursor) {
