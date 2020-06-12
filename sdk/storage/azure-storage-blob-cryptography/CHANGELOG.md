@@ -1,6 +1,6 @@
 # Release History
 
-## 12.6.2 (2020-06-15)
+## 12.6.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
 
 ## 12.6.1 (2020-05-06)
