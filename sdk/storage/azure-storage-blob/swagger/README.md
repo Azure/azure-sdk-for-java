@@ -1365,4 +1365,13 @@ directive:
     }
 ```
 
+### Hide TagValue in FilterBlobItem
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    delete $.FilterBlobItem.properties.TagValue;
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
