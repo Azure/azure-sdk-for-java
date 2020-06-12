@@ -29,7 +29,7 @@ public final class FormLine extends FormContent {
      */
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final List<FormWord> formWords) {
-        super(text, boundingBox, pageNumber, TextContentType.LINE);
+        super(text, boundingBox, pageNumber);
         this.formWords = formWords;
     }
 
@@ -40,14 +40,6 @@ public final class FormLine extends FormContent {
      */
     public List<FormWord> getFormWords() {
         return this.formWords;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TextContentType getTextContentType() {
-        return super.getTextContentType();
     }
 
     /**
