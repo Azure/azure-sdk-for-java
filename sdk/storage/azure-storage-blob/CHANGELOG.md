@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.7.0-beta.2 (Unreleased)
-
+- Moved BlobParallelUploadOptions into options package.
+- Added data source and data length to BlobParallelUploadOptions and removed them from the relevant method parameter lists
 
 ## 12.7.0-beta.1 (Unreleased)
 - Fixed a bug that would cause empty data to be sent if a call to stage block, block blob upload, append block, or upload pages was automatically retried by the SDK.
