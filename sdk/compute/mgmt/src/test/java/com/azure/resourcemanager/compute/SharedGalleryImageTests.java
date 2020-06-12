@@ -315,7 +315,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
     private VirtualMachine prepareGeneralizedVmWith2EmptyDataDisks(
         String rgName, String vmName, Region region, ComputeManager computeManager) {
         final String uname = "javauser";
-        final String password = "12NewPA$$w0rd!";
+        final String password = password();
         final KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
 

@@ -47,8 +47,7 @@ public final class ManageVirtualMachine {
         final String linuxVMName = azure.sdkContext().randomResourceName("lVM", 15);
         final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
 
         try {
 

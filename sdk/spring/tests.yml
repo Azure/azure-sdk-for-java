@@ -31,4 +31,3 @@ jobs:
             safeName: azurespringboottestapplication
         EnvVars:
           AZURE_TEST_MODE: LIVE
-

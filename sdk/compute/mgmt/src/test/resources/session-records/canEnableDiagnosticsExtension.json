@@ -382,7 +382,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "2e5a4c91-7c8c-4970-9b88-fdc656c1a018",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"tzBw2iOYq/xHnlPntDRmc78ggL18Sfc5egBkNDaxTxzkVYsb9x3oZjDkNal9XhyZXq/p2pVpGCx3dUvZrGAtMQ==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"eFWjXoPVihYn+yxy85kd5/d9wBLzMhGr9jTKZxdopJtPrXST3E/1MEN4IqkWzAUL/b35prkm7B6/CWdm8iQ1JQ==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PATCH",
