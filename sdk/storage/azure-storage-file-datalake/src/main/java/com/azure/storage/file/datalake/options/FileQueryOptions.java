@@ -27,6 +27,7 @@ public class FileQueryOptions {
 
     /**
      * Constructs a {@link FileQueryOptions}.
+     * @param expression The query expression.
      */
     public FileQueryOptions(String expression) {
         StorageImplUtils.assertNotNull("expression", expression);

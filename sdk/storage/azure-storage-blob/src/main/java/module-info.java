@@ -33,4 +33,5 @@ module com.azure.storage.blob {
     opens com.azure.storage.blob.implementation.models to
         com.fasterxml.jackson.databind,
         com.azure.core;
+    exports com.azure.storage.blob.options;
 }
