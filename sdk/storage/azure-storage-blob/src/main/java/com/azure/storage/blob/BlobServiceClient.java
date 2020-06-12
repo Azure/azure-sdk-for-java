@@ -456,7 +456,7 @@ public final class BlobServiceClient {
      */
     public BlobContainerClient undeleteBlobContainer(String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
-            deletedContainerName, deletedContainerVersion, null,
+            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion),
             null, Context.NONE).getValue();
     }
 
@@ -473,10 +473,8 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#String-String-UndeleteBlobContainerOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context}
      *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
      * @param options {@link UndeleteBlobContainerOptions}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -484,11 +482,10 @@ public final class BlobServiceClient {
      * to interact with the restored container.
      */
     public Response<BlobContainerClient> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options,
-        Duration timeout, Context context) {
+        UndeleteBlobContainerOptions options, Duration timeout, Context context) {
         Mono<Response<BlobContainerClient>> response =
             this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                deletedContainerName, deletedContainerVersion, options, context)
+                options, context)
             .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
 
         return blockWithOptionalTimeout(response, timeout);
