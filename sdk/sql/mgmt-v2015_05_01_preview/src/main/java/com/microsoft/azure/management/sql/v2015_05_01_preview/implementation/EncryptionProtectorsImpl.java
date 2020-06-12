@@ -11,6 +11,7 @@ package com.microsoft.azure.management.sql.v2015_05_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.EncryptionProtectors;
+import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
@@ -26,6 +27,12 @@ class EncryptionProtectorsImpl extends WrapperImpl<EncryptionProtectorsInner> im
 
     public SqlManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Completable revalidateAsync(String resourceGroupName, String serverName) {
+        EncryptionProtectorsInner client = this.inner();
+        return client.revalidateAsync(resourceGroupName, serverName).toCompletable();
     }
 
     @Override
