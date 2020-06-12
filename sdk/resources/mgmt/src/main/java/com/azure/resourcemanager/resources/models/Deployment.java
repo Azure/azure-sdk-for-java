@@ -268,7 +268,7 @@ public interface Deployment extends
              */
             Accepted<Deployment> beginCreate();
 
-            //Mono<Deployment> beginCreateAsync();
+            Mono<Deployment> beginCreateAsync();
         }
     }
 

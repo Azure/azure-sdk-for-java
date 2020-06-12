@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.DebugSetting;
 import com.azure.resourcemanager.resources.models.Dependency;
@@ -319,20 +320,20 @@ public final class DeploymentImpl extends
         return accepted;
     }
 
-//    @Override
-//    public Mono<Deployment> beginCreateAsync() {
-//        return Mono.just(creatableResourceGroup)
-//                .flatMap(resourceGroupCreatable -> {
-//                    if (resourceGroupCreatable != null) {
-//                        return creatableResourceGroup.createAsync().last();
-//                    } else {
-//                        return Mono.just((Indexable) DeploymentImpl.this);
-//                    }
-//                })
-//                .flatMap(indexable -> manager().inner().getDeployments()
-//                    .beginCreateOrUpdateWithoutPollingAsync(resourceGroupName(), name(), createRequestFromInner()))
-//                .map(innerToFluentMap(this));
-//    }
+    @Override
+    public Mono<Deployment> beginCreateAsync() {
+        return Mono.just(creatableResourceGroup)
+                .flatMap(resourceGroupCreatable -> {
+                    if (resourceGroupCreatable != null) {
+                        return creatableResourceGroup.createAsync().last();
+                    } else {
+                        return Mono.just((Indexable) DeploymentImpl.this);
+                    }
+                })
+                .flatMap(indexable -> manager().inner().getDeployments()
+                    .beginCreateOrUpdateWithoutPollingAsync(resourceGroupName(), name(), createRequestFromInner()))
+                .map(innerToFluentMap(this));
+    }
 
     @Override
     public Mono<Deployment> createResourceAsync() {
