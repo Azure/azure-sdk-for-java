@@ -131,7 +131,7 @@ client = new BlobChangefeedClientBuilder(blobServiceClient).buildClient();
 <!-- embedme ./src/samples/java/com/azure/storage/blob/changefeed/ReadmeSamples.java#L27-L28 -->
 ```java
 client.getEvents().forEach(event ->
-            System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
+    System.out.printf("Topic: %s, Subject: %s%n", event.getTopic(), event.getSubject()));
 ```
 
 ### Get events between a start and end time
