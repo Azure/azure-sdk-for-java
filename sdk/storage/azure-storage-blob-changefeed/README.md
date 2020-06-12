@@ -6,8 +6,6 @@ guaranteed, durable, immutable, read-only log of these changes. Client applicati
 logs at any time. The change feed enables you to build efficient and scalable solutions that
 process change events that occur in your Blob Storage account at a low cost.
 
-TODO (gapra) : This is a placeholder. Add docs and point users to blob readme and add changefeed specific samples. 
-
 ## Getting started
 ### Prerequisites
 
