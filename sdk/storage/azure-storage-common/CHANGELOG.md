@@ -1,9 +1,9 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.7.0-beta.2 (2020-06-15)
+- Updated azure-core dependency.
 
-
-## 12.7.0-beta.1 (Unreleased)
+## 12.7.0-beta.1 (2020-06-08)
 
 
 ## 12.6.1 (2020-05-06)
