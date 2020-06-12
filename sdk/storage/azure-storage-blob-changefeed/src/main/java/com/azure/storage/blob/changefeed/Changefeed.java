@@ -91,7 +91,7 @@ class Changefeed {
             });
     }
 
-    /* TODO  (gapra) : Investigate making this thread safe. */
+    /* TODO (gapra) : Investigate making this thread safe. */
     /**
      * Populates the last consumable property from changefeed metadata.
      * Log files in any segment that is dated after the date of the LastConsumable property in the
