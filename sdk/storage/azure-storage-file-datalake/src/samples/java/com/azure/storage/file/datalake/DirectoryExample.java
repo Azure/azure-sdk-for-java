@@ -4,6 +4,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.util.Configuration;
 import com.azure.storage.file.datalake.implementation.models.StorageErrorException;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathProperties;
 
 import java.util.UUID;
@@ -63,7 +64,7 @@ public class DirectoryExample {
         // Delete the child directory. The operation will fail because storage service only allowed to delete the empty directory.
         try {
             childDirClient.delete();
-        } catch (StorageErrorException e) {
+        } catch (DataLakeStorageException e) {
             System.out.println("This is expected as the child directory is not empty.");
         }
 
