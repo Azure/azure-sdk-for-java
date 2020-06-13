@@ -3,25 +3,31 @@
 
 package com.azure.core.util.serializer;
 
+import reactor.core.publisher.Mono;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+
 /**
  * Generic interface covering serializing and deserialization objects.
  */
 public interface ObjectSerializer {
     /**
-     * Reads a byte array into its object representation.
+     * Reads a stream into its object representation.
      *
-     * @param input Byte array.
+     * @param stream {@link InputStream} of data.
      * @param clazz {@link Class} representing the object.
      * @param <T> Type of the object.
-     * @return The object represented by the deserialized byte array.
+     * @return The object represented by the deserialized stream.
      */
-    <T> T deserialize(byte[] input, Class<T> clazz);
+    <T> Mono<T> deserialize(InputStream stream, Class<T> clazz);
 
     /**
-     * Writes the object into a byte array representation.
+     * Writes the object into a stream.
      *
+     * @param stream {@link OutputStream} where the object will be written.
      * @param value The object.
-     * @return The byte array representing the serialized object.
+     * @return The stream where the object was written.
      */
-    byte[] serialize(Object value);
+    Mono<OutputStream> serialize(OutputStream stream, Object value);
 }
