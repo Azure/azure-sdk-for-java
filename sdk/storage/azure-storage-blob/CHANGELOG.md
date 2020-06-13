@@ -1,5 +1,7 @@
 # Release History
 
+## 12.8.0-beta.1 (Unreleased)
+
 ## 12.7.0 (2020-06-12)
 - Moved BlobParallelUploadOptions into options package.
 - Added data source and data length to BlobParallelUploadOptions and removed them from the relevant method parameter lists
