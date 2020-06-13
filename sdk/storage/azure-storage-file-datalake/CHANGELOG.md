@@ -1,5 +1,7 @@
 # Release History
 
+## 12.2.0-beta.1 (Unreleased)
+
 ## 12.1.2 (2020-06-12)
 - Updated azure-storage-common and azure-core dependencies.
 

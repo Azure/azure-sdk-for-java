@@ -1,5 +1,7 @@
 # Release History
 
+## 12.6.0-beta.1 (Unreleased)
+
 ## 12.5.0 (2020-06-12)
 - Fixed bug in ShareFileClient.uploadRangeFromUrl and ShareFileClient.beginCopy where sourceUrl was not getting encoded.
 - Updated azure-storage-common and azure-core dependencies. 
