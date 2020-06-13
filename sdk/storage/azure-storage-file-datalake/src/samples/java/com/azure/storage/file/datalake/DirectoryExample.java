@@ -26,12 +26,14 @@ public class DirectoryExample {
      */
     public static void main(String[] args) {
         String fileSystemName = generateRandomName();
-        DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT).fileSystemName(fileSystemName).buildClient();
+        String sasToken="${SASToken}";
+        DataLakeFileSystemClient dataLakeFileSystemClient = new DataLakeFileSystemClientBuilder().endpoint(ENDPOINT).fileSystemName(fileSystemName).sasToken(sasToken).buildClient();
         dataLakeFileSystemClient.create();
         // Build up a directory client
         DataLakeDirectoryClient directoryClient = new DataLakePathClientBuilder().endpoint(ENDPOINT)
             .pathName(generateRandomName())
             .fileSystemName(fileSystemName)
+            .sasToken(sasToken)
             .buildDirectoryClient();
 
         // Create a parent directory
