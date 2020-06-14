@@ -35,21 +35,21 @@ public class TestConstants {
     public static final int TIME_TO_LIVE = 5;
     public static final boolean INDEXINGPOLICY_AUTOMATIC = false;
     public static final IndexingMode INDEXINGPOLICY_MODE = IndexingMode.LAZY;
-    public static final String INCLUDEDPATH_0 = "{\"path\":\"/*\",\"indexes\":[" +
-            "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":2}," +
-            "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":2}," +
-            "{\"kind\":\"Spatial\",\"dataType\":\"Point\"}" +
-            "]}";
-    public static final String INCLUDEDPATH_1 = "{\"path\":\"/cache/*\",\"indexes\":[" +
-            "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":3}," +
-            "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3}," +
-            "{\"kind\":\"Spatial\",\"dataType\":\"LineString\"}" +
-            "]}";
-    public static final String INCLUDEDPATH_2 = "{\"path\":\"/entities/*\",\"indexes\":[" +
-            "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":4}," +
-            "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":4}," +
-            "{\"kind\":\"Spatial\",\"dataType\":\"Polygon\"}" +
-            "]}";
+    public static final String INCLUDEDPATH_0 = "{\"path\":\"/*\",\"indexes\":["
+        + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":2},"
+        + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":2},"
+        + "{\"kind\":\"Spatial\",\"dataType\":\"Point\"}"
+        + "]}";
+    public static final String INCLUDEDPATH_1 = "{\"path\":\"/cache/*\",\"indexes\":["
+        + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":3},"
+        + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3},"
+        + "{\"kind\":\"Spatial\",\"dataType\":\"LineString\"}"
+        + "]}";
+    public static final String INCLUDEDPATH_2 = "{\"path\":\"/entities/*\",\"indexes\":["
+        + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":4},"
+        + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":4},"
+        + "{\"kind\":\"Spatial\",\"dataType\":\"Polygon\"}"
+        + "]}";
     public static final String[] INCLUDEDPATHS = {
             INCLUDEDPATH_0,
             INCLUDEDPATH_1,
@@ -62,15 +62,15 @@ public class TestConstants {
             EXCLUDEDPATH_1,
     };
 
-    public static final String ORDER_BY_STRING_PATH = "{\"path\":\"/*\",\"indexes\":[" +
-            "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":-1}," +
-            "]}";
+    public static final String ORDER_BY_STRING_PATH = "{\"path\":\"/*\",\"indexes\":["
+        + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":-1},"
+        + "]}";
 
     public static final String STARTSWITH_INCLUDEDPATH =
-            "{\"path\":\"/*\",\"indexes\":[" +
-                    "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1}," +
-                    "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":3}" +
-                    "]}";
+            "{\"path\":\"/*\",\"indexes\":["
+                + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1},"
+                + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":3}"
+                + "]}";
 
     public static final String[] PERSON_INCLUDEDPATHS = {
             STARTSWITH_INCLUDEDPATH

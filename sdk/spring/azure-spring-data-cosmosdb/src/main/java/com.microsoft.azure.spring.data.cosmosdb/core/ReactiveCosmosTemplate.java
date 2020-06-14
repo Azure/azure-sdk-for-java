@@ -95,7 +95,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return Mono containing CosmosContainerResponse
      */
     @Override
-    public Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation information) {
+    public Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation<?,?> information) {
         return createContainerIfNotExists(information);
     }
 
@@ -106,7 +106,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return Mono containing CosmosContainerResponse
      */
     @Override
-    public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation information) {
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?,?> information) {
 
         return cosmosClient
             .createDatabaseIfNotExists(this.databaseName)
@@ -279,6 +279,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Insert
      *
      * @param objectToSave the object to save
+     * @param <T> type of inserted objectToSave
      * @return Mono with the item or error
      */
     public <T> Mono<T> insert(T objectToSave) {

@@ -46,6 +46,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.fail;
 
+@SuppressWarnings("unchecked")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplateIT {
@@ -127,7 +128,7 @@ public class ReactiveCosmosTemplateIT {
     public void testInsertDuplicateId() {
         final Mono<Person> insertMono = cosmosTemplate.insert(TEST_PERSON,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
-        final TestSubscriber testSubscriber = new TestSubscriber();
+        final TestSubscriber<? super Person> testSubscriber = new TestSubscriber<>();
         insertMono.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent();
         testSubscriber.assertNotComplete();

@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+@SuppressWarnings("unchecked")
 @RunWith(MockitoJUnitRunner.class)
 public class CosmosTemplateIllegalTest {
     private static final String NULL_STR = null;
@@ -33,7 +34,7 @@ public class CosmosTemplateIllegalTest {
 
     @Mock(answer = Answers.CALLS_REAL_METHODS)
     private CosmosTemplate dbTemplate;
-    private Class dbTemplateClass;
+    private Class<?> dbTemplateClass;
 
     @Before
     public void setUp() {

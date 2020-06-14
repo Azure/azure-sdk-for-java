@@ -147,6 +147,12 @@
             <version>1.2</version> <!-- {x-version-update;org.javatuples:javatuples;external_dependency} -->
         </dependency>
 
+<!--      <dependency>-->
+<!--        <groupId>com.azure</groupId>-->
+<!--        <artifactId>azure-core</artifactId>-->
+<!--        <version>1.5.1</version> &lt;!&ndash; {x-version-update;com.azure:azure-core;dependency} &ndash;&gt;-->
+<!--      </dependency>-->
+
         <!-- Test -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -229,6 +235,7 @@
                       <include>org.json:json:20140107</include>
                       <include>com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.0</include>
                       <include>com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.0</include>
+                      <include>org.slf4j:slf4j-simple:[1.7.25]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
                     </includes>
                   </bannedDependencies>
                 </rules>
@@ -262,34 +269,34 @@
               </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>findbugs-maven-plugin</artifactId>
-                <version>3.0.5</version> <!-- {x-version-update;org.codehaus.mojo:findbugs-maven-plugin;external_dependency} -->
-                <configuration>
-                    <effort>Max</effort>
-                    <threshold>Low</threshold>
-                    <xmlOutput>true</xmlOutput>
-                    <findbugsXmlOutputDirectory>${project.build.directory}/findbugs
-                    </findbugsXmlOutputDirectory>
-                    <excludeFilterFile>${project.basedir}/config/findbugs-exclude.xml</excludeFilterFile>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant</artifactId>
-                        <version>1.9.4</version> <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>findbugs-maven-plugin</artifactId>-->
+<!--                <version>3.0.5</version> &lt;!&ndash; {x-version-update;org.codehaus.mojo:findbugs-maven-plugin;external_dependency} &ndash;&gt;-->
+<!--                <configuration>-->
+<!--                    <effort>Max</effort>-->
+<!--                    <threshold>Low</threshold>-->
+<!--                    <xmlOutput>true</xmlOutput>-->
+<!--                    <findbugsXmlOutputDirectory>${project.build.directory}/findbugs-->
+<!--                    </findbugsXmlOutputDirectory>-->
+<!--                    <excludeFilterFile>${project.basedir}/config/findbugs-exclude.xml</excludeFilterFile>-->
+<!--                </configuration>-->
+<!--                <dependencies>-->
+<!--                    <dependency>-->
+<!--                        <groupId>org.apache.ant</groupId>-->
+<!--                        <artifactId>ant</artifactId>-->
+<!--                        <version>1.9.4</version> &lt;!&ndash; {x-version-update;org.apache.ant:ant;external_dependency} &ndash;&gt;-->
+<!--                    </dependency>-->
+<!--                </dependencies>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>compile</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
@@ -331,24 +338,32 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--              <groupId>org.apache.maven.plugins</groupId>-->
-<!--              <artifactId>maven-compiler-plugin</artifactId>-->
-<!--              <configuration>-->
-<!--                <excludes>-->
-<!--                  <exclude>**/MappingCosmosConverter.java</exclude>-->
-<!--                  <exclude>**/ReactiveCosmosTemplate.java</exclude>-->
-<!--                  <exclude>**/CosmosQueryMethod.java</exclude>-->
-<!--                  <exclude>**/ReactiveCosmosTemplate.java</exclude>-->
-<!--                  <exclude>**/ReactiveCosmosOperations.java</exclude>-->
-<!--                  <exclude>**/CosmosQueryMethod.java</exclude>-->
-<!--                  <exclude>**/ReactiveCosmosEntityMetadata.java</exclude>-->
-<!--                  <exclude>**/ReactiveCosmosQueryCreator.java</exclude>-->
-<!--                  <exclude>**/AbstractQueryGenerator.java</exclude>-->
-<!--                  <exclude>**/CosmosQueryCreator.java</exclude>-->
-<!--                </excludes>-->
-<!--              </configuration>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+                <configuration>
+                    <show>private</show>
+                    <failOnError>false</failOnError>
+                    <sourceFileExcludes>
+                      <sourceFileExclude>
+                        com/microsoft/azure/spring/data/cosmosdb/core/mapping/BasicCosmosPersistentProperty.java
+                      </sourceFileExclude>
+                    </sourceFileExcludes>
+                </configuration>
+                  <executions>
+                    <execution>
+                      <id>attach-javadocs</id>
+                      <goals>
+                        <goal>jar</goal>
+                      </goals>
+                      <configuration>
+                        <skip>true</skip>
+                        <doclint>none</doclint>
+                      </configuration>
+                    </execution>
+                  </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>

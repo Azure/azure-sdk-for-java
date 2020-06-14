@@ -21,9 +21,9 @@ public interface ReactiveCosmosOperations {
      * @return Mono of cosmos container response
      */
     @Deprecated
-    Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation information);
+    Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation<?,?> information);
 
-    Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation information);
+    Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?,?> information);
 
     <T> Flux<T> findAll(String containerName, Class<T> domainType);
 

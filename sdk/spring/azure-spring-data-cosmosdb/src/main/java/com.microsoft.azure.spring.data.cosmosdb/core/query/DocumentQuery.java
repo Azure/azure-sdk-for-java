@@ -69,7 +69,7 @@ public class DocumentQuery {
      * Indicate if DocumentQuery should enable cross partition query.
      *
      * @param partitionKeys The list of partitionKey names.
-     * @return
+     * @return If DocumentQuery should enable cross partition query
      */
     public boolean isCrossPartitionQuery(@NonNull List<String> partitionKeys) {
         if (partitionKeys.isEmpty()) {

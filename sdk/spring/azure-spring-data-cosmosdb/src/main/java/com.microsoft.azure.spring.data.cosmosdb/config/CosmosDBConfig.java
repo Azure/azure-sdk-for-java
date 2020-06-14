@@ -209,12 +209,27 @@ public class CosmosDBConfig {
         }
 
         public String toString() {
-            return "CosmosDBConfig.CosmosDBConfigBuilder(uri=" + this.uri + ", key=" + this.key
-                    + ", database=" + this.database + ", connectionPolicy=" + this.connectionPolicy
-                    + ", consistencyLevel=" + this.consistencyLevel + ", allowTelemetry=" + this.allowTelemetry
-                    + ", requestOptions=" + this.requestOptions + ", cosmosKeyCredential=" + this.cosmosKeyCredential
-                    + ", responseDiagnosticsProcessor=" + this.responseDiagnosticsProcessor + ", populateQueryMetrics="
-                    + this.populateQueryMetrics + ")";
+            return "CosmosDBConfig.CosmosDBConfigBuilder(uri="
+                    + this.uri
+                    + ", key="
+                    + this.key
+                    + ", database="
+                    + this.database
+                    + ", connectionPolicy="
+                    + this.connectionPolicy
+                    + ", consistencyLevel="
+                    + this.consistencyLevel
+                    + ", allowTelemetry="
+                    + this.allowTelemetry
+                    + ", requestOptions="
+                    + this.requestOptions
+                    + ", cosmosKeyCredential="
+                    + this.cosmosKeyCredential
+                    + ", responseDiagnosticsProcessor="
+                    + this.responseDiagnosticsProcessor
+                    + ", populateQueryMetrics="
+                    + this.populateQueryMetrics
+                    + ")";
         }
     }
 }
