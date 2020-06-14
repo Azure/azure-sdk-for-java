@@ -13,14 +13,14 @@ public class BasicCosmosPersistentEntityUnitTest {
 
     @Test
     public void testGetCollection() {
-        final BasicCosmosPersistentEntity entity = new BasicCosmosPersistentEntity<Person>(
+        final BasicCosmosPersistentEntity<Person> entity = new BasicCosmosPersistentEntity<Person>(
                 ClassTypeInformation.from(Person.class));
         assertThat(entity.getContainer()).isEqualTo("");
     }
 
     @Test
     public void testGetLanguage() {
-        final BasicCosmosPersistentEntity entity = new BasicCosmosPersistentEntity<Person>(
+        final BasicCosmosPersistentEntity<Person> entity = new BasicCosmosPersistentEntity<Person>(
                 ClassTypeInformation.from(Person.class));
         assertThat(entity.getLanguage()).isEqualTo("");
     }

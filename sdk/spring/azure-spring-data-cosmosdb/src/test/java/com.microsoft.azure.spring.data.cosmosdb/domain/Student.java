@@ -46,12 +46,16 @@ public class Student {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Student student = (Student) o;
-        return Objects.equals(id, student.id) &&
-            Objects.equals(firstName, student.firstName) &&
-            Objects.equals(lastName, student.lastName);
+        return Objects.equals(id, student.id)
+            && Objects.equals(firstName, student.firstName)
+            && Objects.equals(lastName, student.lastName);
     }
 
     @Override
@@ -61,10 +65,16 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
-            "id='" + id + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            '}';
+        return "Student{"
+            + "id='"
+            + id
+            + '\''
+            + ", firstName='"
+            + firstName
+            + '\''
+            + ", lastName='"
+            + lastName
+            + '\''
+            + '}';
     }
 }

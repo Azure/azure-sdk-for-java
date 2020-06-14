@@ -12,7 +12,7 @@ public @interface PartitionKey {
     /**
      * The name of the partition key if the serialized attribute name differs from the field name
      *
-     * @return
+     * @return partition key name
      */
     String value() default "";
 }

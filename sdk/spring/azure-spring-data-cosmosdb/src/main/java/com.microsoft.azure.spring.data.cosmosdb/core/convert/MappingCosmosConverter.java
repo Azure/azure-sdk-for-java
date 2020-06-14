@@ -152,8 +152,8 @@ public class MappingCosmosConverter
     /**
      * Convert a property value to the value stored in CosmosDB
      *
-     * @param fromPropertyValue
-     * @return
+     * @param fromPropertyValue source property value
+     * @return fromPropertyValue converted property value stored in CosmosDB
      */
     public static Object toCosmosDbValue(Object fromPropertyValue) {
         if (fromPropertyValue == null) {

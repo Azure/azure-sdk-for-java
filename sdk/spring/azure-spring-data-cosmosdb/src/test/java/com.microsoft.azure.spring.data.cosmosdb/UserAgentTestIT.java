@@ -16,8 +16,8 @@ import org.springframework.context.annotation.PropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore("Cannot use fake uri and key with CosmosDbFactory as it tries the connection on new creation." +
-    "At the same time, cannot use mockito with real values, because it won't prepare PropertyLoader class for mocking")
+@Ignore("Cannot use fake uri and key with CosmosDbFactory as it tries the connection on new creation."
+    + "At the same time, cannot use mockito with real values, because it won't prepare PropertyLoader class for mocking")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(PropertyLoader.class)
 @PropertySource(value = {"classpath:application.properties"})

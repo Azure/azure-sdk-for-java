@@ -57,7 +57,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * save entity without partition
      *
      * @param entity to be saved
-     * @param <S>
+     * @param <S> type of entity
      * @return entity
      */
     @Override
@@ -86,9 +86,9 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * batch save entities
      *
-     * @param entities
-     * @param <S>
-     * @return
+     * @param entities Batch entities
+     * @param <S> type of entities
+     * @return return the saved entities
      */
     @Override
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
@@ -106,7 +106,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * find all entities from one container without configuring partition key value
      *
-     * @return
+     * @return return Iterable of the found entities List
      */
     @Override
     public Iterable<T> findAll() {
@@ -116,8 +116,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * find entities based on id list from one container without partitions
      *
-     * @param ids
-     * @return
+     * @param ids id list used to find entities
+     * @return return a List of all found entities
      */
     @Override
     public List<T> findAllById(Iterable<ID> ids) {
@@ -129,8 +129,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * find one entity per id without partitions
      *
-     * @param id
-     * @return
+     * @param id an id used to find entity
+     * @return return the searching result
      */
     @Override
     public Optional<T> findById(ID id) {
@@ -157,7 +157,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * return count of documents in one container without partitions
      *
-     * @return
+     * @return count of documents in one container without partitions
      */
     @Override
     public long count() {
@@ -167,7 +167,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * delete one document per id without configuring partition key value
      *
-     * @param id
+     * @param id an id used to specify the deleted document
      */
     @Override
     public void deleteById(ID id) {
@@ -187,7 +187,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * delete one document per entity
      *
-     * @param entity
+     * @param entity the entity used to specify a document
      */
     @Override
     public void delete(T entity) {
@@ -211,7 +211,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * delete list of entities without partitions
      *
-     * @param entities
+     * @param entities list of entities to be deleted
      */
     @Override
     public void deleteAll(Iterable<? extends T> entities) {
@@ -223,8 +223,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * check if an entity exists per id without partition
      *
-     * @param primaryKey
-     * @return
+     * @param primaryKey an id to specify an entity
+     * @return if the entity exists
      */
     @Override
     public boolean existsById(ID primaryKey) {
@@ -236,7 +236,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * Returns all entities sorted by the given options.
      *
-     * @param sort
+     * @param sort the Sort option for queries.
      * @return all entities sorted by the given options
      */
     @Override
@@ -251,7 +251,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * FindQuerySpecGenerator
      * Returns a Page of entities meeting the paging restriction provided in the Pageable object.
      *
-     * @param pageable
+     * @param pageable the Pageable object providing paging restriction
      * @return a page of entities
      */
     @Override

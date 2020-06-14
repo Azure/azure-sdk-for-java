@@ -381,7 +381,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param query          The representation for query method.
      * @param domainType    Class of domain
      * @param containerName Container name of database
-     * @param <T>
+     * @param <T>           class of domainType
      * @return All the deleted items as List.
      */
     @Override

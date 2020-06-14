@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class PageTestUtils {
-    public static void validateLastPage(Page page, int pageSize) {
+    public static void validateLastPage(Page<?> page, int pageSize) {
         final Pageable pageable = page.getPageable();
 
         assertThat(pageable).isInstanceOf(CosmosPageRequest.class);
@@ -19,7 +19,7 @@ public class PageTestUtils {
         assertThat(pageable.getPageSize()).isEqualTo(pageSize);
     }
 
-    public static void validateNonLastPage(Page page, int pageSize) {
+    public static void validateNonLastPage(Page<?> page, int pageSize) {
         final Pageable pageable = page.getPageable();
 
         assertThat(pageable).isInstanceOf(CosmosPageRequest.class);

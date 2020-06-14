@@ -42,7 +42,7 @@ public class ExpressionResolverUnitTest {
     static class TestConfiguration {
         @Bean
         public ExpressionResolver expressionResolver(ConfigurableBeanFactory beanFactory) {
-            return new ExpressionResolver((ConfigurableBeanFactory) beanFactory);
+            return new ExpressionResolver(beanFactory);
         }
     }
 
