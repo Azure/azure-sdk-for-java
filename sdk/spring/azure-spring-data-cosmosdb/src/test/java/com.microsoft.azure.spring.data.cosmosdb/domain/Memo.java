@@ -61,13 +61,17 @@ public class Memo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Memo memo = (Memo) o;
-        return Objects.equals(id, memo.id) &&
-            Objects.equals(message, memo.message) &&
-            Objects.equals(date, memo.date) &&
-            importance == memo.importance;
+        return Objects.equals(id, memo.id)
+            && Objects.equals(message, memo.message)
+            && Objects.equals(date, memo.date)
+            && importance == memo.importance;
     }
 
     @Override
@@ -77,12 +81,18 @@ public class Memo {
 
     @Override
     public String toString() {
-        return "Memo{" +
-            "id='" + id + '\'' +
-            ", message='" + message + '\'' +
-            ", date=" + date +
-            ", importance=" + importance +
-            '}';
+        return "Memo{"
+            + "id='"
+            + id
+            + '\''
+            + ", message='"
+            + message
+            + '\''
+            + ", date="
+            + date
+            + ", importance="
+            + importance
+            + '}';
     }
 }
 

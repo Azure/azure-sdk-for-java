@@ -15,7 +15,7 @@ public class CosmosTemplateUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void rejectNullDbFactory() {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder("", "", TestConstants.DB_NAME).build();
+        final CosmosDBConfig dbConfig = CosmosDBConfig.cosmosDBConfigbuilder("", "", TestConstants.DB_NAME).build();
         final CosmosDbFactory cosmosDbFactory = new CosmosDbFactory(dbConfig);
 
         new CosmosTemplate(cosmosDbFactory, null, TestConstants.DB_NAME);

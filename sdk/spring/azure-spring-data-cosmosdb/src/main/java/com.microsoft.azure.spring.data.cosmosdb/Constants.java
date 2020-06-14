@@ -4,7 +4,10 @@ package com.microsoft.azure.spring.data.cosmosdb;
 
 import com.azure.data.cosmos.IndexingMode;
 
-public class Constants {
+/**
+ * Constants class of CosmosDB properties
+ */
+public final class Constants {
 
     public static final String DEFAULT_COLLECTION_NAME = "";
     public static final String DEFAULT_REQUEST_UNIT = "4000";

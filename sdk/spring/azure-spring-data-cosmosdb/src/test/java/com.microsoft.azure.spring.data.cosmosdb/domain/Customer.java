@@ -47,12 +47,16 @@ public class Customer {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) &&
-            Objects.equals(level, customer.level) &&
-            Objects.equals(user, customer.user);
+        return Objects.equals(id, customer.id)
+            && Objects.equals(level, customer.level)
+            && Objects.equals(user, customer.user);
     }
 
     @Override
@@ -62,11 +66,15 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-            "id='" + id + '\'' +
-            ", level=" + level +
-            ", user=" + user +
-            '}';
+        return "Customer{"
+            + "id='"
+            + id
+            + '\''
+            + ", level="
+            + level
+            + ", user="
+            + user
+            + '}';
     }
 
     public static class User {
@@ -98,11 +106,15 @@ public class Customer {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             User user = (User) o;
-            return Objects.equals(name, user.name) &&
-                Objects.equals(age, user.age);
+            return Objects.equals(name, user.name)
+                && Objects.equals(age, user.age);
         }
 
         @Override
@@ -112,10 +124,13 @@ public class Customer {
 
         @Override
         public String toString() {
-            return "User{" +
-                "name='" + name + '\'' +
-                ", age=" + age +
-                '}';
+            return "User{"
+                + "name='"
+                + name
+                + '\''
+                + ", age="
+                + age
+                + '}';
         }
     }
 }

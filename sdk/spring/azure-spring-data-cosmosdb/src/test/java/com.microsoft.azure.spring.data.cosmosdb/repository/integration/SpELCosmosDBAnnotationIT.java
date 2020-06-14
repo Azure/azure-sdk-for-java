@@ -83,27 +83,27 @@ public class SpELCosmosDBAnnotationIT {
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-      final CosmosDBConfig dbConfig = CosmosDBConfig.builder(dbUri, dbKey, TestConstants.DB_NAME).build();
-      final CosmosDbFactory dbFactory = new CosmosDbFactory(dbConfig);
+        final CosmosDBConfig dbConfig = CosmosDBConfig.cosmosDBConfigbuilder(dbUri, dbKey, TestConstants.DB_NAME).build();
+        final CosmosDbFactory dbFactory = new CosmosDbFactory(dbConfig);
 
-      cosmosEntityInformation = new CosmosEntityInformation<>(SpELPropertyStudent.class);
-      final CosmosMappingContext dbContext = new CosmosMappingContext();
-      dbContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
+        cosmosEntityInformation = new CosmosEntityInformation<>(SpELPropertyStudent.class);
+        final CosmosMappingContext dbContext = new CosmosMappingContext();
+        dbContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
 
-      final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
-      final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(dbContext, objectMapper);
-      staticTemplate = new CosmosTemplate(dbFactory, mappingConverter, TestConstants.DB_NAME);
+        final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+        final MappingCosmosConverter mappingConverter = new MappingCosmosConverter(dbContext, objectMapper);
+        staticTemplate = new CosmosTemplate(dbFactory, mappingConverter, TestConstants.DB_NAME);
 
-      staticTemplate.createContainerIfNotExists(cosmosEntityInformation);
+        staticTemplate.createContainerIfNotExists(cosmosEntityInformation);
 
-      final SpELPropertyStudent insertedRecord =
+        final SpELPropertyStudent insertedRecord =
               staticTemplate.insert(cosmosEntityInformation.getContainerName(), TEST_PROPERTY_STUDENT, null);
-      assertNotNull(insertedRecord);
+        assertNotNull(insertedRecord);
 
-      final SpELPropertyStudent readRecord =
+        final SpELPropertyStudent readRecord =
               staticTemplate.findById(TestConstants.DYNAMIC_PROPERTY_COLLECTION_NAME,
                       insertedRecord.getId(), SpELPropertyStudent.class);
-      assertNotNull(readRecord);
+        assertNotNull(readRecord);
     }
 
 }

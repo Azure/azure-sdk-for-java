@@ -6,7 +6,6 @@ import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
 import com.microsoft.azure.spring.data.cosmosdb.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
-import java.beans.ConstructorProperties;
 import java.util.Objects;
 
 @Document()
@@ -50,9 +49,9 @@ public class Address {
             return false;
         }
         final Address address = (Address) o;
-        return Objects.equals(postalCode, address.postalCode) &&
-            Objects.equals(street, address.street) &&
-            Objects.equals(city, address.city);
+        return Objects.equals(postalCode, address.postalCode)
+            && Objects.equals(street, address.street)
+            && Objects.equals(city, address.city);
     }
 
     @Override

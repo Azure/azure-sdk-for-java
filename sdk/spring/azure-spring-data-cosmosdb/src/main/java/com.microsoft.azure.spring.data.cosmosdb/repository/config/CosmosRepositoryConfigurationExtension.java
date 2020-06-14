@@ -19,7 +19,10 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 
-
+/**
+ * Configuration extension class based on {@link RepositoryConfigurationExtensionSupport} provide options to set
+ * repository support.
+ */
 public class CosmosRepositoryConfigurationExtension extends RepositoryConfigurationExtensionSupport {
 
     @Override
@@ -32,6 +35,10 @@ public class CosmosRepositoryConfigurationExtension extends RepositoryConfigurat
         return Constants.COSMOSDB_MODULE_PREFIX;
     }
 
+    /**
+     * Return the name of the repository factory bean class.
+     * @return String value of bean name
+     */
     public String getRepositoryFactoryBeanClassName() {
         return CosmosRepositoryFactoryBean.class.getName();
     }

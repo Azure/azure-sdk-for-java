@@ -8,7 +8,9 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
 
 import java.lang.annotation.Annotation;
 
-
+/**
+ * Inherit {@link RepositoryBeanDefinitionRegistrarSupport} class to enable repository and get extension
+ */
 public class ReactiveCosmosRepositoriesRegistrar extends RepositoryBeanDefinitionRegistrarSupport {
 
     @Override

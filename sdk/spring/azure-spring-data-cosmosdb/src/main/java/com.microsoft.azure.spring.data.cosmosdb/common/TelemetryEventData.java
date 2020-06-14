@@ -9,6 +9,9 @@ import org.springframework.util.Assert;
 import java.time.Instant;
 import java.util.Map;
 
+/**
+ * Data format class for telemetry event.
+ */
 public class TelemetryEventData {
 
     private final String name;
@@ -22,6 +25,12 @@ public class TelemetryEventData {
 
     private final String time;
 
+    /**
+     * Initialize data of a telemetry event
+     *
+     * @param eventName specify an event
+     * @param properties properties of event
+     */
     public TelemetryEventData(String eventName, @NonNull Map<String, String> properties) {
         Assert.hasText(eventName, "Event name should contain text.");
 
@@ -33,22 +42,47 @@ public class TelemetryEventData {
         time = Instant.now().toString();
     }
 
+    /**
+     * Get name of event
+     *
+     * @return name value
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get instrumentationKey of event
+     *
+     * @return instrumentationKey value
+     */
     public String getInstrumentationKey() {
         return instrumentationKey;
     }
 
+    /**
+     * Get tags of event
+     *
+     * @return Tags value
+     */
     public Tags getTags() {
         return tags;
     }
 
+    /**
+     * Get data of event
+     *
+     * @return EventData value
+     */
     public EventData getData() {
         return data;
     }
 
+    /**
+     * Get time of event
+     *
+     * @return time value
+     */
     public String getTime() {
         return time;
     }
@@ -61,7 +95,7 @@ public class TelemetryEventData {
         @JsonProperty("ai.internal.sdkVersion")
         private final String aiInternalSdkVersion;
 
-        public Tags(String instance, String sdkVersion) {
+        Tags(String instance, String sdkVersion) {
             aiCloudRoleInstance = instance;
             aiInternalSdkVersion = sdkVersion;
         }
@@ -81,7 +115,7 @@ public class TelemetryEventData {
 
         private final CustomData baseData = new CustomData();
 
-        public EventData(String baseType) {
+        EventData(String baseType) {
             this.baseType = baseType;
         }
 

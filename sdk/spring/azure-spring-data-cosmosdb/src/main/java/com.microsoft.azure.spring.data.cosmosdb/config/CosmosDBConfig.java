@@ -12,6 +12,9 @@ import org.springframework.util.Assert;
 
 import java.beans.ConstructorProperties;
 
+/**
+ * Config properties of CosmosDB
+ */
 public class CosmosDBConfig {
     private String uri;
 
@@ -33,6 +36,19 @@ public class CosmosDBConfig {
 
     private boolean populateQueryMetrics;
 
+    /**
+     * Initialization
+     * @param uri must not be {@literal null}
+     * @param key must not be {@literal null}
+     * @param database must not be {@literal null}
+     * @param connectionPolicy must not be {@literal null}
+     * @param consistencyLevel must not be {@literal null}
+     * @param allowTelemetry must not be {@literal null}
+     * @param requestOptions must not be {@literal null}
+     * @param cosmosKeyCredential must not be {@literal null}
+     * @param responseDiagnosticsProcessor must not be {@literal null}
+     * @param populateQueryMetrics must not be {@literal null}
+     */
     @ConstructorProperties({"uri", "key", "database", "connectionPolicy", "consistencyLevel", "allowTelemetry",
                             "requestOptions", "cosmosKeyCredential", "responseDiagnosticsProcessor",
                             "populateQueryMetrics"})
@@ -52,56 +68,111 @@ public class CosmosDBConfig {
         this.populateQueryMetrics = populateQueryMetrics;
     }
 
+    /**
+     * Gets uri
+     * @return uri
+     */
     public String getUri() {
         return uri;
     }
 
+    /**
+     * Gets key
+     * @return key
+     */
     public String getKey() {
         return key;
     }
 
+    /**
+     * Gets database
+     * @return database
+     */
     public String getDatabase() {
         return database;
     }
 
+    /**
+     * Gets connection policy
+     * @return connectionPolicy
+     */
     public ConnectionPolicy getConnectionPolicy() {
         return connectionPolicy;
     }
 
+    /**
+     * Gets consistency level
+     * @return ConsistencyLevel
+     */
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
+    /**
+     * Checks if telemetry is allowed
+     * @return boolean
+     */
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }
 
+    /**
+     * Gets request options
+     * @return RequestOptions
+     */
     public RequestOptions getRequestOptions() {
         return requestOptions;
     }
 
+    /**
+     * Gets Cosmos key credential
+     * @return CosmosKeyCredential
+     */
     public CosmosKeyCredential getCosmosKeyCredential() {
         return cosmosKeyCredential;
     }
 
+    /**
+     * Gets response diagnostics processor
+     * @return ResponseDiagnosticsProcessor
+     */
     public ResponseDiagnosticsProcessor getResponseDiagnosticsProcessor() {
         return responseDiagnosticsProcessor;
     }
 
+    /**
+     * Checks if is populate query metrics
+     * @return boolean
+     */
     public boolean isPopulateQueryMetrics() {
         return populateQueryMetrics;
     }
 
+    /**
+     * Sets response diagnostics processor
+     * @param responseDiagnosticsProcessor must not be {@literal null}
+     */
     public void setResponseDiagnosticsProcessor(ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
     }
 
+    /**
+     * Sets populate query metrics
+     * @param populateQueryMetrics must not be {@literal null}
+     */
     public void setPopulateQueryMetrics(boolean populateQueryMetrics) {
         this.populateQueryMetrics = populateQueryMetrics;
     }
 
-    public static CosmosDBConfigBuilder builder(String uri, CosmosKeyCredential cosmosKeyCredential,
-                                                String database) {
+    /**
+     * create a CosmosDBConfigBuilder with cosmos uri, cosmosKeyCredential and database name
+     * @param uri must not be {@literal null}
+     * @param cosmosKeyCredential must not be {@literal null}
+     * @param database must not be {@literal null}
+     * @return CosmosDBConfigBuilder
+     */
+    public static CosmosDBConfigBuilder cosmosDBConfigbuilder(String uri, CosmosKeyCredential cosmosKeyCredential,
+                                                              String database) {
         return defaultBuilder()
             .uri(uri)
             .cosmosKeyCredential(cosmosKeyCredential)
@@ -111,7 +182,14 @@ public class CosmosDBConfig {
             .requestOptions(new RequestOptions());
     }
 
-    public static CosmosDBConfigBuilder builder(String uri, String key, String database) {
+    /**
+     * create a CosmosDBConfigBuilder with cosmos uri, key and database name
+     * @param uri must not be {@literal null}
+     * @param key must not be {@literal null}
+     * @param database must not be {@literal null}
+     * @return CosmosDBConfigBuilder
+     */
+    public static CosmosDBConfigBuilder cosmosDBConfigbuilder(String uri, String key, String database) {
         return defaultBuilder()
             .uri(uri)
             .key(key)
@@ -121,21 +199,35 @@ public class CosmosDBConfig {
             .requestOptions(new RequestOptions());
     }
 
-    public static CosmosDBConfigBuilder builder(String connectionString, String database) {
+    /**
+     * create a CosmosDBConfigBuilder with connection string and database name
+     * @param connectionString must not be {@literal null}
+     * @param database must not be {@literal null}
+     * @return CosmosDBConfigBuilder
+     * @throws CosmosDBAccessException for invalid connection string
+     */
+    public static CosmosDBConfigBuilder cosmosDBConfigbuilder(String connectionString, String database) {
         Assert.hasText(connectionString, "connection string should have text!");
         try {
             final String uri = connectionString.split(";")[0].split("=")[1];
             final String key = connectionString.split(";")[1].split("=")[1];
-            return builder(uri, key, database);
+            return cosmosDBConfigbuilder(uri, key, database);
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new CosmosDBAccessException("could not parse connection string");
         }
     }
 
+    /**
+     * create a CosmosDBConfigBuilder instance
+     * @return CosmosDBConfigBuilder
+     */
     public static CosmosDBConfigBuilder defaultBuilder() {
         return new CosmosDBConfigBuilder();
     }
 
+    /**
+     * Builder class for cosmos db config
+     */
     public static class CosmosDBConfigBuilder {
         private String uri;
         private String key;
@@ -151,63 +243,133 @@ public class CosmosDBConfig {
         CosmosDBConfigBuilder() {
         }
 
+        /**
+         * Set uri
+         *
+         * @param uri value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder uri(String uri) {
             this.uri = uri;
             return this;
         }
 
+        /**
+         * Set key
+         *
+         * @param key value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder key(String key) {
             this.key = key;
             return this;
         }
 
+        /**
+         * Set database
+         *
+         * @param database value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder database(String database) {
             this.database = database;
             return this;
         }
 
+        /**
+         * Set connectionPolicy
+         *
+         * @param connectionPolicy value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder connectionPolicy(ConnectionPolicy connectionPolicy) {
             this.connectionPolicy = connectionPolicy;
             return this;
         }
 
+        /**
+         * Set consistencyLevel
+         *
+         * @param consistencyLevel value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder consistencyLevel(ConsistencyLevel consistencyLevel) {
             this.consistencyLevel = consistencyLevel;
             return this;
         }
 
+        /**
+         * Set allowTelemetry
+         *
+         * @param allowTelemetry value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder allowTelemetry(boolean allowTelemetry) {
             this.allowTelemetry = allowTelemetry;
             return this;
         }
 
+        /**
+         * Set requestOptions
+         *
+         * @param requestOptions value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder requestOptions(RequestOptions requestOptions) {
             this.requestOptions = requestOptions;
             return this;
         }
 
+        /**
+         * Set cosmosKeyCredential
+         *
+         * @param cosmosKeyCredential value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder cosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
             this.cosmosKeyCredential = cosmosKeyCredential;
             return this;
         }
 
+        /**
+         * Set responseDiagnosticsProcessor
+         *
+         * @param responseDiagnosticsProcessor value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder responseDiagnosticsProcessor(ResponseDiagnosticsProcessor
                                                                       responseDiagnosticsProcessor) {
             this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
             return this;
         }
 
+        /**
+         * Set populateQueryMetrics
+         *
+         * @param populateQueryMetrics value to initialize
+         * @return CosmosDBConfigBuilder
+         */
         public CosmosDBConfigBuilder populateQueryMetrics(boolean populateQueryMetrics) {
             this.populateQueryMetrics = populateQueryMetrics;
             return this;
         }
 
+        /**
+         * Build a CosmosDBConfig instance
+         *
+         * @return CosmosDBConfig
+         */
         public CosmosDBConfig build() {
             return new CosmosDBConfig(this.uri, this.key, this.database, this.connectionPolicy, this.consistencyLevel,
                 this.allowTelemetry, this.requestOptions, this.cosmosKeyCredential, this.responseDiagnosticsProcessor,
                 this.populateQueryMetrics);
         }
 
+        /**
+         * Generate string info of instance
+         *
+         * @return String
+         */
         public String toString() {
             return "CosmosDBConfig.CosmosDBConfigBuilder(uri="
                     + this.uri

@@ -17,8 +17,12 @@ public abstract class Shape {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Shape shape = (Shape) o;
         return area == shape.area;
     }
@@ -30,7 +34,10 @@ public abstract class Shape {
 
     @Override
     public String toString() {
-        return "Shape{" + "area=" + area + '}';
+        return "Shape{"
+            + "area="
+            + area
+            + '}';
     }
 
     public Shape(int area) {

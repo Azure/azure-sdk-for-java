@@ -26,7 +26,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MacAddress {
+/**
+ * Mac address class to transfer mac address to hash mac address.
+ */
+public final class MacAddress {
 
     private static final String UNKNOWN_MAC_ADDRESS = "Unknown-Mac-Address";
     private static final String MAC_REGEX = "([0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}";
@@ -49,7 +52,9 @@ public class MacAddress {
         final String os = System.getProperty("os.name");
         final StringBuilder macBuilder = new StringBuilder();
 
-        if (os != null && !os.isEmpty() && os.toLowerCase(Locale.US).startsWith("win")) {
+        if (os != null
+                && !os.isEmpty()
+                && os.toLowerCase(Locale.US).startsWith("win")) {
             commands = Collections.singletonList("getmac");
         } else {
             commands = Arrays.asList("ifconfig", "-a");
@@ -113,6 +118,11 @@ public class MacAddress {
         return builder.toString();
     }
 
+    /**
+     * To get a hash Mac address.
+     *
+     * @return String Hash mac address
+     */
     public static String getHashMac() {
         final String rawMac = getRawMac();
 

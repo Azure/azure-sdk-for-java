@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PageableAddressRepository extends PagingAndSortingRepository<PageableAddress, String>{
+public interface PageableAddressRepository extends PagingAndSortingRepository<PageableAddress, String> {
     Page<PageableAddress> findByStreet(String street, Pageable pageable);
 
     Page<PageableAddress> findByCity(String city, Pageable pageable);

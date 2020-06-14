@@ -29,7 +29,7 @@ public class UserAgentTestIT {
     public void testUserAgentSuffixAppended() {
         PowerMockito.mockStatic(PropertyLoader.class);
         Mockito.doReturn(TEST_VERSION).when(PropertyLoader.getProjectVersion());
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder(TestConstants.COSMOSDB_FAKE_HOST,
+        final CosmosDBConfig dbConfig = CosmosDBConfig.cosmosDBConfigbuilder(TestConstants.COSMOSDB_FAKE_HOST,
             TestConstants.COSMOSDB_FAKE_KEY, TestConstants.DB_NAME).build();
         final CosmosDbFactory factory = new CosmosDbFactory(dbConfig);
         factory.getCosmosClient();

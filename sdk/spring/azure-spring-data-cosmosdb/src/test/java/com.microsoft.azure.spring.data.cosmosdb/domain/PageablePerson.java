@@ -87,14 +87,18 @@ public class PageablePerson {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PageablePerson that = (PageablePerson) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(firstName, that.firstName) &&
-            Objects.equals(lastName, that.lastName) &&
-            Objects.equals(hobbies, that.hobbies) &&
-            Objects.equals(shippingAddresses, that.shippingAddresses);
+        return Objects.equals(id, that.id)
+            && Objects.equals(firstName, that.firstName)
+            && Objects.equals(lastName, that.lastName)
+            && Objects.equals(hobbies, that.hobbies)
+            && Objects.equals(shippingAddresses, that.shippingAddresses);
     }
 
     @Override
@@ -104,13 +108,23 @@ public class PageablePerson {
 
     @Override
     public String toString() {
-        return "PageablePerson{" +
-            "id='" + id + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", hobbies=" + hobbies +
-            ", shippingAddresses=" + shippingAddresses +
-            ", _etag='" + _etag + '\'' +
-            '}';
+        return "PageablePerson{"
+            + "id='"
+            + id
+            + '\''
+            + ", firstName='"
+            + firstName
+            + '\''
+            + ", lastName='"
+            + lastName
+            + '\''
+            + ", hobbies="
+            + hobbies
+            + ", shippingAddresses="
+            + shippingAddresses
+            + ", _etag='"
+            + _etag
+            + '\''
+            + '}';
     }
 }

@@ -8,8 +8,16 @@ import org.springframework.data.repository.query.Parameters;
 import java.lang.reflect.Method;
 import java.util.List;
 
+/**
+ * Method parameters that have to be bound to query parameters or applied to the query independently.
+ */
 public class CosmosParameters extends Parameters<CosmosParameters, CosmosParameter> {
 
+    /**
+     * Creates a new instance of {@link CosmosParameters}.
+     *
+     * @param method must not be {@literal null}.
+     */
     public CosmosParameters(Method method) {
         super(method);
     }

@@ -79,8 +79,13 @@ public class SdkService {
         final Iterator<FeedResponse<CosmosItemProperties>> feedResponseIterator =
                 cosmosSyncClient.getDatabase(dbName)
                         .getContainer(containerName)
-                        .queryItems("SELECT * FROM " + containerName + " WHERE " +
-                            containerName + ".id='" + id + "'", new FeedOptions());
+                        .queryItems("SELECT * FROM "
+                                + containerName
+                                + " WHERE "
+                                + containerName
+                                + ".id='"
+                                + id
+                                + "'", new FeedOptions());
         CosmosItemProperties itemProperties = null;
         if (feedResponseIterator.hasNext()) {
             final List<CosmosItemProperties> results = feedResponseIterator.next().results();
@@ -193,7 +198,8 @@ public class SdkService {
         final Iterator<CosmosItemProperties> it = getCosmosItemPropertiesList(sql).iterator();
         final List<PerfPerson> entities = new ArrayList<>();
         int i = 0;
-        while (it.hasNext() && i++ < size) {
+        while (it.hasNext()
+                && i++ < size) {
             // This convert here is in order to mock data conversion in real use case, in order to compare with
             // Spring Data mapping
             final CosmosItemProperties d = it.next();

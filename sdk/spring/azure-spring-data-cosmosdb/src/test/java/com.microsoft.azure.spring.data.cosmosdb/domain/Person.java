@@ -87,14 +87,18 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Person person = (Person) o;
-        return Objects.equals(id, person.id) &&
-            Objects.equals(firstName, person.firstName) &&
-            Objects.equals(lastName, person.lastName) &&
-            Objects.equals(hobbies, person.hobbies) &&
-            Objects.equals(shippingAddresses, person.shippingAddresses);
+        return Objects.equals(id, person.id)
+            && Objects.equals(firstName, person.firstName)
+            && Objects.equals(lastName, person.lastName)
+            && Objects.equals(hobbies, person.hobbies)
+            && Objects.equals(shippingAddresses, person.shippingAddresses);
     }
 
     @Override
@@ -104,13 +108,23 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-            "id='" + id + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            ", hobbies=" + hobbies +
-            ", shippingAddresses=" + shippingAddresses +
-            ", _etag='" + _etag + '\'' +
-            '}';
+        return "Person{"
+            + "id='"
+            + id
+            + '\''
+            + ", firstName='"
+            + firstName
+            + '\''
+            + ", lastName='"
+            + lastName
+            + '\''
+            + ", hobbies="
+            + hobbies
+            + ", shippingAddresses="
+            + shippingAddresses
+            + ", _etag='"
+            + _etag
+            + '\''
+            + '}';
     }
 }

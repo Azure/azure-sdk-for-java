@@ -58,13 +58,17 @@ public class PageableMemo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PageableMemo that = (PageableMemo) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(message, that.message) &&
-            Objects.equals(date, that.date) &&
-            importance == that.importance;
+        return Objects.equals(id, that.id)
+            && Objects.equals(message, that.message)
+            && Objects.equals(date, that.date)
+            && importance == that.importance;
     }
 
     @Override
@@ -74,11 +78,17 @@ public class PageableMemo {
 
     @Override
     public String toString() {
-        return "PageableMemo{" +
-            "id='" + id + '\'' +
-            ", message='" + message + '\'' +
-            ", date=" + date +
-            ", importance=" + importance +
-            '}';
+        return "PageableMemo{"
+            + "id='"
+            + id
+            + '\''
+            + ", message='"
+            + message
+            + '\''
+            + ", date="
+            + date
+            + ", importance="
+            + importance
+            + '}';
     }
 }

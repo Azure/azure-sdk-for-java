@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class PropertyLoader {
+/**
+ * Load properties from files
+ */
+public final class PropertyLoader {
 
     private static final String PROJECT_PROPERTY_FILE = "/META-INF/project.properties";
 
@@ -21,14 +24,29 @@ public class PropertyLoader {
     private PropertyLoader() {
     }
 
+    /**
+     * Get project version from /META-INF/project.properties
+     *
+     * @return String project version
+     */
     public static String getProjectVersion() {
         return getPropertyByName("project.version", PROJECT_PROPERTY_FILE);
     }
 
+    /**
+     * Get telemetry instrumentation key from /telemetry.config
+     *
+     * @return String telemetry instrumentation key
+     */
     public static String getTelemetryInstrumentationKey() {
         return getPropertyByName("telemetry.instrumentationKey", TELEMETRY_CONFIG_FILE);
     }
 
+    /**
+     * Check if telemetry is allowed
+     *
+     * @return boolean if telemetry is allowed
+     */
     public static boolean isApplicationTelemetryAllowed() {
         String allowed = getPropertyByName("cosmosdb.telemetryAllowed", APPLICATION_PROPERTY_FILE);
 

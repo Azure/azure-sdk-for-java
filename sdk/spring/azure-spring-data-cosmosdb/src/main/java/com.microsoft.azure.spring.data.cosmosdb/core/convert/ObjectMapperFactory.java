@@ -9,6 +9,9 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
+/**
+ * Factory class for object mapper
+ */
 public class ObjectMapperFactory {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -19,6 +22,10 @@ public class ObjectMapperFactory {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
+    /**
+     * To get object mapper
+     * @return ObjectMapper
+     */
     public static ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }

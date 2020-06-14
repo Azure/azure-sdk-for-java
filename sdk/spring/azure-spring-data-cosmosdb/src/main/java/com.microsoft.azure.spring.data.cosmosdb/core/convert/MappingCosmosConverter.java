@@ -29,6 +29,9 @@ import java.util.Date;
 
 import static com.microsoft.azure.spring.data.cosmosdb.Constants.ISO_8601_COMPATIBLE_DATE_PATTERN;
 
+/**
+ * A converter class between common types and cosmosItemProperties
+ */
 @SuppressWarnings("unchecked")
 public class MappingCosmosConverter
     implements EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty,
@@ -41,13 +44,18 @@ public class MappingCosmosConverter
     private ApplicationContext applicationContext;
     private ObjectMapper objectMapper;
 
+    /**
+     * Initialization
+     * @param mappingContext must not be {@literal null}
+     * @param objectMapper must not be {@literal null}
+     */
     public MappingCosmosConverter(
         MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> mappingContext,
         @Qualifier(Constants.OBJECTMAPPER_BEAN_NAME) ObjectMapper objectMapper) {
         this.mappingContext = mappingContext;
         this.conversionService = new GenericConversionService();
-        this.objectMapper = objectMapper == null ? ObjectMapperFactory.getObjectMapper() :
-            objectMapper;
+        this.objectMapper = objectMapper == null ? ObjectMapperFactory.getObjectMapper()
+            : objectMapper;
     }
 
     @Override
@@ -78,8 +86,10 @@ public class MappingCosmosConverter
 
             return objectMapper.readValue(jsonObject.toString(), type);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to read the source document " + cosmosItemProperties.toJson()
-                + "  to target type " + type, e);
+            throw new IllegalStateException("Failed to read the source document "
+                + cosmosItemProperties.toJson()
+                + "  to target type "
+                + type, e);
         }
     }
 
@@ -89,6 +99,13 @@ public class MappingCosmosConverter
         throw new UnsupportedOperationException("The feature is not implemented yet");
     }
 
+    /**
+     * To write source entity as a cosmos item
+     * @param sourceEntity must not be {@literal null}
+     * @return CosmosItemProperties
+     * @throws MappingException no mapping metadata for entity type
+     * @throws CosmosDBAccessException fail to map document value
+     */
     public CosmosItemProperties writeCosmosItemProperties(Object sourceEntity) {
         if (sourceEntity == null) {
             return null;
@@ -98,7 +115,8 @@ public class MappingCosmosConverter
             mappingContext.getPersistentEntity(sourceEntity.getClass());
 
         if (persistentEntity == null) {
-            throw new MappingException("no mapping metadata for entity type: " + sourceEntity.getClass().getName());
+            throw new MappingException("no mapping metadata for entity type: "
+                + sourceEntity.getClass().getName());
         }
 
         final ConvertingPropertyAccessor<?> accessor = getPropertyAccessor(sourceEntity);
@@ -121,6 +139,10 @@ public class MappingCosmosConverter
         return cosmosItemProperties;
     }
 
+    /**
+     * To get application context
+     * @return ApplicationContext
+     */
     public ApplicationContext getApplicationContext() {
         return this.applicationContext;
     }
@@ -135,6 +157,10 @@ public class MappingCosmosConverter
         return conversionService;
     }
 
+    /**
+     * To get mapping context
+     * @return MappingContext
+     */
     public MappingContext<? extends CosmosPersistentEntity<?>, CosmosPersistentProperty> getMappingContext() {
         return mappingContext;
     }
@@ -146,7 +172,7 @@ public class MappingCosmosConverter
 
         Assert.notNull(entityInformation, "EntityInformation should not be null.");
         final PersistentPropertyAccessor<?> accessor = entityInformation.getPropertyAccessor(entity);
-        return new ConvertingPropertyAccessor<> (accessor, conversionService);
+        return new ConvertingPropertyAccessor<>(accessor, conversionService);
     }
 
     /**
@@ -164,8 +190,7 @@ public class MappingCosmosConverter
 
         if (fromPropertyValue instanceof Date) {
             fromPropertyValue = ((Date) fromPropertyValue).getTime();
-        } else
-        if (fromPropertyValue instanceof ZonedDateTime) {
+        } else if (fromPropertyValue instanceof ZonedDateTime) {
             fromPropertyValue = ((ZonedDateTime) fromPropertyValue)
                                         .format(DateTimeFormatter.ofPattern(ISO_8601_COMPATIBLE_DATE_PATTERN));
         } else if (fromPropertyValue instanceof Enum) {

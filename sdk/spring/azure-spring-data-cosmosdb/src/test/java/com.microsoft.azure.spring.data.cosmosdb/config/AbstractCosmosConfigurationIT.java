@@ -101,7 +101,7 @@ public class AbstractCosmosConfigurationIT {
         @Bean
         public CosmosDBConfig getConfig() {
             final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
-            return CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, dbName).build();
+            return CosmosDBConfig.cosmosDBConfigbuilder(cosmosDbUri, cosmosDbKey, dbName).build();
         }
 
         @Override
@@ -144,7 +144,7 @@ public class AbstractCosmosConfigurationIT {
         public CosmosDBConfig getConfig() {
             final String dbName = StringUtils.hasText(this.database) ? this.database : TestConstants.DB_NAME;
             final RequestOptions options = getRequestOptions();
-            return CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, dbName)
+            return CosmosDBConfig.cosmosDBConfigbuilder(cosmosDbUri, cosmosDbKey, dbName)
                     .requestOptions(options)
                     .build();
         }

@@ -8,7 +8,7 @@ import com.microsoft.azure.spring.data.cosmosdb.domain.Address;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestConstants {
+public final class TestConstants {
     private static final int SUFFIX_LENGTH = 1;
 
     private static final Address ADDRESS_1 = new Address("201107", "Zixing Road", "Shanghai");
@@ -24,10 +24,10 @@ public class TestConstants {
     public static final IndexingMode DEFAULT_INDEXINGPOLICY_MODE = IndexingMode.CONSISTENT;
     public static final String[] DEFAULT_EXCLUDEDPATHS = {};
     public static final String[] DEFAULT_INCLUDEDPATHS = {
-            "{\"path\":\"/*\",\"indexes\":[" +
-                    "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1}," +
-                    "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3}" +
-                    "]}",
+        "{\"path\":\"/*\",\"indexes\":["
+                    + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":-1},"
+                    + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3}"
+                    + "]}",
     };
 
     public static final String ROLE_COLLECTION_NAME = "RoleCollectionName";
@@ -36,35 +36,35 @@ public class TestConstants {
     public static final boolean INDEXINGPOLICY_AUTOMATIC = false;
     public static final IndexingMode INDEXINGPOLICY_MODE = IndexingMode.LAZY;
     public static final String INCLUDEDPATH_0 = "{\"path\":\"/*\",\"indexes\":["
-        + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":2},"
-        + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":2},"
-        + "{\"kind\":\"Spatial\",\"dataType\":\"Point\"}"
-        + "]}";
+            + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":2},"
+            + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":2},"
+            + "{\"kind\":\"Spatial\",\"dataType\":\"Point\"}"
+            + "]}";
     public static final String INCLUDEDPATH_1 = "{\"path\":\"/cache/*\",\"indexes\":["
-        + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":3},"
-        + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3},"
-        + "{\"kind\":\"Spatial\",\"dataType\":\"LineString\"}"
-        + "]}";
+            + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":3},"
+            + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":3},"
+            + "{\"kind\":\"Spatial\",\"dataType\":\"LineString\"}"
+            + "]}";
     public static final String INCLUDEDPATH_2 = "{\"path\":\"/entities/*\",\"indexes\":["
-        + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":4},"
-        + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":4},"
-        + "{\"kind\":\"Spatial\",\"dataType\":\"Polygon\"}"
-        + "]}";
+            + "{\"kind\":\"Range\",\"dataType\":\"Number\",\"precision\":4},"
+            + "{\"kind\":\"Hash\",\"dataType\":\"String\",\"precision\":4},"
+            + "{\"kind\":\"Spatial\",\"dataType\":\"Polygon\"}"
+            + "]}";
     public static final String[] INCLUDEDPATHS = {
-            INCLUDEDPATH_0,
-            INCLUDEDPATH_1,
-            INCLUDEDPATH_2,
+        INCLUDEDPATH_0,
+        INCLUDEDPATH_1,
+        INCLUDEDPATH_2,
     };
     public static final String EXCLUDEDPATH_0 = "{\"path\":\"/excluded/*\"}";
     public static final String EXCLUDEDPATH_1 = "{\"path\":\"/props/*\"}";
     public static final String[] EXCLUDEDPATHS = {
-            EXCLUDEDPATH_0,
-            EXCLUDEDPATH_1,
+        EXCLUDEDPATH_0,
+        EXCLUDEDPATH_1,
     };
 
     public static final String ORDER_BY_STRING_PATH = "{\"path\":\"/*\",\"indexes\":["
-        + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":-1},"
-        + "]}";
+            + "{\"kind\":\"Range\",\"dataType\":\"String\",\"precision\":-1},"
+            + "]}";
 
     public static final String STARTSWITH_INCLUDEDPATH =
             "{\"path\":\"/*\",\"indexes\":["
@@ -73,7 +73,7 @@ public class TestConstants {
                 + "]}";
 
     public static final String[] PERSON_INCLUDEDPATHS = {
-            STARTSWITH_INCLUDEDPATH
+        STARTSWITH_INCLUDEDPATH
     };
 
     public static final String DB_NAME = "testdb";

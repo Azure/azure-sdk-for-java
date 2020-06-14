@@ -5,17 +5,16 @@ package com.microsoft.azure.spring.data.cosmosdb.core;
 
 import com.azure.data.cosmos.AccessCondition;
 import com.azure.data.cosmos.AccessConditionType;
+import com.azure.data.cosmos.CosmosItemProperties;
+import com.azure.data.cosmos.SqlQuerySpec;
+import com.azure.data.cosmos.CosmosItemRequestOptions;
+import com.azure.data.cosmos.FeedResponse;
+import com.azure.data.cosmos.FeedOptions;
 import com.azure.data.cosmos.CosmosClient;
 import com.azure.data.cosmos.CosmosContainerProperties;
 import com.azure.data.cosmos.CosmosContainerResponse;
-import com.azure.data.cosmos.CosmosItemProperties;
-import com.azure.data.cosmos.CosmosItemRequestOptions;
-import com.azure.data.cosmos.FeedOptions;
-import com.azure.data.cosmos.FeedResponse;
 import com.azure.data.cosmos.PartitionKey;
-import com.azure.data.cosmos.SqlQuerySpec;
 import com.microsoft.azure.spring.data.cosmosdb.CosmosDbFactory;
-import com.microsoft.azure.spring.data.cosmosdb.common.CosmosdbUtils;
 import com.microsoft.azure.spring.data.cosmosdb.common.Memoizer;
 import com.microsoft.azure.spring.data.cosmosdb.core.convert.MappingCosmosConverter;
 import com.microsoft.azure.spring.data.cosmosdb.core.generator.CountQueryGenerator;
@@ -42,6 +41,9 @@ import static com.microsoft.azure.spring.data.cosmosdb.common.CosmosdbUtils.fill
 import static com.microsoft.azure.spring.data.cosmosdb.exception.CosmosDBExceptionUtils.exceptionHandler;
 import static com.microsoft.azure.spring.data.cosmosdb.exception.CosmosDBExceptionUtils.findAPIExceptionHandler;
 
+/**
+ * Template class of reactive cosmos
+ */
 @SuppressWarnings("unchecked")
 public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, ApplicationContextAware {
     private static final String COUNT_VALUE_KEY = "_aggregate";
@@ -61,9 +63,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Constructor
      *
-     * @param cosmosDbFactory            the cosmosdbfactory
+     * @param cosmosDbFactory the cosmosdbfactory
      * @param mappingCosmosConverter the mappingCosmosConverter
-     * @param dbName                     database name
+     * @param dbName database name
      */
     public ReactiveCosmosTemplate(CosmosDbFactory cosmosDbFactory,
                                   MappingCosmosConverter mappingCosmosConverter,
@@ -95,7 +97,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return Mono containing CosmosContainerResponse
      */
     @Override
-    public Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation<?,?> information) {
+    public Mono<CosmosContainerResponse> createCollectionIfNotExists(CosmosEntityInformation<?, ?> information) {
         return createContainerIfNotExists(information);
     }
 
@@ -106,7 +108,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return Mono containing CosmosContainerResponse
      */
     @Override
-    public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?,?> information) {
+    public Mono<CosmosContainerResponse> createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
 
         return cosmosClient
             .createDatabaseIfNotExists(this.databaseName)
@@ -139,7 +141,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Find all items in a given container
      *
      * @param containerName the containerName
-     * @param domainType   the domainType
+     * @param domainType the domainType
      * @return Flux with all the found items or error
      */
     @Override
@@ -188,7 +190,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Find by id
      *
-     * @param id          the id
+     * @param id the id
      * @param domainType the domainType
      * @return Mono with the item or error
      */
@@ -202,8 +204,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Find by id
      *
      * @param containerName the containername
-     * @param id            the id
-     * @param domainType   the entity class
+     * @param id the id
+     * @param domainType the entity class
      * @return Mono with the item or error
      */
     @Override
@@ -221,13 +223,13 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                            .getContainer(containerName)
                            .queryItems(query, options)
                            .flatMap(cosmosItemFeedResponse -> {
-                                fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
-                                    null, cosmosItemFeedResponse);
-                                return Mono.justOrEmpty(cosmosItemFeedResponse
-                                    .results()
-                                    .stream()
-                                    .map(cosmosItem -> toDomainObject(domainType, cosmosItem))
-                                    .findFirst());
+                               fillAndProcessResponseDiagnostics(responseDiagnosticsProcessor,
+                                   null, cosmosItemFeedResponse);
+                               return Mono.justOrEmpty(cosmosItemFeedResponse
+                                   .results()
+                                   .stream()
+                                   .map(cosmosItem -> toDomainObject(domainType, cosmosItem))
+                                   .findFirst());
                            })
                            .onErrorResume(throwable ->
                                findAPIExceptionHandler("Failed to find item", throwable))
@@ -237,9 +239,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Find by id
      *
-     * @param id            the id
-     * @param domainType   the entity class
-     * @param partitionKey  partition Key
+     * @param id the id
+     * @param domainType the entity class
+     * @param partitionKey partition Key
      * @return Mono with the item or error
      */
     @Override
@@ -265,6 +267,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Insert
      *
+     * @param <T> type of inserted objectToSave
      * @param objectToSave the object to save
      * @param partitionKey the partition key
      * @return Mono with the item or error
@@ -302,9 +305,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Insert
      *
+     * @param <T> type of inserted objectToSave
      * @param containerName the container name
-     * @param objectToSave  the object to save
-     * @param partitionKey  the partition key
+     * @param objectToSave the object to save
+     * @param partitionKey the partition key
      * @return Mono with the item or error
      */
     public <T> Mono<T> insert(String containerName, Object objectToSave, PartitionKey partitionKey) {
@@ -332,7 +336,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Upsert
      *
-     * @param object       the object to upsert
+     * @param object the object to upsert
      * @param partitionKey the partition key
      * @return Mono with the item or error
      */
@@ -345,8 +349,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Upsert
      *
      * @param containerName the container name
-     * @param object        the object to save
-     * @param partitionKey  the partition key
+     * @param object the object to save
+     * @param partitionKey the partition key
      * @return Mono with the item or error
      */
     @Override
@@ -376,8 +380,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Delete an item by id
      *
      * @param containerName the container name
-     * @param id            the id
-     * @param partitionKey  the partition key
+     * @param id the id
+     * @param partitionKey the partition key
      * @return void Mono
      */
     @Override
@@ -406,7 +410,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Delete all items in a container
      *
-     * @param containerName    the container name
+     * @param containerName the container name
      * @param partitionKeyName the partition key path
      * @return void Mono
      */
@@ -448,8 +452,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Delete items matching query
      *
-     * @param query         the document query
-     * @param domainType   the entity class
+     * @param query the document query
+     * @param domainType the entity class
      * @param containerName the container name
      * @return Mono
      */
@@ -469,8 +473,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Find items
      *
-     * @param query         the document query
-     * @param domainType   the entity class
+     * @param query the document query
+     * @param domainType the entity class
      * @param containerName the container name
      * @return Flux with found items or error
      */
@@ -483,8 +487,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Exists
      *
-     * @param query         the document query
-     * @param domainType   the entity class
+     * @param query the document query
+     * @param domainType the entity class
      * @param containerName the container name
      * @return Mono with a boolean or error
      */
@@ -520,7 +524,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     /**
      * Count
      *
-     * @param query         the document query
+     * @param query the document query
      * @param containerName the container name
      * @return Mono with count or error
      */
@@ -534,6 +538,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return mappingCosmosConverter;
     }
 
+    /**
+     *Count
+     *
+     * @param query the document query
+     * @param isCrossPartitionQuery flag of cross partition
+     * @param containerName the container name
+     * @return Mono
+     */
     public Mono<Long> count(DocumentQuery query, boolean isCrossPartitionQuery, String containerName) {
         return getCountValue(query, isCrossPartitionQuery, containerName);
     }
@@ -640,7 +652,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         PartitionKey partitionKey = null;
 
-        if (!partitionKeyNames.isEmpty() && StringUtils.hasText(partitionKeyNames.get(0))) {
+        if (!partitionKeyNames.isEmpty()
+                && StringUtils.hasText(partitionKeyNames.get(0))) {
             partitionKey = new PartitionKey(cosmosItemProperties.get(partitionKeyNames.get(0)));
         }
 

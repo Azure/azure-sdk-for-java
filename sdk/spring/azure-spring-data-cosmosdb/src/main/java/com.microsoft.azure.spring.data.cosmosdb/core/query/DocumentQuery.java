@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.data.cosmosdb.core.query;
 
 import org.springframework.data.domain.Pageable;
@@ -13,6 +10,9 @@ import org.springframework.util.Assert;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class for document query
+ */
 public class DocumentQuery {
 
     private final Criteria criteria;
@@ -21,22 +21,48 @@ public class DocumentQuery {
 
     private Pageable pageable = Pageable.unpaged();
 
+    /**
+     * Initialization
+     *
+     * @param criteria object
+     */
     public DocumentQuery(@NonNull Criteria criteria) {
         this.criteria = criteria;
     }
 
+    /**
+     * To get Criteria object
+     *
+     * @return Criteria
+     */
     public Criteria getCriteria() {
         return criteria;
     }
 
+    /**
+     * To get Sort object
+     *
+     * @return Sort
+     */
     public Sort getSort() {
         return sort;
     }
 
+    /**
+     * To get Pageable object
+     *
+     * @return Pageable
+     */
     public Pageable getPageable() {
         return pageable;
     }
 
+    /**
+     * With Sort
+     *
+     * @param sort Sort
+     * @return DocumentQuery object
+     */
     public DocumentQuery with(@NonNull Sort sort) {
         if (sort.isSorted()) {
             this.sort = sort.and(this.sort);
@@ -45,6 +71,12 @@ public class DocumentQuery {
         return this;
     }
 
+    /**
+     * With Sort
+     *
+     * @param pageable Sort
+     * @return DocumentQuery object
+     */
     public DocumentQuery with(@NonNull Pageable pageable) {
         Assert.notNull(pageable, "pageable should not be null");
 
@@ -82,6 +114,11 @@ public class DocumentQuery {
                 .orElse(hasKeywordOr());
     }
 
+    /**
+     * To get criteria by type
+     * @param criteriaType the criteria type
+     * @return Optional
+     */
     public Optional<Criteria> getCriteriaByType(@NonNull CriteriaType criteriaType) {
         return getCriteriaByType(criteriaType, this.criteria);
     }

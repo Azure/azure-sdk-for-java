@@ -7,17 +7,32 @@ import com.microsoft.azure.spring.data.cosmosdb.core.query.DocumentQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
 
+/**
+ * Abstract class for reactive cosmos query.
+ */
 public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
 
     private final ReactiveCosmosQueryMethod method;
     private final ReactiveCosmosOperations operations;
 
+    /**
+     * Initialization
+     *
+     * @param method ReactiveCosmosQueryMethod
+     * @param operations ReactiveCosmosOperations
+     */
     public AbstractReactiveCosmosQuery(ReactiveCosmosQueryMethod method,
                                        ReactiveCosmosOperations operations) {
         this.method = method;
         this.operations = operations;
     }
 
+    /**
+     * Executes the {@link AbstractReactiveCosmosQuery} with the given parameters.
+     *
+     * @param parameters must not be {@literal null}.
+     * @return execution result. Can be {@literal null}.
+     */
     public Object execute(Object[] parameters) {
         final ReactiveCosmosParameterAccessor accessor =
             new ReactiveCosmosParameterParameterAccessor(method, parameters);
@@ -37,8 +52,8 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         if (isDeleteQuery()) {
             return new ReactiveCosmosQueryExecution.DeleteExecution(operations);
         } else if (method.isPageQuery()) {
-            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos " +
-                "db");
+            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos "
+                + "db");
         } else if (isExistsQuery()) {
             return new ReactiveCosmosQueryExecution.ExistsExecution(operations);
         } else {
@@ -46,6 +61,11 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         }
     }
 
+    /**
+     * Get method of query
+     *
+     * @return ReactiveCosmosQueryMethod
+     */
     public ReactiveCosmosQueryMethod getQueryMethod() {
         return method;
     }

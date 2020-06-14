@@ -19,11 +19,21 @@ public class CosmosDBAccessException extends DataAccessException {
 
     protected final CosmosClientException cosmosClientException;
 
+    /**
+     * Construct a {@code CosmosDBAccessException} with the specified detail message.
+     * @param msg the detail message
+     */
     public CosmosDBAccessException(String msg) {
         super(msg);
         this.cosmosClientException = null;
     }
 
+    /**
+     * Construct a {@code CosmosDBAccessException} with the specified detail message.
+     * and nested exception.
+     * @param msg the detail message
+     * @param cause the nested Throwable
+     */
     public CosmosDBAccessException(@Nullable String msg, @Nullable Throwable cause) {
         super(msg, cause);
         if (cause instanceof CosmosClientException) {
@@ -33,6 +43,13 @@ public class CosmosDBAccessException extends DataAccessException {
         }
     }
 
+    /**
+     * Construct a {@code CosmosDBAccessException} with the specified detail message
+     * and nested exception.
+     *
+     * @param msg the detail message
+     * @param cause the nested exception
+     */
     public CosmosDBAccessException(@Nullable String msg, @Nullable Exception cause) {
         super(msg, cause);
         this.cosmosClientException = cause instanceof CosmosClientException
@@ -40,6 +57,10 @@ public class CosmosDBAccessException extends DataAccessException {
             : null;
     }
 
+    /**
+     * To get exception object for cosmos client
+     * @return CosmosClientException
+     */
     public CosmosClientException getCosmosClientException() {
         return cosmosClientException;
     }

@@ -184,7 +184,7 @@ public class CosmosEntityInformationUnitTest {
         @Version
         private String _etag;
 
-        public VersionedVolunteer() {
+        VersionedVolunteer() {
         }
 
         public String getId() {
@@ -213,12 +213,16 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             VersionedVolunteer that = (VersionedVolunteer) o;
-            return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(_etag, that._etag);
+            return Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(_etag, that._etag);
         }
 
         @Override
@@ -228,11 +232,17 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "VersionedVolunteer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", _etag='" + _etag + '\'' +
-                '}';
+            return "VersionedVolunteer{"
+                + "id='"
+                + id
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", _etag='"
+                + _etag
+                + '\''
+                + '}';
         }
     }
 
@@ -242,7 +252,7 @@ public class CosmosEntityInformationUnitTest {
         private String name;
         private long _etag;
 
-        public WrongVersionType() {
+        WrongVersionType() {
         }
 
         public String getId() {
@@ -271,12 +281,16 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             WrongVersionType that = (WrongVersionType) o;
-            return _etag == that._etag &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name);
+            return _etag == that._etag
+                && Objects.equals(id, that.id)
+                && Objects.equals(name, that.name);
         }
 
         @Override
@@ -286,11 +300,16 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "WrongVersionType{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", _etag=" + _etag +
-                '}';
+            return "WrongVersionType{"
+                + "id='"
+                + id
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", _etag="
+                + _etag
+                + '}';
         }
     }
 
@@ -301,7 +320,7 @@ public class CosmosEntityInformationUnitTest {
         private String name;
         private String _etag;
 
-        public VersionOnWrongField() {
+        VersionOnWrongField() {
         }
 
         public String getId() {
@@ -330,12 +349,16 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             VersionOnWrongField that = (VersionOnWrongField) o;
-            return Objects.equals(id, that.id) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(_etag, that._etag);
+            return Objects.equals(id, that.id)
+                && Objects.equals(name, that.name)
+                && Objects.equals(_etag, that._etag);
         }
 
         @Override
@@ -345,11 +368,17 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "VersionOnWrongField{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", _etag='" + _etag + '\'' +
-                '}';
+            return "VersionOnWrongField{"
+                + "id='"
+                + id
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", _etag='"
+                + _etag
+                + '\''
+                + '}';
         }
     }
 }

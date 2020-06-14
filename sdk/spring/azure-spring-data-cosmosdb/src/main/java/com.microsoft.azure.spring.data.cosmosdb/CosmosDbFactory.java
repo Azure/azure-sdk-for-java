@@ -17,6 +17,9 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * Factory class for cosmosdb to create client
+ */
 public class CosmosDbFactory {
 
     private final CosmosDBConfig config;
@@ -35,12 +38,22 @@ public class CosmosDbFactory {
         return suffix;
     }
 
+    /**
+     * Validate config and initialization
+     *
+     * @param config cosmosdb config
+     */
     public CosmosDbFactory(@NonNull CosmosDBConfig config) {
         validateConfig(config);
 
         this.config = config;
     }
 
+    /**
+     * To create a CosmosClient
+     *
+     * @return CosmosClient
+     */
     public CosmosClient getCosmosClient() {
         final ConnectionPolicy policy = config.getConnectionPolicy();
         final String userAgent = getUserAgentSuffix() + ";" + policy.userAgentSuffix();
@@ -55,6 +68,11 @@ public class CosmosDbFactory {
                            .build();
     }
 
+    /**
+     * To create a CosmosSyncClient
+     *
+     * @return CosmosSyncClient
+     */
     public CosmosSyncClient getCosmosSyncClient() {
         final ConnectionPolicy policy = config.getConnectionPolicy();
         final String userAgent = getUserAgentSuffix() + ";" + policy.userAgentSuffix();
@@ -91,6 +109,11 @@ public class CosmosDbFactory {
         }
     }
 
+    /**
+     * To get config object of cosmosdb
+     *
+     * @return CosmosDBConfig
+     */
     public CosmosDBConfig getConfig() {
         return config;
     }

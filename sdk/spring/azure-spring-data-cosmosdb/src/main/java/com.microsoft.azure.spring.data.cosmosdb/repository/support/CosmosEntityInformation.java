@@ -26,7 +26,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class to describe cosmosdb entity
+ */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
     private static final String ETAG = "_etag";
@@ -39,6 +41,11 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private boolean isVersioned;
     private boolean autoCreateContainer;
 
+    /**
+     * Initialization
+     *
+     * @param domainType to specify id field
+     */
     public CosmosEntityInformation(Class<T> domainType) {
         super(domainType);
 
@@ -58,46 +65,99 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.autoCreateContainer = getIsAutoCreateContainer(domainType);
     }
 
+    /**
+     * Get the field represented by the supplied id field on the
+     * specified entity.
+     *
+     * @param entity the target object from which to get the field
+     * @return the id's current value
+     */
     @SuppressWarnings("unchecked")
     public ID getId(T entity) {
         return (ID) ReflectionUtils.getField(id, entity);
     }
 
+    /**
+     * Get id field
+     *
+     * @return id
+     */
     public Field getIdField() {
         return this.id;
     }
 
+    /**
+     * Get id type
+     *
+     * @return class of id type
+     */
     @SuppressWarnings("unchecked")
     public Class<ID> getIdType() {
         return (Class<ID>) id.getType();
     }
 
+    /**
+     * Get collection name
+     *
+     * @return collection name
+     * @deprecated Use {@link #getContainerName()} instead
+     */
     @Deprecated
     public String getCollectionName() {
         return this.containerName;
     }
 
+    /**
+     * Get container name
+     *
+     * @return container name
+     */
     public String getContainerName() {
         return this.containerName;
     }
 
+    /**
+     * Get request unit value
+     *
+     * @return request unit
+     */
     public Integer getRequestUnit() {
         return this.requestUnit;
     }
 
+    /**
+     * Get timeToLive value
+     *
+     * @return timeToLive
+     */
     public Integer getTimeToLive() {
         return this.timeToLive;
     }
 
+    /**
+     * Get indexing policy
+     *
+     * @return IndexingPolicy
+     */
     @NonNull
     public IndexingPolicy getIndexingPolicy() {
         return this.indexingPolicy;
     }
 
+    /**
+     * Check if is versioned
+     *
+     * @return boolean
+     */
     public boolean isVersioned() {
         return isVersioned;
     }
 
+    /**
+     * Get the field name represented by the supplied partitionKeyField object
+     *
+     * @return partition key field name
+     */
     public String getPartitionKeyFieldName() {
         if (partitionKeyField == null) {
             return null;
@@ -107,15 +167,33 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
     }
 
+    /**
+     * Get the field value represented by the supplied partitionKeyField object on the
+     * specified entity object.
+     *
+     * @param entity the target object from which to get the field
+     * @return partition key field
+     */
     public String getPartitionKeyFieldValue(T entity) {
         return partitionKeyField == null ? null : (String) ReflectionUtils.getField(partitionKeyField, entity);
     }
 
+    /**
+     * Check if auto creating collection is allowed
+     *
+     * @return boolean
+     * @deprecated Use {@link #isAutoCreateContainer()} instead.
+     */
     @Deprecated
     public boolean isAutoCreateCollection() {
         return autoCreateContainer;
     }
 
+    /**
+     * Check if auto creating container is allowed
+     *
+     * @return boolean
+     */
     public boolean isAutoCreateContainer() {
         return autoCreateContainer;
     }
@@ -146,7 +224,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         if (idField == null) {
             throw new IllegalArgumentException("domain should contain @Id field or field named id");
         } else if (idField.getType() != String.class
-                && idField.getType() != Integer.class && idField.getType() != int.class) {
+                && idField.getType() != Integer.class
+                && idField.getType() != int.class) {
             throw new IllegalArgumentException("type of id field must be String or Integer");
         }
 
@@ -158,7 +237,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         final Document annotation = domainType.getAnnotation(Document.class);
 
-        if (annotation != null && annotation.collection() != null && !annotation.collection().isEmpty()) {
+        if (annotation != null
+                && annotation.collection() != null
+                && !annotation.collection().isEmpty()) {
             customContainerName = resolveExpression(annotation.collection());
         }
 
@@ -173,11 +254,12 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         if (fields.size() == 1) {
             partitionKey = fields.get(0);
         } else if (fields.size() > 1) {
-            throw new IllegalArgumentException("Azure Cosmos DB supports only one partition key, " +
-                    "only one field with @PartitionKey annotation!");
+            throw new IllegalArgumentException("Azure Cosmos DB supports only one partition key, "
+                + "only one field with @PartitionKey annotation!");
         }
 
-        if (partitionKey != null && partitionKey.getType() != String.class) {
+        if (partitionKey != null
+                && partitionKey.getType() != String.class) {
             throw new IllegalArgumentException("type of PartitionKey field must be String");
         }
         return partitionKey;
@@ -187,7 +269,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         Integer ru = Integer.parseInt(Constants.DEFAULT_REQUEST_UNIT);
         final Document annotation = domainType.getAnnotation(Document.class);
 
-        if (annotation != null && annotation.ru() != null && !annotation.ru().isEmpty()) {
+        if (annotation != null
+                && annotation.ru() != null
+                && !annotation.ru().isEmpty()) {
             ru = Integer.parseInt(annotation.ru());
         }
         return ru;

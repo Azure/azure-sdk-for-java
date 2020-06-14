@@ -20,11 +20,20 @@ import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 
+/**
+ * Repository class for simple reactive Cosmos operation
+ */
 public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K> {
 
     private final CosmosEntityInformation<T, K> entityInformation;
     private final ReactiveCosmosOperations cosmosOperations;
 
+    /**
+     * Initialization with metadata and applicationContext will create container if required
+     *
+     * @param metadata for entityInformation
+     * @param applicationContext for cosmosOperations
+     */
     public SimpleReactiveCosmosRepository(CosmosEntityInformation<T, K> metadata,
                                           ApplicationContext applicationContext) {
         this.cosmosOperations = applicationContext.getBean(ReactiveCosmosOperations.class);
@@ -35,6 +44,12 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         }
     }
 
+    /**
+     * Initialization with metadata and reactiveCosmosOperations
+     *
+     * @param metadata for entityInformation
+     * @param reactiveCosmosOperations for cosmosOperations
+     */
     public SimpleReactiveCosmosRepository(CosmosEntityInformation<T, K> metadata,
                                           ReactiveCosmosOperations reactiveCosmosOperations) {
         this.cosmosOperations = reactiveCosmosOperations;

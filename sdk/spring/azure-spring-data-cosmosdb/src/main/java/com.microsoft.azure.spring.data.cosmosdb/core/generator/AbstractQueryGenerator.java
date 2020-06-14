@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static com.microsoft.azure.spring.data.cosmosdb.core.convert.MappingCosmosConverter.toCosmosDbValue;
 
+/**
+ * Base class for generating sql query
+ */
 public abstract class AbstractQueryGenerator {
 
     protected AbstractQueryGenerator() {
@@ -43,7 +46,8 @@ public abstract class AbstractQueryGenerator {
     }
 
     private String generateBinaryQuery(@NonNull Criteria criteria, @NonNull List<Pair<String, Object>> parameters) {
-        Assert.isTrue(criteria.getSubjectValues().size() == 1, "Binary criteria should have only one subject value");
+        Assert.isTrue(criteria.getSubjectValues().size() == 1,
+            "Binary criteria should have only one subject value");
         Assert.isTrue(CriteriaType.isBinary(criteria.getType()), "Criteria type should be binary operation");
 
         final String subject = criteria.getSubject();
@@ -76,7 +80,8 @@ public abstract class AbstractQueryGenerator {
     }
 
     private String generateClosedQuery(@NonNull String left, @NonNull String right, CriteriaType type) {
-        Assert.isTrue(CriteriaType.isClosed(type) && CriteriaType.isBinary(type),
+        Assert.isTrue(CriteriaType.isClosed(type)
+                && CriteriaType.isBinary(type),
                 "Criteria type should be binary and closure operation");
 
         return String.join(" ", left, type.getSqlKeyword(), right);
@@ -84,7 +89,8 @@ public abstract class AbstractQueryGenerator {
 
     @SuppressWarnings("unchecked")
     private String generateInQuery(Criteria criteria) {
-        Assert.isTrue(criteria.getSubjectValues().size() == 1, "Criteria should have only one subject value");
+        Assert.isTrue(criteria.getSubjectValues().size() == 1,
+            "Criteria should have only one subject value");
         if (!(criteria.getSubjectValues().get(0) instanceof Collection)) {
             throw new IllegalQueryException("IN keyword requires Collection type in parameters");
         }
@@ -137,14 +143,16 @@ public abstract class AbstractQueryGenerator {
                 return generateBinaryQuery(criteria, parameters);
             case AND:
             case OR:
-                Assert.isTrue(criteria.getSubCriteria().size() == 2, "criteria should have two SubCriteria");
+                Assert.isTrue(criteria.getSubCriteria().size() == 2,
+                    "criteria should have two SubCriteria");
 
                 final String left = generateQueryBody(criteria.getSubCriteria().get(0), parameters);
                 final String right = generateQueryBody(criteria.getSubCriteria().get(1), parameters);
 
                 return generateClosedQuery(left, right, type);
             default:
-                throw new UnsupportedOperationException("unsupported Criteria type: " + type);
+                throw new UnsupportedOperationException("unsupported Criteria type: "
+                    + type);
         }
     }
 
@@ -184,7 +192,9 @@ public abstract class AbstractQueryGenerator {
         final String queryTail = "ORDER BY";
         final List<String> subjects = sort.stream().map(this::getParameter).collect(Collectors.toList());
 
-        return queryTail + " " + String.join(",", subjects);
+        return queryTail
+                    + " "
+                    + String.join(",", subjects);
     }
 
     @NonNull
@@ -207,8 +217,8 @@ public abstract class AbstractQueryGenerator {
 
         sqlParameters.addAll(
                 parameters.stream()
-                        .map(p -> new com.azure.data.cosmos.SqlParameter("@" + p.getValue0(),
-                                toCosmosDbValue(p.getValue1())))
+                        .map(p -> new com.azure.data.cosmos.SqlParameter("@"
+                                + p.getValue0(), toCosmosDbValue(p.getValue1())))
                         .collect(Collectors.toList())
         );
 

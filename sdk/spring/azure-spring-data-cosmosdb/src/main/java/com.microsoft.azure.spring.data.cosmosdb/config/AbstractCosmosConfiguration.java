@@ -16,14 +16,27 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * To configure cosmos with client, cosmoscdb factory and template
+ */
 @Configuration
 public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSupport {
 
+    /**
+     * Declare CosmosClient bean.
+     * @param config of cosmosDbFactory
+     * @return CosmosClient bean
+     */
     @Bean
     public CosmosClient cosmosClient(CosmosDBConfig config) {
         return this.cosmosDbFactory(config).getCosmosClient();
     }
 
+    /**
+     * Declare CosmosSyncClient bean.
+     * @param config of cosmosDbFactory
+     * @return CosmosSyncClient bean
+     */
     @Bean
     public CosmosSyncClient cosmosSyncClient(CosmosDBConfig config) {
         return this.cosmosDbFactory(config).getCosmosSyncClient();
@@ -33,23 +46,45 @@ public abstract class AbstractCosmosConfiguration extends CosmosConfigurationSup
     @Autowired(required = false)
     private ObjectMapper objectMapper;
 
+    /**
+     * Declare CosmosDbFactory bean.
+     * @param config of cosmosDbFactory
+     * @return CosmosDbFactory bean
+     */
     @Bean
     public CosmosDbFactory cosmosDbFactory(CosmosDBConfig config) {
         return new CosmosDbFactory(config);
     }
 
+    /**
+     * Declare CosmosTemplate bean.
+     * @param config of cosmosDbFactory
+     * @return CosmosTemplate bean
+     * @throws ClassNotFoundException if the class type is invalid
+     */
     @Bean
     public CosmosTemplate cosmosTemplate(CosmosDBConfig config) throws ClassNotFoundException {
         return new CosmosTemplate(this.cosmosDbFactory(config), this.mappingCosmosConverter(),
                 config.getDatabase());
     }
 
+    /**
+     * Declare ReactiveCosmosTemplate bean.
+     * @param config of cosmosDbFactory
+     * @return ReactiveCosmosTemplate bean
+     * @throws ClassNotFoundException if the class type is invalid
+     */
     @Bean
     public ReactiveCosmosTemplate reactiveCosmosTemplate(CosmosDBConfig config) throws ClassNotFoundException {
         return new ReactiveCosmosTemplate(this.cosmosDbFactory(config), this.mappingCosmosConverter(),
             config.getDatabase());
     }
 
+    /**
+     * Declare MappingCosmosConverter bean.
+     * @return MappingCosmosConverter bean
+     * @throws ClassNotFoundException if the class type is invalid
+     */
     @Bean
     public MappingCosmosConverter mappingCosmosConverter() throws ClassNotFoundException {
         return new MappingCosmosConverter(this.cosmosMappingContext(), objectMapper);

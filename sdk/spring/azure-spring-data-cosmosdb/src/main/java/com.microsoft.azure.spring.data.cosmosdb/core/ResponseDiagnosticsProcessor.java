@@ -5,6 +5,9 @@ package com.microsoft.azure.spring.data.cosmosdb.core;
 
 import javax.annotation.Nullable;
 
+/**
+ * Interface for processing cosmosdb response
+ */
 public interface ResponseDiagnosticsProcessor {
 
     /**

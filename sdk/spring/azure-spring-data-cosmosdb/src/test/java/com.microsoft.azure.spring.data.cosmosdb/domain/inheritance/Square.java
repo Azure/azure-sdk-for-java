@@ -39,12 +39,18 @@ public class Square extends Shape {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         Square square = (Square) o;
-        return length == square.length &&
-            Objects.equals(id, square.id);
+        return length == square.length
+            && Objects.equals(id, square.id);
     }
 
     @Override
@@ -54,6 +60,12 @@ public class Square extends Shape {
 
     @Override
     public String toString() {
-        return "Square{" + "id='" + id + '\'' + ", length=" + length + '}';
+        return "Square{"
+            + "id='"
+            + id
+            + '\''
+            + ", length="
+            + length
+            + '}';
     }
 }

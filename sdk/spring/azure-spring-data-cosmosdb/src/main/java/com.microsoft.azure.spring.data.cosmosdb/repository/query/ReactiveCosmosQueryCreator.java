@@ -20,10 +20,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Class for reactive cosmos query creators that create criteria based queries from a {@link PartTree}.
+ */
 public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Criteria> {
 
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;
 
+    /**
+     * Creates a new {@link ReactiveCosmosQueryCreator}. {@link ReactiveCosmosParameterAccessor} is used to hand actual
+     * parameter values into the callback methods as well as to apply dynamic sorting via a {@link Sort} parameter.
+     *
+     * @param tree must not be {@literal null}.
+     * @param accessor must not be {@literal null}.
+     * @param mappingContext must not be {@literal null}.
+     */
     public ReactiveCosmosQueryCreator(PartTree tree, ReactiveCosmosParameterAccessor accessor,
                                       MappingContext<?, CosmosPersistentProperty> mappingContext) {
         super(tree, accessor);
@@ -52,7 +63,8 @@ public class ReactiveCosmosQueryCreator extends AbstractQueryCreator<DocumentQue
         final List<Object> values = new ArrayList<>();
 
         if (CriteriaType.isPartTypeUnSupported(type)) {
-            throw new UnsupportedOperationException("Unsupported keyword: " + type);
+            throw new UnsupportedOperationException("Unsupported keyword: "
+                    + type);
         }
 
         for (int i = 0; i < part.getNumberOfArguments(); i++) {

@@ -9,7 +9,10 @@ import org.springframework.data.mapping.model.Property;
 import org.springframework.data.mapping.model.SimpleTypeHolder;
 import org.springframework.data.util.TypeInformation;
 
-
+/**
+ * Class to build mapping metadata and thus create instances of {@link BasicCosmosPersistentEntity} and
+ * {@link CosmosPersistentProperty}.
+ */
 public class CosmosMappingContext
         extends AbstractMappingContext<BasicCosmosPersistentEntity<?>, CosmosPersistentProperty> {
 

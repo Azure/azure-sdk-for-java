@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.data.cosmosdb.core.query;
 
 import org.springframework.lang.NonNull;
@@ -13,6 +10,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Enum of criteria type
+ */
 public enum CriteriaType {
 
     ALL(""),
@@ -71,6 +71,10 @@ public enum CriteriaType {
         this.sqlKeyword = sqlKeyword;
     }
 
+    /**
+     * To get sql keyword
+     * @return String
+     */
     public String getSqlKeyword() {
         return sqlKeyword;
     }
@@ -95,11 +99,20 @@ public enum CriteriaType {
         return PART_TREE_TYPE_TO_CRITERIA.containsKey(partType);
     }
 
+    /**
+     * Convert to criteria type.
+     *
+     * @param partType PartType to be converted.
+     * @return CriteriaType
+     * @throws UnsupportedOperationException for unsupported part type
+     */
+    @SuppressWarnings("")
     public static CriteriaType toCriteriaType(@NonNull Part.Type partType) {
         final CriteriaType criteriaType = PART_TREE_TYPE_TO_CRITERIA.get(partType);
 
         if (criteriaType == null) {
-            throw new UnsupportedOperationException("Unsupported part type: " + partType);
+            throw new UnsupportedOperationException("Unsupported part type: "
+                + partType);
         }
 
         return criteriaType;
