@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.data.cosmosdb.core.query;
 
 import com.azure.data.cosmos.FeedResponse;
@@ -25,11 +22,26 @@ public class CosmosPageRequest extends PageRequest {
     // Request continuation token used to resume query
     private String requestContinuation;
 
+    /**
+     * Creates a new {@link PageRequest} with unsorted parameters applied.
+     *
+     * @param page zero-based page index, must not be negative.
+     * @param size the size of the page to be returned, must be greater than 0.
+     * @param requestContinuation must not be {@literal null}.
+     */
     public CosmosPageRequest(int page, int size, String requestContinuation) {
         super(page, size, Sort.unsorted());
         this.requestContinuation = requestContinuation;
     }
 
+    /**
+     * Creates a new {@link CosmosPageRequest} with sort parameters applied.
+     *
+     * @param page zero-based page index, must not be negative.
+     * @param size the size of the page to be returned, must be greater than 0.
+     * @param sort must not be {@literal null}, use {@link Sort#unsorted()} instead.
+     * @param requestContinuation must not be {@literal null}.
+     */
     public CosmosPageRequest(int page, int size, String requestContinuation, Sort sort) {
         super(page, size, sort);
         this.requestContinuation = requestContinuation;
@@ -48,10 +60,29 @@ public class CosmosPageRequest extends PageRequest {
         this.requestContinuation = requestContinuation;
     }
 
+    /**
+     * Creates a new {@link CosmosPageRequest}
+     *
+     * @param page zero-based page index, must not be negative.
+     * @param size the size of the page to be returned, must be greater than 0.
+     * @param requestContinuation cannot be null
+     * @param sort cannot be null
+     * @return CosmosPageRequest
+     */
     public static CosmosPageRequest of(int page, int size, String requestContinuation, Sort sort) {
         return new CosmosPageRequest(0, page, size, requestContinuation, sort);
     }
 
+    /**
+     * Creates a new {@link CosmosPageRequest}
+     *
+     * @param offset cannot be null
+     * @param page zero-based page index, must not be negative.
+     * @param size the size of the page to be returned, must be greater than 0.
+     * @param requestContinuation cannot be null
+     * @param sort cannot be null
+     * @return CosmosPageRequest
+     */
     public static CosmosPageRequest of(long offset, int page, int size, String requestContinuation, Sort sort) {
         return new CosmosPageRequest(offset, page, size, requestContinuation, sort);
     }
@@ -67,6 +98,10 @@ public class CosmosPageRequest extends PageRequest {
         return offset;
     }
 
+    /**
+     * To get request continuation
+     * @return String
+     */
     public String getRequestContinuation() {
         return this.requestContinuation;
     }
@@ -75,7 +110,8 @@ public class CosmosPageRequest extends PageRequest {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = 31 * result + (requestContinuation != null ? requestContinuation.hashCode() : 0);
+        result = 31 * result
+                    + (requestContinuation != null ? requestContinuation.hashCode() : 0);
 
         return result;
     }
@@ -92,9 +128,10 @@ public class CosmosPageRequest extends PageRequest {
 
         final CosmosPageRequest that = (CosmosPageRequest) obj;
 
-        final boolean continuationTokenEquals = requestContinuation != null ?
-                requestContinuation.equals(that.requestContinuation) : that.requestContinuation == null;
+        final boolean continuationTokenEquals = requestContinuation != null
+            ? requestContinuation.equals(that.requestContinuation) : that.requestContinuation == null;
 
-        return continuationTokenEquals && super.equals(that);
+        return continuationTokenEquals
+            && super.equals(that);
     }
 }

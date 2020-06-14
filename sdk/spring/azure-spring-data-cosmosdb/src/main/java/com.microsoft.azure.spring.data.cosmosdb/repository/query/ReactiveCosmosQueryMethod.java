@@ -10,10 +10,21 @@ import org.springframework.data.repository.query.QueryMethod;
 
 import java.lang.reflect.Method;
 
+/**
+ * Inherit from QueryMethod class to execute a finder query.
+ */
 public class ReactiveCosmosQueryMethod extends QueryMethod {
 
     private ReactiveCosmosEntityMetadata<?> metadata;
 
+    /**
+     * Creates a new {@link QueryMethod} from the given parameters. Looks up the correct query to use for following
+     * invocations of the method given.
+     *
+     * @param method must not be {@literal null}.
+     * @param metadata must not be {@literal null}.
+     * @param factory must not be {@literal null}.
+     */
     public ReactiveCosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
         super(method, metadata, factory);
     }
@@ -23,7 +34,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
     public EntityMetadata<?> getEntityInformation() {
         final Class<Object> domainType = (Class<Object>) getDomainClass();
         final CosmosEntityInformation<Object, String> entityInformation =
-                new CosmosEntityInformation<Object, String>(domainType);
+            new CosmosEntityInformation<Object, String>(domainType);
 
         this.metadata = new SimpleReactiveCosmosEntityMetadata<Object>(domainType, entityInformation);
         return this.metadata;

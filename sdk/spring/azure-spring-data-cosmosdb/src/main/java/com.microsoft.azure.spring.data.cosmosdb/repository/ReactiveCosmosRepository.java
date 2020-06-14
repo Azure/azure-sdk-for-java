@@ -7,7 +7,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+/**
+ * Repository interface with search and delete operation
+ */
 @NoRepositoryBean
 public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepository<T, K> {
 

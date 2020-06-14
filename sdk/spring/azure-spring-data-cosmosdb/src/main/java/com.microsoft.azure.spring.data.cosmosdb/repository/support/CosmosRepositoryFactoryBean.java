@@ -5,6 +5,7 @@ package com.microsoft.azure.spring.data.cosmosdb.repository.support;
 import com.microsoft.azure.spring.data.cosmosdb.core.CosmosOperations;
 import com.microsoft.azure.spring.data.cosmosdb.core.mapping.CosmosMappingContext;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,7 +16,10 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 
 import java.io.Serializable;
 
-
+/**
+ * Adapter for Springs {@link FactoryBean} interface to allow easy setup of cosmos repository factories via Spring
+ * configuration.
+ */
 public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
         extends RepositoryFactoryBeanSupport<T, S, ID>
         implements ApplicationContextAware {
@@ -24,11 +28,20 @@ public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID exte
     private CosmosOperations operations;
     private boolean mappingContextConfigured = false;
 
-
+    /**
+     * Creates a new {@link RepositoryFactoryBeanSupport} for the given repository interface.
+     *
+     * @param repositoryInterface must not be {@literal null}.
+     */
     public CosmosRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
         super(repositoryInterface);
     }
 
+    /**
+     * Set cosmos operation
+     *
+     * @param operations for cosmos operations
+     */
     @Autowired
     public void setCosmosOperations(CosmosOperations operations) {
         this.operations = operations;

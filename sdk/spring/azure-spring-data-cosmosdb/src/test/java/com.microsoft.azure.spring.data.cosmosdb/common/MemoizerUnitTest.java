@@ -33,7 +33,7 @@ public class MemoizerUnitTest {
     public void testMemoizedFunctionShouldBeCalledOnlyOnce() {
         IntStream
         .range(0, 10)
-        .forEach(number -> memoizedFunction.apply(KEY));
+            .forEach(number -> memoizedFunction.apply(KEY));
 
         assertEquals(1, countMap.get(KEY).get());
     }
@@ -42,7 +42,7 @@ public class MemoizerUnitTest {
     public void testDifferentMemoizersShouldNotShareTheSameCache() {
         IntStream
         .range(0, 10)
-        .forEach(number -> Memoizer.memoize(MemoizerUnitTest::incrCount).apply(KEY));
+            .forEach(number -> Memoizer.memoize(MemoizerUnitTest::incrCount).apply(KEY));
 
         assertEquals(10, countMap.get(KEY).get());
     }

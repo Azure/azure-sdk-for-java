@@ -4,7 +4,11 @@ package com.microsoft.azure.spring.data.cosmosdb.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +20,9 @@ import java.util.Map;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON;
 
+/**
+ * Class for telemetry sender to send request and event data
+ */
 public class TelemetrySender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TelemetrySender.class);
@@ -26,7 +33,8 @@ public class TelemetrySender {
 
     private static final String PROPERTY_SERVICE_NAME = "serviceName";
 
-    private static final String PROJECT_INFO = "spring-data-cosmosdb/" + PropertyLoader.getProjectVersion();
+    private static final String PROJECT_INFO = "spring-data-cosmosdb/"
+                                                    + PropertyLoader.getProjectVersion();
 
     private static final String TELEMETRY_TARGET_URL = "https://dc.services.visualstudio.com/v2/track";
 
@@ -57,16 +65,23 @@ public class TelemetrySender {
         for (int i = 0; i < RETRY_LIMIT; i++) {
             response = executeRequest(eventData);
 
-            if (response != null && response.getStatusCode() == HttpStatus.OK) {
+            if (response != null
+                    && response.getStatusCode() == HttpStatus.OK) {
                 return;
             }
         }
 
-        if (response != null && response.getStatusCode() != HttpStatus.OK) {
+        if (response != null
+                && response.getStatusCode() != HttpStatus.OK) {
             LOGGER.warn("Failed to send telemetry data, response status code {}.", response.getStatusCode().toString());
         }
     }
 
+    /**
+     * Send telemetry data according to event name
+     *
+     * @param name event name
+     */
     public void send(String name) {
         Assert.hasText(name, "Event name should contain text.");
 

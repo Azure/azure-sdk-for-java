@@ -5,6 +5,9 @@ package com.microsoft.azure.spring.data.cosmosdb.core.generator;
 import com.azure.data.cosmos.SqlQuerySpec;
 import com.microsoft.azure.spring.data.cosmosdb.core.query.DocumentQuery;
 
+/**
+ * Interface of generating SqlQuerySpec
+ */
 public interface QuerySpecGenerator {
 
     /**

@@ -131,15 +131,16 @@ public class CosmosTemplatePartitionIT {
 
     @Test
     public void testUpsertNewDocumentPartition() {
-        final String firstName = NEW_FIRST_NAME + "_" + UUID.randomUUID().toString();
+        final String firstName = NEW_FIRST_NAME
+                + "_" + UUID.randomUUID().toString();
         final PartitionPerson newPerson = new PartitionPerson(TEST_PERSON.getId(),
             firstName, NEW_LAST_NAME,
             null, null);
 
         final String partitionKeyValue = newPerson.getLastName();
         final PartitionPerson partitionPerson =
-            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), newPerson
-                , new PartitionKey(partitionKeyValue));
+            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), newPerson,
+                new PartitionKey(partitionKeyValue));
 
         final List<PartitionPerson> result = cosmosTemplate.findAll(PartitionPerson.class);
 

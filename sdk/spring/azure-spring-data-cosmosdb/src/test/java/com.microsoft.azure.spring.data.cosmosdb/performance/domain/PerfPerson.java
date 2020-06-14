@@ -39,11 +39,15 @@ public class PerfPerson {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PerfPerson that = (PerfPerson) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(name, that.name);
+        return Objects.equals(id, that.id)
+            && Objects.equals(name, that.name);
     }
 
     @Override
@@ -53,9 +57,13 @@ public class PerfPerson {
 
     @Override
     public String toString() {
-        return "PerfPerson{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
-            '}';
+        return "PerfPerson{"
+            + "id='"
+            + id
+            + '\''
+            + ", name='"
+            + name
+            + '\''
+            + '}';
     }
 }

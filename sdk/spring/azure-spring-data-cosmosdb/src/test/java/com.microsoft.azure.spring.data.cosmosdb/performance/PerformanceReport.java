@@ -34,7 +34,7 @@ class PerfItem {
     private int times;
     private float diffToSdk;
 
-    public PerfItem(OperationType type, long springCost, long sdkCost, int times) {
+    PerfItem(OperationType type, long springCost, long sdkCost, int times) {
         this.type = type;
         this.springCost = springCost;
         this.sdkCost = sdkCost;
@@ -84,14 +84,18 @@ class PerfItem {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         PerfItem perfItem = (PerfItem) o;
-        return springCost == perfItem.springCost &&
-            sdkCost == perfItem.sdkCost &&
-            times == perfItem.times &&
-            Float.compare(perfItem.diffToSdk, diffToSdk) == 0 &&
-            type == perfItem.type;
+        return springCost == perfItem.springCost
+            && sdkCost == perfItem.sdkCost
+            && times == perfItem.times
+            && Float.compare(perfItem.diffToSdk, diffToSdk) == 0
+            && type == perfItem.type;
     }
 
     @Override
@@ -101,8 +105,18 @@ class PerfItem {
 
     @Override
     public String toString() {
-        return "[type=" + type.toString() + ", springCost=" + springCost + ", sdkCost=" + sdkCost + ", times=" +
-                times + ", diffToSdk=" + (diffToSdk * 100 + "%") + "];";
+        return "[type="
+            + type.toString()
+            + ", springCost="
+            + springCost
+            + ", sdkCost="
+            + sdkCost
+            + ", times="
+            + times
+            + ", diffToSdk="
+            + (diffToSdk * 100
+                + "%")
+            + "];";
     }
 }
 

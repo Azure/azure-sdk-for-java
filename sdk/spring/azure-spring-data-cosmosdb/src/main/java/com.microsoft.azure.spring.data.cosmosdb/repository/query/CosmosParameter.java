@@ -5,8 +5,16 @@ package com.microsoft.azure.spring.data.cosmosdb.repository.query;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.repository.query.Parameter;
 
+/**
+ * A single cosmos parameter of a query method.
+ */
 public class CosmosParameter extends Parameter {
 
+    /**
+     * Creates a new {@link CosmosParameter} for the given {@link MethodParameter}.
+     *
+     * @param parameter must not be {@literal null}.
+     */
     public CosmosParameter(MethodParameter parameter) {
         super(parameter);
     }

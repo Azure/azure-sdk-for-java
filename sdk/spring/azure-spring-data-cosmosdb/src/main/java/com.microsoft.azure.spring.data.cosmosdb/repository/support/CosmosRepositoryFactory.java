@@ -22,12 +22,20 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-
+/**
+ * Factory class for cosmos repository contains application context and operations information
+ */
 public class CosmosRepositoryFactory extends RepositoryFactorySupport {
 
     private final ApplicationContext applicationContext;
     private final CosmosOperations cosmosOperations;
 
+    /**
+     * Initialization
+     *
+     * @param cosmosOperations for cosmosdb operations
+     * @param applicationContext for the context
+     */
     public CosmosRepositoryFactory(CosmosOperations cosmosOperations, ApplicationContext applicationContext) {
         this.cosmosOperations = cosmosOperations;
         this.applicationContext = applicationContext;
@@ -58,7 +66,7 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     private static class CosmosDbQueryLookupStrategy implements QueryLookupStrategy {
         private final CosmosOperations dbOperations;
 
-        public CosmosDbQueryLookupStrategy(
+        CosmosDbQueryLookupStrategy(
                 CosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
             this.dbOperations = operations;
         }

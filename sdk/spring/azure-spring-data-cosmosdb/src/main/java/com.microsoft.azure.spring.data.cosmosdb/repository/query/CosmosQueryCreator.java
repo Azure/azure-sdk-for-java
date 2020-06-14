@@ -19,14 +19,24 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-// TODO: String based query, based on how cosmosdb provides.
-//  StringCosmosQuery class,
-//  How to bind values to the query. if CosmosDb already has binding capability, if not we would have to do it here in
-//  some creative way.query creator are associated with part tree queries,
+/**
+ * TODO: String based query, based on how cosmosdb provides.
+ *  StringCosmosQuery class,
+ *  How to bind values to the query. if CosmosDb already has binding capability, if not we would have to do it here in
+ *  some creative way.query creator are associated with part tree queries,
+ */
 public class CosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Criteria> {
 
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;
 
+    /**
+     * Creates a new {@link CosmosQueryCreator}. {@link CosmosParameterAccessor} is used to hand actual
+     * parameter values into the callback methods as well as to apply dynamic sorting via a {@link Sort} parameter.
+     *
+     * @param tree must not be {@literal null}.
+     * @param accessor must not be {@literal null}.
+     * @param mappingContext must not be {@literal null}.
+     */
     public CosmosQueryCreator(PartTree tree, CosmosParameterAccessor accessor,
                               MappingContext<?, CosmosPersistentProperty> mappingContext) {
         super(tree, accessor);
@@ -55,7 +65,8 @@ public class CosmosQueryCreator extends AbstractQueryCreator<DocumentQuery, Crit
         final List<Object> values = new ArrayList<>();
 
         if (CriteriaType.isPartTypeUnSupported(type)) {
-            throw new UnsupportedOperationException("Unsupported keyword: " + type);
+            throw new UnsupportedOperationException("Unsupported keyword: "
+                + type);
         }
 
         for (int i = 0; i < part.getNumberOfArguments(); i++) {

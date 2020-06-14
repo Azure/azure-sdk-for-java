@@ -7,11 +7,20 @@ import org.springframework.data.repository.query.ParametersParameterAccessor;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * {@link ParametersParameterAccessor} implementation and store all special parameters in a List.
+ */
 public class CosmosParameterParameterAccessor extends ParametersParameterAccessor
         implements CosmosParameterAccessor {
 
     private final List<Object> values;
 
+    /**
+     * Creates a new {@link CosmosParameterParameterAccessor}.
+     *
+     * @param method must not be {@literal null}.
+     * @param values must not be {@literal null}.
+     */
     public CosmosParameterParameterAccessor(CosmosQueryMethod method, Object[] values) {
         super(method.getParameters(), values);
 

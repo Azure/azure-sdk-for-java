@@ -5,9 +5,24 @@ package com.microsoft.azure.spring.data.cosmosdb.repository.query;
 import com.microsoft.azure.spring.data.cosmosdb.core.ReactiveCosmosOperations;
 import com.microsoft.azure.spring.data.cosmosdb.core.query.DocumentQuery;
 
+/**
+ * Interface to execute reactive cosmos query operations
+ */
 public interface ReactiveCosmosQueryExecution {
+
+    /**
+     * Declare an execute function for different operations to call
+     *
+     * @param query document query operation
+     * @param type domain type
+     * @param container container to conduct query
+     * @return Object according to execution result
+     */
     Object execute(DocumentQuery query, Class<?> type, String container);
 
+    /**
+     * Container operation implementation to execute a container name query
+     */
     final class ContainerExecution implements ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
@@ -22,6 +37,9 @@ public interface ReactiveCosmosQueryExecution {
         }
     }
 
+    /**
+     * Find operation implementation to execute a find query
+     */
     final class MultiEntityExecution implements ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
@@ -36,6 +54,9 @@ public interface ReactiveCosmosQueryExecution {
         }
     }
 
+    /**
+     * Exist operation implementation to execute a exist query
+     */
     final class ExistsExecution implements ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;
@@ -50,6 +71,9 @@ public interface ReactiveCosmosQueryExecution {
         }
     }
 
+    /**
+     * Delete operation implementation to execute a delete query
+     */
     final class DeleteExecution implements ReactiveCosmosQueryExecution {
 
         private final ReactiveCosmosOperations operations;

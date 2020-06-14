@@ -25,9 +25,9 @@ public class PageableAddress {
             return false;
         }
         final PageableAddress address = (PageableAddress) o;
-        return Objects.equals(postalCode, address.postalCode) &&
-            Objects.equals(street, address.street) &&
-            Objects.equals(city, address.city);
+        return Objects.equals(postalCode, address.postalCode)
+            && Objects.equals(street, address.street)
+            && Objects.equals(city, address.city);
     }
 
     @Override
@@ -67,10 +67,16 @@ public class PageableAddress {
 
     @Override
     public String toString() {
-        return "PageableAddress{" +
-            "postalCode='" + postalCode + '\'' +
-            ", street='" + street + '\'' +
-            ", city='" + city + '\'' +
-            '}';
+        return "PageableAddress{"
+            + "postalCode='"
+            + postalCode
+            + '\''
+            + ", street='"
+            + street
+            + '\''
+            + ", city='"
+            + city
+            + '\''
+            + '}';
     }
 }

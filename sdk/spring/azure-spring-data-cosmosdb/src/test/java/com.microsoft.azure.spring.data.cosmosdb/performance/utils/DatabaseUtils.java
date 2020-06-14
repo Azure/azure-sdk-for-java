@@ -28,7 +28,7 @@ public class DatabaseUtils {
     }
 
     public static void deleteContainer(CosmosSyncClient documentClient, String databaseName, String containerName)
-            throws CosmosClientException{
+            throws CosmosClientException {
         final RequestOptions requestOptions = new RequestOptions();
         requestOptions.setOfferThroughput(1000);
 

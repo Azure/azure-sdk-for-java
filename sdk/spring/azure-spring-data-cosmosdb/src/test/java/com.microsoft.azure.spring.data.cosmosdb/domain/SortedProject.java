@@ -87,15 +87,19 @@ public class SortedProject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SortedProject that = (SortedProject) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(name, that.name) &&
-            Objects.equals(creator, that.creator) &&
-            Objects.equals(hasReleased, that.hasReleased) &&
-            Objects.equals(starCount, that.starCount) &&
-            Objects.equals(forkCount, that.forkCount);
+        return Objects.equals(id, that.id)
+            && Objects.equals(name, that.name)
+            && Objects.equals(creator, that.creator)
+            && Objects.equals(hasReleased, that.hasReleased)
+            && Objects.equals(starCount, that.starCount)
+            && Objects.equals(forkCount, that.forkCount);
     }
 
     @Override
@@ -105,13 +109,22 @@ public class SortedProject {
 
     @Override
     public String toString() {
-        return "SortedProject{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
-            ", creator='" + creator + '\'' +
-            ", hasReleased=" + hasReleased +
-            ", starCount=" + starCount +
-            ", forkCount=" + forkCount +
-            '}';
+        return "SortedProject{"
+            + "id='"
+            + id
+            + '\''
+            + ", name='"
+            + name
+            + '\''
+            + ", creator='"
+            + creator
+            + '\''
+            + ", hasReleased="
+            + hasReleased
+            + ", starCount="
+            + starCount
+            + ", forkCount="
+            + forkCount
+            + '}';
     }
 }

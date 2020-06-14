@@ -7,16 +7,31 @@ import com.microsoft.azure.spring.data.cosmosdb.core.query.DocumentQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
 import org.springframework.data.repository.query.ResultProcessor;
 
+/**
+ * Abstract class for cosmos query.
+ */
 public abstract class AbstractCosmosQuery implements RepositoryQuery {
 
     private final CosmosQueryMethod method;
     private final CosmosOperations operations;
 
+    /**
+     * Initialization
+     *
+     * @param method CosmosQueryMethod
+     * @param operations CosmosOperations
+     */
     public AbstractCosmosQuery(CosmosQueryMethod method, CosmosOperations operations) {
         this.method = method;
         this.operations = operations;
     }
 
+    /**
+     * Executes the {@link AbstractCosmosQuery} with the given parameters.
+     *
+     * @param parameters must not be {@literal null}.
+     * @return execution result. Can be {@literal null}.
+     */
     public Object execute(Object[] parameters) {
         final CosmosParameterAccessor accessor = new CosmosParameterParameterAccessor(method, parameters);
         final DocumentQuery query = createQuery(accessor);
@@ -41,6 +56,11 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         }
     }
 
+    /**
+     * Get method of query
+     *
+     * @return CosmosQueryMethod
+     */
     public CosmosQueryMethod getQueryMethod() {
         return method;
     }

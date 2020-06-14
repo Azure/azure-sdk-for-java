@@ -16,6 +16,10 @@ public class ExpressionResolver {
 
     private static EmbeddedValueResolver embeddedValueResolver;
 
+    /**
+     * Initialize ExpressionResolver with ConfigurableBeanFactory
+     * @param beanFactory used to initialize the embeddedValueResolver
+     */
     public ExpressionResolver(BeanFactory beanFactory) {
         if (beanFactory instanceof ConfigurableBeanFactory) {
             setEmbeddedValueResolver(new EmbeddedValueResolver((ConfigurableBeanFactory) beanFactory));

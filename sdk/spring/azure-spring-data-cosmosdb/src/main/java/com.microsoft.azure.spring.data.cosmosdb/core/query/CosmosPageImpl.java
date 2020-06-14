@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See LICENSE in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.microsoft.azure.spring.data.cosmosdb.core.query;
 
 import org.springframework.data.domain.PageImpl;
@@ -11,6 +8,11 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * {@code CosmosPageImpl} implementation.
+ *
+ * @param <T> the type of which the CosmosPageImpl consists.
+ */
 public class CosmosPageImpl<T> extends PageImpl<T> {
 
     private static final long serialVersionUID = 5294396337522314504L;
@@ -20,6 +22,14 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
     //  Storing the offset of current page, helps to check hasNext and next values
     private long offset;
 
+    /**
+     * Constructor of {@code CosmosPageImpl}.
+     *
+     * @param content the content of this page, must not be {@literal null}.
+     * @param pageable the paging information, must not be {@literal null}.
+     * @param total amount of items available. The total might be adapted considering the length of the content
+     *          given, if it is going to be the content of the last page. This is in place to mitigate inconsistencies.
+     */
     public CosmosPageImpl(List<T> content, Pageable pageable, long total) {
         super(content, pageable, total);
         this.offset = pageable.getOffset();
@@ -37,7 +47,8 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
 
     @Override
     public boolean hasNext() {
-        return this.offset + getContent().size() < getTotalElements();
+        return this.offset
+                + getContent().size() < getTotalElements();
     }
 
     @Override

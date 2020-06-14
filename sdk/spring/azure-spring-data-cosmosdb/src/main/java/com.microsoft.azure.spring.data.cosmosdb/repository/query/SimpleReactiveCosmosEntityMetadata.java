@@ -5,11 +5,20 @@ package com.microsoft.azure.spring.data.cosmosdb.repository.query;
 import com.microsoft.azure.spring.data.cosmosdb.repository.support.CosmosEntityInformation;
 import org.springframework.util.Assert;
 
+/**
+ * Metadata class to describe simple reactive cosmos entity includes domain type and cosmos entity information
+ */
 public class SimpleReactiveCosmosEntityMetadata<T> implements ReactiveCosmosEntityMetadata<T> {
 
     private final Class<T> type;
     private final CosmosEntityInformation<T, String> entityInformation;
 
+    /**
+     * Initialization
+     *
+     * @param type the actual domain class type
+     * @param entityInformation cosmos entity
+     */
     public SimpleReactiveCosmosEntityMetadata(Class<T> type, CosmosEntityInformation<T,
                                                                             String> entityInformation) {
         Assert.notNull(type, "type must not be null!");
@@ -19,10 +28,20 @@ public class SimpleReactiveCosmosEntityMetadata<T> implements ReactiveCosmosEnti
         this.entityInformation = entityInformation;
     }
 
+    /**
+     * Return the actual domain class type
+     *
+     * @return type
+     */
     public Class<T> getJavaType() {
         return type;
     }
 
+    /**
+     * Get collection name of cosmos
+     *
+     * @return container name
+     */
     public String getCollectionName() {
         return entityInformation.getContainerName();
     }

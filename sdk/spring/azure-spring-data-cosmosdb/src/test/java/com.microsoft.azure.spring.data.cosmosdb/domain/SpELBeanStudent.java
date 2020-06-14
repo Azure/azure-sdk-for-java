@@ -48,12 +48,16 @@ public class SpELBeanStudent {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         SpELBeanStudent that = (SpELBeanStudent) o;
-        return Objects.equals(id, that.id) &&
-            Objects.equals(firstName, that.firstName) &&
-            Objects.equals(lastName, that.lastName);
+        return Objects.equals(id, that.id)
+            && Objects.equals(firstName, that.firstName)
+            && Objects.equals(lastName, that.lastName);
     }
 
     @Override
@@ -63,10 +67,16 @@ public class SpELBeanStudent {
 
     @Override
     public String toString() {
-        return "SpELBeanStudent{" +
-            "id='" + id + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
-            '}';
+        return "SpELBeanStudent{"
+            + "id='"
+            + id
+            + '\''
+            + ", firstName='"
+            + firstName
+            + '\''
+            + ", lastName='"
+            + lastName
+            + '\''
+            + '}';
     }
 }

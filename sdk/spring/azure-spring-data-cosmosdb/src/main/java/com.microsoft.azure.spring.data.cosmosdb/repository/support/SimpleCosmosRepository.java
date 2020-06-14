@@ -24,11 +24,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
+/**
+ * Repository class for simple Cosmos operation
+ */
 public class SimpleCosmosRepository<T, ID extends Serializable> implements CosmosRepository<T, ID> {
 
     private final CosmosOperations operation;
     private final CosmosEntityInformation<T, ID> information;
 
+    /**
+     * Initialization
+     *
+     * @param metadata for cosmos entity information
+     * @param applicationContext to get bean of CosmosOperations class
+     */
     public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
                                   ApplicationContext applicationContext) {
         this.operation = applicationContext.getBean(CosmosOperations.class);
@@ -39,6 +48,12 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         }
     }
 
+    /**
+     * Initialization
+     *
+     * @param metadata for cosmos entity information
+     * @param dbOperations for cosmosdb operation
+     */
     public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
                                   CosmosOperations dbOperations) {
         this.operation = dbOperations;
@@ -136,7 +151,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public Optional<T> findById(ID id) {
         Assert.notNull(id, "id must not be null");
 
-        if (id instanceof String && !StringUtils.hasText((String) id)) {
+        if (id instanceof String
+                && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 
@@ -147,7 +163,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public Optional<T> findById(ID id, PartitionKey partitionKey) {
         Assert.notNull(id, "id must not be null");
 
-        if (id instanceof String && !StringUtils.hasText((String) id)) {
+        if (id instanceof String
+                && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 

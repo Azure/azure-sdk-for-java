@@ -21,11 +21,20 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+/**
+ * Factory class for reactive cosmos repository contains application context and operations information
+ */
 public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySupport {
 
     private final ApplicationContext applicationContext;
     private final ReactiveCosmosOperations cosmosOperations;
 
+    /**
+     * Initialization
+     *
+     * @param cosmosOperations for cosmosdb operations
+     * @param applicationContext for the context
+     */
     public ReactiveCosmosRepositoryFactory(ReactiveCosmosOperations cosmosOperations,
                                            ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -61,7 +70,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     private static class ReactiveCosmosQueryLookupStrategy implements QueryLookupStrategy {
         private final ReactiveCosmosOperations cosmosOperations;
 
-        public ReactiveCosmosQueryLookupStrategy(
+        ReactiveCosmosQueryLookupStrategy(
             ReactiveCosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
             this.cosmosOperations = operations;
         }

@@ -8,15 +8,10 @@ import com.microsoft.azure.spring.data.cosmosdb.repository.TestRepositoryConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static com.microsoft.azure.spring.data.cosmosdb.common.TestConstants.COSMOSDB_FAKE_CONNECTION_STRING;
-import static com.microsoft.azure.spring.data.cosmosdb.common.TestConstants.COSMOSDB_FAKE_HOST;
-import static com.microsoft.azure.spring.data.cosmosdb.common.TestConstants.COSMOSDB_FAKE_KEY;
-import static com.microsoft.azure.spring.data.cosmosdb.common.TestConstants.COSMOSDB_INVALID_FAKE_CONNECTION_STRING;
-import static com.microsoft.azure.spring.data.cosmosdb.common.TestConstants.DB_NAME;
+import static com.microsoft.azure.spring.data.cosmosdb.common.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,14 +26,14 @@ public class CosmosDbFactoryTestIT {
 
     @Test(expected = IllegalArgumentException.class)
     public void testEmptyKey() {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.builder(COSMOSDB_FAKE_HOST, "", DB_NAME).build();
+        final CosmosDBConfig dbConfig = CosmosDBConfig.cosmosDBConfigbuilder(COSMOSDB_FAKE_HOST, "", DB_NAME).build();
         new CosmosDbFactory(dbConfig);
     }
 
     @Test
     public void testInvalidEndpoint() {
         final CosmosDBConfig dbConfig =
-                CosmosDBConfig.builder(COSMOSDB_FAKE_HOST, COSMOSDB_FAKE_KEY, DB_NAME).build();
+                CosmosDBConfig.cosmosDBConfigbuilder(COSMOSDB_FAKE_HOST, COSMOSDB_FAKE_KEY, DB_NAME).build();
         final CosmosDbFactory factory = new CosmosDbFactory(dbConfig);
 
         assertThat(factory).isNotNull();
@@ -47,7 +42,7 @@ public class CosmosDbFactoryTestIT {
     @Test
     public void testConnectWithConnectionString() {
         final CosmosDBConfig dbConfig =
-                CosmosDBConfig.builder(COSMOSDB_FAKE_CONNECTION_STRING, DB_NAME).build();
+                CosmosDBConfig.cosmosDBConfigbuilder(COSMOSDB_FAKE_CONNECTION_STRING, DB_NAME).build();
         final CosmosDbFactory factory = new CosmosDbFactory(dbConfig);
 
         assertThat(factory).isNotNull();
@@ -55,13 +50,13 @@ public class CosmosDbFactoryTestIT {
 
     @Test(expected = CosmosDBAccessException.class)
     public void testInvalidConnectionString() {
-        CosmosDBConfig.builder(COSMOSDB_INVALID_FAKE_CONNECTION_STRING, DB_NAME).build();
+        CosmosDBConfig.cosmosDBConfigbuilder(COSMOSDB_INVALID_FAKE_CONNECTION_STRING, DB_NAME).build();
     }
 
     @Test
     public void testConnectionPolicyUserAgentKept() {
         final CosmosDBConfig dbConfig =
-                CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, DB_NAME).build();
+                CosmosDBConfig.cosmosDBConfigbuilder(cosmosDbUri, cosmosDbKey, DB_NAME).build();
         final CosmosDbFactory factory = new CosmosDbFactory(dbConfig);
         factory.getCosmosClient();
 

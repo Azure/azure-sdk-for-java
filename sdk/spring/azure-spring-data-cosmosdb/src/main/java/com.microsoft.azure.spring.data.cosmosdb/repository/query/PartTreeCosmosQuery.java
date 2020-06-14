@@ -8,14 +8,24 @@ import com.microsoft.azure.spring.data.cosmosdb.core.mapping.CosmosPersistentPro
 import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.repository.query.ResultProcessor;
+import org.springframework.data.repository.query.parser.Part;
 import org.springframework.data.repository.query.parser.PartTree;
 
+/**
+ * Cosmos query class with {@link PartTree} to parse a {@link String} into a tree or {@link PartTree.OrPart}s consisting
+ * of simple {@link Part} instances in turn.
+ */
 public class PartTreeCosmosQuery extends AbstractCosmosQuery {
 
     private final PartTree tree;
     private final MappingContext<?, CosmosPersistentProperty> mappingContext;
     private final ResultProcessor processor;
 
+    /**
+     * Initialization
+     * @param method CosmosQueryMethod
+     * @param operations CosmosOperations
+     */
     public PartTreeCosmosQuery(CosmosQueryMethod method, CosmosOperations operations) {
         super(method, operations);
 

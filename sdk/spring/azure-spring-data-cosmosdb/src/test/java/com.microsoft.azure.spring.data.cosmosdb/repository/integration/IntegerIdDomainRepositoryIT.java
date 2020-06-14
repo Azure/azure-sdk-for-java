@@ -215,7 +215,7 @@ public class IntegerIdDomainRepositoryIT {
 
         private String location;
 
-        public InvalidDomain(int count, String location) {
+        InvalidDomain(int count, String location) {
             this.count = count;
             this.location = location;
         }
@@ -238,11 +238,15 @@ public class IntegerIdDomainRepositoryIT {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             InvalidDomain that = (InvalidDomain) o;
-            return count == that.count &&
-                Objects.equals(location, that.location);
+            return count == that.count
+                && Objects.equals(location, that.location);
         }
 
         @Override
@@ -252,10 +256,13 @@ public class IntegerIdDomainRepositoryIT {
 
         @Override
         public String toString() {
-            return "InvalidDomain{" +
-                "count=" + count +
-                ", location='" + location + '\'' +
-                '}';
+            return "InvalidDomain{"
+                + "count="
+                + count
+                + ", location='"
+                + location
+                + '\''
+                + '}';
         }
     }
 }

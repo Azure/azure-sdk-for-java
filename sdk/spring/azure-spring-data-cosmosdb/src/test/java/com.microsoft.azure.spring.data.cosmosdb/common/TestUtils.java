@@ -19,7 +19,7 @@ public class TestUtils {
     }
 
     public static <T> void testIndexingPolicyPathsEquals(List<T> policyPaths,
-                                                         String [] pathsExpected) {
+                                                         String[] pathsExpected) {
         if (policyPaths == null) {
             throw new IllegalStateException("policyPaths should not be null");
         } else if (pathsExpected == null) {

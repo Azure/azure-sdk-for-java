@@ -47,11 +47,15 @@ public class Question {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Question question = (Question) o;
-        return Objects.equals(id, question.id) &&
-            Objects.equals(url, question.url);
+        return Objects.equals(id, question.id)
+            && Objects.equals(url, question.url);
     }
 
     @Override
@@ -61,9 +65,13 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{" +
-            "id='" + id + '\'' +
-            ", url='" + url + '\'' +
-            '}';
+        return "Question{"
+            + "id='"
+            + id
+            + '\''
+            + ", url='"
+            + url
+            + '\''
+            + '}';
     }
 }

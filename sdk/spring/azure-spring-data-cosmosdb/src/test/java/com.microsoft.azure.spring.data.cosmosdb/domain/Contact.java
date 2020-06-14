@@ -37,11 +37,15 @@ public class Contact {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Contact contact = (Contact) o;
-        return Objects.equals(logicId, contact.logicId) &&
-            Objects.equals(title, contact.title);
+        return Objects.equals(logicId, contact.logicId)
+            && Objects.equals(title, contact.title);
     }
 
     @Override

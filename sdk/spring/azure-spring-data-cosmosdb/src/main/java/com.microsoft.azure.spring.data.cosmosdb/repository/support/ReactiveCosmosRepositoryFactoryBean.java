@@ -5,6 +5,7 @@ package com.microsoft.azure.spring.data.cosmosdb.repository.support;
 import com.microsoft.azure.spring.data.cosmosdb.core.ReactiveCosmosOperations;
 import com.microsoft.azure.spring.data.cosmosdb.core.mapping.CosmosMappingContext;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -15,6 +16,10 @@ import org.springframework.data.repository.core.support.RepositoryFactorySupport
 
 import java.io.Serializable;
 
+/**
+ * Adapter for Springs {@link FactoryBean} interface to allow easy setup of reactive cosmos repository factories
+ * via Spring configuration.
+ */
 public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
     K extends Serializable>
     extends RepositoryFactoryBeanSupport<T, S, K>
@@ -24,10 +29,20 @@ public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
     private ReactiveCosmosOperations cosmosOperations;
     private boolean mappingContextConfigured = false;
 
+    /**
+     * Creates a new {@link RepositoryFactoryBeanSupport} for the given repository interface.
+     *
+     * @param repositoryInterface must not be {@literal null}.
+     */
     public ReactiveCosmosRepositoryFactoryBean(Class<? extends T> repositoryInterface) {
         super(repositoryInterface);
     }
 
+    /**
+     * Set reactive Cosmosdb operations
+     *
+     * @param operations contains cosmos operations
+     */
     @Autowired
     public void setReactiveCosmosOperations(ReactiveCosmosOperations operations) {
         this.cosmosOperations = operations;

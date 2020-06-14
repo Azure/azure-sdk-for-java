@@ -175,7 +175,9 @@ public class CosmosTemplateIT {
         cosmosTemplate.deleteById(Person.class.getSimpleName(), TEST_PERSON.getId(),
                 new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
 
-        final String firstName = NEW_FIRST_NAME + "_" + UUID.randomUUID().toString();
+        final String firstName = NEW_FIRST_NAME
+                                    + "_"
+                                    + UUID.randomUUID().toString();
         final Person newPerson = new Person(TEST_PERSON.getId(), firstName,
                 NEW_FIRST_NAME, null, null);
 

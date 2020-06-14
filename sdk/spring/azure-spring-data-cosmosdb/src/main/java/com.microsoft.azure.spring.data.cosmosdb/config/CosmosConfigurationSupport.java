@@ -20,13 +20,26 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A support class for cosmos configuration to scan beans and get initial entities
+ */
 public abstract class CosmosConfigurationSupport {
 
+    /**
+     * Declare ExpressionResolver bean.
+     * @param beanFactory used to initialize the embeddedValueResolver
+     * @return ExpressionResolver bean
+     */
     @Bean
     public ExpressionResolver expressionResolver(BeanFactory beanFactory) {
         return new ExpressionResolver(beanFactory);
     }
 
+    /**
+     * Declare CosmosMappingContext bean.
+     * @return CosmosMappingContext bean
+     * @throws ClassNotFoundException if the class type is invalid
+     */
     @Bean
     public CosmosMappingContext cosmosMappingContext() throws ClassNotFoundException {
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
@@ -40,6 +53,11 @@ public abstract class CosmosConfigurationSupport {
         return Collections.singleton(mappingBasePackage == null ? null : mappingBasePackage.getName());
     }
 
+    /**
+     * Scan all base packages and get all beans
+     * @return initial entity set
+     * @throws ClassNotFoundException if the class type is invalid
+     */
     protected Set<Class<?>> getInitialEntitySet() throws ClassNotFoundException {
         final Set<Class<?>> initialEntitySet = new HashSet<>();
 
@@ -50,6 +68,12 @@ public abstract class CosmosConfigurationSupport {
         return initialEntitySet;
     }
 
+    /**
+     * Scan all beans under the given base package
+     * @param basePackage set the base location of beans
+     * @return initial entity set for found beans
+     * @throws ClassNotFoundException if the class type is invalid
+     */
     protected Set<Class<?>> scanForEntities(String basePackage) throws ClassNotFoundException {
         if (!StringUtils.hasText(basePackage)) {
             return Collections.emptySet();

@@ -41,11 +41,15 @@ public class IntegerIdDomain {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         IntegerIdDomain that = (IntegerIdDomain) o;
-        return Objects.equals(number, that.number) &&
-            Objects.equals(name, that.name);
+        return Objects.equals(number, that.number)
+            && Objects.equals(name, that.name);
     }
 
     @Override
@@ -55,9 +59,12 @@ public class IntegerIdDomain {
 
     @Override
     public String toString() {
-        return "IntegerIdDomain{" +
-            "number=" + number +
-            ", name='" + name + '\'' +
-            '}';
+        return "IntegerIdDomain{"
+            + "number="
+            + number
+            + ", name='"
+            + name
+            + '\''
+            + '}';
     }
 }

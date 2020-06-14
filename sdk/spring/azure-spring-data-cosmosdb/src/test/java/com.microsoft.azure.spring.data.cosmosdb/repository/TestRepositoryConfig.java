@@ -58,10 +58,11 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
         final RequestOptions options = getRequestOptions();
         final CosmosDBConfig.CosmosDBConfigBuilder builder;
 
-        if (StringUtils.hasText(this.cosmosDbUri) && StringUtils.hasText(this.cosmosDbKey)) {
-            builder = CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, dbName);
+        if (StringUtils.hasText(this.cosmosDbUri)
+                && StringUtils.hasText(this.cosmosDbKey)) {
+            builder = CosmosDBConfig.cosmosDBConfigbuilder(cosmosDbUri, cosmosDbKey, dbName);
         } else {
-            builder = CosmosDBConfig.builder(connectionString, dbName);
+            builder = CosmosDBConfig.cosmosDBConfigbuilder(connectionString, dbName);
         }
         return builder.requestOptions(options)
                 .populateQueryMetrics(populateQueryMetrics)
