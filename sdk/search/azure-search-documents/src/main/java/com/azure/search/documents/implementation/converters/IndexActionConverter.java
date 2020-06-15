@@ -8,6 +8,7 @@ import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,6 +63,8 @@ public final class IndexActionConverter {
         TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
         if (obj.getParamMap() != null) {
             Map<String, Object> properties = obj.getParamMap();
+
+            mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
             additionalProperties = mapper.convertValue(properties, typeRef);
         } else {
             T properties = obj.getDocument();

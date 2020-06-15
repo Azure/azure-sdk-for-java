@@ -73,6 +73,7 @@ public final class GeoPoint {
     @JsonIgnore
     public boolean isValid() {
         return coordinates != null && coordinates.size() == 2
+            && coordinates.get(0) != null && coordinates.get(1) != null
             && coordinates.get(0) >= -180.0 && coordinates.get(0) <= 180.0
             && coordinates.get(1) >= -90.0 && coordinates.get(1) <= 90.0
             && (coordinateSystem == null || coordinateSystem.isValid());
