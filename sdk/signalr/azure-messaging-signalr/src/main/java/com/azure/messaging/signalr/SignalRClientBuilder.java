@@ -54,7 +54,7 @@ public final class SignalRClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
+    private static final HttpPipelinePolicy DEFAULT_RETRY_POLICY = new RetryPolicy();
 
     private final Map<String, String> properties;
     private final List<HttpPipelinePolicy> policies;
