@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Resource;
@@ -82,7 +82,7 @@ class DocumentProducer<T extends Resource> {
 
     protected final IDocumentQueryClient client;
     protected final String collectionRid;
-    protected final QueryRequestOptions queryRequestOptions;
+    protected final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     protected final Class<T> resourceType;
     protected final PartitionKeyRange targetRange;
     protected final String collectionLink;
@@ -100,7 +100,7 @@ class DocumentProducer<T extends Resource> {
     public DocumentProducer(
             IDocumentQueryClient client,
             String collectionResourceId,
-            QueryRequestOptions queryRequestOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeRequestFunc,
             PartitionKeyRange targetRange,
@@ -143,8 +143,8 @@ class DocumentProducer<T extends Resource> {
 
         this.correlatedActivityId = correlatedActivityId;
 
-        this.queryRequestOptions = queryRequestOptions != null ? queryRequestOptions : new QueryRequestOptions();
-        ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.queryRequestOptions, initialContinuationToken);
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.targetRange = targetRange;
@@ -159,7 +159,7 @@ class DocumentProducer<T extends Resource> {
                 (token, maxItemCount) -> createRequestFunc.apply(targetRange, token, maxItemCount);
         Flux<FeedResponse<T>> obs = Paginator
                 .getPaginatedQueryResultAsObservable(
-                        ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(queryRequestOptions),
+                        ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
                         sourcePartitionCreateRequestFunc,
                         executeRequestFuncWithRetries,
                         resourceType,
@@ -229,7 +229,7 @@ class DocumentProducer<T extends Resource> {
         return new DocumentProducer<T>(
                 client,
                 collectionRid,
-                queryRequestOptions,
+                cosmosQueryRequestOptions,
                 createRequestFunc,
                 executeRequestFuncWithRetries,
                 targetRange,
@@ -248,7 +248,7 @@ class DocumentProducer<T extends Resource> {
             collectionRid,
             range,
             true,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(queryRequestOptions));
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(cosmosQueryRequestOptions));
     }
 
     private boolean isSplit(CosmosException e) {

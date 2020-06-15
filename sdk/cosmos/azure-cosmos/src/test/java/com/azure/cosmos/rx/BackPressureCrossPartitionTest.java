@@ -8,19 +8,17 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.models.QueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import io.reactivex.subscribers.TestSubscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,10 +65,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath("/*");
-        List<Index> indexes = new ArrayList<>();
-        indexes.add(Index.range(DataType.STRING, -1));
-        indexes.add(Index.range(DataType.NUMBER, -1));
-        includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 
@@ -88,7 +82,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     }
 
     private void warmUp() {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         // ensure collection is cached
         createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).byPage().blockFirst();
     }
@@ -108,7 +102,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void queryPages(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
@@ -152,7 +146,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = 2 * TIMEOUT)
     public void queryItems(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 

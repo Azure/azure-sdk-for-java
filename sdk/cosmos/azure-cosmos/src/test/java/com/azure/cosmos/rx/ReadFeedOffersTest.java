@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -48,7 +48,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
     public void readOffers() throws Exception {
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
 
         Flux<FeedResponse<Offer>> feedObservable = client.readOffers(options);

@@ -469,7 +469,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "7723710e-21a2-4a58-91d0-fb3ebad56257",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"D8lCd1JEpy9MjEhBPCurllR7CHaK1b9T2fJkpXoGk7bU2GlhsOb0elckVPElNZyWTTd3AZEOFClmut8wl92MqA==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"DSePyBNLovtKr0JmStNGiVd+Rb+XFtt8MZnyqMDpcfJTlHsZ2ks3f66SgnZ3lade/THvDjSPUi2Xcu6bBzsQcA==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",
@@ -496,7 +496,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "194ca7b3-4b5c-4024-9808-20d0b88920d1",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"Lv6zVvSzyanCJgicxcnJoplyUh1PZN1S4Vmq9RSvSkTJIxadfs8IXEqHJSmg4wnt6JT7ZWryGBvTxELlP5Csng==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"DSePyBNLovtKr0JmStNGiVd+Rb+XFtt8MZnyqMDpcfJTlHsZ2ks3f66SgnZ3lade/THvDjSPUi2Xcu6bBzsQcA==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "POST",

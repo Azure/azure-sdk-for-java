@@ -10,10 +10,11 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -24,13 +25,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -49,10 +46,6 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     private static final String STATUS_CODE = "StatusCode";
     private static final String BODY = "Body";
     private static final String SIG = "sig";
-
-    private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
-    private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
-    private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
 
     private final ClientLogger logger = new ClientLogger(RecordNetworkCallPolicy.class);
     private final RecordedData recordedData;
@@ -177,7 +170,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return response.getBodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                responseData.put(BODY, redactUserDelegationKey(content));
+                responseData.put(BODY, new RecordingRedactor().redact(content));
                 return responseData;
             });
         } else {
@@ -215,25 +208,5 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 return responseData;
             });
         }
-    }
-
-    private String redactUserDelegationKey(String content) {
-        if (!content.contains("UserDelegationKey")) {
-            return content;
-        }
-
-        content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), Base64.getEncoder().encodeToString("REDACTED".getBytes(StandardCharsets.UTF_8)));
-        content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
-        content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
-
-        return content;
-    }
-
-    private String redactionReplacement(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            content = content.replace(matcher.group(1), replacement);
-        }
-
-        return content;
     }
 }

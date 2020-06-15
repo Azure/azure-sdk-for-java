@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -53,7 +53,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int skipCount = 4;
         int takeCount = 10;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
@@ -76,7 +76,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         int skipCount = 0;
         int takeCount = 2;
         String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         CosmosPagedFlux<CosmosItemProperties> queryObservable;
 
         int totalDocsObtained = 0;
@@ -148,7 +148,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
 
         do {
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             CosmosPagedFlux<CosmosItemProperties> queryObservable =
                 createdCollection.queryItems(query, options, CosmosItemProperties.class);
 

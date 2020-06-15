@@ -35,7 +35,7 @@ public final class SynonymTokenFilterConverter {
         }
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        synonymTokenFilter.setIgnoreCase(ignoreCase);
+        synonymTokenFilter.setCaseIgnored(ignoreCase);
         return synonymTokenFilter;
     }
 
@@ -53,7 +53,7 @@ public final class SynonymTokenFilterConverter {
         String name = obj.getName();
         synonymTokenFilter.setName(name);
 
-        Boolean expand = obj.isExpand();
+        Boolean expand = obj.getExpand();
         synonymTokenFilter.setExpand(expand);
 
         if (obj.getSynonyms() != null) {
@@ -61,7 +61,7 @@ public final class SynonymTokenFilterConverter {
             synonymTokenFilter.setSynonyms(synonyms);
         }
 
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         synonymTokenFilter.setIgnoreCase(ignoreCase);
         return synonymTokenFilter;
     }

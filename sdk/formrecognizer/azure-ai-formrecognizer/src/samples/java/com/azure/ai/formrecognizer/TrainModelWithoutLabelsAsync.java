@@ -71,7 +71,7 @@ public class TrainModelWithoutLabelsAsync {
             customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
                 System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
                 System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-                System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
+                System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
                 if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
                     System.out.println("Document Errors:");
                     trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->

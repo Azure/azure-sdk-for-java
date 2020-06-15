@@ -10,7 +10,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
@@ -107,7 +107,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     public void groupByInMemory() {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Document> documentsObservable = client
@@ -138,7 +138,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     public void groupByInMemory_MoreDetail() {
 
         int requestPageSize = 3;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Document> documentsObservable = client

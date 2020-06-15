@@ -120,7 +120,7 @@ public final class RntbdObjectMapper {
         checkNotNull(filter, "filter");
 
         try {
-            filterProvider.addFilter(type.getSimpleName(), filter.newInstance());
+            filterProvider.addFilter(type.getSimpleName(), filter.getDeclaredConstructor().newInstance());
         } catch (final ReflectiveOperationException error) {
             throw new IllegalStateException(error);
         }

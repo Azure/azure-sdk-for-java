@@ -35,6 +35,7 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,6 +60,8 @@ class ServiceBusReceiverClientTest {
     private MessageLockToken messageLockToken;
     @Mock
     private Map<String, Object> propertiesToModify;
+    @Mock
+    ServiceBusTransactionContext transactionContext;
 
     @BeforeEach
     void setup() {
@@ -92,6 +95,18 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    void abandonMessageWithTransaction() {
+        // Arrange
+        when(asyncClient.abandon(any(MessageLockToken.class), isNull(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+
+        // Act
+        client.abandon(messageLockToken, null, transactionContext);
+
+        // Assert
+        verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals), isNull(), eq(transactionContext));
+    }
+
+    @Test
     void abandonMessage() {
         // Arrange
         when(asyncClient.abandon(any(MessageLockToken.class))).thenReturn(Mono.empty());
@@ -114,6 +129,18 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         verify(asyncClient).abandon(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify));
+    }
+
+    @Test
+    void completeMessageWithTransaction() {
+        // Arrange
+        when(asyncClient.complete(any(MessageLockToken.class), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+
+        // Act
+        client.complete(messageLockToken, transactionContext);
+
+        // Assert
+        verify(asyncClient).complete(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(transactionContext));
     }
 
     @Test
@@ -141,6 +168,19 @@ class ServiceBusReceiverClientTest {
     }
 
     @Test
+    void deferMessageWithPropertiesWithTransaction() {
+        // Arrange
+        when(asyncClient.defer(any(MessageLockToken.class), anyMap(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+        when(asyncClient.defer(any(MessageLockToken.class), any(), anyString(), any(ServiceBusTransactionContext.class))).thenReturn(Mono.empty());
+
+        // Act
+        client.defer(messageLockToken, propertiesToModify, transactionContext);
+
+        // Assert
+        verify(asyncClient).defer(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(propertiesToModify), eq(transactionContext));
+    }
+
+    @Test
     void deferMessageWithProperties() {
         // Arrange
         when(asyncClient.defer(any(MessageLockToken.class), anyMap())).thenReturn(Mono.empty());
@@ -163,6 +203,24 @@ class ServiceBusReceiverClientTest {
 
         // Assert
         verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals));
+    }
+
+    @Test
+    void deadLetterMessageWithOptionsWithTransaction() {
+        // Arrange
+        final DeadLetterOptions options = new DeadLetterOptions()
+            .setDeadLetterErrorDescription("foo")
+            .setDeadLetterReason("bar")
+            .setPropertiesToModify(propertiesToModify);
+
+        when(asyncClient.deadLetter(any(MessageLockToken.class), any(DeadLetterOptions.class), any(ServiceBusTransactionContext.class)))
+            .thenReturn(Mono.empty());
+
+        // Act
+        client.deadLetter(messageLockToken, options, transactionContext);
+
+        // Assert
+        verify(asyncClient).deadLetter(argThat(ServiceBusReceiverClientTest::lockTokenEquals), eq(options), eq(transactionContext));
     }
 
     @Test
@@ -214,10 +272,10 @@ class ServiceBusReceiverClientTest {
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.browse()).thenReturn(Mono.just(message));
+        when(asyncClient.peek()).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.browse();
+        final ServiceBusReceivedMessage actual = client.peek();
 
         // Assert
         assertEquals(message, actual);
@@ -228,10 +286,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.browseAt(sequenceNumber)).thenReturn(Mono.just(message));
+        when(asyncClient.peekAt(sequenceNumber)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.browseAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.peekAt(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -267,10 +325,10 @@ class ServiceBusReceiverClientTest {
                 }
             });
         });
-        when(asyncClient.browseBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -311,10 +369,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.browseBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -340,10 +398,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.browseBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
+        when(asyncClient.peekBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatchAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatchAt(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);

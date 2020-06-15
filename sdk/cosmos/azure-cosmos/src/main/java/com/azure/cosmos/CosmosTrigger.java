@@ -48,11 +48,11 @@ public class CosmosTrigger {
     /**
      * Replace cosmos trigger.
      *
-     * @param triggerSettings the trigger settings
+     * @param triggerProperties the trigger properties.
      * @return the cosmos trigger response
      */
-    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerSettings) {
-        return container.getScripts().blockTriggerResponse(trigger.replace(triggerSettings));
+    public CosmosTriggerResponse replace(CosmosTriggerProperties triggerProperties) {
+        return container.getScripts().blockTriggerResponse(trigger.replace(triggerProperties));
     }
 
     /**
