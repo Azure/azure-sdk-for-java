@@ -489,7 +489,8 @@ public final class BlobDownloadHeaders {
      * to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setObjectReplicationSourcePolicies(List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+    public BlobDownloadHeaders setObjectReplicationSourcePolicies(
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
         this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         return this;
     }
