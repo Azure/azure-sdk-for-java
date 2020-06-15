@@ -19,9 +19,10 @@ import com.nimbusds.jwt.SignedJWT;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+
+import static java.time.LocalDateTime.now;
 
 /**
  * An {@link HttpPipelinePolicy} for authenticating against the SignalR service. Used in the default HTTP pipeline
@@ -44,7 +45,7 @@ public final class SignalRAuthenticationPolicy implements HttpPipelinePolicy {
      * within the credential is not, and as such can be updated by calling {@link AzureKeyCredential#update(String)} as
      * appropriate.</p>
      *
-     * @param credential THe {@link AzureKeyCredential} that will be used for all outgoing HTTP requests to the
+     * @param credential The {@link AzureKeyCredential} that will be used for all outgoing HTTP requests to the
      * SignalR service.
      */
     public SignalRAuthenticationPolicy(final AzureKeyCredential credential) {
@@ -56,8 +57,7 @@ public final class SignalRAuthenticationPolicy implements HttpPipelinePolicy {
         try {
             final JWTClaimsSet claims = new JWTClaimsSet.Builder()
                   .audience(context.getHttpRequest().getUrl().toString())
-                  .expirationTime(
-                      Date.from(LocalDateTime.now().plusMinutes(10).atZone(ZoneId.systemDefault()).toInstant()))
+                  .expirationTime(Date.from(now().plusMinutes(10).atZone(ZoneId.systemDefault()).toInstant()))
                   .build();
 
             final JWSSigner signer = new MACSigner(credential.getKey().getBytes(StandardCharsets.UTF_8));
