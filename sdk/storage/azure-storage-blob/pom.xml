@@ -276,6 +276,7 @@
                 --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.blob/com.azure.storage.blob.implementation.util=ALL-UNNAMED
                 --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
+                --add-opens com.azure.storage.blob/com.azure.storage.blob.changefeed=ALL-UNNAMED
                 --add-reads com.azure.core=ALL-UNNAMED
                 --add-reads com.azure.core.test=ALL-UNNAMED
                 --add-reads com.azure.core.amqp=ALL-UNNAMED

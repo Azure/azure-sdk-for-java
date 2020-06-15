@@ -66,6 +66,9 @@ stages:
         - name: azure-storage-blob-batch
           groupId: com.azure
           safeName: azurestorageblobbatch
+        - name: azure-storage-blob-changefeed
+          groupId: com.azure
+          safeName: azurestorageblobchangefeed
         - name: azure-storage-blob-cryptography
           groupId: com.azure
           safeName: azurestorageblobcryptography

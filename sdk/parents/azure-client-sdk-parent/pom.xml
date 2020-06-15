@@ -534,6 +534,7 @@
               com.azure.core.test*:
               com.azure.endtoend*:
               com.azure.perf*
+              com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -618,6 +619,10 @@
               <group>
                 <title>Azure Storage Blob - Batch</title>
                 <packages>com.azure.storage.blob.batch*</packages>
+              </group>
+              <group>
+                <title>Azure Storage Blob - Changefeed</title>
+                <packages>com.azure.storage.blob.changefeed*</packages>
               </group>
               <group>
                 <title>Azure Storage Blobs - Cryptography</title>
@@ -827,6 +832,7 @@
                 -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-changefeed/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
