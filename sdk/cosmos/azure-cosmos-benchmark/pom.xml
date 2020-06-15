@@ -487,6 +487,7 @@ Licensed under the MIT License.
                   <descriptorRefs>
                     <descriptorRef>jar-with-dependencies</descriptorRef>
                   </descriptorRefs>
+                  <outputDirectory>${project.build.directory}/ctl</outputDirectory>
                   <finalName>azure-cosmos-benchmark</finalName>
                   <archive>
                     <manifest>

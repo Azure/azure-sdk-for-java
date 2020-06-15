@@ -55,7 +55,7 @@ echo "log file name is $logFileName"
 
 echo "serviceEndpoint $serviceEndpoint, colNmae $colName operation: $operation, consistencyLevel: $consistencyLevel, connectionMode: $connectionMode, protocol: $protocol, concurrency: $concurrency" > $logFileName
 start=`test "x$1" == x && date +%s`
-jar_file=./target/azure-cosmos-benchmark-jar-with-dependencies.jar
+jar_file=./azure-cosmos-benchmark-jar-with-dependencies.jar
 
 JVM_OPT=""
 #JVM_OPT='-Dazure.cosmos.rntbd.threadcount=16 -Dazure.cosmos.directTcp.defaultOptions={"maxRequestsPerChannel":10}'
