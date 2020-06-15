@@ -15,17 +15,17 @@ steps:
         -RepositoryUsername nobody -RepositoryPassword $(System.AccessToken)
         -GPGExecutablePath ${{parameters.BuildToolsPath}}/tools/gpg/bin/gpg.exe -InformationAction Continue
       workingDirectory: $(Agent.BuildDirectory)
-      displayName: 'Publish to Azure Artifacts'
+      displayName: 'Publish to Burner Feed'
 
   - ${{if eq(parameters.Target, 'JavaDevFeed')}}:
     - pwsh: >
         ${{parameters.JavaRepoRoot}}/eng/scripts/Publish-MavenPackages.ps1 -ArtifactDirectory ${{parameters.ArtifactDirectory}}
         -GroupIDFilter ${{parameters.GroupID}} -ArtifactIDFilter ${{parameters.ArtifactID}}
-        -RepositoryUrl https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+        -RepositoryUrl ${{parameters.RepositoryUrl}}
         -RepositoryUsername nobody -RepositoryPassword $(System.AccessToken)
         -GPGExecutablePath ${{parameters.BuildToolsPath}}/tools/gpg/bin/gpg.exe -InformationAction Continue
       workingDirectory: $(Agent.BuildDirectory)
-      displayName: 'Publish to Azure Artifacts'
+      displayName: 'Publish to Java Dev Feed'
         
   - ${{if eq(parameters.Target, 'AndroidDevFeed')}}:
     - pwsh: >
@@ -35,7 +35,7 @@ steps:
         -RepositoryUsername nobody -RepositoryPassword $(System.AccessToken)
         -GPGExecutablePath ${{parameters.BuildToolsPath}}/tools/gpg/bin/gpg.exe -InformationAction Continue
       workingDirectory: $(Agent.BuildDirectory)
-      displayName: 'Publish to Azure Artifacts'
+      displayName: 'Publish to Andriod Public Dev Feed'
             
   - ${{if eq(parameters.Target, 'MavenCentral')}}:
     - pwsh: >

@@ -2,10 +2,11 @@
 
 ## 12.2.0-beta.1 (Unreleased)
 
+## 12.1.2 (2020-06-12)
+- Updated azure-storage-common and azure-core dependencies.
 
 ## 12.1.1 (2020-05-06)
 - Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
-
 
 ## 12.1.0 (2020-04-06)
 - Fixed a NPE caused due to deserializing a non existent lastModifiedTime.
