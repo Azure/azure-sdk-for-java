@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobUploadFromFileOptions;
@@ -100,7 +100,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobAsyncClient#uploadWithResponse(Flux, com.azure.storage.blob.models.BlobParallelUploadOptions)}
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadWithResponse(Flux, BlobParallelUploadOptions)}
      */
     public void upload3() {
         // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions

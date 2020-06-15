@@ -11,7 +11,7 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobUploadFromFileOptions;
@@ -372,7 +372,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(data, new BlobParallelUploadOptions()
+        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
             .setRequestConditions(requestConditions));
     }
@@ -415,30 +415,29 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param options {@link BlobParallelUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, BlobParallelUploadOptions options) {
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
-            Objects.requireNonNull(data, "'data' must not be null");
-            BlobParallelUploadOptions finalOptions = options == null ? new BlobParallelUploadOptions() : options;
-            BlobRequestConditions validatedRequestConditions = finalOptions.getRequestConditions() == null
-                ? new BlobRequestConditions() : finalOptions.getRequestConditions();
+            Objects.requireNonNull(options, "'data' must not be null");
+            BlobRequestConditions validatedRequestConditions = options.getRequestConditions() == null
+                ? new BlobRequestConditions() : options.getRequestConditions();
             final ParallelTransferOptions validatedParallelTransferOptions =
-                ModelHelper.populateAndApplyDefaults(finalOptions.getParallelTransferOptions());
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
 
             BlockBlobAsyncClient blockBlobAsyncClient = getBlockBlobAsyncClient();
 
             Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunksFunction = (stream) ->
                 uploadInChunks(blockBlobAsyncClient, stream, validatedParallelTransferOptions,
-                    finalOptions.getHeaders(), finalOptions.getMetadata(), finalOptions.getTags(),
-                    finalOptions.getTier(), validatedRequestConditions);
+                    options.getHeaders(), options.getMetadata(), options.getTags(),
+                    options.getTier(), validatedRequestConditions);
 
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
                 (stream, length) -> blockBlobAsyncClient.uploadWithResponse(ProgressReporter
                     .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
-                    length, new BlockBlobSimpleUploadOptions().setHeaders(finalOptions.getHeaders())
-                        .setMetadata(finalOptions.getMetadata()).setTags(finalOptions.getTags())
-                        .setTier(finalOptions.getTier()).setRequestConditions(finalOptions.getRequestConditions()));
+                    length, new BlockBlobSimpleUploadOptions().setHeaders(options.getHeaders())
+                        .setMetadata(options.getMetadata()).setTags(options.getTags())
+                        .setTier(options.getTier()).setRequestConditions(options.getRequestConditions()));
 
-            return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(validatedParallelTransferOptions),
+            return UploadUtils.uploadFullOrChunked(options.getDataFlux(), ModelHelper.wrapBlobOptions(validatedParallelTransferOptions),
                 uploadInChunksFunction, uploadFullBlobMethod);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
