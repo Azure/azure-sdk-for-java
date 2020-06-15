@@ -12,6 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,14 +90,13 @@ public final class BlobDownloadHeaders {
                 String ruleId = split[1];
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
-                int index = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId,
+                ObjectReplicationPolicy policy = ObjectReplicationPolicy.getObjectReplicationPolicy(policyId,
                     this.objectReplicationSourcePolicies);
-                if (index == -1) {
-                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                if (policy == null) {
+                    policy = new ObjectReplicationPolicy(policyId);
                     policy.putRule(rule);
                     this.objectReplicationSourcePolicies.add(policy);
                 } else {
-                    ObjectReplicationPolicy policy = objectReplicationSourcePolicies.get(index);
                     policy.putRule(rule);
                 }
             }
@@ -472,20 +472,20 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the objectReplicationPolicies property: The
-     * objectReplicationPolicies property.
+     * Get the objectReplicationSourcePolicies property: The
+     * objectReplicationSourcePolicies property.
      *
-     * @return the objectReplicationPolicies value.
+     * @return the objectReplicationSourcePolicies value.
      */
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return this.objectReplicationSourcePolicies;
+        return Collections.unmodifiableList(this.objectReplicationSourcePolicies);
     }
 
     /**
-     * Set the objectReplicationPolicies property: The
-     * objectReplicationPolicies property.
+     * Set the objectReplicationSourcePolicies property: The
+     * objectReplicationSourcePolicies property.
      *
-     * @param objectReplicationSourcePolicies the objectReplicationPolicies value
+     * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies value
      * to set.
      * @return the BlobDownloadHeaders object itself.
      */

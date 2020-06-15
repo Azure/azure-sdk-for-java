@@ -8,6 +8,7 @@ import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -213,14 +214,13 @@ public final class BlobProperties {
                 String ruleId = split[1];
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
-                int index = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId,
+                ObjectReplicationPolicy policy = ObjectReplicationPolicy.getObjectReplicationPolicy(policyId,
                     this.objectReplicationSourcePolicies);
-                if (index == -1) {
-                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                if (policy == null) {
+                    policy = new ObjectReplicationPolicy(policyId);
                     policy.putRule(rule);
                     this.objectReplicationSourcePolicies.add(policy);
                 } else {
-                    ObjectReplicationPolicy policy = objectReplicationSourcePolicies.get(index);
                     policy.putRule(rule);
                 }
             }
@@ -587,7 +587,7 @@ public final class BlobProperties {
      * replication.
      */
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return this.objectReplicationSourcePolicies;
+        return Collections.unmodifiableList(this.objectReplicationSourcePolicies);
     }
 
     /**

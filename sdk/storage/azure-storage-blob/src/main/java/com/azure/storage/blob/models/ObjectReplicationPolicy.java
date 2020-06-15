@@ -4,7 +4,9 @@
 package com.azure.storage.blob.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A type that contains information about an object replication policy on a source blob.
@@ -13,6 +15,11 @@ public class ObjectReplicationPolicy {
 
     private final String policyId;
     private final List<ObjectReplicationRule> objectReplicationRules;
+
+    public ObjectReplicationPolicy(String policyId, List<ObjectReplicationRule> rules) {
+        this.policyId = policyId;
+        this.objectReplicationRules = Collections.unmodifiableList(rules);
+    }
 
     ObjectReplicationPolicy(String policyId) {
         this.policyId = policyId;
@@ -35,16 +42,14 @@ public class ObjectReplicationPolicy {
      * rule.
      */
     public List<ObjectReplicationRule> getRules() {
-        return this.objectReplicationRules;
+        return Collections.unmodifiableList(this.objectReplicationRules);
     }
 
-    static int getIndexOfObjectReplicationPolicy(String policyId,
+    static ObjectReplicationPolicy getObjectReplicationPolicy(String policyId,
         List<ObjectReplicationPolicy> objectReplicationPolicies) {
-        for (int i = 0; i < objectReplicationPolicies.size(); i++) {
-            if (policyId.equals(objectReplicationPolicies.get(i).getPolicyId())) {
-                return i;
-            }
-        }
-        return -1;
+        Optional<ObjectReplicationPolicy> p = objectReplicationPolicies.stream()
+            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .findFirst();
+        return p.orElse(null);
     }
 }

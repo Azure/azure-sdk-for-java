@@ -7,32 +7,11 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobBeginCopyOptions
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions
-import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType
-import com.azure.storage.blob.models.DownloadRetryOptions
-import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.RehydratePriority
-import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.models.*
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
-import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
@@ -998,10 +977,9 @@ class BlobAPITest extends APISpec {
     }
 
     def validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
-        def policyIndex = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId, policies)
-        def rules = policies.get(policyIndex).getRules()
-        def ruleIndex = ObjectReplicationRule.getIndexOfObjectReplicationRule(ruleId, rules)
-        return rules.get(ruleIndex).getStatus() == ObjectReplicationStatus.COMPLETE
+        ObjectReplicationRule.getObjectReplicationRule(ruleId,
+            ObjectReplicationPolicy.getObjectReplicationPolicy(policyId, policies).getRules())
+            .getStatus() == ObjectReplicationStatus.COMPLETE
     }
 
     // Test getting the properties from a listing
