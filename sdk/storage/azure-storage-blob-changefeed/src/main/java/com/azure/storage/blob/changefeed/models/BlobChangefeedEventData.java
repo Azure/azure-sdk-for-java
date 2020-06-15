@@ -184,7 +184,7 @@ public class BlobChangefeedEventData {
     /**
      * @return Whether or not this operation was recursive.
      */
-    public Boolean getRecursive() {
+    public boolean getRecursive() {
         return recursive;
     }
 
