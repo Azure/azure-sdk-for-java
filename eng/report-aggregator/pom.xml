@@ -15,7 +15,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>jacoco-test-coverage</artifactId>
+  <artifactId>report-aggregator</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
   <name>Microsoft Azure Client Library - Test coverage</name>
