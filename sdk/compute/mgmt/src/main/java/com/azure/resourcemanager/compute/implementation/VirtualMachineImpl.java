@@ -1684,22 +1684,12 @@ class VirtualMachineImpl
     public Mono<VirtualMachine> createResourceAsync() {
         // -- set creation-time only properties
         return prepareCreateResourceAsync()
-            .flatMap(
-                virtualMachine -> {
-                    this.handleAvailabilitySettings();
-                    this.virtualMachineMsiHandler.processCreatedExternalIdentities();
-                    this.virtualMachineMsiHandler.handleExternalIdentities();
-                    return this
-                        .manager()
-                        .inner()
-                        .getVirtualMachines()
-                        .createOrUpdateAsync(resourceGroupName(), vmName, inner())
-                        .map(
-                            virtualMachineInner -> {
-                                reset(virtualMachineInner);
-                                return this;
-                            });
-                });
+            .flatMap(virtualMachine -> this.manager().inner().getVirtualMachines()
+                .createOrUpdateAsync(resourceGroupName(), vmName, inner())
+                .map(virtualMachineInner -> {
+                    reset(virtualMachineInner);
+                    return this;
+                }));
     }
 
     private Mono<VirtualMachine> prepareCreateResourceAsync() {
@@ -1738,7 +1728,8 @@ class VirtualMachineImpl
         if (activationResponse == null) {
             throw logger.logExceptionAsError(new NullPointerException());
         } else {
-            Accepted<VirtualMachine> accepted = new AcceptedImpl<VirtualMachineInner, VirtualMachine>(activationResponse,
+            Accepted<VirtualMachine> accepted = new AcceptedImpl<VirtualMachineInner, VirtualMachine>(
+                activationResponse,
                 this.manager().inner().getSerializerAdapter(),
                 this.manager().inner().getHttpPipeline(),
                 VirtualMachineInner.class,
