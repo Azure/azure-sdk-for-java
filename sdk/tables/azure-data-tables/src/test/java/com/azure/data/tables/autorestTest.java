@@ -18,19 +18,19 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
-
 
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 public class autorestTest {
 
 
-    @org.junit.Test
+    @Test
     void createAndUpdateTableFixed() {
         final String connectionString = System.getenv("azure_tables_connection_string");
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -75,7 +75,7 @@ public class autorestTest {
     }
 
 
-    @org.junit.Test
+    @Test
     void fromConnie () {
         final List<HttpPipelinePolicy> policies = Arrays.asList(
             new AddDatePolicy(),
@@ -108,7 +108,7 @@ public class autorestTest {
 
 
 
-    @org.junit.Test
+    @Test
     void TablesAuth() {
         final String connectionString = System.getenv("azure_tables_connection_string");
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
