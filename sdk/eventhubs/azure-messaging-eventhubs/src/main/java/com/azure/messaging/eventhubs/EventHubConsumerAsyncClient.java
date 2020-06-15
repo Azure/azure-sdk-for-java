@@ -12,6 +12,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.schemaregistry.SchemaRegistryDataDeserializer;
 import com.azure.messaging.eventhubs.implementation.AmqpReceiveLinkProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
@@ -71,6 +72,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final EventHubConnectionProcessor connectionProcessor;
     private final MessageSerializer messageSerializer;
     private final String consumerGroup;
+    private final SchemaRegistryDataDeserializer<T> registryDeserializer;
     private final int prefetchCount;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
@@ -83,8 +85,10 @@ public class EventHubConsumerAsyncClient implements Closeable {
         new ConcurrentHashMap<>();
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
+                                EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer,
+                                String consumerGroup,
+                                SchemaRegistryDataDeserializer<T> registryDeserializer, int prefetchCount,
+                                Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
@@ -94,6 +98,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
         this.onClientClosed = onClientClosed;
+        this.registryDeserializer = registryDeserializer;
     }
 
     /**
@@ -177,7 +182,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      * @throws NullPointerException if {@code partitionId}, or {@code startingPosition} is null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
-    public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition) {
+    public Flux<PartitionEvent<T>> receiveFromPartition(String partitionId, EventPosition startingPosition) {
         return receiveFromPartition(partitionId, startingPosition, defaultReceiveOptions);
     }
 
@@ -205,7 +210,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *     null.
      * @throws IllegalArgumentException if {@code partitionId} is an empty string.
      */
-    public Flux<PartitionEvent> receiveFromPartition(String partitionId, EventPosition startingPosition,
+    public Flux<PartitionEvent<T>> receiveFromPartition(String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         if (Objects.isNull(partitionId)) {
             return fluxError(logger, new NullPointerException("'partitionId' cannot be null."));
@@ -235,7 +240,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub starting from the beginning of each partition.
      */
-    public Flux<PartitionEvent> receive() {
+    public Flux<PartitionEvent<T>> receive() {
         return receive(true, defaultReceiveOptions);
     }
 
@@ -256,7 +261,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @return A stream of events for every partition in the Event Hub.
      */
-    public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent) {
+    public Flux<PartitionEvent<T>> receive(boolean startReadingAtEarliestEvent) {
         return receive(startReadingAtEarliestEvent, defaultReceiveOptions);
     }
 
@@ -289,7 +294,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code receiveOptions} is null.
      */
-    public Flux<PartitionEvent> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
+    public Flux<PartitionEvent<T>> receive(boolean startReadingAtEarliestEvent, ReceiveOptions receiveOptions) {
         if (Objects.isNull(receiveOptions)) {
             return fluxError(logger, new NullPointerException("'receiveOptions' cannot be null."));
         }
@@ -325,7 +330,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         }
     }
 
-    private Flux<PartitionEvent> createConsumer(String linkName, String partitionId, EventPosition startingPosition,
+    private Flux<PartitionEvent<T>> createConsumer(String linkName, String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         return openPartitionConsumers
             .computeIfAbsent(linkName,
@@ -365,6 +370,6 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
         return new EventHubPartitionAsyncConsumer(linkMessageProcessor, messageSerializer, getFullyQualifiedNamespace(),
             getEventHubName(), consumerGroup, partitionId, initialPosition,
-            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler);
+            receiveOptions.getTrackLastEnqueuedEventProperties(), scheduler, registryDeserializer);
     }
 }

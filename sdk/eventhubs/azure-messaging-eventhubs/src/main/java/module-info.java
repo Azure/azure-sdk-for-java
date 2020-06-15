@@ -6,6 +6,7 @@ module com.azure.messaging.eventhubs {
     requires transitive com.azure.core.amqp;
 
     requires com.microsoft.azure.qpid.protonj.extensions;
+    requires azure.data.schemaregistry;
 
     exports com.azure.messaging.eventhubs;
     exports com.azure.messaging.eventhubs.models;

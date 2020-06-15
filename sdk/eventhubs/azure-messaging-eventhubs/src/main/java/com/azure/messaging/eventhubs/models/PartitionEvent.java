@@ -12,11 +12,12 @@ import java.util.Objects;
  * A container for {@link EventData} along with the partition information for this event data.
  */
 @Immutable
-public class PartitionEvent {
+public class PartitionEvent<T> {
 
     private final PartitionContext partitionContext;
     private final EventData eventData;
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties;
+    private final Object deserialized;
 
     /**
      * Creates an instance of PartitionEvent.
@@ -24,13 +25,16 @@ public class PartitionEvent {
      * @param partitionContext The partition information associated with the event data.
      * @param eventData The event data received from the Event Hub.
      * @param lastEnqueuedEventProperties The properties of the last enqueued event in the partition.
+     * @param deserialized object deserialized by deserializer. Set to eventData byte array payload if no deserializer
+     *  has been set.
      * @throws NullPointerException if {@code partitionContext} or {@code eventData} is {@code null}.
      */
     public PartitionEvent(final PartitionContext partitionContext, final EventData eventData,
-        LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+                          LastEnqueuedEventProperties lastEnqueuedEventProperties, T deserialized) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
         this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
+        this.deserialized = deserialized;
     }
 
     /**
@@ -58,5 +62,14 @@ public class PartitionEvent {
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
         return lastEnqueuedEventProperties;
+    }
+
+    /**
+     * Gets deserialized object from EventData byte payload
+     * @return deserialized object
+     */
+    public T getDeserializedObject() {
+        Objects.requireNonNull(this.deserialized);
+        return (T) this.deserialized;
     }
 }

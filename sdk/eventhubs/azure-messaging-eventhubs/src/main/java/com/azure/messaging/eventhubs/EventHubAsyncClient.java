@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.schemaregistry.SchemaRegistryDataDeserializer;
+import com.azure.data.schemaregistry.SchemaRegistryDataSerializer;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import reactor.core.publisher.Flux;
@@ -24,7 +26,7 @@ import java.util.Objects;
  * @see EventHubClient See EventHubClient to communicate with an Event Hub using a synchronous client.
  * @see <a href="https://docs.microsoft.com/Azure/event-hubs/event-hubs-about">About Azure Event Hubs</a>
  */
-class EventHubAsyncClient implements Closeable {
+class EventHubAsyncClient<T> implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
     private final EventHubConnectionProcessor connectionProcessor;
@@ -32,17 +34,24 @@ class EventHubAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
+    private final SchemaRegistryDataSerializer<T> registrySerializer;
+    private final SchemaRegistryDataDeserializer<T> registryDeserializer;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+                        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection,
+                        Runnable onClientClose, SchemaRegistryDataSerializer<T> registrySerializer,
+                        SchemaRegistryDataDeserializer<T> registryDeserializer) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
-        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.messageSerializer =
+            Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.isSharedConnection = isSharedConnection;
+        this.registrySerializer = registrySerializer;
+        this.registryDeserializer = registryDeserializer;
     }
 
     /**
@@ -102,9 +111,10 @@ class EventHubAsyncClient implements Closeable {
      *
      * @return A new {@link EventHubProducerAsyncClient}.
      */
-    EventHubProducerAsyncClient createProducer() {
-        return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
+    EventHubProducerAsyncClient<T> createProducer() {
+        return new EventHubProducerAsyncClient<>(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
+            connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer,
+            registrySerializer, scheduler,
             isSharedConnection, onClientClose);
     }
 
@@ -120,7 +130,7 @@ class EventHubAsyncClient implements Closeable {
      * @throws NullPointerException If {@code consumerGroup} is {@code null}.
      * @throws IllegalArgumentException If {@code consumerGroup} is an empty string.
      */
-    EventHubConsumerAsyncClient createConsumer(String consumerGroup, int prefetchCount) {
+    EventHubConsumerAsyncClient<T> createConsumer(String consumerGroup, int prefetchCount) {
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null.");
 
         if (consumerGroup.isEmpty()) {
@@ -128,8 +138,9 @@ class EventHubAsyncClient implements Closeable {
                 new IllegalArgumentException("'consumerGroup' cannot be an empty string."));
         }
 
-        return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection,
+        return new EventHubConsumerAsyncClient<>(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
+            connectionProcessor, messageSerializer, consumerGroup, registryDeserializer,
+            prefetchCount, scheduler, isSharedConnection,
             onClientClose);
     }
 
