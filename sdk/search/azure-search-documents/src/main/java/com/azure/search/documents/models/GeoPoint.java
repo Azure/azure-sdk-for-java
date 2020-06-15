@@ -116,10 +116,8 @@ public final class GeoPoint {
     @Override
     public String toString() {
         if (isValid()) {
-            String longitude = ("" + coordinates.get(0)).contains(".")
-                ? "" + coordinates.get(0) : "" + coordinates.get(0) + ".0";
-            String latitude = ("" + coordinates.get(1)).contains(".")
-                ? "" + coordinates.get(1) : "" + coordinates.get(1) + ".0";
+            String longitude = Double.toString(coordinates.get(0));
+            String latitude = Double.toString(coordinates.get(1));
 
             return String.format(
                 Locale.ROOT,
