@@ -76,11 +76,11 @@ public final class FormRecognizerClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-FormContentType}
      *
      * @param form The data of the form to recognize form information from.
-     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
      * .tiff type file stream.
      *
@@ -92,7 +92,7 @@ public final class FormRecognizerClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(InputStream form, String modelId, long length, FormContentType formContentType) {
+        beginRecognizeCustomForms(InputStream form, long length, String modelId, FormContentType formContentType) {
         return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId)
             .setFormContentType(formContentType));
     }
@@ -234,7 +234,7 @@ public final class FormRecognizerClient {
     public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream receipt, long length, FormContentType formContentType) {
         return beginRecognizeReceipts(new RecognizeOptions(receipt, length)
-            .setFormContentType(formContentType).setIncludeTextContent(false));
+            .setFormContentType(formContentType));
     }
 
     /**

@@ -80,26 +80,26 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for
-     * {@link FormRecognizerClient#beginRecognizeCustomForms(InputStream, String, long, FormContentType)}
+     * {@link FormRecognizerClient#beginRecognizeCustomForms(InputStream, long, String, FormContentType)}
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomForms() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-FormContentType
         File sourceFile = new File("{file_source_url}");
         String modelId = "{model_id}";
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        formRecognizerClient.beginRecognizeCustomForms(targetStream, modelId, sourceFile.length(),
-            FormContentType.IMAGE_JPEG).getFinalResult().forEach(recognizedForm -> {
-                recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                    System.out.printf("Field text: %s%n", fieldText);
-                    System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
-                    System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
+        formRecognizerClient.beginRecognizeCustomForms(targetStream, sourceFile.length(), modelId,
+                FormContentType.IMAGE_JPEG).getFinalResult().forEach(recognizedForm -> {
+                    recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
+                        System.out.printf("Field text: %s%n", fieldText);
+                        System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                        System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
+                    });
                 });
-            });
-        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-string-long-FormContentType
+        // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string-FormContentType
     }
 
     /**

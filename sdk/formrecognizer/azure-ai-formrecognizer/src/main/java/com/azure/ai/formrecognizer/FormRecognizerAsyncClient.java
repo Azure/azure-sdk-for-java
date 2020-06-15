@@ -122,11 +122,11 @@ public final class FormRecognizerAsyncClient {
      * {@code Flux} must produce the same data each time it is subscribed to.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType}
+     * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-FormContentType}
      *
      * @param form The data of the form to recognize form information from.
-     * @param modelId The UUID string format custom trained model Id to be used.
      * @param length The exact length of the data. Size of the file must be less than 50 MB.
+     * @param modelId The UUID string format custom trained model Id to be used.
      * @param formContentType The type of the provided form. Supported Media types including .pdf, .jpg, .png or
      * .tiff type file stream.
      *
@@ -138,7 +138,7 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
-        beginRecognizeCustomForms(Flux<ByteBuffer> form, String modelId, long length, FormContentType formContentType) {
+        beginRecognizeCustomForms(Flux<ByteBuffer> form, long length, String modelId, FormContentType formContentType) {
         return beginRecognizeCustomForms(new RecognizeCustomFormsOptions(form, length, modelId)
             .setFormContentType(formContentType));
     }
@@ -301,7 +301,7 @@ public final class FormRecognizerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String receiptUrl) {
-        return beginRecognizeReceiptsFromUrl(new RecognizeOptions(receiptUrl).setIncludeTextContent(false));
+        return beginRecognizeReceiptsFromUrl(new RecognizeOptions(receiptUrl));
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)

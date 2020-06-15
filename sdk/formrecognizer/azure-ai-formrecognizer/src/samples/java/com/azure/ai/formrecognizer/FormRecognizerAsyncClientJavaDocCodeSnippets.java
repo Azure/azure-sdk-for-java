@@ -92,14 +92,14 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public void beginRecognizeCustomForms() throws IOException {
-        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType
+        // BEGIN: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-FormContentType
         File sourceFile = new File("{file_source_url}");
         String modelId = "{model_id}";
         Flux<ByteBuffer> buffer = toFluxByteBuffer(
             new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
 
-        formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, modelId, sourceFile.length(),
-            FormContentType.IMAGE_JPEG).subscribe(recognizePollingOperation ->
+        formRecognizerAsyncClient.beginRecognizeCustomForms(buffer, sourceFile.length(), modelId,
+                FormContentType.IMAGE_JPEG).subscribe(recognizePollingOperation ->
             // if training polling operation completed, retrieve the final result.
             recognizePollingOperation.getFinalResult().subscribe(recognizedForms ->
                 recognizedForms.forEach(recognizedForm -> {
@@ -111,7 +111,7 @@ public class FormRecognizerAsyncClientJavaDocCodeSnippets {
                 })
             )
         );
-        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-string-long-FormContentType
+        // END: com.azure.ai.formrecognizer.FormRecognizerAsyncClient.beginRecognizeCustomForms#Flux-long-string-FormContentType
     }
 
     /**

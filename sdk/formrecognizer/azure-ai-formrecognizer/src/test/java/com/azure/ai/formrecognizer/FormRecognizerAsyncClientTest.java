@@ -365,8 +365,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF).getSyncPoller();
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), MULTIPAGE_INVOICE_FILE_LENGTH, trainingPoller.getFinalResult().getModelId(),
+                        FormContentType.APPLICATION_PDF).getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
         }));

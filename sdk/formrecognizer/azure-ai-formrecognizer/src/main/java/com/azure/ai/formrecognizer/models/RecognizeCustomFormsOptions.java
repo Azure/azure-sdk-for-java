@@ -8,7 +8,6 @@ import reactor.core.publisher.Flux;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Objects;
 
 /**
  * Extended options that may be passed when recognizing custom form on Form Recognizer client.
@@ -26,7 +25,7 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
      */
     public RecognizeCustomFormsOptions(final InputStream form, final long length, final String modelId) {
         super(form, length);
-        this.modelId = Objects.requireNonNull(modelId, "'modelId' cannot be null");
+        this.modelId = modelId;
     }
 
     /**
@@ -38,7 +37,7 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
      */
     public RecognizeCustomFormsOptions(final Flux<ByteBuffer> formData, final long length, final String modelId) {
         super(formData, length);
-        this.modelId = Objects.requireNonNull(modelId, "'modelId' cannot be null");
+        this.modelId = modelId;
     }
 
     /**
@@ -49,7 +48,7 @@ public class RecognizeCustomFormsOptions extends RecognizeOptions {
      */
     public RecognizeCustomFormsOptions(final String formUrl, final String modelId) {
         super(formUrl);
-        this.modelId = Objects.requireNonNull(modelId, "'modelId' cannot be null");
+        this.modelId = modelId;
     }
 
     /**

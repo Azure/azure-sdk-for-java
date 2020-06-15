@@ -44,8 +44,8 @@ public class AdvancedDiffLabeledUnlabeledData {
                 "{labeled_model_Id}").setFormContentType(FormContentType.APPLICATION_PDF)
                     .setIncludeTextContent(true).setPollInterval(Duration.ofSeconds(5))).getFinalResult();
         List<RecognizedForm> formsWithUnlabeledModel =
-            client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), "{unlabeled_model_Id}",
-                analyzeFile.length(), FormContentType.APPLICATION_PDF).getFinalResult();
+            client.beginRecognizeCustomForms(new FileInputStream(analyzeFile), analyzeFile.length(), "{unlabeled_model_Id}",
+                    FormContentType.APPLICATION_PDF).getFinalResult();
 
         //  The main difference is found in the labels of its fields
         // The form recognized with a labeled model will have the labels it was trained with,

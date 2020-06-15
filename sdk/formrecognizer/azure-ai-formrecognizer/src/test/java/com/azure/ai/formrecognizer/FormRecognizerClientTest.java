@@ -318,8 +318,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, List<RecognizedForm>> syncPoller
-                    = client.beginRecognizeCustomForms(data, trainingPoller.getFinalResult().getModelId(),
-                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF);
+                    = client.beginRecognizeCustomForms(data, CUSTOM_FORM_FILE_LENGTH, trainingPoller.getFinalResult().getModelId(),
+                        FormContentType.APPLICATION_PDF);
                 syncPoller.waitForCompletion();
                 validateRecognizedResult(syncPoller.getFinalResult(), false, false);
             }));
@@ -364,8 +364,8 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(data, trainingPoller.getFinalResult().getModelId(),
-                    MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF);
+                client.beginRecognizeCustomForms(data, MULTIPAGE_INVOICE_FILE_LENGTH, trainingPoller.getFinalResult().getModelId(),
+                        FormContentType.APPLICATION_PDF);
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
         }));

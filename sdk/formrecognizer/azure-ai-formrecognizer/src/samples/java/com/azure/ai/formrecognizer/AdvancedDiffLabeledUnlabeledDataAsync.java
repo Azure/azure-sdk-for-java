@@ -53,7 +53,7 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                 .setPollInterval(Duration.ofSeconds(5)));
 
         PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), "{unlabeled_model_Id}", analyzeFile.length(), FormContentType.APPLICATION_PDF);
+            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)), analyzeFile.length(), "{unlabeled_model_Id}", FormContentType.APPLICATION_PDF);
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()

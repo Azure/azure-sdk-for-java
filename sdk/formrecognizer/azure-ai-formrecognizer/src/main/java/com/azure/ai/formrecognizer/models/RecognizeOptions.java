@@ -8,10 +8,9 @@ import reactor.core.publisher.Flux;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Objects;
 
 /**
- * Options that may be passed when using recognize API's on Form Recognizer client.
+ * Options that may be passed when using recognize APIs on Form Recognizer client.
  */
 @Fluent
 public class RecognizeOptions {
@@ -31,7 +30,7 @@ public class RecognizeOptions {
      * @param length the exact length of the provided form data.
      */
     public RecognizeOptions(final InputStream form, final long length) {
-        this.form = Objects.requireNonNull(form, "'form' cannot be null");
+        this.form = form;
         this.length = length;
         this.formData = null;
         this.formUrl = null;
@@ -44,7 +43,7 @@ public class RecognizeOptions {
      * @param length the exact length of the provided form data.
      */
     public RecognizeOptions(final Flux<ByteBuffer> formData, final long length) {
-        this.formData = Objects.requireNonNull(formData, "'formData' cannot be null");
+        this.formData = formData;
         this.length = length;
         this.form = null;
         this.formUrl = null;
@@ -56,7 +55,7 @@ public class RecognizeOptions {
      * @param formUrl The source URL to the input form.
      */
     public RecognizeOptions(final String formUrl) {
-        this.formUrl = Objects.requireNonNull(formUrl, "'formUrl' cannot be null");
+        this.formUrl = formUrl;
         this.form = null;
         this.formData = null;
         this.length = 0;
