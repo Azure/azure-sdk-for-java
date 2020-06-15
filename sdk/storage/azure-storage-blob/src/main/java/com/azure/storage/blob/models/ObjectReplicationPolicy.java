@@ -16,6 +16,12 @@ public class ObjectReplicationPolicy {
     private final String policyId;
     private final List<ObjectReplicationRule> objectReplicationRules;
 
+    /**
+     * Constructs a new ObjectReplicationPolicy object.
+     * @param policyId The policy id
+     * @param rules A {@code List} of rules associated with this policy to the status of the replication associated
+     * with that rule.
+     */
     public ObjectReplicationPolicy(String policyId, List<ObjectReplicationRule> rules) {
         this.policyId = policyId;
         this.objectReplicationRules = Collections.unmodifiableList(rules);

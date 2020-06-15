@@ -14,6 +14,11 @@ public class ObjectReplicationRule {
     private final String ruleId;
     private final ObjectReplicationStatus status;
 
+    /**
+     * Constructs a new ObjectReplicationRule object.
+     * @param ruleId The rule id.
+     * @param status The {@link ObjectReplicationStatus}
+     */
     public ObjectReplicationRule(String ruleId, ObjectReplicationStatus status) {
         this.ruleId = ruleId;
         this.status = status;
