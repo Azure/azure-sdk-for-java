@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,83 +21,6 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob-Download-Headers")
 @Fluent
 public final class BlobDownloadHeaders {
-
-    /**
-     * Instantiates an empty {@code BlobDownloadHeaders}.
-     */
-    public BlobDownloadHeaders() {
-        objectReplicationSourcePolicies = null;
-    }
-
-    /**
-     * Instantiates a {@code BlobDownloadHeaders} object based on the generated, internal version of the type.
-     * @param headers The generated headers type from which to extract values.
-     */
-    public BlobDownloadHeaders(com.azure.storage.blob.implementation.models.BlobDownloadHeaders headers) {
-        /*
-        We have these two types because we needed to update this interface in a way that could not be generated
-        (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
-        wrapping it. Because it's headers type, we couldn't change the name of the generated type.
-         */
-        this.lastModified = headers.getLastModified();
-        this.metadata = headers.getMetadata();
-        this.eTag = headers.getETag();
-        this.contentLength = headers.getContentLength();
-        this.contentType = headers.getContentType();
-        this.contentRange = headers.getContentRange();
-        this.contentEncoding = headers.getContentEncoding();
-        this.contentLanguage = headers.getContentLanguage();
-        this.contentMd5 = headers.getContentMd5();
-        this.contentDisposition = headers.getContentDisposition();
-        this.cacheControl = headers.getCacheControl();
-        this.blobSequenceNumber = headers.getBlobSequenceNumber();
-        this.blobType = headers.getBlobType();
-        this.leaseStatus = headers.getLeaseStatus();
-        this.leaseState = headers.getLeaseState();
-        this.leaseDuration = headers.getLeaseDuration();
-        this.copyId = headers.getCopyId();
-        this.copyStatus = headers.getCopyStatus();
-        this.copySource = headers.getCopySource();
-        this.copyProgress = headers.getCopyProgress();
-        this.copyCompletionTime = headers.getCopyCompletionTime();
-        this.copyStatusDescription = headers.getCopyStatusDescription();
-        this.isServerEncrypted = headers.isServerEncrypted();
-        this.clientRequestId = headers.getClientRequestId();
-        this.requestId = headers.getRequestId();
-        this.version = headers.getVersion();
-        this.versionId = headers.getVersionId();
-        this.acceptRanges = headers.getAcceptRanges();
-        this.dateProperty = headers.getDateProperty();
-        this.blobCommittedBlockCount = headers.getBlobCommittedBlockCount();
-        this.encryptionKeySha256 = headers.getEncryptionKeySha256();
-        this.encryptionScope = headers.getEncryptionScope();
-        this.blobContentMD5 = headers.getBlobContentMD5();
-        this.contentCrc64 = headers.getContentCrc64();
-        this.errorCode = headers.getErrorCode();
-        this.tagCount = headers.getTagCount();
-
-        Map<String, String> objectReplicationStatus = headers.getObjectReplicationRules();
-        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
-        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
-        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
-        if (this.objectReplicationDestinationPolicyId == null) {
-            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
-                String[] split = entry.getKey().split("_");
-                String policyId = split[0];
-                String ruleId = split[1];
-                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
-                    ObjectReplicationStatus.fromString(entry.getValue()));
-                if (!internalSourcePolicies.containsKey(policyId)) {
-                    internalSourcePolicies.put(policyId, new ArrayList<>());
-                }
-                internalSourcePolicies.get(policyId).add(rule);
-            }
-        }
-        this.objectReplicationSourcePolicies = new ArrayList<>();
-        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
-            this.objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
-        }
-    }
 
     /*
      * Returns the date and time the container was last modified. Any operation
