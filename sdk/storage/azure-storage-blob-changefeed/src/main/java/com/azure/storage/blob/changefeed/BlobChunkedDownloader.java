@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 /**
  * FOR INTERNAL USE ONLY.
@@ -48,8 +48,8 @@ class BlobChunkedDownloader {
             .setBlockSizeLong(blockSize);
         BlobRequestConditions requestConditions = new BlobRequestConditions();
 
-        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range
-            -> client.downloadWithResponse(range, null, requestConditions, false);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc = (range, conditions)
+            -> client.downloadWithResponse(range, null, conditions, false);
 
         return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc)
             .flatMapMany(setupTuple3 -> {
@@ -63,9 +63,8 @@ class BlobChunkedDownloader {
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .concatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(client, chunkNum, initialResponse,
-                        range, null, options, finalConditions, false, newCount,
-                        BlobDownloadAsyncResponse::getValue));
+                    .concatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
+                        range, options, finalConditions, newCount, downloadFunc, BlobDownloadAsyncResponse::getValue));
             });
     }
 

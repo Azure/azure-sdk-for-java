@@ -89,7 +89,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -1011,8 +1011,9 @@ public class BlobAsyncClientBase {
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
-        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range ->
-            this.downloadWithResponse(range, downloadRetryOptions, requestConditions, rangeGetContentMd5, context);
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
+            (range, conditions) -> this.downloadWithResponse(range, downloadRetryOptions, conditions,
+                rangeGetContentMd5, context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
             downloadFunc)
@@ -1028,9 +1029,8 @@ public class BlobAsyncClientBase {
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(this, chunkNum, initialResponse,
-                        finalRange, downloadRetryOptions, finalParallelTransferOptions, finalConditions,
-                        rangeGetContentMd5, newCount,
+                    .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
+                        finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
                             progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
