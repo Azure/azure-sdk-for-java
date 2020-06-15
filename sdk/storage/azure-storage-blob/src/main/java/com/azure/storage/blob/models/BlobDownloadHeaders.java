@@ -27,7 +27,7 @@ public final class BlobDownloadHeaders {
      * Instantiates an empty {@code BlobDownloadHeaders}.
      */
     public BlobDownloadHeaders() {
-        objectReplicationPolicies = null;
+        objectReplicationSourcePolicies = null;
     }
 
     /**
@@ -79,7 +79,7 @@ public final class BlobDownloadHeaders {
 
         Map<String, String> objectReplicationStatus = headers.getObjectReplicationRules();
 
-        this.objectReplicationPolicies = new ArrayList<>();
+        this.objectReplicationSourcePolicies = new ArrayList<>();
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
         if (this.objectReplicationDestinationPolicyId == null) {
@@ -90,13 +90,13 @@ public final class BlobDownloadHeaders {
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
                 int index = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId,
-                    this.objectReplicationPolicies);
+                    this.objectReplicationSourcePolicies);
                 if (index == -1) {
                     ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
                     policy.putRule(rule);
-                    this.objectReplicationPolicies.add(policy);
+                    this.objectReplicationSourcePolicies.add(policy);
                 } else {
-                    ObjectReplicationPolicy policy = objectReplicationPolicies.get(index);
+                    ObjectReplicationPolicy policy = objectReplicationSourcePolicies.get(index);
                     policy.putRule(rule);
                 }
             }
@@ -128,7 +128,7 @@ public final class BlobDownloadHeaders {
      * The objectReplicationRuleStatus property.
      */
     @HeaderCollection("x-ms-or-")
-    private List<ObjectReplicationPolicy> objectReplicationPolicies;
+    private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
      * The number of bytes present in the response body.
@@ -477,20 +477,20 @@ public final class BlobDownloadHeaders {
      *
      * @return the objectReplicationPolicies value.
      */
-    public List<ObjectReplicationPolicy> getObjectReplicationPolicies() {
-        return this.objectReplicationPolicies;
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
     }
 
     /**
      * Set the objectReplicationPolicies property: The
      * objectReplicationPolicies property.
      *
-     * @param objectReplicationPolicies the objectReplicationPolicies value
+     * @param objectReplicationSourcePolicies the objectReplicationPolicies value
      * to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setObjectReplicationPolicies(List<ObjectReplicationPolicy> objectReplicationPolicies) {
-        this.objectReplicationPolicies = objectReplicationPolicies;
+    public BlobDownloadHeaders setObjectReplicationSourcePolicies(List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         return this;
     }
 

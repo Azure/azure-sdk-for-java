@@ -7,7 +7,6 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobBeginCopyOptions
@@ -33,6 +32,7 @@ import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
+import com.azure.storage.blob.models.ObjectReplicationPolicy
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
@@ -987,8 +987,8 @@ class BlobAPITest extends APISpec {
             false, null, null)
 
         then:
-        validateOR(sourceProperties.getObjectReplicationPolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
-        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationPolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+        validateOR(sourceProperties.getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
 
         // There is a sas token attached at the end. Only check that the path is the same.
         destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath())

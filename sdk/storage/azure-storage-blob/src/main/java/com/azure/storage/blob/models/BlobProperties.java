@@ -52,8 +52,7 @@ public final class BlobProperties {
     private final Long tagCount;
     private final String versionId;
     private final Boolean isCurrentVersion;
-    private final List<ObjectReplicationPolicy> objectReplicationPolicies;
-//    private final Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+    private final List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
     private final String objectReplicationDestinationPolicyId;
 
     /**
@@ -204,7 +203,7 @@ public final class BlobProperties {
         this.versionId = versionId;
         this.isCurrentVersion = isCurrentVersion;
 
-        this.objectReplicationPolicies = new ArrayList<>();
+        this.objectReplicationSourcePolicies = new ArrayList<>();
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
         if (this.objectReplicationDestinationPolicyId == null) {
@@ -215,13 +214,13 @@ public final class BlobProperties {
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
                 int index = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId,
-                    this.objectReplicationPolicies);
+                    this.objectReplicationSourcePolicies);
                 if (index == -1) {
                     ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
                     policy.putRule(rule);
-                    this.objectReplicationPolicies.add(policy);
+                    this.objectReplicationSourcePolicies.add(policy);
                 } else {
-                    ObjectReplicationPolicy policy = objectReplicationPolicies.get(index);
+                    ObjectReplicationPolicy policy = objectReplicationSourcePolicies.get(index);
                     policy.putRule(rule);
                 }
             }
@@ -270,7 +269,7 @@ public final class BlobProperties {
      * @param versionId The version identifier of the blob.
      * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
      * @param tagCount Number of tags associated with the blob.
-     * @param objectReplicationPolicies The already parsed object replication policies.
+     * @param objectReplicationSourcePolicies The already parsed object replication policies.
      * @param objectReplicationDestinationPolicyId The policy id on the destination blob.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
@@ -284,7 +283,7 @@ public final class BlobProperties {
         final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
         String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
         final Integer committedBlockCount, final Long tagCount, final String versionId,
-        final Boolean isCurrentVersion, List<ObjectReplicationPolicy> objectReplicationPolicies,
+        final Boolean isCurrentVersion, List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         String objectReplicationDestinationPolicyId) {
 
         this.creationTime = creationTime;
@@ -322,7 +321,7 @@ public final class BlobProperties {
         this.tagCount = tagCount;
         this.versionId = versionId;
         this.isCurrentVersion = isCurrentVersion;
-        this.objectReplicationPolicies = objectReplicationPolicies;
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
     }
 
@@ -587,8 +586,8 @@ public final class BlobProperties {
      * and the status of the replication for each policy. Only available when the blob is the source of object
      * replication.
      */
-    public List<ObjectReplicationPolicy> getObjectReplicationPolicies() {
-        return this.objectReplicationPolicies;
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
     }
 
     /**

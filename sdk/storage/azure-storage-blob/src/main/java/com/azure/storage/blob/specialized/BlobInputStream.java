@@ -114,7 +114,7 @@ public final class BlobInputStream extends StorageInputStream {
             hd.getCopyCompletionTime(), hd.getCopyStatusDescription(), hd.isServerEncrypted(),
             null, null, null, null, null, hd.getEncryptionKeySha256(), hd.getEncryptionScope(), null, hd.getMetadata(),
             hd.getBlobCommittedBlockCount(), hd.getTagCount(), hd.getVersionId(), null,
-            hd.getObjectReplicationPolicies(), hd.getObjectReplicationDestinationPolicyId());
+            hd.getObjectReplicationSourcePolicies(), hd.getObjectReplicationDestinationPolicyId());
     }
 
     /**
