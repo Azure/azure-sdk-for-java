@@ -203,7 +203,7 @@ class ChunkTest extends Specification {
         cfEventData.put("sourceUrl", data.getSourceUrl())
         cfEventData.put("url", data.getBlobUrl())
         cfEventData.put("sequencer", data.getSequencer())
-        cfEventData.put("recursive", data.getRecursive())
+        cfEventData.put("recursive", data.isRecursive())
         return cfEventData
     }
 }

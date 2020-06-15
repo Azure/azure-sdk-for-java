@@ -184,7 +184,7 @@ public class BlobChangefeedEventData {
     /**
      * @return Whether or not this operation was recursive.
      */
-    public boolean getRecursive() {
+    public boolean isRecursive() {
         return recursive;
     }
 
@@ -215,7 +215,7 @@ public class BlobChangefeedEventData {
             && Objects.equals(getDestinationUrl(), that.getDestinationUrl())
             && Objects.equals(getSourceUrl(), that.getSourceUrl())
             && Objects.equals(getBlobUrl(), that.getBlobUrl())
-            && Objects.equals(getRecursive(), that.getRecursive())
+            && Objects.equals(isRecursive(), that.isRecursive())
             && Objects.equals(getSequencer(), that.getSequencer());
     }
 
@@ -223,6 +223,6 @@ public class BlobChangefeedEventData {
     public int hashCode() {
         return Objects.hash(getApi(), getClientRequestId(), getRequestId(), getETag(), getContentType(),
             getContentLength(), getBlobType(), getContentOffset(), getDestinationUrl(), getSourceUrl(),
-            getBlobUrl(), getRecursive(), getSequencer());
+            getBlobUrl(), isRecursive(), getSequencer());
     }
 }
