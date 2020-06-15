@@ -1,5 +1,8 @@
 # Release History
 
+## 5.2.0-beta.1 (Unreleased)
+
+
 ## 5.1.1 (2020-06-12)
 - Fix bug where receiver link fails to add credits to new links created after an existing link is closed.
 - Add a check to load balancer task to not run if the previous load balancer task is still in progress.
