@@ -90,7 +90,7 @@ public final class BlobDownloadHeaders {
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
                 if (!internalSourcePolicies.containsKey(policyId)) {
-                  internalSourcePolicies.put(policyId, new ArrayList<>());
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
                 }
                 internalSourcePolicies.get(policyId).add(rule);
             }
