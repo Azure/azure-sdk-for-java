@@ -67,7 +67,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Returns current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -81,7 +81,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Returns current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -94,7 +94,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Returns current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentBillingFeaturesInner object
@@ -111,7 +111,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Returns current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ApplicationInsightsComponentBillingFeaturesInner object
@@ -153,7 +153,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Update current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param billingFeaturesProperties Properties that need to be specified to update billing features for an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -168,7 +168,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Update current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param billingFeaturesProperties Properties that need to be specified to update billing features for an Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -182,7 +182,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Update current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param billingFeaturesProperties Properties that need to be specified to update billing features for an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -200,7 +200,7 @@ public class ComponentCurrentBillingFeaturesInner {
     /**
      * Update current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param billingFeaturesProperties Properties that need to be specified to update billing features for an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation

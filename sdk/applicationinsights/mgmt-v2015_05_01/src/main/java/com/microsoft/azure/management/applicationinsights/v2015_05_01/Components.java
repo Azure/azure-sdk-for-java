@@ -24,8 +24,9 @@ import com.microsoft.azure.arm.model.HasInner;
 public interface Components extends SupportsCreating<ApplicationInsightsComponent.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<ApplicationInsightsComponent>, SupportsListingByResourceGroup<ApplicationInsightsComponent>, SupportsListing<ApplicationInsightsComponent>, HasInner<ComponentsInner> {
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
+    In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch the execution of purge requests by sending a single command whose predicate includes all user identities that require purging. Use the in operator to specify multiple identities. You should run the query prior to using for a purge request to verify that the results are expected.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param body Describes the body of a request to purge data in a single table of an Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -36,7 +37,7 @@ public interface Components extends SupportsCreating<ApplicationInsightsComponen
     /**
      * Get status for an ongoing purge operation.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation

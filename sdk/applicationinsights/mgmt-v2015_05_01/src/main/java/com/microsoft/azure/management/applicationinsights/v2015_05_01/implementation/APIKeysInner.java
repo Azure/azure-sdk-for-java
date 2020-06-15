@@ -78,7 +78,7 @@ public class APIKeysInner {
     /**
      * Gets a list of API keys of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -92,7 +92,7 @@ public class APIKeysInner {
     /**
      * Gets a list of API keys of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -105,7 +105,7 @@ public class APIKeysInner {
     /**
      * Gets a list of API keys of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInsightsComponentAPIKeyInner&gt; object
@@ -122,7 +122,7 @@ public class APIKeysInner {
     /**
      * Gets a list of API keys of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ApplicationInsightsComponentAPIKeyInner&gt; object
@@ -169,7 +169,7 @@ public class APIKeysInner {
     /**
      * Create an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param aPIKeyProperties Properties that need to be specified to create an API key of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -184,7 +184,7 @@ public class APIKeysInner {
     /**
      * Create an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param aPIKeyProperties Properties that need to be specified to create an API key of a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -198,7 +198,7 @@ public class APIKeysInner {
     /**
      * Create an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param aPIKeyProperties Properties that need to be specified to create an API key of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -216,7 +216,7 @@ public class APIKeysInner {
     /**
      * Create an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param aPIKeyProperties Properties that need to be specified to create an API key of a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -263,7 +263,7 @@ public class APIKeysInner {
     /**
      * Delete an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -278,7 +278,7 @@ public class APIKeysInner {
     /**
      * Delete an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -292,7 +292,7 @@ public class APIKeysInner {
     /**
      * Delete an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -310,7 +310,7 @@ public class APIKeysInner {
     /**
      * Delete an API Key of an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -356,7 +356,7 @@ public class APIKeysInner {
     /**
      * Get the API Key for this key id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -371,7 +371,7 @@ public class APIKeysInner {
     /**
      * Get the API Key for this key id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -385,7 +385,7 @@ public class APIKeysInner {
     /**
      * Get the API Key for this key id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -403,7 +403,7 @@ public class APIKeysInner {
     /**
      * Get the API Key for this key id.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param keyId The API Key ID. This is unique within a Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation

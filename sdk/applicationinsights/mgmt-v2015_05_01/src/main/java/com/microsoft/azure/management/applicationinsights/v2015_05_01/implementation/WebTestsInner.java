@@ -112,7 +112,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get all Application Insights web tests defined within a specified resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -131,7 +131,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get all Application Insights web tests defined within a specified resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -151,7 +151,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get all Application Insights web tests defined within a specified resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WebTestInner&gt; object
      */
@@ -168,7 +168,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get all Application Insights web tests defined within a specified resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WebTestInner&gt; object
      */
@@ -189,7 +189,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get all Application Insights web tests defined within a specified resource group.
      *
-    ServiceResponse<PageImpl<WebTestInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<WebTestInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;WebTestInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -227,7 +227,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get a specific Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -241,7 +241,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get a specific Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -254,7 +254,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get a specific Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WebTestInner object
@@ -271,7 +271,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Get a specific Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WebTestInner object
@@ -313,7 +313,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web test definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -328,7 +328,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web test definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -342,7 +342,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web test definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -360,7 +360,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param webTestDefinition Properties that need to be specified to create or update an Application Insights web test definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -407,7 +407,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -421,7 +421,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -434,7 +434,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WebTestInner object
@@ -451,7 +451,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WebTestInner object
@@ -489,7 +489,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -504,7 +504,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param tags Resource tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -518,7 +518,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -536,7 +536,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Creates or updates an Application Insights web test definition.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -582,7 +582,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Deletes an Application Insights web test.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -595,7 +595,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Deletes an Application Insights web test.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -608,7 +608,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Deletes an Application Insights web test.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -625,7 +625,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     /**
      * Deletes an Application Insights web test.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param webTestName The name of the Application Insights webtest resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -666,7 +666,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -684,7 +684,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -703,7 +703,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WebTestInner&gt; object
@@ -719,7 +719,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WebTestInner&gt; object
@@ -739,7 +739,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;WebTestInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -776,7 +776,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
      * Get all Application Insights web tests defined for the specified component.
      *
      * @param componentName The name of the Application Insights component resource.
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -796,7 +796,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
      * Get all Application Insights web tests defined for the specified component.
      *
      * @param componentName The name of the Application Insights component resource.
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -817,7 +817,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
      * Get all Application Insights web tests defined for the specified component.
      *
      * @param componentName The name of the Application Insights component resource.
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WebTestInner&gt; object
      */
@@ -835,7 +835,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
      * Get all Application Insights web tests defined for the specified component.
      *
      * @param componentName The name of the Application Insights component resource.
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;WebTestInner&gt; object
      */
@@ -857,7 +857,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
      * Get all Application Insights web tests defined for the specified component.
      *
     ServiceResponse<PageImpl<WebTestInner>> * @param componentName The name of the Application Insights component resource.
-    ServiceResponse<PageImpl<WebTestInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<WebTestInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;WebTestInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1007,7 +1007,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1026,7 +1026,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -1047,7 +1047,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1064,7 +1064,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1085,7 +1085,7 @@ public class WebTestsInner implements InnerSupportsGet<WebTestInner>, InnerSuppo
     }
 
     /**
-     * Get all Application Insights web test alerts definitioned within a subscription.
+     * Get all Application Insights web test alerts definitions within a subscription.
      *
     ServiceResponse<PageImpl<WebTestInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
