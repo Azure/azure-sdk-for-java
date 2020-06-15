@@ -10,6 +10,8 @@ public enum KnownWindowsVirtualMachineImage {
     WINDOWS_SERVER_2012_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-Datacenter"),
     /** Windows Server 2012 R2 Data center. */
     WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"),
+    /** Windows Server 2016 Data center. */
+    WINDOWS_SERVER_2016_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter"),
     /**
      * Windows Server 2016 technical preview with container.
      *

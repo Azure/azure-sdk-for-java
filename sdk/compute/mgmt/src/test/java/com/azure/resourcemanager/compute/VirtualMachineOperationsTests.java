@@ -6,6 +6,8 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -27,6 +29,9 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -114,7 +119,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(TestUtilities.password())
                 .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
@@ -151,7 +156,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(TestUtilities.password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_D3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -187,6 +192,40 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    public void canCreateVirtualMachineSyncPoll() throws Exception {
+        Accepted<VirtualMachine> acceptedVirtualMachine = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2016_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(TestUtilities.password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .beginCreate();
+        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getAcceptedResult();
+        Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
+        PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+        while (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            int delayInMills = pollResponse.getRetryAfter() == null
+                ? 10000
+                : (int) pollResponse.getRetryAfter().toMillis();
+            SdkContext.sleep(delayInMills);
+            pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+        }
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
+        Assertions.assertEquals("Succeeded", virtualMachine.provisioningState());
+    }
+
+    @Test
     public void canCreateUpdatePriorityAndPrice() throws Exception {
         // Create
         computeManager
@@ -199,7 +238,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(TestUtilities.password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_A2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -314,7 +353,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(TestUtilities.password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -409,7 +448,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(TestUtilities.password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -606,7 +645,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(TestUtilities.password())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk1")
                 .withNewVhd(100)
@@ -652,7 +691,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(TestUtilities.password())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)

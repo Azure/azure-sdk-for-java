@@ -246,10 +246,12 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
         PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
         while (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            SdkContext.sleep(1000);
+            int delayInMills = pollResponse.getRetryAfter() == null
+                ? 10000
+                : (int) pollResponse.getRetryAfter().toMillis();
+            SdkContext.sleep(delayInMills);
             pollResponse = acceptedDeployment.getSyncPoller().poll();
         }
-        System.out.println("statuc " + pollResponse.getStatus());
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         Deployment deployment = acceptedDeployment.getFinalResult();
         Assertions.assertEquals("Succeeded", deployment.provisioningState());
