@@ -42,7 +42,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
-import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -1815,7 +1815,7 @@ public class BlobAsyncClientBase {
      * @return A reactive response containing the queried data.
      */
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(expression, null)
+        return queryWithResponse(new BlobQueryOptions(expression))
             .flatMapMany(BlobQueryAsyncResponse::getValue);
     }
 
@@ -1827,34 +1827,31 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#BlobQueryOptions}
      *
-     * @param expression The query expression.
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @return A reactive response containing the queried data.
      */
-    public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
         try {
-            return withContext(context ->
-                queryWithResponse(expression, queryOptions, context));
+            return withContext(context -> queryWithResponse(queryOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions, Context context) {
+    Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions, Context context) {
+        StorageImplUtils.assertNotNull("queryOptions", queryOptions);
+        BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
+            ? new BlobRequestConditions() : queryOptions.getRequestConditions();
 
-        BlobQueryOptions finalQueryOptions = queryOptions == null ? new BlobQueryOptions() : queryOptions;
-        BlobRequestConditions requestConditions = finalQueryOptions.getRequestConditions() == null
-            ? new BlobRequestConditions() : finalQueryOptions.getRequestConditions();
-
-        QuerySerialization in = BlobQueryReader.transformSerialization(finalQueryOptions.getInputSerialization(),
+        QuerySerialization in = BlobQueryReader.transformSerialization(queryOptions.getInputSerialization(),
             logger);
-        QuerySerialization out = BlobQueryReader.transformSerialization(finalQueryOptions.getOutputSerialization(),
+        QuerySerialization out = BlobQueryReader.transformSerialization(queryOptions.getOutputSerialization(),
             logger);
 
         QueryRequest qr = new QueryRequest()
-            .setExpression(expression)
+            .setExpression(queryOptions.getExpression())
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
@@ -1865,8 +1862,8 @@ public class BlobAsyncClientBase {
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 /* Parse the avro reactive stream. */
-                new BlobQueryReader(response.getValue(), finalQueryOptions.getProgressConsumer(),
-                    finalQueryOptions.getErrorConsumer())
+                new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
+                    queryOptions.getErrorConsumer())
                     .read(),
                 response.getDeserializedHeaders()));
     }

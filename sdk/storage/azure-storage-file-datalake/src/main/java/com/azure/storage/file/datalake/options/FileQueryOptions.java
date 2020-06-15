@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.models;
+package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.FileQueryError;
+import com.azure.storage.file.datalake.models.FileQueryProgress;
+import com.azure.storage.file.datalake.models.FileQuerySerialization;
 
 import java.util.function.Consumer;
 
@@ -13,6 +18,7 @@ import java.util.function.Consumer;
 @Fluent
 public class FileQueryOptions {
 
+    private final String expression;
     private FileQuerySerialization inputSerialization;
     private FileQuerySerialization outputSerialization;
     private DataLakeRequestConditions requestConditions;
@@ -21,8 +27,20 @@ public class FileQueryOptions {
 
     /**
      * Constructs a {@link FileQueryOptions}.
+     * @param expression The query expression.
      */
-    public FileQueryOptions() {
+    public FileQueryOptions(String expression) {
+        StorageImplUtils.assertNotNull("expression", expression);
+        this.expression = expression;
+    }
+
+    /**
+     * Gets the query expression.
+     *
+     * @return the query expression.
+     */
+    public String getExpression() {
+        return expression;
     }
 
     /**

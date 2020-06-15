@@ -3,6 +3,7 @@ package com.azure.storage.blob.specialized
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
+import com.azure.storage.blob.options.BlobQueryOptions
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import spock.lang.Requires
@@ -147,7 +148,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = bc.openQueryInputStream(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -167,7 +168,7 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        bc.queryWithResponse(os, expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        bc.queryWithResponse(os, new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser), null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -222,7 +223,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = bc.openQueryInputStream(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -233,7 +234,7 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        bc.queryWithResponse(os, expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        bc.queryWithResponse(os, new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser), null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -254,11 +255,11 @@ class BlobBaseAPITest extends APISpec {
         bc.download(downloadData)
         downloadData.write(10) /* writing extra new line */
         byte[] downloadedData = downloadData.toByteArray()
-        BlobQueryOptions options = new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser)
+        BlobQueryOptions options = new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -268,7 +269,7 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        bc.queryWithResponse(os, expression, options, null, null)
+        bc.queryWithResponse(os, options, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -296,11 +297,11 @@ class BlobBaseAPITest extends APISpec {
             .setRecordSeparator('\n' as char)
         def expression = "SELECT * from BlobStorage"
         byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes()
-        BlobQueryOptions options = new BlobQueryOptions().setInputSerialization(inSer).setOutputSerialization(outSer)
+        BlobQueryOptions options = new BlobQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -312,7 +313,7 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        bc.queryWithResponse(os, expression, options, null, null)
+        bc.queryWithResponse(os, options, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -335,11 +336,11 @@ class BlobBaseAPITest extends APISpec {
             .setHeadersPresent(false)
         def expression = "SELECT * from BlobStorage"
         byte[] expectedData = "owner0,owner1\n".getBytes()
-        BlobQueryOptions options = new BlobQueryOptions().setInputSerialization(inSer).setOutputSerialization(outSer)
+        BlobQueryOptions options = new BlobQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -351,7 +352,7 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        bc.queryWithResponse(os, expression, options, null, null)
+        bc.queryWithResponse(os, options, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -371,14 +372,14 @@ class BlobBaseAPITest extends APISpec {
         uploadCsv(base.setColumnSeparator('.' as char), 32)
         MockErrorConsumer receiver = new MockErrorConsumer("InvalidColumnOrdinal")
         def expression = "SELECT _1 from BlobStorage WHERE _2 > 250"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
             .setErrorConsumer(receiver)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -388,11 +389,11 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         receiver = new MockErrorConsumer("InvalidColumnOrdinal")
-        options = new BlobQueryOptions()
+        options = new BlobQueryOptions(expression)
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
             .setErrorConsumer(receiver)
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
         then:
         notThrown(IOException)
@@ -408,12 +409,12 @@ class BlobBaseAPITest extends APISpec {
             .setHeadersPresent(true)
         uploadCsv(base.setColumnSeparator('.' as char), 32)
         def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setInputSerialization(new BlobQueryJsonSerialization())
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -421,7 +422,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
         then:
         thrown(Exceptions.ReactiveException)
@@ -440,12 +441,12 @@ class BlobBaseAPITest extends APISpec {
         def mockReceiver = new MockProgressConsumer()
         def sizeofBlobToRead = bc.getProperties().getBlobSize()
         def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
 
         /* The QQ Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -461,9 +462,9 @@ class BlobBaseAPITest extends APISpec {
         /* Output Stream. */
         when:
         mockReceiver = new MockProgressConsumer()
-        options = new BlobQueryOptions()
+        options = new BlobQueryOptions(expression)
             .setProgressConsumer(mockReceiver as Consumer)
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
         then:
         mockReceiver.progressList.contains(sizeofBlobToRead)
@@ -482,12 +483,12 @@ class BlobBaseAPITest extends APISpec {
 
         def mockReceiver = new MockProgressConsumer()
         def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(expression, options)
+        InputStream qqStream = bc.openQueryInputStream(options)
 
         /* The Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -508,9 +509,9 @@ class BlobBaseAPITest extends APISpec {
         when:
         mockReceiver = new MockProgressConsumer()
         temp = 0
-        options = new BlobQueryOptions()
+        options = new BlobQueryOptions(expression)
             .setProgressConsumer(mockReceiver as Consumer)
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
         then:
         // Make sure theyre all increasingly bigger
@@ -567,18 +568,18 @@ class BlobBaseAPITest extends APISpec {
         def inSer = input ? ser : null
         def outSer = output ? ser : null
         def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setInputSerialization(inSer)
             .setOutputSerialization(outSer)
 
         when:
-        bc.openQueryInputStream(expression, options) /* Don't need to call read. */
+        bc.openQueryInputStream(options) /* Don't need to call read. */
 
         then:
         thrown(IllegalArgumentException)
 
         when:
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
         then:
         thrown(IllegalArgumentException)
@@ -601,11 +602,11 @@ class BlobBaseAPITest extends APISpec {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
         def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setRequestConditions(bac)
 
         when:
-        InputStream stream = bc.openQueryInputStream(expression, options)
+        InputStream stream = bc.openQueryInputStream(options)
         stream.read()
         stream.close()
 
@@ -613,7 +614,7 @@ class BlobBaseAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         when:
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options,null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options,null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -639,17 +640,17 @@ class BlobBaseAPITest extends APISpec {
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
         def expression = "SELECT * from BlobStorage"
-        BlobQueryOptions options = new BlobQueryOptions()
+        BlobQueryOptions options = new BlobQueryOptions(expression)
             .setRequestConditions(bac)
 
         when:
-        bc.openQueryInputStream(expression, options) /* Don't need to call read. */
+        bc.openQueryInputStream(options) /* Don't need to call read. */
 
         then:
         thrown(BlobStorageException)
 
         when:
-        bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
+        bc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
 
         then:
         thrown(BlobStorageException)
