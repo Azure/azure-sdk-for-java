@@ -38,7 +38,7 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 generate-client-as-impl: true
 generate-client-interfaces: false
-sync-methods: none
+sync-methods: all
 add-context-parameter: true
 ```
 
