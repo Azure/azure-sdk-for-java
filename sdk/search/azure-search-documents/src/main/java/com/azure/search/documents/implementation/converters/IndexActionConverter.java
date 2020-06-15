@@ -54,18 +54,21 @@ public final class IndexActionConverter {
             indexAction.setActionType(actionType);
         }
 
-        T document = obj.getDocument();
+
 
         ObjectMapper mapper = new JacksonAdapter().serializer();
         SerializationUtil.configureMapper(mapper);
-        Map<String, Object> additionalProperties = mapper.convertValue(document, Map.class);
 
-        indexAction.setAdditionalProperties(additionalProperties);
-
+        Map<String, Object> additionalProperties;
         if (obj.getParamMap() != null) {
             Map<String, Object> properties = obj.getParamMap();
-            PrivateFieldAccessHelper.set(indexAction, "additionalProperties", properties);
+            additionalProperties = mapper.convertValue(properties, Map.class);
+        } else {
+            T properties = obj.getDocument();
+            additionalProperties = mapper.convertValue(properties, Map.class);
         }
+
+        indexAction.setAdditionalProperties(additionalProperties);
         return indexAction;
     }
 
