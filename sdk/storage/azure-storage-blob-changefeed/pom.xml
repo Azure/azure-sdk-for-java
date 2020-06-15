@@ -274,6 +274,7 @@
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.blob/com.azure.storage.blob=ALL-UNNAMED
+                --add-opens com.azure.storage.blob/com.azure.storage.blob.specialized=ALL-UNNAMED
                 --add-opens com.azure.storage.blob.changefeed/com.azure.storage.blob.changefeed=ALL-UNNAMED
                 --add-opens com.azure.storage.blob.changefeed/com.azure.storage.blob.changefeed.implementation.models=ALL-UNNAMED
                 --add-opens com.azure.storage.blob.changefeed/com.azure.storage.blob.changefeed.implementation.util=ALL-UNNAMED
