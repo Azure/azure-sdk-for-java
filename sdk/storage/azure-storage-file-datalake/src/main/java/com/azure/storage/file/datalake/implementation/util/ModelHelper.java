@@ -53,8 +53,8 @@ public class ModelHelper {
         return new ParallelTransferOptions(
             other.getBlockSize() == null ? Integer.valueOf(FILE_DEFAULT_UPLOAD_BLOCK_SIZE)
                 : other.getBlockSize(),
-            other.getNumBuffers() == null ? Integer.valueOf(FILE_DEFAULT_NUMBER_OF_BUFFERS)
-                : other.getNumBuffers(),
+            other.getMaxConcurrency() == null ? Integer.valueOf(FILE_DEFAULT_NUMBER_OF_BUFFERS)
+                : other.getMaxConcurrency(),
             other.getProgressReceiver(),
             other.getMaxSingleUploadSize() == null ? Integer.valueOf(MAX_APPEND_FILE_BYTES)
                 : other.getMaxSingleUploadSize());

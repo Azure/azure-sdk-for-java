@@ -4,11 +4,15 @@ package com.azure.cosmos.examples;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 
 public class HelloWorldDemo {
+    private static final String DATABASE_NAME = "contoso-travel";
+    private static final String CONTAINER_NAME = "passengers";
+
     public static void main(String[] args) {
         new HelloWorldDemo().runDemo();
     }
@@ -23,12 +27,12 @@ public class HelloWorldDemo {
 
         // Get a reference to the container
         // This will create (or read) a database and its container.
-        CosmosAsyncContainer container = client.createDatabaseIfNotExists("contoso-travel")
+        CosmosAsyncContainer container = client.createDatabaseIfNotExists(DATABASE_NAME)
             // TIP: Our APIs are Reactor Core based, so try to chain your calls
-            .flatMap(response -> response.getDatabase()
-                    .createContainerIfNotExists("passengers", "/id"))
-            .flatMap(response -> Mono.just(response.getContainer()))
-            .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
+            .flatMap(response -> client.getDatabase(DATABASE_NAME)
+                .createContainerIfNotExists(CONTAINER_NAME, "/id"))
+            .flatMap(response -> Mono.just(client.getDatabase(DATABASE_NAME).getContainer(CONTAINER_NAME)))
+            .block();
 
         // Create an item
         container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND"))

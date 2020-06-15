@@ -50,7 +50,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties doc = new CosmosItemProperties();
         doc.setId(markerDocId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
+        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
@@ -124,7 +124,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
         CosmosItemProperties doc = new CosmosItemProperties();
         doc.setId(lockId);
 
-        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createRequestOptions(
+        CosmosItemRequestOptions requestOptions = this.requestOptionsFactory.createItemRequestOptions(
             ServiceItemLease.fromDocument(doc));
 
         if (requestOptions == null) {

@@ -7,9 +7,6 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.ScoringParameter;
-import com.azure.search.documents.models.SearchMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -101,7 +98,7 @@ public final class SearchRequest {
      * "mylocation--122.2,44.8" (without the quotes).
      */
     @JsonProperty(value = "scoringParameters")
-    private List<ScoringParameter> scoringParameters;
+    private List<String> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching
@@ -399,7 +396,7 @@ public final class SearchRequest {
      *
      * @return the scoringParameters value.
      */
-    public List<ScoringParameter> getScoringParameters() {
+    public List<String> getScoringParameters() {
         return this.scoringParameters;
     }
 
@@ -413,7 +410,7 @@ public final class SearchRequest {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setScoringParameters(List<ScoringParameter> scoringParameters) {
+    public SearchRequest setScoringParameters(List<String> scoringParameters) {
         this.scoringParameters = scoringParameters;
         return this;
     }

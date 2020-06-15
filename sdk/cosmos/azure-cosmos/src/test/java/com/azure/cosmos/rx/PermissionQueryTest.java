@@ -58,7 +58,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsIdsInAnyOrder(expectedDocs.stream().map(CosmosPermissionProperties::getId).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -94,9 +94,9 @@ public class PermissionQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator
                 .Builder<CosmosPermissionProperties>()
-                .exactlyContainsInAnyOrder(createdPermissions
+                .exactlyContainsIdsInAnyOrder(createdPermissions
                         .stream()
-                        .map(d -> d.getResourceId())
+                        .map(CosmosPermissionProperties::getId)
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()
@@ -148,7 +148,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         CosmosPermissionProperties cosmosPermissionProperties = new CosmosPermissionProperties();
         cosmosPermissionProperties.setId(UUID.randomUUID().toString());
         cosmosPermissionProperties.setPermissionMode(PermissionMode.READ);
-        cosmosPermissionProperties.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + index + "=");
+        cosmosPermissionProperties.setContainerName("myContainer" + index + "=");
 
         return createdUser.createPermission(cosmosPermissionProperties, null).single().block().getProperties();
     }

@@ -12,11 +12,6 @@ import com.azure.core.annotation.Immutable;
 public class RecognizedReceipt {
 
     /**
-     * The locale information for the recognized Receipt.
-     */
-    private final String receiptLocale;
-
-    /**
      * The recognized form.
      */
     private final RecognizedForm recognizedForm;
@@ -24,21 +19,10 @@ public class RecognizedReceipt {
     /**
      * Constructs a RecognizedReceipt object.
      *
-     * @param receiptLocale The locale information for the recognized Receipt.
      * @param recognizedForm The recognized form.
      */
-    public RecognizedReceipt(final String receiptLocale, final RecognizedForm recognizedForm) {
-        this.receiptLocale = receiptLocale;
+    public RecognizedReceipt(final RecognizedForm recognizedForm) {
         this.recognizedForm = recognizedForm;
-    }
-
-    /**
-     * Get he locale information for the recognized Receipt.
-     *
-     * @return The locale information for the recognized Receipt.
-     */
-    public String getReceiptLocale() {
-        return this.receiptLocale;
     }
 
     /**
