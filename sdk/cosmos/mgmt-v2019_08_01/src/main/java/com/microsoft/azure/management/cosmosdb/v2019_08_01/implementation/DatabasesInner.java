@@ -34,7 +34,7 @@ public class DatabasesInner {
     /** The Retrofit service to perform REST calls. */
     private DatabasesService service;
     /** The service client containing this operation class. */
-    private CosmosDBImpl client;
+    private CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabasesInner.
@@ -42,7 +42,7 @@ public class DatabasesInner {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public DatabasesInner(Retrofit retrofit, CosmosDBImpl client) {
+    public DatabasesInner(Retrofit retrofit, CosmosDBManagementClientImpl client) {
         this.service = retrofit.create(DatabasesService.class);
         this.client = client;
     }

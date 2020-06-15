@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraKeyspaceCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraKeyspaceGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraKeyspaceResource;
 import rx.functions.Func1;
 
@@ -94,26 +95,6 @@ class CassandraKeyspaceGetResultsImpl extends CreatableUpdatableImpl<CassandraKe
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
-    public String cassandraKeyspaceGetResultsId() {
-        return this.inner().cassandraKeyspaceGetResultsId();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -126,6 +107,11 @@ class CassandraKeyspaceGetResultsImpl extends CreatableUpdatableImpl<CassandraKe
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public CassandraKeyspaceGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override

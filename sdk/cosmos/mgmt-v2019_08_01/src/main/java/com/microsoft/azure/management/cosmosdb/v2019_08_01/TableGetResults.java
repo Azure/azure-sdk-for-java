@@ -25,21 +25,6 @@ import java.util.Map;
  */
 public interface TableGetResults extends HasInner<TableGetResultsInner>, Indexable, Refreshable<TableGetResults>, Updatable<TableGetResults.Update>, HasManager<CosmosDBManager> {
     /**
-     * @return the _etag value.
-     */
-    String _etag();
-
-    /**
-     * @return the _rid value.
-     */
-    String _rid();
-
-    /**
-     * @return the _ts value.
-     */
-    Object _ts();
-
-    /**
      * @return the id value.
      */
     String id();
@@ -55,9 +40,9 @@ public interface TableGetResults extends HasInner<TableGetResultsInner>, Indexab
     String name();
 
     /**
-     * @return the tableGetResultsId value.
+     * @return the resource value.
      */
-    String tableGetResultsId();
+    TableGetPropertiesResource resource();
 
     /**
      * @return the tags value.
