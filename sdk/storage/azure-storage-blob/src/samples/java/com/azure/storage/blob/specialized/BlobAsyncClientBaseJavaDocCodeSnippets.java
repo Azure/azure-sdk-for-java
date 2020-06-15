@@ -15,7 +15,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -579,11 +579,11 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClientBase#queryWithResponse(String, BlobQueryOptions)}
+     * Code snippet for {@link BlobAsyncClientBase#queryWithResponse(BlobQueryOptions)}
      * @throws UncheckedIOException for IOExceptions.
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#BlobQueryOptions
         String expression = "SELECT * from BlobStorage";
         BlobQueryJsonSerialization input = new BlobQueryJsonSerialization()
             .setRecordSeparator('\n');
@@ -597,14 +597,14 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         Consumer<BlobQueryError> errorConsumer = System.out::println;
         Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
             + progress.getBytesScanned());
-        BlobQueryOptions queryOptions = new BlobQueryOptions()
+        BlobQueryOptions queryOptions = new BlobQueryOptions(expression)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        client.queryWithResponse(expression, queryOptions)
+        client.queryWithResponse(queryOptions)
             .subscribe(response -> {
                 ByteArrayOutputStream queryData = new ByteArrayOutputStream();
                 response.getValue().subscribe(piece -> {
@@ -615,6 +615,6 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
                     }
                 });
             });
-        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#String-BlobQueryOptions
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.queryWithResponse#BlobQueryOptions
     }
 }

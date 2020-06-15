@@ -18,7 +18,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
@@ -533,10 +533,10 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#openQueryInputStream(String, BlobQueryOptions)}
+     * Code snippet for {@link BlobClientBase#openQueryInputStream(BlobQueryOptions)}
      */
     public void openQueryInputStream2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
         String expression = "SELECT * from BlobStorage";
         BlobQuerySerialization input = new BlobQueryDelimitedSerialization()
             .setColumnSeparator(',')
@@ -551,16 +551,16 @@ public class BlobClientBaseJavaDocCodeSnippets {
         Consumer<BlobQueryError> errorConsumer = System.out::println;
         Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
             + progress.getBytesScanned());
-        BlobQueryOptions queryOptions = new BlobQueryOptions()
+        BlobQueryOptions queryOptions = new BlobQueryOptions(expression)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        InputStream inputStream = client.openQueryInputStream(expression, queryOptions);
+        InputStream inputStream = client.openQueryInputStream(queryOptions);
         // Now you can read from the input stream like you would normally.
-        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String-BlobQueryOptions
+        // END: com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions
     }
 
     /**
@@ -576,10 +576,10 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#queryWithResponse(OutputStream, String, BlobQueryOptions, Duration, Context)}
+     * Code snippet for {@link BlobClientBase#queryWithResponse(OutputStream, BlobQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-BlobQueryOptions-Duration-Context
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT * from BlobStorage";
         BlobQueryJsonSerialization input = new BlobQueryJsonSerialization()
@@ -594,15 +594,15 @@ public class BlobClientBaseJavaDocCodeSnippets {
         Consumer<BlobQueryError> errorConsumer = System.out::println;
         Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
             + progress.getBytesScanned());
-        BlobQueryOptions queryOptions = new BlobQueryOptions()
+        BlobQueryOptions queryOptions = new BlobQueryOptions(expression)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
         System.out.printf("Query completed with status %d%n",
-            client.queryWithResponse(queryData, expression, queryOptions, timeout, new Context(key1, value1))
+            client.queryWithResponse(queryData, queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-String-BlobQueryOptions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-BlobQueryOptions-Duration-Context
     }
 }

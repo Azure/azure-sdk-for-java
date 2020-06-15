@@ -67,7 +67,7 @@ public final class BlobQueryHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private byte[] contentMD5;
+    private byte[] contentMd5;
 
     /*
      * This header returns the value that was specified for the
@@ -245,7 +245,7 @@ public final class BlobQueryHeaders {
      * if only parts of the blob/application metadata are encrypted).
      */
     @JsonProperty(value = "x-ms-server-encrypted")
-    private Boolean isServerEncrypted;
+    private Boolean serverEncrypted;
 
     /*
      * The SHA-256 hash of the encryption key used to encrypt the blob. This
@@ -271,7 +271,7 @@ public final class BlobQueryHeaders {
      * requested range
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
-    private byte[] blobContentMD5;
+    private byte[] blobContentMd5;
 
     /*
      * If the request is to read a specified range and the
@@ -436,26 +436,26 @@ public final class BlobQueryHeaders {
     }
 
     /**
-     * Get the contentMD5 property: If the blob has an MD5 hash and this
+     * Get the contentMd5 property: If the blob has an MD5 hash and this
      * operation is to read the full blob, this response header is returned so
      * that the client can check for message content integrity.
      *
-     * @return the contentMD5 value.
+     * @return the contentMd5 value.
      */
-    public byte[] getContentMD5() {
-        return CoreUtils.clone(this.contentMD5);
+    public byte[] getContentMd5() {
+        return CoreUtils.clone(this.contentMd5);
     }
 
     /**
-     * Set the contentMD5 property: If the blob has an MD5 hash and this
+     * Set the contentMd5 property: If the blob has an MD5 hash and this
      * operation is to read the full blob, this response header is returned so
      * that the client can check for message content integrity.
      *
-     * @param contentMD5 the contentMD5 value to set.
+     * @param contentMd5 the contentMd5 value to set.
      * @return the BlobQueryHeaders object itself.
      */
-    public BlobQueryHeaders setContentMD5(byte[] contentMD5) {
-        this.contentMD5 = CoreUtils.clone(contentMD5);
+    public BlobQueryHeaders setContentMd5(byte[] contentMd5) {
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
@@ -994,30 +994,30 @@ public final class BlobQueryHeaders {
     }
 
     /**
-     * Get the isServerEncrypted property: The value of this header is set to
+     * Get the serverEncrypted property: The value of this header is set to
      * true if the blob data and application metadata are completely encrypted
      * using the specified algorithm. Otherwise, the value is set to false
      * (when the blob is unencrypted, or if only parts of the blob/application
      * metadata are encrypted).
      *
-     * @return the isServerEncrypted value.
+     * @return the serverEncrypted value.
      */
     public Boolean isServerEncrypted() {
-        return this.isServerEncrypted;
+        return this.serverEncrypted;
     }
 
     /**
-     * Set the isServerEncrypted property: The value of this header is set to
+     * Set the serverEncrypted property: The value of this header is set to
      * true if the blob data and application metadata are completely encrypted
      * using the specified algorithm. Otherwise, the value is set to false
      * (when the blob is unencrypted, or if only parts of the blob/application
      * metadata are encrypted).
      *
-     * @param isServerEncrypted the isServerEncrypted value to set.
+     * @param serverEncrypted the serverEncrypted value to set.
      * @return the BlobQueryHeaders object itself.
      */
-    public BlobQueryHeaders setIsServerEncrypted(Boolean isServerEncrypted) {
-        this.isServerEncrypted = isServerEncrypted;
+    public BlobQueryHeaders setServerEncrypted(Boolean serverEncrypted) {
+        this.serverEncrypted = serverEncrypted;
         return this;
     }
 
@@ -1072,30 +1072,30 @@ public final class BlobQueryHeaders {
     }
 
     /**
-     * Get the blobContentMD5 property: If the blob has a MD5 hash, and if
+     * Get the blobContentMd5 property: If the blob has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole blob's MD5 value. This
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @return the blobContentMD5 value.
+     * @return the blobContentMd5 value.
      */
-    public byte[] getBlobContentMD5() {
-        return CoreUtils.clone(this.blobContentMD5);
+    public byte[] getBlobContentMd5() {
+        return CoreUtils.clone(this.blobContentMd5);
     }
 
     /**
-     * Set the blobContentMD5 property: If the blob has a MD5 hash, and if
+     * Set the blobContentMd5 property: If the blob has a MD5 hash, and if
      * request contains range header (Range or x-ms-range), this response
      * header is returned with the value of the whole blob's MD5 value. This
      * value may or may not be equal to the value returned in Content-MD5
      * header, with the latter calculated from the requested range.
      *
-     * @param blobContentMD5 the blobContentMD5 value to set.
+     * @param blobContentMd5 the blobContentMd5 value to set.
      * @return the BlobQueryHeaders object itself.
      */
-    public BlobQueryHeaders setBlobContentMD5(byte[] blobContentMD5) {
-        this.blobContentMD5 = CoreUtils.clone(blobContentMD5);
+    public BlobQueryHeaders setBlobContentMd5(byte[] blobContentMd5) {
+        this.blobContentMd5 = CoreUtils.clone(blobContentMd5);
         return this;
     }
 

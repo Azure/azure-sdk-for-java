@@ -12,7 +12,7 @@ import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
-import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -260,10 +260,10 @@ public class DataLakeFileClientJavaDocSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileClient#openQueryInputStream(String, FileQueryOptions)}
+     * Code snippet for {@link DataLakeFileClient#openQueryInputStream(FileQueryOptions)}
      */
     public void openQueryInputStream2() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String-FileQueryOptions
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#FileQueryOptions
         String expression = "SELECT * from BlobStorage";
         FileQuerySerialization input = new FileQueryDelimitedSerialization()
             .setColumnSeparator(',')
@@ -278,16 +278,16 @@ public class DataLakeFileClientJavaDocSamples {
         Consumer<FileQueryError> errorConsumer = System.out::println;
         Consumer<FileQueryProgress> progressConsumer = progress -> System.out.println("total file bytes read: "
             + progress.getBytesScanned());
-        FileQueryOptions queryOptions = new FileQueryOptions()
+        FileQueryOptions queryOptions = new FileQueryOptions(expression)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
 
-        InputStream inputStream = client.openQueryInputStream(expression, queryOptions);
+        InputStream inputStream = client.openQueryInputStream(queryOptions);
         // Now you can read from the input stream like you would normally.
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String-FileQueryOptions
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#FileQueryOptions
     }
 
     /**
@@ -303,10 +303,10 @@ public class DataLakeFileClientJavaDocSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileClient#queryWithResponse(OutputStream, String, FileQueryOptions, Duration, Context)}
+     * Code snippet for {@link DataLakeFileClient#queryWithResponse(OutputStream, FileQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-String-FileQueryOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT * from BlobStorage";
         FileQueryJsonSerialization input = new FileQueryJsonSerialization()
@@ -321,16 +321,16 @@ public class DataLakeFileClientJavaDocSamples {
         Consumer<FileQueryError> errorConsumer = System.out::println;
         Consumer<FileQueryProgress> progressConsumer = progress -> System.out.println("total file bytes read: "
             + progress.getBytesScanned());
-        FileQueryOptions queryOptions = new FileQueryOptions()
+        FileQueryOptions queryOptions = new FileQueryOptions(expression)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
         System.out.printf("Query completed with status %d%n",
-            client.queryWithResponse(queryData, expression, queryOptions, timeout, new Context(key1, value1))
+            client.queryWithResponse(queryData, queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-String-FileQueryOptions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context
     }
 
 }

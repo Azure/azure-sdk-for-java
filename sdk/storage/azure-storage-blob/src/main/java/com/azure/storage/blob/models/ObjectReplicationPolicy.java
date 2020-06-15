@@ -3,24 +3,30 @@
 
 package com.azure.storage.blob.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.azure.core.annotation.Immutable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A type that contains information about an object replication policy on a source blob.
  */
+@Immutable
 public class ObjectReplicationPolicy {
 
     private final String policyId;
-    private final Map<String, String> ruleStatuses;
+    private final List<ObjectReplicationRule> objectReplicationRules;
 
-    ObjectReplicationPolicy(String policyId) {
+    /**
+     * Constructs a new ObjectReplicationPolicy object.
+     * @param policyId The policy id
+     * @param rules A {@code List} of rules associated with this policy to the status of the replication associated
+     * with that rule.
+     */
+    public ObjectReplicationPolicy(String policyId, List<ObjectReplicationRule> rules) {
         this.policyId = policyId;
-        this.ruleStatuses = new HashMap<>();
-    }
-
-    void putRuleAndStatus(String rule, String status) {
-        this.ruleStatuses.put(rule, status);
+        this.objectReplicationRules = Collections.unmodifiableList(new ArrayList<>(rules));
     }
 
     /**
@@ -31,10 +37,10 @@ public class ObjectReplicationPolicy {
     }
 
     /**
-     * @return A {@code Map} of rules associated with this policy to the status of the replication associated with that
+     * @return A {@code List} of rules associated with this policy to the status of the replication associated with that
      * rule.
      */
-    public Map<String, String> getRules() {
-        return this.ruleStatuses;
+    public List<ObjectReplicationRule> getRules() {
+        return Collections.unmodifiableList(this.objectReplicationRules);
     }
 }

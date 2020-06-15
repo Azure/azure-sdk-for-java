@@ -7,7 +7,10 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,7 +53,7 @@ public final class BlobProperties {
     private final Long tagCount;
     private final String versionId;
     private final Boolean isCurrentVersion;
-    private final Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+    private final List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
     private final String objectReplicationDestinationPolicyId;
 
     /**
@@ -201,7 +204,7 @@ public final class BlobProperties {
         this.versionId = versionId;
         this.isCurrentVersion = isCurrentVersion;
 
-        this.objectReplicationSourcePolicies = new HashMap<>();
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
         if (this.objectReplicationDestinationPolicyId == null) {
@@ -209,16 +212,20 @@ public final class BlobProperties {
                 String[] split = entry.getKey().split("_");
                 String policyId = split[0];
                 String ruleId = split[1];
-                if (this.objectReplicationSourcePolicies.containsKey(policyId)) {
-                    this.objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());
-                } else {
-                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, entry.getValue());
-                    this.objectReplicationSourcePolicies.put(policyId, policy);
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
                 }
+                internalSourcePolicies.get(policyId).add(rule);
             }
         }
+        this.objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            this.objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
     }
+
 
     /**
      * Constructs a {@link BlobProperties}.
@@ -261,7 +268,7 @@ public final class BlobProperties {
      * @param versionId The version identifier of the blob.
      * @param isCurrentVersion Flag indicating if version identifier points to current version of the blob.
      * @param tagCount Number of tags associated with the blob.
-     * @param objectReplicationStatus The already parsed object replication status.
+     * @param objectReplicationSourcePolicies The already parsed object replication policies.
      * @param objectReplicationDestinationPolicyId The policy id on the destination blob.
      */
     public BlobProperties(final OffsetDateTime creationTime, final OffsetDateTime lastModified, final String eTag,
@@ -275,7 +282,7 @@ public final class BlobProperties {
         final Boolean isAccessTierInferred, final ArchiveStatus archiveStatus, final String encryptionKeySha256,
         String encryptionScope, final OffsetDateTime accessTierChangeTime, final Map<String, String> metadata,
         final Integer committedBlockCount, final Long tagCount, final String versionId,
-        final Boolean isCurrentVersion, Map<String, ObjectReplicationPolicy> objectReplicationStatus,
+        final Boolean isCurrentVersion, List<ObjectReplicationPolicy> objectReplicationSourcePolicies,
         String objectReplicationDestinationPolicyId) {
 
         this.creationTime = creationTime;
@@ -313,7 +320,7 @@ public final class BlobProperties {
         this.tagCount = tagCount;
         this.versionId = versionId;
         this.isCurrentVersion = isCurrentVersion;
-        this.objectReplicationSourcePolicies = objectReplicationStatus;
+        this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
     }
 
@@ -574,12 +581,12 @@ public final class BlobProperties {
     }
 
     /**
-     * @return a {@link Map} that contains information on the object replication policies associated with this blob
+     * @return a {@link List} that contains information on the object replication policies associated with this blob
      * and the status of the replication for each policy. Only available when the blob is the source of object
      * replication.
      */
-    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return this.objectReplicationSourcePolicies;
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return Collections.unmodifiableList(this.objectReplicationSourcePolicies);
     }
 
     /**
