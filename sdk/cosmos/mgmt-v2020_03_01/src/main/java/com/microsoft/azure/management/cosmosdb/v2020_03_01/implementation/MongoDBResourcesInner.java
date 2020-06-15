@@ -136,7 +136,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -150,7 +150,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -163,7 +163,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;MongoDBDatabaseGetResultsInner&gt; object
@@ -180,7 +180,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB databases under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;MongoDBDatabaseGetResultsInner&gt; object
@@ -225,7 +225,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -240,7 +240,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -254,7 +254,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -272,7 +272,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -316,7 +316,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -332,7 +332,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -347,7 +347,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -366,7 +366,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -398,7 +398,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -414,7 +414,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -429,7 +429,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -448,7 +448,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or updates Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param createUpdateMongoDBDatabaseParameters The parameters to provide for the current MongoDB database.
@@ -498,7 +498,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -512,7 +512,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -526,7 +526,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -544,7 +544,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -571,7 +571,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -585,7 +585,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -599,7 +599,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -617,7 +617,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -662,7 +662,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -677,7 +677,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -691,7 +691,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -709,7 +709,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -753,7 +753,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -769,7 +769,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -784,7 +784,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -803,7 +803,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -835,7 +835,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -851,7 +851,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -866,7 +866,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -885,7 +885,7 @@ public class MongoDBResourcesInner {
     /**
      * Update RUs per second of the an Azure Cosmos DB MongoDB database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current MongoDB database.
@@ -935,7 +935,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -950,7 +950,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -964,7 +964,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -982,7 +982,7 @@ public class MongoDBResourcesInner {
     /**
      * Lists the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1031,7 +1031,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1047,7 +1047,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1062,7 +1062,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1081,7 +1081,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the MongoDB collection under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1129,7 +1129,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1146,7 +1146,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1162,7 +1162,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1182,7 +1182,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1218,7 +1218,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1235,7 +1235,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1251,7 +1251,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1271,7 +1271,7 @@ public class MongoDBResourcesInner {
     /**
      * Create or update an Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1325,7 +1325,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1340,7 +1340,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1355,7 +1355,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1374,7 +1374,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1405,7 +1405,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1420,7 +1420,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1435,7 +1435,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1454,7 +1454,7 @@ public class MongoDBResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB MongoDB Collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1503,7 +1503,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1519,7 +1519,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1534,7 +1534,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1553,7 +1553,7 @@ public class MongoDBResourcesInner {
     /**
      * Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1601,7 +1601,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1618,7 +1618,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1634,7 +1634,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1654,7 +1654,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1690,7 +1690,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1707,7 +1707,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1723,7 +1723,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
@@ -1743,7 +1743,7 @@ public class MongoDBResourcesInner {
     /**
      * Update the RUs per second of an Azure Cosmos DB MongoDB collection.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
      * @param collectionName Cosmos DB collection name.
