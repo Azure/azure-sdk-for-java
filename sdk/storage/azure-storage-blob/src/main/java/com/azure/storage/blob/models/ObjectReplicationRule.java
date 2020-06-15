@@ -3,9 +3,6 @@
 
 package com.azure.storage.blob.models;
 
-import java.util.Collection;
-import java.util.Optional;
-
 /**
  * A type that contains information about an object replication rule on a source blob.
  */
@@ -36,13 +33,5 @@ public class ObjectReplicationRule {
      */
     public ObjectReplicationStatus getStatus() {
         return status;
-    }
-
-    static ObjectReplicationRule getObjectReplicationRule(String ruleId,
-        Collection<ObjectReplicationRule> objectReplicationRules) {
-        Optional<ObjectReplicationRule> r = objectReplicationRules.stream()
-            .filter(rule -> ruleId.equals(rule.getRuleId()))
-            .findFirst();
-        return r.orElse(null);
     }
 }

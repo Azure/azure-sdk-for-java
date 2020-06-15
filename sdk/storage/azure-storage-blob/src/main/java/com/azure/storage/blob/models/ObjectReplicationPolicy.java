@@ -3,15 +3,16 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A type that contains information about an object replication policy on a source blob.
  */
+@Immutable
 public class ObjectReplicationPolicy {
 
     private final String policyId;
@@ -25,16 +26,7 @@ public class ObjectReplicationPolicy {
      */
     public ObjectReplicationPolicy(String policyId, List<ObjectReplicationRule> rules) {
         this.policyId = policyId;
-        this.objectReplicationRules = Collections.unmodifiableList(rules);
-    }
-
-    ObjectReplicationPolicy(String policyId) {
-        this.policyId = policyId;
-        this.objectReplicationRules = new ArrayList<>();
-    }
-
-    void putRule(ObjectReplicationRule rule) {
-        this.objectReplicationRules.add(rule);
+        this.objectReplicationRules = Collections.unmodifiableList(new ArrayList<>(rules));
     }
 
     /**
@@ -50,13 +42,5 @@ public class ObjectReplicationPolicy {
      */
     public List<ObjectReplicationRule> getRules() {
         return Collections.unmodifiableList(this.objectReplicationRules);
-    }
-
-    static ObjectReplicationPolicy getObjectReplicationPolicy(String policyId,
-        Collection<ObjectReplicationPolicy> objectReplicationPolicies) {
-        Optional<ObjectReplicationPolicy> p = objectReplicationPolicies.stream()
-            .filter(policy -> policyId.equals(policy.getPolicyId()))
-            .findFirst();
-        return p.orElse(null);
     }
 }

@@ -79,8 +79,7 @@ public final class BlobDownloadHeaders {
         this.tagCount = headers.getTagCount();
 
         Map<String, String> objectReplicationStatus = headers.getObjectReplicationRules();
-
-        this.objectReplicationSourcePolicies = new ArrayList<>();
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
         objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
         this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
         if (this.objectReplicationDestinationPolicyId == null) {
@@ -90,16 +89,15 @@ public final class BlobDownloadHeaders {
                 String ruleId = split[1];
                 ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
                     ObjectReplicationStatus.fromString(entry.getValue()));
-                ObjectReplicationPolicy policy = ObjectReplicationPolicy.getObjectReplicationPolicy(policyId,
-                    this.objectReplicationSourcePolicies);
-                if (policy == null) {
-                    policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRule(rule);
-                    this.objectReplicationSourcePolicies.add(policy);
-                } else {
-                    policy.putRule(rule);
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                  internalSourcePolicies.put(policyId, new ArrayList<>());
                 }
+                internalSourcePolicies.get(policyId).add(rule);
             }
+        }
+        this.objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            this.objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
     }
 
