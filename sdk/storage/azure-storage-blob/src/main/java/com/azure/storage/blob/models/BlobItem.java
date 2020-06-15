@@ -80,7 +80,7 @@ public final class BlobItem {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
-    private final Map<String, String> tags;
+    private Map<String, String> tags;
 
     /*
      * The versionId property.
@@ -209,12 +209,23 @@ public final class BlobItem {
     }
 
     /**
-     * Get the tags property: The tag property.
+     * Get the tags property: The tags property.
      *
      * @return the metadata value.
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags property.
+     *
+     * @param tags the tags value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
