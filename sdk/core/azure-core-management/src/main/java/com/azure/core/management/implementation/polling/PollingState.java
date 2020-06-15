@@ -207,7 +207,7 @@ public final class PollingState {
     /**
      * @return the delay in seconds to wait before invoking poll operation.
      */
-    Duration getPollDelay() {
+    public Duration getPollDelay() {
         return this.pollDelay;
     }
 

@@ -47,6 +47,19 @@ public class HttpReadSettings extends StoreReadSettings {
     private Object requestTimeout;
 
     /**
+     * Indicates whether to enable partition discovery.
+     */
+    @JsonProperty(value = "enablePartitionDiscovery")
+    private Boolean enablePartitionDiscovery;
+
+    /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
      * Get the HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType string).
      *
      * @return the requestMethod value
@@ -123,6 +136,46 @@ public class HttpReadSettings extends StoreReadSettings {
      */
     public HttpReadSettings withRequestTimeout(Object requestTimeout) {
         this.requestTimeout = requestTimeout;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to enable partition discovery.
+     *
+     * @return the enablePartitionDiscovery value
+     */
+    public Boolean enablePartitionDiscovery() {
+        return this.enablePartitionDiscovery;
+    }
+
+    /**
+     * Set indicates whether to enable partition discovery.
+     *
+     * @param enablePartitionDiscovery the enablePartitionDiscovery value to set
+     * @return the HttpReadSettings object itself.
+     */
+    public HttpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+        this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the HttpReadSettings object itself.
+     */
+    public HttpReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
         return this;
     }
 

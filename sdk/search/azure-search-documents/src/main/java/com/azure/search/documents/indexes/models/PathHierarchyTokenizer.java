@@ -39,7 +39,7 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      * is false.
      */
     @JsonProperty(value = "reverse")
-    private Boolean reverseTokenOrder;
+    private Boolean tokenOrderReversed;
 
     /*
      * The number of initial tokens to skip. Default is 0.
@@ -119,19 +119,19 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
      *
      * @return the reverseTokenOrder value.
      */
-    public Boolean isReverseTokenOrder() {
-        return this.reverseTokenOrder;
+    public Boolean isTokenOrderReversed() {
+        return this.tokenOrderReversed;
     }
 
     /**
      * Set the reverseTokenOrder property: A value indicating whether to
      * generate tokens in reverse order. Default is false.
      *
-     * @param reverseTokenOrder the reverseTokenOrder value to set.
+     * @param tokenOrderReversed the reverseTokenOrder value to set.
      * @return the PathHierarchyTokenizerV2 object itself.
      */
-    public PathHierarchyTokenizer setReverseTokenOrder(Boolean reverseTokenOrder) {
-        this.reverseTokenOrder = reverseTokenOrder;
+    public PathHierarchyTokenizer setTokenOrderReversed(Boolean tokenOrderReversed) {
+        this.tokenOrderReversed = tokenOrderReversed;
         return this;
     }
 

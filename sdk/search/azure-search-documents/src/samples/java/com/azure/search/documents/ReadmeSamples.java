@@ -11,11 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
+import com.azure.search.documents.indexes.SearchIndexerClient;
+import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.models.Hotel;
+import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
@@ -40,32 +43,46 @@ public class ReadmeSamples {
     private SearchClient searchClient = new SearchClientBuilder().buildClient();
 
     public void createSearchClient() {
-        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+        SearchClient searchClient = new SearchClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(adminKey))
+            .indexName(indexName)
             .buildClient();
     }
 
     public void createAsyncSearchClient() {
-        SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
+        SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(adminKey))
+            .indexName(indexName)
             .buildAsyncClient();
     }
 
     public void createIndexClient() {
-        SearchClient searchClient = new SearchClientBuilder()
+        SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .indexName(indexName)
             .buildClient();
     }
 
-    public void createAsyncIndexClient() {
-        SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
+    public void createIndexAsyncClient() {
+        SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .indexName(indexName)
+            .buildAsyncClient();
+    }
+
+    public void createIndexerClient() {
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
+            .buildClient();
+    }
+
+    public void createIndexerAsyncClient() {
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(apiKey))
             .buildAsyncClient();
     }
 

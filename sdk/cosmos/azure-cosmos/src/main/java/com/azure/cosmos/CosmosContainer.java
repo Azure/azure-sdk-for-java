@@ -8,7 +8,7 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -239,7 +239,7 @@ public class CosmosContainer {
      * @param classType the classType.
      * @return the {@link CosmosPagedIterable}.
      */
-    <T> CosmosPagedIterable<T> readAllItems(QueryRequestOptions options, Class<T> classType) {
+    <T> CosmosPagedIterable<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.readAllItems(options, classType));
     }
 
@@ -252,7 +252,7 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    public <T> CosmosPagedIterable<T> queryItems(String query, QueryRequestOptions options, Class<T> classType) {
+    public <T> CosmosPagedIterable<T> queryItems(String query, CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(query, options, classType));
     }
 
@@ -265,7 +265,7 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, QueryRequestOptions options, Class<T> classType) {
+    public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
     }
 

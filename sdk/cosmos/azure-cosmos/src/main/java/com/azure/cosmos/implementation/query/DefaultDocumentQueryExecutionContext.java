@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Resource;
@@ -59,14 +59,14 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     private static final String DEFAULT_PARTITION_KEY_RANGE_ID = "0";
 
     public DefaultDocumentQueryExecutionContext(IDocumentQueryClient client, ResourceType resourceTypeEnum,
-                                                Class<T> resourceType, SqlQuerySpec query, QueryRequestOptions queryRequestOptions, String resourceLink,
+                                                Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
                                                 UUID correlatedActivityId, boolean isContinuationExpected) {
 
         super(client,
                 resourceTypeEnum,
                 resourceType,
                 query,
-                queryRequestOptions,
+                cosmosQueryRequestOptions,
                 resourceLink,
                 false,
                 correlatedActivityId);
@@ -78,32 +78,32 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
-        return this.queryRequestOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(queryRequestOptions.getPartitionKey());
+        return this.cosmosQueryRequestOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
     }
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
 
-        if (queryRequestOptions == null) {
-            queryRequestOptions = new QueryRequestOptions();
+        if (cosmosQueryRequestOptions == null) {
+            cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         }
 
-        QueryRequestOptions newQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
+        CosmosQueryRequestOptions newCosmosQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions);
 
         // We can not go to backend with the composite continuation token,
         // but we still need the gateway for the query plan.
         // The workaround is to try and parse the continuation token as a composite continuation token.
         // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
 
-        String originalContinuation = ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(newQueryRequestOptions);
+        String originalContinuation = ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(newCosmosQueryRequestOptions);
 
         if (isClientSideContinuationToken(originalContinuation)) {
             // At this point we know we want back a query plan
-            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(newQueryRequestOptions, null);
-            newQueryRequestOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(newCosmosQueryRequestOptions, null);
+            newCosmosQueryRequestOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
         }
 
-        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(newQueryRequestOptions);
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(newCosmosQueryRequestOptions);
         int maxPageSize = maxItemCount != null ? maxItemCount : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
@@ -112,7 +112,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = executeInternalAsyncFunc();
 
         return Paginator
-    			.getPaginatedQueryResultAsObservable(newQueryRequestOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
+    			.getPaginatedQueryResultAsObservable(newCosmosQueryRequestOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
@@ -135,14 +135,14 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
         DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy();
 
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, queryRequestOptions);
+        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(collectionCache, retryPolicyInstance, resourceLink, cosmosQueryRequestOptions);
         if (super.resourceTypeEnum.isPartitioned()) {
             retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(
                     collectionCache,
                     partitionKeyRangeCache,
                     PathsHelper.getCollectionPath(super.resourceLink),
                     retryPolicyInstance,
-                    queryRequestOptions);
+                    cosmosQueryRequestOptions);
         }
 
         final DocumentClientRetryPolicy finalRetryPolicyInstance = retryPolicyInstance;
@@ -192,8 +192,8 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                 this.query,
                 this.getPartitionKeyInternal());
 
-        if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(queryRequestOptions))) {
-            request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(queryRequestOptions)));
+        if (!StringUtils.isEmpty(partitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
+            request.routeTo(new PartitionKeyRangeIdentity(partitionKeyRangeIdInternal(cosmosQueryRequestOptions)));
         }
 
         return request;

@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -53,9 +54,22 @@ public class FormTrainingClientBuilderUnitTest {
      */
     @Test
     public void nullAzureKeyCredential() {
+        AzureKeyCredential credential = null;
         assertThrows(NullPointerException.class, () -> {
             final FormTrainingClientBuilder builder = new FormTrainingClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(credential);
+        });
+    }
+
+    /**
+     * Test for null AAD credential
+     */
+    @Test
+    public void nullAADCredential() {
+        TokenCredential tokenCredential = null;
+        assertThrows(NullPointerException.class, () -> {
+            final FormTrainingClientBuilder builder = new FormTrainingClientBuilder();
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(tokenCredential);
         });
     }
 

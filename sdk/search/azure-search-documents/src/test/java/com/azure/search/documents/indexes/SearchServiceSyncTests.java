@@ -6,7 +6,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.ServiceCounters;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.models.RequestOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,17 +29,17 @@ public class SearchServiceSyncTests extends SearchTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
+        SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
             Context.NONE).getValue();
-        validateServiceStatistics(serviceStatistics);
+        validateServiceStatistics(searchServiceStatistics);
     }
 
     @Test
     public void getServiceStatsReturnsRequestId() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
-        RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
-        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
+        RequestOptions requestOptions = new RequestOptions().setClientRequestId(UUID.randomUUID());
+        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
             Context.NONE);
 
         /*
@@ -56,8 +56,8 @@ public class SearchServiceSyncTests extends SearchTestBase {
         validateServiceStatistics(response.getValue());
     }
 
-    private static void validateServiceStatistics(ServiceStatistics serviceStatistics) {
-        ServiceCounters serviceCounters = serviceStatistics.getCounters();
+    private static void validateServiceStatistics(SearchServiceStatistics searchServiceStatistics) {
+        ServiceCounters serviceCounters = searchServiceStatistics.getCounters();
         assertTrue(serviceCounters.getIndexCounter().getQuota() >= 1);
         assertTrue(serviceCounters.getIndexerCounter().getQuota() >= 1);
         assertTrue(serviceCounters.getDataSourceCounter().getQuota() >= 1);

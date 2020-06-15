@@ -581,7 +581,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalResultCount(true),
+        SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalCount(true),
             generateRequestOptions(), Context.NONE);
         assertNotNull(results);
         Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();

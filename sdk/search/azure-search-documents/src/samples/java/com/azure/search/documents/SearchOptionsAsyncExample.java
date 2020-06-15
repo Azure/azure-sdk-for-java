@@ -126,7 +126,7 @@ public class SearchOptionsAsyncExample {
         // Get total search results count
         // Get count property from the first page in the response
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true),
+            new SearchOptions().setIncludeTotalCount(true),
             new RequestOptions());
 
         System.out.println("Count = " + results.byPage()
@@ -139,7 +139,7 @@ public class SearchOptionsAsyncExample {
         // Get total search results count by accessing the SearchPagedResponse
         // Access Count property when iterating by page
         SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true),
+            new SearchOptions().setIncludeTotalCount(true),
             new RequestOptions());
 
         Stream<Long> countStream = results.byPage().map(SearchPagedResponse::getCount).toStream();

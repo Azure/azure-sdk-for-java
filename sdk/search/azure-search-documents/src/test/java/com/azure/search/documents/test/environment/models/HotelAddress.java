@@ -19,7 +19,7 @@ public class HotelAddress {
     @JsonProperty(value = "StateProvince")
     private String stateProvince;
 
-    @SearchableFieldProperty(synonymMaps = {"fieldbuilder"})
+    @SearchableFieldProperty(synonymMapNames = {"fieldbuilder"})
     @JsonProperty(value = "Country")
     private String country;
 

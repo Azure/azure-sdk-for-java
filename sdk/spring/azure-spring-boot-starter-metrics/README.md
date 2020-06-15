@@ -1,5 +1,14 @@
 #Azure Metrics Spring Boot Starter client library for Java
 
+## Java agent based monitoring
+
+Azure Application Insights has released one Java agent that can be used to capture metrics inside JVM. Consider use the Java agent based approach. 
+
+Refer following document for more details:
+
+https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent
+
+
 ## Key concepts
 
 ## Getting started

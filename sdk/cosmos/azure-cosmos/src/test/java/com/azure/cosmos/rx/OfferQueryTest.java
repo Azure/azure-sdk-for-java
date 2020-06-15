@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import org.assertj.core.util.Strings;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -54,7 +54,7 @@ public class OfferQueryTest extends TestSuiteBase {
         String collectionResourceId = createdCollections.get(0).getResourceId();
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, null);
 
@@ -84,7 +84,7 @@ public class OfferQueryTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.offerResourceId in (%s)",
                 Strings.join(collectionResourceIds.stream().map(s -> "'" + s + "'").collect(Collectors.toList())).with(","));
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
         Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(query, options);
 
@@ -114,7 +114,7 @@ public class OfferQueryTest extends TestSuiteBase {
     public void queryCollections_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, options);
 
         FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
