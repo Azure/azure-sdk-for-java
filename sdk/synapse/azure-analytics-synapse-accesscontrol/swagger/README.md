@@ -21,8 +21,8 @@ autorest --java --use=C:/work/autorest.java
 ### Code generation settings
 
 ```yaml
-branch: synapse_update_data_plane_specs
-repo: https://github.com/idear1203/azure-rest-api-specs/blob/$(branch)
+branch: master
+repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 ```
 
 ```yaml
@@ -38,8 +38,8 @@ generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
-models-subpackage: implementation.models
+models-subpackage: models
 custom-types-subpackage: models
-context-client-method-parameter: true
+context-client-method-parameter: false
 required-parameter-client-methods: true
 ```

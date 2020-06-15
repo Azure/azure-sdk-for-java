@@ -59,7 +59,7 @@ public final class AccessControlClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
+    static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
 
     private final ClientLogger logger = new ClientLogger(AccessControlClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -74,7 +74,6 @@ public final class AccessControlClientBuilder {
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
-    private AccessControlServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -99,9 +98,6 @@ public final class AccessControlClientBuilder {
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
-        // Service Version
-        final AccessControlServiceVersion serviceVersion =
-            version != null ? version : AccessControlServiceVersion.getLatest();
 
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
@@ -143,10 +139,7 @@ public final class AccessControlClientBuilder {
                 .build();
         }
 
-        AccessControlClientImpl client = new AccessControlClientImpl(pipeline);
-        client.setEndpoint(endpoint);
-        client.setApiVersion(serviceVersion.getVersion());
-        return client;
+        return new AccessControlClientImpl(pipeline, endpoint);
     }
 
     /**
@@ -308,21 +301,6 @@ public final class AccessControlClientBuilder {
      */
     public AccessControlClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
-        return this;
-    }
-
-    /**
-     * Sets the {@link AccessControlServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
-     *
-     * @param version {@link AccessControlServiceVersion} of the service to be used when making requests.
-     * @return The updated {@link AccessControlClientBuilder} object.
-     */
-    public AccessControlClientBuilder serviceVersion(AccessControlServiceVersion version) {
-        this.version = version;
         return this;
     }
 }

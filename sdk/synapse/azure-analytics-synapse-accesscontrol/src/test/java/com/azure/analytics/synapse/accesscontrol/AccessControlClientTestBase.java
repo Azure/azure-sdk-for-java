@@ -1,6 +1,6 @@
 package com.azure.analytics.synapse.accesscontrol;
 
-import com.azure.analytics.synapse.accesscontrol.implementation.models.SynapseRole;
+import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class AccessControlClientTestBase extends TestBase {
 
-    static final String SYNAPSE_SCOPE = "https://dev.azuresynapse.net/.default";
     static final String NAME = "name";
     static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-accesscontrol.properties";
     static final String VERSION = "version";
@@ -66,7 +65,7 @@ public abstract class AccessControlClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, SYNAPSE_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, AccessControlClientBuilder.DEFAULT_SCOPE));
         }
 
         policies.add(new RetryPolicy());

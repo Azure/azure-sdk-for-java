@@ -1,9 +1,7 @@
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.implementation.models.SparkBatchJob;
-import com.azure.analytics.synapse.spark.implementation.models.SparkSession;
+import com.azure.analytics.synapse.spark.models.SparkSession;
 import org.junit.jupiter.api.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class SparkSessionClientTest extends SparkClientTestBase {
 

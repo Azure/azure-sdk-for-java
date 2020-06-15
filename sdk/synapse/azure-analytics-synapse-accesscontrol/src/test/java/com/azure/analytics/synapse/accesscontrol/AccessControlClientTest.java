@@ -1,6 +1,6 @@
 package com.azure.analytics.synapse.accesscontrol;
 
-import com.azure.analytics.synapse.accesscontrol.implementation.models.SynapseRole;
+import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
 import org.junit.jupiter.api.Test;
 
 public class AccessControlClientTest extends AccessControlClientTestBase {

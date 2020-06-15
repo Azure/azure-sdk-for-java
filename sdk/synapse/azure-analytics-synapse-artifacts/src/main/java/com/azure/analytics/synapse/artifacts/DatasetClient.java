@@ -5,52 +5,26 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.DatasetsImpl;
-import com.azure.analytics.synapse.artifacts.implementation.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.implementation.models.DatasetListResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.DatasetResource;
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.DatasetResource;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the synchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class DatasetClient {
     private DatasetsImpl serviceClient;
 
-    /**
-     * Initializes an instance of Datasets client.
-     */
+    /** Initializes an instance of Datasets client. */
     DatasetClient(DatasetsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Lists datasets.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of dataset resources.
@@ -61,25 +35,12 @@ public final class DatasetClient {
     }
 
     /**
-     * Lists datasets.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of dataset resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatasetResource> getDatasetsByWorkspace(Context context) {
-        return this.serviceClient.getDatasetsByWorkspace(context);
-    }
-
-    /**
      * Creates or updates a dataset.
-     * 
+     *
      * @param datasetName The dataset name.
      * @param dataset Dataset resource type.
-     * @param ifMatch ETag of the dataset entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
+     * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,24 +53,7 @@ public final class DatasetClient {
 
     /**
      * Creates or updates a dataset.
-     * 
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
-     * @param ifMatch ETag of the dataset entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetResource createOrUpdateDataset(String datasetName, DatasetResource dataset, String ifMatch, Context context) {
-        return this.serviceClient.createOrUpdateDataset(datasetName, dataset, ifMatch, context);
-    }
-
-    /**
-     * Creates or updates a dataset.
-     * 
+     *
      * @param datasetName The dataset name.
      * @param dataset Dataset resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,9 +68,10 @@ public final class DatasetClient {
 
     /**
      * Gets a dataset.
-     * 
+     *
      * @param datasetName The dataset name.
-     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
+     *     entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -139,23 +84,7 @@ public final class DatasetClient {
 
     /**
      * Gets a dataset.
-     * 
-     * @param datasetName The dataset name.
-     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a dataset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatasetResource getDataset(String datasetName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getDataset(datasetName, ifNoneMatch, context);
-    }
-
-    /**
-     * Gets a dataset.
-     * 
+     *
      * @param datasetName The dataset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -169,7 +98,7 @@ public final class DatasetClient {
 
     /**
      * Deletes a dataset.
-     * 
+     *
      * @param datasetName The dataset name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -178,19 +107,5 @@ public final class DatasetClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDataset(String datasetName) {
         this.serviceClient.deleteDataset(datasetName);
-    }
-
-    /**
-     * Deletes a dataset.
-     * 
-     * @param datasetName The dataset name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataset(String datasetName, Context context) {
-        this.serviceClient.deleteDataset(datasetName, context);
     }
 }

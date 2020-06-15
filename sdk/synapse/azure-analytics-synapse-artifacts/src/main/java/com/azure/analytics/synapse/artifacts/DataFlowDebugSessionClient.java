@@ -5,59 +5,33 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.DataFlowDebugSessionsImpl;
-import com.azure.analytics.synapse.artifacts.implementation.models.AddDataFlowToDebugSessionResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.implementation.models.CreateDataFlowDebugSessionRequest;
-import com.azure.analytics.synapse.artifacts.implementation.models.CreateDataFlowDebugSessionResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.DataFlowDebugCommandRequest;
-import com.azure.analytics.synapse.artifacts.implementation.models.DataFlowDebugCommandResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.DataFlowDebugPackage;
-import com.azure.analytics.synapse.artifacts.implementation.models.DataFlowDebugSessionInfo;
-import com.azure.analytics.synapse.artifacts.implementation.models.DataFlowDebugSessionsCreateDataFlowDebugSessionResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.DataFlowDebugSessionsExecuteCommandResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.DeleteDataFlowDebugSessionRequest;
-import com.azure.analytics.synapse.artifacts.implementation.models.QueryDataFlowDebugSessionsResponse;
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
+import com.azure.analytics.synapse.artifacts.models.AddDataFlowToDebugSessionResponse;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.CreateDataFlowDebugSessionRequest;
+import com.azure.analytics.synapse.artifacts.models.CreateDataFlowDebugSessionResponse;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandRequest;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugCommandResponse;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugPackage;
+import com.azure.analytics.synapse.artifacts.models.DataFlowDebugSessionInfo;
+import com.azure.analytics.synapse.artifacts.models.DeleteDataFlowDebugSessionRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the synchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class DataFlowDebugSessionClient {
     private DataFlowDebugSessionsImpl serviceClient;
 
-    /**
-     * Initializes an instance of DataFlowDebugSessions client.
-     */
+    /** Initializes an instance of DataFlowDebugSessions client. */
     DataFlowDebugSessionClient(DataFlowDebugSessionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Creates a data flow debug session.
-     * 
+     *
      * @param request Request body structure for creating data flow debug session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -70,23 +44,8 @@ public final class DataFlowDebugSessionClient {
     }
 
     /**
-     * Creates a data flow debug session.
-     * 
-     * @param request Request body structure for creating data flow debug session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for creating data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateDataFlowDebugSessionResponse createDataFlowDebugSession(CreateDataFlowDebugSessionRequest request, Context context) {
-        return this.serviceClient.createDataFlowDebugSession(request, context);
-    }
-
-    /**
      * Query all active data flow debug sessions.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of active debug sessions.
@@ -97,22 +56,8 @@ public final class DataFlowDebugSessionClient {
     }
 
     /**
-     * Query all active data flow debug sessions.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active debug sessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataFlowDebugSessionInfo> queryDataFlowDebugSessionsByWorkspace(Context context) {
-        return this.serviceClient.queryDataFlowDebugSessionsByWorkspace(context);
-    }
-
-    /**
      * Add a data flow into debug session.
-     * 
+     *
      * @param request Request body structure for starting data flow debug session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -125,23 +70,8 @@ public final class DataFlowDebugSessionClient {
     }
 
     /**
-     * Add a data flow into debug session.
-     * 
-     * @param request Request body structure for starting data flow debug session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure for starting data flow debug session.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddDataFlowToDebugSessionResponse addDataFlow(DataFlowDebugPackage request, Context context) {
-        return this.serviceClient.addDataFlow(request, context);
-    }
-
-    /**
      * Deletes a data flow debug session.
-     * 
+     *
      * @param request Request body structure for deleting data flow debug session.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -153,22 +83,8 @@ public final class DataFlowDebugSessionClient {
     }
 
     /**
-     * Deletes a data flow debug session.
-     * 
-     * @param request Request body structure for deleting data flow debug session.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteDataFlowDebugSession(DeleteDataFlowDebugSessionRequest request, Context context) {
-        this.serviceClient.deleteDataFlowDebugSession(request, context);
-    }
-
-    /**
      * Execute a data flow debug command.
-     * 
+     *
      * @param request Request body structure for data flow expression preview.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -178,20 +94,5 @@ public final class DataFlowDebugSessionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request) {
         return this.serviceClient.executeCommand(request);
-    }
-
-    /**
-     * Execute a data flow debug command.
-     * 
-     * @param request Request body structure for data flow expression preview.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body structure of data flow result for data preview, statistics or expression preview.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataFlowDebugCommandResponse executeCommand(DataFlowDebugCommandRequest request, Context context) {
-        return this.serviceClient.executeCommand(request, context);
     }
 }

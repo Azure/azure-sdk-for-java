@@ -33,7 +33,7 @@ public final class ArtifactsClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
+    static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
 
     private final ClientLogger logger = new ClientLogger(ArtifactsClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -48,7 +48,6 @@ public final class ArtifactsClientBuilder {
     private HttpPipeline httpPipeline;
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
-    private ArtifactsServiceVersion version;
 
     /**
      * The constructor with defaults.
@@ -73,9 +72,6 @@ public final class ArtifactsClientBuilder {
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
-        // Service Version
-        final ArtifactsServiceVersion serviceVersion =
-            version != null ? version : ArtifactsServiceVersion.getLatest();
 
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
@@ -117,10 +113,7 @@ public final class ArtifactsClientBuilder {
                 .build();
         }
 
-        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline);
-        client.setEndpoint(endpoint);
-        client.setApiVersion(serviceVersion.getVersion());
-        return client;
+        return new ArtifactsClientImpl(pipeline, endpoint);
     }
 
     /**
@@ -242,21 +235,6 @@ public final class ArtifactsClientBuilder {
      */
     public ArtifactsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
-        return this;
-    }
-
-    /**
-     * Sets the {@link ArtifactsServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
-     *
-     * @param version {@link ArtifactsServiceVersion} of the service to be used when making requests.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     */
-    public ArtifactsClientBuilder serviceVersion(ArtifactsServiceVersion version) {
-        this.version = version;
         return this;
     }
 

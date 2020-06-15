@@ -1,6 +1,6 @@
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.implementation.models.SparkBatchJob;
+import com.azure.analytics.synapse.spark.models.SparkBatchJob;
 import org.junit.jupiter.api.Test;
 
 public class SparkBatchClientTest extends SparkClientTestBase {

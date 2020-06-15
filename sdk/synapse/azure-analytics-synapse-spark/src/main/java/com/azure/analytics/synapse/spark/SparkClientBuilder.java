@@ -32,7 +32,7 @@ public final class SparkClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
+    static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
 
     private final ClientLogger logger = new ClientLogger(SparkClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -117,11 +117,7 @@ public final class SparkClientBuilder {
                 .build();
         }
 
-        SparkClientImpl client = new SparkClientImpl(pipeline);
-        client.setEndpoint(endpoint);
-        client.setSparkPoolName(sparkPoolName);
-        client.setLivyApiVersion(serviceVersion.getVersion());
-        return client;
+        return new SparkClientImpl(pipeline, endpoint, serviceVersion.getVersion(), sparkPoolName);
     }
 
     /**

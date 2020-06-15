@@ -4,10 +4,10 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
-import com.azure.analytics.synapse.artifacts.implementation.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.implementation.models.CreateRunResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.PipelineListResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.PipelineResource;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.CreateRunResponse;
+import com.azure.analytics.synapse.artifacts.models.PipelineListResponse;
+import com.azure.analytics.synapse.artifacts.models.PipelineResource;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -29,30 +29,22 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Pipelines.
- */
+/** An instance of this class provides access to all the operations defined in Pipelines. */
 public final class PipelinesImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final PipelinesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of PipelinesImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     PipelinesImpl(ArtifactsClientImpl client) {
@@ -61,8 +53,8 @@ public final class PipelinesImpl {
     }
 
     /**
-     * The interface defining all the services for ArtifactsClientPipelines to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for ArtifactsClientPipelines to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientPipel")
@@ -70,77 +62,86 @@ public final class PipelinesImpl {
         @Get("/pipelines")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<SimpleResponse<PipelineListResponse>> getPipelinesByWorkspace(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<PipelineListResponse>> getPipelinesByWorkspace(
+                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Put("/pipelines/{pipelineName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<SimpleResponse<PipelineResource>> createOrUpdatePipeline(@HostParam("endpoint") String endpoint, @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch, @BodyParam("application/json") PipelineResource pipeline, Context context);
+        Mono<Response<PipelineResource>> createOrUpdatePipeline(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("pipelineName") String pipelineName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("If-Match") String ifMatch,
+                @BodyParam("application/json") PipelineResource pipeline,
+                Context context);
 
         @Get("/pipelines/{pipelineName}")
         @ExpectedResponses({200, 304})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<SimpleResponse<PipelineResource>> getPipeline(@HostParam("endpoint") String endpoint, @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion, @HeaderParam("If-None-Match") String ifNoneMatch, Context context);
+        Mono<Response<PipelineResource>> getPipeline(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("pipelineName") String pipelineName,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("If-None-Match") String ifNoneMatch,
+                Context context);
 
         @Delete("/pipelines/{pipelineName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> deletePipeline(@HostParam("endpoint") String endpoint, @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Void>> deletePipeline(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("pipelineName") String pipelineName,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Post("/pipelines/{pipelineName}/createRun")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<SimpleResponse<CreateRunResponse>> createPipelineRun(@HostParam("endpoint") String endpoint, @PathParam("pipelineName") String pipelineName, @QueryParam("api-version") String apiVersion, @QueryParam("referencePipelineRunId") String referencePipelineRunId, @QueryParam("isRecovery") Boolean isRecovery, @QueryParam("startActivityName") String startActivityName, @BodyParam("application/json") Map<String, Object> parameters, Context context);
+        Mono<Response<CreateRunResponse>> createPipelineRun(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("pipelineName") String pipelineName,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("referencePipelineRunId") String referencePipelineRunId,
+                @QueryParam("isRecovery") Boolean isRecovery,
+                @QueryParam("startActivityName") String startActivityName,
+                @BodyParam("application/json") Map<String, Object> parameters,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<SimpleResponse<PipelineListResponse>> getPipelinesByWorkspaceNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<PipelineListResponse>> getPipelinesByWorkspaceNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Lists pipelines.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of pipeline resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceSinglePageAsync() {
-        return FluxUtil.withContext(context -> service.getPipelinesByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.getPipelinesByWorkspace(
+                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Lists pipelines.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceSinglePageAsync(Context context) {
-        return service.getPipelinesByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
-    }
-
-    /**
-     * Lists pipelines.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of pipeline resources.
@@ -148,29 +149,13 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PipelineResource> getPipelinesByWorkspaceAsync() {
         return new PagedFlux<>(
-            () -> getPipelinesByWorkspaceSinglePageAsync(),
-            nextLink -> getPipelinesByWorkspaceNextSinglePageAsync(nextLink));
+                () -> getPipelinesByWorkspaceSinglePageAsync(),
+                nextLink -> getPipelinesByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists pipelines.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PipelineResource> getPipelinesByWorkspaceAsync(Context context) {
-        return new PagedFlux<>(
-            () -> getPipelinesByWorkspaceSinglePageAsync(context),
-            nextLink -> getPipelinesByWorkspaceNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists pipelines.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of pipeline resources.
@@ -181,102 +166,60 @@ public final class PipelinesImpl {
     }
 
     /**
-     * Lists pipelines.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PipelineResource> getPipelinesByWorkspace(Context context) {
-        return new PagedIterable<>(getPipelinesByWorkspaceAsync(context));
-    }
-
-    /**
      * Creates or updates a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource type.
-     * @param ifMatch ETag of the pipeline entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
+     * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PipelineResource>> createOrUpdatePipelineWithResponseAsync(String pipelineName, PipelineResource pipeline, String ifMatch) {
-        return FluxUtil.withContext(context -> service.createOrUpdatePipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifMatch, pipeline, context));
+    public Mono<Response<PipelineResource>> createOrUpdatePipelineWithResponseAsync(
+            String pipelineName, PipelineResource pipeline, String ifMatch) {
+        return FluxUtil.withContext(
+                context ->
+                        service.createOrUpdatePipeline(
+                                this.client.getEndpoint(),
+                                pipelineName,
+                                this.client.getApiVersion(),
+                                ifMatch,
+                                pipeline,
+                                context));
     }
 
     /**
      * Creates or updates a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource type.
-     * @param ifMatch ETag of the pipeline entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
+     * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pipeline resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PipelineResource>> createOrUpdatePipelineWithResponseAsync(String pipelineName, PipelineResource pipeline, String ifMatch, Context context) {
-        return service.createOrUpdatePipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifMatch, pipeline, context);
-    }
-
-    /**
-     * Creates or updates a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource type.
-     * @param ifMatch ETag of the pipeline entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PipelineResource> createOrUpdatePipelineAsync(String pipelineName, PipelineResource pipeline, String ifMatch) {
+    public Mono<PipelineResource> createOrUpdatePipelineAsync(
+            String pipelineName, PipelineResource pipeline, String ifMatch) {
         return createOrUpdatePipelineWithResponseAsync(pipelineName, pipeline, ifMatch)
-            .flatMap((SimpleResponse<PipelineResource> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<PipelineResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Creates or updates a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource type.
-     * @param ifMatch ETag of the pipeline entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PipelineResource> createOrUpdatePipelineAsync(String pipelineName, PipelineResource pipeline, String ifMatch, Context context) {
-        return createOrUpdatePipelineWithResponseAsync(pipelineName, pipeline, ifMatch, context)
-            .flatMap((SimpleResponse<PipelineResource> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Creates or updates a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,21 +232,23 @@ public final class PipelinesImpl {
         final String ifMatch = null;
         final Context context = null;
         return createOrUpdatePipelineWithResponseAsync(pipelineName, pipeline, ifMatch)
-            .flatMap((SimpleResponse<PipelineResource> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<PipelineResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Creates or updates a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource type.
-     * @param ifMatch ETag of the pipeline entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
+     * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,24 +261,7 @@ public final class PipelinesImpl {
 
     /**
      * Creates or updates a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource type.
-     * @param ifMatch ETag of the pipeline entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pipeline resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineResource createOrUpdatePipeline(String pipelineName, PipelineResource pipeline, String ifMatch, Context context) {
-        return createOrUpdatePipelineAsync(pipelineName, pipeline, ifMatch, context).block();
-    }
-
-    /**
-     * Creates or updates a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @param pipeline Pipeline resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,40 +278,33 @@ public final class PipelinesImpl {
 
     /**
      * Gets a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a pipeline.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PipelineResource>> getPipelineWithResponseAsync(String pipelineName, String ifNoneMatch) {
-        return FluxUtil.withContext(context -> service.getPipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifNoneMatch, context));
+    public Mono<Response<PipelineResource>> getPipelineWithResponseAsync(String pipelineName, String ifNoneMatch) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getPipeline(
+                                this.client.getEndpoint(),
+                                pipelineName,
+                                this.client.getApiVersion(),
+                                ifNoneMatch,
+                                context));
     }
 
     /**
      * Gets a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PipelineResource>> getPipelineWithResponseAsync(String pipelineName, String ifNoneMatch, Context context) {
-        return service.getPipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), ifNoneMatch, context);
-    }
-
-    /**
-     * Gets a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -392,41 +313,19 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineResource> getPipelineAsync(String pipelineName, String ifNoneMatch) {
         return getPipelineWithResponseAsync(pipelineName, ifNoneMatch)
-            .flatMap((SimpleResponse<PipelineResource> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<PipelineResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Gets a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PipelineResource> getPipelineAsync(String pipelineName, String ifNoneMatch, Context context) {
-        return getPipelineWithResponseAsync(pipelineName, ifNoneMatch, context)
-            .flatMap((SimpleResponse<PipelineResource> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Gets a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -438,20 +337,22 @@ public final class PipelinesImpl {
         final String ifNoneMatch = null;
         final Context context = null;
         return getPipelineWithResponseAsync(pipelineName, ifNoneMatch)
-            .flatMap((SimpleResponse<PipelineResource> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<PipelineResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Gets a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,23 +365,7 @@ public final class PipelinesImpl {
 
     /**
      * Gets a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param ifNoneMatch ETag of the pipeline entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineResource getPipeline(String pipelineName, String ifNoneMatch, Context context) {
-        return getPipelineAsync(pipelineName, ifNoneMatch, context).block();
-    }
-
-    /**
-     * Gets a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -496,7 +381,7 @@ public final class PipelinesImpl {
 
     /**
      * Deletes a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -505,27 +390,15 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deletePipelineWithResponseAsync(String pipelineName) {
-        return FluxUtil.withContext(context -> service.deletePipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(
+                context ->
+                        service.deletePipeline(
+                                this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), context));
     }
 
     /**
      * Deletes a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deletePipelineWithResponseAsync(String pipelineName, Context context) {
-        return service.deletePipeline(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Deletes a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -534,29 +407,12 @@ public final class PipelinesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deletePipelineAsync(String pipelineName) {
-        return deletePipelineWithResponseAsync(pipelineName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deletePipelineWithResponseAsync(pipelineName).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deletePipelineAsync(String pipelineName, Context context) {
-        return deletePipelineWithResponseAsync(pipelineName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -568,26 +424,15 @@ public final class PipelinesImpl {
     }
 
     /**
-     * Deletes a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePipeline(String pipelineName, Context context) {
-        deletePipelineAsync(pipelineName, context).block();
-    }
-
-    /**
      * Creates a run of a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
+     *     run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
+     *     the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
+     *     activities will run.
      * @param parameters An object mapping parameter names to argument values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -595,83 +440,63 @@ public final class PipelinesImpl {
      * @return response body with a run identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CreateRunResponse>> createPipelineRunWithResponseAsync(String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
-        return FluxUtil.withContext(context -> service.createPipelineRun(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), referencePipelineRunId, isRecovery, startActivityName, parameters, context));
+    public Mono<Response<CreateRunResponse>> createPipelineRunWithResponseAsync(
+            String pipelineName,
+            String referencePipelineRunId,
+            Boolean isRecovery,
+            String startActivityName,
+            Map<String, Object> parameters) {
+        return FluxUtil.withContext(
+                context ->
+                        service.createPipelineRun(
+                                this.client.getEndpoint(),
+                                pipelineName,
+                                this.client.getApiVersion(),
+                                referencePipelineRunId,
+                                isRecovery,
+                                startActivityName,
+                                parameters,
+                                context));
     }
 
     /**
      * Creates a run of a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
+     *     run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
+     *     the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
+     *     activities will run.
      * @param parameters An object mapping parameter names to argument values.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body with a run identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CreateRunResponse>> createPipelineRunWithResponseAsync(String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters, Context context) {
-        return service.createPipelineRun(this.client.getEndpoint(), pipelineName, this.client.getApiVersion(), referencePipelineRunId, isRecovery, startActivityName, parameters, context);
+    public Mono<CreateRunResponse> createPipelineRunAsync(
+            String pipelineName,
+            String referencePipelineRunId,
+            Boolean isRecovery,
+            String startActivityName,
+            Map<String, Object> parameters) {
+        return createPipelineRunWithResponseAsync(
+                        pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
+                .flatMap(
+                        (Response<CreateRunResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Creates a run of a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
-     * @param parameters An object mapping parameter names to argument values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateRunResponse> createPipelineRunAsync(String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
-        return createPipelineRunWithResponseAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
-            .flatMap((SimpleResponse<CreateRunResponse> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Creates a run of a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
-     * @param parameters An object mapping parameter names to argument values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateRunResponse> createPipelineRunAsync(String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters, Context context) {
-        return createPipelineRunWithResponseAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters, context)
-            .flatMap((SimpleResponse<CreateRunResponse> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Creates a run of a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -685,23 +510,28 @@ public final class PipelinesImpl {
         final String startActivityName = null;
         final Map<String, Object> parameters = null;
         final Context context = null;
-        return createPipelineRunWithResponseAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
-            .flatMap((SimpleResponse<CreateRunResponse> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+        return createPipelineRunWithResponseAsync(
+                        pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
+                .flatMap(
+                        (Response<CreateRunResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Creates a run of a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified
+     *     run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and
+     *     the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
+     *     activities will run.
      * @param parameters An object mapping parameter names to argument values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -709,32 +539,19 @@ public final class PipelinesImpl {
      * @return response body with a run identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateRunResponse createPipelineRun(String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
-        return createPipelineRunAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters).block();
+    public CreateRunResponse createPipelineRun(
+            String pipelineName,
+            String referencePipelineRunId,
+            Boolean isRecovery,
+            String startActivityName,
+            Map<String, Object> parameters) {
+        return createPipelineRunAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
+                .block();
     }
 
     /**
      * Creates a run of a pipeline.
-     * 
-     * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
-     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
-     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
-     * @param parameters An object mapping parameter names to argument values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateRunResponse createPipelineRun(String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters, Context context) {
-        return createPipelineRunAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters, context).block();
-    }
-
-    /**
-     * Creates a run of a pipeline.
-     * 
+     *
      * @param pipelineName The pipeline name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -748,12 +565,13 @@ public final class PipelinesImpl {
         final String startActivityName = null;
         final Map<String, Object> parameters = null;
         final Context context = null;
-        return createPipelineRunAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters).block();
+        return createPipelineRunAsync(pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters)
+                .block();
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -763,34 +581,14 @@ public final class PipelinesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.getPipelinesByWorkspaceNext(nextLink, context))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PipelineResource>> getPipelinesByWorkspaceNextSinglePageAsync(String nextLink, Context context) {
-        return service.getPipelinesByWorkspaceNext(nextLink, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

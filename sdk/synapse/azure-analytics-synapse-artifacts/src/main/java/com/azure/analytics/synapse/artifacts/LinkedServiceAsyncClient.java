@@ -5,52 +5,29 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.LinkedServicesImpl;
-import com.azure.analytics.synapse.artifacts.implementation.models.CloudErrorException;
-import com.azure.analytics.synapse.artifacts.implementation.models.LinkedServiceListResponse;
-import com.azure.analytics.synapse.artifacts.implementation.models.LinkedServiceResource;
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
+import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
+import com.azure.analytics.synapse.artifacts.models.LinkedServiceResource;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the asynchronous ArtifactsClient type.
- */
+/** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class LinkedServiceAsyncClient {
     private LinkedServicesImpl serviceClient;
 
-    /**
-     * Initializes an instance of LinkedServices client.
-     */
+    /** Initializes an instance of LinkedServices client. */
     LinkedServiceAsyncClient(LinkedServicesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Lists linked services.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of linked service resources.
@@ -62,21 +39,7 @@ public final class LinkedServiceAsyncClient {
 
     /**
      * Lists linked services.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceSinglePage(Context context) {
-        return this.serviceClient.getLinkedServicesByWorkspaceSinglePageAsync(context);
-    }
-
-    /**
-     * Lists linked services.
-     * 
+     *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of linked service resources.
@@ -87,88 +50,45 @@ public final class LinkedServiceAsyncClient {
     }
 
     /**
-     * Lists linked services.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LinkedServiceResource> getLinkedServicesByWorkspace(Context context) {
-        return this.serviceClient.getLinkedServicesByWorkspaceAsync(context);
-    }
-
-    /**
      * Creates or updates a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
      * @param linkedService Linked service resource type.
-     * @param ifMatch ETag of the linkedService entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
+     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return linked service resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponse(String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
-        return this.serviceClient.createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch);
+    public Mono<Response<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponse(
+            String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
+        return this.serviceClient.createOrUpdateLinkedServiceWithResponseAsync(
+                linkedServiceName, linkedService, ifMatch);
     }
 
     /**
      * Creates or updates a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
      * @param linkedService Linked service resource type.
-     * @param ifMatch ETag of the linkedService entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
+     * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
+     *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return linked service resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LinkedServiceResource>> createOrUpdateLinkedServiceWithResponse(String linkedServiceName, LinkedServiceResource linkedService, String ifMatch, Context context) {
-        return this.serviceClient.createOrUpdateLinkedServiceWithResponseAsync(linkedServiceName, linkedService, ifMatch, context);
-    }
-
-    /**
-     * Creates or updates a linked service.
-     * 
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource type.
-     * @param ifMatch ETag of the linkedService entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedServiceResource> createOrUpdateLinkedService(String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
+    public Mono<LinkedServiceResource> createOrUpdateLinkedService(
+            String linkedServiceName, LinkedServiceResource linkedService, String ifMatch) {
         return this.serviceClient.createOrUpdateLinkedServiceAsync(linkedServiceName, linkedService, ifMatch);
     }
 
     /**
      * Creates or updates a linked service.
-     * 
-     * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource type.
-     * @param ifMatch ETag of the linkedService entity.  Should only be specified for update, for which it should match existing entity or can be * for unconditional update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linked service resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedServiceResource> createOrUpdateLinkedService(String linkedServiceName, LinkedServiceResource linkedService, String ifMatch, Context context) {
-        return this.serviceClient.createOrUpdateLinkedServiceAsync(linkedServiceName, linkedService, ifMatch, context);
-    }
-
-    /**
-     * Creates or updates a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
      * @param linkedService Linked service resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,46 +97,34 @@ public final class LinkedServiceAsyncClient {
      * @return linked service resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedServiceResource> createOrUpdateLinkedService(String linkedServiceName, LinkedServiceResource linkedService) {
+    public Mono<LinkedServiceResource> createOrUpdateLinkedService(
+            String linkedServiceName, LinkedServiceResource linkedService) {
         return this.serviceClient.createOrUpdateLinkedServiceAsync(linkedServiceName, linkedService);
     }
 
     /**
      * Gets a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a linked service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LinkedServiceResource>> getLinkedServiceWithResponse(String linkedServiceName, String ifNoneMatch) {
+    public Mono<Response<LinkedServiceResource>> getLinkedServiceWithResponse(
+            String linkedServiceName, String ifNoneMatch) {
         return this.serviceClient.getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch);
     }
 
     /**
      * Gets a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LinkedServiceResource>> getLinkedServiceWithResponse(String linkedServiceName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getLinkedServiceWithResponseAsync(linkedServiceName, ifNoneMatch, context);
-    }
-
-    /**
-     * Gets a linked service.
-     * 
-     * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
+     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -229,23 +137,7 @@ public final class LinkedServiceAsyncClient {
 
     /**
      * Gets a linked service.
-     * 
-     * @param linkedServiceName The linked service name.
-     * @param ifNoneMatch ETag of the linked service entity. Should only be specified for get. If the ETag matches the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a linked service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkedServiceResource> getLinkedService(String linkedServiceName, String ifNoneMatch, Context context) {
-        return this.serviceClient.getLinkedServiceAsync(linkedServiceName, ifNoneMatch, context);
-    }
-
-    /**
-     * Gets a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -259,7 +151,7 @@ public final class LinkedServiceAsyncClient {
 
     /**
      * Deletes a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -273,22 +165,7 @@ public final class LinkedServiceAsyncClient {
 
     /**
      * Deletes a linked service.
-     * 
-     * @param linkedServiceName The linked service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteLinkedServiceWithResponse(String linkedServiceName, Context context) {
-        return this.serviceClient.deleteLinkedServiceWithResponseAsync(linkedServiceName, context);
-    }
-
-    /**
-     * Deletes a linked service.
-     * 
+     *
      * @param linkedServiceName The linked service name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -301,23 +178,8 @@ public final class LinkedServiceAsyncClient {
     }
 
     /**
-     * Deletes a linked service.
-     * 
-     * @param linkedServiceName The linked service name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteLinkedService(String linkedServiceName, Context context) {
-        return this.serviceClient.deleteLinkedServiceAsync(linkedServiceName, context);
-    }
-
-    /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -327,20 +189,5 @@ public final class LinkedServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceNextSinglePage(String nextLink) {
         return this.serviceClient.getLinkedServicesByWorkspaceNextSinglePageAsync(nextLink);
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink null
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of linked service resources.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<LinkedServiceResource>> getLinkedServicesByWorkspaceNextSinglePage(String nextLink, Context context) {
-        return this.serviceClient.getLinkedServicesByWorkspaceNextSinglePageAsync(nextLink, context);
     }
 }

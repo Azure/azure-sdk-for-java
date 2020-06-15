@@ -1,7 +1,7 @@
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.implementation.models.SparkBatchJob;
-import com.azure.analytics.synapse.spark.implementation.models.SparkSession;
+import com.azure.analytics.synapse.spark.models.SparkBatchJob;
+import com.azure.analytics.synapse.spark.models.SparkSession;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public abstract class SparkClientTestBase extends TestBase {
 
-    static final String SYNAPSE_SCOPE = "https://dev.azuresynapse.net/.default";
     static final String NAME = "name";
     static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-spark.properties";
     static final String VERSION = "version";
@@ -78,7 +77,7 @@ public abstract class SparkClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, SYNAPSE_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, SparkClientBuilder.DEFAULT_SCOPE));
         }
 
         policies.add(new RetryPolicy());

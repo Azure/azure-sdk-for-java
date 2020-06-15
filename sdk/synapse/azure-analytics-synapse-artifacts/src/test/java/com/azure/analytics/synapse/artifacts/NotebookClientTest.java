@@ -1,6 +1,6 @@
 package com.azure.analytics.synapse.artifacts;
 
-import com.azure.analytics.synapse.artifacts.implementation.models.NotebookResource;
+import com.azure.analytics.synapse.artifacts.models.NotebookResource;
 import org.junit.jupiter.api.Test;
 
 public class NotebookClientTest extends ArtifactsClientTestBase {

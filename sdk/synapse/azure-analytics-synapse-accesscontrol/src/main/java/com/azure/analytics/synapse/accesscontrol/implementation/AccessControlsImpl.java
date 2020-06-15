@@ -4,12 +4,12 @@
 
 package com.azure.analytics.synapse.accesscontrol.implementation;
 
-import com.azure.analytics.synapse.accesscontrol.implementation.models.AccessControlsGetRoleAssignmentsResponse;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.ErrorContractException;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.RoleAssignmentDetails;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.RoleAssignmentOptions;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.RolesListResponse;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.SynapseRole;
+import com.azure.analytics.synapse.accesscontrol.models.AccessControlsGetRoleAssignmentsResponse;
+import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetails;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentOptions;
+import com.azure.analytics.synapse.accesscontrol.models.RolesListResponse;
+import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -30,30 +30,22 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * AccessControls.
- */
+/** An instance of this class provides access to all the operations defined in AccessControls. */
 public final class AccessControlsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final AccessControlsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AccessControlClientImpl client;
 
     /**
      * Initializes an instance of AccessControlsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AccessControlsImpl(AccessControlClientImpl client) {
@@ -62,8 +54,7 @@ public final class AccessControlsImpl {
     }
 
     /**
-     * The interface defining all the services for
-     * AccessControlClientAccessControls to be used by the proxy service to
+     * The interface defining all the services for AccessControlClientAccessControls to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
@@ -72,148 +63,129 @@ public final class AccessControlsImpl {
         @Post("/rbac/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<SimpleResponse<RoleAssignmentDetails>> createRoleAssignment(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") RoleAssignmentOptions options, Context context);
+        Mono<Response<RoleAssignmentDetails>> createRoleAssignment(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") RoleAssignmentOptions createRoleAssignmentOptions,
+                Context context);
 
         @Get("/rbac/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<AccessControlsGetRoleAssignmentsResponse> getRoleAssignments(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @QueryParam("roleId") String roleId, @QueryParam("principalId") String principalId, @HeaderParam("x-ms-continuation") String continuationToken, Context context);
+        Mono<AccessControlsGetRoleAssignmentsResponse> getRoleAssignments(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("roleId") String roleId,
+                @QueryParam("principalId") String principalId,
+                @HeaderParam("x-ms-continuation") String continuationToken,
+                Context context);
 
         @Get("/rbac/roleAssignments/{roleAssignmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<SimpleResponse<RoleAssignmentDetails>> getRoleAssignmentById(@HostParam("endpoint") String endpoint, @PathParam("roleAssignmentId") String roleAssignmentId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<RoleAssignmentDetails>> getRoleAssignmentById(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("roleAssignmentId") String roleAssignmentId,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Delete("/rbac/roleAssignments/{roleAssignmentId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<Void>> deleteRoleAssignmentById(@HostParam("endpoint") String endpoint, @PathParam("roleAssignmentId") String roleAssignmentId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Void>> deleteRoleAssignmentById(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("roleAssignmentId") String roleAssignmentId,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Post("/rbac/getMyAssignedRoles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<SimpleResponse<List<String>>> getCallerRoleAssignments(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<List<String>>> getCallerRoleAssignments(
+                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Get("/rbac/roles")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<SimpleResponse<RolesListResponse>> getRoleDefinitions(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<RolesListResponse>> getRoleDefinitions(
+                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Get("/rbac/roles/{roleId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<SimpleResponse<SynapseRole>> getRoleDefinitionById(@HostParam("endpoint") String endpoint, @PathParam("roleId") String roleId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<SynapseRole>> getRoleDefinitionById(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("roleId") String roleId,
+                @QueryParam("api-version") String apiVersion,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<SimpleResponse<RolesListResponse>> getRoleDefinitionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<RolesListResponse>> getRoleDefinitionsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
+     *
+     * @param createRoleAssignmentOptions Role Assignment request details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RoleAssignmentDetails>> createRoleAssignmentWithResponseAsync(RoleAssignmentOptions options) {
-        return FluxUtil.withContext(context -> service.createRoleAssignment(this.client.getEndpoint(), this.client.getApiVersion(), options, context));
+    public Mono<Response<RoleAssignmentDetails>> createRoleAssignmentWithResponseAsync(
+            RoleAssignmentOptions createRoleAssignmentOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.createRoleAssignment(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                createRoleAssignmentOptions,
+                                context));
     }
 
     /**
      * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
-     * @param context The context to associate with this operation.
+     *
+     * @param createRoleAssignmentOptions Role Assignment request details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RoleAssignmentDetails>> createRoleAssignmentWithResponseAsync(RoleAssignmentOptions options, Context context) {
-        return service.createRoleAssignment(this.client.getEndpoint(), this.client.getApiVersion(), options, context);
+    public Mono<RoleAssignmentDetails> createRoleAssignmentAsync(RoleAssignmentOptions createRoleAssignmentOptions) {
+        return createRoleAssignmentWithResponseAsync(createRoleAssignmentOptions)
+                .flatMap(
+                        (Response<RoleAssignmentDetails> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
+     *
+     * @param createRoleAssignmentOptions Role Assignment request details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentDetails> createRoleAssignmentAsync(RoleAssignmentOptions options) {
-        return createRoleAssignmentWithResponseAsync(options)
-            .flatMap((SimpleResponse<RoleAssignmentDetails> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment response details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentDetails> createRoleAssignmentAsync(RoleAssignmentOptions options, Context context) {
-        return createRoleAssignmentWithResponseAsync(options, context)
-            .flatMap((SimpleResponse<RoleAssignmentDetails> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment response details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentDetails createRoleAssignment(RoleAssignmentOptions options) {
-        return createRoleAssignmentAsync(options).block();
-    }
-
-    /**
-     * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment response details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentDetails createRoleAssignment(RoleAssignmentOptions options, Context context) {
-        return createRoleAssignmentAsync(options, context).block();
+    public RoleAssignmentDetails createRoleAssignment(RoleAssignmentOptions createRoleAssignmentOptions) {
+        return createRoleAssignmentAsync(createRoleAssignmentOptions).block();
     }
 
     /**
      * List role assignments.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @param principalId Object ID of the AAD principal or security-group.
      * @param continuationToken Continuation token.
@@ -223,30 +195,22 @@ public final class AccessControlsImpl {
      * @return a list of role assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessControlsGetRoleAssignmentsResponse> getRoleAssignmentsWithResponseAsync(String roleId, String principalId, String continuationToken) {
-        return FluxUtil.withContext(context -> service.getRoleAssignments(this.client.getEndpoint(), this.client.getApiVersion(), roleId, principalId, continuationToken, context));
+    public Mono<AccessControlsGetRoleAssignmentsResponse> getRoleAssignmentsWithResponseAsync(
+            String roleId, String principalId, String continuationToken) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getRoleAssignments(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                roleId,
+                                principalId,
+                                continuationToken,
+                                context));
     }
 
     /**
      * List role assignments.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param principalId Object ID of the AAD principal or security-group.
-     * @param continuationToken Continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of role assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessControlsGetRoleAssignmentsResponse> getRoleAssignmentsWithResponseAsync(String roleId, String principalId, String continuationToken, Context context) {
-        return service.getRoleAssignments(this.client.getEndpoint(), this.client.getApiVersion(), roleId, principalId, continuationToken, context);
-    }
-
-    /**
-     * List role assignments.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @param principalId Object ID of the AAD principal or security-group.
      * @param continuationToken Continuation token.
@@ -256,44 +220,22 @@ public final class AccessControlsImpl {
      * @return a list of role assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<RoleAssignmentDetails>> getRoleAssignmentsAsync(String roleId, String principalId, String continuationToken) {
+    public Mono<List<RoleAssignmentDetails>> getRoleAssignmentsAsync(
+            String roleId, String principalId, String continuationToken) {
         return getRoleAssignmentsWithResponseAsync(roleId, principalId, continuationToken)
-            .flatMap((AccessControlsGetRoleAssignmentsResponse res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (AccessControlsGetRoleAssignmentsResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * List role assignments.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param principalId Object ID of the AAD principal or security-group.
-     * @param continuationToken Continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of role assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<RoleAssignmentDetails>> getRoleAssignmentsAsync(String roleId, String principalId, String continuationToken, Context context) {
-        return getRoleAssignmentsWithResponseAsync(roleId, principalId, continuationToken, context)
-            .flatMap((AccessControlsGetRoleAssignmentsResponse res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * List role assignments.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of role assignments.
@@ -305,18 +247,19 @@ public final class AccessControlsImpl {
         final String continuationToken = null;
         final Context context = null;
         return getRoleAssignmentsWithResponseAsync(roleId, principalId, continuationToken)
-            .flatMap((AccessControlsGetRoleAssignmentsResponse res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (AccessControlsGetRoleAssignmentsResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * List role assignments.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @param principalId Object ID of the AAD principal or security-group.
      * @param continuationToken Continuation token.
@@ -332,24 +275,7 @@ public final class AccessControlsImpl {
 
     /**
      * List role assignments.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param principalId Object ID of the AAD principal or security-group.
-     * @param continuationToken Continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of role assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<RoleAssignmentDetails> getRoleAssignments(String roleId, String principalId, String continuationToken, Context context) {
-        return getRoleAssignmentsAsync(roleId, principalId, continuationToken, context).block();
-    }
-
-    /**
-     * List role assignments.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of role assignments.
@@ -365,7 +291,7 @@ public final class AccessControlsImpl {
 
     /**
      * Get role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -373,28 +299,16 @@ public final class AccessControlsImpl {
      * @return role assignment by role assignment Id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RoleAssignmentDetails>> getRoleAssignmentByIdWithResponseAsync(String roleAssignmentId) {
-        return FluxUtil.withContext(context -> service.getRoleAssignmentById(this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), context));
+    public Mono<Response<RoleAssignmentDetails>> getRoleAssignmentByIdWithResponseAsync(String roleAssignmentId) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getRoleAssignmentById(
+                                this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), context));
     }
 
     /**
      * Get role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment by role assignment Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<RoleAssignmentDetails>> getRoleAssignmentByIdWithResponseAsync(String roleAssignmentId, Context context) {
-        return service.getRoleAssignmentById(this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Get role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -404,40 +318,19 @@ public final class AccessControlsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentDetails> getRoleAssignmentByIdAsync(String roleAssignmentId) {
         return getRoleAssignmentByIdWithResponseAsync(roleAssignmentId)
-            .flatMap((SimpleResponse<RoleAssignmentDetails> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<RoleAssignmentDetails> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Get role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment by role assignment Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentDetails> getRoleAssignmentByIdAsync(String roleAssignmentId, Context context) {
-        return getRoleAssignmentByIdWithResponseAsync(roleAssignmentId, context)
-            .flatMap((SimpleResponse<RoleAssignmentDetails> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Get role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -450,23 +343,8 @@ public final class AccessControlsImpl {
     }
 
     /**
-     * Get role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment by role assignment Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentDetails getRoleAssignmentById(String roleAssignmentId, Context context) {
-        return getRoleAssignmentByIdAsync(roleAssignmentId, context).block();
-    }
-
-    /**
      * Delete role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -475,27 +353,15 @@ public final class AccessControlsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRoleAssignmentByIdWithResponseAsync(String roleAssignmentId) {
-        return FluxUtil.withContext(context -> service.deleteRoleAssignmentById(this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteRoleAssignmentById(
+                                this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), context));
     }
 
     /**
      * Delete role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRoleAssignmentByIdWithResponseAsync(String roleAssignmentId, Context context) {
-        return service.deleteRoleAssignmentById(this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Delete role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -505,28 +371,12 @@ public final class AccessControlsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRoleAssignmentByIdAsync(String roleAssignmentId) {
         return deleteRoleAssignmentByIdWithResponseAsync(roleAssignmentId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Delete role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteRoleAssignmentByIdAsync(String roleAssignmentId, Context context) {
-        return deleteRoleAssignmentByIdWithResponseAsync(roleAssignmentId, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -538,48 +388,23 @@ public final class AccessControlsImpl {
     }
 
     /**
-     * Delete role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRoleAssignmentById(String roleAssignmentId, Context context) {
-        deleteRoleAssignmentByIdAsync(roleAssignmentId, context).block();
-    }
-
-    /**
      * List role assignments of the caller.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Post200ApplicationJsonItemsItem.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<String>>> getCallerRoleAssignmentsWithResponseAsync() {
-        return FluxUtil.withContext(context -> service.getCallerRoleAssignments(this.client.getEndpoint(), this.client.getApiVersion(), context));
+    public Mono<Response<List<String>>> getCallerRoleAssignmentsWithResponseAsync() {
+        return FluxUtil.withContext(
+                context ->
+                        service.getCallerRoleAssignments(
+                                this.client.getEndpoint(), this.client.getApiVersion(), context));
     }
 
     /**
      * List role assignments of the caller.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<List<String>>> getCallerRoleAssignmentsWithResponseAsync(Context context) {
-        return service.getCallerRoleAssignments(this.client.getEndpoint(), this.client.getApiVersion(), context);
-    }
-
-    /**
-     * List role assignments of the caller.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Post200ApplicationJsonItemsItem.
@@ -587,39 +412,19 @@ public final class AccessControlsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> getCallerRoleAssignmentsAsync() {
         return getCallerRoleAssignmentsWithResponseAsync()
-            .flatMap((SimpleResponse<List<String>> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<List<String>> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * List role assignments of the caller.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> getCallerRoleAssignmentsAsync(Context context) {
-        return getCallerRoleAssignmentsWithResponseAsync(context)
-            .flatMap((SimpleResponse<List<String>> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * List role assignments of the caller.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Post200ApplicationJsonItemsItem.
@@ -630,62 +435,32 @@ public final class AccessControlsImpl {
     }
 
     /**
-     * List role assignments of the caller.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> getCallerRoleAssignments(Context context) {
-        return getCallerRoleAssignmentsAsync(context).block();
-    }
-
-    /**
      * List roles.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Synapse roles available.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SynapseRole>> getRoleDefinitionsSinglePageAsync() {
-        return FluxUtil.withContext(context -> service.getRoleDefinitions(this.client.getEndpoint(), this.client.getApiVersion(), context))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.getRoleDefinitions(
+                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * List roles.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SynapseRole>> getRoleDefinitionsSinglePageAsync(Context context) {
-        return service.getRoleDefinitions(this.client.getEndpoint(), this.client.getApiVersion(), context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
-    }
-
-    /**
-     * List roles.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Synapse roles available.
@@ -693,29 +468,12 @@ public final class AccessControlsImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SynapseRole> getRoleDefinitionsAsync() {
         return new PagedFlux<>(
-            () -> getRoleDefinitionsSinglePageAsync(),
-            nextLink -> getRoleDefinitionsNextSinglePageAsync(nextLink));
+                () -> getRoleDefinitionsSinglePageAsync(), nextLink -> getRoleDefinitionsNextSinglePageAsync(nextLink));
     }
 
     /**
      * List roles.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SynapseRole> getRoleDefinitionsAsync(Context context) {
-        return new PagedFlux<>(
-            () -> getRoleDefinitionsSinglePageAsync(context),
-            nextLink -> getRoleDefinitionsNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * List roles.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Synapse roles available.
@@ -726,22 +484,8 @@ public final class AccessControlsImpl {
     }
 
     /**
-     * List roles.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SynapseRole> getRoleDefinitions(Context context) {
-        return new PagedIterable<>(getRoleDefinitionsAsync(context));
-    }
-
-    /**
      * Get role by role Id.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -749,28 +493,16 @@ public final class AccessControlsImpl {
      * @return role by role Id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynapseRole>> getRoleDefinitionByIdWithResponseAsync(String roleId) {
-        return FluxUtil.withContext(context -> service.getRoleDefinitionById(this.client.getEndpoint(), roleId, this.client.getApiVersion(), context));
+    public Mono<Response<SynapseRole>> getRoleDefinitionByIdWithResponseAsync(String roleId) {
+        return FluxUtil.withContext(
+                context ->
+                        service.getRoleDefinitionById(
+                                this.client.getEndpoint(), roleId, this.client.getApiVersion(), context));
     }
 
     /**
      * Get role by role Id.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role by role Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<SynapseRole>> getRoleDefinitionByIdWithResponseAsync(String roleId, Context context) {
-        return service.getRoleDefinitionById(this.client.getEndpoint(), roleId, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Get role by role Id.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -780,40 +512,19 @@ public final class AccessControlsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynapseRole> getRoleDefinitionByIdAsync(String roleId) {
         return getRoleDefinitionByIdWithResponseAsync(roleId)
-            .flatMap((SimpleResponse<SynapseRole> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<SynapseRole> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
      * Get role by role Id.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role by role Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SynapseRole> getRoleDefinitionByIdAsync(String roleId, Context context) {
-        return getRoleDefinitionByIdWithResponseAsync(roleId, context)
-            .flatMap((SimpleResponse<SynapseRole> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Get role by role Id.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -826,23 +537,8 @@ public final class AccessControlsImpl {
     }
 
     /**
-     * Get role by role Id.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role by role Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynapseRole getRoleDefinitionById(String roleId, Context context) {
-        return getRoleDefinitionByIdAsync(roleId, context).block();
-    }
-
-    /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -852,34 +548,14 @@ public final class AccessControlsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SynapseRole>> getRoleDefinitionsNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.getRoleDefinitionsNext(nextLink, context))
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
-    }
-
-    /**
-     * Get the next page of items.
-     * 
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SynapseRole>> getRoleDefinitionsNextSinglePageAsync(String nextLink, Context context) {
-        return service.getRoleDefinitionsNext(nextLink, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

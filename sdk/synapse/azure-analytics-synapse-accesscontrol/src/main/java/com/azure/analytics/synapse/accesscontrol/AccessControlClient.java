@@ -5,85 +5,43 @@
 package com.azure.analytics.synapse.accesscontrol;
 
 import com.azure.analytics.synapse.accesscontrol.implementation.AccessControlsImpl;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.AccessControlsGetRoleAssignmentsResponse;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.ErrorContractException;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.RoleAssignmentDetails;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.RoleAssignmentOptions;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.RolesListResponse;
-import com.azure.analytics.synapse.accesscontrol.implementation.models.SynapseRole;
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
+import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetails;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentOptions;
+import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the synchronous AccessControlClient type.
- */
+/** Initializes a new instance of the synchronous AccessControlClient type. */
 @ServiceClient(builder = AccessControlClientBuilder.class)
 public final class AccessControlClient {
     private AccessControlsImpl serviceClient;
 
-    /**
-     * Initializes an instance of AccessControls client.
-     */
+    /** Initializes an instance of AccessControls client. */
     AccessControlClient(AccessControlsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
+     *
+     * @param createRoleAssignmentOptions Role Assignment request details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignment response details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentDetails createRoleAssignment(RoleAssignmentOptions options) {
-        return this.serviceClient.createRoleAssignment(options);
-    }
-
-    /**
-     * Create role assignment.
-     * 
-     * @param options Role Assignment request details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role Assignment response details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentDetails createRoleAssignment(RoleAssignmentOptions options, Context context) {
-        return this.serviceClient.createRoleAssignment(options, context);
+    public RoleAssignmentDetails createRoleAssignment(RoleAssignmentOptions createRoleAssignmentOptions) {
+        return this.serviceClient.createRoleAssignment(createRoleAssignmentOptions);
     }
 
     /**
      * List role assignments.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @param principalId Object ID of the AAD principal or security-group.
      * @param continuationToken Continuation token.
@@ -99,24 +57,7 @@ public final class AccessControlClient {
 
     /**
      * List role assignments.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param principalId Object ID of the AAD principal or security-group.
-     * @param continuationToken Continuation token.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of role assignments.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<RoleAssignmentDetails> getRoleAssignments(String roleId, String principalId, String continuationToken, Context context) {
-        return this.serviceClient.getRoleAssignments(roleId, principalId, continuationToken, context);
-    }
-
-    /**
-     * List role assignments.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of role assignments.
@@ -128,7 +69,7 @@ public final class AccessControlClient {
 
     /**
      * Get role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -141,23 +82,8 @@ public final class AccessControlClient {
     }
 
     /**
-     * Get role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignment by role assignment Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentDetails getRoleAssignmentById(String roleAssignmentId, Context context) {
-        return this.serviceClient.getRoleAssignmentById(roleAssignmentId, context);
-    }
-
-    /**
      * Delete role assignment by role assignment Id.
-     * 
+     *
      * @param roleAssignmentId The ID of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -169,22 +95,8 @@ public final class AccessControlClient {
     }
 
     /**
-     * Delete role assignment by role assignment Id.
-     * 
-     * @param roleAssignmentId The ID of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteRoleAssignmentById(String roleAssignmentId, Context context) {
-        this.serviceClient.deleteRoleAssignmentById(roleAssignmentId, context);
-    }
-
-    /**
      * List role assignments of the caller.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Post200ApplicationJsonItemsItem.
@@ -195,22 +107,8 @@ public final class AccessControlClient {
     }
 
     /**
-     * List role assignments of the caller.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> getCallerRoleAssignments(Context context) {
-        return this.serviceClient.getCallerRoleAssignments(context);
-    }
-
-    /**
      * List roles.
-     * 
+     *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Synapse roles available.
@@ -221,22 +119,8 @@ public final class AccessControlClient {
     }
 
     /**
-     * List roles.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SynapseRole> getRoleDefinitions(Context context) {
-        return this.serviceClient.getRoleDefinitions(context);
-    }
-
-    /**
      * Get role by role Id.
-     * 
+     *
      * @param roleId Synapse Built-In Role Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -246,20 +130,5 @@ public final class AccessControlClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SynapseRole getRoleDefinitionById(String roleId) {
         return this.serviceClient.getRoleDefinitionById(roleId);
-    }
-
-    /**
-     * Get role by role Id.
-     * 
-     * @param roleId Synapse Built-In Role Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role by role Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynapseRole getRoleDefinitionById(String roleId, Context context) {
-        return this.serviceClient.getRoleDefinitionById(roleId, context);
     }
 }
