@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
