@@ -30,7 +30,7 @@ pr:
       - sdk/appconfiguration/mgmt-v2019_11_01_preview
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: appconfiguration
     Artifacts:

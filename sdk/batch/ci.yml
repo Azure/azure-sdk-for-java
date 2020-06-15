@@ -23,7 +23,7 @@ pr:
       - sdk/batch/
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
   parameters:
     ServiceDirectory: batch
     Artifacts:

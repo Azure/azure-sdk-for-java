@@ -62,7 +62,7 @@ pr:
       - sdk/storage/mgmt-v2019_06_01
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
   parameters:
     ServiceDirectory: storage
     Artifacts:

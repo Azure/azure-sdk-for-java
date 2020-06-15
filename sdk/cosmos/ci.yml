@@ -35,7 +35,7 @@ pr:
       - sdk/cosmos/mgmt-v2019_12_12
 
 extends:
-- template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
+  template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
   parameters:
     ServiceDirectory: cosmos
     SDKType: client

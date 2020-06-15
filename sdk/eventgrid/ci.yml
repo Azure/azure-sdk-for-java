@@ -38,7 +38,7 @@ pr:
       - sdk/eventgrid/mgmt-v2020_04_01_preview
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
   parameters:
     ServiceDirectory: eventgrid
     Artifacts:

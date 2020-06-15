@@ -27,7 +27,7 @@ pr:
       - sdk/loganalytics/mgmt-v2015_03_20
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
   parameters:
     ServiceDirectory: loganalytics
     Artifacts:

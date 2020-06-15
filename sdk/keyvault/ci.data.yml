@@ -38,7 +38,7 @@ pr:
       - sdk/keyvault/azure-security-keyvault-secrets
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
   parameters:
     ServiceDirectory: keyvault
     Artifacts:

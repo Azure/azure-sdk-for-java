@@ -33,7 +33,7 @@ pr:
       - sdk/servicebus/microsoft-azure-servicebus
 
 extends:
-- template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: servicebus
     Artifacts:
