@@ -477,6 +477,24 @@ Licensed under the MIT License.
                   </archive>
                 </configuration>
               </execution>
+              <execution>
+                <id>make-assembly-ctl</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <descriptorRefs>
+                    <descriptorRef>jar-with-dependencies</descriptorRef>
+                  </descriptorRefs>
+                  <finalName>azure-cosmos-benchmark</finalName>
+                  <archive>
+                    <manifest>
+                      <mainClass>com.azure.cosmos.benchmark.Main</mainClass>
+                    </manifest>
+                  </archive>
+                </configuration>
+              </execution>
             </executions>
           </plugin>
         </plugins>
