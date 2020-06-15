@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.models;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -39,7 +39,7 @@ public class ObjectReplicationRule {
     }
 
     static ObjectReplicationRule getObjectReplicationRule(String ruleId,
-        List<ObjectReplicationRule> objectReplicationRules) {
+        Collection<ObjectReplicationRule> objectReplicationRules) {
         Optional<ObjectReplicationRule> r = objectReplicationRules.stream()
             .filter(rule -> ruleId.equals(rule.getRuleId()))
             .findFirst();

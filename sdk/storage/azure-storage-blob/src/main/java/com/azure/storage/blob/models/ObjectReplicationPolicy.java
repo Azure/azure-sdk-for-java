@@ -4,6 +4,7 @@
 package com.azure.storage.blob.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +53,7 @@ public class ObjectReplicationPolicy {
     }
 
     static ObjectReplicationPolicy getObjectReplicationPolicy(String policyId,
-        List<ObjectReplicationPolicy> objectReplicationPolicies) {
+        Collection<ObjectReplicationPolicy> objectReplicationPolicies) {
         Optional<ObjectReplicationPolicy> p = objectReplicationPolicies.stream()
             .filter(policy -> policyId.equals(policy.getPolicyId()))
             .findFirst();
