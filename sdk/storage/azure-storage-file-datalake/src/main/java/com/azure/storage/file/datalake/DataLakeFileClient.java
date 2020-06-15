@@ -22,7 +22,7 @@ import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
-import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadResponse;
@@ -569,7 +569,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
     public InputStream openQueryInputStream(String expression) {
-        return openQueryInputStream(expression, null);
+        return openQueryInputStream(new FileQueryOptions(expression));
     }
 
     /**
@@ -580,16 +580,15 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#String-FileQueryOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.openQueryInputStream#FileQueryOptions}
      *
-     * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    public InputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
+    public InputStream openQueryInputStream(FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
-        FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(expression, queryOptions)
+        FileQueryAsyncResponse response = dataLakeFileAsyncClient.queryWithResponse(queryOptions)
             .block();
 
         // Create input stream from the data.
@@ -615,7 +614,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, expression, null, null, Context.NONE);
+        queryWithResponse(stream, new FileQueryOptions(expression), null, Context.NONE);
     }
 
     /**
@@ -626,10 +625,9 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-String-FileQueryOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context}
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
-     * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -637,10 +635,10 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public FileQueryResponse queryWithResponse(OutputStream stream, String expression, FileQueryOptions queryOptions,
+    public FileQueryResponse queryWithResponse(OutputStream stream, FileQueryOptions queryOptions,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            BlobQueryResponse response = blockBlobClient.queryWithResponse(stream, expression,
+            BlobQueryResponse response = blockBlobClient.queryWithResponse(stream,
                 Transforms.toBlobQueryOptions(queryOptions), timeout, context);
             return Transforms.toFileQueryResponse(response);
         }, logger);

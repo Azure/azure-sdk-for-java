@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryProgress;
+import com.azure.storage.blob.models.BlobQuerySerialization;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.function.Consumer;
 
@@ -13,6 +18,7 @@ import java.util.function.Consumer;
 @Fluent
 public class BlobQueryOptions {
 
+    private final String expression;
     private BlobQuerySerialization inputSerialization;
     private BlobQuerySerialization outputSerialization;
     private BlobRequestConditions requestConditions;
@@ -21,8 +27,20 @@ public class BlobQueryOptions {
 
     /**
      * Constructs a {@link BlobQueryOptions}.
+     * @param expression The query expression.
      */
-    public BlobQueryOptions() {
+    public BlobQueryOptions(String expression) {
+        StorageImplUtils.assertNotNull("expression", expression);
+        this.expression = expression;
+    }
+
+    /**
+     * Gets the query expression.
+     *
+     * @return the query expression.
+     */
+    public String getExpression() {
+        return expression;
     }
 
     /**
