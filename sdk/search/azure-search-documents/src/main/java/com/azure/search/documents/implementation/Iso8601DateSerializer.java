@@ -9,9 +9,9 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * Custom serializer to serialize {@link java.util.Date} to Iso8601 standard date format "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'".
@@ -30,11 +30,18 @@ final class Iso8601DateSerializer extends JsonSerializer<Date> {
         return module;
     }
 
+    /**
+     * Serializes the date value to service accepted iso8601 format with UTC time zone.
+     *
+     * @param dateValue The {@link java.util.Date} value.
+     * @param gen Generator used to output resulting Json content
+     * @param serializers Provider that can be used to get serializers for serializing Objects value contains, if any.
+     * @throws IOException Throws exception when the dateValue cannot convert to json content.
+     */
     @Override
     public void serialize(Date dateValue, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
-        String dateString = format.format(dateValue);
+        String dateString = dateValue.toInstant().atOffset(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         gen.writeString(dateString);
     }
 }

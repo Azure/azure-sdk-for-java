@@ -120,10 +120,11 @@ public final class GeoPoint {
                 ? "" + coordinates.get(0) : "" + coordinates.get(0) + ".0";
             String latitude = ("" + coordinates.get(1)).contains(".")
                 ? "" + coordinates.get(1) : "" + coordinates.get(1) + ".0";
+
             return String.format(
-                Locale.US,
+                Locale.ROOT,
                 "{type=Point, coordinates=[%s, %s], crs={%s}}", "" + longitude, latitude,
-                coordinateSystem.toString());
+                coordinateSystem);
         }
         return "";
     }

@@ -95,6 +95,13 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new ObjectMapper();
+        SerializationUtil.configureMapper(MAPPER);
+    }
+
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
@@ -459,13 +466,12 @@ public final class SearchAsyncClient {
     Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
+
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    ObjectMapper mapper = new ObjectMapper();
-                    SerializationUtil.configureMapper(mapper);
-                    SearchDocument document = mapper.convertValue(res.getValue(), SearchDocument.class);
+                    SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
                     return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());

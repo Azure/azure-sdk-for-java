@@ -24,7 +24,7 @@ public class Iso8601SerializerTests {
     }
 
     @Test
-    public void dateWithTimeZone() throws JsonProcessingException {
+    public void serializeDateWithTimeZoneDateFormat() throws JsonProcessingException {
         SimpleDateFormat format = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"");
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date currentDate = new Date();
@@ -34,11 +34,11 @@ public class Iso8601SerializerTests {
     }
 
     @Test
-    public void dateWithoutTimeZone() throws JsonProcessingException {
+    public void serializeDate() throws JsonProcessingException {
         Date epochTime = Date.from(Instant.ofEpochSecond(new Date().toInstant().getEpochSecond()));
         Date expectedDate = new Date(epochTime.getYear(), epochTime.getMonth(), epochTime.getDate(),
             epochTime.getHours(), epochTime.getMinutes(), epochTime.getSeconds());
-        SimpleDateFormat format = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"");
+        SimpleDateFormat format = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss'Z'\"");
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         String actualDate = MAPPER.writeValueAsString(epochTime);
         assertEquals(format.format(expectedDate), actualDate);

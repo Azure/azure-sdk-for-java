@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -408,7 +409,7 @@ public class IndexingSyncTests extends SearchTestBase {
         client = setupClient(this::createHotelIndex);
 
         // Define commonly used values
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Define hotels
@@ -538,7 +539,7 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         client = setupClient(this::createHotelIndex);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         LoudHotel originalDoc = new LoudHotel()
             .HOTELID("1")
@@ -857,7 +858,7 @@ public class IndexingSyncTests extends SearchTestBase {
     }
 
     Hotel prepareStaticallyTypedHotel(String hotelId) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return new Hotel()
             .hotelId(hotelId)
