@@ -34,14 +34,14 @@ pr:
     include:
       - sdk/schemaregistry/
 
-stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-    parameters:
-      ServiceDirectory: schemaregistry
-      Artifacts:
-        - name: azure-data-schemaregistry
-          groupId: com.azure
-          safeName: azuredataschemaregistry
-        - name: azure-data-schemaregistry-avro
-          groupId: com.azure
-          safeName: azuredataschemaregistryavro
+extends:
+- template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: schemaregistry
+    Artifacts:
+      - name: azure-data-schemaregistry
+        groupId: com.azure
+        safeName: azuredataschemaregistry
+      - name: azure-data-schemaregistry-avro
+        groupId: com.azure
+        safeName: azuredataschemaregistryavro
