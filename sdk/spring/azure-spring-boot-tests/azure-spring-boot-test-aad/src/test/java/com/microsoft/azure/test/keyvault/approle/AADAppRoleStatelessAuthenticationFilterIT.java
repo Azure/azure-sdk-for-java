@@ -42,7 +42,6 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @Test
-    @Ignore
     public void testAADAppRoleStatelessAuthenticationFilter() {
         final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_CLIENT_ID),
                 System.getenv(AAD_CLIENT_SECRET));
@@ -76,10 +75,12 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
             assertEquals(HttpStatus.OK, response2.getStatusCode());
             assertEquals("authorized endpoint response", response2.getBody());
 
-            final ResponseEntity<String> response3 = restTemplate.exchange(app.root() + "admin/demo",
+            try {
+                restTemplate.exchange(app.root() + "admin/demo",
                     HttpMethod.GET, entity, String.class, new HashMap<>());
-            assertEquals(HttpStatus.OK, response3.getStatusCode());
-            assertEquals("admin endpoint response", response3.getBody());
+            } catch (Exception e) {
+                assertEquals(HttpClientErrorException.Forbidden.class, e.getClass());
+            }
 
             LOGGER.info("--------------------->test over");
         }
