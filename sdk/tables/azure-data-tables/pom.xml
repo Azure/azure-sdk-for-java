@@ -42,6 +42,18 @@ Licensed under the MIT License.
       <artifactId>azure-core</artifactId>
       <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-common</artifactId>
+      <version>12.7.0-beta.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
