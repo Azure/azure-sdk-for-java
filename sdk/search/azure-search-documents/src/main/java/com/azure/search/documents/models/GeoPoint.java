@@ -118,8 +118,7 @@ public final class GeoPoint {
         if (isValid()) {
             String longitude = ("" + coordinates.get(0)).contains(".")
                 ? "" + coordinates.get(0) : "" + coordinates.get(0) + ".0";
-            String latitude = ("" + coordinates.get(1)).contains(".")
-                ? "" + coordinates.get(1) : "" + coordinates.get(1) + ".0";
+            String latitude = Double.toString(coordinates.get(1));
             return String.format(
                 Locale.US,
                 "{type=Point, coordinates=[%s, %s], crs={%s}}", "" + longitude, latitude,
