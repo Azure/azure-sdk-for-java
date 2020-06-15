@@ -8,6 +8,7 @@ from enum import Enum
 import re
 from subprocess import check_call, CalledProcessError
 
+include_update_marker = re.compile(r'\{x-include-update;([^;]+);([^}]+)\}')
 version_update_start_marker = re.compile(r'\{x-version-update-start;([^;]+);([^}]+)\}')	
 version_update_end_marker = re.compile(r'\{x-version-update-end\}')
 version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
@@ -18,6 +19,10 @@ version_update_marker = re.compile(r'\{x-version-update;([^;]+);([^}]+)\}')
 # what's being matched is in the middle of the string
 # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
 version_regex_str_no_anchor = r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
+
+# External dependency versions do not have to match semver format and the semver regular expressions
+# will partially match and produce some hilarious results.
+external_dependency_include_regex = r'(?<=<include>).+?(?=</include>)'
 
 # External dependency versions do not have to match semver format and the semver regular expressions
 # will partially match and produce some hilarious results.
@@ -32,6 +37,8 @@ version_regex_str_with_names_anchored = r'^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1
 
 # This is specific to our revision which, if there is one, needs to have the format of beta.X
 prerelease_version_regex_with_name = r'^beta\.(?P<revision>0|[1-9]\d*)$'
+# This is special for track 1, data track, which can be <major>.<minor>.<version>-beta with no ".X"
+prerelease_data_version_regex = r'^beta$'
 
 class UpdateType(Enum):
     external_dependency = 'external_dependency'
@@ -98,6 +105,24 @@ class CodeModule:
             return self.name + ';' + self.dependency + ';' + self.current + '\n'
         except AttributeError:
             return self.name + ';' + self.dependency + '\n'
+
+    # return the CodeModule string formatted for a whitelist include entry
+    # note: for whitelist includes the version needs to be braces in order for
+    # the version to be an explicit version. Without the braces a version
+    # would be treated as that version and above. For example: 
+    # <groupId>:<artifactId>:1.2 would be treated as 1.2 and above or equivalent to [1.2,)
+    def string_for_whitelist_include(self):
+        if hasattr(self, 'external_dependency'):
+            temp = self.name
+            # This is necessary to deal with the fact that external_dependencies can have
+            # '_' in them if they're an external dependency exception. Since the whitelist
+            # name needs to be the actual dependency, take everything after the _ which is
+            # the actual name
+            if '_' in temp:
+                temp = temp.split('_')[1]
+            return temp + ':[' + self.external_dependency + ']'
+        else:
+            raise ValueError('string_for_whitelist_include called on non-external_dependency: ' + self.name)
 
 def run_check_call(
     command_array,

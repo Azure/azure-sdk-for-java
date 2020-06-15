@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -12,6 +12,9 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataType;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -24,15 +27,15 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -44,6 +47,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -214,7 +218,7 @@ public class GatewayAddressCache implements IAddressCache {
                     return addressesValueHolder;
                     }).onErrorResume(ex -> {
                         Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
-                        CosmosClientException dce = Utils.as(unwrappedException, CosmosClientException.class);
+                        CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
                         if (dce == null) {
                             logger.error("unexpected failure", ex);
                             if (forceRefreshPartitionAddressesModified) {
@@ -295,6 +299,7 @@ public class GatewayAddressCache implements IAddressCache {
             httpHeaders.set(entry.getKey(), entry.getValue());
         }
 
+        Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
@@ -302,6 +307,15 @@ public class GatewayAddressCache implements IAddressCache {
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
         return dsrObs.map(
                 dsr -> {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                    if (metadataDiagnosticsContext != null) {
+                        Instant addressCallEndTime = Instant.now();
+                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                            addressCallEndTime,
+                            MetadataType.SERVER_ADDRESS_LOOKUP);
+                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                    }
+
                     if (logger.isDebugEnabled()) {
                         logger.debug("getServerAddressesViaGatewayAsync deserializes result");
                     }
@@ -474,12 +488,21 @@ public class GatewayAddressCache implements IAddressCache {
 
         HttpRequest httpRequest;
         httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
-
+        Instant addressCallStartTime = Instant.now();
         Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
 
         return dsrObs.map(
                 dsr -> {
+                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                    if (metadataDiagnosticsContext != null) {
+                        Instant addressCallEndTime = Instant.now();
+                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                            addressCallEndTime,
+                            MetadataType.MASTER_ADDRESS_LOOK_UP);
+                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                    }
+
                     logAddressResolutionEnd(request, identifier);
                     return dsr.getQueryResponse(Address.class);
                 });
@@ -552,16 +575,16 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     private static String logAddressResolutionStart(RxDocumentServiceRequest request, URI targetEndpointUrl) {
-        if (request.requestContext.cosmosResponseDiagnostics != null) {
-            return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosResponseDiagnostics, targetEndpointUrl);
+        if (request.requestContext.cosmosDiagnostics != null) {
+            return BridgeInternal.recordAddressResolutionStart(request.requestContext.cosmosDiagnostics, targetEndpointUrl);
         }
 
         return null;
     }
 
     private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier) {
-        if (request.requestContext.cosmosResponseDiagnostics != null) {
-            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosResponseDiagnostics, identifier);
+        if (request.requestContext.cosmosDiagnostics != null) {
+            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier);
         }
     }
 }

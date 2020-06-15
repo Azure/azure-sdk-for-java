@@ -17,32 +17,36 @@ module com.azure.cosmos {
     requires io.netty.transport.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty;
-    requires org.slf4j;
     requires com.codahale.metrics;
     requires com.fasterxml.jackson.module.afterburner;
     requires java.management;
     requires jdk.management;
     requires micrometer.core;
+    //  This is only required by guava shaded libraries
     requires java.logging;
 
     // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
+    exports com.azure.cosmos.util;
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos to com.fasterxml.jackson.databind;
-    opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
-    opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.directconnectivity to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.directconnectivity.rntbd to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.http to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.aggregation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
 }

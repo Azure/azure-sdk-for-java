@@ -10,8 +10,9 @@ import com.azure.core.credential.TokenRequestContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Deque;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -35,19 +36,29 @@ public class ChainedTokenCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        AtomicReference<Throwable> cause = new AtomicReference<>();
+        List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
-            .flatMap(p -> p.getToken(request).onErrorResume(t -> {
-                if (cause.get() != null) {
-                    t.initCause(cause.get());
-                }
-                cause.set(t);
-                return Mono.empty();
-            }), 1)
-            .next()
-            .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("Tried "
-                + credentials.stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(", "))
-                + " but failed to acquire a token for any of them. Please verify the environment for either of them"
-                + " and see more details in the causes below.", cause.get()))));
+                   .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
+                       exceptions.add(t);
+                       return Mono.empty();
+                   }), 1)
+                   .next()
+                   .switchIfEmpty(Mono.defer(() -> {
+
+                       StringBuilder message = new StringBuilder("Tried "
+                             + credentials.stream().map(c -> c.getClass().getSimpleName())
+                                   .collect(Collectors.joining(", "))
+                             + " but failed to acquire a token for any of them. Please verify the"
+                             + " environment for the credentials"
+                             + " and see more details in the causes below.");
+
+                       // Chain Exceptions.
+                       CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                       for (int z = exceptions.size() - 2; z >= 0; z--) {
+                           CredentialUnavailableException current = exceptions.get(z);
+                           last = new CredentialUnavailableException(current.getMessage(), last);
+                       }
+                       return Mono.error(new CredentialUnavailableException(message.toString(), last));
+                   }));
     }
 }

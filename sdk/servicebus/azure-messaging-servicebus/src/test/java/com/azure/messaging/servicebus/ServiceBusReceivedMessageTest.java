@@ -23,7 +23,6 @@ public class ServiceBusReceivedMessageTest {
         assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage((byte[]) null));
     }
 
-
     @Test
     public void messagePropertiesShouldNotBeNull() {
         // Act
@@ -80,7 +79,7 @@ public class ServiceBusReceivedMessageTest {
         originalMessage.setTo("to");
 
         // Act
-        final ServiceBusMessage messageToSend = originalMessage.toServiceBusMessage();
+        final ServiceBusMessage messageToSend = new ServiceBusMessage(originalMessage);
 
         // Assert
         Assertions.assertNotNull(messageToSend);

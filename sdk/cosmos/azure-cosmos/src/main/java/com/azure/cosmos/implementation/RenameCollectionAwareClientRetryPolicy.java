@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import org.slf4j.Logger;
@@ -38,7 +39,7 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         return this.retryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
             if (!shouldRetryResult.shouldRetry && !this.hasTriggered) {
-                CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+                CosmosException clientException = Utils.as(e, CosmosException.class);
 
                 if (this.request == null) {
                     // someone didn't call OnBeforeSendRequest - nothing we can do
@@ -61,7 +62,7 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
                     request.forceNameCacheRefresh = true;
                     request.requestContext.resolvedCollectionRid = null;
 
-                    Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+                    Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
                     return collectionObs.flatMap(collectionValueHolder -> {
                         if (collectionValueHolder.v == null) {

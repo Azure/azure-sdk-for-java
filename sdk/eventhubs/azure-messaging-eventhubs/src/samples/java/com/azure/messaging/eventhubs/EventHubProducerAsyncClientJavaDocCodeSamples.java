@@ -4,6 +4,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.messaging.eventhubs.models.SendOptions;
+import java.util.Arrays;
+import java.util.List;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -153,5 +156,40 @@ public class EventHubProducerAsyncClientJavaDocCodeSamples {
                 }
             });
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int
+    }
+
+    /**
+     * Code snippet to demonstrate how to send a list of events using
+     * {@link EventHubProducerAsyncClient#send(Iterable)}.
+     */
+    public void sendIterableSample() {
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable
+        List<EventData> events = Arrays.asList(new EventData("maple"), new EventData("aspen"),
+            new EventData("oak"));
+        producer
+            .send(events)
+            .subscribe(unused -> { },
+                error -> System.err.println("Error occurred while sending events:" + error),
+                () -> System.out.println("Send complete."));
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable
+    }
+
+    /**
+     * Code snippet to demonstrate how to send a list of events using
+     * {@link EventHubProducerAsyncClient#send(Iterable, SendOptions)}.
+     */
+    public void sendIterableWithPartitionKeySample() {
+        final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
+        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable-SendOptions
+        List<EventData> events = Arrays.asList(new EventData("Melbourne"), new EventData("London"),
+            new EventData("New York"));
+        SendOptions sendOptions = new SendOptions().setPartitionKey("cities");
+        producer
+            .send(events, sendOptions)
+            .subscribe(unused -> { },
+                error -> System.err.println("Error occurred while sending events:" + error),
+                () -> System.out.println("Send complete."));
+        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable-SendOptions
     }
 }

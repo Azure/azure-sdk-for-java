@@ -5,36 +5,42 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   Matrix:
-    Linux - Java 8:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
+    Linux - Java 8 (AzureCloud):
+      OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.8'
       DisplayName: 'Linux - Java 8'
-    macOS - Java 8:
-      OSName: 'macOS'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
+    macOS - Java 8 (AzureCloud):
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       DisplayName: 'macOS - Java 8'
-    Windows - Java 8:
-      OSName: 'Windows'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    Windows - Java 8 (AzureCloud):
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       DisplayName: 'Windows - Java 8'
-    Linux - Java 11:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
+    Linux - Java 11 (AzureCloud):
+      OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.11'
       DisplayName: 'Linux - Java 11'
-    macOS - Java 11:
-      OSName: 'macOS'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    macOS - Java 11 (AzureCloud):
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       DisplayName: 'macOS - Java 11'
-    Windows - Java 11:
-      OSName: 'Windows'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
+    Windows - Java 11 (AzureCloud):
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       DisplayName: 'Windows - Java 11'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: okhttp
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
@@ -55,6 +61,10 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
+      - name: SubscriptionConfiguration
+        value: $(sub-config-azure-cloud-test-resources)
+
     strategy:
       matrix: ${{ parameters.Matrix }}
       maxParallel: ${{ parameters.MaxParallel }}
@@ -63,31 +73,15 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
+      - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - pwsh: |
-            Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
-          displayName: Install Az Module
-
-        - pwsh: |
-            $baseName = "t" + [guid]::NewGuid().ToString('n').Substring(0,16)
-            Write-Host "##vso[task.setvariable variable=BaseName;]$baseName"
-          displayName: Generate $(BaseName)
-
-        - pwsh: >-
-            eng/New-TestResources.ps1
-            -BaseName $(BaseName)
-            -ServiceDirectory ${{ parameters.ServiceDirectory }}
-            -TestApplicationId '$(aad-azure-sdk-test-client-id)'
-            -TestApplicationSecret '$(aad-azure-sdk-test-client-secret)'
-            -TestApplicationOid '$(aad-azure-sdk-test-client-oid)'
-            -TenantId '$(aad-azure-sdk-test-tenant-id)'
-            -ProvisionerApplicationId '$(provisioner-aad-id)'
-            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
-            -DeleteAfterHours 24
-            -CI
-            -Force
-            -Verbose
-          displayName: Provision Test Resources
+        - template: /eng/common/TestResources/deploy-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
 
       - ${{ parameters.PreRunSteps }}
 
@@ -118,17 +112,10 @@ jobs:
       - ${{ parameters.PostRunSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - pwsh: >-
-            eng/Remove-TestResources.ps1
-            -ResourceGroupName "${env:AZURE_RESOURCEGROUP_NAME}"
-            -TenantId '$(aad-azure-sdk-test-tenant-id)'
-            -ProvisionerApplicationId '$(provisioner-aad-id)'
-            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
-            -Force
-            -Verbose
-          condition: ne(variables['AZURE_RESOURCEGROUP_NAME'], '')
-          continueOnError: true
-          displayName: Remove Test Resources
+        - template: /eng/common/TestResources/remove-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
 
 
       - task: PublishTestResults@2

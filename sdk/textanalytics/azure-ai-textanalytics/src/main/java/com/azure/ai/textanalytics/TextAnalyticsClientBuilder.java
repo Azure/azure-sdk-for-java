@@ -43,7 +43,7 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Text Analytics to access the resource service. {@link
- * #apiKey(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} give the builder
+ * #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} give the builder
  * access credential.
  * </p>
  *
@@ -125,7 +125,7 @@ public final class TextAnalyticsClientBuilder {
      * </p>
      *
      * @return A {@link TextAnalyticsClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #apiKey(AzureKeyCredential) apiKey}
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
@@ -143,7 +143,7 @@ public final class TextAnalyticsClientBuilder {
      * </p>
      *
      * @return A {@link TextAnalyticsAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #apiKey(AzureKeyCredential) apiKey}
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
      * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
@@ -254,13 +254,14 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests for this {@link TextAnalyticsClientBuilder}.
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * {@link TextAnalyticsClientBuilder}.
      *
-     * @param keyCredential API key credential
+     * @param keyCredential {@link AzureKeyCredential} API key credential
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is {@code null}
      */
-    public TextAnalyticsClientBuilder apiKey(AzureKeyCredential keyCredential) {
+    public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
         this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }

@@ -147,7 +147,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(),
+            RetryUtil.getRetryPolicy(retryOptions), messageSerializer);
     }
 
     private synchronized ManagementChannel getOrCreateManagementChannel() {

@@ -7,10 +7,8 @@ jobs:
     timeoutInMinutes: 180
     variables:
       - template: templates/variables/globals.yml
-      - name: ProjectList
-        value: com.azure:azure-data-appconfiguration,com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-http-jdk-httpclient,com.azure:azure-core-http-netty,com.azure:azure-core-http-okhttp,com.azure:azure-core-test,com.azure:azure-core-tracing-opentelemetry,com.azure:azure-cosmos,com.azure:azure-messaging-eventhubs,com.azure:azure-messaging-eventhubs-checkpointstore-blob,com.azure:azure-identity,com.azure:azure-security-keyvault-certificates,com.azure:azure-security-keyvault-keys,com.azure:azure-security-keyvault-secrets,com.azure:azure-storage-blob,com.azure:azure-storage-blob-cryptography,com.azure:azure-storage-blob-nio,com.azure:azure-storage-common,com.azure:azure-storage-file-datalake,com.azure:azure-storage-file-share,com.azure:azure-storage-queue,com.azure:azure-sdk-template,com.azure:azure-ai-textanalytics
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
     steps:
     - task: Maven@3
       displayName: 'Generate Reports'
@@ -22,7 +20,7 @@ jobs:
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'clean verify'
+        goals: 'clean verify site:site site:stage'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
@@ -52,13 +50,16 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        copy -r target/staging $(Build.ArtifactStagingDirectory)
-        copy target/dependency-whitelist.json (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-        copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-        copy eng/common/InterdependencyGraph.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-        copy eng/common/dependency-whitelist.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
-        copy data.js (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
+        Copy-Item eng/jacoco-test-coverage/target/dependency-whitelist.json $(Build.ArtifactStagingDirectory)\staging
+        Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+        Copy-Item eng/code-quality-reports/src/main/resources/dependency-whitelist.html $(Build.ArtifactStagingDirectory)/staging
+        
+        # What is this?
+        # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+
+        Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
 
     - publish: $(Build.ArtifactStagingDirectory)

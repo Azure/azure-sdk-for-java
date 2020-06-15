@@ -4,7 +4,7 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       TimeoutInMinutes: 240
-      MaxParallel: 2
+      MaxParallel: 6
       ServiceDirectory: keyvault
       Artifacts:
         - name: azure-security-keyvault-certificates
@@ -18,11 +18,6 @@ jobs:
           safeName: azuresecuritykeyvaultsecrets
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_TEST_HTTP_CLIENTS: ALL
-        AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS: ALL
-        AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS: ALL
-        AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS: ALL
-        AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS: ALL
         ARM_CLIENTID: $(aad-azure-sdk-test-client-id)
         ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)

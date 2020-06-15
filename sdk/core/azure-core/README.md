@@ -22,7 +22,7 @@ Typically, you won't need to install or depend on Azure Core, instead it will be
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
-  <version>1.4.0</version>
+  <version>1.5.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,11 +55,11 @@ _Service methods_ can return a shared Azure Core type `Response<T>`. This type p
 ### Exception Hierarchy with `AzureException`
 
 `AzureException` is the root exception in the hierarchy used in Azure Core. Additional exceptions such as `HttpRequestException` and `HttpResponseException` are used
-to reduce the scope of exception reasons. 
+to reduce the scope of exception reasons.
 
 ### Pagination with `ContinuablePagedFlux<T>`
 
-`ContinuablePageFlux` manages sending an intial page request to a service and retrieving additional pages as the consumer requests more data until the consumer is
+`ContinuablePageFlux` manages sending an initial page request to a service and retrieving additional pages as the consumer requests more data until the consumer is
 done processing or all pages have been consumed.
 
 ### Long Running Operations with `PollerFlux<T>`
@@ -68,12 +68,13 @@ done processing or all pages have been consumed.
 
 ## Next steps
 
-Get started with some of the Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java-packages).
+Get started with some of the Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).
 
 ## Troubleshooting
 
-If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout
-[StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs, please file issues via [GitHub
+Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose) or checkout [StackOverflow for Azure Java
+SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ### Enabling Logging
 
@@ -91,5 +92,8 @@ If you would like to become an active contributor to this project please follow 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+<!-- links -->
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)

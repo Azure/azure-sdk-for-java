@@ -1,11 +1,19 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.8.0-beta.1 (Unreleased)
 
+## 12.7.0 (2020-06-12)
+- Updated azure-core dependency.
+
+## 12.7.0-beta.1 (2020-06-08)
+
+
+## 12.6.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
 
 ## 12.6.0 (2020-04-06)
-- Added a constant for the directory metadata marker. 
-- Fixed bug where x-ms headers were not being word-sorted. 
+- Added a constant for the directory metadata marker.
+- Fixed bug where x-ms headers were not being word-sorted.
 
 ## 12.5.0 (2020-03-11)
 - Added types that enabled buffered upload in datalake.
@@ -39,4 +47,3 @@
 ### Features included in `azure-storage-blob-cryptography`
 - This package supports common functionality needed for blob storage.
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
-  

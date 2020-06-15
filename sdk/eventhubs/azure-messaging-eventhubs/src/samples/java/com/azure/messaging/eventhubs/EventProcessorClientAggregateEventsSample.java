@@ -73,7 +73,7 @@ public class EventProcessorClientAggregateEventsSample {
             .processPartitionClose(context -> aggregator.onClose(context))
             .processEvent(event -> aggregator.onEvent(event))
             .processError(error -> aggregator.onError(error))
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
 
         System.out.println("Starting event processor");

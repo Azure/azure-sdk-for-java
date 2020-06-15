@@ -2,23 +2,36 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Trigger;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos trigger properties.
  */
-public final class CosmosTriggerProperties extends Resource {
+public final class CosmosTriggerProperties {
 
+    private Trigger trigger;
     /**
      * Constructor
      */
-    public CosmosTriggerProperties() {
-        super();
+    CosmosTriggerProperties() {
+        this.trigger = new Trigger();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param id the id of the Cosmos trigger.
+     * @param body the body of the Cosmos trigger.
+     */
+    public CosmosTriggerProperties(String id, String body) {
+        this.trigger = new Trigger();
+        trigger.setId(id);
+        trigger.setBody(body);
     }
 
     /**
@@ -27,7 +40,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @param jsonString the json string that represents the trigger properties.
      */
     CosmosTriggerProperties(String jsonString) {
-        super(jsonString);
+        this.trigger = new Trigger(jsonString);
     }
 
     /**
@@ -37,7 +50,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the current cosmos trigger properties instance
      */
     public CosmosTriggerProperties setId(String id) {
-        super.setId(id);
+        trigger.setId(id);
         return this;
     }
 
@@ -47,7 +60,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the body of the trigger.
      */
     public String getBody() {
-        return super.getString(Constants.Properties.BODY);
+        return this.trigger.getBody();
     }
 
     /**
@@ -57,7 +70,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the CosmosTriggerProperties.
      */
     public CosmosTriggerProperties setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
+        this.trigger.setBody(body);
         return this;
     }
 
@@ -67,16 +80,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the trigger type.
      */
     public TriggerType getTriggerType() {
-        TriggerType result = TriggerType.PRE;
-        try {
-            result = TriggerType.valueOf(
-                StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_TYPE)));
-        } catch (IllegalArgumentException e) {
-            // ignore the exception and return the default
-            this.getLogger()
-                .warn("INVALID triggerType value {}.", super.getString(Constants.Properties.TRIGGER_TYPE));
-        }
-        return result;
+        return this.trigger.getTriggerType();
     }
 
     /**
@@ -86,7 +90,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the CosmosTriggerProperties.
      */
     public CosmosTriggerProperties setTriggerType(TriggerType triggerType) {
-        super.set(Constants.Properties.TRIGGER_TYPE, triggerType.toString());
+        this.trigger.setTriggerType(triggerType);
         return this;
     }
 
@@ -96,16 +100,7 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the trigger operation.
      */
     public TriggerOperation getTriggerOperation() {
-        TriggerOperation result = TriggerOperation.CREATE;
-        try {
-            result = TriggerOperation.valueOf(
-                StringUtils.upperCase(super.getString(Constants.Properties.TRIGGER_OPERATION)));
-        } catch (IllegalArgumentException e) {
-            // ignore the exception and return the default
-            this.getLogger().warn("INVALID triggerOperation value {}.",
-                super.getString(Constants.Properties.TRIGGER_OPERATION));
-        }
-        return result;
+        return this.trigger.getTriggerOperation();
     }
 
     /**
@@ -115,8 +110,50 @@ public final class CosmosTriggerProperties extends Resource {
      * @return the CosmosTriggerProperties.
      */
     public CosmosTriggerProperties setTriggerOperation(TriggerOperation triggerOperation) {
-        super.set(Constants.Properties.TRIGGER_OPERATION, triggerOperation.toString());
+        this.trigger.setTriggerOperation(triggerOperation);
         return this;
+    }
+
+    Resource getResource() {
+        return this.trigger;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.trigger.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    String getResourceId() {
+        return this.trigger.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the timestamp.
+     */
+    public Instant getTimestamp() {
+        return this.trigger.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.trigger.getETag();
     }
 
     static List<CosmosTriggerProperties> getFromV2Results(List<Trigger> results) {

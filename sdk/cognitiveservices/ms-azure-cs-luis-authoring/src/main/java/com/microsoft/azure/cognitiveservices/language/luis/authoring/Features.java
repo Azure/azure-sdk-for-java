@@ -13,10 +13,12 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.List
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdatePhraseListOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.FeaturesResponseObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraseListFeatureInfo;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PhraselistUpdateObject;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -28,7 +30,7 @@ import rx.Observable;
 public interface Features {
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -42,7 +44,7 @@ public interface Features {
     int addPhraseList(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject);
 
     /**
-     * Creates a new phraselist feature.
+     * Creates a new phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -55,7 +57,7 @@ public interface Features {
 
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -65,11 +67,10 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PhraseListFeatureInfo&gt; object if successful.
      */
-    @Deprecated
     List<PhraseListFeatureInfo> listPhraseLists(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter);
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -77,11 +78,10 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
-    @Deprecated
     Observable<List<PhraseListFeatureInfo>> listPhraseListsAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter);
 
     /**
-     * Gets all the phraselist features.
+     * Gets all the phraselist features in a version of the application.
      *
      * @return the first stage of the listPhraseLists call
      */
@@ -164,7 +164,7 @@ public interface Features {
     }
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -174,11 +174,10 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the FeaturesResponseObject object if successful.
      */
-    @Deprecated
     FeaturesResponseObject list(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter);
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -186,11 +185,10 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FeaturesResponseObject object
      */
-    @Deprecated
     Observable<FeaturesResponseObject> listAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter);
 
     /**
-     * Gets all the extraction features for the specified application version.
+     * Gets all the extraction phraselist and pattern features in a version of the application.
      *
      * @return the first stage of the list call
      */
@@ -274,7 +272,7 @@ public interface Features {
 
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -287,7 +285,7 @@ public interface Features {
     PhraseListFeatureInfo getPhraseList(UUID appId, String versionId, int phraselistId);
 
     /**
-     * Gets phraselist feature info.
+     * Gets phraselist feature info in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -299,7 +297,7 @@ public interface Features {
 
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -310,11 +308,10 @@ public interface Features {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updatePhraseList(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter);
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -323,11 +320,10 @@ public interface Features {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updatePhraseListAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter);
 
     /**
-     * Updates the phrases, the state and the name of the phraselist feature.
+     * Updates the phrases, the state and the name of the phraselist feature in a version of the application.
      *
      * @return the first stage of the updatePhraseList call
      */
@@ -417,7 +413,7 @@ public interface Features {
 
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -430,7 +426,7 @@ public interface Features {
     OperationStatus deletePhraseList(UUID appId, String versionId, int phraselistId);
 
     /**
-     * Deletes a phraselist feature.
+     * Deletes a phraselist feature from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -439,6 +435,62 @@ public interface Features {
      * @return the observable to the OperationStatus object
      */
     Observable<OperationStatus> deletePhraseListAsync(UUID appId, String versionId, int phraselistId);
+
+
+
+    /**
+     * Adds a new feature relation to be used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus addIntentFeature(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationCreateObject);
+
+    /**
+     * Adds a new feature relation to be used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> addIntentFeatureAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationCreateObject);
+
+
+
+    /**
+     * Adds a new feature relation to be used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus addEntityFeature(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationCreateObject);
+
+    /**
+     * Adds a new feature relation to be used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationCreateObject A Feature relation information object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> addEntityFeatureAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationCreateObject);
 
 
 }

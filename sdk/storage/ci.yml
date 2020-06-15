@@ -29,6 +29,8 @@ trigger:
       - sdk/storage/mgmt-v2018_11_01
       - sdk/storage/mgmt-v2019_04_01
       - sdk/storage/mgmt-v2019_06_01
+      - sdk/storage/microsoft-azure-storage-blob
+      - sdk/storage/mgmt
 
 pr:
   branches:
@@ -79,3 +81,8 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
+      AdditionalModules:
+        - name: azure-storage-perf
+          groupId: com.azure
+        - name: azure-messaging-eventhubs
+          groupId: com.azure

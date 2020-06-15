@@ -22,7 +22,7 @@ documentation][api_documentation] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-tracing-opentelemetry</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -158,22 +158,23 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- Links -->
+[api_documentation]: https://aka.ms/java-docs
 [api_documentation]: https://azure.github.io/azure-sdk-for-java/
 [azure_data_app_configuration]: https://mvnrepository.com/artifact/com.azure/azure-data-appconfiguration/
-[azure-security-keyvault-secrets]: ../../keyvault/azure-security-keyvault-secrets
 [azure_keyvault_secrets]: https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets
-[azure-messaging-eventhubs]: ../../eventhubs/azure-messaging-eventhubs
 [azure_messaging_eventhubs_mvn]: https://mvnrepository.com/artifact/com.azure/azure-messaging-eventhubs/
+[azure-messaging-eventhubs]: ../../eventhubs/azure-messaging-eventhubs
+[azure-security-keyvault-secrets]: ../../keyvault/azure-security-keyvault-secrets
 [context]: ../azure-core/src/main/java/com/azure/core/util/Context.java
 [create-eventhubs-builders]: ../../eventhubs/azure-messaging-eventhubs#create-an-event-hub-client-using-a-connection-string
-[source_code]:  src
-[api_documentation]: https://aka.ms/java-docs
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
+[OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java
 [sample_app_config]: ./src/samples/CreateConfigurationSettingTracingSample.md
-[sample_key_vault]: ./src/samples/ListKeyVaultSecretsTracingSample.md
 [sample_async_key_vault]: ./src/samples/AsyncListKeyVaultSecretsSample.md
 [sample_eventhubs]: ./src/samples/PublishEventsTracingSample.md
+[sample_key_vault]: ./src/samples/ListKeyVaultSecretsTracingSample.md
 [samples]: ./src/samples/
-[OpenTelemetry]: https://github.com/open-telemetry/opentelemetry-java
-[OpenTelemetry-quickstart]: https://github.com/open-telemetry/opentelemetry-java
+[source_code]: src
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-tracing-opentelemetry%2FREADME.png)

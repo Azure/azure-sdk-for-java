@@ -12,15 +12,15 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Iterator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- * Represents the startTime and duration of important events in the lifetime of a request.
+ * Represents the startTimeUTC and duration of important events in the lifetime of a request.
  * <p>
- * A {@link RequestTimeline} represents a timeline as a sequence of {@link Event} instances with name, startTime, and
+ * A {@link RequestTimeline} represents a timeline as a sequence of {@link Event} instances with name, startTimeUTC, and
  * duration properties. Hence, one might use this class to represent any timeline. Today we use it to represent
  * request timelines for:
  * <p><ul>
@@ -32,12 +32,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * serialization for any class that implements {@link Iterable}.
  * <p>
  * <b>Example:</b>
- * <pre>{@code OffsetDateTime startTime = OffsetDateTime.parse("2020-01-07T11:24:12.842749-08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+ * <pre>{@code OffsetDateTime startTimeUTC = OffsetDateTime.parse("2020-01-07T11:24:12.842749-08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
  * sys.out.println(RequestTimeline.of(
- *     new RequestTimeline.Event("foo", startTime, startTime.plusSeconds(1)),
- *     new RequestTimeline.Event("bar", startTime.plusSeconds(1), startTime.plusSeconds(2))));}</pre>
+ *     new RequestTimeline.Event("foo", startTimeUTC, startTimeUTC.plusSeconds(1)),
+ *     new RequestTimeline.Event("bar", startTimeUTC.plusSeconds(1), startTimeUTC.plusSeconds(2))));}</pre>
  * JSON serialization:
- * <pre>{@code [{"name":"foo","startTime":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","startTime":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
+ * <pre>{@code [{"name":"foo","startTimeUTC":"2020-01-07T11:24:12.842749-08:00","duration":"PT1S"},{"name":"bar","startTimeUTC":"2020-01-07T11:24:13.842749-08:00","duration":"PT1S"}])}</pre>
  */
 public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
 
@@ -56,7 +56,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
     /**
      * Returns an empty {@link RequestTimeline}.
      *
-     * The empty startTime line returned is static.
+     * The empty startTimeUTC line returned is static.
      *
      * @return an empty {@link RequestTimeline}.
      */
@@ -77,7 +77,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
     /**
      * Returns an empty {@link RequestTimeline}.
      *
-     * The empty startTime line returned is static and equivalent to calling {@link RequestTimeline#empty}.
+     * The empty startTimeUTC line returned is static and equivalent to calling {@link RequestTimeline#empty}.
      *
      * @return an empty request timeline.
      */
@@ -150,7 +150,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         return RntbdObjectMapper.toString(this);
     }
 
-    @JsonPropertyOrder({ "name", "startTime", "durationInMicroSec" })
+    @JsonPropertyOrder({ "name", "startTimeUTC", "durationInMicroSec" })
     public static final class Event {
 
         @JsonIgnore
@@ -163,9 +163,9 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)
-        private final OffsetDateTime startTime;
+        private final Instant startTime;
 
-        public Event(final String name, final OffsetDateTime from, final OffsetDateTime to) {
+        public Event(final String name, final Instant from, final Instant to) {
 
             checkNotNull(name, "expected non-null name");
 
@@ -188,7 +188,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             return name;
         }
 
-        public OffsetDateTime getStartTime() {
+        public Instant getStartTime() {
             return startTime;
         }
     }

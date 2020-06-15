@@ -24,7 +24,7 @@ trigger:
       - sdk/servicebus/mgmt-v2015_08_01
       - sdk/servicebus/mgmt-v2017_04_01
       - sdk/servicebus/mgmt-v2018_01_01_preview
-      - sdk/servicebus/azure-servicebus
+      - sdk/servicebus/azure-messaging-servicebus
 
 pr:
   branches:
@@ -40,7 +40,7 @@ pr:
       - sdk/servicebus/mgmt-v2015_08_01
       - sdk/servicebus/mgmt-v2017_04_01
       - sdk/servicebus/mgmt-v2018_01_01_preview
-      - sdk/servicebus/azure-servicebus
+      - sdk/servicebus/azure-messaging-servicebus
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

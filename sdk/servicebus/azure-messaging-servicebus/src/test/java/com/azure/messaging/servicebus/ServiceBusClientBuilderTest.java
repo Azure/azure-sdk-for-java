@@ -6,9 +6,11 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -163,6 +165,44 @@ class ServiceBusClientBuilderTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
+    }
+
+    @MethodSource("getProxyConfigurations")
+    @ParameterizedTest
+    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
+        boolean clientCreated = false;
+        try {
+            ServiceBusReceiverClient syncClient = new ServiceBusClientBuilder()
+                .connectionString(NAMESPACE_CONNECTION_STRING)
+                .configuration(configuration)
+                .receiver()
+                .topicName("baz").subscriptionName("bar")
+                .receiveMode(ReceiveMode.PEEK_LOCK)
+                .buildClient();
+
+            clientCreated = true;
+        } catch (Exception ex) {
+        }
+
+        Assertions.assertEquals(expectedClientCreation, clientCreated);
+    }
+
+    private static Stream<Arguments> getProxyConfigurations() {
+        return Stream.of(
+            Arguments.of("http://localhost:8080", true),
+            Arguments.of("localhost:8080", true),
+            Arguments.of("localhost_8080", false),
+            Arguments.of("http://example.com:8080", true),
+            Arguments.of("http://sub.example.com:8080", true),
+            Arguments.of(":8080", false),
+            Arguments.of("http://localhost", true),
+            Arguments.of("sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com", true)
+        );
+
     }
 
     private static URI getUri(String endpointFormat, String namespace, String domainName) {

@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -15,6 +16,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -29,6 +31,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,9 +45,17 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #apiKey(AzureKeyCredential)} gives
+ * {@link #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} gives
  * the builder access credential.
  * </p>
+ *
+ * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -53,6 +64,8 @@ import java.util.Objects;
  * pipeline requires additional setup but allows for finer control on how the {@link FormRecognizerClient} and
  * {@link FormRecognizerAsyncClient} is built.
  * </p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation}
  *
  * @see FormRecognizerAsyncClient
  * @see FormRecognizerClient
@@ -64,11 +77,10 @@ public final class FormRecognizerClientBuilder {
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
     private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -83,8 +95,11 @@ public final class FormRecognizerClientBuilder {
     private HttpPipeline httpPipeline;
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
 
+    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
     /**
      * The constructor with defaults.
      */
@@ -113,7 +128,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return A FormRecognizerClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
+     * {@link #credential(AzureKeyCredential)} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerClient buildClient() {
@@ -131,11 +146,12 @@ public final class FormRecognizerClientBuilder {
      * </p>
      *
      * @return A FormRecognizerAsyncClient with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
+        // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         // Global Env configuration store
@@ -145,53 +161,57 @@ public final class FormRecognizerClientBuilder {
         final FormRecognizerServiceVersion serviceVersion =
             version != null ? version : FormRecognizerServiceVersion.getLatest();
 
-        // Endpoint cannot be null, which is required in request authentication
-
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            // Closest to API goes first, closest to wire goes last.
-            final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
-
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
-            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-            policies.add(new AddDatePolicy());
-            // Authentications
-            if (credential != null) {
-                policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-            } else {
-                // Throw exception that credential and tokenCredential cannot be null
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing credential information while building a client."));
-            }
-            policies.addAll(this.policies);
-            HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-            policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-            pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
-
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
-            .build();
+            .buildClient();
 
         return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
+    }
+
+    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersPolicy(headers));
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+        policies.add(new AddDatePolicy());
+        // Authentications
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+        } else if (credential != null) {
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        } else {
+            // Throw exception that credential and tokenCredential cannot be null
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+        policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     /**
      * Sets the service endpoint for the Azure Form Recognizer instance.
      *
      * @param endpoint The URL of the Azure Form Recognizer instance service requests to and receive responses from.
+     *
      * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
@@ -215,15 +235,28 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests for this FormRecognizerClientBuilder.
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * FormRecognizerClientBuilder.
      *
-     * @param apiKeyCredential API key credential
+     * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
      * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
-    public FormRecognizerClientBuilder apiKey(AzureKeyCredential apiKeyCredential) {
+    public FormRecognizerClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated {@link FormRecognizerClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    public FormRecognizerClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 
@@ -259,6 +292,7 @@ public final class FormRecognizerClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
+     *
      * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder httpClient(HttpClient client) {

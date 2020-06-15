@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -37,21 +38,21 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for getting sync client using the API key authentication.
+     * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
-    public void useApiKeySyncClient() {
+    public void useAzureKeyCredentialSyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
 
     /**
-     * Code snippet for getting async client using API key authentication.
+     * Code snippet for getting async client using AzureKeyCredential authentication.
      */
-    public void useApiKeyAsyncClient() {
+    public void useAzureKeyCredentialAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -60,23 +61,24 @@ public class ReadmeSamples {
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .endpoint("{endpoint}")
-            .credential(new DefaultAzureCredentialBuilder().build())
+            .credential(defaultCredential)
             .buildAsyncClient();
     }
 
     /**
-     * Code snippet for rotating API key of the client
+     * Code snippet for rotating AzureKeyCredential of the client
      */
-    public void rotatingApiKey() {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+    public void rotatingAzureKeyCredential() {
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.update("{new_api_key}");
+        credential.update("{new_key}");
     }
 
     /**
@@ -89,7 +91,7 @@ public class ReadmeSamples {
         );
 
         try {
-            textAnalyticsClient.detectLanguageBatch(documents, null, Context.NONE);
+            textAnalyticsClient.detectLanguageBatchWithResponse(documents, null, Context.NONE);
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
@@ -112,8 +114,8 @@ public class ReadmeSamples {
     public void detectLanguages() {
         String document = "Bonjour tout le monde";
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
-        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
-            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
     }
 
     /**
@@ -122,8 +124,8 @@ public class ReadmeSamples {
     public void recognizeEntity() {
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsClient.recognizeEntities(document).forEach(entity ->
-            System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+            System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
     }
 
     /**
@@ -135,8 +137,8 @@ public class ReadmeSamples {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-            linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-                System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
+            linkedEntity.getMatches().forEach(match ->
+                System.out.printf("Text: %s, confidence score: %f.%n", match.getText(), match.getConfidenceScore()));
         });
     }
 

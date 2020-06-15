@@ -1,7 +1,16 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
+
+## 1.3.0 (2020-06-08)
+
+- Added new APIs used to redact sensitive information from playback recordings.
+- Updated Azure Core dependency.
+
+## 1.2.1 (2020-05-04)
+
+- Updating dependencies.
 
 ## 1.2.0 (2020-04-03)
 
@@ -10,7 +19,7 @@
 ## 1.1.0 (2020-01-07)
 
 ## 1.1.0-beta.2 (2019-12-18)
-- Quick release to have client library depends on the right version of azure-core and azure-core-test changes. 
+- Quick release to have client library depends on the right version of azure-core and azure-core-test changes.
 
 ## Version 1.1.0-beta.1 (2019-12-17)
 - Added log message if playback json file is missing.

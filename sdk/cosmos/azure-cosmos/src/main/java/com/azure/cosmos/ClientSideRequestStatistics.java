@@ -3,12 +3,15 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -23,9 +26,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,16 +52,18 @@ class ClientSideRequestStatistics {
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
-    private ZonedDateTime requestStartTime;
-    private ZonedDateTime requestEndTime;
+    private Instant requestStartTimeUTC;
+    private Instant requestEndTimeUTC;
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline transportRequestTimeline;
+    private MetadataDiagnosticsContext metadataDiagnosticsContext;
+    private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     ClientSideRequestStatistics() {
-        this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-        this.requestEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        this.requestStartTimeUTC = Instant.now();
+        this.requestEndTimeUTC = Instant.now();
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
@@ -68,22 +71,17 @@ class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.connectionMode = ConnectionMode.DIRECT;
+        this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
+        this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
     }
 
-    private static String formatDateTime(ZonedDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        }
-        return dateTime.format(RESPONSE_TIME_FORMATTER);
-    }
-
-    Duration getRequestLatency() {
-        return Duration.between(requestStartTime, requestEndTime);
+    Duration getDuration() {
+        return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
-        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.DIRECT;
 
         StoreResponseStatistics storeResponseStatistics = new StoreResponseStatistics();
@@ -101,8 +99,8 @@ class ClientSideRequestStatistics {
         }
 
         synchronized (this) {
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             if (locationEndPoint != null) {
@@ -120,18 +118,18 @@ class ClientSideRequestStatistics {
 
     void recordGatewayResponse(
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
-        CosmosClientException exception) {
-        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        CosmosException exception) {
+        Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.GATEWAY;
         synchronized (this) {
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             if (rxDocumentServiceRequest != null
                     && rxDocumentServiceRequest.requestContext != null
                     && rxDocumentServiceRequest.requestContext.retryContext != null) {
-                rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = Instant.now();
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
             }
 
@@ -163,9 +161,9 @@ class ClientSideRequestStatistics {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
-        resolutionStatistics.startTime = ZonedDateTime.now(ZoneOffset.UTC);
+        resolutionStatistics.startTime = Instant.now();
         //  Very far in the future
-        resolutionStatistics.endTime = ZonedDateTime.of(LocalDateTime.MAX, ZoneOffset.UTC);
+        resolutionStatistics.endTime = Instant.MAX;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
 
         synchronized (this) {
@@ -179,7 +177,7 @@ class ClientSideRequestStatistics {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
-        ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
+        Instant responseTime = Instant.now();
 
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
@@ -187,8 +185,8 @@ class ClientSideRequestStatistics {
                                                        + "before calling end");
             }
 
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
@@ -220,9 +218,17 @@ class ClientSideRequestStatistics {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
+    MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+        return this.metadataDiagnosticsContext;
+    }
+
+    SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
+        return this.serializationDiagnosticsContext;
+    }
+
     void recordRetryContext(RxDocumentServiceRequest request) {
-        if (request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        if(request.requestContext.retryContext != null) {
+            request.requestContext.retryContext.retryEndTime =  Instant.now();
             this.retryContext = new RetryContext(request.requestContext.retryContext);
         }
     }
@@ -230,8 +236,8 @@ class ClientSideRequestStatistics {
     static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
         StoreResult storeResult;
-        @JsonSerialize(using = ZonedDateTimeSerializer.class)
-        ZonedDateTime requestResponseTime;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        Instant requestResponseTime;
         ResourceType requestResourceType;
         OperationType requestOperationType;
     }
@@ -259,23 +265,6 @@ class ClientSideRequestStatistics {
         }
     }
 
-    private static class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
-
-        private static final long serialVersionUID = -1029068207700658765L;
-
-        ZonedDateTimeSerializer() {
-            super(ZonedDateTime.class);
-        }
-
-        @Override
-        public void serialize(
-            ZonedDateTime zonedDateTime,
-            JsonGenerator jsonGenerator,
-            SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeObject(formatDateTime(zonedDateTime));
-        }
-    }
-
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
 
         private static final long serialVersionUID = -2746532297176812860L;
@@ -289,10 +278,10 @@ class ClientSideRequestStatistics {
             ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws
             IOException {
             generator.writeStartObject();
-            long requestLatency = statistics.getRequestLatency().toMillis();
+            long requestLatency = statistics.getDuration().toMillis();
             generator.writeNumberField("requestLatency", requestLatency);
-            generator.writeStringField("requestStartTime", formatDateTime(statistics.requestStartTime));
-            generator.writeStringField("requestEndTime", formatDateTime(statistics.requestEndTime));
+            generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestStartTimeUTC));
+            generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.formatDateTime(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
@@ -312,6 +301,8 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
+            generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
+            generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {
@@ -335,10 +326,10 @@ class ClientSideRequestStatistics {
     }
 
     private static class AddressResolutionStatistics {
-        @JsonSerialize(using = ZonedDateTimeSerializer.class)
-        ZonedDateTime startTime;
-        @JsonSerialize(using = ZonedDateTimeSerializer.class)
-        ZonedDateTime endTime;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        Instant startTime;
+        @JsonSerialize(using = DiagnosticsInstantSerializer.class)
+        Instant endTime;
         String targetEndpoint;
     }
 

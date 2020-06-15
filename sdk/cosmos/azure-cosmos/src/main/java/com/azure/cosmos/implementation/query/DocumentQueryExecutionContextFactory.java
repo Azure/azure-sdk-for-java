@@ -4,9 +4,9 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
@@ -48,7 +48,7 @@ public class DocumentQueryExecutionContextFactory {
                 resourceLink, null
                 // TODO      AuthorizationTokenType.INVALID)
                 ); //this request doesnt actually go to server
-        return collectionCache.resolveCollectionAsync(request);
+        return collectionCache.resolveCollectionAsync(null, request);
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(
@@ -56,7 +56,7 @@ public class DocumentQueryExecutionContextFactory {
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
-            FeedOptions feedOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             String resourceLink,
             boolean isContinuationExpected,
             UUID correlatedActivityId) {
@@ -73,7 +73,7 @@ public class DocumentQueryExecutionContextFactory {
             resourceTypeEnum,
             resourceType,
             query,
-            feedOptions,
+            cosmosQueryRequestOptions,
             resourceLink,
             correlatedActivityId,
             isContinuationExpected);
@@ -95,22 +95,22 @@ public class DocumentQueryExecutionContextFactory {
                           // The partitionKeyRangeIdInternal is no more a public API on
                           // FeedOptions, but have the below condition
                           // for handling ParallelDocumentQueryTest#partitionKeyRangeId
-                          if (feedOptions != null && !StringUtils
+                          if (cosmosQueryRequestOptions != null && !StringUtils
                                                           .isEmpty(ModelBridgeInternal
-                                                                       .partitionKeyRangeIdInternal(feedOptions))) {
+                                                                       .partitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
                               partitionKeyRanges = queryExecutionContext
                                                        .getTargetPartitionKeyRangesById(collectionValueHolder.v
                                                                                             .getResourceId(),
-                                                           ModelBridgeInternal.partitionKeyRangeIdInternal(feedOptions));
+                                                           ModelBridgeInternal.partitionKeyRangeIdInternal(cosmosQueryRequestOptions));
                           } else {
                               List<Range<String>> queryRanges =
                                   partitionedQueryExecutionInfo.getQueryRanges();
 
-                              if (feedOptions != null
-                                      && feedOptions.getPartitionKey() != null
-                                      && feedOptions.getPartitionKey() != PartitionKey.NONE) {
+                              if (cosmosQueryRequestOptions != null
+                                      && cosmosQueryRequestOptions.getPartitionKey() != null
+                                      && cosmosQueryRequestOptions.getPartitionKey() != PartitionKey.NONE) {
                                   PartitionKeyInternal internalPartitionKey =
-                                      BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
+                                      BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
                                   Range<String> range = Range
                                                             .getPointRange(internalPartitionKey
                                                                                .getEffectivePartitionKeyString(internalPartitionKey,
@@ -127,7 +127,7 @@ public class DocumentQueryExecutionContextFactory {
                                                                                                               resourceTypeEnum,
                                                                                                               resourceType,
                                                                                                               query,
-                                                                                                              feedOptions,
+                                                                                                              cosmosQueryRequestOptions,
                                                                                                               resourceLink,
                                                                                                               isContinuationExpected,
                                                                                                               partitionedQueryExecutionInfo,
@@ -145,7 +145,7 @@ public class DocumentQueryExecutionContextFactory {
             ResourceType resourceTypeEnum,
             Class<T> resourceType,
             SqlQuerySpec query,
-            FeedOptions feedOptions,
+            CosmosQueryRequestOptions cosmosQueryRequestOptions,
             String resourceLink,
             boolean isContinuationExpected,
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
@@ -153,7 +153,7 @@ public class DocumentQueryExecutionContextFactory {
             String collectionRid,
             UUID correlatedActivityId) {
 
-        int initialPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
+        int initialPageSize = Utils.getValueOrDefault(ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions), ParallelQueryConfig.ClientInternalPageSize);
 
         BadRequestException validationError = Utils.checkRequestOrReturnException
                 (initialPageSize > 0 || initialPageSize == -1, "MaxItemCount", "Invalid MaxItemCount %s",
@@ -200,7 +200,7 @@ public class DocumentQueryExecutionContextFactory {
                 resourceTypeEnum,
                 resourceType,
                 query,
-                feedOptions,
+                cosmosQueryRequestOptions,
                 resourceLink,
                 collectionRid,
                 partitionedQueryExecutionInfo,
@@ -213,13 +213,14 @@ public class DocumentQueryExecutionContextFactory {
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
         IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
-        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, FeedOptions feedOptions,
+        Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
 
         return PipelinedDocumentQueryExecutionContext.createReadManyAsync(queryClient,
                                                                    collectionResourceId, sqlQuery, rangeQueryMap,
-                                                                   feedOptions, resourceId, collectionLink,
-                                                                   activityId, klass, resourceTypeEnum );
+            cosmosQueryRequestOptions, resourceId, collectionLink,
+                                                                   activityId, klass,
+            resourceTypeEnum );
     }
 }

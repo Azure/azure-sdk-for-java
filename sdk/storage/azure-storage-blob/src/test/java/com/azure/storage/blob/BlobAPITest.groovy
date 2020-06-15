@@ -8,6 +8,7 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
@@ -27,6 +28,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -91,7 +93,7 @@ class BlobAPITest extends APISpec {
 
         when:
         // Uses blob output stream under the hood.
-        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null)
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -100,6 +102,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Upload numBlocks"() {
         setup:
+        if (numBlocks > 0 && !liveMode()) {
+            return // skip multipart upload for playback/record as it uses randomly generated block ids
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
@@ -118,6 +123,12 @@ class BlobAPITest extends APISpec {
         Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
         Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
         3 * Constants.MB| Constants.MB  || 3
+    }
+
+    def "Upload return value"() {
+        expect:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null)
+            .getValue().getETag() != null
     }
 
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.

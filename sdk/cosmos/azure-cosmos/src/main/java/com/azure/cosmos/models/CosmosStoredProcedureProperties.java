@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,16 +13,18 @@ import java.util.stream.Collectors;
  * Represents a stored procedure in the Azure Cosmos DB database service.
  * <p>
  * Cosmos DB allows stored procedures to be executed in the storage tier, directly against a container. The
- * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
- * additional details, refer to the server-side JavaScript API documentation.
+ * script gets executed under ACID transactions on the primary storage partition of the specified container. For
+ * additional details, refer to
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-write-stored-procedures-triggers-udfs">documentation</a>
  */
-public final class CosmosStoredProcedureProperties extends Resource {
+public final class CosmosStoredProcedureProperties {
 
+    private StoredProcedure storedProcedure;
     /**
      * Constructor.
      */
-    public CosmosStoredProcedureProperties() {
-        super();
+    CosmosStoredProcedureProperties() {
+        this.storedProcedure = new StoredProcedure();
     }
 
     /**
@@ -31,7 +34,7 @@ public final class CosmosStoredProcedureProperties extends Resource {
      * @return return the Cosmos stored procedure properties with id set
      */
     public CosmosStoredProcedureProperties setId(String id) {
-        super.setId(id);
+        this.storedProcedure.setId(id);
         return this;
     }
 
@@ -41,7 +44,7 @@ public final class CosmosStoredProcedureProperties extends Resource {
      * @param jsonString the json string that represents the stored procedure.
      */
     CosmosStoredProcedureProperties(String jsonString) {
-        super(jsonString);
+        this.storedProcedure = new StoredProcedure(jsonString);
     }
 
     /**
@@ -51,9 +54,9 @@ public final class CosmosStoredProcedureProperties extends Resource {
      * @param body the body of the stored procedure
      */
     public CosmosStoredProcedureProperties(String id, String body) {
-        super();
-        super.setId(id);
-        this.setBody(body);
+        this.storedProcedure = new StoredProcedure();
+        storedProcedure.setId(id);
+        storedProcedure.setBody(body);
     }
 
     /**
@@ -62,21 +65,64 @@ public final class CosmosStoredProcedureProperties extends Resource {
      * @return the body of the stored procedure.
      */
     public String getBody() {
-        return super.getString(Constants.Properties.BODY);
+        return this.storedProcedure.getBody();
     }
 
     /**
      * Set the body of the stored procedure.
      *
      * @param body the body of the stored procedure.
+     * @return return the Cosmos stored procedure properties.
      */
-    public void setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
+    public CosmosStoredProcedureProperties setBody(String body) {
+        this.storedProcedure.setBody(body);
+        return this;
     }
 
+    Resource getResource() {
+        return this.storedProcedure;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.storedProcedure.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    String getResourceId() {
+        return this.storedProcedure.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the timestamp.
+     */
+    public Instant getTimestamp() {
+        return this.storedProcedure.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.storedProcedure.getETag();
+    }
 
     static List<CosmosStoredProcedureProperties> getFromV2Results(List<StoredProcedure> results) {
         return results.stream().map(sproc -> new CosmosStoredProcedureProperties(sproc.toJson()))
-                   .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 }

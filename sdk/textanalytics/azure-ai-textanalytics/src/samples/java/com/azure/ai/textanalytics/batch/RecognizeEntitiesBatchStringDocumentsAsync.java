@@ -5,6 +5,9 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -24,7 +27,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -34,19 +37,32 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
             "Elon Musk is the CEO of SpaceX and Tesla."
         );
 
+        // Request options: show statistics and model version
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
+
         // Recognizing entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizeEntitiesBatch(documents, "en").subscribe(
-            entitiesResult -> {
-                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
-                if (entitiesResult.isError()) {
-                    // Erroneous document
-                    System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
-                } else {
-                    // Valid document
-                    entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                        "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+        client.recognizeEntitiesBatch(documents, "en", requestOptions).subscribe(
+            recognizeEntitiesResultCollection -> {
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());
+
+                // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+                for (RecognizeEntitiesResult entitiesResult : recognizeEntitiesResultCollection) {
+                    System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
+                    if (entitiesResult.isError()) {
+                        // Erroneous document
+                        System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
+                    } else {
+                        // Valid document
+                        entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                            "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+                    }
                 }
             },
             error -> System.err.println("There was an error recognizing entities of the documents." + error),

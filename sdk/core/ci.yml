@@ -20,6 +20,8 @@ trigger:
   paths:
     include:
       - sdk/core/
+      - sdk/parents/azure-sdk-parent/
+      - sdk/parents/azure-client-sdk-parent/
       - eng/
 
 pr:
@@ -32,6 +34,8 @@ pr:
   paths:
     include:
       - sdk/core/
+      - sdk/parents/azure-sdk-parent/
+      - sdk/parents/azure-client-sdk-parent/
       - eng/
 
 stages:
@@ -45,15 +49,21 @@ stages:
         - name: azure-core-amqp
           groupId: com.azure
           safeName: azurecoreamqp
+        - name: azure-core-http-jdk-httpclient
+          groupId: com.azure
+          safeName: azurecorehttpjdkhttpclient
         - name: azure-core-http-netty
           groupId: com.azure
           safeName: azurecorehttpnetty
         - name: azure-core-http-okhttp
           groupId: com.azure
           safeName: azurecorehttpokhttp
-        - name: azure-core-http-jdk-httpclient
+        - name: azure-core-serializer-json-gson
           groupId: com.azure
-          safeName: azurecorehttpjdkhttpclient
+          safeName: azurecoreserializerjsongson
+        - name: azure-core-serializer-json-jackson
+          groupId: com.azure
+          safeName: azurecoreserializerjsonjackson
         - name: azure-core-test
           groupId: com.azure
           safeName: azurecoretest
@@ -62,4 +72,6 @@ stages:
           safeName: azurecoretracingopentelemetry
       AdditionalModules:
         - name: azure-data-appconfiguration
+          groupId: com.azure
+        - name: perf-test-core
           groupId: com.azure

@@ -230,6 +230,7 @@ public final class Message implements Serializable, IMessage {
     @Override
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+        this.partitionKey = sessionId;
     }
 
     @Override
@@ -321,6 +322,11 @@ public final class Message implements Serializable, IMessage {
 
     @Override
     public void setPartitionKey(String partitionKey) {
+    	if (this.sessionId != null && !this.sessionId.equals(partitionKey))
+    	{
+    		// SessionId is set. Then partition key must be same as session id.
+    		throw new IllegalArgumentException("PartitionKey:" + partitionKey +" is not same as SessionId:" + this.sessionId);
+    	}
         this.partitionKey = partitionKey;
     }
 

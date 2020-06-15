@@ -3,74 +3,62 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Collection;
+/** Defines values for FieldValueType. */
+public enum FieldValueType {
+    /** Enum value string. */
+    STRING("string"),
 
-/**
- * Defines values for FieldValueType.
- */
-@Immutable
-public final class FieldValueType extends ExpandableStringEnum<FieldValueType> {
+    /** Enum value date. */
+    DATE("date"),
 
-    /**
-     * Static value string for FieldValueType.
-     */
-    public static final FieldValueType STRING = fromString("string");
+    /** Enum value time. */
+    TIME("time"),
 
-    /**
-     * Static value date for FieldValueType.
-     */
-    public static final FieldValueType DATE = fromString("date");
+    /** Enum value phoneNumber. */
+    PHONE_NUMBER("phoneNumber"),
 
-    /**
-     * Static value time for FieldValueType.
-     */
-    public static final FieldValueType TIME = fromString("time");
+    /** Enum value number. */
+    FLOAT("float"),
 
-    /**
-     * Static value phoneNumber for FieldValueType.
-     */
-    public static final FieldValueType PHONE_NUMBER = fromString("phoneNumber");
+    /** Enum value integer. */
+    INTEGER("integer"),
 
-    /**
-     * Static value number for FieldValueType.
-     */
-    public static final FieldValueType NUMBER = fromString("number");
+    /** Enum value array. */
+    LIST("list"),
 
-    /**
-     * Static value integer for FieldValueType.
-     */
-    public static final FieldValueType INTEGER = fromString("integer");
+    /** Enum value object. */
+    MAP("map");
+
+    /** The actual serialized value for a FieldValueType instance. */
+    private final String value;
+
+    FieldValueType(String value) {
+        this.value = value;
+    }
 
     /**
-     * Static value array for FieldValueType.
-     */
-    public static final FieldValueType ARRAY = fromString("array");
-
-    /**
-     * Static value object for FieldValueType.
-     */
-    public static final FieldValueType OBJECT = fromString("object");
-
-    /**
-     * Parses a serialized value to a {@code FieldValueType} instance.
+     * Parses a serialized value to a FieldValueType instance.
      *
      * @param value the serialized value to parse.
-     *
      * @return the parsed FieldValueType object, or null if unable to parse.
      */
     @JsonCreator
     public static FieldValueType fromString(String value) {
-        return fromString(value, FieldValueType.class);
+        FieldValueType[] items = FieldValueType.values();
+        for (FieldValueType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
-    /**
-     * @return known {@link FieldValueType} values.
-     */
-    public static Collection<FieldValueType> values() {
-        return values(FieldValueType.class);
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

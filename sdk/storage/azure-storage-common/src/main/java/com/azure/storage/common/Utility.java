@@ -5,6 +5,7 @@ package com.azure.storage.common;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -155,6 +156,24 @@ public final class Utility {
     }
 
     /**
+     * Performs a safe encoding of a url string, only encoding the path.
+     *
+     * @param url The url to encode.
+     * @return The encoded url.
+     */
+    public static String encodeUrlPath(String url) {
+        /* Deconstruct the URL and reconstruct it making sure the path is encoded. */
+        UrlBuilder builder = UrlBuilder.parse(url);
+        String path = builder.getPath();
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        path = Utility.urlEncode(Utility.urlDecode(path));
+        builder.setPath(path);
+        return builder.toString();
+    }
+
+    /**
      * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
      * millisecond precision.
      *
@@ -206,43 +225,59 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
-        final long[] currentTotalLength = new long[1];
-        return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
-            .map(i -> i * blockSize)
-            .concatMap(pos -> Mono.fromCallable(() -> {
-                long count = pos + blockSize > length ? length - pos : blockSize;
-                byte[] cache = new byte[(int) count];
-                int numOfBytes = 0;
-                int offset = 0;
-                // Revise the casting if the max allowed network data transmission is over 2G.
-                int len = (int) count;
-                while (numOfBytes != -1 && offset < count) {
-                    numOfBytes = data.read(cache, offset, len);
-                    offset += numOfBytes;
-                    len -= numOfBytes;
-                    if (numOfBytes != -1) {
-                        currentTotalLength[0] += numOfBytes;
+        data.mark(Integer.MAX_VALUE);
+        return Flux.defer(() -> {
+            /*
+            If the request needs to be retried, the flux will be resubscribed to. The stream and counter must be
+            reset in order to correctly return the same data again.
+             */
+            final long[] currentTotalLength = new long[1];
+            try {
+                data.reset();
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+            return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
+                .map(i -> i * blockSize)
+                .concatMap(pos -> Mono.fromCallable(() -> {
+                    long count = pos + blockSize > length ? length - pos : blockSize;
+                    byte[] cache = new byte[(int) count];
+                    int numOfBytes = 0;
+                    int offset = 0;
+                    // Revise the casting if the max allowed network data transmission is over 2G.
+                    int len = (int) count;
+                    while (numOfBytes != -1 && offset < count) {
+                        numOfBytes = data.read(cache, offset, len);
+                        offset += numOfBytes;
+                        len -= numOfBytes;
+                        if (numOfBytes != -1) {
+                            currentTotalLength[0] += numOfBytes;
+                        }
                     }
-                }
-                if (numOfBytes == -1 && currentTotalLength[0] < length) {
-                    throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                        String.format("Request body emitted %d bytes, less than the expected %d bytes.",
-                            currentTotalLength[0], length), currentTotalLength[0], length));
-                }
-                return ByteBuffer.wrap(cache);
-            }))
-            .doOnComplete(() -> {
-                try {
-                    if (data.available() > 0) {
-                        long totalLength = currentTotalLength[0] + data.available();
+                    if (numOfBytes == -1 && currentTotalLength[0] < length) {
                         throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
-                            String.format("Request body emitted %d bytes, more than the expected %d bytes.",
-                                totalLength, length), totalLength, length));
+                            String.format("Request body emitted %d bytes, less than the expected %d bytes.",
+                                currentTotalLength[0], length), currentTotalLength[0], length));
                     }
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
-                        + e.getMessage()));
-                }
-            });
+                    return ByteBuffer.wrap(cache);
+                }))
+                .doOnComplete(() -> {
+                    try {
+                        if (data.available() > 0) {
+                            long totalLength = currentTotalLength[0] + data.available();
+                            throw LOGGER.logExceptionAsError(new UnexpectedLengthException(
+                                String.format("Request body emitted %d bytes, more than the expected %d bytes.",
+                                    totalLength, length), totalLength, length));
+                        } else if (currentTotalLength[0] > length) {
+                            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                                String.format("Read more data than was requested. Size of data read: %d. Size of data"
+                                    + " requested: %d", currentTotalLength[0], length)));
+                        }
+                    } catch (IOException e) {
+                        throw LOGGER.logExceptionAsError(new RuntimeException("I/O errors occurs. Error details: "
+                            + e.getMessage()));
+                    }
+                });
+        });
     }
 }

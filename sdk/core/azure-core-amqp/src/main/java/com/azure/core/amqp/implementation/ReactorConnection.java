@@ -241,7 +241,7 @@ public class ReactorConnection implements AmqpConnection {
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
             getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
-            connectionOptions.getRetry().getTryTimeout());
+            connectionOptions.getRetry().getTryTimeout(), retryPolicy);
     }
 
     /**
@@ -284,6 +284,10 @@ public class ReactorConnection implements AmqpConnection {
         for (String key : keys) {
             logger.info("connectionId[{}]: Removing session '{}'", connectionId, key);
             removeSession(key);
+        }
+
+        if (connection != null) {
+            connection.close();
         }
 
         if (executor != null) {

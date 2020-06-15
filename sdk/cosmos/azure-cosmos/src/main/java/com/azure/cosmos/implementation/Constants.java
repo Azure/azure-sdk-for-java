@@ -50,6 +50,11 @@ public final class Constants {
         public static final String DOCUMENTS_LINK = "_docs";
         public static final String RESOURCE_LINK = "resource";
         public static final String MEDIA_LINK = "media";
+        public static final String AUTOPILOT_MAX_THROUGHPUT = "maxThroughput";
+        public static final String AUTOPILOT_AUTO_UPGRADE_POLICY = "autoUpgradePolicy";
+        public static final String AUTOPILOT_AUTO_THROUGHPUT_POLICY = "throughputPolicy";
+        public static final String AUTOPILOT_THROUGHPUT_POLICY_INCREMENT_PERCENT = "incrementPercent";
+        public static final String AUTOPILOT_SETTINGS = "offerAutopilotSettings";
 
         public static final String PERMISSION_MODE = "permissionMode";
         public static final String RESOURCE_KEY = "key";
@@ -153,6 +158,7 @@ public final class Constants {
         // Time-to-Live
         public static final String TTL = "ttl";
         public static final String DEFAULT_TTL = "defaultTtl";
+        public static final String ANALYTICAL_STORAGE_TTL = "analyticalStorageTtl";
 
         // Global DB account properties
         public static final String Name = "name";
@@ -193,7 +199,7 @@ public final class Constants {
         public static final String SINGLE_SPACE_URI_ENCODING = "%20";
         public static final String UTF_8 = "UTF-8";
     }
-    
+
     public static final class PartitionedQueryExecutionInfo {
         public static final int VERSION_1 = 1;
     }

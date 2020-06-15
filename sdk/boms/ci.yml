@@ -33,10 +33,13 @@ pr:
       - sdk/boms/
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-bom.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-pom-only.yml
     parameters:
       ServiceDirectory: boms
       Artifacts:
         - name: azure-sdk-bom
           groupId: com.azure
           safeName: azuresdkbom
+        - name: azure-spring-boot-bom
+          groupID: com.microsoft.azure
+          safeName: azurespringbootbom

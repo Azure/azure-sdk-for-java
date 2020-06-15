@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -315,7 +316,7 @@ public class AddressResolverTest {
         this.collectionCacheRefreshedCount = 0;
 
         Mockito.doAnswer(invocationOnMock -> {
-            RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
+            RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
             if (request.forceNameCacheRefresh && collectionAfterRefresh != null) {
                 currentCollection.setValue(collectionAfterRefresh);
                 AddressResolverTest.this.collectionCacheRefreshedCount++;
@@ -340,7 +341,7 @@ public class AddressResolverTest {
             }
 
             return new Utils.ValueHolder<>(null);
-        }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(RxDocumentServiceRequest.class));
+        }).when(this.collectionCache).resolveCollectionAsync( Mockito.any(), Mockito.any(RxDocumentServiceRequest.class));
 
         // Routing map cache
         Map<String, CollectionRoutingMap> currentRoutingMap =
@@ -348,18 +349,20 @@ public class AddressResolverTest {
         this.routingMapRefreshCount = new HashMap<>();
 
         Mockito.doAnswer(invocationOnMock -> {
-            String collectionRid = invocationOnMock.getArgumentAt(0, String.class);
-            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
+            String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
+            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(2, CollectionRoutingMap.class);
 
-            return collectionRoutingMapCache.tryLookupAsync(collectionRid, previousValue, false, null);
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(),
+            return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(
+            Mockito.any(MetadataDiagnosticsContext.class),
+            Mockito.anyString(),
             Mockito.any(CollectionRoutingMap.class),
             Mockito.anyMapOf(String.class, Object.class));
 
         // Refresh case
         Mockito.doAnswer(invocationOnMock -> {
-            String collectionRid = invocationOnMock.getArgumentAt(0, String.class);
-            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
+            String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
+            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(2, CollectionRoutingMap.class);
 
             if (previousValue == null) {
                 return Mono.just(new Utils.ValueHolder<>(currentRoutingMap.get(collectionRid)));
@@ -390,7 +393,9 @@ public class AddressResolverTest {
             }
 
             return Mono.error(new NotImplementedException("not mocked"));
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(),
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(
+            Mockito.any(MetadataDiagnosticsContext.class),
+            Mockito.anyString(),
             Mockito.any(CollectionRoutingMap.class),
             Mockito.anyBoolean(),
             Mockito.anyMapOf(String.class, Object.class));

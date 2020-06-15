@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -19,6 +17,10 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -32,9 +34,8 @@ public class ServiceBusSenderClientTest {
 
     @Mock
     private ServiceBusSenderAsyncClient asyncSender;
-
-    @Captor
-    private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
+    @Mock
+    ServiceBusTransactionContext transactionContext;
 
     private ServiceBusSenderClient sender;
 
@@ -62,7 +63,6 @@ public class ServiceBusSenderClientTest {
     @AfterEach
     void teardown() {
         sender.close();
-        singleMessageCaptor = null;
         Mockito.framework().clearInlineMocks();
     }
 
@@ -138,6 +138,109 @@ public class ServiceBusSenderClientTest {
     }
 
     /**
+     * Verifies that sending an array of message will result in calling sender.send(Message..., transaction).
+     */
+    @Test
+    void sendMessageListWithTransaction() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
+            contents);
+
+        when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(messages, transactionContext);
+
+        // Assert
+        verify(asyncSender).send(messages, transactionContext);
+    }
+
+    /**
+     * Verifies that sending an array of message will result in calling sender.send(Message...).
+     */
+    @Test
+    void sendMessageList() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(),
+            contents);
+
+        when(asyncSender.send(messages)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(messages);
+
+        // Assert
+        verify(asyncSender).send(messages);
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(List ServiceBusMessage, transaction).
+     */
+    @Test
+    void sendListMessageNullTransaction() {
+        // Arrange
+        final ServiceBusTransactionContext nullTransaction = null;
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        List<ServiceBusMessage> messages = new ArrayList<>();
+        messages.add(testData);
+        when(asyncSender.send(messages, transactionContext)).thenReturn(Mono.empty());
+
+        // Act & Assert
+        try {
+            sender.send(messages, nullTransaction);
+            Assertions.fail("This should have failed with NullPointerException.");
+        } catch (Exception ex) {
+            Assertions.assertTrue(ex instanceof NullPointerException);
+        }
+        verify(asyncSender).send(messages, nullTransaction);
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(Message, transaction).
+     */
+    @Test
+    void sendSingleMessageNullTransaction() {
+        // Arrange
+        final ServiceBusTransactionContext nullTransaction = null;
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+
+        when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
+
+        // Act & Assert
+        try {
+            sender.send(testData, nullTransaction);
+            Assertions.fail("This should have failed with NullPointerException.");
+        } catch (Exception ex) {
+            Assertions.assertTrue(ex instanceof NullPointerException);
+        }
+        verify(asyncSender).send(testData, nullTransaction);
+    }
+
+    /**
+     * Verifies that sending a single message will result in calling sender.send(Message, transaction).
+     */
+    @Test
+    void sendSingleMessageWithTransaction() {
+        // Arrange
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+
+        when(asyncSender.send(testData, transactionContext)).thenReturn(Mono.empty());
+
+        // Act
+        sender.send(testData, transactionContext);
+
+        // Assert
+        verify(asyncSender).send(testData, transactionContext);
+    }
+
+    /**
      * Verifies that sending a single message will result in calling sender.send(Message).
      */
     @Test
@@ -152,10 +255,66 @@ public class ServiceBusSenderClientTest {
         sender.send(testData);
 
         // Assert
-        verify(asyncSender, times(1)).send(testData);
-        verify(asyncSender).send(singleMessageCaptor.capture());
+        verify(asyncSender).send(testData);
+    }
 
-        final ServiceBusMessage message = singleMessageCaptor.getValue();
-        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
+    /**
+     * Verifies that scheduling a message will result in calling asyncSender.scheduleMessage().
+     */
+    @Test
+    void scheduleMessage() {
+        // Arrange
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final Instant scheduledEnqueueTime = Instant.now();
+        final long expected = 1;
+
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime)).thenReturn(Mono.just(expected));
+
+        // Act
+        long actual = sender.scheduleMessage(testData, scheduledEnqueueTime);
+
+        // Assert
+        Assertions.assertEquals(expected, actual);
+        verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime);
+
+    }
+
+    /**
+     * Verifies that scheduling a message will result in calling asyncSender.scheduleMessage() with transaction.
+     */
+    @Test
+    void scheduleMessageWithTransaction() {
+        // Arrange
+        final ServiceBusMessage testData =
+            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final Instant scheduledEnqueueTime = Instant.now();
+        final long expected = 1;
+
+        when(asyncSender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext)).thenReturn(Mono.just(expected));
+
+        // Act
+        long actual = sender.scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+
+        // Assert
+        Assertions.assertEquals(expected, actual);
+        verify(asyncSender).scheduleMessage(testData, scheduledEnqueueTime, transactionContext);
+    }
+
+    /**
+     * Verifies that cancel a scheduled message will result in calling asyncSender.cancelScheduledMessage().
+     */
+    @Test
+    void cancelScheduleMessage() {
+        // Arrange
+        final long sequenceNumber = 1;
+
+        when(asyncSender.cancelScheduledMessage(sequenceNumber)).thenReturn(Mono.empty());
+
+        // Act
+        sender.cancelScheduledMessage(sequenceNumber);
+
+        // Assert
+        verify(asyncSender).cancelScheduledMessage(sequenceNumber);
     }
 }

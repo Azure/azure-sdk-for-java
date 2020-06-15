@@ -4,26 +4,14 @@
 package com.azure.storage.blob
 
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.models.BlobAnalyticsLogging
-import com.azure.storage.blob.models.BlobContainerItem
-import com.azure.storage.blob.models.BlobContainerListDetails
-import com.azure.storage.blob.models.BlobCorsRule
-import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.models.BlobRetentionPolicy
-import com.azure.storage.blob.models.BlobServiceProperties
-import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.models.StaticWebsite
-
-import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.blob.models.BlobStorageException
-
+import com.azure.storage.blob.models.*
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -517,5 +505,43 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "OAuth on secondary"() {
+        setup:
+        def secondaryEndpoint = String.format(defaultEndpointTemplate,
+            primaryCredential.getAccountName() + "-secondary")
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, secondaryEndpoint)).buildClient()
+
+        when:
+        serviceClient.getProperties()
+
+        then:
+        notThrown(Exception)
+    }
+
+    @Unroll
+    def "sas token does not show up on invalid uri"() {
+        setup:
+        /* random sas token. this does not actually authenticate anything. */
+        def mockSas = "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter"
+
+        when:
+        BlobServiceClient client = new BlobServiceClientBuilder()
+            .endpoint(service)
+            .sasToken(mockSas)
+            .buildClient();
+        client.getBlobContainerClient(container)
+            .getBlobClient("blobname")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        !e.getMessage().contains(mockSas)
+
+        where:
+        service                                       | container        || _
+        "https://doesntmatter. blob.core.windows.net" | "containername"  || _
+        "https://doesntmatter.blob.core.windows.net"  | "container name" || _
+        /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 }

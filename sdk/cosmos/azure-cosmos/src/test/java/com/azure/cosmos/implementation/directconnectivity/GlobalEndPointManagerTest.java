@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -120,6 +122,7 @@ public class GlobalEndPointManagerTest {
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
         Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -127,14 +130,14 @@ public class GlobalEndPointManagerTest {
      * switching to different preferredLocation region
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
-    public void refreshLocationAsyncForConnectivityIssueWithPreferredLocation() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+    public void refreshLocationAsyncForConnectivityIssueWithPreferredRegions() throws Exception {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
-        List<String> preferredLocation = new ArrayList<>();
-        preferredLocation.add("East US");
-        preferredLocation.add("East Asia");
-        connectionPolicy.setPreferredLocations(preferredLocation);
-        connectionPolicy.setUsingMultipleWriteLocations(true);
+        List<String> preferredRegions = new ArrayList<>();
+        preferredRegions.add("East US");
+        preferredRegions.add("East Asia");
+        connectionPolicy.setPreferredRegions(preferredRegions);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount.documents.azure.com:443"));
@@ -173,6 +176,7 @@ public class GlobalEndPointManagerTest {
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
         Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -212,6 +216,7 @@ public class GlobalEndPointManagerTest {
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
         Assert.assertTrue(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -219,9 +224,9 @@ public class GlobalEndPointManagerTest {
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void backgroundRefreshForMultiMaster() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
-        connectionPolicy.setUsingMultipleWriteLocations(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson4);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount.documents.azure.com:443"));
@@ -230,6 +235,7 @@ public class GlobalEndPointManagerTest {
 
         AtomicBoolean isRefreshInBackground = getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshInBackground.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     /**
@@ -237,9 +243,9 @@ public class GlobalEndPointManagerTest {
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void startRefreshLocationTimerAsync() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
-        connectionPolicy.setUsingMultipleWriteLocations(true);
+        connectionPolicy.setMultipleWriteRegionsEnabled(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount.documents.azure.com:443"));
@@ -272,6 +278,7 @@ public class GlobalEndPointManagerTest {
         isRefreshing = this.getIsRefreshing(globalEndPointManager);
         isRefreshInBackground = this.getRefreshInBackground(globalEndPointManager);
         Assert.assertFalse(isRefreshing.get());
+        LifeCycleUtils.closeQuietly(globalEndPointManager);
     }
 
     private LocationCache getLocationCache(GlobalEndpointManager globalEndPointManager) throws Exception {
@@ -332,9 +339,9 @@ public class GlobalEndPointManagerTest {
     }
 
     private GlobalEndpointManager getGlobalEndPointManager() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
-        connectionPolicy.setUsingMultipleWriteLocations(true); // currently without this proper, background refresh will not work
+        connectionPolicy.setMultipleWriteRegionsEnabled(true); // currently without this proper, background refresh will not work
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(databaseAccount));
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI("https://testaccount.documents.azure.com:443"));

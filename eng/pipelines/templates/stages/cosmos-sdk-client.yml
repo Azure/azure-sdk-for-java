@@ -1,7 +1,9 @@
 parameters:
   Artifacts: []
   ServiceDirectory: not-specified
-  
+  TargetDocRepoOwner: 'Azure'
+  TargetDocRepoName: 'azure-docs-sdk-java'
+
 stages:
   - stage: Build
     jobs:
@@ -13,43 +15,36 @@ stages:
         SDKType: ${{parameters.SDKType}}
         TestMatrix:
           Linux - Java 8:
-            OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
           macOS - Java 8:
-            OSName: 'macOS'
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
           Windows - Java 8:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
           Linux - Java 11:
-            OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
           macOS - Java 11:
-            OSName: 'macOS'
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
           Windows - Java 11:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
           Windows From Source - Java 8:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             RunTitle: 'From Source: Windows on Java 1.8'
@@ -148,12 +143,12 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
+    - template: archetype-java-release.yml
       parameters:
         DependsOn: Build
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
-
-        
+        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 

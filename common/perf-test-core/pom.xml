@@ -47,36 +47,19 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <searchTransitive>false</searchTransitive>
-                  <excludes>
-                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
-                    dependencies when they are used for test scope or otherwise) -->
-                    <exclude>*:*:*:*:runtime</exclude>
-                    <exclude>*:*:*:*:compile</exclude>
-                    <exclude>*:*:*:*:provided</exclude>
-                  </excludes>
-                  <includes>
-                    <include>com.azure:*</include>
-                    <include>org.slf4j</include>
-                    <include>com.fasterxml.jackson.*</include>
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
 
-                    <!-- special allowance for perf-test-core as it is not a shipping library: -->
-                    <include>com.beust:jcommander</include>
-                  </includes>
-                </bannedDependencies>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
+                <!-- special allowance for perf-test-core as it is not a shipping library: -->
+                <include>com.beust:jcommander:[1.58]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -95,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 </project>

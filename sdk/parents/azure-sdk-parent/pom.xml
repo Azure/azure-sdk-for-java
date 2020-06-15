@@ -68,20 +68,6 @@
     </pluginRepository>
   </pluginRepositories>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <uniqueVersion>true</uniqueVersion>
-      <layout>default</layout>
-    </snapshotRepository>
-    <site>
-      <id>azure-java-build-docs</id>
-      <url>${site.url}/site/</url>
-    </site>
-  </distributionManagement>
-
   <issueManagement>
     <system>GitHub</system>
     <url>${issues.url}</url>
@@ -95,6 +81,7 @@
   </scm>
 
   <properties>
+    <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
@@ -168,17 +155,6 @@
               <include>**/*Tests.java</include>
               <include>**/*TestCase.java</include>
             </includes>
-            <systemPropertyVariables>
-              <configurationAPIRuntimeFound>runtimeConfiguration</configurationAPIRuntimeFound>
-              <configurationAPIUseRuntimeFirst>runtimeConfiguration</configurationAPIUseRuntimeFirst>
-            </systemPropertyVariables>
-            <environmentVariables>
-              <test.mode>${testMode}</test.mode>
-              <KEYVAULT_VAULTURI>https://azure-keyvault-3.vault.azure.net</KEYVAULT_VAULTURI>
-              <KEYVAULT_VAULTURI_ALT>https://azure-keyvault-2.vault.azure.net</KEYVAULT_VAULTURI_ALT>
-              <configurationAPIEnvironmentFound>environmentConfiguration</configurationAPIEnvironmentFound>
-              <configurationAPIUseRuntimeFirst>environmentConfiguration</configurationAPIUseRuntimeFirst>
-            </environmentVariables>
             <useSystemClassLoader>false</useSystemClassLoader>
           </configuration>
         </plugin>

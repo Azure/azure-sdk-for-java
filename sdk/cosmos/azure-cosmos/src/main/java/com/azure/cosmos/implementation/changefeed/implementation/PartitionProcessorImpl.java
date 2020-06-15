@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -24,7 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
 
@@ -79,11 +78,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     return Flux.just(value);
                 }
 
-                ZonedDateTime stopTimer = ZonedDateTime.now().plus(this.settings.getFeedPollDelay());
+                Instant stopTimer = Instant.now().plus(this.settings.getFeedPollDelay());
                 return Mono.just(value)
                     .delayElement(Duration.ofMillis(100))
                     .repeat( () -> {
-                        ZonedDateTime currentTime = ZonedDateTime.now();
+                        Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                     }).last();
 
@@ -121,11 +120,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 }
             })
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
+                if (throwable instanceof CosmosException) {
 
-                    CosmosClientException clientException = (CosmosClientException) throwable;
-                    logger.warn("CosmosClientException: partition {} from thread {}",
-                        BridgeInternal.getPartitionKeyInternal(this.options.getPartitionKey()), Thread.currentThread().getId(), clientException);
+                    CosmosException clientException = (CosmosException) throwable;
+                    logger.warn("CosmosException: partition {} from thread {}",
+                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -156,12 +155,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         case TRANSIENT_ERROR: {
                             // Retry on transient (429) errors
                             if (clientException.getRetryAfterDuration().toMillis() > 0) {
-                                ZonedDateTime stopTimer = ZonedDateTime.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
+                                Instant stopTimer = Instant.now().plus(clientException.getRetryAfterDuration().toMillis(), MILLIS);
                                 return Mono.just(clientException.getRetryAfterDuration().toMillis()) // set some seed value to be able to run
                                            // the repeat loop
                                            .delayElement(Duration.ofMillis(100))
                                            .repeat(() -> {
-                                        ZonedDateTime currentTime = ZonedDateTime.now();
+                                               Instant currentTime = Instant.now();
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                                     }).flatMap(values -> Flux.empty());
                             }
@@ -174,7 +173,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     }
                 } else if (throwable instanceof LeaseLostException) {
                         logger.info("LeaseLoseException with partition {} from thread {}",
-                            BridgeInternal.getPartitionKeyInternal(this.options.getPartitionKey()), Thread.currentThread().getId());
+                            this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId());
                         this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Task cancelled exception: partition {} from {}",

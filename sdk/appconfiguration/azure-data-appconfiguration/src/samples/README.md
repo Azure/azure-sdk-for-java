@@ -47,14 +47,13 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_GETTING_STARTED]: ../../README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: ../../README.md#troubleshooting
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
-[SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [proxy_option]: java/com/azure/data/appconfiguration/ProxyOptionsSample.java
 [sample_hello_world]: java/com/azure/data/appconfiguration/HelloWorld.java
 [sample_list_configuration_settings]: java/com/azure/data/appconfiguration/ConfigurationSets.java
 [sample_conditional_request]: java/com/azure/data/appconfiguration/ConditionalRequest.java
 [sample_read_only]: java/com/azure/data/appconfiguration/ReadOnlySample.java
-[sample_read_revision_history]: com/azure/data/appconfiguration/ReadRevisionHistory.java
+[sample_read_revision_history]: java/com/azure/data/appconfiguration/ReadRevisionHistory.java
 [sample_aad]: java/com/azure/data/appconfiguration/AadAuthentication.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2Fsrc%2Fsamples%2FREADME.png)

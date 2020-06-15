@@ -5,10 +5,11 @@ package com.azure.cosmos.rx.examples.multimaster.samples;
 
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -84,8 +85,8 @@ public class Worker {
                 FeedResponse<Document> response = null;
                 do {
 
-                    FeedOptions options = new FeedOptions();
-                    options.setRequestContinuation(response != null ? response.getContinuationToken() : null);
+                    CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+                    ModelBridgeInternal.setQueryRequestOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
                     response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                             .subscribeOn(schedulerForBlockingWork).single().block();
@@ -121,8 +122,8 @@ public class Worker {
         FeedResponse<Document> response = null;
         do {
 
-            FeedOptions options = new FeedOptions();
-            options.setRequestContinuation(response != null ? response.getContinuationToken() : null);
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(options, response != null ? response.getContinuationToken() : null);
 
             response = this.client.readDocuments(this.documentCollectionUri, options).take(1)
                     .subscribeOn(schedulerForBlockingWork).single().block();
@@ -135,7 +136,7 @@ public class Worker {
                 this.client.deleteDocument(document.getSelfLink(), null)
                         .subscribeOn(schedulerForBlockingWork).single().block();
             } catch (RuntimeException exEx) {
-                CosmosClientException dce = getDocumentClientExceptionCause(exEx);
+                CosmosException dce = getDocumentClientExceptionCause(exEx);
 
                 if (dce.getStatusCode() != 404) {
                     logger.info("Error occurred while deleting {} from {}", dce, client.getWriteEndpoint());
@@ -146,11 +147,11 @@ public class Worker {
         logger.info("Deleted all documents from region {}", this.client.getWriteEndpoint());
     }
 
-    private CosmosClientException getDocumentClientExceptionCause(Throwable e) {
+    private CosmosException getDocumentClientExceptionCause(Throwable e) {
         while (e != null) {
 
-            if (e instanceof CosmosClientException) {
-                return (CosmosClientException) e;
+            if (e instanceof CosmosException) {
+                return (CosmosException) e;
             }
 
             e = e.getCause();

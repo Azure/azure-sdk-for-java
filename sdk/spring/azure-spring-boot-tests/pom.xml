@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-spring-boot-tests</artifactId>
+  <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-tests;current} -->
+  <packaging>pom</packaging>
+
+  <name>Azure Spring Boot Tests</name>
+  <description>Tests for Azure Spring Boot</description>
+
+  <modules>
+    <module>azure-spring-boot-test-core</module>
+    <module>azure-spring-boot-test-application</module>
+    <module>azure-spring-boot-test-aad</module>
+    <module>azure-spring-boot-test-cosmosdb</module>
+    <module>azure-spring-boot-test-keyvault</module>
+  </modules>
+
+  <properties>
+    <skipSpringITs>true</skipSpringITs>
+  </properties>
+
+</project>

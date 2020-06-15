@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -22,20 +24,22 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     private final DocumentClientRetryPolicy nextRetryPolicy;
     private final IPartitionKeyRangeCache partitionKeyRangeCache;
     private final String collectionLink;
-    private final FeedOptions feedOptions;
+    private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private volatile boolean retried;
+    private RxDocumentServiceRequest request;
 
     public PartitionKeyRangeGoneRetryPolicy(
             RxCollectionCache collectionCache,
             IPartitionKeyRangeCache partitionKeyRangeCache,
             String collectionLink,
             DocumentClientRetryPolicy nextRetryPolicy,
-            FeedOptions feedOptions) {
+            CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         this.collectionCache = collectionCache;
         this.partitionKeyRangeCache = partitionKeyRangeCache;
         this.collectionLink = collectionLink;
         this.nextRetryPolicy = nextRetryPolicy;
-        this.feedOptions = feedOptions;
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
+        this.request = null;
     }
 
     /// <summary>
@@ -45,7 +49,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     /// <param name="cancellationToken"></param>
     /// <returns>True indicates caller should retry, False otherwise</returns>
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
-        CosmosClientException clientException = Utils.as(exception, CosmosClientException.class);
+        CosmosException clientException = Utils.as(exception, CosmosException.class);
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
@@ -61,20 +65,26 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                     null
                     // AuthorizationTokenType.PrimaryMasterKey)
                     );
-            if (this.feedOptions != null) {
-                request.properties = this.feedOptions.getProperties();
+            if (this.cosmosQueryRequestOptions != null) {
+                request.properties = ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions);
             }
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
+                BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                request);
 
             return collectionObs.flatMap(collectionValueHolder -> {
 
-                Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(collectionValueHolder.v.getResourceId(),
-                    null, request.properties);
+                Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
+                    BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
+                    collectionValueHolder.v.getResourceId(),
+                    null,
+                    request.properties);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
                         // Force refresh.
                         return this.partitionKeyRangeCache.tryLookupAsync(
+                            null,
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
                             request.properties);
@@ -98,6 +108,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
+        this.request = request;
         this.nextRetryPolicy.onBeforeSendRequest(request);
     }
 

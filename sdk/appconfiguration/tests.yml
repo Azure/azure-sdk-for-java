@@ -10,8 +10,6 @@ jobs:
           safeName: azuredataappconfiguration
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_TEST_HTTP_CLIENTS: ALL
-        AZURE_APPCONFIG_TEST_SERVICE_VERSIONS: ALL
         AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)

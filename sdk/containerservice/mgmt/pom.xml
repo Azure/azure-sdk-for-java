@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-parent</artifactId>
+        <groupId>com.azure.resourcemanager</groupId>
+        <artifactId>azure-resourcemanager-parent</artifactId>
         <version>2.0.0-SNAPSHOT</version>
         <relativePath>../../management/pom.xml</relativePath>
     </parent>
 
-    <artifactId>azure-mgmt-containerservice</artifactId>
+    <artifactId>azure-resourcemanager-containerservice</artifactId>
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Container Service Management</name>
@@ -43,20 +43,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-core-management</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-identity</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
+            <groupId>com.azure.resourcemanager</groupId>
+            <artifactId>azure-resourcemanager-resources</artifactId>
             <version>2.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -70,13 +58,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-storage</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
+            <groupId>com.azure.resourcemanager</groupId>
+            <artifactId>azure-resourcemanager-resources</artifactId>
             <version>2.0.0-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
@@ -89,6 +72,11 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core-http-netty</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -126,21 +114,6 @@
                   </compilerArguments>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.1.1</version>
-                <configuration>
-                    <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
-                    <bottom><![CDATA[<code>/**
-<br />* Copyright (c) Microsoft Corporation. All rights reserved.
-<br />* Licensed under the MIT License. See License.txt in the project root for
-<br />* license information.
-<br />*/</code>]]></bottom>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 

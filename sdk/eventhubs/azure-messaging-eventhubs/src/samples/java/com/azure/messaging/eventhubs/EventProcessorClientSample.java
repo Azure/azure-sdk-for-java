@@ -53,7 +53,7 @@ public class EventProcessorClientSample {
             .connectionString(EH_CONNECTION_STRING)
             .processEvent(processEvent)
             .processError(processError)
-            .checkpointStore(new InMemoryCheckpointStore());
+            .checkpointStore(new SampleCheckpointStore());
 
         EventProcessorClient eventProcessorClient = eventProcessorClientBuilder.buildEventProcessorClient();
         System.out.println("Starting event processor");

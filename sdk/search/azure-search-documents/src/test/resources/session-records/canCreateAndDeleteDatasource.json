@@ -1,21 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "DELETE",
-    "Uri" : "https://azs-sdk451307e2296.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob4900846b5')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "9097897e-380e-4b5d-96dd-10ea1c381d2c"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a6ecd310-613d-4065-8b44-663eb1ba1e94",
+      "request-id" : "9097897e-380e-4b5d-96dd-10ea1c381d2c",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:30:21 GMT",
+      "Date" : "Mon, 11 May 2020 17:57:10 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "21",
+      "client-request-id" : "9097897e-380e-4b5d-96dd-10ea1c381d2c",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "133",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob' was found in a service named 'azs-sdk451307e2296'.\"}}",
+      "Content-Length" : "139",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No datasource with the name 'azs-java-test-blob4900846b5' was found in a service named 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
@@ -23,26 +26,29 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk451307e2296.search.windows.net/datasources('azs-java-test-blob')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-blob4900846b5')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "128175e3-1666-4069-9c7e-9ccedbcc1fb7"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "0e9a519a-27c6-44dd-8f7b-0802e01dd7d0",
+      "request-id" : "128175e3-1666-4069-9c7e-9ccedbcc1fb7",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:30:21 GMT",
+      "Date" : "Mon, 11 May 2020 17:57:10 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "6",
+      "client-request-id" : "128175e3-1666-4069-9c7e-9ccedbcc1fb7",
+      "elapsed-time" : "7",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "126",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob' was found in service 'azs-sdk451307e2296'.\"}}",
+      "Content-Length" : "132",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'azs-java-test-blob4900846b5' was found in service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk451307e2296" ]
+  "variables" : [ "azs-java-test-blob4900846b5" ]
 }
