@@ -57,12 +57,12 @@ public class TracerProvider {
      */
     public Context startSpan(String methodName, String databaseId, String endpoint, Context context) {
         Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        local = local.addData(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME);
         local = tracer.start(methodName, local); // start the span and return the started span
         if (databaseId != null) {
             tracer.setAttribute(TracerProvider.DB_INSTANCE, databaseId, local);
         }
 
-        tracer.setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME, local);
         tracer.setAttribute(TracerProvider.DB_TYPE, DB_TYPE_VALUE, local);
         tracer.setAttribute(TracerProvider.DB_URL, endpoint, local);
         tracer.setAttribute(TracerProvider.DB_STATEMENT, methodName, local);
