@@ -1182,7 +1182,7 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().getBlobCommittedBlockCount(),
             response.getDeserializedHeaders().getTagCount(),
             response.getDeserializedHeaders().getVersionId(), null,
-            response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
+            response.getDeserializedHeaders().getObjectReplicationPolicies(),
             response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
     }

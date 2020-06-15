@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A type that contains information about an object replication policy on a source blob.
@@ -12,15 +12,15 @@ import java.util.Map;
 public class ObjectReplicationPolicy {
 
     private final String policyId;
-    private final Map<String, String> ruleStatuses;
+    private final List<ObjectReplicationRule> objectReplicationRules;
 
     ObjectReplicationPolicy(String policyId) {
         this.policyId = policyId;
-        this.ruleStatuses = new HashMap<>();
+        this.objectReplicationRules = new ArrayList<>();
     }
 
-    void putRuleAndStatus(String rule, String status) {
-        this.ruleStatuses.put(rule, status);
+    void putRule(ObjectReplicationRule rule) {
+        this.objectReplicationRules.add(rule);
     }
 
     /**
@@ -31,10 +31,20 @@ public class ObjectReplicationPolicy {
     }
 
     /**
-     * @return A {@code Map} of rules associated with this policy to the status of the replication associated with that
+     * @return A {@code List} of rules associated with this policy to the status of the replication associated with that
      * rule.
      */
-    public Map<String, String> getRules() {
-        return this.ruleStatuses;
+    public List<ObjectReplicationRule> getRules() {
+        return this.objectReplicationRules;
+    }
+
+    static int getIndexOfObjectReplicationPolicy(String policyId,
+        List<ObjectReplicationPolicy> objectReplicationPolicies) {
+        for (int i = 0; i < objectReplicationPolicies.size(); i++) {
+            if (policyId.equals(objectReplicationPolicies.get(i).getPolicyId())) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

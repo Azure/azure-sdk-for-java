@@ -7,28 +7,7 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobBeginCopyOptions
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions
-import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType
-import com.azure.storage.blob.models.DownloadRetryOptions
-import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.RehydratePriority
-import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.models.*
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -987,16 +966,21 @@ class BlobAPITest extends APISpec {
             false, null, null)
 
         then:
-        sourceProperties.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
-            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
-        sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies()
-            .get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
-            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+        validateOR(sourceProperties.getObjectReplicationPolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationPolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+
         // There is a sas token attached at the end. Only check that the path is the same.
         destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath())
         destProperties.getObjectReplicationDestinationPolicyId() == "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
         destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId() ==
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
+    }
+
+    def validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+        def policyIndex = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId, policies)
+        def rules = policies.get(policyIndex).getRules()
+        def ruleIndex = ObjectReplicationRule.getIndexOfObjectReplicationRule(ruleId, rules)
+        return rules.get(ruleIndex).getStatus() == ObjectReplicationStatus.COMPLETE
     }
 
     // Test getting the properties from a listing

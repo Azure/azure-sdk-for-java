@@ -9,9 +9,12 @@ import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Defines headers for Download operation.
@@ -24,7 +27,7 @@ public final class BlobDownloadHeaders {
      * Instantiates an empty {@code BlobDownloadHeaders}.
      */
     public BlobDownloadHeaders() {
-        objectReplicationSourcePolicies = null;
+        objectReplicationPolicies = null;
     }
 
     /**
@@ -74,25 +77,27 @@ public final class BlobDownloadHeaders {
         this.errorCode = headers.getErrorCode();
         this.tagCount = headers.getTagCount();
 
-        this.objectReplicationSourcePolicies = new HashMap<>();
-        this.objectReplicationRuleStatus = headers.getObjectReplicationRules() == null ? new HashMap<>()
-            : headers.getObjectReplicationRules();
-        this.objectReplicationDestinationPolicyId = this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
-        /*
-        If there is no destination policy, then we are a source. If ORS is enabled. If it is not enabled, the loop will
-        just never enter.
-         */
+        Map<String, String> objectReplicationStatus = headers.getObjectReplicationRules();
+
+        this.objectReplicationPolicies = new ArrayList<>();
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
         if (this.objectReplicationDestinationPolicyId == null) {
-            for (Map.Entry<String, String> entry : this.objectReplicationRuleStatus.entrySet()) {
+            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
                 String[] split = entry.getKey().split("_");
                 String policyId = split[0];
                 String ruleId = split[1];
-                if (this.objectReplicationSourcePolicies.containsKey(policyId)) {
-                    this.objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());
-                } else {
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                int index = ObjectReplicationPolicy.getIndexOfObjectReplicationPolicy(policyId,
+                    this.objectReplicationPolicies);
+                if (index == -1) {
                     ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, entry.getValue());
-                    this.objectReplicationSourcePolicies.put(policyId, policy);
+                    policy.putRule(rule);
+                    this.objectReplicationPolicies.add(policy);
+                } else {
+                    ObjectReplicationPolicy policy = objectReplicationPolicies.get(index);
+                    policy.putRule(rule);
                 }
             }
         }
@@ -123,7 +128,7 @@ public final class BlobDownloadHeaders {
      * The objectReplicationRuleStatus property.
      */
     @HeaderCollection("x-ms-or-")
-    private Map<String, String> objectReplicationRuleStatus;
+    private List<ObjectReplicationPolicy> objectReplicationPolicies;
 
     /*
      * The number of bytes present in the response body.
@@ -395,8 +400,6 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
-    private final Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
-
     /**
      * Get the lastModified property: Returns the date and time the container
      * was last modified. Any operation that modifies the blob, including an
@@ -451,7 +454,7 @@ public final class BlobDownloadHeaders {
      * @return the objectReplicationDestinationPolicyId value.
      */
     public String getObjectReplicationDestinationPolicyId() {
-        return this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
+        return this.objectReplicationDestinationPolicyId;
     }
 
     /**
@@ -469,25 +472,25 @@ public final class BlobDownloadHeaders {
     }
 
     /**
-     * Get the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Get the objectReplicationPolicies property: The
+     * objectReplicationPolicies property.
      *
-     * @return the objectReplicationRuleStatus value.
+     * @return the objectReplicationPolicies value.
      */
-    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
-        return this.objectReplicationSourcePolicies;
+    public List<ObjectReplicationPolicy> getObjectReplicationPolicies() {
+        return this.objectReplicationPolicies;
     }
 
     /**
-     * Set the objectReplicationRuleStatus property: The
-     * objectReplicationRuleStatus property.
+     * Set the objectReplicationPolicies property: The
+     * objectReplicationPolicies property.
      *
-     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * @param objectReplicationPolicies the objectReplicationPolicies value
      * to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
-        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
+    public BlobDownloadHeaders setObjectReplicationPolicies(List<ObjectReplicationPolicy> objectReplicationPolicies) {
+        this.objectReplicationPolicies = objectReplicationPolicies;
         return this;
     }
 
