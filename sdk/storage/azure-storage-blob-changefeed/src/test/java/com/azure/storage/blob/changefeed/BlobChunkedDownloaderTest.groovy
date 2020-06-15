@@ -9,19 +9,19 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 
-class BlobLazyDownloaderTest extends APISpec {
+class BlobChunkedDownloaderTest extends APISpec {
 
     BlobAsyncClient bc
-    BlobLazyDownloaderFactory factory
+    BlobChunkedDownloaderFactory factory
 
     def setup() {
         def cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         cc.create().block()
         bc = Spy(cc.getBlobAsyncClient(generateBlobName()))
-        factory = new BlobLazyDownloaderFactory(cc)
+        factory = new BlobChunkedDownloaderFactory(cc)
     }
 
-    byte[] downloadHelper(BlobLazyDownloader downloader) {
+    byte[] downloadHelper(BlobChunkedDownloader downloader) {
         OutputStream os = downloader.download()
             .reduce(new ByteArrayOutputStream(),  { outputStream, buffer ->
             outputStream.write(FluxUtil.byteBufferToArray(buffer))
@@ -43,7 +43,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(size)
 
         when:
-        byte[] output = downloadHelper(new BlobLazyDownloader(bc, blockSize, 0))
+        byte[] output = downloadHelper(new BlobChunkedDownloader(bc, blockSize, 0))
 
         then:
         output == input
@@ -62,7 +62,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(Constants.KB)
 
         when:
-        byte[] output = downloadHelper(new BlobLazyDownloader(bc, Constants.KB, offset))
+        byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
@@ -84,7 +84,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(size)
 
         when:
-        byte[] output = downloadHelper(new BlobLazyDownloader(bc, Constants.KB, offset))
+        byte[] output = downloadHelper(new BlobChunkedDownloader(bc, Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
@@ -117,7 +117,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(uploadSize)
 
         when:
-        byte[] output = downloadHelper(new BlobLazyDownloader(bc, downloadSize))
+        byte[] output = downloadHelper(new BlobChunkedDownloader(bc, downloadSize))
 
         then:
         assert output.length == downloadSize

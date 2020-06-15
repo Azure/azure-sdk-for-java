@@ -19,7 +19,7 @@ import java.util.function.Function;
  * FOR INTERNAL USE ONLY.
  * Class to lazily download a blob.
  */
-class BlobLazyDownloader {
+class BlobChunkedDownloader {
 
     private final BlobAsyncClient client; /* Client to download from. */
     private final long blockSize; /* The block size. */
@@ -28,7 +28,7 @@ class BlobLazyDownloader {
     /**
      * Creates a new BlobLazyDownloader to download the rest of a blob at a certain offset.
      */
-    BlobLazyDownloader(BlobAsyncClient client, long blockSize, long offset) {
+    BlobChunkedDownloader(BlobAsyncClient client, long blockSize, long offset) {
         this.client = client;
         this.blockSize = blockSize;
         this.range = new BlobRange(offset);
@@ -37,7 +37,7 @@ class BlobLazyDownloader {
     /**
      * Creates a new BlobLazyDownloader to download a partial blob.
      */
-    BlobLazyDownloader(BlobAsyncClient client, long totalSize) {
+    BlobChunkedDownloader(BlobAsyncClient client, long totalSize) {
         this.client = client;
         this.blockSize = totalSize;
         this.range = new BlobRange(0, totalSize);
@@ -49,7 +49,7 @@ class BlobLazyDownloader {
         BlobRequestConditions requestConditions = new BlobRequestConditions();
 
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range
-            -> client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
+            -> client.downloadWithResponse(range, null, requestConditions, false);
 
         return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc)
             .flatMapMany(setupTuple3 -> {

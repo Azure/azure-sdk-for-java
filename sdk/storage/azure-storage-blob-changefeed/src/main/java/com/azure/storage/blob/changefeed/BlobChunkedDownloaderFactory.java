@@ -8,16 +8,16 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
- * Factory class for {@link BlobLazyDownloader}.
+ * Factory class for {@link BlobChunkedDownloader}.
  */
-class BlobLazyDownloaderFactory {
+class BlobChunkedDownloaderFactory {
 
     private final BlobContainerAsyncClient client;
 
     /**
      * Creates a BlobLazyDownloaderFactory with the designated client.
      */
-    BlobLazyDownloaderFactory(BlobContainerAsyncClient client) {
+    BlobChunkedDownloaderFactory(BlobContainerAsyncClient client) {
         StorageImplUtils.assertNotNull("client", client);
         this.client = client;
     }
@@ -28,14 +28,14 @@ class BlobLazyDownloaderFactory {
      * @param blobPath The blob name.
      * @param blockSize The block size to download.
      * @param offset The offset to start downloading from.
-     * @return {@link BlobLazyDownloader}
+     * @return {@link BlobChunkedDownloader}
      */
-    BlobLazyDownloader getBlobLazyDownloader(String blobPath, long blockSize, long offset) {
+    BlobChunkedDownloader getBlobLazyDownloader(String blobPath, long blockSize, long offset) {
         StorageImplUtils.assertNotNull("blobPath", blobPath);
 
         BlobAsyncClient blobClient = this.client.getBlobAsyncClient(blobPath);
 
-        return new BlobLazyDownloader(blobClient, blockSize, offset);
+        return new BlobChunkedDownloader(blobClient, blockSize, offset);
     }
 
     /**
@@ -43,13 +43,13 @@ class BlobLazyDownloaderFactory {
      *
      * @param blobPath The blob name.
      * @param totalSize The total size to download.
-     * @return {@link BlobLazyDownloader}
+     * @return {@link BlobChunkedDownloader}
      */
-    BlobLazyDownloader getBlobLazyDownloader(String blobPath, long totalSize) {
+    BlobChunkedDownloader getBlobLazyDownloader(String blobPath, long totalSize) {
         StorageImplUtils.assertNotNull("blobPath", blobPath);
 
         BlobAsyncClient blobClient = this.client.getBlobAsyncClient(blobPath);
 
-        return new BlobLazyDownloader(blobClient, totalSize);
+        return new BlobChunkedDownloader(blobClient, totalSize);
     }
 }

@@ -22,16 +22,16 @@ class ChunkFactory {
     private static final long DEFAULT_BODY_SIZE = Constants.MB;
 
     private final AvroReaderFactory avroReaderFactory;
-    private final BlobLazyDownloaderFactory blobLazyDownloaderFactory;
+    private final BlobChunkedDownloaderFactory blobChunkedDownloaderFactory;
 
     /**
      * Creates a ChunkFactory with the designated factories.
      */
-    ChunkFactory(AvroReaderFactory avroReaderFactory, BlobLazyDownloaderFactory blobLazyDownloaderFactory) {
+    ChunkFactory(AvroReaderFactory avroReaderFactory, BlobChunkedDownloaderFactory blobChunkedDownloaderFactory) {
         StorageImplUtils.assertNotNull("avroReaderFactory", avroReaderFactory);
-        StorageImplUtils.assertNotNull("blobLazyDownloaderFactory", blobLazyDownloaderFactory);
+        StorageImplUtils.assertNotNull("blobLazyDownloaderFactory", blobChunkedDownloaderFactory);
         this.avroReaderFactory = avroReaderFactory;
-        this.blobLazyDownloaderFactory = blobLazyDownloaderFactory;
+        this.blobChunkedDownloaderFactory = blobChunkedDownloaderFactory;
     }
 
     /**
@@ -57,7 +57,7 @@ class ChunkFactory {
            Read events like normal using the simple AvroReader. */
         if (blockOffset == 0) {
             /* Download the whole blob lazily in chunks and use that as the source for the AvroReader. */
-            Flux<ByteBuffer> avro = blobLazyDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE,
+            Flux<ByteBuffer> avro = blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE,
                 blockOffset /* Note: this is 0. */)
                 .download();
             avroReader = avroReaderFactory.getAvroReader(avro);
@@ -67,12 +67,12 @@ class ChunkFactory {
             /* Download the first DEFAULT_HEADER_SIZE bytes from the blob lazily in chunks and use that as the header
                source for the AvroReader. */
             Flux<ByteBuffer> avroHeader =
-                blobLazyDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_HEADER_SIZE)
+                blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_HEADER_SIZE)
                     .download();
             /* Download the rest of the blob starting at the blockOffset lazily in chunks and use that as the body
                source for the AvroReader. */
             Flux<ByteBuffer> avroBody =
-                blobLazyDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE, blockOffset)
+                blobChunkedDownloaderFactory.getBlobLazyDownloader(chunkPath, DEFAULT_BODY_SIZE, blockOffset)
                     .download();
             avroReader = avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset, objectBlockIndex);
         }

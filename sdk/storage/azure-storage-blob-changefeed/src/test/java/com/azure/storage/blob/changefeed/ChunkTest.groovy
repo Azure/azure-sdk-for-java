@@ -24,8 +24,8 @@ class ChunkTest extends Specification {
     BlobAsyncClient mockBlob
     AvroReaderFactory mockAvroReaderFactory
     AvroReader mockAvroReader
-    BlobLazyDownloaderFactory mockBlobLazyDownloaderFactory
-    BlobLazyDownloader mockBlobLazyDownloader
+    BlobChunkedDownloaderFactory mockBlobLazyDownloaderFactory
+    BlobChunkedDownloader mockBlobLazyDownloader
 
     String chunkPath = "chunkPath"
     ChangefeedCursor chunkCursor
@@ -42,8 +42,8 @@ class ChunkTest extends Specification {
         mockBlob = mock(BlobAsyncClient.class)
         mockAvroReaderFactory = mock(AvroReaderFactory.class)
         mockAvroReader = mock(AvroReader.class)
-        mockBlobLazyDownloaderFactory = mock(BlobLazyDownloaderFactory.class)
-        mockBlobLazyDownloader = mock(BlobLazyDownloader.class)
+        mockBlobLazyDownloaderFactory = mock(BlobChunkedDownloaderFactory.class)
+        mockBlobLazyDownloader = mock(BlobChunkedDownloader.class)
 
         when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)
