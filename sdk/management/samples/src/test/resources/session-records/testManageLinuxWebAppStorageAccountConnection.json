@@ -149,7 +149,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "96b71416-95d1-453b-822a-602f43a1dc41",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"sJKJT26J7/o3FAW4e6I7/9U28ZLjRCIMfGqJXLirQK0GDSAUpibFK4mT/wg4X2ADC+/uRVqJRPCSGCcUW/c4Ww==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"NzXMkguAUDfvHiBOemaPP47N9zFXcACtNJEbzbjcEPPbIiXOxK0RAjq/Vl5t1fBojD2mQBn3uL2Ju9i9+zMSmw==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",
@@ -349,7 +349,7 @@
       "etag" : "\"1D5BA0EA735E555\"",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b9eaa2d9-b21d-41ff-87ff-3061fe222830",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_01431663ea91/providers/Microsoft.Web/sites/webapp1-e4b5306004/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore8d6046315;AccountKey=sJKJT26J7/o3FAW4e6I7/9U28ZLjRCIMfGqJXLirQK0GDSAUpibFK4mT/wg4X2ADC+/uRVqJRPCSGCcUW/c4Ww==\",\"type\":\"Custom\"}}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_01431663ea91/providers/Microsoft.Web/sites/webapp1-e4b5306004/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore8d6046315;AccountKey=***REMOVED***\",\"type\":\"Custom\"}}}"
     }
   }, {
     "Method" : "GET",
@@ -462,7 +462,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "e0177801-7fdb-4e38-b0bc-56f832c93ee0",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_01431663ea91/providers/Microsoft.Web/sites/webapp1-e4b5306004/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore8d6046315;AccountKey=sJKJT26J7/o3FAW4e6I7/9U28ZLjRCIMfGqJXLirQK0GDSAUpibFK4mT/wg4X2ADC+/uRVqJRPCSGCcUW/c4Ww==\",\"type\":\"Custom\"}}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_01431663ea91/providers/Microsoft.Web/sites/webapp1-e4b5306004/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore8d6046315;AccountKey=***REMOVED***\",\"type\":\"Custom\"}}}"
     }
   }, {
     "Method" : "GET",
@@ -630,7 +630,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "6069d5e1-73fc-4bcd-b25c-2fc106041a37",
-      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_01431663ea91/providers/Microsoft.Web/sites/webapp1-e4b5306004/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore8d6046315;AccountKey=sJKJT26J7/o3FAW4e6I7/9U28ZLjRCIMfGqJXLirQK0GDSAUpibFK4mT/wg4X2ADC+/uRVqJRPCSGCcUW/c4Ww==\",\"type\":\"Custom\"}}}"
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1nemv_01431663ea91/providers/Microsoft.Web/sites/webapp1-e4b5306004/config/connectionstrings\",\"name\":\"connectionstrings\",\"type\":\"Microsoft.Web/sites/config\",\"location\":\"West US\",\"tags\":{},\"properties\":{\"storage.connectionString\":{\"value\":\"DefaultEndpointsProtocol=https;AccountName=jsdkstore8d6046315;AccountKey=***REMOVED***\",\"type\":\"Custom\"}}}"
     }
   }, {
     "Method" : "GET",

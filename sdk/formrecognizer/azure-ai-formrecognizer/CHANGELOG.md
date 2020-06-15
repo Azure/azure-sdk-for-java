@@ -1,6 +1,11 @@
 # Release History
 
-## 1.0.0-beta.3 (2020-06-09)
+## 1.0.0-beta.4 (Unreleased)
+### Breaking Changes
+- Rename `elements` property on model `FormTableCell` to `textContent`
+- Remove `TextContentType` model and use `instanceOf` to detect the FormContent type
+
+## 1.0.0-beta.3 (2020-06-10)
 ### New Features
 - Support to copy a custom model from one Form Recognizer resource to another
 - Added support for AAD Authentication.

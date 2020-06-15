@@ -197,7 +197,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF)
             .getFinalResult().forEach(recognizedForm -> {
-                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Angle: %f%n", recognizedForm.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                 // Table information
                 System.out.println("Recognized Tables: ");
@@ -221,7 +221,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF,
             Duration.ofSeconds(5)).getFinalResult().forEach(recognizedForm -> {
-                System.out.printf("Page Angle: %s%n", recognizedForm.getTextAngle());
+                System.out.printf("Page Angle: %f%n", recognizedForm.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", recognizedForm.getUnit());
                 // Table information
                 System.out.println("Recognized Tables: ");
@@ -307,7 +307,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                             receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
                                 if (key.equals("Quantity")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                        System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                        System.out.printf("Quantity: %d, confidence: %.2f%n",
                                             formField.getFieldValue().asInteger(), formField.getConfidence());
                                     }
                                 }
@@ -353,7 +353,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                             receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
                                 if (key.equals("Quantity")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                        System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                        System.out.printf("Quantity: %d, confidence: %.2f%n",
                                             formField.getFieldValue().asInteger(), formField.getConfidence());
                                     }
                                 }
@@ -401,7 +401,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                             receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
                                 if (key.equals("Quantity")) {
                                     if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
-                                        System.out.printf("Quantity: %s, confidence: %.2f%n",
+                                        System.out.printf("Quantity: %d, confidence: %.2f%n",
                                             formField.getFieldValue().asInteger(), formField.getConfidence());
                                     }
                                 }

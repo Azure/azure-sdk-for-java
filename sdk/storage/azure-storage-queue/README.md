@@ -20,7 +20,7 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-queue</artifactId>
-  <version>12.5.1</version>
+  <version>12.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

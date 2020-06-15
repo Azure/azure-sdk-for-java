@@ -12,17 +12,17 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.network.models.Network;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import org.apache.commons.lang.time.StopWatch;
 
 /**
  * Azure Compute sample for managing virtual machines -
@@ -42,8 +42,7 @@ public final class ManageVirtualMachinesInParallel {
         final String networkName = azure.sdkContext().randomResourceName("vnetCOMV", 24);
         final String storageAccountName = azure.sdkContext().randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         try {
             // Create a resource group [Where all resources gets created]
             ResourceGroup resourceGroup = azure.resourceGroups()

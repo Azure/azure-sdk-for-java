@@ -50,8 +50,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
 
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA23w0rd!";
+        final String password = com.azure.resourcemanager.samples.Utils.password();
 
         Azure azure = null;
 
