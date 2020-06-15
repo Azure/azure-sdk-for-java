@@ -40,7 +40,7 @@
 ###########
 /eng/                                               @JimSuplizio @mitchdenny @weshaggard @danieljurek
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
-/eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
+/eng/report-aggregator/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /parent/                                            @JimSuplizio
 
