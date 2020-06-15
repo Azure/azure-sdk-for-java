@@ -8,15 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Iso8601SerializerTests {
     private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final String SERIALIZER_FORMAT = "\"%s\"";
 
     @BeforeAll
     public static void setupClass() {
@@ -25,12 +26,11 @@ public class Iso8601SerializerTests {
 
     @Test
     public void serializeDateWithTimeZoneDateFormat() throws JsonProcessingException {
-        SimpleDateFormat format = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'\"");
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date currentDate = new Date();
-        String expectedDate = format.format(currentDate);
+        String expectedDate = currentDate.toInstant().atOffset(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         String actualDate = MAPPER.writeValueAsString(currentDate);
-        assertEquals(expectedDate, actualDate);
+        assertEquals(String.format(SERIALIZER_FORMAT, expectedDate), actualDate);
     }
 
     @Test
@@ -38,9 +38,9 @@ public class Iso8601SerializerTests {
         Date epochTime = Date.from(Instant.ofEpochSecond(new Date().toInstant().getEpochSecond()));
         Date expectedDate = new Date(epochTime.getYear(), epochTime.getMonth(), epochTime.getDate(),
             epochTime.getHours(), epochTime.getMinutes(), epochTime.getSeconds());
-        SimpleDateFormat format = new SimpleDateFormat("\"yyyy-MM-dd'T'HH:mm:ss'Z'\"");
-        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        String expectedDateString = expectedDate.toInstant().atOffset(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         String actualDate = MAPPER.writeValueAsString(epochTime);
-        assertEquals(format.format(expectedDate), actualDate);
+        assertEquals(String.format(SERIALIZER_FORMAT, expectedDateString), actualDate);
     }
 }
