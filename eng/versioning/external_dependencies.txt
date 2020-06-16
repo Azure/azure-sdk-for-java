@@ -17,6 +17,7 @@ com.microsoft.azure:azure-client-runtime;1.7.3
 com.microsoft.azure:azure-core;0.9.8
 com.microsoft.azure:azure-cosmos;3.7.1
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
+com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus-jms;0.0.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
 com.microsoft.azure:spotbugs-maven-plugin;1.2.1
