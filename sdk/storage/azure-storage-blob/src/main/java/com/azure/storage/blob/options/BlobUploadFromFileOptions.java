@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Map;
 
@@ -13,12 +18,30 @@ import java.util.Map;
  */
 @Fluent
 public class BlobUploadFromFileOptions {
+    private final String filePath;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+
+    /**
+     * Constructs a {@link BlobUploadFromFileOptions}.
+     *
+     * @param filePath Path of the file to upload.
+     */
+    public BlobUploadFromFileOptions(String filePath) {
+        StorageImplUtils.assertNotNull("filePath", filePath);
+        this.filePath = filePath;
+    }
+
+    /**
+     * @return The path of the file to upload
+     */
+    public String getFilePath() {
+        return filePath;
+    }
 
     /**
      * @return {@link ParallelTransferOptions}

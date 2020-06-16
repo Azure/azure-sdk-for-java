@@ -7,8 +7,8 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import reactor.core.publisher.Flux;
 
@@ -174,10 +174,10 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFile(String, BlobUploadFromFileOptions)}
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFileWithResponse(BlobUploadFromFileOptions)}
      */
     public void uploadFromFile3() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -192,11 +192,11 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize);
 
-        client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTags(tags)
             .setTier(AccessTier.HOT).setRequestConditions(requestConditions))
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions
     }
 }

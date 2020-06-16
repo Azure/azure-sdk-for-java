@@ -4,19 +4,22 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -188,10 +191,10 @@ public class EncryptedBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
-        this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setTier(tier).setRequestConditions(requestConditions),
-            timeout);
+            timeout, null);
     }
 
     /**
@@ -199,20 +202,23 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context}
      *
-     * @param filePath Path of the file to upload
      * @param options {@link BlobUploadFromFileOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
+     * @return Information about the uploaded block blob.
      */
     @Override
-    public void uploadFromFile(String filePath, BlobUploadFromFileOptions options, Duration timeout)
+    public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options,
+                                                              Duration timeout, Context context)
         throws UncheckedIOException {
-        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, options);
+        Mono<Response<BlockBlobItem>> upload =
+            this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
+                .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

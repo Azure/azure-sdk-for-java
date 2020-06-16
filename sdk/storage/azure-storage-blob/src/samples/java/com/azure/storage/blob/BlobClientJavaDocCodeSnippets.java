@@ -10,13 +10,13 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.common.implementation.Constants;
 
@@ -432,12 +432,12 @@ public class BlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClient#uploadFromFile(String, BlobUploadFromFileOptions, Duration)}
+     * Code snippet for {@link BlobClient#uploadFromFileWithResponse(BlobUploadFromFileOptions, Duration, Context)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile3() throws IOException {
-        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -452,13 +452,14 @@ public class BlobClientJavaDocCodeSnippets {
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         try {
-            client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+            client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout);
+                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions),
+                timeout, new Context(key2, value2));
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration
+        // END: com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context
     }
 }
