@@ -1,7 +1,5 @@
 package com.azure.data.tables;
 
-import com.azure.core.exception.HttpResponseException;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,27 +12,20 @@ public class CodeSnippetsAysnc {
     public void AsyncSnippets() {
 
         //build service client
-        TableAsyncServiceClient tableAsyncServiceClient = new TableAsyncServiceClientBuilder()
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
             .connectionString("connectionString")
-            .build();
-
-        //build table client
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
-            .connectionString("connectionString")
-            .tableName("OfficeSupplies")
             .build();
 
         //add table
-        Mono<Void> createTableMono = tableAsyncServiceClient.createTable("OfficeSupplies");
-
-        createTableMono.subscribe(Void -> {
+        tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(Void -> {
             System.out.println("Table creation successful.");
         }, error -> {
             System.out.println("There was an error creating the table. Error: " + error);
         });
 
+
         //delete a table
-        Mono<Void> deleteTableMono = tableAsyncServiceClient.deleteTable("OfficeSupplies");
+        Mono<Void> deleteTableMono = tableServiceAsyncClient.deleteTable("OfficeSupplies");
 
         deleteTableMono.subscribe(Void -> {
             System.out.println("Table deletion successful");
@@ -44,38 +35,33 @@ public class CodeSnippetsAysnc {
 
 
         //query tables
-        String filterString = "$filter= name eq 'OfficeSupplies'";
-        String selectString = "$select= Product, Price";
-        Flux<String> queryTableFlux = tableAsyncServiceClient.queryTables(filterString);
-        Disposable subscription = queryTableFlux.subscribe(s -> {
-            System.out.println(s);
+        String selectString = "$select= TableName eq 'OfficeSupplies'";
+        Flux<AzureTable> queryTableFlux = tableServiceAsyncClient.queryTables(selectString);
+        queryTableFlux.subscribe(azureTable -> {
+            System.out.println(azureTable.getName());
         }, error -> {
-            System.out.println("There was an error querying the table. Error: " + error);
+            System.out.println("There was an error querying the service. Error: " + error);
         });
     }
 
-    public void InsertEntity(){
+    public void InsertEntity() {
 
         //build service client
-        TableAsyncServiceClient tableAsyncServiceClient = new TableAsyncServiceClientBuilder()
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
             .connectionString("connectionString")
             .build();
 
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
 
 
-        Mono<TableAsyncClient> createTableMono = tableAsyncServiceClient.createTable("OfficeSupplies");
-
-        createTableMono.flatMap(tableAsyncClient -> {
-            System.out.println("Table creation successful.");
-
-            String tableName = "Office Supplies";
-            String row = "crayola markers";
-            String partitionKey = "markers";
-            HashMap<String, Object> tableEntityProperties = new HashMap<>();
-            Mono<TableEntity> insertEntityMono = tableAsyncClient.insertEntity(tableName, row, partitionKey, tableEntityProperties);
-            return insertEntityMono;
-        }).subscribe(tableEntity1 -> {
-            System.out.println("Insert Entity Successful. Entity: " + tableEntity1);
+        String tableName = "OfficeSupplies";
+        String row = "crayolaMarkers";
+        String partitionKey = "markers";
+        HashMap<String, Object> tableEntityProperties = new HashMap<>();
+        Mono<TableEntity> insertEntityMono = tableAsyncClient.insertEntity(tableName, row, partitionKey,
+            tableEntityProperties);
+        insertEntityMono.subscribe(tableEntity -> {
+            System.out.println("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error inserting the Entity. Error: " + error);
         });
@@ -83,61 +69,45 @@ public class CodeSnippetsAysnc {
 
     }
 
-    public void DeleteEntity(){
+    public void DeleteEntity() {
 
         //build service client
-        TableAsyncServiceClient tableAsyncServiceClient = new TableAsyncServiceClientBuilder()
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
             .connectionString("connectionString")
             .build();
 
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
 
+        String selectString = "$select = RowKey eq 'crayolaMarkers'";
+        Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("OfficeSupplies", selectString);
 
-        Mono<TableAsyncClient> createTableMono = tableAsyncServiceClient.createTable("OfficeSupplies");
-
-        createTableMono.flatMap(tableAsyncClient -> {
-            System.out.println("Table creation successful.");
-
-            String tableName = "Office Supplies";
-            String row = "crayola markers";
-            String partitionKey = "markers";
-            HashMap<String, Object> tableEntityProperties = new HashMap<>();
-            Mono<TableEntity> insertEntityMono = tableAsyncClient.insertEntity(tableName, row, partitionKey, tableEntityProperties);
-            return insertEntityMono;
-        }).flatMap(tableEntity1 -> {
-            System.out.println("Insert Entity Successful. Table Entity: " + tableEntity1);
-            Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity1);
+        queryTableEntity.flatMap(tableEntity -> {
+            System.out.println("Table Entity: " + tableEntity);
+            Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity);
             return deleteEntityMono;
-        }).subscribe(tableEntity1 -> {
-            System.out.println("Delete Entity Successful. Entity: " + tableEntity1);
+        }).subscribe(Void -> {
+            System.out.println("Delete Entity Successful.");
         }, error -> {
             System.out.println("There was an error deleting the Entity. Error: " + error);
         });
-
-
     }
-    public void UpdateEntity(){
 
-        //client-builder pattern
-        TableAsyncClientBuilder tableAsyncClientBuilder = new TableAsyncClientBuilder();
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
+    public void UpdateEntity() {
+
+        //build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
             .connectionString("connectionString")
             .build();
 
-        Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
-        createTableMono.flatMap(Void -> {
-            System.out.println("Table creation successful.");
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
 
-            String tableName = "Office Supplies";
-            String row = "crayola markers";
-            String partitionKey = "markers";
-            HashMap<String, Object> tableEntityProperties = new HashMap<>();
-            Mono<TableEntity> insertEntityMono = tableAsyncClient.insertEntity(tableName, row, partitionKey, tableEntityProperties);
-            return insertEntityMono;
-        }).flatMap(tableEntity1 -> {
-            System.out.println("Insert Entity Successful. Table Entity: " + tableEntity1);
+        String selectString2 = "$select = RowKey eq 'crayolaMarkers'";
+        Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("OfficeSupplies", selectString2);
 
-            tableEntity1.addProperty("Seller","Crayola");
-            Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(tableEntity1);
+        queryTableEntity.flatMap(tableEntity -> {
+            System.out.println("Table Entity: " + tableEntity);
+            tableEntity.addProperty("Price", "5");
+            Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(tableEntity);
             return updateEntityMono;
         }).subscribe(Void -> {
             System.out.println("Update Entity Successful.");
@@ -148,62 +118,25 @@ public class CodeSnippetsAysnc {
 
     }
 
-    public void UpsertEntity(){
+    public void QueryEntities() {
 
-        //client-builder pattern
-        TableAsyncClientBuilder tableAsyncClientBuilder = new TableAsyncClientBuilder();
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
+        //build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
             .connectionString("connectionString")
             .build();
 
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
 
-        Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
-        createTableMono.flatMap(Void -> {
-            System.out.println("Table creation successful.");
+        String filterString2 = "$filter = price eq '5'";
+        String selectString2 = "$select = PartitionKey eq 'markers'";
+        Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("OfficeSupplies", filterString2, selectString2);
 
-            String tableName = "Office Supplies";
-            String row = "crayola markers";
-            String partitionKey = "markers";
-            HashMap<String, Object> tableEntityProperties = new HashMap<>();
-            Mono<TableEntity> insertEntityMono = tableAsyncClient.insertEntity(tableName, row, partitionKey, tableEntityProperties);
-            return insertEntityMono;
-        }).flatMap(tableEntity1 -> {
-            System.out.println("Insert Entity Successful. Table Entity: " + tableEntity1);
-
-            tableEntity1.addProperty("Price","$5");
-            Mono<TableEntity> upsertEntityMono = tableAsyncClient.upsertEntity(tableEntity1);
-            return upsertEntityMono;
-        }).subscribe(tableEntity1 -> {
-            System.out.println("Upsert Entity Successful. Entity: " + tableEntity1);
+        queryTableEntity.subscribe(tableEntity -> {
+            System.out.println("Table Entity: " + tableEntity);
         }, error -> {
-            System.out.println("There was an error upserting the Entity. Error: " + error);
+            System.out.println("There was an error querying the table. Error: " + error);
         });
 
-
     }
 
-    public void QueryEntities(){
-
-        //client-builder pattern
-        TableAsyncClientBuilder tableAsyncClientBuilder = new TableAsyncClientBuilder();
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
-            .connectionString("connectionString")
-            .build();
-
-
-        Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
-        createTableMono.then(Mono.fromCallable(()-> {
-                System.out.println("Table creation successful.");
-
-                String filterString2 = "$filter = Product eq 'markers'";
-                String selectString2 = "$select = Seller eq 'crayola'";
-                Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("tableName", filterString2, selectString2);
-                return queryTableEntity;
-            })).subscribe(tableEntity1 -> {
-                System.out.println("Table Entity: " + tableEntity1);
-            }, error -> {
-                System.out.println("There was an error querying the table. Error: " + error);
-            });
-        }
-
-    }
+}

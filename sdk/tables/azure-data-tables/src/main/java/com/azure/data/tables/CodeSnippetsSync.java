@@ -38,11 +38,11 @@ public class CodeSnippetsSync {
         }
 
         //query tables
-        String filterString = "$filter= name eq 'OfficeSupplies'";
+        String selectString = "$selectString= TableName eq 'OfficeSupplies'";
 
         try {
             //TODO: create Table class TableName is the odata feild
-            List<AzureTable> responseTables = tableServiceClient.queryTables(filterString);
+            List<AzureTable> responseTables = tableServiceClient.queryTables(selectString);
         } catch (HttpResponseException e){
             System.out.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -62,7 +62,6 @@ public class CodeSnippetsSync {
 
 
         //update entity
-        //TODO: let the customer specify if it is a replacement or a merge
         tableEntity.addProperty("Seller","Crayola");
         try {
             tableClient.updateEntity(tableEntity);
@@ -71,10 +70,18 @@ public class CodeSnippetsSync {
         }
 
 
-        //upsert entity
-        tableEntity.addProperty("Price","$5");
+        //upsert entity (where it is an update and replace)
+        tableEntity.addProperty("Price","5");
         try {
-            tableEntity = tableClient.upsertEntity(tableEntity);
+            tableClient.updateAndReplaceEntity(tableEntity);
+        } catch (HttpResponseException e){
+            System.out.println("Upsert Entity Unsuccessful. Error: " + e);
+        }
+
+        //upsert entity (where it is an update and replace)
+        tableEntity.addProperty("Price","5");
+        try {
+            tableClient.updateAndMergeEntity(tableEntity);
         } catch (HttpResponseException e){
             System.out.println("Upsert Entity Unsuccessful. Error: " + e);
         }

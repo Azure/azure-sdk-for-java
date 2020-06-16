@@ -13,6 +13,10 @@ public class TableAsyncClient {
         return null;
     }
 
+    public Flux<TableEntity> queryEntity(String az, String filterString){
+        return null;
+    }
+
     public Mono<TableEntity> insertEntity(String tableName, String row, String partition, Map<String, Object> tableEntityProperties){
         return null;
     }

@@ -21,5 +21,6 @@ public class TableClient {
     public void deleteEntity(TableEntity tableEntity){ }
 
     public void updateEntity(TableEntity te){ }
-    public TableEntity upsertEntity(TableEntity tableEntity){ return new TableEntity(); }
+    public void updateAndReplaceEntity(TableEntity tableEntity){ }
+    public void updateAndMergeEntity(TableEntity tableEntity){ }
 }
