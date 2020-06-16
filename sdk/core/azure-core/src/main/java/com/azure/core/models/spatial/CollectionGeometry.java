@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.spatial;
+package com.azure.core.models.spatial;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a heterogeneous collection of {@link Geometry geometries}.
  */
 public final class CollectionGeometry extends Geometry {
-    private final Collection<Geometry> geometries;
+    private final List<Geometry> geometries;
 
     /**
      * Constructs a geometry collection.
      *
      * @param geometries The geometries in the collection.
      */
-    public CollectionGeometry(Collection<Geometry> geometries) {
+    public CollectionGeometry(List<Geometry> geometries) {
         this(geometries, null);
     }
 
@@ -27,8 +27,9 @@ public final class CollectionGeometry extends Geometry {
      * @param geometries The geometries in the collection.
      * @param properties Additional properties of the geometry collection.
      */
-    public CollectionGeometry(Collection<Geometry> geometries, GeometryProperties properties) {
+    public CollectionGeometry(List<Geometry> geometries, GeometryProperties properties) {
         super(properties);
+
         this.geometries = geometries;
     }
 
@@ -37,7 +38,7 @@ public final class CollectionGeometry extends Geometry {
      *
      * @return An unmodifiable representation of the {@link Geometry geometries} in this collection.
      */
-    public Collection<Geometry> getGeometries() {
-        return Collections.unmodifiableCollection(geometries);
+    public List<Geometry> getGeometries() {
+        return Collections.unmodifiableList(geometries);
     }
 }

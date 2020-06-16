@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.spatial;
+package com.azure.core.models.spatial;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a multi-point geometry.
  */
 public final class MultiPointGeometry extends Geometry {
-    private final Collection<PointGeometry> points;
+    private final List<PointGeometry> points;
 
     /**
      * Constructs a multi-point geometry.
      *
      * @param points The points that define the multi-point.
      */
-    public MultiPointGeometry(Collection<PointGeometry> points) {
+    public MultiPointGeometry(List<PointGeometry> points) {
         this(points, null);
     }
 
@@ -27,7 +27,7 @@ public final class MultiPointGeometry extends Geometry {
      * @param points The points that define the multi-point.
      * @param properties Additional properties of the multi-point.
      */
-    public MultiPointGeometry(Collection<PointGeometry> points, GeometryProperties properties) {
+    public MultiPointGeometry(List<PointGeometry> points, GeometryProperties properties) {
         super(properties);
 
         this.points = points;
@@ -39,7 +39,7 @@ public final class MultiPointGeometry extends Geometry {
      * @return An unmodifiable representation of the {@link PointGeometry geometric points} representing this
      * multi-point.
      */
-    public Collection<PointGeometry> getPoints() {
-        return Collections.unmodifiableCollection(points);
+    public List<PointGeometry> getPoints() {
+        return Collections.unmodifiableList(points);
     }
 }

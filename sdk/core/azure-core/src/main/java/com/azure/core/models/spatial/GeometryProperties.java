@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.spatial;
+package com.azure.core.models.spatial;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -12,12 +13,7 @@ public final class GeometryProperties {
     private final GeometryBoundingBox boundingBox;
     private final Map<String, Object> additionalProperties;
 
-    /**
-     * Constructs an empty properties.
-     */
-    public GeometryProperties() {
-        this(null, null);
-    }
+    public static final GeometryProperties DEFAULT_PROPERTIES = new GeometryProperties(null, Collections.emptyMap());
 
     /**
      * Constructs properties about a {@link Geometry}.
@@ -45,6 +41,6 @@ public final class GeometryProperties {
      * @return The additional properties of the geometry.
      */
     public Map<String, Object> getAdditionalProperties() {
-        return additionalProperties;
+        return Collections.unmodifiableMap(additionalProperties);
     }
 }

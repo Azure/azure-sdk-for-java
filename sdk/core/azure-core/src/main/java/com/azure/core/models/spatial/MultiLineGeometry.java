@@ -1,23 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.spatial;
+package com.azure.core.models.spatial;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a multi-line geometry.
  */
 public final class MultiLineGeometry extends Geometry {
-    private final Collection<LineGeometry> lines;
+    private final List<LineGeometry> lines;
 
     /**
      * Constructs a multi-line geometry.
      *
      * @param lines The geometric lines that define the multi-line.
      */
-    public MultiLineGeometry(Collection<LineGeometry> lines) {
+    public MultiLineGeometry(List<LineGeometry> lines) {
         this(lines, null);
     }
 
@@ -27,7 +27,7 @@ public final class MultiLineGeometry extends Geometry {
      * @param lines The geometric lines that define the multi-line.
      * @param properties Additional properties of the multi-line.
      */
-    public MultiLineGeometry(Collection<LineGeometry> lines, GeometryProperties properties) {
+    public MultiLineGeometry(List<LineGeometry> lines, GeometryProperties properties) {
         super(properties);
 
         this.lines = lines;
@@ -38,7 +38,7 @@ public final class MultiLineGeometry extends Geometry {
      *
      * @return An unmodifiable representation of the {@link LineGeometry geometric lines} representing this multi-line.
      */
-    public Collection<LineGeometry> getLines() {
-        return Collections.unmodifiableCollection(lines);
+    public List<LineGeometry> getLines() {
+        return Collections.unmodifiableList(lines);
     }
 }
