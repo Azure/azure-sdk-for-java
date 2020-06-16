@@ -79,8 +79,10 @@ class JdkAsyncHttpClient implements HttpClient {
                         final String headerValue = header.getValue();
                         builder.setHeader(headerName, headerValue);
                     } else {
-                        logger.error("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
-                            + "and above (unless it is whitelisted in JAVA_HOME/conf/net.properties).");
+                        logger.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
+                            + "and above. This header can be whitelisted in JAVA_HOME/conf/net.properties or in "
+                            + "System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
+                            + ".allowRestrictedHeaders' and a comma separated list of header names.");
                     }
                 }
             }
