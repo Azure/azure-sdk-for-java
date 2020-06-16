@@ -26,6 +26,7 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class autorestTest {
 
@@ -55,7 +56,7 @@ public class autorestTest {
         AzureTableImplBuilder azureTableImplBuilder = new AzureTableImplBuilder();
         AzureTableImpl azureTable = azureTableImplBuilder
             .pipeline(pipeline)
-            .url("https://telboytrial.table.core.windows.net/")
+            .url("/https://telboytrial.table.core.windows.net")
             .buildClient();
 
         try{
@@ -77,6 +78,15 @@ public class autorestTest {
 
     @Test
     void fromConnie () {
+        final String connectionString = System.getenv("azure_tables_connection_string");
+
+        StorageConnectionString storageConnectionString
+            = StorageConnectionString.create(connectionString, new ClientLogger("tables"));
+
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        TablesSharedKeyCredential sharedKeyCredential = new TablesSharedKeyCredential(authSettings.getAccount().getName(),
+            authSettings.getAccount().getAccessKey());
+
         final List<HttpPipelinePolicy> policies = Arrays.asList(
             new AddDatePolicy(),
             new AddHeadersPolicy(new HttpHeaders().put("Accept", OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA.toString())),
@@ -90,7 +100,7 @@ public class autorestTest {
         AzureTableImpl azureTable = new AzureTableImplBuilder()
             .pipeline(pipeline)
             .version("2019-02-02")
-            .url("https://azsstgt28603173b8764a45.table.core.windows.net/")
+            .url("https://telboytrial.table.core.windows.net")
             .buildClient();
         TableProperties tableProperties = new TableProperties().setTableName("ebTableSeven");
         QueryOptions queryOptions = new QueryOptions();
