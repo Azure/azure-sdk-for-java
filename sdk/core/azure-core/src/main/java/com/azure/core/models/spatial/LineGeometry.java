@@ -5,6 +5,7 @@ package com.azure.core.models.spatial;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a geometric line.
@@ -18,17 +19,20 @@ public final class LineGeometry extends Geometry {
      * @param positions Geometric positions that define the line.
      */
     public LineGeometry(List<GeometryPosition> positions) {
-        this(positions, null);
+        this(positions, null, null);
     }
 
     /**
      * Constructs a geometric line.
      *
      * @param positions Geometric positions that define the line.
+     * @param boundingBox Bounding box for the line.
      * @param properties Additional properties of the geometric line.
      */
-    public LineGeometry(List<GeometryPosition> positions, GeometryProperties properties) {
-        super(properties);
+    public LineGeometry(List<GeometryPosition> positions, GeometryBoundingBox boundingBox,
+        Map<String, Object> properties) {
+        super(boundingBox, properties);
+
         this.positions = positions;
     }
 

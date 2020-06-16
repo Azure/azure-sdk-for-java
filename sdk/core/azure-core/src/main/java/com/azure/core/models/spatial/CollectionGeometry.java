@@ -5,6 +5,7 @@ package com.azure.core.models.spatial;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a heterogeneous collection of {@link Geometry geometries}.
@@ -18,17 +19,19 @@ public final class CollectionGeometry extends Geometry {
      * @param geometries The geometries in the collection.
      */
     public CollectionGeometry(List<Geometry> geometries) {
-        this(geometries, null);
+        this(geometries, null, null);
     }
 
     /**
      * Constructs a geometry collection.
      *
      * @param geometries The geometries in the collection.
+     * @param boundingBox Bounding box for the geometry collection.
      * @param properties Additional properties of the geometry collection.
      */
-    public CollectionGeometry(List<Geometry> geometries, GeometryProperties properties) {
-        super(properties);
+    public CollectionGeometry(List<Geometry> geometries, GeometryBoundingBox boundingBox,
+        Map<String, Object> properties) {
+        super(boundingBox, properties);
 
         this.geometries = geometries;
     }

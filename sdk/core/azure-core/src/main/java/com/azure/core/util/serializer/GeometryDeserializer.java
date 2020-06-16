@@ -7,7 +7,6 @@ import com.azure.core.models.spatial.CollectionGeometry;
 import com.azure.core.models.spatial.Geometry;
 import com.azure.core.models.spatial.GeometryBoundingBox;
 import com.azure.core.models.spatial.GeometryPosition;
-import com.azure.core.models.spatial.GeometryProperties;
 import com.azure.core.models.spatial.LineGeometry;
 import com.azure.core.models.spatial.MultiLineGeometry;
 import com.azure.core.models.spatial.MultiPointGeometry;
@@ -74,54 +73,55 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
 
         if (GEOMETRY_COLLECTION_TYPE.equalsIgnoreCase(type)) {
             List<Geometry> geometries = new ArrayList<>();
-            getRequiredProperty(node, GEOMETRIES_PROPERTY)
-                .iterator()
-                .forEachRemaining(geometryNode -> geometries.add(read(geometryNode)));
+            getRequiredProperty(node, GEOMETRIES_PROPERTY).forEach(geometryNode -> geometries.add(read(geometryNode)));
 
-            return new CollectionGeometry(geometries, readProperties(node, GEOMETRIES_PROPERTY));
+            return new CollectionGeometry(geometries, readBoundingBox(node), readProperties(node, GEOMETRIES_PROPERTY));
         }
 
         JsonNode coordinates = getRequiredProperty(node, COORDINATES_PROPERTY);
-        GeometryProperties properties = readProperties(node);
+
+        GeometryBoundingBox boundingBox = readBoundingBox(node);
+        Map<String, Object> properties = readProperties(node);
 
         switch (type) {
             case POINT_TYPE:
-                return new PointGeometry(readCoordinate(coordinates), properties);
+                return new PointGeometry(readCoordinate(coordinates), boundingBox, properties);
             case LINE_STRING_TYPE:
-                return new LineGeometry(readCoordinates(coordinates), properties);
+                return new LineGeometry(readCoordinates(coordinates), boundingBox, properties);
             case MULTI_POINT_TYPE:
                 List<PointGeometry> points = new ArrayList<>();
                 readCoordinates(coordinates).forEach(position -> points.add(new PointGeometry(position)));
 
-                return new MultiPointGeometry(points, properties);
+                return new MultiPointGeometry(points, boundingBox, properties);
             case POLYGON_TYPE:
                 List<LineGeometry> rings = new ArrayList<>();
-                node.iterator().forEachRemaining(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
+                node.forEach(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
 
-                return new PolygonGeometry(rings, properties);
+                return new PolygonGeometry(rings, boundingBox, properties);
             case MULTI_LINE_STRING_TYPE:
                 List<LineGeometry> lines = new ArrayList<>();
-                node.iterator().forEachRemaining(line -> lines.add(new LineGeometry(readCoordinates(line))));
+                node.forEach(line -> lines.add(new LineGeometry(readCoordinates(line))));
 
-                return new MultiLineGeometry(lines, properties);
+                return new MultiLineGeometry(lines, boundingBox, properties);
             case MULTI_POLYGON_TYPE:
-                return readMultiPolygon(node, properties);
+                return readMultiPolygon(node, boundingBox, properties);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     String.format("Unsupported geometry type %s.", type)));
         }
     }
 
-    private static MultiPolygonGeometry readMultiPolygon(JsonNode node, GeometryProperties properties) {
+    private static MultiPolygonGeometry readMultiPolygon(JsonNode node, GeometryBoundingBox boundingBox,
+        Map<String, Object> properties) {
         List<PolygonGeometry> polygons = new ArrayList<>();
         for (JsonNode polygon : node) {
             List<LineGeometry> rings = new ArrayList<>();
-            polygon.iterator().forEachRemaining(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
+            polygon.forEach(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
 
             polygons.add(new PolygonGeometry(rings));
         }
 
-        return new MultiPolygonGeometry(polygons, properties);
+        return new MultiPolygonGeometry(polygons, boundingBox, properties);
     }
 
     /*
@@ -142,36 +142,37 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         return requiredNode;
     }
 
-    private static GeometryProperties readProperties(JsonNode node) {
-        return readProperties(node, COORDINATES_PROPERTY);
-    }
-
-    private static GeometryProperties readProperties(JsonNode node, String knownProperty) {
-        GeometryBoundingBox boundingBox = null;
-
+    private static GeometryBoundingBox readBoundingBox(JsonNode node) {
         JsonNode boundingBoxNode = node.get(BOUNDING_BOX_PROPERTY);
         if (boundingBoxNode != null) {
             switch (boundingBoxNode.size()) {
                 case 4:
-                    boundingBox = new GeometryBoundingBox(boundingBoxNode.get(0).asDouble(),
+                    return new GeometryBoundingBox(boundingBoxNode.get(0).asDouble(),
                         boundingBoxNode.get(1).asDouble(), boundingBoxNode.get(2).asDouble(),
                         boundingBoxNode.get(3).asDouble());
-                    break;
                 case 6:
-                    boundingBox = new GeometryBoundingBox(boundingBoxNode.get(0).asDouble(),
+                    return new GeometryBoundingBox(boundingBoxNode.get(0).asDouble(),
                         boundingBoxNode.get(1).asDouble(), boundingBoxNode.get(3).asDouble(),
                         boundingBoxNode.get(4).asDouble(), boundingBoxNode.get(2).asDouble(),
                         boundingBoxNode.get(5).asDouble());
-                    break;
                 default:
                     throw LOGGER.logExceptionAsError(
                         new IllegalStateException("Only 2 or 3 dimension bounding boxes are supported."));
             }
         }
 
+        return null;
+    }
+
+    private static Map<String, Object> readProperties(JsonNode node) {
+        return readProperties(node, COORDINATES_PROPERTY);
+    }
+
+    private static Map<String, Object> readProperties(JsonNode node, String knownProperty) {
         Map<String, Object> additionalProperties = null;
-        for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
-            Map.Entry<String, JsonNode> field = it.next();
+        Iterator<Map.Entry<String, JsonNode>> fieldsIterator = node.fields();
+        while (fieldsIterator.hasNext()) {
+            Map.Entry<String, JsonNode> field = fieldsIterator.next();
             String propertyName = field.getKey();
             if (propertyName.equalsIgnoreCase(TYPE_PROPERTY)
                 || propertyName.equalsIgnoreCase(BOUNDING_BOX_PROPERTY)
@@ -186,11 +187,7 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
             additionalProperties.put(propertyName, readAdditionalPropertyValue(field.getValue()));
         }
 
-        if (boundingBox != null || additionalProperties != null) {
-            return new GeometryProperties(boundingBox, additionalProperties);
-        }
-
-        return GeometryProperties.DEFAULT_PROPERTIES;
+        return additionalProperties;
     }
 
     private static Object readAdditionalPropertyValue(JsonNode node) {
@@ -219,7 +216,7 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
                 return map;
             case ARRAY:
                 List<Object> list = new ArrayList<>(node.size());
-                node.iterator().forEachRemaining(element -> list.add(readAdditionalPropertyValue(element)));
+                node.forEach(element -> list.add(readAdditionalPropertyValue(element)));
                 return list;
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -230,7 +227,7 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
     private static List<GeometryPosition> readCoordinates(JsonNode coordinates) {
         List<GeometryPosition> positions = new ArrayList<>();
 
-        coordinates.iterator().forEachRemaining(coordinate -> positions.add(readCoordinate(coordinate)));
+        coordinates.forEach(coordinate -> positions.add(readCoordinate(coordinate)));
 
         return positions;
     }

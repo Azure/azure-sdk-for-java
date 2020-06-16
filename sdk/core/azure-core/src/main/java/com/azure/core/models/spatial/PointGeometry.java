@@ -3,6 +3,8 @@
 
 package com.azure.core.models.spatial;
 
+import java.util.Map;
+
 /**
  * Represents a geometric point.
  */
@@ -15,17 +17,18 @@ public final class PointGeometry extends Geometry {
      * @param position The {@link GeometryPosition geometric position} of the point.
      */
     public PointGeometry(GeometryPosition position) {
-        this(position, null);
+        this(position, null, null);
     }
 
     /**
      * Constructs a geometric point.
      *
      * @param position The {@link GeometryPosition geometric position} of the point.
+     * @param boundingBox Bounding box for the point.
      * @param properties Additional properties of the geometric point.
      */
-    public PointGeometry(GeometryPosition position, GeometryProperties properties) {
-        super(properties);
+    public PointGeometry(GeometryPosition position, GeometryBoundingBox boundingBox, Map<String, Object> properties) {
+        super(boundingBox, properties);
 
         this.position = position;
     }

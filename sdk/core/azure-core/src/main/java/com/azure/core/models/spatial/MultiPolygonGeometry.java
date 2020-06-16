@@ -5,6 +5,7 @@ package com.azure.core.models.spatial;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a multi-polygon geometry.
@@ -18,17 +19,19 @@ public final class MultiPolygonGeometry extends Geometry {
      * @param polygons The polygons that define the multi-polygon.
      */
     public MultiPolygonGeometry(List<PolygonGeometry> polygons) {
-        this(polygons, null);
+        this(polygons, null, null);
     }
 
     /**
      * Constructs a multi-polygon geometry.
      *
      * @param polygons The polygons that define the multi-polygon.
+     * @param boundingBox Bounding box for the multi-polygon.
      * @param properties Additional properties of the multi-polygon.
      */
-    public MultiPolygonGeometry(List<PolygonGeometry> polygons, GeometryProperties properties) {
-        super(properties);
+    public MultiPolygonGeometry(List<PolygonGeometry> polygons, GeometryBoundingBox boundingBox,
+        Map<String, Object> properties) {
+        super(boundingBox, properties);
 
         this.polygons = polygons;
     }

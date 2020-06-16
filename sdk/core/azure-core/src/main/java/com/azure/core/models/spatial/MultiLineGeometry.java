@@ -5,6 +5,7 @@ package com.azure.core.models.spatial;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a multi-line geometry.
@@ -18,17 +19,19 @@ public final class MultiLineGeometry extends Geometry {
      * @param lines The geometric lines that define the multi-line.
      */
     public MultiLineGeometry(List<LineGeometry> lines) {
-        this(lines, null);
+        this(lines, null, null);
     }
 
     /**
      * Constructs a multi-line geometry.
      *
      * @param lines The geometric lines that define the multi-line.
+     * @param boundingBox Bounding box for the multi-line.
      * @param properties Additional properties of the multi-line.
      */
-    public MultiLineGeometry(List<LineGeometry> lines, GeometryProperties properties) {
-        super(properties);
+    public MultiLineGeometry(List<LineGeometry> lines, GeometryBoundingBox boundingBox,
+        Map<String, Object> properties) {
+        super(boundingBox, properties);
 
         this.lines = lines;
     }

@@ -7,7 +7,6 @@ import com.azure.core.models.spatial.CollectionGeometry;
 import com.azure.core.models.spatial.Geometry;
 import com.azure.core.models.spatial.GeometryBoundingBox;
 import com.azure.core.models.spatial.GeometryPosition;
-import com.azure.core.models.spatial.GeometryProperties;
 import com.azure.core.models.spatial.LineGeometry;
 import com.azure.core.models.spatial.MultiLineGeometry;
 import com.azure.core.models.spatial.MultiPointGeometry;
@@ -98,9 +97,8 @@ final class GeometrySerializer extends JsonSerializer<Geometry> {
                 String.format("Geometry type '%s' isn't supported.", value.getClass().getName())));
         }
 
-        GeometryProperties geometryProperties = value.getProperties();
-        writeBoundingBox(geometryProperties.getBoundingBox(), gen);
-        writeAdditionalProperties(geometryProperties.getAdditionalProperties(), gen);
+        writeBoundingBox(value.getBoundingBox(), gen);
+        writeAdditionalProperties(value.getProperties(), gen);
 
         gen.writeEndObject();
     }

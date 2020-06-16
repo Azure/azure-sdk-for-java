@@ -5,6 +5,7 @@ package com.azure.core.models.spatial;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a geometric polygon.
@@ -18,17 +19,18 @@ public final class PolygonGeometry extends Geometry {
      * @param rings The lines that define the polygon.
      */
     public PolygonGeometry(List<LineGeometry> rings) {
-        this(rings, null);
+        this(rings, null, null);
     }
 
     /**
      * Constructs a geometric polygon.
      *
      * @param rings The lines that define the polygon.
+     * @param boundingBox Bounding box for the polygon.
      * @param properties Additional properties of the polygon.
      */
-    public PolygonGeometry(List<LineGeometry> rings, GeometryProperties properties) {
-        super(properties);
+    public PolygonGeometry(List<LineGeometry> rings, GeometryBoundingBox boundingBox, Map<String, Object> properties) {
+        super(boundingBox, properties);
 
         this.rings = rings;
     }
