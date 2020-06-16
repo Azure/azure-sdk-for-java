@@ -240,7 +240,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         try {
             computeManager.virtualMachines().getById(virtualMachine.id());
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404 && "ResourceNotFound".equals(e.getMessage())) {
+            if (e.getResponse().getStatusCode() == 404 && "NotFound".equals(e.getValue().getCode())) {
                 deleted = true;
             }
         }
