@@ -131,7 +131,14 @@ jobs:
           ProfileFlag: '-Pfast'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "BoundedStaleness", "Session", "ConsistentPrefix"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+        Bounded_Staleness_Tcp_Fast:
+          DisplayName: Bounded Staleness TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["BoundedStaleness", "ConsistentPrefix"]'
         # 08m 53s, expect passed
         Strong_Tcp_Direct:
           DisplayName: Strong TCP Direct
