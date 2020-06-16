@@ -10,17 +10,18 @@ import java.util.Map;
  *   and distributing the processing events across multiple consumers effectively.
  * <p>
  * There are four main components of implementing the change feed processor:
- *  - The monitored container: the monitored container has the data from which the change feed is generated. Any inserts
- *    and updates to the monitored container are reflected in the change feed of the container.
- *  - The lease container: the lease container acts as a state storage and coordinates processing the change feed across
- *    multiple workers. The lease container can be stored in the same account as the monitored container or in a
- *    separate account.
- *  - The host: a host is an application instance that uses the change feed processor to listen for changes. Multiple
- *    instances with the same lease configuration can run in parallel, but each instance should have a different
- *    instance name.
- *  - The delegate: the delegate is the code that defines what you, the developer, want to do with each batch of
- *    changes that the change feed processor reads.
- * </p>
+ * <ul>
+ * <li>The monitored container: the monitored container has the data from which the change feed is generated. Any inserts
+ * and updates to the monitored container are reflected in the change feed of the container.</li>
+ * <li>The lease container: the lease container acts as a state storage and coordinates processing the change feed across
+ * multiple workers. The lease container can be stored in the same account as the monitored container or in a
+ * separate account.</li>
+ * <li>The host: a host is an application instance that uses the change feed processor to listen for changes. Multiple
+ * instances with the same lease configuration can run in parallel, but each instance should have a different
+ * instance name.</li>
+ * <li>The delegate: the delegate is the code that defines what you, the developer, want to do with each batch of
+ * changes that the change feed processor reads.</li>
+ * </ul>
  * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public interface ChangeFeedProcessor {
