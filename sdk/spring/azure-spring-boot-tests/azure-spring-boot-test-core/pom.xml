@@ -103,8 +103,8 @@
                 <include>org.apache.maven.wagon:wagon-provider-api:[3.3.4]</include>
                 <include>org.eclipse.aether:aether-connector-basic:[1.1.0]</include>
                 <include>org.eclipse.aether:aether-transport-wagon:[1.1.0]</include>
-                <include>org.springframework.boot:spring-boot:[2.2.0.RELEASE]</include>
-                <include>org.springframework.boot:spring-boot-starter-web:[2.2.0.RELEASE]</include>
+                <include>org.springframework.boot:spring-boot:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
                 <include>org.springframework:spring-context:[5.2.0.RELEASE]</include>
               </includes>
             </bannedDependencies>
