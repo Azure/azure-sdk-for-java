@@ -8,7 +8,9 @@ import java.util.Map;
 public class  TableAsyncServiceClient{
 
     public TableAsyncServiceClient(){ }
-    public Mono<Void> createTable(String name){return  Mono.empty(); }
+    //public Mono<Void> createTable(String name){return  Mono.empty(); }
+
+    public Mono<TableAsyncClient> createTable(String name){return null; }
 
     public Mono<Void> createTableIfNotExist(String name) {return  Mono.empty(); }
 

@@ -56,16 +56,16 @@ public class CodeSnippetsAysnc {
 
     public void InsertEntity(){
 
-        //client-builder pattern
-        TableAsyncClientBuilder tableAsyncClientBuilder = new TableAsyncClientBuilder();
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
+        //build service client
+        TableAsyncServiceClient tableAsyncServiceClient = new TableAsyncServiceClientBuilder()
             .connectionString("connectionString")
             .build();
 
 
-        Mono<Void> createTableMono = tableAsyncClient.createTable("OfficeSupplies");
 
-        createTableMono.flatMap(Void -> {
+        Mono<TableAsyncClient> createTableMono = tableAsyncServiceClient.createTable("OfficeSupplies");
+
+        createTableMono.flatMap(tableAsyncClient -> {
             System.out.println("Table creation successful.");
 
             String tableName = "Office Supplies";
@@ -85,14 +85,16 @@ public class CodeSnippetsAysnc {
 
     public void DeleteEntity(){
 
-        //client-builder pattern
-        TableAsyncClientBuilder tableAsyncClientBuilder = new TableAsyncClientBuilder();
-        TableAsyncClient tableAsyncClient = new TableAsyncClientBuilder()
+        //build service client
+        TableAsyncServiceClient tableAsyncServiceClient = new TableAsyncServiceClientBuilder()
             .connectionString("connectionString")
             .build();
 
-        Mono<Void> createTableMono = tableAsyncClient.createTable("tableName");
-        createTableMono.flatMap(Void -> {
+
+
+        Mono<TableAsyncClient> createTableMono = tableAsyncServiceClient.createTable("OfficeSupplies");
+
+        createTableMono.flatMap(tableAsyncClient -> {
             System.out.println("Table creation successful.");
 
             String tableName = "Office Supplies";
