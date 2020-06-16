@@ -6,6 +6,7 @@ package com.azure.search.documents.models;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -92,6 +93,9 @@ public class GeoPointUnitTests {
     public void canFormatWithToString() {
         GeoPoint point = GeoPoint.create(7.678581, -122.131577);
 
-        assertEquals("+7.678581-122.131577CRSEPSG:4326/", point.toString());
+        assertEquals(String.format(
+            Locale.US, "{type=Point, coordinates=[%s, %s], crs={%s}}",
+            point.getLongitude() + "", point.getLatitude() + "", point.getCoordinateSystem().toString()),
+            point.toString());
     }
 }

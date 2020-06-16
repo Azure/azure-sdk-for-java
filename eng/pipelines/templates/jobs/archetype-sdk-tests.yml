@@ -103,7 +103,7 @@ jobs:
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: $(DisplayName)
+        displayName: 'Run tests: $(DisplayName)'
         inputs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}

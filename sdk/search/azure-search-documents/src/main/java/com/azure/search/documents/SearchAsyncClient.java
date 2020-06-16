@@ -11,8 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -68,11 +66,6 @@ public final class SearchAsyncClient {
     private static final int MULTI_STATUS_CODE = 207;
 
     /**
-     * The lazily-created serializer for search index client.
-     */
-    private static final SerializerAdapter SERIALIZER = initializeSerializerAdapter();
-
-    /**
      * Search REST API Version
      */
     private final SearchServiceVersion serviceVersion;
@@ -102,6 +95,13 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new ObjectMapper();
+        SerializationUtil.configureMapper(MAPPER);
+    }
+
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
@@ -118,7 +118,6 @@ public final class SearchAsyncClient {
             .indexName(indexName)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .serializer(SERIALIZER)
             .build();
     }
 
@@ -467,12 +466,13 @@ public final class SearchAsyncClient {
     Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
+
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    SearchDocument doc = new SearchDocument(res.getValue());
-                    return new SimpleResponse<>(res, doc);
+                    SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
+                    return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -743,19 +743,6 @@ public final class SearchAsyncClient {
 
         return autoCompleteRequest;
     }
-
-    /**
-     * initialize singleton instance of the default serializer adapter.
-     */
-    private static synchronized SerializerAdapter initializeSerializerAdapter() {
-        JacksonAdapter adapter = new JacksonAdapter();
-
-        ObjectMapper mapper = adapter.serializer();
-        SerializationUtil.configureMapper(mapper);
-
-        return adapter;
-    }
-
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();

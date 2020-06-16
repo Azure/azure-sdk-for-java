@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>azure-spring-boot-tests</artifactId>
+    <groupId>com.microsoft.azure</groupId>
+    <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-tests;current} -->
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>azure-spring-boot-test-core</artifactId>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot</artifactId>
+      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.2.0.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <version>2.2.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-embedder</artifactId>
+      <version>3.6.2</version> <!-- {x-version-update;org.apache.maven:maven-embedder;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>3.6.2</version> <!-- {x-version-update;org.apache.maven:maven-compat;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-connector-basic</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;org.eclipse.aether:aether-connector-basic;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.aether</groupId>
+      <artifactId>aether-transport-wagon</artifactId>
+      <version>1.1.0</version> <!-- {x-version-update;org.eclipse.aether:aether-transport-wagon;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-http</artifactId>
+      <version>3.3.4</version> <!-- {x-version-update;org.apache.maven.wagon:wagon-http;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.wagon</groupId>
+      <artifactId>wagon-provider-api</artifactId>
+      <version>3.3.4</version> <!-- {x-version-update;org.apache.maven.wagon:wagon-provider-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure</artifactId>
+      <version>1.34.0</version> <!-- {x-version-update;spring_com.microsoft.azure:azure;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.53</version> <!-- {x-version-update;com.jcraft:jsch;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.github.cverges.expect4j</groupId>
+      <artifactId>expect4j</artifactId>
+      <version>1.6</version> <!-- {x-version-update;com.github.cverges.expect4j:expect4j;external_dependency} -->
+    </dependency>
+    <!-- This dependency is added for building from source pipeline, to also include this core project -->
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot-starter;current} -->
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+                <include>com.microsoft.azure:*</include>
+                <include>com.jcraft:jsch:[0.1.53]</include>
+                <include>com.github.cverges.expect4j:expect4j:[1.6]</include>
+                <include>org.apache.maven:maven-embedder:[3.6.2]</include>
+                <include>org.apache.maven:maven-compat:[3.6.2]</include>
+                <include>org.apache.maven.wagon:wagon-http:[3.3.4]</include>
+                <include>org.apache.maven.wagon:wagon-provider-api:[3.3.4]</include>
+                <include>org.eclipse.aether:aether-connector-basic:[1.1.0]</include>
+                <include>org.eclipse.aether:aether-transport-wagon:[1.1.0]</include>
+                <include>org.springframework.boot:spring-boot:[2.2.0.RELEASE]</include>
+                <include>org.springframework.boot:spring-boot-starter-web:[2.2.0.RELEASE]</include>
+                <include>org.springframework:spring-context:[5.2.0.RELEASE]</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <skipITs>${skipSpringITs}</skipITs>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+
+</project>
