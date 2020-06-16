@@ -34,9 +34,9 @@ public interface ResourceGroups extends
     boolean contain(String name);
 
     /**
-     * Begins deleting a resource from Azure, identifying it by its resource name.
+     * Begins deleting a resource group from Azure, identifying it by its name.
      *
-     * @param name the resource name
+     * @param name the resource group name
      * @return the accepted deleting operation
      */
     Accepted<Void> beginDeleteByName(String name);
