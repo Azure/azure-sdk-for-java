@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Simple host for distributing change feed events across observers, simplifying the process of reading the change feeds
  *   and distributing the processing events across multiple consumers effectively.
- * <p></p>
+ * <p>
  * There are four main components of implementing the change feed processor:
  * <ul>
  * <li>The monitored container: the monitored container has the data from which the change feed is generated. Any inserts
