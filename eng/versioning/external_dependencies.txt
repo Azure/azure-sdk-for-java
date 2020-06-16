@@ -73,6 +73,7 @@ org.springframework.boot:spring-boot-starter-validation;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.3.0.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.0.RELEASE
 org.springframework.boot:spring-boot;2.3.0.RELEASE
+org.springframework.boot:spring-boot-starter-parent;2.3.0.RELEASE
 
 org.springframework.security:spring-security-config;5.2.0.RELEASE
 org.springframework.security:spring-security-core;5.2.0.RELEASE
