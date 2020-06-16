@@ -32,7 +32,7 @@ result in all dependencies being included in your project.
 
 ### Adding libraries to your project
 
-After adding the BOM Azure client libraries included in the BOM are now available to be added as a dependency without 
+After adding the BOM, Azure client libraries included in the BOM are now available to be added as a dependency without 
 listing the artifact's version.
 
 ```xml
