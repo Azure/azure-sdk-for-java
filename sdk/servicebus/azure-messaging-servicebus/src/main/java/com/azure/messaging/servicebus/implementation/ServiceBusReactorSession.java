@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.LinkSettings;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -100,21 +99,20 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
 
-        String linkName = entityPath;
         final Duration serverTimeout = adjustServerTimeout(timeout);
         Map<Symbol, Object> linkProperties = new HashMap<>();
 
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
 
         if (!CoreUtils.isNullOrEmpty(viaEntityPath)) {
-             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, entityPath);
+            linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, entityPath);
             logger.verbose("Get or create sender link for via entity path: '{}'", viaEntityPath);
-            return createProducer(String.format("VIA-%s", viaEntityPath), viaEntityPath, entityPath, timeout, retry, linkProperties);
-        }else {
+            return createProducer(String.format("VIA-%s", viaEntityPath), viaEntityPath, entityPath, timeout, retry,
+                linkProperties);
+        } else {
             logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
             return createProducer(entityPath, entityPath, timeout, retry, linkProperties);
         }
-
     }
 
     @Override

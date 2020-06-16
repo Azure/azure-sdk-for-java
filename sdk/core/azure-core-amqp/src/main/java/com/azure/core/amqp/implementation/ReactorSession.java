@@ -210,7 +210,7 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        return createProducerInternal(linkName, entityPath, null, timeout, retry, null);
+        return createProducer(linkName, entityPath, null, timeout, retry, null);
     }
 
     /**
@@ -424,23 +424,6 @@ public class ReactorSession implements AmqpSession {
      *
      * @param linkName Name of the receive link.
      * @param entityPath Address in the message broker for the link.
-     * @param transferDestinationPath Final destination address in the message broker for the link.
-     * @param linkProperties The properties needed to be set on the link.
-     * @param timeout Operation timeout when creating the link.
-     * @param retry Retry policy to apply when link creation times out.
-     *
-     * @return A new instance of an {@link AmqpLink} with the correct properties set.
-     */
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, String transferDestinationPath,
-        Duration timeout, AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
-        return createProducerInternal(linkName, entityPath, transferDestinationPath, timeout, retry, linkProperties);
-    }
-
-    /**
-     * Creates an {@link AmqpLink} that has AMQP specific capabilities set.
-     *
-     * @param linkName Name of the receive link.
-     * @param entityPath Address in the message broker for the link.
      * @param linkProperties The properties needed to be set on the link.
      * @param timeout Operation timeout when creating the link.
      * @param retry Retry policy to apply when link creation times out.
@@ -449,10 +432,22 @@ public class ReactorSession implements AmqpSession {
      */
     protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
         Map<Symbol, Object> linkProperties) {
-        return createProducerInternal(linkName, entityPath, null, timeout, retry, linkProperties);
+        return createProducer(linkName, entityPath, null, timeout, retry, linkProperties);
     }
 
-    private Mono<AmqpLink> createProducerInternal(String linkName, String entityPath, String finalDestinationPath,
+    /**
+     * Creates an {@link AmqpLink} that has AMQP specific capabilities set.
+     *
+     * @param linkName Name of the receive link.
+     * @param entityPath Address in the message broker for the link.
+     * @param finalDestinationPath Final destination address in the message broker for the link.
+     * @param linkProperties The properties needed to be set on the link.
+     * @param timeout Operation timeout when creating the link.
+     * @param retry Retry policy to apply when link creation times out.
+     *
+     * @return A new instance of an {@link AmqpLink} with the correct properties set.
+     */
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, String finalDestinationPath,
         Duration timeout, AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
 
         if (isDisposed()) {

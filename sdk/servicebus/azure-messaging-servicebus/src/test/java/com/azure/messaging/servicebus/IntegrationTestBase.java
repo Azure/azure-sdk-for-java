@@ -268,7 +268,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(queueName, "'queueName' cannot be null.");
                 ServiceBusSenderClientBuilder senderBuilder = builder.sender()
                     .queueName(queueName);
-                if (viaEntityIndex >= 0 ) {
+                if (viaEntityIndex >= 0) {
                     final String viaQueueName = isSessionAware ? getSessionQueueName(viaEntityIndex) : getQueueName(viaEntityIndex);
                     senderBuilder.viaQueueName(viaQueueName);
                 }

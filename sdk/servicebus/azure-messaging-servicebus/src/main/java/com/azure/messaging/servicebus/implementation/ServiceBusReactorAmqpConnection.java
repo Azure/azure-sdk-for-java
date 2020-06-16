@@ -10,7 +10,6 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
-import com.azure.core.amqp.implementation.LinkSettings;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
@@ -29,7 +28,6 @@ import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
-import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -144,13 +142,12 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     public Mono<AmqpSendLink> createSendLink(String entityPath, String viaEntityPath, AmqpRetryOptions retryOptions) {
 
         String entity = !CoreUtils.isNullOrEmpty(viaEntityPath) ? viaEntityPath : entityPath;
-        return createSession(entity).cast(ServiceBusSession.class)
-            .flatMap(session -> {
+        return createSession(entity).cast(ServiceBusSession.class).flatMap(session -> {
             logger.verbose("Get or create sender link for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-             return session.createSenderLink(entityPath, viaEntityPath, retryOptions.getTryTimeout(),
-                 retryPolicy).cast(AmqpSendLink.class);
+            return session.createSenderLink(entityPath, viaEntityPath, retryOptions.getTryTimeout(), retryPolicy)
+                .cast(AmqpSendLink.class);
         });
     }
 

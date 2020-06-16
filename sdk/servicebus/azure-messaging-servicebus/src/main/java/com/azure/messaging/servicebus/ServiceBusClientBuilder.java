@@ -527,8 +527,8 @@ public final class ServiceBusClientBuilder {
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
-            return new ServiceBusSenderAsyncClient(entityName, viaQueueName, entityType, connectionProcessor, retryOptions,
-                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
+            return new ServiceBusSenderAsyncClient(entityName, viaQueueName, entityType, connectionProcessor,
+                retryOptions, tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
