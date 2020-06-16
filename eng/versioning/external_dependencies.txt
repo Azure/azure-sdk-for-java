@@ -63,16 +63,16 @@ org.slf4j:slf4j-api;1.7.28
 org.slf4j:slf4j-simple;1.7.25
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-actuator-autoconfigure;2.2.0.RELEASE
-org.springframework.boot:spring-boot-autoconfigure-processor;2.2.0.RELEASE
-org.springframework.boot:spring-boot-autoconfigure;2.2.0.RELEASE
-org.springframework.boot:spring-boot-configuration-processor;2.2.0.RELEASE
-org.springframework.boot:spring-boot-dependencies;2.2.0.RELEASE
-org.springframework.boot:spring-boot-starter-test;2.2.0.RELEASE
-org.springframework.boot:spring-boot-starter-validation;2.2.0.RELEASE
-org.springframework.boot:spring-boot-starter-web;2.2.0.RELEASE
-org.springframework.boot:spring-boot-starter;2.2.0.RELEASE
-org.springframework.boot:spring-boot;2.2.0.RELEASE
+org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure-processor;2.3.0.RELEASE
+org.springframework.boot:spring-boot-autoconfigure;2.3.0.RELEASE
+org.springframework.boot:spring-boot-configuration-processor;2.3.0.RELEASE
+org.springframework.boot:spring-boot-dependencies;2.3.0.RELEASE
+org.springframework.boot:spring-boot-starter-test;2.3.0.RELEASE
+org.springframework.boot:spring-boot-starter-validation;2.3.0.RELEASE
+org.springframework.boot:spring-boot-starter-web;2.3.0.RELEASE
+org.springframework.boot:spring-boot-starter;2.3.0.RELEASE
+org.springframework.boot:spring-boot;2.3.0.RELEASE
 
 org.springframework.security:spring-security-config;5.2.0.RELEASE
 org.springframework.security:spring-security-core;5.2.0.RELEASE
