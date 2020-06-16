@@ -4,11 +4,19 @@
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
+import com.azure.storage.blob.models.ObjectReplicationPolicy;
+import com.azure.storage.blob.models.ObjectReplicationRule;
+import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -84,5 +92,83 @@ public class ModelHelper {
             .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+    /**
+     * Transforms {@link BlobDownloadHeaders} into a public {@link com.azure.storage.blob.models.BlobDownloadHeaders}.
+     *
+     * @param internalHeaders {@link BlobDownloadHeaders}
+     * @return {@link com.azure.storage.blob.models.BlobDownloadHeaders}
+     */
+    public static com.azure.storage.blob.models.BlobDownloadHeaders populateBlobDownloadHeaders(
+        BlobDownloadHeaders internalHeaders) {
+        /*
+        We have these two types because we needed to update this interface in a way that could not be generated
+        (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
+        wrapping it. Because it's headers type, we couldn't change the name of the generated type.
+         */
+        com.azure.storage.blob.models.BlobDownloadHeaders headers =
+            new com.azure.storage.blob.models.BlobDownloadHeaders();
+        headers.setLastModified(internalHeaders.getLastModified());
+        headers.setMetadata(internalHeaders.getMetadata());
+        headers.setETag(internalHeaders.getETag());
+        headers.setContentLength(internalHeaders.getContentLength());
+        headers.setContentType(internalHeaders.getContentType());
+        headers.setContentRange(internalHeaders.getContentRange());
+        headers.setContentEncoding(internalHeaders.getContentEncoding());
+        headers.setContentLanguage(internalHeaders.getContentLanguage());
+        headers.setContentMd5(internalHeaders.getContentMd5());
+        headers.setContentDisposition(internalHeaders.getContentDisposition());
+        headers.setCacheControl(internalHeaders.getCacheControl());
+        headers.setBlobSequenceNumber(internalHeaders.getBlobSequenceNumber());
+        headers.setBlobType(internalHeaders.getBlobType());
+        headers.setLeaseStatus(internalHeaders.getLeaseStatus());
+        headers.setLeaseState(internalHeaders.getLeaseState());
+        headers.setLeaseDuration(internalHeaders.getLeaseDuration());
+        headers.setCopyId(internalHeaders.getCopyId());
+        headers.setCopyStatus(internalHeaders.getCopyStatus());
+        headers.setCopySource(internalHeaders.getCopySource());
+        headers.setCopyProgress(internalHeaders.getCopyProgress());
+        headers.setCopyCompletionTime(internalHeaders.getCopyCompletionTime());
+        headers.setCopyStatusDescription(internalHeaders.getCopyStatusDescription());
+        headers.setIsServerEncrypted(internalHeaders.isServerEncrypted());
+        headers.setClientRequestId(internalHeaders.getClientRequestId());
+        headers.setRequestId(internalHeaders.getRequestId());
+        headers.setVersion(internalHeaders.getVersion());
+        headers.setVersionId(internalHeaders.getVersionId());
+        headers.setAcceptRanges(internalHeaders.getAcceptRanges());
+        headers.setDateProperty(internalHeaders.getDateProperty());
+        headers.setBlobCommittedBlockCount(internalHeaders.getBlobCommittedBlockCount());
+        headers.setEncryptionKeySha256(internalHeaders.getEncryptionKeySha256());
+        headers.setEncryptionScope(internalHeaders.getEncryptionScope());
+        headers.setBlobContentMD5(internalHeaders.getBlobContentMD5());
+        headers.setContentCrc64(internalHeaders.getContentCrc64());
+        headers.setErrorCode(internalHeaders.getErrorCode());
+        headers.setTagCount(internalHeaders.getTagCount());
+
+        Map<String, String> objectReplicationStatus = internalHeaders.getObjectReplicationRules();
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        headers.setObjectReplicationDestinationPolicyId(objectReplicationStatus.getOrDefault("policy-id", null));
+        if (headers.getObjectReplicationDestinationPolicyId() == null) {
+            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
+                }
+                internalSourcePolicies.get(policyId).add(rule);
+            }
+        }
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
+        headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
+
+        return headers;
     }
 }

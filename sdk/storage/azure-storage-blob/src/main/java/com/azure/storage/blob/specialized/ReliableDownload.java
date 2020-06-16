@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -60,7 +61,7 @@ final class ReliableDownload {
     }
 
     BlobDownloadHeaders getDeserializedHeaders() {
-        return new BlobDownloadHeaders(rawResponse.getDeserializedHeaders());
+        return ModelHelper.populateBlobDownloadHeaders(rawResponse.getDeserializedHeaders());
     }
 
     Flux<ByteBuffer> getValue() {
