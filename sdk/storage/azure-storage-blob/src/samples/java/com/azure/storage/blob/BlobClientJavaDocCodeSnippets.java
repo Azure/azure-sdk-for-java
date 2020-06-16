@@ -437,7 +437,7 @@ public class BlobClientJavaDocCodeSnippets {
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile3() throws IOException {
-        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration
+        // BEGIN: com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#String-BlobUploadFromFileOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -452,13 +452,14 @@ public class BlobClientJavaDocCodeSnippets {
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         try {
-            client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+            client.uploadFromFileWithResponse(filePath, new BlobUploadFromFileOptions()
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout);
+                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions),
+                timeout, new Context(key2, value2));
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.BlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration
+        // END: com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#String-BlobUploadFromFileOptions-Duration-Context
     }
 }

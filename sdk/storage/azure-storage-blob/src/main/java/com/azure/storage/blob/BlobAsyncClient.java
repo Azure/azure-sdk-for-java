@@ -575,9 +575,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        return this.uploadFromFileWithResponse(filePath, new BlobUploadFromFileOptions()
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+            .setTier(tier).setRequestConditions(requestConditions))
+            .then();
     }
 
     /**
@@ -588,14 +589,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFileWithResponse#String-BlobUploadFromFileOptions}
      *
      * @param filePath Path to the upload file
      * @param options {@link BlobUploadFromFileOptions}
-     * @return An empty response
+     * @return A reactive response containing the information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Mono<Void> uploadFromFile(String filePath, BlobUploadFromFileOptions options) {
+    public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(
+        String filePath, BlobUploadFromFileOptions options) {
         BlobUploadFromFileOptions finalOptions = options == null ? new BlobUploadFromFileOptions() : options;
         Long originalBlockSize = (finalOptions.getParallelTransferOptions() == null)
             ? null
@@ -627,8 +629,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                 new BlockBlobSimpleUploadOptions().setHeaders(finalOptions.getHeaders())
                                     .setMetadata(finalOptions.getMetadata()).setTags(finalOptions.getTags())
                                     .setTier(finalOptions.getTier())
-                                    .setRequestConditions(finalOptions.getRequestConditions()))
-                                .then();
+                                    .setRequestConditions(finalOptions.getRequestConditions()));
                         }
                     } catch (IOException ex) {
                         return Mono.error(ex);
@@ -641,7 +642,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    private Mono<Void> uploadFileChunks(long fileSize, ParallelTransferOptions parallelTransferOptions,
+    private Mono<Response<BlockBlobItem>> uploadFileChunks(
+        long fileSize, ParallelTransferOptions parallelTransferOptions,
         Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, BlobRequestConditions requestConditions, AsynchronousFileChannel channel,
         BlockBlobAsyncClient client) {
@@ -669,8 +671,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new ArrayList<>(blockIds.values()), new BlockBlobCommitBlockListOptions()
                     .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
-                    .setRequestConditions(finalRequestConditions))))
-            .then();
+                    .setRequestConditions(finalRequestConditions))));
     }
 
     /**

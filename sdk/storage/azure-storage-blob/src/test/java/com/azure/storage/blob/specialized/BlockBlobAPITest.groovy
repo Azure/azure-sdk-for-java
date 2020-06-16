@@ -733,7 +733,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath(), new BlobUploadFromFileOptions().setTags(tags), null)
+        blobClient.uploadFromFileWithResponse(file.getAbsolutePath(), new BlobUploadFromFileOptions().setTags(tags), null, null)
 
         then:
         tags == blockBlobClient.getTags()
