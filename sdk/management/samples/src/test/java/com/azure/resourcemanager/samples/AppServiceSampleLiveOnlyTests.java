@@ -6,16 +6,19 @@ package com.azure.resourcemanager.samples;
 import com.azure.resourcemanager.appservice.samples.ManageFunctionAppLogs;
 import com.azure.resourcemanager.appservice.samples.ManageFunctionAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageFunctionAppWithAuthentication;
+import com.azure.resourcemanager.appservice.samples.ManageFunctionAppWithDomainSsl;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxFunctionAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppCosmosDbByMsi;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppStorageAccountConnection;
 import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithContainerRegistry;
+import com.azure.resourcemanager.appservice.samples.ManageLinuxWebAppWithDomainSsl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbByMsi;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppCosmosDbThroughKeyVault;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppLogs;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppSourceControl;
 import com.azure.resourcemanager.appservice.samples.ManageWebAppStorageAccountConnection;
+import com.azure.resourcemanager.appservice.samples.ManageWebAppWithDomainSsl;
 import com.azure.resourcemanager.resources.core.TestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -88,5 +91,30 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     @Test
     public void testManageLinuxFunctionAppSourceControl() {
         Assertions.assertTrue(ManageLinuxFunctionAppSourceControl.runSample(azure));
+    }
+
+    @Test
+    public void testManageWebAppWithDomainSsl() {
+        Assertions.assertTrue(ManageWebAppWithDomainSsl.runSample(azure));
+    }
+
+//    @Test
+//    public void testManageWebAppWithTrafficManager() {
+//        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
+//    }
+
+    @Test
+    public void testManageLinuxWebAppWithDomainSsl() {
+        Assertions.assertTrue(ManageLinuxWebAppWithDomainSsl.runSample(azure));
+    }
+
+//    @Test
+//    public void testManageLinuxWebAppWithTrafficManager() {
+//        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
+//    }
+
+    @Test
+    public void testManageFunctionAppWithDomainSsl() {
+        Assertions.assertTrue(ManageFunctionAppWithDomainSsl.runSample(azure));
     }
 }

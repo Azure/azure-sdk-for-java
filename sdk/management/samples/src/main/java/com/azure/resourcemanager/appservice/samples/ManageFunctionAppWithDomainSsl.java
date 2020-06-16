@@ -44,8 +44,7 @@ public final class ManageFunctionAppWithDomainSsl {
         final String app2Name       = azure.sdkContext().randomResourceName("webapp2-", 20);
         final String rgName         = azure.sdkContext().randomResourceName("rgNEMV_", 24);
         final String domainName     = azure.sdkContext().randomResourceName("jsdkdemo-", 20) + ".com";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String certPassword   = "StrongPass!12";
+        final String certPassword   = Utils.password();
 
         try {
             //============================================================
