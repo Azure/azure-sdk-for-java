@@ -24,9 +24,10 @@ public final class UtilBridgeInternal {
     private UtilBridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
+    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction, boolean isTracerEnabled) {
+        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction, isTracerEnabled);
     }
+
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {

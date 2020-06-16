@@ -41,8 +41,7 @@ public final class ManageLinuxWebAppSqlConnection {
         final String sqlServerName = azure.sdkContext().randomResourceName("jsdkserver", 20);
         final String sqlDbName = azure.sdkContext().randomResourceName("jsdkdb", 20);
         final String admin = "jsdkadmin";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "StrongPass!123";
+        final String password = Utils.password();
         final String rgName = azure.sdkContext().randomResourceName("rg1NEMV_", 24);
 
         try {

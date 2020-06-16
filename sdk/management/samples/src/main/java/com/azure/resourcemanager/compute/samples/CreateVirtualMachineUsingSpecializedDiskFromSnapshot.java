@@ -49,8 +49,7 @@ public final class CreateVirtualMachineUsingSpecializedDiskFromSnapshot {
         final String rgName = azure.sdkContext().randomResourceName("rgCOMV", 15);
         final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip", 15);
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final Region region = Region.US_WEST_CENTRAL;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_apache.sh";

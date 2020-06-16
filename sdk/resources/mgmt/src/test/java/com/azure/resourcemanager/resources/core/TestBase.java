@@ -56,6 +56,13 @@ public abstract class TestBase {
         return sdkContext.randomResourceName(prefix, maxLen);
     }
 
+    public String password() {
+        // do not record
+        String password = new SdkContext().randomResourceName("Pa5$", 12);
+        System.out.printf("Password: %s%n", password);
+        return password;
+    }
+
     protected enum RunCondition {
         MOCK_ONLY,
         LIVE_ONLY,

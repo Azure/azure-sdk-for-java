@@ -70,9 +70,28 @@ stages:
           groupId: com.microsoft.azure
         - name: azure-spring-boot-sample-active-directory
           groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-active-directory-b2c-oidc
+          groupId: com.microsoft.azure
         - name: azure-spring-boot-sample-active-directory-backend
           groupId: com.microsoft.azure
         - name: azure-spring-boot-sample-active-directory-backend-v2
           groupId: com.microsoft.azure
         - name: azure-spring-boot-sample-active-directory-stateless
           groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-cosmosdb
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-data-gremlin
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-keyvault-secrets
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-mediaservices
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-servicebus
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-servicebus-jms-queue
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-servicebus-jms-topic
+          groupId: com.microsoft.azure
+        - name: azure-spring-boot-sample-storage-blob
+          groupId: com.microsoft.azure
+

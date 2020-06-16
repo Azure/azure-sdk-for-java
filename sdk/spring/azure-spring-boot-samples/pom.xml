@@ -63,18 +63,18 @@
 
   <modules>
     <module>azure-spring-boot-sample-active-directory</module>
-<!--    <module>azure-spring-boot-sample-active-directory-b2c-oidc</module>-->
+    <module>azure-spring-boot-sample-active-directory-b2c-oidc</module>
     <module>azure-spring-boot-sample-active-directory-backend</module>
     <module>azure-spring-boot-sample-active-directory-backend-v2</module>
     <module>azure-spring-boot-sample-active-directory-stateless</module>
-<!--    <module>azure-spring-boot-sample-cosmosdb</module>-->
-<!--    <module>azure-spring-boot-sample-data-gremlin</module>-->
-<!--    <module>azure-spring-boot-sample-keyvault-secrets</module>-->
-<!--    <module>azure-spring-boot-sample-mediaservices</module>-->
-<!--    <module>azure-spring-boot-sample-servicebus</module>-->
-<!--    <module>azure-spring-boot-sample-servicebus-jms-queue</module>-->
-<!--    <module>azure-spring-boot-sample-servicebus-jms-topic</module>-->
-<!--    <module>azure-spring-boot-sample-storage</module>-->
+    <module>azure-spring-boot-sample-cosmosdb</module>
+    <module>azure-spring-boot-sample-data-gremlin</module>
+    <module>azure-spring-boot-sample-keyvault-secrets</module>
+    <module>azure-spring-boot-sample-mediaservices</module>
+    <module>azure-spring-boot-sample-servicebus</module>
+    <module>azure-spring-boot-sample-servicebus-jms-queue</module>
+    <module>azure-spring-boot-sample-servicebus-jms-topic</module>
+    <module>azure-spring-boot-sample-storage-blob</module>
   </modules>
 
 </project>

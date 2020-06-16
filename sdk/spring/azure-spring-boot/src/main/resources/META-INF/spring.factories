@@ -1,15 +1,8 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.microsoft.azure.spring.cloudfoundry.environment.VcapProcessor,\
-com.microsoft.azure.spring.keyvault.KeyVaultEnvironmentPostProcessor
+org.springframework.boot.env.EnvironmentPostProcessor=com.microsoft.azure.keyvault.spring.KeyVaultEnvironmentPostProcessor
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.microsoft.azure.spring.autoconfigure.cosmosdb.CosmosAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.cosmosdb.CosmosDbRepositoriesAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.cosmosdb.CosmosDbReactiveRepositoriesAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.gremlin.GremlinAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.gremlin.GremlinRepositoriesAutoConfiguration,\
-com.azure.spring.autoconfigure.mediaservices.MediaServicesAutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.servicebus.ServiceBusAutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
 com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.btoc.AADB2CAutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.metrics.AzureMonitorMetricsExportAutoConfiguration,\
-com.microsoft.azure.spring.autoconfigure.jms.ServiceBusJMSAutoConfiguration
+com.microsoft.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration

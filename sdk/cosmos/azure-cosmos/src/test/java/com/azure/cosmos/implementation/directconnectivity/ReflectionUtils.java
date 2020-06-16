@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -103,5 +104,9 @@ public class ReflectionUtils {
 
     public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
         set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
+    }
+
+    public static void setTracerProvider(CosmosAsyncClient cosmosAsyncClient, TracerProvider tracerProvider){
+        set(cosmosAsyncClient, tracerProvider, "tracerProvider");
     }
 }

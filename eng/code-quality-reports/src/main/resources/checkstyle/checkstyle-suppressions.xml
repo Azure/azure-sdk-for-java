@@ -459,4 +459,7 @@
   <!-- Checkstyle suppressions for azure-test-watch package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.testing.AzureTestWatcher.java"/>
+
+  <!-- Checkstyle suppressions for resource manager package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 </suppressions>

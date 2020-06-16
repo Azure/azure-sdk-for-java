@@ -18,7 +18,7 @@ that is optimized for ease of use, succinctness and consistency.
 [//]: # ({x-version-update-start;com.azure:azure-resourcemanager;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
   <version>2.0.0-SNAPSHOT</version>
 </dependency>
@@ -254,7 +254,7 @@ For example, here is sample maven dependency for Compute package.
 [//]: # ({x-version-update-start;com.azure:azure-resourcemanager-compute;current})
 ```xml
 <dependency>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
   <version>2.0.0-SNAPSHOT</version>
 </dependency>
