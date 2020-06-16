@@ -17,8 +17,6 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
       TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
@@ -29,39 +27,18 @@ jobs:
       Matrix:
         # 59m 59s, timed out
         Http_E2E:
-          DisplayName: ReadMyWrites Integration Tests
+          DisplayName: Https ReadMyWrites Integration Tests
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
         # 59m 59s, timed out
         Session_Tcp_E2E:
-          DisplayName: ReadMyWrites Integration Tests
+          DisplayName: TCP ReadMyWrites Integration Tests
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Session'
-        # 09m 23s, expect passed
-        Single_Region_Fast:
-          DisplayName: Single Region Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        # 09m 0s, expect passed
-        Single_Region_Direct:
-          DisplayName: Single Region Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-        # 7m 44s, expect passed
-        Single_Region_Examples:
-          DisplayName: Single Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -86,8 +63,6 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
       TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
@@ -100,39 +75,27 @@ jobs:
       Matrix:
         # 09m 07s, expect passed
         Fast:
-          DisplayName: Multimaster Single Region Fast
+          DisplayName: Session Single Region Fast
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
         # 09m 14s, expect passed
         Direct:
-          DisplayName: Multimaster Single Region Direct
+          DisplayName: Session Single Region Direct
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
-        # 07m 42s, expect passed
-        Examples:
-          DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
         # 07m 05s, expect passed
         NonEmulator:
-          DisplayName: Multimaster Single Region NonEmulator
+          DisplayName: Session Single Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
         # 28m 42s, expect passed (rebalanced)
         Single_Region_Long:
-          DisplayName: Long Integration Tests
+          DisplayName: Session Single Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
           DESIRED_CONSISTENCIES: '["Session"]'
           PREFERRED_LOCATIONS: null
           PROTOCOLS: ''
-        # 6m 58s, expect passed (rebalanced)
-        Single_Region_NonEmulator:
-          DisplayName: Single Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -154,8 +117,6 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
       TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -170,34 +131,12 @@ jobs:
           ProfileFlag: '-Pfast'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Bounded_Staleness_Tcp_Fast:
-          DisplayName: Bounded Staleness TCP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
-        Consistent_Prefix_Tcp_Fast:
-          DisplayName: Consistent Prefix TCP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
+          DESIRED_CONSISTENCIES: '["Strong", "BoundedStaleness", "Session", "ConsistentPrefix"]'
         # 08m 53s, expect passed
         Strong_Tcp_Direct:
           DisplayName: Strong TCP Direct
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, expect passed
-        Strong_Tcp_Examples:
-          DisplayName: Strong TCP Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
@@ -231,8 +170,6 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
       TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
@@ -242,76 +179,38 @@ jobs:
       Matrix:
         # 59m 58s, timed out
         Https_E2E:
-          DisplayName: Single Region ReadMyWrites
+          DisplayName: Single Region Https ReadMyWrites
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
-        Bounded_Staleness_Https_E2E:
-          DisplayName: Bounded Staleness Single Region ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'BoundedStaleness'
         # 59m 58s, timed out
         Strong_Tcp_E2E:
-          DisplayName: Single Region ReadMyWrites
+          DisplayName: Single Region TCP ReadMyWrites
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Strong'
         Bounded_Staleness_Tcp_E2E:
-          DisplayName: Bounded Staleness Single Region ReadMyWrites
+          DisplayName: Bounded Staleness Single Region TCP ReadMyWrites
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'BoundedStaleness'
-        # 08m 50s, expect passed
-        Strong_Https_Fast:
-          DisplayName: Strong HTTP Fast
+        Bounded_Staleness_Tcp_Fast:
+          DisplayName: Bounded Staleness TCP Fast
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        Bounded_Staleness_Https_Fast:
-          DisplayName: Bounded Staleness HTTP Fast
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pfast'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
+          PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
-        Consistent_Prefix_Https_Fast:
-          DisplayName: Consistent Prefix HTTP Fast
+        Consistent_Prefix_Tcp_Fast:
+          DisplayName: Consistent Prefix TCP Fast
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
+          PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
-        # 08m 50s, expect passed
-        Strong_Https_Direct:
-          DisplayName: Strong HTTP Direct
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pdirect'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 07m 36s, expect passed
-        Strong_Https_Examples:
-          DisplayName: Strong HTTP Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-        # 06m 59s, expect passed
-        Strong_Https_NonEmulator:
-          DisplayName: Strong HTTP NonEmulator
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pnon-emulator'
-          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-          PROTOCOLS: '["Https"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -334,8 +233,6 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
       TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
@@ -351,7 +248,6 @@ jobs:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
         # 06m 34s, previously failing
         MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
@@ -367,11 +263,6 @@ jobs:
           DisplayName: Multimaster Multi Region Direct
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
-        # 07m 49s, expect passed
-        Examples:
-          DisplayName: Multimaster Multi Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
         # 08m 0s, expect passed
         NonEmulator:
           DisplayName: Multimaster Multi Region NonEmulator
@@ -399,8 +290,6 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-examples
-          groupId: com.azure
       TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
@@ -426,11 +315,6 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
-        # 07m 52s, expect passed
-        Examples:
-          DisplayName: Multimaster Single Region Examples
-          OSVmImage: 'ubuntu-18.04'
-          ProfileFlag: '-Pexamples'
         # 07m 10s, expect passed
         NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
