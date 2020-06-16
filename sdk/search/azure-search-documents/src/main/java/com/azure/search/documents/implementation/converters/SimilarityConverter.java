@@ -3,33 +3,32 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.Similarity;
+import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.Similarity} and {@link Similarity}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.Similarity} and {@link SimilarityAlgorithm}.
  */
 public final class SimilarityConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.Similarity} to {@link Similarity}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.Similarity} to {@link SimilarityAlgorithm}.
      */
-    public static Similarity map(com.azure.search.documents.implementation.models.Similarity obj) {
+    public static SimilarityAlgorithm map(com.azure.search.documents.indexes.implementation.models.Similarity obj) {
         if (obj == null) {
             return null;
         }
-        Similarity similarity = new Similarity();
-        return similarity;
+        SimilarityAlgorithm similarityAlgorithm = new SimilarityAlgorithm();
+        return similarityAlgorithm;
     }
 
     /**
-     * Maps from {@link Similarity} to {@link com.azure.search.documents.implementation.models.Similarity}.
+     * Maps from {@link SimilarityAlgorithm} to {@link com.azure.search.documents.indexes.implementation.models.Similarity}.
      */
-    public static com.azure.search.documents.implementation.models.Similarity map(Similarity obj) {
+    public static com.azure.search.documents.indexes.implementation.models.Similarity map(SimilarityAlgorithm obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.Similarity similarity =
-            new com.azure.search.documents.implementation.models.Similarity();
+        com.azure.search.documents.indexes.implementation.models.Similarity similarity =
+            new com.azure.search.documents.indexes.implementation.models.Similarity();
         return similarity;
     }
 

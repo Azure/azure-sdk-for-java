@@ -1,7 +1,9 @@
 parameters:
   Artifacts: []
   ServiceDirectory: not-specified
-  
+  TargetDocRepoOwner: 'Azure'
+  TargetDocRepoName: 'azure-docs-sdk-java'
+
 stages:
   - stage: Build
     jobs:
@@ -88,8 +90,6 @@ stages:
           jdkVersionOption: $(JavaVersion)
 
         PreRunSteps:
-        - template: ../steps/update-version-fix.yml
-
         - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
             Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"
@@ -150,5 +150,5 @@ stages:
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
-
-        
+        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 

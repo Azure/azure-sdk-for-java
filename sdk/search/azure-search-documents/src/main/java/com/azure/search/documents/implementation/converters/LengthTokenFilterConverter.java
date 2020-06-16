@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.LengthTokenFilter;
+import com.azure.search.documents.indexes.models.LengthTokenFilter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.LengthTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.LengthTokenFilter} and
  * {@link LengthTokenFilter}.
  */
 public final class LengthTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.LengthTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.LengthTokenFilter} to
      * {@link LengthTokenFilter}.
      */
-    public static LengthTokenFilter map(com.azure.search.documents.implementation.models.LengthTokenFilter obj) {
+    public static LengthTokenFilter map(com.azure.search.documents.indexes.implementation.models.LengthTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -34,14 +33,14 @@ public final class LengthTokenFilterConverter {
 
     /**
      * Maps from {@link LengthTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.LengthTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.LengthTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.LengthTokenFilter map(LengthTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.LengthTokenFilter map(LengthTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.LengthTokenFilter lengthTokenFilter =
-            new com.azure.search.documents.implementation.models.LengthTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.LengthTokenFilter lengthTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.LengthTokenFilter();
 
         String name = obj.getName();
         lengthTokenFilter.setName(name);

@@ -3,17 +3,17 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.ClassicTokenizer;
+import com.azure.search.documents.indexes.models.ClassicTokenizer;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ClassicTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ClassicTokenizer} and
  * {@link ClassicTokenizer}.
  */
 public final class ClassicTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ClassicTokenizer} to {@link ClassicTokenizer}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ClassicTokenizer} to {@link ClassicTokenizer}.
      */
-    public static ClassicTokenizer map(com.azure.search.documents.implementation.models.ClassicTokenizer obj) {
+    public static ClassicTokenizer map(com.azure.search.documents.indexes.implementation.models.ClassicTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -28,14 +28,14 @@ public final class ClassicTokenizerConverter {
     }
 
     /**
-     * Maps from {@link ClassicTokenizer} to {@link com.azure.search.documents.implementation.models.ClassicTokenizer}.
+     * Maps from {@link ClassicTokenizer} to {@link com.azure.search.documents.indexes.implementation.models.ClassicTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.ClassicTokenizer map(ClassicTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ClassicTokenizer map(ClassicTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ClassicTokenizer classicTokenizer =
-            new com.azure.search.documents.implementation.models.ClassicTokenizer();
+        com.azure.search.documents.indexes.implementation.models.ClassicTokenizer classicTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.ClassicTokenizer();
 
         String name = obj.getName();
         classicTokenizer.setName(name);

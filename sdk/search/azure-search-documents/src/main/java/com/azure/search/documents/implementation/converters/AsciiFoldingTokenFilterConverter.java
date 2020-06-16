@@ -3,18 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.AsciiFoldingTokenFilter;
+import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter} and
  * {@link AsciiFoldingTokenFilter}.
  */
 public final class AsciiFoldingTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter} to
      * {@link AsciiFoldingTokenFilter}.
      */
-    public static AsciiFoldingTokenFilter map(com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter obj) {
+    public static AsciiFoldingTokenFilter map(com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -30,14 +30,14 @@ public final class AsciiFoldingTokenFilterConverter {
 
     /**
      * Maps from {@link AsciiFoldingTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter map(AsciiFoldingTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter map(AsciiFoldingTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter asciiFoldingTokenFilter =
-            new com.azure.search.documents.implementation.models.AsciiFoldingTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter asciiFoldingTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.AsciiFoldingTokenFilter();
 
         String name = obj.getName();
         asciiFoldingTokenFilter.setName(name);

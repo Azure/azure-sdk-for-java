@@ -7,11 +7,15 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.io.Serializable;
+
 /**
  * Defines values for TextAnalyticsErrorCode.
  */
 @Immutable
-public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnalyticsErrorCode> {
+public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnalyticsErrorCode> implements Serializable {
+    private static final long serialVersionUID = 21436310107606058L;
+
     /**
      * Enum value invalidRequest.
      */
@@ -84,7 +88,7 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
      * @return The corresponding TextAnalyticsErrorCode.
      */
     @JsonCreator
-    static TextAnalyticsErrorCode fromString(String name) {
+    public static TextAnalyticsErrorCode fromString(String name) {
         return fromString(name, TextAnalyticsErrorCode.class);
     }
 }

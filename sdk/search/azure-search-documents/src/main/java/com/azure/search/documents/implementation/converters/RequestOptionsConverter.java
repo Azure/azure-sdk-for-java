@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.RequestOptions;
 
 import java.util.UUID;
@@ -23,7 +22,7 @@ public final class RequestOptionsConverter {
         RequestOptions requestOptions = new RequestOptions();
 
         UUID xMsClientRequestId = obj.getXMsClientRequestId();
-        requestOptions.setXMsClientRequestId(xMsClientRequestId);
+        requestOptions.setClientRequestId(xMsClientRequestId);
         return requestOptions;
     }
 
@@ -37,7 +36,7 @@ public final class RequestOptionsConverter {
         com.azure.search.documents.implementation.models.RequestOptions requestOptions =
             new com.azure.search.documents.implementation.models.RequestOptions();
 
-        UUID xMsClientRequestId = obj.getXMsClientRequestId();
+        UUID xMsClientRequestId = obj.getClientRequestId();
         requestOptions.setXMsClientRequestId(xMsClientRequestId);
         return requestOptions;
     }

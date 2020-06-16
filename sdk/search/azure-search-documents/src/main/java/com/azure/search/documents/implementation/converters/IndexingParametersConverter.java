@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.IndexingParameters;
+import com.azure.search.documents.indexes.models.IndexingParameters;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.IndexingParameters} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.IndexingParameters} and
  * {@link IndexingParameters}.
  */
 public final class IndexingParametersConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.IndexingParameters} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.IndexingParameters} to
      * {@link IndexingParameters}.
      */
-    public static IndexingParameters map(com.azure.search.documents.implementation.models.IndexingParameters obj) {
+    public static IndexingParameters map(com.azure.search.documents.indexes.implementation.models.IndexingParameters obj) {
         if (obj == null) {
             return null;
         }
@@ -43,14 +43,14 @@ public final class IndexingParametersConverter {
 
     /**
      * Maps from {@link IndexingParameters} to
-     * {@link com.azure.search.documents.implementation.models.IndexingParameters}.
+     * {@link com.azure.search.documents.indexes.implementation.models.IndexingParameters}.
      */
-    public static com.azure.search.documents.implementation.models.IndexingParameters map(IndexingParameters obj) {
+    public static com.azure.search.documents.indexes.implementation.models.IndexingParameters map(IndexingParameters obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexingParameters indexingParameters =
-            new com.azure.search.documents.implementation.models.IndexingParameters();
+        com.azure.search.documents.indexes.implementation.models.IndexingParameters indexingParameters =
+            new com.azure.search.documents.indexes.implementation.models.IndexingParameters();
 
         Integer maxFailedItemsPerBatch = obj.getMaxFailedItemsPerBatch();
         indexingParameters.setMaxFailedItemsPerBatch(maxFailedItemsPerBatch);

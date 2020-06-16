@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
+import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -788,6 +789,164 @@ class AzureFileSystemProviderTest extends APISpec {
 
         when:
         fs.provider().newInputStream(fs.getPath("foo"))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "OutputStream options default"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+
+        def data = defaultData.array()
+
+        when:
+        // Defaults should allow us to create a new file.
+        nioStream.write(data)
+        nioStream.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+
+        when:
+        // Defaults should allow us to open to an existing file and overwrite the destination.
+        data = getRandomByteArray(100)
+        nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+        nioStream.write(data)
+        nioStream.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), new ByteArrayInputStream(data), 100)
+    }
+
+    def "OutputStream options create"() {
+        // Create works both on creating new and opening existing. We test these scenarios above.
+        // Here we assert that we cannot create without this option
+        setup:
+        def fs = createFS(config)
+
+        when:
+        // Explicitly exclude a create option.
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "OutputStream options create new"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def data = defaultData.array()
+
+        when:
+        // Succeed in creating a new file
+        def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+        nioStream.write(data)
+        nioStream.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+
+        when:
+        // Fail in overwriting an existing
+        fs.provider().newOutputStream(fs.getPath(bc.getBlobName()), StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "OutputStream options missing required"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Missing WRITE"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Missing TRUNCATE_EXISTING"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE)
+
+        then:
+        thrown(IllegalArgumentException)
+
+    }
+
+    @Unroll
+    def "OutputStream options invalid"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), option,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                             | _
+        StandardOpenOption.APPEND          | _
+        StandardOpenOption.DELETE_ON_CLOSE | _
+        StandardOpenOption.DSYNC           | _
+        StandardOpenOption.READ            | _
+        StandardOpenOption.SPARSE          | _
+        StandardOpenOption.SYNC            | _
+    }
+
+    @Unroll
+    @Requires({ liveMode() }) // Because we upload in blocks
+    def "OutputStream file system config"() {
+        setup:
+        def blockSize = 50L
+        def putBlobThreshold = 100L
+        config[AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE] = blockSize
+        config[AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD] = putBlobThreshold
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def nioStream = fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
+
+        def data = getRandomByteArray(dataSize)
+
+        when:
+        nioStream.write(data)
+        nioStream.close()
+
+        then:
+        bc.listBlocks().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize || blockCount
+        60       || 0
+        150      || 3
+    }
+
+    def "OutputStream open directory fail"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newOutputStream(fs.getPath(bc.getBlobName()))
 
         then:
         thrown(IOException)

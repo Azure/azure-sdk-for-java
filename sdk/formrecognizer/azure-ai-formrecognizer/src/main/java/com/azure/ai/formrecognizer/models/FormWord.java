@@ -23,7 +23,7 @@ public final class FormWord extends FormContent {
      * @param confidence the confidence.
      */
     public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final float confidence) {
-        super(text, boundingBox, pageNumber, TextContentType.WORD);
+        super(text, boundingBox, pageNumber);
         this.confidence = confidence;
     }
 
@@ -34,14 +34,6 @@ public final class FormWord extends FormContent {
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TextContentType getTextContentType() {
-        return super.getTextContentType();
     }
 
     /**

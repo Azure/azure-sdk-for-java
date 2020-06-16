@@ -3,21 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.KeywordMarkerTokenFilter;
+import com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter} and
  * {@link KeywordMarkerTokenFilter}.
  */
 public final class KeywordMarkerTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter} to
      * {@link KeywordMarkerTokenFilter}.
      */
-    public static KeywordMarkerTokenFilter map(com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter obj) {
+    public static KeywordMarkerTokenFilter map(com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -32,20 +32,20 @@ public final class KeywordMarkerTokenFilterConverter {
         }
 
         Boolean ignoreCase = obj.isIgnoreCase();
-        keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
+        keywordMarkerTokenFilter.setCaseIgnored(ignoreCase);
         return keywordMarkerTokenFilter;
     }
 
     /**
      * Maps from {@link KeywordMarkerTokenFilter} to
-     * {@link com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter}.
+     * {@link com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter map(KeywordMarkerTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter map(KeywordMarkerTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter keywordMarkerTokenFilter =
-            new com.azure.search.documents.implementation.models.KeywordMarkerTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter keywordMarkerTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter();
 
         String name = obj.getName();
         keywordMarkerTokenFilter.setName(name);
@@ -55,7 +55,7 @@ public final class KeywordMarkerTokenFilterConverter {
             keywordMarkerTokenFilter.setKeywords(keywords);
         }
 
-        Boolean ignoreCase = obj.isIgnoreCase();
+        Boolean ignoreCase = obj.isCaseIgnored();
         keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
         return keywordMarkerTokenFilter;
     }

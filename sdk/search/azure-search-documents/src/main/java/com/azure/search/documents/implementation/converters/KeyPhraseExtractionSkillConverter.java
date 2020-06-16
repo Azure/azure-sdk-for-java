@@ -3,24 +3,24 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.KeyPhraseExtractionSkill;
-import com.azure.search.documents.models.KeyPhraseExtractionSkillLanguage;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.KeyPhraseExtractionSkill;
+import com.azure.search.documents.indexes.models.KeyPhraseExtractionSkillLanguage;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill} and
  * {@link KeyPhraseExtractionSkill}.
  */
 public final class KeyPhraseExtractionSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill} to
      * {@link KeyPhraseExtractionSkill}.
      */
-    public static KeyPhraseExtractionSkill map(com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill obj) {
+    public static KeyPhraseExtractionSkill map(com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -60,23 +60,23 @@ public final class KeyPhraseExtractionSkillConverter {
 
     /**
      * Maps from {@link KeyPhraseExtractionSkill} to
-     * {@link com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill}.
+     * {@link com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill}.
      */
-    public static com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill map(KeyPhraseExtractionSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill map(KeyPhraseExtractionSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill keyPhraseExtractionSkill =
-            new com.azure.search.documents.implementation.models.KeyPhraseExtractionSkill();
+        com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill keyPhraseExtractionSkill =
+            new com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             keyPhraseExtractionSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             keyPhraseExtractionSkill.setInputs(inputs);
         }
@@ -94,7 +94,7 @@ public final class KeyPhraseExtractionSkillConverter {
         keyPhraseExtractionSkill.setMaxKeyPhraseCount(maxKeyPhraseCount);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.implementation.models.KeyPhraseExtractionSkillLanguage defaultLanguageCode =
+            com.azure.search.documents.indexes.implementation.models.KeyPhraseExtractionSkillLanguage defaultLanguageCode =
                 KeyPhraseExtractionSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             keyPhraseExtractionSkill.setDefaultLanguageCode(defaultLanguageCode);
         }

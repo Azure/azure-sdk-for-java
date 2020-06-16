@@ -3,18 +3,17 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.LimitTokenFilter;
+import com.azure.search.documents.indexes.models.LimitTokenFilter;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.LimitTokenFilter} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.LimitTokenFilter} and
  * {@link LimitTokenFilter}.
  */
 public final class LimitTokenFilterConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.LimitTokenFilter} to {@link LimitTokenFilter}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.LimitTokenFilter} to {@link LimitTokenFilter}.
      */
-    public static LimitTokenFilter map(com.azure.search.documents.implementation.models.LimitTokenFilter obj) {
+    public static LimitTokenFilter map(com.azure.search.documents.indexes.implementation.models.LimitTokenFilter obj) {
         if (obj == null) {
             return null;
         }
@@ -27,19 +26,19 @@ public final class LimitTokenFilterConverter {
         limitTokenFilter.setMaxTokenCount(maxTokenCount);
 
         Boolean consumeAllTokens = obj.isConsumeAllTokens();
-        limitTokenFilter.setConsumeAllTokens(consumeAllTokens);
+        limitTokenFilter.setAllTokensConsumed(consumeAllTokens);
         return limitTokenFilter;
     }
 
     /**
-     * Maps from {@link LimitTokenFilter} to {@link com.azure.search.documents.implementation.models.LimitTokenFilter}.
+     * Maps from {@link LimitTokenFilter} to {@link com.azure.search.documents.indexes.implementation.models.LimitTokenFilter}.
      */
-    public static com.azure.search.documents.implementation.models.LimitTokenFilter map(LimitTokenFilter obj) {
+    public static com.azure.search.documents.indexes.implementation.models.LimitTokenFilter map(LimitTokenFilter obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.LimitTokenFilter limitTokenFilter =
-            new com.azure.search.documents.implementation.models.LimitTokenFilter();
+        com.azure.search.documents.indexes.implementation.models.LimitTokenFilter limitTokenFilter =
+            new com.azure.search.documents.indexes.implementation.models.LimitTokenFilter();
 
         String name = obj.getName();
         limitTokenFilter.setName(name);
@@ -47,7 +46,7 @@ public final class LimitTokenFilterConverter {
         Integer maxTokenCount = obj.getMaxTokenCount();
         limitTokenFilter.setMaxTokenCount(maxTokenCount);
 
-        Boolean consumeAllTokens = obj.isConsumeAllTokens();
+        Boolean consumeAllTokens = obj.areAllTokensConsumed();
         limitTokenFilter.setConsumeAllTokens(consumeAllTokens);
         return limitTokenFilter;
     }

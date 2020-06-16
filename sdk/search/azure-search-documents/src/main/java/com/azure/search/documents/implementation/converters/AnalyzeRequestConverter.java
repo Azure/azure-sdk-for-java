@@ -3,80 +3,80 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.AnalyzeRequest;
-import com.azure.search.documents.models.CharFilterName;
-import com.azure.search.documents.models.LexicalAnalyzerName;
-import com.azure.search.documents.models.LexicalTokenizerName;
-import com.azure.search.documents.models.TokenFilterName;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
+import com.azure.search.documents.indexes.models.CharFilterName;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.TokenFilterName;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.AnalyzeRequest} and
- * {@link AnalyzeRequest}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.AnalyzeRequest} and
+ * {@link AnalyzeTextOptions}.
  */
 public final class AnalyzeRequestConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.AnalyzeRequest} to {@link AnalyzeRequest}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.AnalyzeRequest} to {@link AnalyzeTextOptions}.
      */
-    public static AnalyzeRequest map(com.azure.search.documents.implementation.models.AnalyzeRequest obj) {
+    public static AnalyzeTextOptions map(com.azure.search.documents.indexes.implementation.models.AnalyzeRequest obj) {
         if (obj == null) {
             return null;
         }
-        AnalyzeRequest analyzeRequest = new AnalyzeRequest();
+        AnalyzeTextOptions analyzeTextOptions = null;
+
+        if (obj.getTokenizer() != null) {
+            LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), tokenizer);
+            analyzeTextOptions.setTokenizerName(tokenizer);
+        } else {
+            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
+            analyzeTextOptions = new AnalyzeTextOptions(obj.getText(), analyzer);
+            analyzeTextOptions.setAnalyzerName(analyzer);
+        }
 
         if (obj.getCharFilters() != null) {
             List<CharFilterName> charFilters =
                 obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
-            analyzeRequest.setCharFilters(charFilters);
+            analyzeTextOptions.setCharFilters(charFilters);
         }
 
-        if (obj.getAnalyzer() != null) {
-            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            analyzeRequest.setAnalyzer(analyzer);
-        }
 
         if (obj.getTokenFilters() != null) {
             List<TokenFilterName> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
-            analyzeRequest.setTokenFilters(tokenFilters);
+            analyzeTextOptions.setTokenFilters(tokenFilters);
         }
 
-        String text = obj.getText();
-        analyzeRequest.setText(text);
 
-        if (obj.getTokenizer() != null) {
-            LexicalTokenizerName tokenizer = LexicalTokenizerNameConverter.map(obj.getTokenizer());
-            analyzeRequest.setTokenizer(tokenizer);
-        }
-        return analyzeRequest;
+        return analyzeTextOptions;
     }
 
     /**
-     * Maps from {@link AnalyzeRequest} to {@link com.azure.search.documents.implementation.models.AnalyzeRequest}.
+     * Maps from {@link AnalyzeTextOptions} to {@link com.azure.search.documents.indexes.implementation.models.AnalyzeRequest}.
      */
-    public static com.azure.search.documents.implementation.models.AnalyzeRequest map(AnalyzeRequest obj) {
+    public static com.azure.search.documents.indexes.implementation.models.AnalyzeRequest map(AnalyzeTextOptions obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.AnalyzeRequest analyzeRequest =
-            new com.azure.search.documents.implementation.models.AnalyzeRequest();
+        com.azure.search.documents.indexes.implementation.models.AnalyzeRequest analyzeRequest =
+            new com.azure.search.documents.indexes.implementation.models.AnalyzeRequest();
 
         if (obj.getCharFilters() != null) {
-            List<com.azure.search.documents.implementation.models.CharFilterName> charFilters =
+            List<com.azure.search.documents.indexes.implementation.models.CharFilterName> charFilters =
                 obj.getCharFilters().stream().map(CharFilterNameConverter::map).collect(Collectors.toList());
             analyzeRequest.setCharFilters(charFilters);
         }
 
-        if (obj.getAnalyzer() != null) {
-            com.azure.search.documents.implementation.models.LexicalAnalyzerName analyzer =
-                LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
+        if (obj.getAnalyzerName() != null) {
+            com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName analyzer =
+                LexicalAnalyzerNameConverter.map(obj.getAnalyzerName());
             analyzeRequest.setAnalyzer(analyzer);
         }
 
         if (obj.getTokenFilters() != null) {
-            List<com.azure.search.documents.implementation.models.TokenFilterName> tokenFilters =
+            List<com.azure.search.documents.indexes.implementation.models.TokenFilterName> tokenFilters =
                 obj.getTokenFilters().stream().map(TokenFilterNameConverter::map).collect(Collectors.toList());
             analyzeRequest.setTokenFilters(tokenFilters);
         }
@@ -84,9 +84,9 @@ public final class AnalyzeRequestConverter {
         String text = obj.getText();
         analyzeRequest.setText(text);
 
-        if (obj.getTokenizer() != null) {
-            com.azure.search.documents.implementation.models.LexicalTokenizerName tokenizer =
-                LexicalTokenizerNameConverter.map(obj.getTokenizer());
+        if (obj.getTokenizerName() != null) {
+            com.azure.search.documents.indexes.implementation.models.LexicalTokenizerName tokenizer =
+                LexicalTokenizerNameConverter.map(obj.getTokenizerName());
             analyzeRequest.setTokenizer(tokenizer);
         }
         return analyzeRequest;

@@ -3,35 +3,35 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.ClassicSimilarity;
+import com.azure.search.documents.indexes.models.ClassicSimilarityAlgorithm;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.ClassicSimilarity} and
- * {@link ClassicSimilarity}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.ClassicSimilarity} and
+ * {@link ClassicSimilarityAlgorithm}.
  */
 public final class ClassicSimilarityConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.ClassicSimilarity} to
-     * {@link ClassicSimilarity}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.ClassicSimilarity} to
+     * {@link ClassicSimilarityAlgorithm}.
      */
-    public static ClassicSimilarity map(com.azure.search.documents.implementation.models.ClassicSimilarity obj) {
+    public static ClassicSimilarityAlgorithm map(com.azure.search.documents.indexes.implementation.models.ClassicSimilarity obj) {
         if (obj == null) {
             return null;
         }
-        ClassicSimilarity classicSimilarity = new ClassicSimilarity();
+        ClassicSimilarityAlgorithm classicSimilarity = new ClassicSimilarityAlgorithm();
         return classicSimilarity;
     }
 
     /**
-     * Maps from {@link ClassicSimilarity} to
-     * {@link com.azure.search.documents.implementation.models.ClassicSimilarity}.
+     * Maps from {@link ClassicSimilarityAlgorithm} to
+     * {@link com.azure.search.documents.indexes.implementation.models.ClassicSimilarity}.
      */
-    public static com.azure.search.documents.implementation.models.ClassicSimilarity map(ClassicSimilarity obj) {
+    public static com.azure.search.documents.indexes.implementation.models.ClassicSimilarity map(ClassicSimilarityAlgorithm obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.ClassicSimilarity classicSimilarity =
-            new com.azure.search.documents.implementation.models.ClassicSimilarity();
+        com.azure.search.documents.indexes.implementation.models.ClassicSimilarity classicSimilarity =
+            new com.azure.search.documents.indexes.implementation.models.ClassicSimilarity();
         return classicSimilarity;
     }
 

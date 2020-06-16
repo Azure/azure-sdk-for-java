@@ -69,16 +69,16 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+        ServiceBusTransactionContext transactionContext) {
 
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-            deadLetterErrorDescription, propertiesToModify);
+            deadLetterErrorDescription, propertiesToModify, transactionContext);
 
         if (deliveryState == null) {
             return monoError(logger,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-
         return linkProcessor.updateDisposition(lockToken, deliveryState);
     }
 

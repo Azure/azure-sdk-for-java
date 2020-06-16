@@ -3,9 +3,8 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.PatternAnalyzer;
-import com.azure.search.documents.models.RegexFlags;
+import com.azure.search.documents.indexes.models.PatternAnalyzer;
+import com.azure.search.documents.indexes.models.RegexFlags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,14 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.PatternAnalyzer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.PatternAnalyzer} and
  * {@link PatternAnalyzer}.
  */
 public final class PatternAnalyzerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.PatternAnalyzer} to {@link PatternAnalyzer}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.PatternAnalyzer} to {@link PatternAnalyzer}.
      */
-    public static PatternAnalyzer map(com.azure.search.documents.implementation.models.PatternAnalyzer obj) {
+    public static PatternAnalyzer map(com.azure.search.documents.indexes.implementation.models.PatternAnalyzer obj) {
         if (obj == null) {
             return null;
         }
@@ -49,19 +48,19 @@ public final class PatternAnalyzerConverter {
     }
 
     /**
-     * Maps from {@link PatternAnalyzer} to {@link com.azure.search.documents.implementation.models.PatternAnalyzer}.
+     * Maps from {@link PatternAnalyzer} to {@link com.azure.search.documents.indexes.implementation.models.PatternAnalyzer}.
      */
-    public static com.azure.search.documents.implementation.models.PatternAnalyzer map(PatternAnalyzer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.PatternAnalyzer map(PatternAnalyzer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.PatternAnalyzer patternAnalyzer =
-            new com.azure.search.documents.implementation.models.PatternAnalyzer();
+        com.azure.search.documents.indexes.implementation.models.PatternAnalyzer patternAnalyzer =
+            new com.azure.search.documents.indexes.implementation.models.PatternAnalyzer();
 
         String name = obj.getName();
         patternAnalyzer.setName(name);
 
-        Boolean lowerCaseTerms = obj.isLowerCaseTerms();
+        Boolean lowerCaseTerms = obj.areLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
 
         String pattern = obj.getPattern();
@@ -69,7 +68,7 @@ public final class PatternAnalyzerConverter {
 
         if (obj.getFlags() != null) {
             String flattenFlags = obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
-            patternAnalyzer.setFlags(com.azure.search.documents.implementation.models.RegexFlags.fromString(flattenFlags));
+            patternAnalyzer.setFlags(com.azure.search.documents.indexes.implementation.models.RegexFlags.fromString(flattenFlags));
         }
 
         if (obj.getStopwords() != null) {

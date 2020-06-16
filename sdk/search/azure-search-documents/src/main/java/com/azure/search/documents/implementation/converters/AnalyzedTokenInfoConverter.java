@@ -4,18 +4,18 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.AnalyzedTokenInfo} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo} and
  * {@link AnalyzedTokenInfo}.
  */
 public final class AnalyzedTokenInfoConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.AnalyzedTokenInfo} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo} to
      * {@link AnalyzedTokenInfo}.
      */
-    public static AnalyzedTokenInfo map(com.azure.search.documents.implementation.models.AnalyzedTokenInfo obj) {
+    public static AnalyzedTokenInfo map(com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo obj) {
         if (obj == null) {
             return null;
         }
@@ -37,14 +37,14 @@ public final class AnalyzedTokenInfoConverter {
 
     /**
      * Maps from {@link AnalyzedTokenInfo} to
-     * {@link com.azure.search.documents.implementation.models.AnalyzedTokenInfo}.
+     * {@link com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo}.
      */
-    public static com.azure.search.documents.implementation.models.AnalyzedTokenInfo map(AnalyzedTokenInfo obj) {
+    public static com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo map(AnalyzedTokenInfo obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.AnalyzedTokenInfo analyzedTokenInfo =
-            new com.azure.search.documents.implementation.models.AnalyzedTokenInfo();
+        com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo analyzedTokenInfo =
+            new com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo();
 
         int endOffset = obj.getEndOffset();
         PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", endOffset);

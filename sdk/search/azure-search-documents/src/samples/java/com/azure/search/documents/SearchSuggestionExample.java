@@ -33,7 +33,7 @@ public class SearchSuggestionExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexClient client = new SearchIndexClientBuilder()
+        SearchClient client = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -43,7 +43,7 @@ public class SearchSuggestionExample {
         suggestWithFuzzySearch(client);
     }
 
-    private static void suggestWithHighlights(SearchIndexClient searchClient) {
+    private static void suggestWithHighlights(SearchClient searchClient) {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setHighlightPreTag("<b>")
             .setHighlightPostTag("</b>")
@@ -66,7 +66,7 @@ public class SearchSuggestionExample {
          */
     }
 
-    private static void suggestWithFuzzySearch(SearchIndexClient searchClient) {
+    private static void suggestWithFuzzySearch(SearchClient searchClient) {
         SuggestOptions suggestOptions = new SuggestOptions()
             .setUseFuzzyMatching(true);
 

@@ -3,19 +3,18 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.OcrSkillLanguage;
+import com.azure.search.documents.indexes.models.OcrSkillLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.OcrSkillLanguage} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage} and
  * {@link OcrSkillLanguage}.
  */
 public final class OcrSkillLanguageConverter {
     /**
-     * Maps from enum {@link com.azure.search.documents.implementation.models.OcrSkillLanguage} to enum
+     * Maps from enum {@link com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage} to enum
      * {@link OcrSkillLanguage}.
      */
-    public static OcrSkillLanguage map(com.azure.search.documents.implementation.models.OcrSkillLanguage obj) {
+    public static OcrSkillLanguage map(com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
@@ -24,13 +23,13 @@ public final class OcrSkillLanguageConverter {
 
     /**
      * Maps from enum {@link OcrSkillLanguage} to enum
-     * {@link com.azure.search.documents.implementation.models.OcrSkillLanguage}.
+     * {@link com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage}.
      */
-    public static com.azure.search.documents.implementation.models.OcrSkillLanguage map(OcrSkillLanguage obj) {
+    public static com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage map(OcrSkillLanguage obj) {
         if (obj == null) {
             return null;
         }
-        return com.azure.search.documents.implementation.models.OcrSkillLanguage.fromString(obj.toString());
+        return com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage.fromString(obj.toString());
     }
 
     private OcrSkillLanguageConverter() {

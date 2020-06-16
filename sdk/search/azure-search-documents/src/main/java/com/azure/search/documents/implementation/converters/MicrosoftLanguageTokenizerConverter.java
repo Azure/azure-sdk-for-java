@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.MicrosoftLanguageTokenizer;
-import com.azure.search.documents.models.MicrosoftTokenizerLanguage;
+import com.azure.search.documents.indexes.models.MicrosoftLanguageTokenizer;
+import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer} and
  * {@link MicrosoftLanguageTokenizer}.
  */
 public final class MicrosoftLanguageTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer} to
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer} to
      * {@link MicrosoftLanguageTokenizer}.
      */
-    public static MicrosoftLanguageTokenizer map(com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer obj) {
+    public static MicrosoftLanguageTokenizer map(com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -40,14 +39,14 @@ public final class MicrosoftLanguageTokenizerConverter {
 
     /**
      * Maps from {@link MicrosoftLanguageTokenizer} to
-     * {@link com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer}.
+     * {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer map(MicrosoftLanguageTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer map(MicrosoftLanguageTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer microsoftLanguageTokenizer =
-            new com.azure.search.documents.implementation.models.MicrosoftLanguageTokenizer();
+        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer microsoftLanguageTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer();
 
         String name = obj.getName();
         microsoftLanguageTokenizer.setName(name);
@@ -56,7 +55,7 @@ public final class MicrosoftLanguageTokenizerConverter {
         microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.implementation.models.MicrosoftTokenizerLanguage language =
+            com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage language =
                 MicrosoftTokenizerLanguageConverter.map(obj.getLanguage());
             microsoftLanguageTokenizer.setLanguage(language);
         }

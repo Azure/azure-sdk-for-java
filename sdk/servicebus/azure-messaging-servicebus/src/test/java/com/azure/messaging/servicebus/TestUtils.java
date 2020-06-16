@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.util.CoreUtils;
 import org.apache.qpid.proton.Proton;
@@ -39,9 +38,17 @@ public class TestUtils {
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
+    static final int USE_CASE_DEFAULT = 0;
+    static final int USE_CASE_RECEIVE_BY_NUMBER = 1;
+    static final int USE_CASE_RECEIVE_BY_TIME = 2;
+    static final int USE_CASE_RECEIVE_NO_MESSAGES = 3;
+    static final int USE_CASE_SEND_RECEIVE_WITH_PROPERTIES = 4;
+    static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
+    static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
+    static final int USE_CASE_SEND_READ_BACK_MESSAGES = 7;
 
     // An application property key to identify where in the stream this message was created.
-    public static final String MESSAGE_POSITION_ID = "message-position";
+    static final String MESSAGE_POSITION_ID = "message-position";
 
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
@@ -49,32 +56,93 @@ public class TestUtils {
         APPLICATION_PROPERTIES.put("status-code", AmqpResponseCode.OK.getValue());
     }
 
-    static Symbol getSymbol(AmqpMessageConstant messageConstant) {
-        return Symbol.getSymbol(messageConstant.getValue());
+    /**
+     * Gets the namespace connection string.
+     *
+     * @return The namespace connection string.
+     */
+    public static String getConnectionString() {
+        return System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     }
 
     /**
-     * Creates a message with the required system properties set.
+     * Gets the fully qualified domain name for the service bus resource.
+     *
+     * @return The fully qualified domain name for the service bus resource.
      */
-    static org.apache.qpid.proton.message.Message getMessage(byte[] contents, Long sequenceNumber, Date enqueuedTime) {
+    public static String getFullyQualifiedDomainName() {
+        return System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+    }
+
+    /**
+     * The Service Bus queue name (NOT session enabled).
+     *
+     * @return The Service Bus queue name.
+     */
+    public static String getQueueBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_QUEUE_NAME");
+    }
+
+    /**
+     * The Service Bus queue name (session enabled).
+     *
+     * @return The Service Bus queue name.
+     */
+    public static String getSessionQueueBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_SESSION_QUEUE_NAME");
+    }
+
+    /**
+     * The Service Bus topic name.
+     *
+     * @return The Service bus topic name.
+     */
+    public static String getTopicName() {
+        return System.getenv("AZURE_SERVICEBUS_TOPIC_NAME");
+    }
+
+    /**
+     * Gets the Service Bus subscription name (NOT session enabled)
+     *
+     * @return The Service Bus subscription name.
+     */
+    public static String getSubscriptionBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_SUBSCRIPTION_NAME");
+    }
+
+    /**
+     * Gets the Service Bus subscription name (session enabled)
+     *
+     * @return The Service Bus subscription name.
+     */
+    public static String getSessionSubscriptionBaseName() {
+        return System.getenv("AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME");
+    }
+
+    /**
+     * Gets the name of an entity based on its base name.
+     *
+     * @param baseName Base of the entity.
+     * @param index Index number.
+     *
+     * @return The entity name.
+     */
+    public static String getEntityName(String baseName, int index) {
+        return String.join("-", baseName, String.valueOf(index));
+    }
+
+    /**
+     * Creates a message with the given contents, default system properties, and adds a {@code messageId} in the
+     * application properties. Useful for helping filter messages.
+     */
+    public static Message getMessage(byte[] contents, String messageId, Map<String, String> additionalProperties) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
-        systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
-        systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
+        systemProperties.put(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Date.from(ENQUEUED_TIME));
+        systemProperties.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), SEQUENCE_NUMBER);
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
         message.setBody(new Data(new Binary(contents)));
-
-        return message;
-    }
-
-    /**
-     * Creates a message with the given contents, default system properties, and adds a {@code messageId} in
-     * the application properties. Useful for helping filter messages.
-     */
-    static Message getMessage(byte[] contents, String messageId, Map<String, String> additionalProperties) {
-        final Message message = getMessage(contents, SEQUENCE_NUMBER, Date.from(ENQUEUED_TIME));
-
         message.getMessageAnnotations().getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
@@ -104,16 +172,17 @@ public class TestUtils {
     /**
      * Creates a mock message with the contents provided.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue) {
+    public static Message getMessage(byte[] contents, String messageTrackingValue) {
         return getMessage(contents, messageTrackingValue, Collections.emptyMap());
     }
 
     /**
-     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that
-     * service bus message.
+     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that service bus
+     * message.
      *
      * @param numberOfEvents Number of events to create.
      * @param messageId An identifier for the set of messages.
+     *
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId, byte[] content) {
@@ -128,11 +197,12 @@ public class TestUtils {
     }
 
     /**
-     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that
-     * service bus message.
+     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that service bus
+     * message.
      *
      * @param numberOfEvents Number of events to create.
      * @param messageId An identifier for the set of messages.
+     *
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId) {
@@ -161,6 +231,7 @@ public class TestUtils {
      * completion signal is emitted.
      *
      * @param messages Messages to emit.
+     *
      * @return A flux of messages.
      */
     public static Flux<ServiceBusReceivedMessage> createMessageSink(ServiceBusReceivedMessage... messages) {

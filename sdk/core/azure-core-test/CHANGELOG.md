@@ -1,7 +1,12 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
+
+## 1.3.0 (2020-06-08)
+
+- Added new APIs used to redact sensitive information from playback recordings.
+- Updated Azure Core dependency.
 
 ## 1.2.1 (2020-05-04)
 

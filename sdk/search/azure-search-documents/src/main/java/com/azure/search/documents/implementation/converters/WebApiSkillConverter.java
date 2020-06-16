@@ -3,9 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.WebApiSkill;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.WebApiSkill;
 
 import java.time.Duration;
 import java.util.List;
@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.WebApiSkill} and {@link WebApiSkill}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.WebApiSkill} and {@link WebApiSkill}.
  */
 public final class WebApiSkillConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.WebApiSkill} to {@link WebApiSkill}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.WebApiSkill} to {@link WebApiSkill}.
      */
-    public static WebApiSkill map(com.azure.search.documents.implementation.models.WebApiSkill obj) {
+    public static WebApiSkill map(com.azure.search.documents.indexes.implementation.models.WebApiSkill obj) {
         if (obj == null) {
             return null;
         }
@@ -71,23 +71,23 @@ public final class WebApiSkillConverter {
     }
 
     /**
-     * Maps from {@link WebApiSkill} to {@link com.azure.search.documents.implementation.models.WebApiSkill}.
+     * Maps from {@link WebApiSkill} to {@link com.azure.search.documents.indexes.implementation.models.WebApiSkill}.
      */
-    public static com.azure.search.documents.implementation.models.WebApiSkill map(WebApiSkill obj) {
+    public static com.azure.search.documents.indexes.implementation.models.WebApiSkill map(WebApiSkill obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.WebApiSkill webApiSkill =
-            new com.azure.search.documents.implementation.models.WebApiSkill();
+        com.azure.search.documents.indexes.implementation.models.WebApiSkill webApiSkill =
+            new com.azure.search.documents.indexes.implementation.models.WebApiSkill();
 
         if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.implementation.models.OutputFieldMappingEntry> outputs =
+            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
                 obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
             webApiSkill.setOutputs(outputs);
         }
 
         if (obj.getInputs() != null) {
-            List<com.azure.search.documents.implementation.models.InputFieldMappingEntry> inputs =
+            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             webApiSkill.setInputs(inputs);
         }

@@ -4,27 +4,31 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
@@ -136,8 +140,10 @@ final class TestUtils {
 
     /**
      * Helper method to get the expected Batch Detected Languages
+     *
+     * @return A {@link DetectLanguageResultCollection}.
      */
-    static TextAnalyticsPagedResponse<DetectLanguageResult> getExpectedBatchDetectedLanguages() {
+    static DetectLanguageResultCollection getExpectedBatchDetectedLanguages() {
         DetectedLanguage detectedLanguage1 = new DetectedLanguage("English", "en", 0.0, null);
         DetectedLanguage detectedLanguage2 = new DetectedLanguage("Spanish", "es", 0.0, null);
         DetectedLanguage detectedLanguage3 = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
@@ -153,27 +159,18 @@ final class TestUtils {
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(3, 3, 0, 3);
         List<DetectLanguageResult> detectLanguageResultList = Arrays.asList(detectLanguageResult1, detectLanguageResult2, detectLanguageResult3);
 
-        return new TextAnalyticsPagedResponse<>(null, 200, null,
-            detectLanguageResultList, null, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+        return new DetectLanguageResultCollection(detectLanguageResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
     /**
      * Helper method to get the expected Batch Categorized Entities
+     *
+     * @return A {@link RecognizeEntitiesResultCollection}.
      */
-    static TextAnalyticsPagedResponse<RecognizeEntitiesResult> getExpectedBatchCategorizedEntities() {
-        return new TextAnalyticsPagedResponse<>(null, 200, null,
+    static RecognizeEntitiesResultCollection getExpectedBatchCategorizedEntities() {
+        return new RecognizeEntitiesResultCollection(
             Arrays.asList(getExpectedBatchCategorizedEntities1(), getExpectedBatchCategorizedEntities2()),
-            null,  DEFAULT_MODEL_VERSION,
-            new TextDocumentBatchStatistics(2, 2, 0, 2));
-    }
-
-    /**
-     * Helper method to get the expected Categorized Entities
-     */
-    static TextAnalyticsPagedResponse<CategorizedEntity> getExpectedCategorizedEntities() {
-        return new TextAnalyticsPagedResponse<>(null, 200, null,
-            getCategorizedEntitiesList1(),
-            null,  DEFAULT_MODEL_VERSION,
+            DEFAULT_MODEL_VERSION,
             new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
@@ -181,9 +178,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT.toString(), null, 0.0);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION.toString(), "GPE", 0.0);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME.toString(), "DateRange", 0.0);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0);
         return Arrays.asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -191,7 +188,7 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION.toString(), null, 0.0);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0);
         return Arrays.asList(categorizedEntity3);
     }
 
@@ -217,8 +214,9 @@ final class TestUtils {
 
     /**
      * Helper method to get the expected Batch Linked Entities
+     * @return A {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    static TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> getExpectedBatchLinkedEntities() {
+    static RecognizeLinkedEntitiesResultCollection getExpectedBatchLinkedEntities() {
         LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0);
         LinkedEntityMatch linkedEntityMatch2 = new LinkedEntityMatch("Microsoft", 0.0);
 
@@ -244,13 +242,14 @@ final class TestUtils {
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesResultList = Arrays.asList(recognizeLinkedEntitiesResult1, recognizeLinkedEntitiesResult2);
 
-        return new TextAnalyticsPagedResponse<>(null, 200, null, recognizeLinkedEntitiesResultList, null, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+        return new RecognizeLinkedEntitiesResultCollection(recognizeLinkedEntitiesResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
     /**
      * Helper method to get the expected Batch Key Phrases
+     * @return
      */
-    static TextAnalyticsPagedResponse<ExtractKeyPhraseResult> getExpectedBatchKeyPhrases() {
+    static ExtractKeyPhrasesResultCollection getExpectedBatchKeyPhrases() {
         TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
         TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
 
@@ -260,28 +259,28 @@ final class TestUtils {
         TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
         List<ExtractKeyPhraseResult> extractKeyPhraseResultList = Arrays.asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
 
-        return new TextAnalyticsPagedResponse<>(null, 200, null, extractKeyPhraseResultList,
-            null, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
+        return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResultList, DEFAULT_MODEL_VERSION, textDocumentBatchStatistics);
     }
 
     /**
      * Helper method to get the expected Batch Text Sentiments
+     * @return
      */
-    static TextAnalyticsPagedResponse<AnalyzeSentimentResult> getExpectedBatchTextSentiment() {
+    static AnalyzeSentimentResultCollection getExpectedBatchTextSentiment() {
         final TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(67, 1);
 
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED.toString(),
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("", TextSentiment.NEGATIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                new SentenceSentiment("", TextSentiment.POSITIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
             )), null);
 
-        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentiment.MIXED.toString(),
+        final DocumentSentiment expectedDocumentSentiment2 = new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment("", TextSentiment.POSITIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                new SentenceSentiment("", TextSentiment.NEGATIVE.toString(), new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
             )), null);
 
         final AnalyzeSentimentResult analyzeSentimentResult1 = new AnalyzeSentimentResult("0",
@@ -290,9 +289,9 @@ final class TestUtils {
         final AnalyzeSentimentResult analyzeSentimentResult2 = new AnalyzeSentimentResult("1",
             textDocumentStatistics, null, expectedDocumentSentiment2);
 
-        return new TextAnalyticsPagedResponse<>(null, 200, null,
+        return new AnalyzeSentimentResultCollection(
             Arrays.asList(analyzeSentimentResult1, analyzeSentimentResult2),
-            null, DEFAULT_MODEL_VERSION, new TextDocumentBatchStatistics(2, 2, 0, 2));
+            DEFAULT_MODEL_VERSION, new TextDocumentBatchStatistics(2, 2, 0, 2));
     }
 
 

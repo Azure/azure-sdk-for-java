@@ -3,20 +3,19 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.StopAnalyzer;
+import com.azure.search.documents.indexes.models.StopAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.StopAnalyzer} and {@link StopAnalyzer}.
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.StopAnalyzer} and {@link StopAnalyzer}.
  */
 public final class StopAnalyzerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.StopAnalyzer} to {@link StopAnalyzer}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.StopAnalyzer} to {@link StopAnalyzer}.
      */
-    public static StopAnalyzer map(com.azure.search.documents.implementation.models.StopAnalyzer obj) {
+    public static StopAnalyzer map(com.azure.search.documents.indexes.implementation.models.StopAnalyzer obj) {
         if (obj == null) {
             return null;
         }
@@ -33,14 +32,14 @@ public final class StopAnalyzerConverter {
     }
 
     /**
-     * Maps from {@link StopAnalyzer} to {@link com.azure.search.documents.implementation.models.StopAnalyzer}.
+     * Maps from {@link StopAnalyzer} to {@link com.azure.search.documents.indexes.implementation.models.StopAnalyzer}.
      */
-    public static com.azure.search.documents.implementation.models.StopAnalyzer map(StopAnalyzer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.StopAnalyzer map(StopAnalyzer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.StopAnalyzer stopAnalyzer =
-            new com.azure.search.documents.implementation.models.StopAnalyzer();
+        com.azure.search.documents.indexes.implementation.models.StopAnalyzer stopAnalyzer =
+            new com.azure.search.documents.indexes.implementation.models.StopAnalyzer();
 
         String name = obj.getName();
         stopAnalyzer.setName(name);

@@ -14,8 +14,6 @@ param (
   $DocRepoContentLocation = "docs-ref-services/" # within the doc repo, where does our readme go?
 )
 
-Write-Host "> $PSCommandPath $args"
-
 
 # import artifact parsing and semver handling
 . (Join-Path $PSScriptRoot artifact-metadata-parsing.ps1)
@@ -24,19 +22,19 @@ Write-Host "> $PSCommandPath $args"
 function GetMetaData($lang){
   switch ($lang) {
     "java" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/java-packages.csv"
       break
     }
     ".net" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/dotnet-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/dotnet-packages.csv"
       break
     }
     "python" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/python-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/python-packages.csv"
       break
     }
     "javascript" {
-      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/js-packages.csv"
+      $metadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/allpackages/js-packages.csv"
       break
     }
     default {
@@ -46,6 +44,8 @@ function GetMetaData($lang){
   }
 
   $metadataResponse = Invoke-WebRequest-WithHandling -url $metadataUri -method "GET" | ConvertFrom-Csv
+
+  return $metadataResponse
 }
 
 function GetAdjustedReadmeContent($pkgInfo, $lang){
@@ -56,11 +56,12 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
     $pkgId = $pkgInfo.PackageId.Replace("@azure/", "")
 
     try {
-      $metadata = GetMetaData -lang $lang 
+      $metadata = GetMetaData -lang $lang
+
       $service = $metadata | ? { $_.Package -eq $pkgId }
 
       if ($service) {
-        $service = "$service,"
+        $service = "$($service.Service)"
       }
     }
     catch {
@@ -68,12 +69,18 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
       Write-Host "Unable to retrieve service metadata for packageId $($pkgInfo.PackageId)"
     }
 
-    $headerContentMatch = (Select-String -InputObject $pkgInfo.ReadmeContent -Pattern 'Azure .+? (client|plugin|shared) library for (JavaScript|Java|Python|\.NET|C)').Matches[0]
+    $fileContent = $pkgInfo.ReadmeContent
 
-    if ($headerContentMatch){
-      $header = "---`r`ntitle: $headerContentMatch`r`nkeywords: Azure, $lang, SDK, API, $service $($pkgInfo.PackageId)`r`nauthor: maggiepint`r`nms.author: magpint`r`nms.date: $date`r`nms.topic: article`r`nms.prod: azure`r`nms.technology: azure`r`nms.devlang: $lang`r`nms.service: $service`r`n---`r`n"
-      $fileContent = $pkgInfo.ReadmeContent -replace $headerContentMatch, "$headerContentMatch - Version $($pkgInfo.PackageVersion) `r`n"
-      return "$header $fileContent"
+    # only replace the version if the formatted header can be found
+    $headerContentMatches = (Select-String -InputObject $pkgInfo.ReadmeContent -Pattern 'Azure .+? (client|plugin|shared) library for (JavaScript|Java|Python|\.NET|C)')
+    if ($headerContentMatches) {
+      $headerContentMatch = $headerContentMatches.Matches[0]
+      $header = "---`ntitle: $headerContentMatch`nkeywords: Azure, $lang, SDK, API, $($pkgInfo.PackageId), $service`nauthor: maggiepint`nms.author: magpint`nms.date: $date`nms.topic: article`nms.prod: azure`nms.technology: azure`nms.devlang: $lang`nms.service: $service`n---`n"
+      $fileContent = $pkgInfo.ReadmeContent -replace $headerContentMatch, "$headerContentMatch - Version $($pkgInfo.PackageVersion) `n"
+    }
+
+    if ($fileContent) {
+      return "$header`n$fileContent"
     }
     else {
       return ""
@@ -90,7 +97,7 @@ $pkgs = VerifyPackages -pkgRepository $Repository `
 
 if ($pkgs) {
   Write-Host "Given the visible artifacts, readmes will be copied for the following packages"
-  Write-Host ($pkgs | % { $_.PackageId }) 
+  Write-Host ($pkgs | % { $_.PackageId })
 
   foreach ($packageInfo in $pkgs) {
     # sync the doc repo
@@ -102,7 +109,10 @@ if ($pkgs) {
 
     $readmeName = "$($packageInfo.PackageId.Replace('azure-','').Replace('Azure.', '').Replace('@azure/', '').ToLower())-readme$rdSuffix.md"
     $readmeLocation = Join-Path $DocRepoLocation $DocRepoContentLocation $readmeName
-    $adjustedContent = GetAdjustedReadmeContent -pkgInfo $packageInfo -lang $Language
+
+    if ($packageInfo.ReadmeContent) {
+      $adjustedContent = GetAdjustedReadmeContent -pkgInfo $packageInfo -lang $Language
+    }
 
     if ($adjustedContent) {
       try {

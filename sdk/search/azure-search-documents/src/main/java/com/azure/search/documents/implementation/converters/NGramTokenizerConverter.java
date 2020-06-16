@@ -3,22 +3,21 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.models.NGramTokenizer;
-import com.azure.search.documents.models.TokenCharacterKind;
+import com.azure.search.documents.indexes.models.NGramTokenizer;
+import com.azure.search.documents.indexes.models.TokenCharacterKind;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * A converter between {@link com.azure.search.documents.implementation.models.NGramTokenizer} and
+ * A converter between {@link com.azure.search.documents.indexes.implementation.models.NGramTokenizer} and
  * {@link NGramTokenizer}.
  */
 public final class NGramTokenizerConverter {
     /**
-     * Maps from {@link com.azure.search.documents.implementation.models.NGramTokenizer} to {@link NGramTokenizer}.
+     * Maps from {@link com.azure.search.documents.indexes.implementation.models.NGramTokenizer} to {@link NGramTokenizer}.
      */
-    public static NGramTokenizer map(com.azure.search.documents.implementation.models.NGramTokenizer obj) {
+    public static NGramTokenizer map(com.azure.search.documents.indexes.implementation.models.NGramTokenizer obj) {
         if (obj == null) {
             return null;
         }
@@ -42,14 +41,14 @@ public final class NGramTokenizerConverter {
     }
 
     /**
-     * Maps from {@link NGramTokenizer} to {@link com.azure.search.documents.implementation.models.NGramTokenizer}.
+     * Maps from {@link NGramTokenizer} to {@link com.azure.search.documents.indexes.implementation.models.NGramTokenizer}.
      */
-    public static com.azure.search.documents.implementation.models.NGramTokenizer map(NGramTokenizer obj) {
+    public static com.azure.search.documents.indexes.implementation.models.NGramTokenizer map(NGramTokenizer obj) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.NGramTokenizer nGramTokenizer =
-            new com.azure.search.documents.implementation.models.NGramTokenizer();
+        com.azure.search.documents.indexes.implementation.models.NGramTokenizer nGramTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.NGramTokenizer();
 
         String name = obj.getName();
         nGramTokenizer.setName(name);
@@ -58,7 +57,7 @@ public final class NGramTokenizerConverter {
         nGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            List<com.azure.search.documents.implementation.models.TokenCharacterKind> tokenChars =
+            List<com.azure.search.documents.indexes.implementation.models.TokenCharacterKind> tokenChars =
                 obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
             nGramTokenizer.setTokenChars(tokenChars);
         }
