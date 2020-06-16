@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.model.BoundingBox;
 
 /**
  * The FormTable model.

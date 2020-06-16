@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.model.BoundingBox;
 
 /**
  * The FormContent model.
@@ -40,9 +41,10 @@ public abstract class FormContent {
     }
 
     /**
-     * BoundingBox property of the element.
+     * A list of 4 points representing the quadrilateral bounding box that outlines the text.
+     * The points are listed in clockwise order: top-left, top-right, bottom-right, bottom-left.
      *
-     * @return the bounding box of the element.
+     * @return the {@code boundingBox} value of the element.
      */
     public BoundingBox getBoundingBox() {
         return boundingBox;

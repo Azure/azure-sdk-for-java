@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.models;
+package com.azure.core.model;
 
 import com.azure.core.annotation.Immutable;
 
@@ -9,18 +9,19 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Quadrangle bounding box, with coordinates specified relative to the top-left of the original image
+ * A list of points representing the quadrilateral bounding box. The points are listed in clockwise
+ * order: top-left, top-right, bottom-right, bottom-left.
  */
 @Immutable
 public final class BoundingBox {
 
     /**
-     * The list of coordinates of the Bounding box.
+     * The list of coordinates of the bounding box.
      */
     private final List<Point> points;
 
     /**
-     * Constructs a Bounding box object.
+     * Constructs a Bounding box object with the specified list of coordinates.
      *
      * @param points The list of coordinates of the Bounding box.
      */
