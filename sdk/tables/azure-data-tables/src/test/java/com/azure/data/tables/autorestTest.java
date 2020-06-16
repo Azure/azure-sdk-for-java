@@ -102,17 +102,29 @@ public class autorestTest {
             .version("2019-02-02")
             .url("https://telboytrial.table.core.windows.net")
             .buildClient();
-        TableProperties tableProperties = new TableProperties().setTableName("ebTableSeven");
+        TableProperties tableProperties = new TableProperties().setTableName("ebTable6");
         QueryOptions queryOptions = new QueryOptions();
         String requestId = UUID.randomUUID().toString();
-        StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
-            ResponseFormat.RETURN_CONTENT, queryOptions, Context.NONE))
+
+
+//        StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
+//            ResponseFormat.RETURN_CONTENT, queryOptions, Context.NONE))
+//            .assertNext(response -> {
+//                System.out.println(response);
+//                Assertions.assertEquals(201, response.getStatusCode());
+//            })
+//            .expectComplete()
+//            .verify();
+
+        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync("ebTableSeven", requestId,
+            Context.NONE))
             .assertNext(response -> {
                 System.out.println(response);
-                Assertions.assertEquals(201, response.getStatusCode());
+                Assertions.assertEquals(204, response.getStatusCode());
             })
             .expectComplete()
             .verify();
+
     }
 
 
