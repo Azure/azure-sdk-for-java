@@ -1,6 +1,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
@@ -16,6 +18,7 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Signal;
 
+import java.nio.BufferOverflowException;
 import java.util.*;
 
 import static com.azure.core.util.tracing.Tracer.*;
@@ -76,6 +79,43 @@ public abstract class Batch {
         return this.sizeInBytes;
     }
 
+    /**
+     * Tries to add an {@link EventData event} to the batch.
+     *
+     * @param eventData The {@link EventData} to add to the batch.
+     * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
+     *     the batch.
+     * @throws IllegalArgumentException if {@code eventData} is {@code null}.
+     * @throws AmqpException if {@code eventData} is larger than the maximum size of the {@link EventDataBatch}.
+     */
+    public boolean tryAdd(final EventData eventData) {
+        if (eventData == null) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
+        }
+        EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
+
+        final int size;
+        try {
+            size = getSize(event, events.isEmpty());
+        } catch (BufferOverflowException exception) {
+            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                    maxMessageSize / 1024),
+                contextProvider.getErrorContext()));
+        }
+
+        synchronized (lock) {
+            if (this.sizeInBytes + size > this.maxMessageSize) {
+                return false;
+            }
+
+            this.sizeInBytes += size;
+        }
+
+        this.events.add(event);
+        return true;
+    }
+
 
     /**
      * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the message.
@@ -83,7 +123,7 @@ public abstract class Batch {
      * @param eventData The Event to add tracing span for.
      * @return the updated event data object.
      */
-    private EventData traceMessageSpan(EventData eventData) {
+    EventData traceMessageSpan(EventData eventData) {
         Optional<Object> eventContextData = eventData.getContext().getData(SPAN_CONTEXT_KEY);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), don't start a message span or add a new context
@@ -118,7 +158,7 @@ public abstract class Batch {
         return partitionId;
     }
 
-    private int getSize(final EventData eventData, final boolean isFirst) {
+    int getSize(final EventData eventData, final boolean isFirst) {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);

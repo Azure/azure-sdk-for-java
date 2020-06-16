@@ -146,7 +146,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 "event-hub-path", connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, null, testScheduler, false, onClientClosed);
+            tracerProvider, messageSerializer, testScheduler, false, onClientClosed, registrySerializer);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
         when(sendLink2.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -238,8 +238,8 @@ class EventHubProducerAsyncClientTest {
         final Semaphore semaphore = new Semaphore(1);
         // In our actual client builder, we allow this.
         final EventHubProducerAsyncClient flexibleProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, testScheduler,
-            false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, testScheduler,
+            false, onClientClosed, registrySerializer);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
@@ -319,8 +319,8 @@ class EventHubProducerAsyncClientTest {
         final SendOptions sendOptions = new SendOptions()
             .setPartitionId(partitionId);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
-            false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, registrySerializer);
 
         when(connection.createSendLink(
             argThat(name -> name.endsWith(partitionId)), argThat(name -> name.endsWith(partitionId)), eq(retryOptions)))
@@ -377,7 +377,7 @@ class EventHubProducerAsyncClientTest {
         TracerProvider tracerProvider = new TracerProvider(tracers);
 
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed, registrySerializer);
 
         final String failureKey = "fail";
         final EventData testData = new EventData("test");
@@ -516,8 +516,8 @@ class EventHubProducerAsyncClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
-            false, onClientClosed);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, registrySerializer);
         final AmqpSendLink link = mock(AmqpSendLink.class);
 
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -822,8 +822,8 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient sharedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
-            true, onClientClosed);
+            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            true, onClientClosed, registrySerializer);
 
         // Act
         sharedProducer.close();
@@ -841,8 +841,8 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
-            false, onClientClosed);
+            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, registrySerializer);
 
         // Act
         dedicatedProducer.close();
@@ -860,8 +860,8 @@ class EventHubProducerAsyncClientTest {
         // Arrange
         EventHubConnectionProcessor hubConnection = mock(EventHubConnectionProcessor.class);
         EventHubProducerAsyncClient dedicatedProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            hubConnection, retryOptions, tracerProvider, messageSerializer, null, Schedulers.parallel(),
-            false, onClientClosed);
+            hubConnection, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, registrySerializer);
 
         // Act
         dedicatedProducer.close();
@@ -897,7 +897,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(EVENT_HUB_NAME, connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed, registrySerializer);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -972,7 +972,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 EVENT_HUB_NAME, connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed, registrySerializer);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
@@ -1048,7 +1048,7 @@ class EventHubProducerAsyncClientTest {
             new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 EVENT_HUB_NAME, connectionOptions.getRetry()));
         producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, null, Schedulers.parallel(), false, onClientClosed);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed, registrySerializer);
 
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);

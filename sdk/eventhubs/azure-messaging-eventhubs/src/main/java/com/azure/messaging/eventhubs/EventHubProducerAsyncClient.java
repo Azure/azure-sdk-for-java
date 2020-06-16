@@ -108,10 +108,15 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AmqpRetryPolicy retryPolicy;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final SchemaRegistryDataSerializer<T> registrySerializer;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
+    private final SchemaRegistryDataSerializer registrySerializer;
+
+    private enum SendMode {
+        EVENT_DATA,
+        OBJECT
+    }
 
     /**
      * Creates a new instance of this {@link EventHubProducerAsyncClient} that can send messages to a single partition
@@ -119,10 +124,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-                                EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
-                                TracerProvider tracerProvider,
-                                MessageSerializer messageSerializer, SchemaRegistryDataSerializer registrySerializer<T>,
-                                Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+                                EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, TracerProvider tracerProvider,
+                                MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, SchemaRegistryDataSerializer registrySerializer) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
@@ -131,12 +134,12 @@ public class EventHubProducerAsyncClient implements Closeable {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.registrySerializer = registrySerializer;
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
+        this.registrySerializer = registrySerializer;
     }
 
     /**
@@ -197,7 +200,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
-    public Mono<EventDataBatch<T>> createBatch() {
+    public Mono<EventDataBatch> createBatch() {
         return createBatch(DEFAULT_BATCH_OPTIONS);
     }
 
@@ -208,7 +211,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      * @throws NullPointerException if {@code options} is null.
      */
-    public Mono<EventDataBatch<T>> createBatch(Class<T> objectClass1, CreateBatchOptions options) {
+    public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
@@ -249,40 +252,70 @@ public class EventHubProducerAsyncClient implements Closeable {
                         : maximumLinkSize;
 
                     return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext,
-                        tracerProvider, registrySerializer, link.getEntityPath(), link.getHostname()));
+                        tracerProvider, link.getEntityPath(), link.getHostname()));
                 }));
     }
 
     /**
-     * Sends single object, serialized by the stored serializer,
-     * @param object object
-     * @return mono that completes when event is pushed to the service
+     * Creates an {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
+     *
+     * @return A new {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
      */
-    Mono<Void> send(T object) {
-        if (registrySerializer == null) {
-            return monoError(logger, new NullPointerException("Registry serializer not initialized"));
-        }
-        byte[] body = registrySerializer.serialize(object).block();
-        if (body == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Payload cannot be null"));
-        }
-        return send(Flux.just(new EventData(body)));
+    public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType) {
+        return createBatch(objectType, DEFAULT_BATCH_OPTIONS);
     }
 
     /**
-     * send object
-     * @param object object
-     * @return mono that completes when event is pushed to the service
+     * Creates an {@link ObjectBatch} configured with the options specified.
+     *
+     * @param options A set of options used to configure the {@link ObjectBatch}.
+     * @return A new {@link ObjectBatch} that can fit as many events as the transport allows.
+     * @throws NullPointerException if {@code options} is null.
      */
-    Mono<Void> send(T object, SendOptions options) {
-        if (registrySerializer == null) {
-            return monoError(logger, new NullPointerException("Registry serializer not initialized"));
+    public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType, CreateBatchOptions options) {
+        if (objectType == null) {
+            return monoError(logger, new NullPointerException("'objectType' cannot be null."));
         }
-        byte[] body = registrySerializer.serialize(object).block();
-        if (body == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Payload cannot be null"));
+        if (options == null) {
+            return monoError(logger, new NullPointerException("'options' cannot be null."));
         }
-        return send(Flux.just(new EventData(body)));
+
+        Mono<ObjectBatch<T>> sendModeError = verifySendMode(SendMode.OBJECT);
+        if (sendModeError != null) {
+            return sendModeError;
+        }
+
+        Mono<ObjectBatch<T>> optionsError = validateBatchOptions(options);
+        if (optionsError != null) {
+            return optionsError;
+        }
+
+        final String partitionKey = options.getPartitionKey();
+        final String partitionId = options.getPartitionId();
+        final int batchMaxSize = options.getMaximumSizeInBytes();
+
+        return getSendLink(partitionId)
+            .flatMap(link -> link.getLinkSize()
+                .flatMap(size -> {
+                    final int maximumLinkSize = size > 0
+                        ? size
+                        : MAX_MESSAGE_LENGTH_BYTES;
+
+                    if (batchMaxSize > maximumLinkSize) {
+                        return monoError(logger,
+                            new IllegalArgumentException(String.format(Locale.US,
+                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                                batchMaxSize, maximumLinkSize)));
+                    }
+
+                    final int batchSize = batchMaxSize > 0
+                        ? batchMaxSize
+                        : maximumLinkSize;
+
+                    return Mono.just(new ObjectBatch<>(batchSize, partitionId, partitionKey, objectType,
+                        link::getErrorContext, tracerProvider, registrySerializer,
+                        link.getEntityPath(), link.getHostname()));
+                }));
     }
 
     /**
@@ -321,9 +354,6 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A {@link Mono} that completes when the event is pushed to the service.
      */
     Mono<Void> send(EventData event, SendOptions options) {
-        if (registrySerializer != null) {
-            // fail this path
-        }
         if (event == null) {
             return monoError(logger, new NullPointerException("'event' cannot be null."));
         } else if (options == null) {
@@ -502,11 +532,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
-        if (registrySerializer != null) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("Serializer mode - sending EventData is not permitted"));
-        }
-
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
@@ -526,8 +551,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                         .setPartitionKey(options.getPartitionKey())
                         .setPartitionId(options.getPartitionId())
                         .setMaximumSizeInBytes(batchSize);
-                    return events.collect(new EventDataCollector(batchOptions, 1,
-                        link::getErrorContext,
+                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
                         tracerProvider, link.getEntityPath(), link.getHostname()));
                 })
                 .flatMap(list -> sendInternal(Flux.fromIterable(list))));
@@ -554,6 +578,41 @@ public class EventHubProducerAsyncClient implements Closeable {
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
+    }
+
+    private <T> Mono<T> verifySendMode(SendMode mode) {
+        switch (mode) {
+            case EVENT_DATA:
+                if (registrySerializer != null) {
+                    return monoError(logger, new IllegalStateException());
+                }
+                break;
+            case OBJECT:
+                if (registrySerializer == null) {
+                    return monoError(logger, new IllegalStateException());
+                }
+                break;
+            default:
+                break;
+        }
+
+        return null;
+    }
+
+    private <T> Mono<T> validateBatchOptions(CreateBatchOptions options) {
+        if (!CoreUtils.isNullOrEmpty(options.getPartitionKey())
+            && !CoreUtils.isNullOrEmpty(options.getPartitionId())) {
+            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+                "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
+                    + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
+                options.getPartitionKey(), options.getPartitionId())));
+        } else if (!CoreUtils.isNullOrEmpty(options.getPartitionKey())
+            && options.getPartitionKey().length() > MAX_PARTITION_KEY_LENGTH) {
+            return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+                "Partition key '%s' exceeds the maximum allowed length: '%s'.", options.getPartitionKey(),
+                MAX_PARTITION_KEY_LENGTH)));
+        }
+        return null;
     }
 
     /**
@@ -593,8 +652,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         private volatile EventDataBatch currentBatch;
 
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
-            TracerProvider tracerProvider, String entityPath,
-                           String hostname) {
+            TracerProvider tracerProvider, String entityPath, String hostname) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
                 ? options.getMaximumSizeInBytes()
@@ -607,7 +665,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             this.hostname = hostname;
 
             currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                tracerProvider, null, entityPath, hostname);
+                tracerProvider, entityPath, hostname);
         }
 
         @Override
@@ -632,7 +690,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
 
                 currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                    tracerProvider, null, entityPath, hostname);
+                    tracerProvider, entityPath, hostname);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

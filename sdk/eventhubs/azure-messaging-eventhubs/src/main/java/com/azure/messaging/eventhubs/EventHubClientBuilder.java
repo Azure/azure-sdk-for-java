@@ -137,8 +137,8 @@ public class EventHubClientBuilder<T> {
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
     private int prefetchCount;
-    private SchemaRegistryDataSerializer<T> registrySerializer;
-    private SchemaRegistryDataDeserializer<T> registryDeserializer;
+    private SchemaRegistryDataSerializer registrySerializer;
+    private SchemaRegistryDataDeserializer registryDeserializer;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -370,7 +370,7 @@ public class EventHubClientBuilder<T> {
      * @param serializer serializer
      * @return update builder instance
      */
-    public EventHubClientBuilder registrySerializer(Serializer serializer) { // could be avro, json, schema registry
+    public EventHubClientBuilder registrySerializer(SchemaRegistryDataSerializer serializer) {
         this.registrySerializer = registrySerializer;
         return this;
     }
@@ -397,7 +397,7 @@ public class EventHubClientBuilder<T> {
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
      *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubConsumerAsyncClient<T> buildAsyncConsumerClient() {
+    public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'consumerGroup' cannot be null or an empty "
                 + "string. using EventHubClientBuilder.consumerGroup(String)"));
@@ -416,7 +416,7 @@ public class EventHubClientBuilder<T> {
      *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
      *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubConsumerClient<T> buildConsumerClient() {
+    public EventHubConsumerClient buildConsumerClient() {
         return buildClient().createConsumer(consumerGroup, prefetchCount);
     }
 
@@ -429,7 +429,7 @@ public class EventHubClientBuilder<T> {
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubProducerAsyncClient<T> buildAsyncProducerClient() {
+    public EventHubProducerAsyncClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
     }
 
@@ -442,7 +442,7 @@ public class EventHubClientBuilder<T> {
      *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
-    public EventHubProducerClient<T> buildProducerClient() {
+    public EventHubProducerClient buildProducerClient() {
         return buildClient().createProducer();
     }
 
@@ -500,7 +500,7 @@ public class EventHubClientBuilder<T> {
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
         return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, registrySerializer, registryDeserializer);
+            isSharedConnection.get(), this::onClientClose, registrySerializer);
     }
 
     /**
