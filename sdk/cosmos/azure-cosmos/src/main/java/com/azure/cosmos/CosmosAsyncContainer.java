@@ -397,10 +397,9 @@ public class CosmosAsyncContainer {
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                              .stream()
-                                             .map(d -> d.get(Constants.Properties.VALUE) != null ?
+                                             .map(d -> d.has(Constants.Properties.VALUE) ?
                                                  transform(d.get(Constants.Properties.VALUE), classType) :
                                                  ModelBridgeInternal.toObjectFromJsonSerializable(d, classType))
-                                             .map(object -> transform(object, classType))
                                              .collect(Collectors.toList());
 
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
