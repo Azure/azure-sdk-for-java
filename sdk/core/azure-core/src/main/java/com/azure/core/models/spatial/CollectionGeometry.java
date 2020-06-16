@@ -3,9 +3,11 @@
 
 package com.azure.core.models.spatial;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a heterogeneous collection of {@link Geometry geometries}.
@@ -17,6 +19,7 @@ public final class CollectionGeometry extends Geometry {
      * Constructs a geometry collection.
      *
      * @param geometries The geometries in the collection.
+     * @throws NullPointerException If {@code geometries} is {@code null}.
      */
     public CollectionGeometry(List<Geometry> geometries) {
         this(geometries, null, null);
@@ -28,12 +31,14 @@ public final class CollectionGeometry extends Geometry {
      * @param geometries The geometries in the collection.
      * @param boundingBox Bounding box for the geometry collection.
      * @param properties Additional properties of the geometry collection.
+     * @throws NullPointerException If {@code geometries} is {@code null}.
      */
     public CollectionGeometry(List<Geometry> geometries, GeometryBoundingBox boundingBox,
         Map<String, Object> properties) {
         super(boundingBox, properties);
 
-        this.geometries = geometries;
+        Objects.requireNonNull(geometries, "'geometries' cannot be null.");
+        this.geometries = Collections.unmodifiableList(new ArrayList<>(geometries));
     }
 
     /**
@@ -42,6 +47,6 @@ public final class CollectionGeometry extends Geometry {
      * @return An unmodifiable representation of the {@link Geometry geometries} in this collection.
      */
     public List<Geometry> getGeometries() {
-        return Collections.unmodifiableList(geometries);
+        return geometries;
     }
 }

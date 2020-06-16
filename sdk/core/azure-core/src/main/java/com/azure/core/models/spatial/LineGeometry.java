@@ -3,9 +3,11 @@
 
 package com.azure.core.models.spatial;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a geometric line.
@@ -17,6 +19,7 @@ public final class LineGeometry extends Geometry {
      * Constructs a geometric line.
      *
      * @param positions Geometric positions that define the line.
+     * @throws NullPointerException If {@code positions} is {@code null}.
      */
     public LineGeometry(List<GeometryPosition> positions) {
         this(positions, null, null);
@@ -28,12 +31,14 @@ public final class LineGeometry extends Geometry {
      * @param positions Geometric positions that define the line.
      * @param boundingBox Bounding box for the line.
      * @param properties Additional properties of the geometric line.
+     * @throws NullPointerException If {@code positions} is {@code null}.
      */
     public LineGeometry(List<GeometryPosition> positions, GeometryBoundingBox boundingBox,
         Map<String, Object> properties) {
         super(boundingBox, properties);
 
-        this.positions = positions;
+        Objects.requireNonNull(positions, "'positions' cannot be null.");
+        this.positions = Collections.unmodifiableList(new ArrayList<>(positions));
     }
 
     /**
@@ -43,6 +48,6 @@ public final class LineGeometry extends Geometry {
      * line.
      */
     public List<GeometryPosition> getPositions() {
-        return Collections.unmodifiableList(positions);
+        return positions;
     }
 }
