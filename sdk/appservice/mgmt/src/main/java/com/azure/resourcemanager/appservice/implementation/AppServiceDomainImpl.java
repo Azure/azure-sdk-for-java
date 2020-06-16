@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice.implementation;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.Contact;
+import com.azure.resourcemanager.appservice.models.DnsType;
 import com.azure.resourcemanager.appservice.models.DomainPurchaseConsent;
 import com.azure.resourcemanager.appservice.models.DomainStatus;
 import com.azure.resourcemanager.appservice.models.Hostname;
@@ -14,7 +15,10 @@ import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
 import com.azure.resourcemanager.appservice.fluent.inner.DomainOwnershipIdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
+import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
@@ -24,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** The implementation for AppServiceDomain. */
@@ -32,6 +38,8 @@ class AppServiceDomainImpl
     implements AppServiceDomain, AppServiceDomain.Definition, AppServiceDomain.Update {
 
     private Map<String, Hostname> hostNameMap;
+
+    private Creatable<DnsZone> dnsZoneCreatable;
 
     AppServiceDomainImpl(String name, DomainInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -43,7 +51,22 @@ class AppServiceDomainImpl
     }
 
     @Override
+    public Flux<Indexable> createAsync() {
+        if (this.isInCreateMode()) {
+            // create a default DNS zone, if not specified
+            if (this.inner().dnsZoneId() == null && dnsZoneCreatable == null) {
+                this.withNewDnsZone(name());
+            }
+        }
+        return super.createAsync();
+    }
+    @Override
     public Mono<AppServiceDomain> createResourceAsync() {
+        if (this.dnsZoneCreatable != null) {
+            DnsZone dnsZone = this.taskResult(dnsZoneCreatable.key());
+            inner().withDnsZoneId(dnsZone.id());
+        }
+
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
         final DomainsClient client = this.manager().inner().getDomains();
@@ -70,7 +93,8 @@ class AppServiceDomainImpl
                     }
                     return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
                 })
-            .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this))
+            .doOnSuccess(ignored -> dnsZoneCreatable = null);
     }
 
     @Override
@@ -152,6 +176,16 @@ class AppServiceDomainImpl
     }
 
     @Override
+    public DnsType dnsType() {
+        return inner().dnsType();
+    }
+
+    @Override
+    public String dnsZoneId() {
+        return inner().dnsZoneId();
+    }
+
+    @Override
     public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
         verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).block();
     }
@@ -210,5 +244,42 @@ class AppServiceDomainImpl
     public AppServiceDomainImpl withAutoRenewEnabled(boolean autoRenew) {
         inner().withAutoRenew(autoRenew);
         return this;
+    }
+
+    @Override
+    public AppServiceDomainImpl withNewDnsZone(String dnsZoneName) {
+        Creatable<DnsZone> dnsZone;
+        if (creatableGroup != null && isInCreateMode()) {
+            dnsZone = manager().dnsZoneManager().zones()
+                .define(dnsZoneName)
+                .withNewResourceGroup(creatableGroup)
+                .withETagCheck();
+        } else {
+            dnsZone = manager().dnsZoneManager().zones()
+                .define(dnsZoneName)
+                .withExistingResourceGroup(resourceGroupName())
+                .withETagCheck();
+        }
+        return this.withNewDnsZone(dnsZone);
+    }
+
+    @Override
+    public AppServiceDomainImpl withNewDnsZone(Creatable<DnsZone> dnsZone) {
+        inner().withDnsType(DnsType.AZURE_DNS);
+        dnsZoneCreatable = dnsZone;
+        this.addDependency(dnsZoneCreatable);
+        return this;
+    }
+
+    @Override
+    public AppServiceDomainImpl withExistingDnsZone(String dnsZoneId) {
+        inner().withDnsType(DnsType.AZURE_DNS);
+        inner().withDnsZoneId(dnsZoneId);
+        return this;
+    }
+
+    @Override
+    public AppServiceDomainImpl withExistingDnsZone(DnsZone dnsZone) {
+        return withExistingDnsZone(dnsZone.id());
     }
 }
