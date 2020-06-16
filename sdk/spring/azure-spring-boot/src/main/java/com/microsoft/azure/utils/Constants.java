@@ -9,7 +9,6 @@ public class Constants {
      */
     public static final String AZURE_KEYVAULT_PREFIX = "azure.keyvault.";
 
-    public static final String AZURE_KEYVAULT_USER_AGENT = "spring-boot-starter/" + PropertyLoader.getProjectVersion();
     public static final String AZURE_KEYVAULT_CLIENT_ID = "client-id";
     public static final String AZURE_KEYVAULT_CLIENT_KEY = "client-key";
     public static final String AZURE_KEYVAULT_TENANT_ID = "tenant-id";
@@ -20,7 +19,6 @@ public class Constants {
     public static final String AZURE_KEYVAULT_REFRESH_INTERVAL = "refresh-interval";
     public static final String AZURE_KEYVAULT_SECRET_KEYS = "secret.keys";
     public static final String AZURE_KEYVAULT_PROPERTYSOURCE_NAME = "azurekv";
-    public static final String AZURE_TOKEN_ACQUIRE_TIMEOUT_IN_SECONDS = "token-acquire-timeout-seconds";
     public static final String AZURE_KEYVAULT_ALLOW_TELEMETRY = "allow.telemetry";
 
     public static final long DEFAULT_REFRESH_INTERVAL_MS = 1800000L;
