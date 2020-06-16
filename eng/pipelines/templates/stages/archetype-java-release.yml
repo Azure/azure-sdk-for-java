@@ -138,6 +138,7 @@ stages:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
@@ -147,7 +148,6 @@ stages:
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              timeoutInMinutes: 5
               dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
@@ -258,6 +258,9 @@ stages:
         displayName: Publish package to daily feed
         variables:
           - template: ../variables/globals.yml
+          - name: RepositoryUrl
+            value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+
         pool:
           vmImage: vs2017-win2016
         steps:
@@ -268,6 +271,18 @@ stages:
 
         - download: current
           artifact: ${{parameters.ArtifactName}}-signed
+        - pwsh: |
+            # For safety default to publishing to the private feed.
+            # Publish to https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
+            if ('$(Build.Repository.Name)' -eq 'Azure/azure-sdk-for-java') {
+              # Publish to the public feed
+              # Publish to https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+              echo "##vso[task.setvariable variable=RepositoryUrl]https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1"
+              echo "Using Java Public Dev Feed"
+            } else {
+              echo "Using Java Private Dev Feed"
+            }
+          displayName: Setup TargetFeed
           timeoutInMinutes: 5
 
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
@@ -278,6 +293,7 @@ stages:
               ArtifactID: ${{artifact.name}}
               GroupID: ${{artifact.groupId}}
               ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+              RepositoryUrl: $(RepositoryUrl)
               Target: JavaDevFeed
               BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
               JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java

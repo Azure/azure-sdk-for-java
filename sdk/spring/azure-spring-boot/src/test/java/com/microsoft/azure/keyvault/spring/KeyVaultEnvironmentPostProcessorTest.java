@@ -25,6 +25,7 @@ import java.util.Map;
 
 import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_CERTIFICATE_PATH;
 import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_CLIENT_ID;
+import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PREFIX;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -58,9 +59,9 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
     @Test
     public void testGetCredentialsWhenPFXCertConfigured() {
-        testProperties.put(AZURE_KEYVAULT_CLIENT_ID, "aaaa-bbbb-cccc-dddd");
+        testProperties.put(AZURE_KEYVAULT_PREFIX + AZURE_KEYVAULT_CLIENT_ID, "aaaa-bbbb-cccc-dddd");
         testProperties.put("azure.keyvault.tenant-id", "myid");
-        testProperties.put(AZURE_KEYVAULT_CERTIFICATE_PATH, "fake-pfx-cert.pfx");
+        testProperties.put(AZURE_KEYVAULT_PREFIX + AZURE_KEYVAULT_CERTIFICATE_PATH, "fake-pfx-cert.pfx");
 
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
@@ -123,6 +124,29 @@ public class KeyVaultEnvironmentPostProcessorTest {
                     OrderedProcessConfig.TEST_ORDER,
                     context.getBean(KeyVaultEnvironmentPostProcessor.class).getOrder());
         });
+    }
+
+    /**
+     * Test the multiple key vault support.
+     */
+    @Test
+    public void testMultipleKeyVaults() {
+        testProperties.put("azure.keyvault.order", "myvault, myvault2");
+        testProperties.put("azure.keyvault.myvault.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("azure.keyvault.myvault.client-key", "mySecret");
+        testProperties.put("azure.keyvault.myvault.tenant-id", "myid");
+        testProperties.put("azure.keyvault.myvault2.client-id", "aaaa-bbbb-cccc-dddd");
+        testProperties.put("azure.keyvault.myvault2.client-key", "mySecret");
+        testProperties.put("azure.keyvault.myvault2.tenant-id", "myid");
+        propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
+
+        keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
+
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault.");
+        assertThat(credentials, IsInstanceOf.instanceOf(ClientSecretCredential.class));
+
+        final TokenCredential credentials2 = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault2.");
+        assertThat(credentials2, IsInstanceOf.instanceOf(ClientSecretCredential.class));
     }
 }
 
