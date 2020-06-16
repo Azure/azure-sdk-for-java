@@ -188,10 +188,9 @@ public class EncryptedBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
-        this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        this.uploadFromFile(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions),
-            timeout);
+                .setTier(tier).setRequestConditions(requestConditions).setTimeout(timeout));
     }
 
     /**
@@ -274,8 +273,8 @@ public class EncryptedBlobClient extends BlobClient {
      * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
-    public BlobQueryResponse queryWithResponse(OutputStream stream, BlobQueryOptions queryOptions,
-        Duration timeout, Context context) {
+    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
+        Context context) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }

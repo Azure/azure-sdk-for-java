@@ -30,7 +30,7 @@ public class BlockBlobCommitBlockListOptions {
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      */
     public BlockBlobCommitBlockListOptions(List<String> base64BlockIds) {
-        this.base64BlockIds = Collections.unmodifiableList(base64BlockIds);
+        this.base64BlockIds = base64BlockIds == null ? null : Collections.unmodifiableList(base64BlockIds);
     }
 
     /**

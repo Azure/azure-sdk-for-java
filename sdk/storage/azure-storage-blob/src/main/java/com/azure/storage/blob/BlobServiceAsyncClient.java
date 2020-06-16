@@ -877,13 +877,13 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        UndeleteBlobContainerOptions options,
-        Context context) {
+        UndeleteBlobContainerOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         boolean hasOptionalDestinationContainerName = options.getDestinationContainerName() != null;
         String finalDestinationContainerName =
             hasOptionalDestinationContainerName ? options.getDestinationContainerName()
                 : options.getDeletedContainerName();
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().restoreWithRestResponseAsync(finalDestinationContainerName, null,
             null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

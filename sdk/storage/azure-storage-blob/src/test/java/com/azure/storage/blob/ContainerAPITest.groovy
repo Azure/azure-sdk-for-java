@@ -685,7 +685,7 @@ class ContainerAPITest extends APISpec {
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
         tags.put("tag", "value")
-        tagsBlob.createWithResponse(512, new PageBlobCreateOptions().setTags(tags), null, null)
+        tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
         uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())

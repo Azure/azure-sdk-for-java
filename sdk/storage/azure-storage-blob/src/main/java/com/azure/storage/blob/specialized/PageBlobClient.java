@@ -161,8 +161,9 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
-        return this.createWithResponse(size, new PageBlobCreateOptions().setSequenceNumber(sequenceNumber)
-            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions), timeout, context);
+        return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
+            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions).setTimeout(timeout),
+            context);
     }
 
     /**

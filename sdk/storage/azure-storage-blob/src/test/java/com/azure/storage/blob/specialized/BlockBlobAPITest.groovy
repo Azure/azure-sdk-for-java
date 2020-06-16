@@ -473,8 +473,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.commitBlockListWithResponse(null, new BlockBlobCommitBlockListOptions().setTags(tags), null,
-            null)
+        blockBlobClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(null).setTags(tags), null)
         def response = blockBlobClient.getTagsWithResponse(null, null)
 
         then:
@@ -733,7 +732,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(file.getAbsolutePath(), new BlobUploadFromFileOptions().setTags(tags), null)
+        blobClient.uploadFromFile(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags))
 
         then:
         tags == blockBlobClient.getTags()
@@ -1006,8 +1005,8 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlockBlobSimpleUploadOptions()
-            .setTags(tags), null, null)
+        blockBlobClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(defaultInputStream.get(), defaultDataSize)
+            .setTags(tags), null)
         def response = blockBlobClient.getTagsWithResponse(null, null)
 
         then:
@@ -1463,8 +1462,9 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
-        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
-            new BlobParallelUploadOptions().setParallelTransferOptions(parallelTransferOptions).setTags(tags))
+        def uploadOperation = blobAsyncClient.uploadWithResponse(
+            new BlobParallelUploadOptions(Flux.just(getRandomData(10)))
+                .setParallelTransferOptions(parallelTransferOptions).setTags(tags))
 
         then:
         StepVerifier.create(uploadOperation.then(blobAsyncClient.getTagsWithResponse(null)))

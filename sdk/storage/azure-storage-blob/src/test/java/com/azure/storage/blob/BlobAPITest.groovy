@@ -1513,7 +1513,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), new BlobBeginCopyOptions().setTags(tags)
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
             .setPollInterval(Duration.ofSeconds(1)))
         poller.blockLast()
 
@@ -1828,7 +1828,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), new BlobCopyFromUrlOptions().setTags(tags), null, null)
+        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTags(tags), null)
 
         then:
         bu2.getTags() == tags

@@ -114,7 +114,7 @@ class AppendBlobAPITest extends APISpec {
         }
 
         when:
-        bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
+        bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), Context.NONE)
         def response = bc.getTagsWithResponse(null, null)
 
         then:

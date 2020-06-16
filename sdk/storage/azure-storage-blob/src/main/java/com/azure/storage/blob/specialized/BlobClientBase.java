@@ -1088,8 +1088,7 @@ public class BlobClientBase {
     public InputStream openQueryInputStream(BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
-        BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions)
-            .block();
+        BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
 
         // Create input stream from the data.
         if (response == null) {
@@ -1108,13 +1107,13 @@ public class BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String}
      *
-     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param stream A non-null {@link OutputStream} instance
      * @param expression The query expression.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, new BlobQueryOptions(expression), Context.NONE);
+        queryWithResponse(new BlobQueryOptions(expression, stream), Context.NONE);
     }
 
     /**
@@ -1125,20 +1124,20 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#OutputStream-BlobQueryOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context}
      *
-     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public BlobQueryResponse queryWithResponse(OutputStream stream, BlobQueryOptions queryOptions, Context context) {
-        StorageImplUtils.assertNotNull("stream", stream);
+    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Context context) {
+        StorageImplUtils.assertNotNull("options", queryOptions);
+        StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         Mono<BlobQueryResponse> download = client
             .queryWithResponse(queryOptions, context)
-            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
+            .flatMap(response -> response.getValue().reduce(queryOptions.getOutputStream(), (outputStream, buffer) -> {
                 try {
                     outputStream.write(FluxUtil.byteBufferToArray(buffer));
                     return outputStream;
