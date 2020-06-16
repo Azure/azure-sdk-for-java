@@ -109,7 +109,7 @@ public class ServiceBusReactorSessionTest {
     private ReactorDispatcher dispatcher;
 
     private ServiceBusReactorSession serviceBusReactorSession;
-    private  String sessionName = "sessionName";
+    private String sessionName = "sessionName";
     private String entityPath = "entityPath";
     private String viaEntityPath = "viaEntityPath";
     private String viaEntityPathSenderLinkName = "VIA-" + viaEntityPath;
@@ -227,7 +227,7 @@ public class ServiceBusReactorSessionTest {
         invocations.get(0).run();
 
         verify(senderViaEntity).setProperties(argThat(linkProperties ->
-            ((String)linkProperties.get(LINK_TRANSFER_DESTINATION_PROPERTY)).equalsIgnoreCase(entityPath)
+            ((String) linkProperties.get(LINK_TRANSFER_DESTINATION_PROPERTY)).equalsIgnoreCase(entityPath)
         ));
     }
 

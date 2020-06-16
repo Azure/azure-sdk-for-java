@@ -232,27 +232,27 @@ public class QueueSendReceiveTests extends SendReceiveTests {
     @Test
     public void transactionalSendViaTest() throws ServiceBusException, InterruptedException, ExecutionException {
         // Need three partitioned entities for this test. Creating manually.
-        String intermediateQueue = "hemant-test-topic9";TestUtils.randomizeEntityName(this.getEntityNamePrefix());
-        //QueueDescription queueDescription = new QueueDescription(intermediateQueue);
-        //queueDescription.setEnablePartitioning(true);
-        //managementClient.createQueueAsync(queueDescription).get();
+        String intermediateQueue = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
+        QueueDescription queueDescription = new QueueDescription(intermediateQueue);
+        queueDescription.setEnablePartitioning(true);
+        managementClient.createQueueAsync(queueDescription).get();
         IMessageSender intermediateSender = ClientFactory.createMessageSenderFromEntityPath(factory, intermediateQueue);
         IMessageReceiver intermediateReceiver = ClientFactory.createMessageReceiverFromEntityPath(factory, intermediateQueue, ReceiveMode.PEEKLOCK);
 
-        String destination1 = "hemant-test-topic10";//TestUtils.randomizeEntityName(this.getEntityNamePrefix());
-        //queueDescription = new QueueDescription(destination1);
-        //queueDescription.setEnablePartitioning(true);
-        //managementClient.createQueueAsync(queueDescription).get();
+        String destination1 = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
+        queueDescription = new QueueDescription(destination1);
+        queueDescription.setEnablePartitioning(true);
+        managementClient.createQueueAsync(queueDescription).get();
+        IMessageSender destination1Sender = ClientFactory.createMessageSenderFromEntityPath(factory, destination1);
         IMessageSender destination1ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destination1, intermediateQueue).get();
         IMessageReceiver destination1Receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destination1, ReceiveMode.PEEKLOCK);
 
-        /*String destination2 = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
+        String destination2 = TestUtils.randomizeEntityName(this.getEntityNamePrefix());
         queueDescription = new QueueDescription(destination2);
         queueDescription.setEnablePartitioning(true);
         managementClient.createQueueAsync(queueDescription).get();
         IMessageSender destination2ViaSender = ClientFactory.createTransferMessageSenderFromEntityPathAsync(factory, destination2, intermediateQueue).get();
         IMessageReceiver destination2Receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, destination2, ReceiveMode.PEEKLOCK);
-        */
 
         try {
             Message message1 = new Message("message");
@@ -274,14 +274,14 @@ public class QueueSendReceiveTests extends SendReceiveTests {
 
             // If the transaction succeeds, then all the operations occurred on the same partition.
             TransactionContext transaction = this.factory.startTransactionAsync().get();
-            //intermediateReceiver.complete(receivedMessage.getLockToken(), transaction);
+            intermediateReceiver.complete(receivedMessage.getLockToken(), transaction);
             destination1ViaSender.send(message2, transaction);
-            //destination2ViaSender.send(message3, transaction);
+            destination2ViaSender.send(message3, transaction);
             this.factory.endTransactionAsync(transaction, true).get();
 
             // Assert that first message indeed completed.
-           // receivedMessage = intermediateReceiver.receive();
-            //Assert.assertNull(receivedMessage);
+            receivedMessage = intermediateReceiver.receive();
+            Assert.assertNull(receivedMessage);
 
             // Assert that second message reached its destination.
             IMessage receivedMessage1 = destination1Receiver.receive();
@@ -292,7 +292,7 @@ public class QueueSendReceiveTests extends SendReceiveTests {
             Message destination1Message = new Message("message");
             destination1Message.setPartitionKey("pk2");
 
-           /* transaction = this.factory.startTransaction();
+            transaction = this.factory.startTransaction();
             destination1Receiver.complete(receivedMessage1.getLockToken(), transaction);
             destination1Sender.send(destination1Message, transaction);
             transaction.commit();
@@ -306,20 +306,18 @@ public class QueueSendReceiveTests extends SendReceiveTests {
             // Cleanup
             receivedMessage1 = destination1Receiver.receive();
             destination1Receiver.complete(receivedMessage1.getLockToken());
-            */
-
         } finally {
             intermediateSender.close();
             intermediateReceiver.close();
-
+            destination1Sender.close();
             destination1ViaSender.close();
-            //destination2ViaSender.close();
-            //destination1Receiver.close();
-            //destination2Receiver.close();
+            destination2ViaSender.close();
+            destination1Receiver.close();
+            destination2Receiver.close();
 
-            //managementClient.deleteQueueAsync(destination1).get();
-            //managementClient.deleteQueueAsync(intermediateQueue).get();
-            //managementClient.deleteQueueAsync(destination2).get();
+            managementClient.deleteQueueAsync(destination1).get();
+            managementClient.deleteQueueAsync(intermediateQueue).get();
+            managementClient.deleteQueueAsync(destination2).get();
         }
     }
 
