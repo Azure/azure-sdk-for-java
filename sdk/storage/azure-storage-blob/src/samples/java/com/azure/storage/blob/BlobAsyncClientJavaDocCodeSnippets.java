@@ -9,12 +9,12 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import reactor.core.publisher.Flux;
@@ -548,10 +548,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, BlobUploadFromFileOptions)}
+     * Code snippet for {@link BlobAsyncClient#uploadFromFileWithResponse(BlobUploadFromFileOptions)}
      */
     public void uploadFromFile3() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFileWithResponse#String-BlobUploadFromFileOptions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -563,13 +563,13 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.uploadFromFileWithResponse(filePath, new BlobUploadFromFileOptions()
+        client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE))
             .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT)
             .setRequestConditions(requestConditions))
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFileWithResponse#String-BlobUploadFromFileOptions
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions
     }
 }

@@ -12,9 +12,9 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -275,7 +275,7 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-        this.uploadFromFileWithResponse(filePath, new BlobUploadFromFileOptions()
+        this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
             .setTier(tier).setRequestConditions(requestConditions), null, null);
     }
@@ -287,19 +287,18 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#String-BlobUploadFromFileOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context}
      *
-     * @param filePath Path of the file to upload
      * @param options {@link BlobUploadFromFileOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Response<BlockBlobItem> uploadFromFileWithResponse(String filePath, BlobUploadFromFileOptions options,
+    public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options,
                                                               Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> upload =
-            this.client.uploadFromFileWithResponse(filePath, options)
+            this.client.uploadFromFileWithResponse(options)
             .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
