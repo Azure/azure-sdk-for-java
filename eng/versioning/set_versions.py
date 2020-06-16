@@ -182,7 +182,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         # if the module is 1.2.3-beta.x, strip off everthing after the '-' and add the qualifier
                         module.dependency = module.dependency[:module.dependency.rfind('-') + 1] + unreleased_build_qualifier
                     else:
-                        module.dependency = module.dependency += '-' + unreleased_build_qualifier
+                        module.dependency += '-' + unreleased_build_qualifier
 
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
