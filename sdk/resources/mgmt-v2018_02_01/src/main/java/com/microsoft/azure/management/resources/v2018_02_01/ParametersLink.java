@@ -11,7 +11,7 @@ package com.microsoft.azure.management.resources.v2018_02_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Entity representing the reference to the deployment paramaters.
+ * Entity representing the reference to the deployment parameters.
  */
 public class ParametersLink {
     /**
