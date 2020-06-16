@@ -88,20 +88,20 @@ public class InternalBlobChangefeedEventData implements BlobChangefeedEventData 
         Object sequencer = data.get("sequencer");
 
         return new InternalBlobChangefeedEventData(
-            InternalBlobChangefeedEvent.nullOrString("api", api),
-            InternalBlobChangefeedEvent.nullOrString("clientRequestId", clientRequestId),
-            InternalBlobChangefeedEvent.nullOrString("requestId", requestId),
-            InternalBlobChangefeedEvent.nullOrString("etag", eTag),
-            InternalBlobChangefeedEvent.nullOrString("contentType", contentType),
-            InternalBlobChangefeedEvent.nullOrLong("contentLength", contentLength),
-            InternalBlobChangefeedEvent.isNull(blobType) ? null
-                : BlobType.fromString(InternalBlobChangefeedEvent.nullOrString("blobType", blobType)),
-            InternalBlobChangefeedEvent.nullOrLong("contentOffset", contentOffset),
-            InternalBlobChangefeedEvent.nullOrString("destinationUrl", destinationUrl),
-            InternalBlobChangefeedEvent.nullOrString("sourceUrl", sourceUrl),
-            InternalBlobChangefeedEvent.nullOrString("url", blobUrl),
-            InternalBlobChangefeedEvent.nullOrBoolean("recursive", recursive),
-            InternalBlobChangefeedEvent.nullOrString("sequencer", sequencer)
+            ChangefeedTypeValidator.nullOr("api", api, String.class),
+            ChangefeedTypeValidator.nullOr("clientRequestId", clientRequestId, String.class),
+            ChangefeedTypeValidator.nullOr("requestId", requestId, String.class),
+            ChangefeedTypeValidator.nullOr("etag", eTag, String.class),
+            ChangefeedTypeValidator.nullOr("contentType", contentType, String.class),
+            ChangefeedTypeValidator.nullOr("contentLength", contentLength, Long.class),
+            ChangefeedTypeValidator.isNull(blobType) ? null
+                : BlobType.fromString(ChangefeedTypeValidator.nullOr("blobType", blobType, String.class)),
+            ChangefeedTypeValidator.nullOr("contentOffset", contentOffset, Long.class),
+            ChangefeedTypeValidator.nullOr("destinationUrl", destinationUrl, String.class),
+            ChangefeedTypeValidator.nullOr("sourceUrl", sourceUrl, String.class),
+            ChangefeedTypeValidator.nullOr("url", blobUrl, String.class),
+            Boolean.TRUE.equals(ChangefeedTypeValidator.nullOr("recursive", recursive, Boolean.class)),
+            ChangefeedTypeValidator.nullOr("sequencer", sequencer, String.class)
         );
     }
 

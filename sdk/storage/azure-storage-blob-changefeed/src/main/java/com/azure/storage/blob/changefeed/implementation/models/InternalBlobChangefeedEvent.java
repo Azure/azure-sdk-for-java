@@ -8,7 +8,6 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
-import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -78,57 +77,19 @@ public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
         Object metadataVersion = r.get("metadataVersion");
 
         return new InternalBlobChangefeedEvent(
-            nullOrString("topic", topic),
-            nullOrString("subject", subject),
-            isNull(eventType) ? null
-                : BlobChangefeedEventType.fromString(InternalBlobChangefeedEvent.nullOrString("eventType", eventType)),
-            isNull(eventTime) ? null
-                : OffsetDateTime.parse(Objects.requireNonNull(nullOrString("eventTime", eventTime))),
-            nullOrString("id", id),
-            isNull(data) ? null : InternalBlobChangefeedEventData.fromRecord(data),
-            nullOrLong("dataVersion", dataVersion),
-            nullOrString("metadataVersion", metadataVersion)
+            ChangefeedTypeValidator.nullOr("topic", topic, String.class),
+            ChangefeedTypeValidator.nullOr("subject", subject, String.class),
+            ChangefeedTypeValidator.isNull(eventType) ? null
+                : BlobChangefeedEventType.fromString(
+                ChangefeedTypeValidator.nullOr("eventType", eventType, String.class)),
+            ChangefeedTypeValidator.isNull(eventTime) ? null
+                : OffsetDateTime.parse(Objects.requireNonNull(
+                    ChangefeedTypeValidator.nullOr("eventTime", eventTime, String.class))),
+            ChangefeedTypeValidator.nullOr("id", id, String.class),
+            ChangefeedTypeValidator.isNull(data) ? null : InternalBlobChangefeedEventData.fromRecord(data),
+            ChangefeedTypeValidator.nullOr("dataVersion", dataVersion, Long.class),
+            ChangefeedTypeValidator.nullOr("metadataVersion", metadataVersion, String.class)
         );
-    }
-
-    /**
-     * Determines whether or not the object is null in the Avro sense.
-     */
-    static boolean isNull(Object o) {
-        return o == null || o instanceof AvroNullSchema.Null;
-    }
-
-    /**
-     * Returns either null or a String.
-     */
-    static String nullOrString(String name, Object o) {
-        if (isNull(o)) {
-            return null;
-        }
-        AvroSchema.checkType(name, o, String.class);
-        return (String) o;
-    }
-
-    /**
-     * Returns either null or a Long.
-     */
-    static Long nullOrLong(String name, Object o) {
-        if (isNull(o)) {
-            return null;
-        }
-        AvroSchema.checkType(name, o, Long.class);
-        return (Long) o;
-    }
-
-    /**
-     * Returns either null or a Boolean.
-     */
-    static boolean nullOrBoolean(String name, Object o) {
-        if (isNull(o)) {
-            return false;
-        }
-        AvroSchema.checkType(name, o, Boolean.class);
-        return (boolean) o;
     }
 
     @Override
