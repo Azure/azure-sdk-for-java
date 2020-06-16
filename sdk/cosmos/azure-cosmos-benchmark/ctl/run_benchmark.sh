@@ -3,6 +3,7 @@
 serviceEndpoint=$Endpoint
 masterKey=$Key
 
+
 if [ -z "$Operation" ]
 then
 operation=ReadLatency
