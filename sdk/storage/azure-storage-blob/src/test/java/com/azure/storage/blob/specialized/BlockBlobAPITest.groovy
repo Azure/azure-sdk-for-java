@@ -24,9 +24,9 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlobUploadFromFileOptions
-import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions
-import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions
+import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions

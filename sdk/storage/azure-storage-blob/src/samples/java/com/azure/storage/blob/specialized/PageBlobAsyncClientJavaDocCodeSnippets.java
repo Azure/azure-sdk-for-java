@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
-import com.azure.storage.blob.models.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
@@ -84,21 +84,21 @@ public class PageBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(long, PageBlobCreateOptions)}
+     * Code snippets for {@link PageBlobAsyncClient#createWithResponse(PageBlobCreateOptions)}
      */
     public void createWithResponse2CodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-PageBlobCreateOptions
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#PageBlobCreateOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
-        client.createWithResponse(size, new PageBlobCreateOptions().setSequenceNumber(sequenceNumber)
+        client.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
             .setHeaders(headers).setMetadata(metadata).setTags(tags).setRequestConditions(blobRequestConditions))
             .subscribe(response -> System.out.printf(
                 "Created page blob with sequence number %s%n", response.getValue().getBlobSequenceNumber()));
 
-        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-PageBlobCreateOptions
+        // END: com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#PageBlobCreateOptions
     }
 
     /**

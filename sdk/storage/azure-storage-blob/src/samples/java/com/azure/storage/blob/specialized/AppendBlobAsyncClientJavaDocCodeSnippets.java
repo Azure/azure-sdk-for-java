@@ -3,7 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.storage.blob.models.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;

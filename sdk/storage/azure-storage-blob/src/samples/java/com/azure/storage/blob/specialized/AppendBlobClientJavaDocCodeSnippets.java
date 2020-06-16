@@ -4,7 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -76,10 +76,10 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#createWithResponse(AppendBlobCreateOptions, Duration, Context)}
+     * Code snippet for {@link AppendBlobClient#createWithResponse(AppendBlobCreateOptions, Context)}
      */
     public void createWithResponse2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
@@ -92,8 +92,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created AppendBlob at %s%n",
             client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setRequestConditions(requestConditions), timeout, context).getValue().getLastModified());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context
+                .setTags(tags).setRequestConditions(requestConditions).setTimeout(timeout), context).getValue().getLastModified());
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Context
     }
 
     /**

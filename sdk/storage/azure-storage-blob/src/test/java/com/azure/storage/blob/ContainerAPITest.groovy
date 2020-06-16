@@ -20,7 +20,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.PageBlobCreateOptions
+import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase

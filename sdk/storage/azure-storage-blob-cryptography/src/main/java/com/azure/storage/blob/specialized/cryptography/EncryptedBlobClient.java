@@ -14,8 +14,8 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
-import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
@@ -199,20 +199,18 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#BlobUploadFromFileOptions}
      *
-     * @param filePath Path of the file to upload
      * @param options {@link BlobUploadFromFileOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
     @Override
-    public void uploadFromFile(String filePath, BlobUploadFromFileOptions options, Duration timeout)
+    public void uploadFromFile(BlobUploadFromFileOptions options)
         throws UncheckedIOException {
-        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, options);
+        Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(options);
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

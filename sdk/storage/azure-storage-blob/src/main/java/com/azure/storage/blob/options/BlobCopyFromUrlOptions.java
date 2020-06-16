@@ -1,26 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.RequestConditions;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobRequestConditions;
 
 import java.time.Duration;
 import java.util.Map;
 
 /**
- * Extended options that may be passed when beginning a copy operation.
+ * Extended options that may be passed when copying a blob.
  */
 @Fluent
-public class BlobBeginCopyOptions {
+public class BlobCopyFromUrlOptions {
+    private final String copySource;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
-    private RehydratePriority rehydratePriority;
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
-    private Duration pollInterval;
+    private Duration timeout;
+
+    /**
+     * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     */
+    public BlobCopyFromUrlOptions(String copySource) {
+        this.copySource = copySource;
+    }
+
+    /**
+     * @return The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
+     */
+    public String getCopySource() {
+        return this.copySource;
+    }
 
     /**
      * @return The metadata to associate with the destination blob.
@@ -33,7 +49,7 @@ public class BlobBeginCopyOptions {
      * @param metadata The metadata to associate with the destination blob.
      * @return The updated options
      */
-    public BlobBeginCopyOptions setMetadata(Map<String, String> metadata) {
+    public BlobCopyFromUrlOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -49,7 +65,7 @@ public class BlobBeginCopyOptions {
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setTags(Map<String, String> tags) {
+    public BlobCopyFromUrlOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -65,24 +81,8 @@ public class BlobBeginCopyOptions {
      * @param tier {@link AccessTier} for the destination blob.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setTier(AccessTier tier) {
+    public BlobCopyFromUrlOptions setTier(AccessTier tier) {
         this.tier = tier;
-        return this;
-    }
-
-    /**
-     * @return {@link RehydratePriority} for rehydrating the blob.
-     */
-    public RehydratePriority getRehydratePriority() {
-        return rehydratePriority;
-    }
-
-    /**
-     * @param rehydratePriority {@link RehydratePriority} for rehydrating the blob.
-     * @return The updated options.
-     */
-    public BlobBeginCopyOptions setRehydratePriority(RehydratePriority rehydratePriority) {
-        this.rehydratePriority = rehydratePriority;
         return this;
     }
 
@@ -93,11 +93,12 @@ public class BlobBeginCopyOptions {
         return sourceRequestConditions;
     }
 
+
     /**
      * @param sourceRequestConditions {@link RequestConditions} for the source.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setSourceRequestConditions(RequestConditions sourceRequestConditions) {
+    public BlobCopyFromUrlOptions setSourceRequestConditions(RequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }
@@ -110,29 +111,33 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * @param destinationRequestConditions {@link BlobRequestConditions} for the destination
+     * @param destinationRequestConditions {@link BlobRequestConditions} for the destination.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
+    public BlobCopyFromUrlOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
 
     /**
-     * @return Duration between each poll for the copy status. If none is specified, a default of one second
-     * is used.
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
      */
-    public Duration getPollInterval() {
-        return pollInterval;
+    public Duration getTimeout() {
+        return this.timeout;
     }
 
     /**
-     * @param pollInterval Duration between each poll for the copy status. If none is specified, a default of one second
-     * is used.
+     * Sets the timeout.
+     * <p>
+     * This value will be ignored on async operations and must be set on the returned async object itself.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setPollInterval(Duration pollInterval) {
-        this.pollInterval = pollInterval;
+    public BlobCopyFromUrlOptions setTimeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 }

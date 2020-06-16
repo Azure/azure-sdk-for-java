@@ -6,7 +6,7 @@ package com.azure.storage.blob.specialized.cryptography;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 
 import java.io.ByteArrayInputStream;
@@ -104,12 +104,12 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, com.azure.storage.blob.models.BlobUploadFromFileOptions, Duration)}
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(BlobUploadFromFileOptions)}
      *
      * @throws IOException If an I/O error occurs
      */
     public void uploadFromFile3() throws IOException {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#BlobUploadFromFileOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -124,13 +124,13 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         try {
-            client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+            client.uploadFromFile(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout);
+                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions).setTimeout(timeout));
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());
         }
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#BlobUploadFromFileOptions
     }
 }

@@ -1,22 +1,79 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import reactor.core.publisher.Flux;
 
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Map;
 
 /**
  * Extended options that may be passed when uploading a Block Blob in a single request.
  */
 public class BlockBlobSimpleUploadOptions {
+    private final Flux<ByteBuffer> dataFlux;
+    private final InputStream dataStream;
+    private final long length;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
     private byte[] contentMd5;
     private BlobRequestConditions requestConditions;
+    private Duration timeout;
+
+    /**
+     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the data source.
+     */
+    public BlockBlobSimpleUploadOptions(Flux<ByteBuffer> data, long length){
+        this.dataFlux = data;
+        this.length = length;
+        this.dataStream = null;
+    }
+
+    /**
+     * @param data The data to write to the blob.
+     * @param length The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the data source.
+     */
+    public BlockBlobSimpleUploadOptions(InputStream data, long length) {
+        this.dataStream = data;
+        this.length = length;
+        this.dataFlux = null;
+    }
+
+    /**
+     * @return The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
+     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     */
+    public Flux<ByteBuffer> getDataFlux() {
+        return this.dataFlux;
+    }
+
+    /**
+     * @return The data to write to the blob.
+     */
+    public InputStream getDataStream() {
+        return this.dataStream;
+    }
+
+    /**
+     * @return The exact length of the data. It is important that this value match precisely the length of the
+     * data emitted by the data source.
+     */
+    public long getLength() {
+        return this.length;
+    }
 
     /**
      * @return {@link BlobHttpHeaders}
@@ -117,6 +174,28 @@ public class BlockBlobSimpleUploadOptions {
      */
     public BlockBlobSimpleUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     */
+    public Duration getTimeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Sets the timeout.
+     * <p>
+     * This value will be ignored on async operations and must be set on the returned async object itself.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The updated options.
+     */
+    public BlockBlobSimpleUploadOptions setTimeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 }

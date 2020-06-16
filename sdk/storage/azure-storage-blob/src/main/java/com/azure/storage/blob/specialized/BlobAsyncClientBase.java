@@ -34,8 +34,8 @@ import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
-import com.azure.storage.blob.models.BlobBeginCopyOptions;
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -87,6 +87,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
@@ -448,7 +449,7 @@ public class BlobAsyncClientBase {
     public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
         RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions, Duration pollInterval) {
-        return this.beginCopy(sourceUrl, new BlobBeginCopyOptions().setMetadata(metadata).setTier(tier)
+        return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
             .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
@@ -459,31 +460,30 @@ public class BlobAsyncClientBase {
      * <p><strong>Starting a copy operation</strong></p>
      * Starting a copy operation and polling on the responses.
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#String-BlobBeginCopyOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopy#BlobBeginCopyOptions}
      *
      * <p><strong>Cancelling a copy operation</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#String-BlobBeginCopyOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.beginCopyFromUrlCancel#BlobBeginCopyOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param options {@link BlobBeginCopyOptions}
      * @return A {@link PollerFlux} that polls the blob copy operation until it has completed, has failed, or has been
      * cancelled.
      */
-    public PollerFlux<BlobCopyInfo, Void> beginCopy(String sourceUrl, BlobBeginCopyOptions options) {
-        BlobBeginCopyOptions finalOptions = options == null ? new BlobBeginCopyOptions() : options;
-        final Duration interval = finalOptions.getPollInterval() != null
-            ? finalOptions.getPollInterval() : Duration.ofSeconds(1);
-        final RequestConditions sourceModifiedCondition = finalOptions.getSourceRequestConditions() == null
+    public PollerFlux<BlobCopyInfo, Void> beginCopy(BlobBeginCopyOptions options) {
+        Objects.requireNonNull(options);
+        final Duration interval = options.getPollInterval() != null
+            ? options.getPollInterval() : Duration.ofSeconds(1);
+        final RequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
             ? new RequestConditions()
-            : finalOptions.getSourceRequestConditions();
+            : options.getSourceRequestConditions();
         final BlobRequestConditions destinationRequestConditions =
-            finalOptions.getDestinationRequestConditions() == null
+            options.getDestinationRequestConditions() == null
             ? new BlobRequestConditions()
-            : finalOptions.getDestinationRequestConditions();
+            : options.getDestinationRequestConditions();
 
         // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
         final RequestConditions sourceConditions = new RequestConditions()
@@ -495,8 +495,8 @@ public class BlobAsyncClientBase {
         return new PollerFlux<>(interval,
             (pollingContext) -> {
                 try {
-                    return onStart(sourceUrl, finalOptions.getMetadata(), finalOptions.getTags(),
-                        finalOptions.getTier(), finalOptions.getRehydratePriority(), sourceConditions,
+                    return onStart(options.getSourceUrl(), options.getMetadata(), options.getTags(),
+                        options.getTier(), options.getRehydratePriority(), sourceConditions,
                         destinationRequestConditions);
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
@@ -715,7 +715,7 @@ public class BlobAsyncClientBase {
     public Mono<Response<String>> copyFromUrlWithResponse(String copySource, Map<String, String> metadata,
         AccessTier tier, RequestConditions sourceModifiedRequestConditions,
         BlobRequestConditions destRequestConditions) {
-        return this.copyFromUrlWithResponse(copySource, new BlobCopyFromUrlOptions().setMetadata(metadata)
+        return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
             .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
             .setDestinationRequestConditions(destRequestConditions));
     }
@@ -725,25 +725,24 @@ public class BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
-     * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param options {@link BlobCopyFromUrlOptions}
      * @return A reactive response containing the copy ID for the long running operation.
      */
-    public Mono<Response<String>> copyFromUrlWithResponse(String copySource, BlobCopyFromUrlOptions options) {
+    public Mono<Response<String>> copyFromUrlWithResponse(BlobCopyFromUrlOptions options) {
         try {
-            return withContext(context -> copyFromUrlWithResponse(copySource, options, context));
+            return withContext(context -> copyFromUrlWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<String>> copyFromUrlWithResponse(String copySource, BlobCopyFromUrlOptions options, Context context) {
-        options = options == null ? new BlobCopyFromUrlOptions() : options;
+    Mono<Response<String>> copyFromUrlWithResponse(BlobCopyFromUrlOptions options, Context context) {
+        Objects.requireNonNull(options);
         RequestConditions sourceModifiedRequestConditions = options.getSourceRequestConditions() == null
             ? new RequestConditions() : options.getSourceRequestConditions();
         BlobRequestConditions destRequestConditions = options.getDestinationRequestConditions() == null
@@ -751,7 +750,7 @@ public class BlobAsyncClientBase {
 
         URL url;
         try {
-            url = new URL(copySource);
+            url = new URL(options.getCopySource());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'copySource' is not a valid url."));
         }

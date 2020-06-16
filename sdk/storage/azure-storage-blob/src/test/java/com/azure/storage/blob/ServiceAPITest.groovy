@@ -15,13 +15,13 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.FindBlobsOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
 
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.UndeleteBlobContainerOptions
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 import com.azure.storage.common.sas.AccountSasPermission

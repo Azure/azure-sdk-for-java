@@ -9,8 +9,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.models.BlobBeginCopyOptions;
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -283,23 +283,23 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#beginCopy(String, BlobBeginCopyOptions)}
+     * Code snippets for {@link BlobClientBase#beginCopy(BlobBeginCopyOptions)}
      */
     public void beginCopyFromUrl2() {
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
         RequestConditions modifiedRequestConditions = new RequestConditions()
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(7));
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
-        SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(url, new BlobBeginCopyOptions().setMetadata(metadata)
+        SyncPoller<BlobCopyInfo, Void> poller = client.beginCopy(new BlobBeginCopyOptions(url).setMetadata(metadata)
             .setTags(tags).setTier(AccessTier.HOT).setRehydratePriority(RehydratePriority.STANDARD)
             .setSourceRequestConditions(modifiedRequestConditions)
             .setDestinationRequestConditions(blobRequestConditions).setPollInterval(Duration.ofSeconds(2)));
 
         PollResponse<BlobCopyInfo> response = poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
         System.out.printf("Copy identifier: %s%n", response.getValue().getCopyId());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions
+        // END: com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions
     }
 
     /**
@@ -334,12 +334,12 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(String, BlobCopyFromUrlOptions, Duration,
+     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(BlobCopyFromUrlOptions, Duration,
      * Context)}
      */
     public void copyFromUrlWithResponse2CodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
         RequestConditions modifiedRequestConditions = new RequestConditions()
@@ -347,11 +347,11 @@ public class BlobClientBaseJavaDocCodeSnippets {
         BlobRequestConditions blobRequestConditions = new BlobRequestConditions().setLeaseId(leaseId);
 
         System.out.printf("Copy identifier: %s%n",
-            client.copyFromUrlWithResponse(url, new BlobCopyFromUrlOptions().setMetadata(metadata).setTags(tags)
+            client.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(url).setMetadata(metadata).setTags(tags)
                 .setTier(AccessTier.HOT).setSourceRequestConditions(modifiedRequestConditions)
-                .setDestinationRequestConditions(blobRequestConditions), timeout,
+                .setDestinationRequestConditions(blobRequestConditions).setTimeout(timeout),
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Context
     }
 
     /**

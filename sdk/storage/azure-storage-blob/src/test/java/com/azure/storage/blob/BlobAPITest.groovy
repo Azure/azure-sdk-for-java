@@ -9,8 +9,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobBeginCopyOptions
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobBeginCopyOptions
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange

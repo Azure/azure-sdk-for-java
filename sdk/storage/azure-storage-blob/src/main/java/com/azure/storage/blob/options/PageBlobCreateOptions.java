@@ -1,19 +1,41 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
+
+import java.time.Duration;
 import java.util.Map;
 
 /**
  * Extended options that may be passed when creating a Page Blob.
  */
 public class PageBlobCreateOptions {
+    private final long size;
     private Long sequenceNumber;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private BlobRequestConditions requestConditions;
+    private Duration timeout;
+
+    /**
+     * @param size  Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     */
+    public PageBlobCreateOptions(long size) {
+        this.size = size;
+    }
+
+    /**
+     * @return Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     */
+    public long getSize() {
+        return this.size;
+    }
 
     /**
      * @return A user-controlled value that you can use to track requests. The value of the sequence
@@ -94,6 +116,28 @@ public class PageBlobCreateOptions {
      */
     public PageBlobCreateOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     */
+    public Duration getTimeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Sets the timeout.
+     * <p>
+     * This value will be ignored on async operations and must be set on the returned async object itself.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The updated options.
+     */
+    public PageBlobCreateOptions setTimeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 }

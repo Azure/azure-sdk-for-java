@@ -9,7 +9,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -474,10 +474,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(Flux, BlobParallelUploadOptions)}
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(BlobParallelUploadOptions)}
      */
     public void upload6() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -493,12 +493,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setMaxConcurrency(maxConcurrency).setProgressReceiver(bytesTransferred ->
                 System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
-        client.uploadWithResponse(data, new BlobParallelUploadOptions()
+        client.uploadWithResponse(new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTags(tags)
             .setTier(AccessTier.HOT).setRequestConditions(requestConditions))
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions
     }
 
     /**
@@ -548,10 +548,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadFromFile(String, BlobUploadFromFileOptions)}
+     * Code snippet for {@link BlobAsyncClient#uploadFromFile(BlobUploadFromFileOptions)}
      */
     public void uploadFromFile3() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#BlobUploadFromFileOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -563,13 +563,13 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
-        client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        client.uploadFromFile(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(
                 new ParallelTransferOptions().setBlockSizeLong(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE))
             .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT)
             .setRequestConditions(requestConditions))
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadFromFile#BlobUploadFromFileOptions
     }
 }

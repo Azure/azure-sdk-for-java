@@ -8,8 +8,10 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
 
@@ -18,14 +20,27 @@ import java.util.Map;
  */
 @Fluent
 public class BlobParallelUploadOptions {
+    private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final long length;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
+    private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
     private Duration timeout;
+
+    /**
+     * Constructs a new {@code BlobParallelUploadOptions}.
+     *
+     * @param dataFlux The data to write to the blob.
+     */
+    public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
+        this.dataFlux = dataFlux;
+        this.dataStream = null;
+        this.length = -1;
+    }
 
     /**
      * Constructs a new {@code BlobParalleUploadOptions}.
@@ -37,6 +52,16 @@ public class BlobParallelUploadOptions {
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
         this.dataStream = dataStream;
         this.length = length;
+        this.dataFlux = null;
+    }
+
+    /**
+     * Gets the data source.
+     *
+     * @return The data to write to the blob.
+     */
+    public Flux<ByteBuffer> getDataFlux() {
+        return this.dataFlux;
     }
 
     /**
@@ -119,6 +144,26 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Get the tags.
+     *
+     * @return The tags to associate with the blob.
+     */
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    /**
+     * Set the tags.
+     *
+     * @param tags The tags to associate with the blob.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Gets the {@link AccessTier}.
      *
      * @return {@link AccessTier}
@@ -169,6 +214,8 @@ public class BlobParallelUploadOptions {
 
     /**
      * Sets the timeout.
+     * <p>
+     * This value will be ignored on async operations and must be set on the returned async object itself.
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The updated options.

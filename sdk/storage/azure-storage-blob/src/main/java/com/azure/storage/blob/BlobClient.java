@@ -12,7 +12,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
@@ -20,16 +20,13 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
@@ -271,9 +268,9 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-        this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        this.uploadFromFile(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions), null);
+            .setTier(tier).setRequestConditions(requestConditions));
     }
 
     /**
@@ -283,18 +280,16 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#String-BlobUploadFromFileOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#BlobUploadFromFileOptions}
      *
-     * @param filePath Path of the file to upload
      * @param options {@link BlobUploadFromFileOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(String filePath, BlobUploadFromFileOptions options, Duration timeout) {
-        Mono<Void> upload = this.client.uploadFromFile(filePath, options);
+    public void uploadFromFile(BlobUploadFromFileOptions options) {
+        Mono<Void> upload = this.client.uploadFromFile(options);
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

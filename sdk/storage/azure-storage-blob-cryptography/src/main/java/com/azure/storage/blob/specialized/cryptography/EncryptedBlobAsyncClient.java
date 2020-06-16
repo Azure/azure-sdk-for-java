@@ -17,7 +17,7 @@ import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -245,7 +245,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(data, new BlobParallelUploadOptions()
+        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
             .setTier(AccessTier.HOT).setRequestConditions(requestConditions));
     }
@@ -274,22 +274,24 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions}
      *
-     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param options {@link BlobParallelUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, BlobParallelUploadOptions options) {
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
-            BlobParallelUploadOptions finalOptions = options == null ? new BlobParallelUploadOptions() : options;
-            final Map<String, String> metadataFinal = finalOptions.getMetadata() == null
-                ? new HashMap<>() : finalOptions.getMetadata();
-            finalOptions.setMetadata(metadataFinal);
-            Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
-            return dataFinal.flatMap(df -> super.uploadWithResponse(df, finalOptions));
+            Objects.requireNonNull(options);
+            final Map<String, String> metadataFinal = options.getMetadata() == null
+                ? new HashMap<>() : options.getMetadata();
+            options.setMetadata(metadataFinal);
+            Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(options.getDataFlux(), metadataFinal);
+            return dataFinal.flatMap(df -> super.uploadWithResponse(new BlobParallelUploadOptions(df)
+                .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
+                .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
+                .setRequestConditions(options.getRequestConditions()).setTimeout(options.getTimeout())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -364,7 +366,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        return this.uploadFromFile(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
             .setTier(tier).setRequestConditions(requestConditions));
     }
@@ -375,23 +377,21 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#BlobUploadFromFileOptions}
      *
-     * @param filePath Path to the upload file
      * @param options {@link BlobUploadFromFileOptions}
      * @return An empty response
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Mono<Void> uploadFromFile(String filePath, BlobUploadFromFileOptions options) {
+    public Mono<Void> uploadFromFile(BlobUploadFromFileOptions options) {
         try {
-
-            BlobParallelUploadOptions finalOptions = options == null ? null : new BlobParallelUploadOptions()
-                .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
-                .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
-                .setRequestConditions(options.getRequestConditions());
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, logger),
-                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), finalOptions)
+            Objects.requireNonNull(options);
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), logger),
+                channel -> this.uploadWithResponse(new BlobParallelUploadOptions(FluxUtil.readFile(channel))
+                    .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
+                    .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
+                    .setRequestConditions(options.getRequestConditions()))
                     .then()
                     .doOnTerminate(() -> {
                         try {

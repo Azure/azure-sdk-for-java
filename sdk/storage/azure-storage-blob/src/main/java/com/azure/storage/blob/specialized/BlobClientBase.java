@@ -12,8 +12,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.BlobBeginCopyOptions;
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
@@ -310,7 +310,7 @@ public class BlobClientBase {
     public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
-        return this.beginCopy(sourceUrl, new BlobBeginCopyOptions().setMetadata(metadata).setTier(tier)
+        return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
             .setRehydratePriority(priority).setSourceRequestConditions(sourceModifiedRequestConditions)
             .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
@@ -320,18 +320,16 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#String-BlobBeginCopyOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
-     * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param options {@link BlobBeginCopyOptions}
      * @return A {@link SyncPoller} to poll the progress of blob copy operation.
      */
-    public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, BlobBeginCopyOptions options) {
-
-        return client.beginCopy(sourceUrl, options).getSyncPoller();
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(BlobBeginCopyOptions options) {
+        return client.beginCopy(options).getSyncPoller();
     }
 
 
@@ -417,9 +415,9 @@ public class BlobClientBase {
     public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
             RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
             Duration timeout, Context context) {
-        return this.copyFromUrlWithResponse(copySource, new BlobCopyFromUrlOptions().setMetadata(metadata)
+        return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
             .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
-            .setDestinationRequestConditions(destRequestConditions), timeout, context);
+            .setDestinationRequestConditions(destRequestConditions).setTimeout(timeout), context);
     }
 
     /**
@@ -427,24 +425,22 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-BlobCopyFromUrlOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
-     * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param options {@link BlobCopyFromUrlOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
-    public Response<String> copyFromUrlWithResponse(String copySource, BlobCopyFromUrlOptions options, Duration timeout,
+    public Response<String> copyFromUrlWithResponse(BlobCopyFromUrlOptions options,
         Context context) {
         Mono<Response<String>> response = client
-            .copyFromUrlWithResponse(copySource, options, context);
+            .copyFromUrlWithResponse(options, context);
 
-        return blockWithOptionalTimeout(response, timeout);
+        return blockWithOptionalTimeout(response, options.getTimeout());
     }
 
     /**
@@ -1118,7 +1114,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, new BlobQueryOptions(expression), null, Context.NONE);
+        queryWithResponse(stream, new BlobQueryOptions(expression), Context.NONE);
     }
 
     /**
@@ -1133,14 +1129,12 @@ public class BlobClientBase {
      *
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param queryOptions {@link BlobQueryOptions The query options}.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public BlobQueryResponse queryWithResponse(OutputStream stream, BlobQueryOptions queryOptions,
-        Duration timeout, Context context) {
+    public BlobQueryResponse queryWithResponse(OutputStream stream, BlobQueryOptions queryOptions, Context context) {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobQueryResponse> download = client
             .queryWithResponse(queryOptions, context)
@@ -1153,6 +1147,6 @@ public class BlobClientBase {
                 }
             }).thenReturn(new BlobQueryResponse(response)));
 
-        return blockWithOptionalTimeout(download, timeout);
+        return blockWithOptionalTimeout(download, queryOptions.getTimeout());
     }
 }

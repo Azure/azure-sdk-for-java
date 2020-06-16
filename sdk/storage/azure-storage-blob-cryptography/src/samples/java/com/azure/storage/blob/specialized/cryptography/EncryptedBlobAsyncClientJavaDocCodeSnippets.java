@@ -7,7 +7,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import reactor.core.publisher.Flux;
@@ -100,10 +100,10 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobAsyncClient#uploadWithResponse(Flux, BlobParallelUploadOptions)}
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadWithResponse(BlobParallelUploadOptions)}
      */
     public void upload3() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -118,12 +118,12 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
             .setBlockSizeLong(blockSize)
             .setMaxConcurrency(maxConcurrency);
 
-        client.uploadWithResponse(data, new BlobParallelUploadOptions()
+        client.uploadWithResponse(new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
             .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions))
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions
     }
 
     /**
@@ -174,10 +174,10 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFile(String, BlobUploadFromFileOptions)}
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFile(BlobUploadFromFileOptions)}
      */
     public void uploadFromFile3() {
-        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#BlobUploadFromFileOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -192,11 +192,11 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize);
 
-        client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        client.uploadFromFile(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTags(tags)
             .setTier(AccessTier.HOT).setRequestConditions(requestConditions))
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#BlobUploadFromFileOptions
     }
 }

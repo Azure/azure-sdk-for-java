@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.util.logging.ClientLogger;
 
@@ -16,13 +16,22 @@ import java.time.Duration;
 public class FindBlobsOptions {
     private final ClientLogger logger = new ClientLogger(FindBlobsOptions.class);
 
+    private final String query;
     private Integer maxResultsPerPage;
+    private Duration timeout;
 
     /**
-     * Constructs an unpopulated {@link FindBlobsOptions}.
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
      */
-    public FindBlobsOptions() {
+    public FindBlobsOptions(String query) {
+        this.query = query;
+    }
 
+    /**
+     * @return Filters the results to return only blobs whose tags match the specified expression.
+     */
+    public String getQuery() {
+        return this.query;
     }
 
     /**
@@ -48,6 +57,28 @@ public class FindBlobsOptions {
             throw logger.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
+        return this;
+    }
+
+    /**
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     */
+    public Duration getTimeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Sets the timeout.
+     * <p>
+     * This value will be ignored on async operations and must be set on the returned async object itself.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The updated options.
+     */
+    public FindBlobsOptions setTimeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 }

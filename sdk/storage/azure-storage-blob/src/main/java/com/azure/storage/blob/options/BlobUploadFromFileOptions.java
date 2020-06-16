@@ -1,10 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 
+import java.time.Duration;
 import java.util.Map;
 
 
@@ -13,12 +18,28 @@ import java.util.Map;
  */
 @Fluent
 public class BlobUploadFromFileOptions {
+    private final String filePath;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+    private Duration timeout;
+
+    /**
+     * @param filePath Path to the upload file
+     */
+    public BlobUploadFromFileOptions(String filePath) {
+        this.filePath = filePath;
+    }
+
+    /**
+     * @return Path to the upload file
+     */
+    public String getFilePath() {
+        return this.filePath;
+    }
 
     /**
      * @return {@link ParallelTransferOptions}
@@ -113,6 +134,28 @@ public class BlobUploadFromFileOptions {
      */
     public BlobUploadFromFileOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     */
+    public Duration getTimeout() {
+        return this.timeout;
+    }
+
+    /**
+     * Sets the timeout.
+     * <p>
+     * This value will be ignored on async operations and must be set on the returned async object itself.
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The updated options.
+     */
+    public BlobUploadFromFileOptions setTimeout(Duration timeout) {
+        this.timeout = timeout;
         return this;
     }
 }
