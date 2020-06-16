@@ -7,10 +7,12 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -27,6 +29,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final AtomicReference<MsalToken> cachedToken;
 
     private final IdentityClient identityClient;
+    private final ClientLogger logger = new ClientLogger(SharedTokenCacheCredential.class);
 
     /**
      * Creates an instance of the Shared Token Cache Credential Provider.
@@ -80,7 +83,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
             Mono.defer(() -> identityClient.authenticateWithSharedTokenCache(request, username)))
             .map(msalToken -> {
                 cachedToken.set(msalToken);
-                return msalToken;
-            });
+                return (AccessToken) msalToken;
+            })
+            .doOnNext(token -> LoggingUtil.getTokenSuccess(SharedTokenCacheCredential.class, logger, request))
+            .doOnError(error -> LoggingUtil.getTokenError(SharedTokenCacheCredential.class, logger, error));
     }
 }

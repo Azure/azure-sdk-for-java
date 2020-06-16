@@ -58,17 +58,26 @@ public class EnvironmentCredential implements TokenCredential {
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
         if (verifyNotNull(clientId)) {
             if (verifyNotNull(tenantId, clientSecret)) {
+                logger.info("Azure Identity => EnvironmentCredential invoking ClientSecretCredential");
                 targetCredential = new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
             } else if (verifyNotNull(tenantId, certPath)) {
+                logger.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
                 targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath,
                         null, identityClientOptions);
             } else if (verifyNotNull(username, password)) {
+                logger.info("Azure Identity => EnvironmentCredential invoking UsernamePasswordCredential");
                 targetCredential = new UsernamePasswordCredential(clientId,
                         tenantId,
                         username,
                         password,
                         identityClientOptions);
+            } else {
+                logger.error("Azure Identity => ERROR in EnvironmentCredential: Not enough environment variables "
+                    + " to determine the environment.");
             }
+        } else {
+            logger.error("Azure Identity => ERROR in EnvironmentCredential: Missing environment variable {}",
+                Configuration.PROPERTY_AZURE_CLIENT_ID);
         }
         tokenCredential = targetCredential;
     }
