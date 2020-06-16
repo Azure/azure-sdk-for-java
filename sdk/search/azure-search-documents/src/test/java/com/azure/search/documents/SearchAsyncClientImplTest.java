@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
+import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
@@ -118,7 +119,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         Mono<SearchDocument> futureDoc = asyncClient.getDocument("1");
 
         StepVerifier.create(futureDoc)
-            .assertNext(result -> assertEquals(expectedDoc, result))
+            .assertNext(result -> assertMapEquals(expectedDoc, result))
             .verifyComplete();
     }
 

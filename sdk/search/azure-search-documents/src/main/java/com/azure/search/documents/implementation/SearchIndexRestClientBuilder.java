@@ -5,7 +5,6 @@
 // regenerated.
 
 package com.azure.search.documents.implementation;
-import com.azure.core.util.serializer.SerializerAdapter;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
@@ -68,22 +67,6 @@ public final class SearchIndexRestClientBuilder {
     }
 
     /*
-     * The serializer to use for requests
-     */
-    private SerializerAdapter serializer;
-
-    /**
-     * Sets The serializer to use for requests.
-     *
-     * @param serializer the serializer value.
-     * @return the SearchIndexRestClientBuilder.
-     */
-    public SearchIndexRestClientBuilder serializer(SerializerAdapter serializer) {
-        this.serializer = serializer;
-        return this;
-    }
-
-    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -108,7 +91,7 @@ public final class SearchIndexRestClientBuilder {
         if (pipeline == null) {
             this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
-        SearchIndexRestClientImpl client = new SearchIndexRestClientImpl(pipeline, serializer);
+        SearchIndexRestClientImpl client = new SearchIndexRestClientImpl(pipeline);
         if (this.apiVersion != null) {
             client.setApiVersion(this.apiVersion);
         }

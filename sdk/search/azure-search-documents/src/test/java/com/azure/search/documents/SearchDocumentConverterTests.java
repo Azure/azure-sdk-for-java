@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -28,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SearchDocumentConverterTests {
 
     private final String testDateString = "2016-10-10T17:41:05.123-07:00";
-    private final OffsetDateTime testDate = OffsetDateTime.of(2016, 10, 10, 17, 41, 5, 123 * 1_000_000, ZoneOffset.of("-07:00"));
+    private final OffsetDateTime testDate = OffsetDateTime.of(2016, 10, 10, 17, 41,
+        5, 123 * 1_000_000, ZoneOffset.of("-07:00"));
 
     private SearchDocument deserialize(String json) {
         // Deserialization of the search result is done with azure-core (using Jackson as well)
@@ -125,21 +127,27 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void canReadGeoPoint() {
-        String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] } }";
+        String json = "{ \"field\": { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}}";
         SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", GeoPoint.create(47.678581, -122.131577)));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        expectedDoc.forEach((key, value) -> {
+            assertEquals(value.toString(), actualDoc.get(key).toString());
+        });
     }
 
     @Test
     public void canReadGeoPointCollection() {
-        String json = "{ \"field\": [{ \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"type\": \"Point\", \"coordinates\": [-121, 49] }]}";
+        String json = "{\"field\":[{\"type\":\"Point\", \"coordinates\":[-122.131577, 47.678581], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}, "
+            + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
         SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
             Arrays.asList(GeoPoint.create(47.678581, -122.131577), GeoPoint.create(49, -121))));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -196,7 +204,10 @@ public class SearchDocumentConverterTests {
     @Test
     public void canReadArraysOfMixedTypes() {
         // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
-        String json = "{\"field\": [\"hello\", 123, 3.14, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581] }, { \"name\": \"Arthur\", \"quest\": null }] }";
+        String json =
+            "{\"field\": [\"hello\", 123, 3.14, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
+            + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
+            + "{ \"name\": \"Arthur\", \"quest\": null }] }";
 
         GeoPoint point = GeoPoint.create(47.678581, -122.131577);
         SearchDocument innerDoc = new SearchDocument();
@@ -208,7 +219,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field", value);
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -219,7 +230,7 @@ public class SearchDocumentConverterTests {
         expectedDoc.put("field2", Arrays.asList(testDate, testDate));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc);
     }
 
     @Test
@@ -265,9 +276,10 @@ public class SearchDocumentConverterTests {
     @Test
     public void dateTimeStringsInArraysAreReadAsDateTime() {
         String json = "{ \"field\": [ \"hello\", \"".concat(testDateString).concat("\", \"123\" ] }}");
-        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", Arrays.asList("hello", testDate, "123")));
+        SearchDocument expectedDoc = new SearchDocument(
+            Collections.singletonMap("field", Arrays.asList("hello", testDate, "123")));
 
         SearchDocument actualDoc = deserialize(json);
-        assertEquals(expectedDoc, actualDoc);
+        assertMapEquals(expectedDoc, actualDoc);
     }
 }

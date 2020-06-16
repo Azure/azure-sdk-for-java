@@ -26,8 +26,8 @@ com.azure:azure-data-tables;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.0.7;1.1.0-beta.6
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-eventhubs;5.1.0;5.2.0-beta.1
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.1.0;1.2.0-beta.1
+com.azure:azure-messaging-eventhubs;5.1.1;5.2.0-beta.1
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.1.1;1.2.0-beta.1
 com.azure:azure-messaging-servicebus;7.0.0-beta.3;7.0.0-beta.4
 com.azure:azure-search-documents;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-security-keyvault-certificates;4.1.0-beta.3;4.1.0-beta.4

@@ -484,7 +484,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<T> documentDefinitionList) {
+                                          List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .map(itemResponse -> itemResponse.getItem())
@@ -813,12 +813,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
-                                                          FeedResponseListValidator<T> validator) {
+                                         FeedResponseListValidator<T> validator) {
         validateQuerySuccess(flowable, validator, subscriberValidationTimeout);
     }
 
     public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
-                                                                 FeedResponseListValidator<T> validator, long timeout) {
+                                                FeedResponseListValidator<T> validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
 
@@ -834,7 +834,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
-                                                                 FailureValidator validator, long timeout) {
+                                                FailureValidator validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
 
