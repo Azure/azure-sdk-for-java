@@ -10,7 +10,17 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,22 +43,12 @@ import java.util.Objects;
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Synapse Analytics Client</strong></p>
- *
- * {@codesnippet com.azure.analytics.synapse.accesscontrol.AccessControlAsyncClient.instantiation}
- *
- * <p><strong>Instantiating a synchronous Synapse Analytics Client</strong></p>
- *
- * {@codesnippet com.azure.analytics.synapse.accesscontrol.AccessControlClient.instantiation}
- *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
  * way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and set the service
  * endpoint with {@link #endpoint(String) this}. Using a pipeline requires additional setup but allows for finer control
  * on how the {@link AccessControlClient} and {@link AccessControlAsyncClient} is built.
  * </p>
- *
- * {@codesnippet com.azure.analytics.synapse.accesscontrol.AccessControlClient.pipeline.instantiation}
  *
  * @see AccessControlAsyncClient
  * @see AccessControlClient

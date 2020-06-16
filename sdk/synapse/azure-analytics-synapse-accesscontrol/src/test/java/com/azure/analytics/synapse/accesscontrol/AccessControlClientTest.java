@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.synapse.accesscontrol;
 
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
@@ -20,8 +23,7 @@ public class AccessControlClientTest extends AccessControlClientTestBase {
      */
     @Test
     public void getRoleDefinitions() {
-        for (SynapseRole expectedRole : client.getRoleDefinitions())
-        {
+        for (SynapseRole expectedRole : client.getRoleDefinitions()) {
             SynapseRole actualRole = client.getRoleDefinitionById(expectedRole.getId());
             validateRoleDefinitions(expectedRole, actualRole);
         }

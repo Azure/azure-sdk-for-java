@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.analytics.synapse.accesscontrol;
 
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
@@ -94,8 +97,7 @@ public abstract class AccessControlClientTestBase extends TestBase {
     @Test
     public abstract void getRoleDefinitions();
 
-    void validateRoleDefinitions(SynapseRole expectedRole, SynapseRole actualRole)
-    {
+    void validateRoleDefinitions(SynapseRole expectedRole, SynapseRole actualRole) {
         assertEquals(expectedRole.getName(), actualRole.getName());
         assertEquals(expectedRole.getId(), actualRole.getId());
         assertEquals(expectedRole.isBuiltIn(), actualRole.isBuiltIn());
