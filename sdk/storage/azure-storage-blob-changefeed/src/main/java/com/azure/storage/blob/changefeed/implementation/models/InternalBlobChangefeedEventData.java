@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.changefeed.implementation.models;
 
+import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -13,7 +14,7 @@ import java.util.Objects;
 /**
  * This class contains properties of a BlobChangefeedEventData.
  */
-public class BlobChangefeedEventData implements com.azure.storage.blob.changefeed.models.BlobChangefeedEventData {
+public class InternalBlobChangefeedEventData implements BlobChangefeedEventData {
 
     private final String api;
     private final String clientRequestId;
@@ -30,7 +31,7 @@ public class BlobChangefeedEventData implements com.azure.storage.blob.changefee
     private final String sequencer;
 
     /**
-     * Constructs a {@link BlobChangefeedEventData}.
+     * Constructs a {@link InternalBlobChangefeedEventData}.
      *
      * @param api The api.
      * @param clientRequestId The client request id.
@@ -46,7 +47,7 @@ public class BlobChangefeedEventData implements com.azure.storage.blob.changefee
      * @param recursive Whether or not this operation was recursive.
      * @param sequencer The sequencer.
      */
-    public BlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
+    public InternalBlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
         String contentType, Long contentLength, BlobType blobType, Long contentOffset, String destinationUrl,
         String sourceUrl, String blobUrl, boolean recursive, String sequencer) {
         this.api = api;
@@ -64,7 +65,7 @@ public class BlobChangefeedEventData implements com.azure.storage.blob.changefee
         this.sequencer = sequencer;
     }
 
-    static BlobChangefeedEventData fromRecord(Object d) {
+    static InternalBlobChangefeedEventData fromRecord(Object d) {
         AvroSchema.checkType("data", d, Map.class);
         Map<?, ?> data = (Map<?, ?>) d;
 
@@ -86,21 +87,21 @@ public class BlobChangefeedEventData implements com.azure.storage.blob.changefee
         Object recursive = data.get("recursive");
         Object sequencer = data.get("sequencer");
 
-        return new BlobChangefeedEventData(
-            BlobChangefeedEvent.nullOrString("api", api),
-            BlobChangefeedEvent.nullOrString("clientRequestId", clientRequestId),
-            BlobChangefeedEvent.nullOrString("requestId", requestId),
-            BlobChangefeedEvent.nullOrString("etag", eTag),
-            BlobChangefeedEvent.nullOrString("contentType", contentType),
-            BlobChangefeedEvent.nullOrLong("contentLength", contentLength),
-            BlobChangefeedEvent.isNull(blobType) ? null
-                : BlobType.fromString(BlobChangefeedEvent.nullOrString("blobType", blobType)),
-            BlobChangefeedEvent.nullOrLong("contentOffset", contentOffset),
-            BlobChangefeedEvent.nullOrString("destinationUrl", destinationUrl),
-            BlobChangefeedEvent.nullOrString("sourceUrl", sourceUrl),
-            BlobChangefeedEvent.nullOrString("url", blobUrl),
-            BlobChangefeedEvent.nullOrBoolean("recursive", recursive),
-            BlobChangefeedEvent.nullOrString("sequencer", sequencer)
+        return new InternalBlobChangefeedEventData(
+            InternalBlobChangefeedEvent.nullOrString("api", api),
+            InternalBlobChangefeedEvent.nullOrString("clientRequestId", clientRequestId),
+            InternalBlobChangefeedEvent.nullOrString("requestId", requestId),
+            InternalBlobChangefeedEvent.nullOrString("etag", eTag),
+            InternalBlobChangefeedEvent.nullOrString("contentType", contentType),
+            InternalBlobChangefeedEvent.nullOrLong("contentLength", contentLength),
+            InternalBlobChangefeedEvent.isNull(blobType) ? null
+                : BlobType.fromString(InternalBlobChangefeedEvent.nullOrString("blobType", blobType)),
+            InternalBlobChangefeedEvent.nullOrLong("contentOffset", contentOffset),
+            InternalBlobChangefeedEvent.nullOrString("destinationUrl", destinationUrl),
+            InternalBlobChangefeedEvent.nullOrString("sourceUrl", sourceUrl),
+            InternalBlobChangefeedEvent.nullOrString("url", blobUrl),
+            InternalBlobChangefeedEvent.nullOrBoolean("recursive", recursive),
+            InternalBlobChangefeedEvent.nullOrString("sequencer", sequencer)
         );
     }
 
@@ -174,10 +175,10 @@ public class BlobChangefeedEventData implements com.azure.storage.blob.changefee
         if (this == o) {
             return true;
         }
-        if (!(o instanceof BlobChangefeedEventData)) {
+        if (!(o instanceof InternalBlobChangefeedEventData)) {
             return false;
         }
-        BlobChangefeedEventData that = (BlobChangefeedEventData) o;
+        InternalBlobChangefeedEventData that = (InternalBlobChangefeedEventData) o;
         return Objects.equals(getApi(), that.getApi())
             && Objects.equals(getClientRequestId(), that.getClientRequestId())
             && Objects.equals(getRequestId(), that.getRequestId())

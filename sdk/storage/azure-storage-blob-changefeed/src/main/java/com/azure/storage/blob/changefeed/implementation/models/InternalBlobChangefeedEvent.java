@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.changefeed.implementation.models;
 
+import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
+import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -15,7 +17,7 @@ import java.util.Objects;
 /**
  * This class contains properties of a BlobChangefeedEvent.
  */
-public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.models.BlobChangefeedEvent {
+public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
 
     private final String topic;
     private final String subject;
@@ -27,19 +29,19 @@ public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.mo
     private final String metadataVersion;
 
     /**
-     * Constructs a {@link BlobChangefeedEvent}.
+     * Constructs a {@link InternalBlobChangefeedEvent}.
      *
      * @param topic The topic.
      * @param subject The subject.
      * @param eventType {@link BlobChangefeedEventType}
      * @param eventTime The {@link OffsetDateTime event time}.
      * @param id The identifier.
-     * @param data {@link BlobChangefeedEventData}
+     * @param data {@link InternalBlobChangefeedEventData}
      * @param dataVersion The data version.
      * @param metadataVersion The metadata version.
      */
-    public BlobChangefeedEvent(String topic, String subject, BlobChangefeedEventType eventType,
-        OffsetDateTime eventTime, String id, com.azure.storage.blob.changefeed.models.BlobChangefeedEventData data,
+    public InternalBlobChangefeedEvent(String topic, String subject, BlobChangefeedEventType eventType,
+        OffsetDateTime eventTime, String id, BlobChangefeedEventData data,
         Long dataVersion, String metadataVersion) {
         this.topic = topic;
         this.subject = subject;
@@ -52,13 +54,13 @@ public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.mo
     }
 
     /**
-     * Constructs a {@link BlobChangefeedEvent}.
+     * Constructs a {@link InternalBlobChangefeedEvent}.
      *
      * @param record The record.
-     * @return The {@link BlobChangefeedEvent} representing the record.
+     * @return The {@link InternalBlobChangefeedEvent} representing the record.
      * @throws IllegalArgumentException if the record is not valid.
      */
-    public static BlobChangefeedEvent fromRecord(Object record) {
+    public static InternalBlobChangefeedEvent fromRecord(Object record) {
         AvroSchema.checkType("r", record, Map.class);
         Map<?, ?> r = (Map<?, ?>) record;
 
@@ -75,15 +77,15 @@ public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.mo
         Object dataVersion = r.get("dataVersion");
         Object metadataVersion = r.get("metadataVersion");
 
-        return new BlobChangefeedEvent(
+        return new InternalBlobChangefeedEvent(
             nullOrString("topic", topic),
             nullOrString("subject", subject),
             isNull(eventType) ? null
-                : BlobChangefeedEventType.fromString(BlobChangefeedEvent.nullOrString("eventType", eventType)),
+                : BlobChangefeedEventType.fromString(InternalBlobChangefeedEvent.nullOrString("eventType", eventType)),
             isNull(eventTime) ? null
                 : OffsetDateTime.parse(Objects.requireNonNull(nullOrString("eventTime", eventTime))),
             nullOrString("id", id),
-            isNull(data) ? null : BlobChangefeedEventData.fromRecord(data),
+            isNull(data) ? null : InternalBlobChangefeedEventData.fromRecord(data),
             nullOrLong("dataVersion", dataVersion),
             nullOrString("metadataVersion", metadataVersion)
         );
@@ -155,7 +157,7 @@ public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.mo
     }
 
     @Override
-    public com.azure.storage.blob.changefeed.models.BlobChangefeedEventData getData() {
+    public BlobChangefeedEventData getData() {
         return data;
     }
 
@@ -173,10 +175,10 @@ public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.mo
         if (this == o) {
             return true;
         }
-        if (!(o instanceof BlobChangefeedEvent)) {
+        if (!(o instanceof InternalBlobChangefeedEvent)) {
             return false;
         }
-        BlobChangefeedEvent event = (BlobChangefeedEvent) o;
+        InternalBlobChangefeedEvent event = (InternalBlobChangefeedEvent) o;
         return Objects.equals(getTopic(), event.getTopic())
             && Objects.equals(getSubject(), event.getSubject())
             && Objects.equals(getEventType(), event.getEventType())

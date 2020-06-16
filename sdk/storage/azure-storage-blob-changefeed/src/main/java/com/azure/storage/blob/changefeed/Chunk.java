@@ -5,6 +5,7 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEvent;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.internal.avro.implementation.AvroReader;
@@ -46,8 +47,7 @@ class Chunk {
 
                 /* Get the event cursor associated with this event. */
                 ChangefeedCursor eventCursor = shardCursor.toEventCursor(blockOffset, objectBlockIndex);
-                BlobChangefeedEvent event = com.azure.storage.blob.changefeed.implementation.models.
-                    BlobChangefeedEvent.fromRecord(object);
+                BlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(object);
 
                 /* Wrap the event and cursor. */
                 return new BlobChangefeedEventWrapper(event, eventCursor);

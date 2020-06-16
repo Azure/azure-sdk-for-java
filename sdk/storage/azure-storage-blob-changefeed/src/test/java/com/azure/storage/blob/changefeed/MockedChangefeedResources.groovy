@@ -1,6 +1,8 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.core.util.FluxUtil
+import com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEvent
+import com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEventData
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType
@@ -26,7 +28,7 @@ class MockedChangefeedResources {
     }
 
     static BlobChangefeedEvent getMockBlobChangefeedEvent(int index) {
-        return new com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEvent(
+        return new InternalBlobChangefeedEvent(
             "topic",
             "subject",
             BlobChangefeedEventType.BLOB_CREATED,
@@ -39,7 +41,7 @@ class MockedChangefeedResources {
     }
 
     static BlobChangefeedEventData getMockBlobChangefeedEventData() {
-        return new com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventData(
+        return new InternalBlobChangefeedEventData(
             "PutBlob",
             "clientRequestId",
             "requestId",
