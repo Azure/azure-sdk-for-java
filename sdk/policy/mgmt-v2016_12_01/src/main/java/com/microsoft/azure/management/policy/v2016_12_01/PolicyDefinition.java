@@ -89,6 +89,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The policy definition description
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -99,6 +101,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy definition
+             * @return the next definition stage
              */
             WithCreate withDisplayName(String displayName);
         }
@@ -109,6 +113,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The policy definition metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -119,6 +125,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithMode {
             /**
              * Specifies mode.
+             * @param mode The policy definition mode. Possible values are NotSpecified, Indexed, and All. Possible values include: 'NotSpecified', 'Indexed', 'All'
+             * @return the next definition stage
              */
             WithCreate withMode(PolicyMode mode);
         }
@@ -129,6 +137,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters Required if a parameter is used in policy rule
+             * @return the next definition stage
              */
             WithCreate withParameters(Object parameters);
         }
@@ -139,6 +149,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithPolicyRule {
             /**
              * Specifies policyRule.
+             * @param policyRule The policy rule
+             * @return the next definition stage
              */
             WithCreate withPolicyRule(Object policyRule);
         }
@@ -149,6 +161,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithPolicyType {
             /**
              * Specifies policyType.
+             * @param policyType The type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'
+             * @return the next definition stage
              */
             WithCreate withPolicyType(PolicyType policyType);
         }
@@ -177,6 +191,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The policy definition description
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -187,6 +203,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithDisplayName {
             /**
              * Specifies displayName.
+             * @param displayName The display name of the policy definition
+             * @return the next update stage
              */
             Update withDisplayName(String displayName);
         }
@@ -197,6 +215,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The policy definition metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -207,6 +227,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithMode {
             /**
              * Specifies mode.
+             * @param mode The policy definition mode. Possible values are NotSpecified, Indexed, and All. Possible values include: 'NotSpecified', 'Indexed', 'All'
+             * @return the next update stage
              */
             Update withMode(PolicyMode mode);
         }
@@ -217,6 +239,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters Required if a parameter is used in policy rule
+             * @return the next update stage
              */
             Update withParameters(Object parameters);
         }
@@ -227,6 +251,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithPolicyRule {
             /**
              * Specifies policyRule.
+             * @param policyRule The policy rule
+             * @return the next update stage
              */
             Update withPolicyRule(Object policyRule);
         }
@@ -237,6 +263,8 @@ public interface PolicyDefinition extends HasInner<PolicyDefinitionInner>, Index
         interface WithPolicyType {
             /**
              * Specifies policyType.
+             * @param policyType The type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'
+             * @return the next update stage
              */
             Update withPolicyType(PolicyType policyType);
         }
