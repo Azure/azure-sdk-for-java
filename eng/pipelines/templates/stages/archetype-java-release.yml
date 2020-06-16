@@ -148,7 +148,6 @@ stages:
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
-              timeoutInMinutes: 5
               dependsOn: PublishPackage
               variables:
                 - template: ../variables/globals.yml
