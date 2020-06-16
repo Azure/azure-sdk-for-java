@@ -104,93 +104,67 @@ public class BlobChangefeedEventData implements com.azure.storage.blob.changefee
         );
     }
 
-    /**
-     * @return The api.
-     */
+    @Override
     public String getApi() {
         return api;
     }
 
-    /**
-     * @return The client request id.
-     */
+    @Override
     public String getClientRequestId() {
         return clientRequestId;
     }
 
-    /**
-     * @return The request id.
-     */
+    @Override
     public String getRequestId() {
         return requestId;
     }
 
-    /**
-     * @return The eTag.
-     */
+    @Override
     public String getETag() {
         return eTag;
     }
 
-    /**
-     * @return The content type.
-     */
+    @Override
     public String getContentType() {
         return contentType;
     }
 
-    /**
-     * @return The content length.
-     */
+    @Override
     public Long getContentLength() {
         return contentLength;
     }
 
-    /**
-     * @return {@link BlobType}.
-     */
+    @Override
     public BlobType getBlobType() {
         return blobType;
     }
 
-    /**
-     * @return The content offset.
-     */
+    @Override
     public Long getContentOffset() {
         return contentOffset;
     }
 
-    /**
-     * @return The destination url.
-     */
+    @Override
     public String getDestinationUrl() {
         return destinationUrl;
     }
 
-    /**
-     * @return The source url.
-     */
+    @Override
     public String getSourceUrl() {
         return sourceUrl;
     }
 
-    /**
-     * @return The blob url.
-     */
+    @Override
     public String getBlobUrl() {
         return blobUrl;
     }
 
-    /**
-     * @return Whether or not this operation was recursive.
-     */
+    @Override
     public boolean isRecursive() {
         return recursive;
     }
 
-    /**
-     * @return The sequencer.
-     */
+    @Override
     public String getSequencer() {
         return sequencer;
     }

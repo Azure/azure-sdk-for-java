@@ -129,58 +129,41 @@ public class BlobChangefeedEvent implements com.azure.storage.blob.changefeed.mo
         return (boolean) o;
     }
 
-    /**
-     * @return the topic.
-     */
+    @Override
     public String getTopic() {
         return topic;
     }
 
-    /**
-     * @return the subject.
-     */
+    @Override
     public String getSubject() {
         return subject;
     }
 
-    /**
-     * @return {@link BlobChangefeedEventType}
-     */
+    @Override
     public BlobChangefeedEventType getEventType() {
         return eventType;
     }
 
-    /**
-     * @return The {@link OffsetDateTime event time}.
-     */
+    @Override
     public OffsetDateTime getEventTime() {
         return eventTime;
     }
 
-    /**
-     * @return the identifer.
-     */
+    @Override
     public String getId() {
         return id;
     }
 
-    /**
-     * @return {@link BlobChangefeedEventData}.
-     */
+    @Override
     public com.azure.storage.blob.changefeed.models.BlobChangefeedEventData getData() {
         return data;
     }
 
-    /**
-     * @return the data version.
-     */
     public Long getDataVersion() {
         return dataVersion;
     }
 
-    /**
-     * @return the metadata version.
-     */
+    @Override
     public String getMetadataVersion() {
         return metadataVersion;
     }
