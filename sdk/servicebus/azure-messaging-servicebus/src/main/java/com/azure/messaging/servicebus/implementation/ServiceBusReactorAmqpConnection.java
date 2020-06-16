@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
+import com.azure.core.amqp.implementation.LinkSettings;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
@@ -18,6 +19,7 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -27,6 +29,7 @@ import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -131,20 +134,23 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
      * linkName}. Otherwise, a new link is created and returned.
      *
-     * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
+     * @param viaEntityPath The intermediate remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions) {
-        return createSession(entityPath).flatMap(session -> {
-            logger.verbose("Get or create producer for path: '{}'", entityPath);
+    public Mono<AmqpSendLink> createSendLink(String entityPath, String viaEntityPath, AmqpRetryOptions retryOptions) {
+
+        String entity = !CoreUtils.isNullOrEmpty(viaEntityPath) ? viaEntityPath : entityPath;
+        return createSession(entity).cast(ServiceBusSession.class)
+            .flatMap(session -> {
+            logger.verbose("Get or create sender link for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
-                .cast(AmqpSendLink.class);
+             return session.createSenderLink(entityPath, viaEntityPath, retryOptions.getTryTimeout(),
+                 retryPolicy).cast(AmqpSendLink.class);
         });
     }
 

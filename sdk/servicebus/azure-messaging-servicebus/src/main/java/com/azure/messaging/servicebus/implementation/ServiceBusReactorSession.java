@@ -3,9 +3,11 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.LinkSettings;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -15,6 +17,7 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -41,6 +44,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private static final Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
+    private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
+        + ":transfer-destination-address");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
     private final Duration openTimeout;
@@ -86,6 +91,30 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         filter.put(SESSION_FILTER, sessionId);
 
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
+    }
+
+    @Override
+    public Mono<AmqpLink> createSenderLink(String entityPath, String viaEntityPath, Duration timeout,
+        AmqpRetryPolicy retry) {
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        Objects.requireNonNull(retry, "'retry' cannot be null.");
+
+        String linkName = entityPath;
+        final Duration serverTimeout = adjustServerTimeout(timeout);
+        Map<Symbol, Object> linkProperties = new HashMap<>();
+
+        linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
+
+        if (!CoreUtils.isNullOrEmpty(viaEntityPath)) {
+             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, entityPath);
+            logger.verbose("Get or create sender link for via entity path: '{}'", viaEntityPath);
+            return createProducer(String.format("VIA-%s", viaEntityPath), viaEntityPath, entityPath, timeout, retry, linkProperties);
+        }else {
+            logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
+            return createProducer(entityPath, entityPath, timeout, retry, linkProperties);
+        }
+
     }
 
     @Override

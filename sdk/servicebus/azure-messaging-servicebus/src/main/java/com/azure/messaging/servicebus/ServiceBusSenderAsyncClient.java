@@ -88,10 +88,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
 
+    private String viaEntityName;
+
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
-    ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
+    ServiceBusSenderAsyncClient(String entityName, String viaEntityName, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
         TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
         // Caching the created link so we don't invoke another link creation.
@@ -104,7 +106,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
         this.entityType = entityType;
-
+        this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
     }
 
@@ -496,6 +498,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return withRetry(
             getSendLink().flatMap(link -> {
+                logger.verbose("!!!! SenderLink for sending message :  " + link + " , LinkName :" + link.getLinkName()+ ", link Path : ", link.getEntityPath());
                 if (isTracingEnabled) {
                     Context entityContext = finalSharedContext.addData(ENTITY_PATH_KEY, link.getEntityPath());
                     // Start send span and store updated context
@@ -551,7 +554,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions))
+            .flatMap(connection -> connection.createSendLink(entityName, viaEntityName, retryOptions))
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
 

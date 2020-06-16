@@ -144,6 +144,73 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * 2. send message  with transactionContext
      * 3. Rollback/commit this transaction.
      */
+    @MethodSource("messagingEntityProvider")
+    @ParameterizedTest
+    void viaMessageSendTest(MessagingEntityType entityType) {
+        // Arrange
+        final Duration shortTimeout = Duration.ofSeconds(15);
+        final int intermediateEntity = TestUtils.USE_CASE_SEND_VIA_1;
+        final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_2;
+        final boolean shareConnection = true;
+        setSenderAndReceiver(entityType, intermediateEntity, false, false, shareConnection);
+        ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
+        ServiceBusSenderAsyncClient intermediateSender = sender;
+
+        ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(false, entityType,
+            destinationEntity, intermediateEntity, false, shareConnection)
+            .buildAsyncClient();
+
+        ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(false, entityType, destinationEntity, Function.identity(), false)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
+
+        final boolean isSessionEnabled =  false;
+        final String messageId = UUID.randomUUID().toString();
+        final int total = 1;
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
+        // Assert & Act
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
+        StepVerifier.create(destination1ViaSender.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        assertNotNull(transaction.get());
+
+        // Assert & Act
+        StepVerifier.create(intermediateSender.send(messages, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(destination1ViaSender.send(messages, transaction.get()))
+            .verifyComplete();
+
+        StepVerifier.create(destination1ViaSender.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+                .verifyComplete();
+
+        // Verify message is received by destination Entity
+        StepVerifier.create(destination1Receiver.receive().take(total).timeout(shortTimeout))
+                .assertNext(receivedMessage -> {
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    messagesPending.decrementAndGet();
+                })
+                .verifyComplete();
+
+        // Verify, none message is gone in intermediate Entity.
+        StepVerifier.create(intermediateReceiver.receive().take(total).timeout(shortTimeout))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can do following
+     * 1. create transaction
+     * 2. send message  with transactionContext
+     * 3. Rollback/commit this transaction.
+     */
     @MethodSource("messagingEntityProviderWithTransaction")
     @ParameterizedTest
     void transactionMessageSendAndCompleteTransaction(MessagingEntityType entityType, boolean isCommit) {
@@ -266,8 +333,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created with
      * shared connection as needed.
      */
-    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials, boolean isSessionEnabled,
-                                      boolean shareConnection) {
+    private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean useCredentials,
+        boolean isSessionEnabled, boolean shareConnection) {
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection).buildAsyncClient();
 
         if (isSessionEnabled) {

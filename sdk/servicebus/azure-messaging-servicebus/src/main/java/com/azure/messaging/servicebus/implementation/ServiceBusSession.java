@@ -4,8 +4,10 @@
 package com.azure.messaging.servicebus.implementation;
 
 
+import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
+import com.azure.core.amqp.implementation.LinkSettings;
 import com.azure.core.amqp.implementation.ReactorSession;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
@@ -49,4 +51,17 @@ public interface ServiceBusSession extends AmqpSession {
      */
     Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
         Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode, String sessionId);
+
+    /**
+     * Creates a new {@link AmqpLink} that can send messages to the message broker.
+     *
+     * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
+     * @param viaEntityPath The entity path this link connects to, so that it may read events from the message broker.
+     * @param timeout Timeout required for creating and opening an AMQP link.
+     * @param retryPolicy The retry policy to use when consuming messages.
+     *
+     * @return A newly created AMQP link.
+     */
+    Mono<AmqpLink> createSenderLink(String entityPath, String viaEntityPath, Duration timeout,
+        AmqpRetryPolicy retryPolicy);
 }

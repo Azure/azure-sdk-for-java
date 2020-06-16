@@ -452,6 +452,7 @@ public final class ServiceBusClientBuilder {
     public final class ServiceBusSenderClientBuilder {
         private String queueName;
         private String topicName;
+        private String viaQueueName;
 
         private ServiceBusSenderClientBuilder() {
         }
@@ -465,6 +466,20 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusSenderClientBuilder queueName(String queueName) {
             this.queueName = queueName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the initial destination Service Bus queue to publish messages to.
+         *
+         * @param viaQueueName The initial destination of the message.
+         *
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
+         *
+         * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Send Via</a>
+         */
+        public ServiceBusSenderClientBuilder viaQueueName(String viaQueueName) {
+            this.viaQueueName = viaQueueName;
             return this;
         }
 
@@ -512,7 +527,7 @@ public final class ServiceBusClientBuilder {
                         new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
-            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
+            return new ServiceBusSenderAsyncClient(entityName, viaQueueName, entityType, connectionProcessor, retryOptions,
                 tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
