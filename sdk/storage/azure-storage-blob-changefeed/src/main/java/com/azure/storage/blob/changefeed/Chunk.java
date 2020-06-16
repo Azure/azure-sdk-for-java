@@ -46,7 +46,8 @@ class Chunk {
 
                 /* Get the event cursor associated with this event. */
                 ChangefeedCursor eventCursor = shardCursor.toEventCursor(blockOffset, objectBlockIndex);
-                BlobChangefeedEvent event = BlobChangefeedEvent.fromRecord(object);
+                BlobChangefeedEvent event = com.azure.storage.blob.changefeed.implementation.models.
+                    BlobChangefeedEvent.fromRecord(object);
 
                 /* Wrap the event and cursor. */
                 return new BlobChangefeedEventWrapper(event, eventCursor);

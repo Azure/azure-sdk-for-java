@@ -26,7 +26,7 @@ class MockedChangefeedResources {
     }
 
     static BlobChangefeedEvent getMockBlobChangefeedEvent(int index) {
-        return new BlobChangefeedEvent(
+        return new com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEvent(
             "topic",
             "subject",
             BlobChangefeedEventType.BLOB_CREATED,
@@ -39,7 +39,7 @@ class MockedChangefeedResources {
     }
 
     static BlobChangefeedEventData getMockBlobChangefeedEventData() {
-        return new BlobChangefeedEventData(
+        return new com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventData(
             "PutBlob",
             "clientRequestId",
             "requestId",
