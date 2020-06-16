@@ -31,6 +31,7 @@ import com.azure.storage.blob.implementation.models.QueryRequest;
 import com.azure.storage.blob.implementation.models.QuerySerialization;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
@@ -38,7 +39,6 @@ import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
@@ -62,8 +62,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
-import reactor.core.scheduler.Schedulers;
-import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -92,13 +90,13 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
-import static java.lang.StrictMath.toIntExact;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -1012,134 +1010,32 @@ public class BlobAsyncClientBase {
         /*
          * Downloads the first chunk and gets the size of the data and etag if not specified by the user.
          */
-        return getSetupMono(finalRange, finalParallelTransferOptions, downloadRetryOptions, requestConditions,
-            rangeGetContentMd5, context)
+        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
+            (range, conditions) -> this.downloadWithResponse(range, downloadRetryOptions, conditions,
+                rangeGetContentMd5, context);
+
+        return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
+            downloadFunc)
             .flatMap(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
 
-                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSizeLong());
+                int numChunks = ChunkedDownloadUtils.calculateNumBlocks(newCount,
+                    finalParallelTransferOptions.getBlockSizeLong());
 
                 // In case it is an empty blob, this ensures we still actually perform a download operation.
                 numChunks = numChunks == 0 ? 1 : numChunks;
 
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
-                    .flatMap(chunkNum -> {
-                        // The first chunk was retrieved during setup.
-                        if (chunkNum == 0) {
-                            return writeBodyToFile(initialResponse, file, 0, finalParallelTransferOptions, progressLock,
-                                totalProgress);
-                        }
+                    .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
+                        finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
+                        response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
+                            progressLock, totalProgress).flux()), finalParallelTransferOptions.getMaxConcurrency())
 
-                        // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
-                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
-                            newCount - modifier);
-                        BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
-
-                        // Make the download call.
-                        return this.downloadWithResponse(chunkRange, downloadRetryOptions, finalConditions,
-                            rangeGetContentMd5, null)
-                            .subscribeOn(Schedulers.elastic())
-                            .flatMap(response ->
-                                writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
-                                    totalProgress));
-                    }, finalParallelTransferOptions.getMaxConcurrency())
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });
-    }
-
-    private int calculateNumBlocks(long dataSize, long blockLength) {
-        // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
-        int numBlocks = toIntExact(dataSize / blockLength);
-        // Include an extra block for trailing data.
-        if (dataSize % blockLength != 0) {
-            numBlocks++;
-        }
-        return numBlocks;
-    }
-
-    /*
-    Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
-    access conditions containing the etag to lock on, and the response from downloading the first chunk.
-     */
-    private Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> getSetupMono(BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
-        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
-        // We will scope our initial download to either be one chunk or the total size.
-        long initialChunkSize = range.getCount() != null
-            && range.getCount() < parallelTransferOptions.getBlockSizeLong()
-            ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
-
-        return this.downloadWithResponse(new BlobRange(range.getOffset(), initialChunkSize), downloadRetryOptions,
-            requestConditions, rangeGetContentMd5, context)
-            .subscribeOn(Schedulers.elastic())
-            .flatMap(response -> {
-                /*
-                Either the etag was set and it matches because the download succeeded, so this is a no-op, or there
-                was no etag, so we set it here. ETag locking is vital to ensure we download one, consistent view
-                of the file.
-                 */
-                BlobRequestConditions newConditions = setEtag(requestConditions,
-                    response.getDeserializedHeaders().getETag());
-
-                // Extract the total length of the blob from the contentRange header. e.g. "bytes 1-6/7"
-                long totalLength = extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
-
-                /*
-                If the user either didn't specify a count or they specified a count greater than the size of the
-                remaining data, take the size of the remaining data. This is to prevent the case where the count
-                is much much larger than the size of the blob and we could try to download at an invalid offset.
-                 */
-                long newCount = range.getCount() == null || range.getCount() > (totalLength - range.getOffset())
-                    ? totalLength - range.getOffset() : range.getCount();
-
-                return Mono.zip(Mono.just(newCount), Mono.just(newConditions), Mono.just(response));
-            })
-            .onErrorResume(BlobStorageException.class, blobStorageException -> {
-                /*
-                 * In the case of an empty blob, we still want to report success and give back valid headers.
-                 * Attempting a range download on an empty blob will return an InvalidRange error code and a
-                 * Content-Range header of the format "bytes * /0". We need to double check that the total size is zero
-                 * in the case that the customer has attempted an invalid range on a non-zero length blob.
-                 */
-                if (blobStorageException.getErrorCode() == BlobErrorCode.INVALID_RANGE
-                    && extractTotalBlobLength(blobStorageException.getResponse()
-                    .getHeaders().getValue("Content-Range")) == 0) {
-
-                    return this.downloadWithResponse(new BlobRange(0, 0L), downloadRetryOptions, requestConditions,
-                        rangeGetContentMd5, context)
-                        .subscribeOn(Schedulers.elastic())
-                        .flatMap(response -> {
-                            /*
-                            Ensure the blob is still 0 length by checking our download was the full length.
-                            (200 is for full blob; 206 is partial).
-                             */
-                            if (response.getStatusCode() != 200) {
-                                Mono.error(new IllegalStateException("Blob was modified mid download. It was "
-                                    + "originally 0 bytes and is now larger."));
-                            }
-                            return Mono.zip(Mono.just(0L), Mono.just(requestConditions), Mono.just(response));
-                        });
-                }
-
-                return Mono.error(blobStorageException);
-            });
-    }
-
-    private static BlobRequestConditions setEtag(BlobRequestConditions requestConditions, String etag) {
-        //We don't want to modify the user's object, so we'll create a duplicate and set the retrieved etag.
-        return new BlobRequestConditions()
-            .setIfModifiedSince(
-                requestConditions.getIfModifiedSince())
-            .setIfUnmodifiedSince(
-                requestConditions.getIfModifiedSince())
-            .setIfMatch(etag)
-            .setIfNoneMatch(
-                requestConditions.getIfNoneMatch())
-            .setLeaseId(requestConditions.getLeaseId());
     }
 
     private static Mono<Void> writeBodyToFile(BlobDownloadAsyncResponse response, AsynchronousFileChannel file,
@@ -1161,7 +1057,7 @@ public class BlobAsyncClientBase {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
         long blobSize = response.getDeserializedHeaders().getContentRange() == null
             ? response.getDeserializedHeaders().getContentLength()
-            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
+            : ChunkedDownloadUtils.extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
             response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
             null, response.getDeserializedHeaders().getContentEncoding(),
@@ -1184,10 +1080,6 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
             response.getDeserializedHeaders().getObjectReplicationDestinationPolicyId());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
-    }
-
-    private static long extractTotalBlobLength(String contentRange) {
-        return Long.parseLong(contentRange.split("/")[1]);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {

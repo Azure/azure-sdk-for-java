@@ -21,6 +21,7 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -29,6 +30,7 @@ import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
@@ -577,9 +579,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFile(new BlobUploadFromFileOptions(filePath)
+        return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+            .setTier(tier).setRequestConditions(requestConditions))
+            .then();
     }
 
     /**
@@ -590,14 +593,14 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFile#BlobUploadFromFileOptions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions}
      *
      * @param options {@link BlobUploadFromFileOptions}
-     * @return An empty response
+     * @return A reactive response containing the information of the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Mono<Void> uploadFromFile(BlobUploadFromFileOptions options) {
-        Objects.requireNonNull(options);
+    public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
+        StorageImplUtils.assertNotNull("options", options);
         Long originalBlockSize = (options.getParallelTransferOptions() == null)
             ? null
             : options.getParallelTransferOptions().getBlockSizeLong();
@@ -628,8 +631,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                 new BlockBlobSimpleUploadOptions(data, fileSize).setHeaders(options.getHeaders())
                                     .setMetadata(options.getMetadata()).setTags(options.getTags())
                                     .setTier(options.getTier())
-                                    .setRequestConditions(options.getRequestConditions()))
-                                .then();
+                                    .setRequestConditions(options.getRequestConditions()));
                         }
                     } catch (IOException ex) {
                         return Mono.error(ex);
@@ -642,7 +644,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         }
     }
 
-    private Mono<Void> uploadFileChunks(long fileSize, ParallelTransferOptions parallelTransferOptions,
+    private Mono<Response<BlockBlobItem>> uploadFileChunks(
+        long fileSize, ParallelTransferOptions parallelTransferOptions,
         Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags,
         AccessTier tier, BlobRequestConditions requestConditions, AsynchronousFileChannel channel,
         BlockBlobAsyncClient client) {
@@ -670,8 +673,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .then(Mono.defer(() -> client.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(new ArrayList<>(blockIds.values()))
                     .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(tier)
-                    .setRequestConditions(finalRequestConditions))))
-            .then();
+                    .setRequestConditions(finalRequestConditions))));
     }
 
     /**

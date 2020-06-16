@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 import java.util.Map;
@@ -28,6 +29,7 @@ public class BlobCopyFromUrlOptions {
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public BlobCopyFromUrlOptions(String copySource) {
+        StorageImplUtils.assertNotNull("copySource", copySource);
         this.copySource = copySource;
     }
 

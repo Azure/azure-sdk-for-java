@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 import java.util.Map;
@@ -28,17 +29,20 @@ public class BlobUploadFromFileOptions {
     private Duration timeout;
 
     /**
-     * @param filePath Path to the upload file
+     * Constructs a {@link BlobUploadFromFileOptions}.
+     *
+     * @param filePath Path of the file to upload.
      */
     public BlobUploadFromFileOptions(String filePath) {
+        StorageImplUtils.assertNotNull("filePath", filePath);
         this.filePath = filePath;
     }
 
     /**
-     * @return Path to the upload file
+     * @return The path of the file to upload
      */
     public String getFilePath() {
-        return this.filePath;
+        return filePath;
     }
 
     /**

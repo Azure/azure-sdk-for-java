@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
@@ -37,6 +38,7 @@ public class BlobParallelUploadOptions {
      * @param dataFlux The data to write to the blob.
      */
     public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
+        StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
         this.length = -1;
@@ -50,6 +52,8 @@ public class BlobParallelUploadOptions {
      * data provided in the {@link InputStream}.
      */
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
+        StorageImplUtils.assertNotNull("dataStream", length);
+        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
         this.length = length;
         this.dataFlux = null;

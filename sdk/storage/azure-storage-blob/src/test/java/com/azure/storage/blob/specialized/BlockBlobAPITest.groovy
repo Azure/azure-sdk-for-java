@@ -24,13 +24,13 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.options.BlobUploadFromFileOptions
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.BlobUploadFromFileOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
@@ -732,7 +732,7 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFile(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags))
+        blobClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags), null)
 
         then:
         tags == blockBlobClient.getTags()

@@ -20,11 +20,13 @@ module com.azure.storage.blob {
         com.azure.storage.blob.batch,
         com.azure.storage.file.datalake;    // FIXME this should not be a long-term solution
 
-    exports com.azure.storage.blob.implementation.models to com.azure.storage.blob.batch;
+    exports com.azure.storage.blob.implementation.models to
+        com.azure.storage.blob.batch;
 
     exports com.azure.storage.blob.implementation.util to
         com.azure.storage.blob.cryptography,
-        com.azure.storage.file.datalake;
+        com.azure.storage.file.datalake,
+        com.azure.storage.blob.changefeed;
 
     opens com.azure.storage.blob.models to
         com.fasterxml.jackson.databind,

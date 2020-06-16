@@ -8,6 +8,7 @@ import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class BlobBeginCopyOptions {
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      */
     public BlobBeginCopyOptions(String sourceUrl) {
-        Objects.requireNonNull(sourceUrl);
+        StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
         this.sourceUrl = sourceUrl;
     }
 

@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -268,9 +269,9 @@ public class BlobClient extends BlobClientBase {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) {
-        this.uploadFromFile(new BlobUploadFromFileOptions(filePath)
+        this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+            .setTier(tier).setRequestConditions(requestConditions), null);
     }
 
     /**
@@ -280,16 +281,20 @@ public class BlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFile#BlobUploadFromFileOptions}
+     * {@codesnippet com.azure.storage.blob.BlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Context}
      *
      * @param options {@link BlobUploadFromFileOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Information about the uploaded block blob.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public void uploadFromFile(BlobUploadFromFileOptions options) {
-        Mono<Void> upload = this.client.uploadFromFile(options);
+    public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options, Context context) {
+        Mono<Response<BlockBlobItem>> upload =
+            this.client.uploadFromFileWithResponse(options)
+                .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
+            return StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 
@@ -24,6 +25,7 @@ public class FindBlobsOptions {
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      */
     public FindBlobsOptions(String query) {
+        StorageImplUtils.assertNotNull("query", query);
         this.query = query;
     }
 

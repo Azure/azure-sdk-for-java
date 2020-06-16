@@ -135,7 +135,7 @@ public class AvroBlockSchema extends AvroCompositeSchema {
         byte[] syncBytes = AvroSchema.getBytes((List<?>) sync);
         if (Arrays.equals(syncBytes, syncMarker)) {
             this.done = true;
-            this.result = null;
+            this.result = -1L;
         } else {
             throw logger.logExceptionAsError(new IllegalStateException("Sync marker validation failed."));
         }
