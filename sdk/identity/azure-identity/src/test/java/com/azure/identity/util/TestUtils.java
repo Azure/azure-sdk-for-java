@@ -59,7 +59,7 @@ public final class TestUtils {
 
             @Override
             public String environment() {
-                return null;
+                return "http://login.microsoftonline.com";
             }
 
             @Override

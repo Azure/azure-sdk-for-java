@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-messaging-servicebus
+  - azure-service-bus
 urlFragment: servicebus-samples
 ---
 
@@ -33,7 +33,7 @@ connection string value can be obtained by:
 - [Send messages][SendMessageAsyncSample]
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
 - [Send message batches synchronously][SendMessageBatchSyncSample]
-- [Schedule and cancel a message][MessageCancelScheduleAsyncSample]
+- [Schedule and cancel a message][SendScheduledMessageAndCancelAsyncSample]
 - [Receive messages synchronously][ReceiveMessageSyncSample]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]
 - [Receive messages using Azure Identity][ReceiveMessageAzureIdentityAsyncSample]

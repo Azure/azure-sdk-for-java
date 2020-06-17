@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-spring-boot-samples</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>azure-spring-boot-sample-data-gremlin</artifactId>
+  <packaging>jar</packaging>
+
+  <name>Spring Data Gremlin Boot Starter Sample</name>
+  <description>Sample project for Spring Data Gremlin</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
+      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-data-gremlin-spring-boot-starter;current} -->
+    </dependency>
+  </dependencies>
+
+</project>

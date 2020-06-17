@@ -63,7 +63,8 @@ public class KeyVaultOperationUnitTest {
         keyVaultOperation = new KeyVaultOperation(keyVaultClient,
             FAKE_VAULT_URI,
             Constants.TOKEN_ACQUIRE_TIMEOUT_SECS,
-            secretKeysConfig);
+            secretKeysConfig,
+            false);
     }
 
     @Test
@@ -90,13 +91,13 @@ public class KeyVaultOperationUnitTest {
     public void testList() {
         //test list with no specific secret keys
         setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, null);
-        final String[] result = keyVaultOperation.list();
+        final String[] result = keyVaultOperation.getPropertyNames();
         assertThat(result.length).isEqualTo(1);
         assertThat(result[0]).isEqualToIgnoringCase(TEST_PROPERTY_NAME_1);
 
         //test list with specific secret key configs
         setupSecretBundle(TEST_PROPERTY_NAME_1, TEST_PROPERTY_NAME_1, SECRET_KEYS_CONFIG);
-        final String[] specificResult = keyVaultOperation.list();
+        final String[] specificResult = keyVaultOperation.getPropertyNames();
         assertThat(specificResult.length).isEqualTo(3);
         assertThat(specificResult[0]).isEqualTo(SECRET_KEYS_CONFIG.get(0));
     }

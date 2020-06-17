@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -37,7 +37,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 2;
 
         CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection
@@ -58,7 +58,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     public void readDocuments_withoutEnableCrossPartitionQuery() {
         // With introduction of queryplan, crosspartition need not be enabled anymore.
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         int maxItemCount = 2;
         CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection
             .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);

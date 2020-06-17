@@ -16,7 +16,7 @@ create and manage indexes, load data, implement search features, execute queries
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -30,61 +30,87 @@ create and manage indexes, load data, implement search features, execute queries
 ### Authenticate the client
 
 In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class. 
-To make this possible you will need an [api-key of the Azure Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
+To make this possible you will need, 
+1. [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and
+1. [Api-key of the Azure Cognitive Search service](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 
-The SDK provides two clients.
+Note that you will need an admin key to authenticate the client (query keys only work for queries).
 
-1. SearchIndexClient for all document operations.
-2. SearchServiceClient for all CRUD operations on service resources.
+The SDK provides three clients.
 
-#### Create a SearchServiceClient
-
-Once you have the values of the Azure Cognitive Search service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) 
-and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the SearchServiceClient:
-
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L40-L43 -->
-```Java
-private SearchClient searchClient = new SearchClientBuilder().buildClient();
-
-public void createSearchClient() {
-    SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-```
-
-or
-
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L47-L50 -->
-```Java
-}
-
-public void createAsyncSearchClient() {
-    SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
-```
+1. SearchIndexClient for all CRUD operations on index and synonym maps.
+1. SearchIndexerClient for all CRUD operations on indexer, date source, and skillset.
+1. SearchClient for all document operations.
 
 #### Create a SearchIndexClient
 
-To create a SearchIndexClient, you will need an existing index name as well as the values of the Azure Cognitive Search service 
-[URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and 
-[query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
-Note that you will need an admin key to index documents (query keys only work for queries).
+To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service 
+URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L65 -->
 ```Java
-}
-
-public void createIndexClient() {
-    SearchClient searchClient = new SearchClientBuilder()
-        .endpoint(endpoint)
+SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildClient();
 ```
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L66 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L69-L72 -->
 ```Java
-}
+SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildAsyncClient();
+```
 
-public void createAsyncIndexClient() {
-    SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-        .endpoint(endpoint)
+#### Create a SearchIndexerClient
+
+To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service 
+URL endpoint and admin key.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
+```Java
+SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L83-L86 -->
+```Java
+SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(apiKey))
+    .buildAsyncClient();
+```
+
+#### Create a SearchClient
+
+Once you have the values of the Azure Cognitive Search service URL endpoint and 
+admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L46-L50 -->
+```Java
+SearchClient searchClient = new SearchClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(adminKey))
+    .indexName(indexName)
+    .buildClient();
+```
+
+or
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
+```Java
+SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
+    .endpoint(endpoint)
+    .credential(new AzureKeyCredential(adminKey))
+    .indexName(indexName)
+    .buildAsyncClient();
 ```
 
 ## Key concepts
@@ -106,54 +132,54 @@ There are several types of operations that can be executed against the service:
 
 ### Create an index
 
-Create Index using `searchClient` instantiated in [Create a SearchServiceClient](#create-a-searchserviceclient)
+Create Index using `searchIndexClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L96-L107 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L127 -->
 ```java
-}
-
-public void createIndexWithSyncClient() {
-    SearchIndex newIndex = new SearchIndex()
-        .setName("index_name")
-        .setFields(
-            Arrays.asList(new SearchField()
-                    .setName("Name")
-                    .setType(SearchFieldDataType.STRING)
-                    .setKey(Boolean.TRUE),
-                new SearchField()
-                    .setName("Cuisine")
+SearchIndex newIndex = new SearchIndex()
+    .setName("index_name")
+    .setFields(
+        Arrays.asList(new SearchField()
+                .setName("Name")
+                .setType(SearchFieldDataType.STRING)
+                .setKey(Boolean.TRUE),
+            new SearchField()
+                .setName("Cuisine")
+                .setType(SearchFieldDataType.STRING)));
+// Create index.
+searchIndexClient.createIndex(newIndex);
 ```
 ### Upload a Document
 
-Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchIndexClient](#create-a-searchindexclient)
+Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L111-L116 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L136 -->
 ```java
-}
-
-public void uploadDocumentWithSyncClient() {
-    List<Hotel> hotels = new ArrayList<>();
-    hotels.add(new Hotel().setHotelId("100"));
-    hotels.add(new Hotel().setHotelId("200"));
+List<Hotel> hotels = new ArrayList<>();
+hotels.add(new Hotel().setHotelId("100"));
+hotels.add(new Hotel().setHotelId("200"));
+hotels.add(new Hotel().setHotelId("300"));
+// Upload hotel.
+searchClient.uploadDocuments(hotels);
 ```
 
 ### Search on hotel name
 
-Search hotel using keyword using `searchClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
+Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L120-L130 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L140-L150 -->
 ```java
+// Perform a text-based search
+for (SearchResult result : searchClient.search("luxury hotel",
+    new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
+    // Each result is a dynamic Map
+    SearchDocument doc = result.getDocument();
+    String hotelName = (String) doc.get("HotelName");
+    Double rating = (Double) doc.get("Rating");
 
-oid searchTextWithSyncClient() {
-erform a text-based search
-(SearchResult result : searchClient.search("luxury hotel",
-new SearchOptions(), new RequestOptions(), Context.NONE)) {
-
-// Each result is a dynamic Map
-SearchDocument doc = result.getDocument();
-String hotelName = (String) doc.get("HotelName");
-Double rating = (Double) doc.get("Rating");
+    System.out.printf("%s: %s%n", hotelName, rating);
+}
 ```
 
 - Samples are explained in detail [here][samples_readme].

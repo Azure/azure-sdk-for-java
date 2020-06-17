@@ -65,11 +65,8 @@ public class GeoPointTests extends SearchTestBase {
             searchOptions, new RequestOptions(), Context.NONE);
         assertNotNull(results);
 
-        GeoPoint geoPointObj = (GeoPoint) getSearchResults(results).get(0).get("Location");
-        assertNotNull(geoPointObj);
-
         GeoPoint expected = GeoPoint.create(47.678581, -122.131577);
-        assertEquals(expected, geoPointObj);
+        assertEquals(expected.toString(), getSearchResults(results).get(0).get("Location").toString());
     }
 
     @Test

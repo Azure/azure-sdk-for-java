@@ -10,7 +10,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlockBlobItem;
@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class provides a client that contains generic blob operations for Azure Storage Blobs. Operations allowed by
@@ -170,39 +171,33 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        uploadWithResponse(data, length, new BlobParallelUploadOptions()
+        uploadWithResponse(new BlobParallelUploadOptions(data, length)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
-            .setRequestConditions(requestConditions), timeout, context);
+            .setRequestConditions(requestConditions).setTimeout(timeout), context);
     }
 
     /**
      * Creates a new blob, or updates the content of an existing blob.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     *
-     * @param data The data to write to the blob.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data provided in the {@link InputStream}.
      * @param options {@link BlobParallelUploadOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
      */
-    public Response<BlockBlobItem> uploadWithResponse(InputStream data, long length, BlobParallelUploadOptions options,
-        Duration timeout, Context context) {
-        BlobParallelUploadOptions blobParallelUploadOptions = options == null ? new BlobParallelUploadOptions()
-            : options;
+    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context) {
+        Objects.requireNonNull(options);
         final ParallelTransferOptions validatedParallelTransferOptions =
-            ModelHelper.populateAndApplyDefaults(blobParallelUploadOptions.getParallelTransferOptions());
+            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
 
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(Utility.convertStreamToByteBuffer(data, length,
-            validatedParallelTransferOptions.getBlockSize()), validatedParallelTransferOptions,
-            blobParallelUploadOptions.getHeaders(), blobParallelUploadOptions.getMetadata(),
-            blobParallelUploadOptions.getTier(), blobParallelUploadOptions.getRequestConditions())
+        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(
+            Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(),
+                validatedParallelTransferOptions.getBlockSize()), validatedParallelTransferOptions,
+            options.getHeaders(), options.getMetadata(),
+            options.getTier(), options.getRequestConditions())
             .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+            return StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }

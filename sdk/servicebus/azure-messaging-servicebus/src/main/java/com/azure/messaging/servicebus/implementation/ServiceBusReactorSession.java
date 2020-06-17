@@ -64,7 +64,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         TokenManagerProvider tokenManagerProvider, Duration openTimeout, MessageSerializer messageSerializer,
         AmqpRetryPolicy retryPolicy) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, openTimeout);
+            messageSerializer, openTimeout, retryPolicy);
         this.openTimeout = openTimeout;
         this.retryPolicy = retryPolicy;
     }

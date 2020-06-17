@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Enables authentication to Azure Active Directory using data from Visual Studio Code
  */
-class VisualStudioCodeCredential implements TokenCredential {
+public class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final IdentityClientOptions identityClientOptions;
     private final AtomicReference<MsalToken> cachedToken;

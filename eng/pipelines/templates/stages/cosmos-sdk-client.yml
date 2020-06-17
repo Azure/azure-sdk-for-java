@@ -90,8 +90,6 @@ stages:
           jdkVersionOption: $(JavaVersion)
 
         PreRunSteps:
-        - template: ../steps/update-version-fix.yml
-
         - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
             Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"

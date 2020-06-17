@@ -21,7 +21,7 @@ import java.time.Duration;
  * command.
  */
 @Immutable
-class AzureCliCredential implements TokenCredential {
+public class AzureCliCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final IdentityClientOptions identityClientOptions;
 

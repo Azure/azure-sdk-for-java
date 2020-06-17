@@ -242,6 +242,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         @Override
         protected void writeInternal(final byte[] data, int offset, int length) {
+            this.checkStreamState();
             sink.next(ByteBuffer.wrap(data, offset, length));
         }
 

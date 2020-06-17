@@ -60,6 +60,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
         this.identityClient = new IdentityClientBuilder()
                 .tenantId(this.tenantId)
                 .clientId(this.clientId)
+                .sharedTokenCacheCredential(true)
                 .identityClientOptions(identityClientOptions)
                 .build();
         this.cachedToken = new AtomicReference<>();
