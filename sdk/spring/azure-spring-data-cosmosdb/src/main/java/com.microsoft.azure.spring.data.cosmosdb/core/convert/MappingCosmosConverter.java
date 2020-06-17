@@ -42,7 +42,7 @@ public class MappingCosmosConverter
                                           CosmosPersistentProperty> mappingContext;
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     /**
      * Initialization

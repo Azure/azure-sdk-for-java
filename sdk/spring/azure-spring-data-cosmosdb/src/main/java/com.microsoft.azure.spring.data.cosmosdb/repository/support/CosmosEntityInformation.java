@@ -32,13 +32,13 @@ import java.util.List;
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
     private static final String ETAG = "_etag";
-    private Field id;
-    private Field partitionKeyField;
-    private String containerName;
-    private Integer requestUnit;
-    private Integer timeToLive;
-    private IndexingPolicy indexingPolicy;
-    private boolean isVersioned;
+    private final Field id;
+    private final Field partitionKeyField;
+    private final String containerName;
+    private final Integer requestUnit;
+    private final Integer timeToLive;
+    private final IndexingPolicy indexingPolicy;
+    private final boolean isVersioned;
     private boolean autoCreateContainer;
 
     /**

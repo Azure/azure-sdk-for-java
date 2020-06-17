@@ -20,7 +20,7 @@ public class CosmosPageRequest extends PageRequest {
     private long offset;
 
     // Request continuation token used to resume query
-    private String requestContinuation;
+    private final String requestContinuation;
 
     /**
      * Creates a new {@link PageRequest} with unsorted parameters applied.

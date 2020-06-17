@@ -83,7 +83,7 @@ public class SpELCosmosDBAnnotationIT {
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-        final CosmosDBConfig dbConfig = CosmosDBConfig.cosmosDBConfigbuilder(dbUri, dbKey, TestConstants.DB_NAME).build();
+        final CosmosDBConfig dbConfig = CosmosDBConfig.builder(dbUri, dbKey, TestConstants.DB_NAME).build();
         final CosmosDbFactory dbFactory = new CosmosDbFactory(dbConfig);
 
         cosmosEntityInformation = new CosmosEntityInformation<>(SpELPropertyStudent.class);

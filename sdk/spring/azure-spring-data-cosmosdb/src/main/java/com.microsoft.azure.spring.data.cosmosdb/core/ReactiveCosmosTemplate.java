@@ -55,7 +55,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean isPopulateQueryMetrics;
 
-    private Function<Class<?>, CosmosEntityInformation<?, ?>> entityInfoCreator =
+    private final Function<Class<?>, CosmosEntityInformation<?, ?>> entityInfoCreator =
         Memoizer.memoize(this::getCosmosEntityInformation);
 
     private final List<String> containerNameCache;
