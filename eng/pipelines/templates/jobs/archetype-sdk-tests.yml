@@ -64,6 +64,8 @@ jobs:
       # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
       - name: SubscriptionConfiguration
         value: $(sub-config-azure-cloud-test-resources)
+      - name: ArmTemplateParameters
+        value: '@{}'
 
     strategy:
       matrix: ${{ parameters.Matrix }}
@@ -116,6 +118,7 @@ jobs:
           parameters:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
+            ArmTemplateParameters: $(ArmTemplateParameters)
 
 
       - task: PublishTestResults@2
