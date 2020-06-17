@@ -1,41 +1,41 @@
 #!/bin/bash
 
-service_endpoint=$Endpoint
-master_key=$Key
+service_endpoint=$ctl_endpoint
+master_key=$ctl_key
 
-if [ -z "$Operation" ]
+if [ -z "$ctl_operation" ]
 then
 operation=ReadLatency
 else
-operation=$Operation
+operation=$ctl_operation
 fi
 
-if [ -z "$Concurrency" ]
+if [ -z "$ctl_concurrency" ]
 then
 concurrency=50
 else
-concurrency=$Concurrency
+concurrency=$ctl_concurrency
 fi
 
-if [ -z "$ConsistencyLevel" ]
+if [ -z "$ctl_consistency_level" ]
 then
 consistency_level=Eventual
 else
-consistency_level=$ConsistencyLevel
+consistency_level=$ctl_consistency_level
 fi
 
-if [ -z "$NumberOfOperations" ]
+if [ -z "$ctl_number_of_operations" ]
 then
 number_of_operations=-1
 else
-number_of_operations=$NumberOfOperations
+number_of_operations=$ctl_number_of_operations
 fi
 
-if [ -z "$MaxRunningTimeDuration" ]
+if [ -z "$ctl_max_running_time_duration" ]
 then
 max_running_time_duration=PT10H
 else
-max_running_time_duration=$MaxRunningTimeDuration
+max_running_time_duration=$ctl_max_running_time_duration
 fi
 
 connection_mode=Direct
@@ -61,11 +61,11 @@ additional_benchmark_options=""
 additional_benchmark_options="-documentDataFieldSize 10 -documentDataFieldCount 10" 
 additional_benchmark_options="$additional_benchmark_options -maxConnectionPoolSize $gateway_connection_poolsize"
 
-if [ -z "$GraphiteEndpoint" ]
+if [ -z "$ctl_graphite_endpoint" ]
 then
 java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 else
-java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $GraphiteEndpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 fi
 
 end=`test "x$1" == x && date +%s`
