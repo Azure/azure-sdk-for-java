@@ -104,7 +104,7 @@ jobs:
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: '$(JavaVersion)'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
