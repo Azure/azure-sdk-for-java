@@ -21,4 +21,3 @@ jobs:
         ARM_CLIENTKEY: $(aad-azure-sdk-test-client-secret)
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
         AZURE_KEYVAULT_ENDPOINT: $(AZURE_KEYVAULT_ENDPOINT)
-        jdk.httpclient.allowRestrictedHeaders: Content-Length

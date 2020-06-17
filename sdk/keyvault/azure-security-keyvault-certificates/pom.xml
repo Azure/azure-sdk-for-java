@@ -103,10 +103,13 @@
   </dependencies>
   <profiles>
     <profile>
-      <id>java-lts</id>
       <activation>
         <jdk>[12,)</jdk>
       </activation>
+      <id>java-lts</id>
+      <properties>
+        <jdk.httpclient.allowRestrictedHeaders>Content-Length</jdk.httpclient.allowRestrictedHeaders>
+      </properties>
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
