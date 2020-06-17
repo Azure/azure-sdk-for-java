@@ -8,51 +8,144 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.microsoft.azure.utils.Constants;
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(value = KeyVaultProperties.PREFIX)
-@Data
 public class KeyVaultProperties {
 
     public static final String PREFIX = "azure.keyvault";
     public static final String DELIMITER = ".";
 
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientKey() {
+        return clientKey;
+    }
+
+    public void setClientKey(String clientKey) {
+        this.clientKey = clientKey;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getCertificatePath() {
+        return certificatePath;
+    }
+
+    public void setCertificatePath(String certificatePath) {
+        this.certificatePath = certificatePath;
+    }
+
+    public String getCertificatePassword() {
+        return certificatePassword;
+    }
+
+    public void setCertificatePassword(String certificatePassword) {
+        this.certificatePassword = certificatePassword;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Long getRefreshInterval() {
+        return refreshInterval;
+    }
+
+    public void setRefreshInterval(Long refreshInterval) {
+        this.refreshInterval = refreshInterval;
+    }
+
+    public List<String> getSecretKeys() {
+        return secretKeys;
+    }
+
+    public void setSecretKeys(List<String> secretKeys) {
+        this.secretKeys = secretKeys;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getCaseSensitiveKeys() {
+        return caseSensitiveKeys;
+    }
+
+    public void setCaseSensitiveKeys(String caseSensitiveKeys) {
+        this.caseSensitiveKeys = caseSensitiveKeys;
+    }
+
+    public String getAllowTelemetry() {
+        return allowTelemetry;
+    }
+
+    public void setAllowTelemetry(String allowTelemetry) {
+        this.allowTelemetry = allowTelemetry;
+    }
+
+    private Boolean enabled;
+    private List<String> secretKeys;
+    private Long refreshInterval = Constants.DEFAULT_REFRESH_INTERVAL_MS;
+    private String allowTelemetry;
+    /**
+     * Defines the constant for the property that enables/disables case sensitive keys.
+     */
+    private String caseSensitiveKeys;
+    private String certificatePassword;
+    private String certificatePath;
     private String clientId;
     private String clientKey;
-    private String tenantId;
-    private String certificatePath;
-    private String certificatePassword;
-    private Boolean enabled;
-    private String uri;
-    private Long refreshInterval = Constants.DEFAULT_REFRESH_INTERVAL_MS;
-    private List<String> secretKeys;
     /**
      * The constant used to define the order of the key vaults you are
      * delivering (comma delimited, e.g 'my-vault, my-vault-2').
      */
     private String order;
-
-    /**
-     * Defines the constant for the property that enables/disables case sensitive keys.
-     */
-    private String caseSensitiveKeys;
-    private String allowTelemetry;
+    private String tenantId;
+    private String uri;
 
 
     public enum Property {
+        ALLOW_TELEMETRY("allow-telemetry"),
+        CASE_SENSITIVE_KEYS("case-sensitive-keys"),
+        CERTIFICATE_PASSWORD("certificate-password"),
+        CERTIFICATE_PATH("certificate-path"),
         CLIENT_ID("client-id"),
         CLIENT_KEY("client-key"),
-        TENANT_ID("tenant-id"),
-        CERTIFICATE_PATH("certificate-path"),
-        CERTIFICATE_PASSWORD("certificate-password"),
         ENABLED("enabled"),
-        URI("uri"),
+        ORDER("order"),
         REFRESH_INTERVAL("refresh-interval"),
         SECRET_KEYS("secret-keys"),
-        ORDER("order"),
-        CASE_SENSITIVE_KEYS("case-sensitive-keys"),
-        ALLOW_TELEMETRY("allow-telemetry");
+        TENANT_ID("tenant-id"),
+        URI("uri");
 
         private final String name;
 
@@ -78,20 +171,19 @@ public class KeyVaultProperties {
 
     public static void main(String[] args) {
         KeyVaultProperties keyVaultProperties = new KeyVaultProperties();
-        System.out.println(
-            "" +
-            keyVaultProperties.getAllowTelemetry() +
-            keyVaultProperties.getCaseSensitiveKeys() +
-            keyVaultProperties.getCertificatePassword() +
-            keyVaultProperties.getCertificatePath() +
-            keyVaultProperties.getClientId() +
-            keyVaultProperties.getClientKey() +
-            keyVaultProperties.getOrder() +
-            keyVaultProperties.getTenantId() +
-            keyVaultProperties.getUri() +
-            keyVaultProperties.getEnabled() +
-            keyVaultProperties.getRefreshInterval() +
-            keyVaultProperties.getSecretKeys()
+        System.out.println(""
+            + keyVaultProperties.getAllowTelemetry()
+            + keyVaultProperties.getCaseSensitiveKeys()
+            + keyVaultProperties.getCertificatePassword()
+            + keyVaultProperties.getCertificatePath()
+            + keyVaultProperties.getClientId()
+            + keyVaultProperties.getClientKey()
+            + keyVaultProperties.getEnabled()
+            + keyVaultProperties.getOrder()
+            + keyVaultProperties.getRefreshInterval()
+            + keyVaultProperties.getSecretKeys()
+            + keyVaultProperties.getTenantId()
+            + keyVaultProperties.getUri()
         );
     }
 }
