@@ -9,7 +9,9 @@
   "variables": {
     "apiVersion": "2020-04-01",
     "accountName": "[toLower(parameters('baseName'))]",
-    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
+    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
+    "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+    "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]"
   },
   "resources": [
     {
@@ -21,7 +23,7 @@
       "properties": {
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
-        "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "enableMultipleWriteLocations": "[variables('enableMultipleWriteLocations')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -29,7 +31,7 @@
         "enableAnalyticalStorage": false,
         "databaseAccountOfferType": "Standard",
         "consistencyPolicy": {
-          "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]",
+          "defaultConsistencyLevel": "[variables('defaultConsistencyLevel')]",
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
