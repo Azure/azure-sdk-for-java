@@ -27,12 +27,10 @@ import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -120,8 +118,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
             return RetryUtil.withRetry(
                 getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
-                .then(tokenManager.authorize()).then(createProducer(String.format("VIA-%s", viaEntityPath), viaEntityPath, timeout, retry,
-                linkProperties));
+                .then(tokenManager.authorize()).then(createProducer(String.format("VIA-%s", viaEntityPath),
+                    viaEntityPath, timeout, retry, linkProperties));
         } else {
             logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
             return createProducer(entityPath, entityPath, timeout, retry, linkProperties);

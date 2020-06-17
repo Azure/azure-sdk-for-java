@@ -153,6 +153,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionEnabled =  false;
         final String messageId = UUID.randomUUID().toString();
         final int total = 1;
+        final int totalToDestination = 2;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
 
         setSenderAndReceiver(entityType, intermediateEntity, false, false, shareConnection);
@@ -180,7 +181,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(intermediateSender.send(messages, transaction.get()))
             .verifyComplete();
-
+        StepVerifier.create(destination1ViaSender.send(messages, transaction.get()))
+            .verifyComplete();
         StepVerifier.create(destination1ViaSender.send(messages, transaction.get()))
             .verifyComplete();
 
@@ -189,12 +191,16 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         // Verify message is received by final destination Entity
-        StepVerifier.create(destination1Receiver.receive().take(total).timeout(shortTimeout))
-                .assertNext(receivedMessage -> {
-                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                    messagesPending.decrementAndGet();
-                })
-                .verifyComplete();
+        StepVerifier.create(destination1Receiver.receive().take(totalToDestination).timeout(shortTimeout))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            })
+            .verifyComplete();
 
         // Verify, intermediate-via queue has is delivered to intermediate Entity.
         StepVerifier.create(intermediateReceiver.receive().take(total).timeout(shortTimeout))
