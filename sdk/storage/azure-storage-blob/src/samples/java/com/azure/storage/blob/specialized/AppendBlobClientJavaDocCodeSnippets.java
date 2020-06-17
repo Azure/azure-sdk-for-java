@@ -93,7 +93,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created AppendBlob at %s%n",
             client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setRequestConditions(requestConditions).setTimeout(timeout), context).getValue().getLastModified());
+                .setTags(tags).setRequestConditions(requestConditions).setTimeout(timeout), context).getValue()
+                .getLastModified());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Context
     }
 
@@ -108,8 +109,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, byte[], AppendBlobRequestConditions,
-     * Duration, Context)}
+     * Code snippet for {@link AppendBlobClient#appendBlockWithResponse(InputStream, long, byte[],
+     * AppendBlobRequestConditions, Duration, Context)}
      *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */

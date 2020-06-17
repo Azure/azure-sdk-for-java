@@ -50,7 +50,7 @@ public class BlockBlobSimpleUploadOptions {
      * data emitted by the data source.
      */
     public BlockBlobSimpleUploadOptions(InputStream data, long length) {
-        StorageImplUtils.assertNotNull("dataStream", length);
+        StorageImplUtils.assertNotNull("dataStream", data);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = data;
         this.length = length;
