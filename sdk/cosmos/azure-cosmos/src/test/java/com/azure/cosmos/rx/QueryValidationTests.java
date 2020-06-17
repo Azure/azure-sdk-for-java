@@ -4,15 +4,20 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -23,7 +28,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class QueryValidationTests extends TestSuiteBase {
-    private static final int NUM_DOCUMENTS = 1000;
+    private static final int DEFAULT_NUM_DOCUMENTS = 1000;
+    private static final int DEFAULT_PAGE_SIZE = 100;
+    private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdContainer;
     private Random random;
 
@@ -39,18 +46,11 @@ public class QueryValidationTests extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
+        createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
 
-        List<TestObject> documentsToInsert = new ArrayList<>();
-
-        for (int i = 0; i < NUM_DOCUMENTS; i++) {
-            documentsToInsert.add(getDocumentDefinition(UUID.randomUUID().toString()));
-        }
-
-        createdDocuments = bulkInsertBlocking(createdContainer, documentsToInsert);
-
-        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+        this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -60,25 +60,57 @@ public class QueryValidationTests extends TestSuiteBase {
          the results.
          */
         String query = "select * from c order by c.prop ASC";
-        List<TestObject> documentsPaged = queryWithContinuationTokens(query, 100, TestObject.class);
-
-        List<TestObject> allDocuments = queryWithContinuationTokens(query, NUM_DOCUMENTS, TestObject.class);
-
-        Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
-        List<String> expectedResourceIds = sortTestObjectsAndCollectIds(createdDocuments,
-                                                                        "prop",
-                                                                        d -> d.getProp(),
-                                                                        validatorComparator);
-
-        List<String> docIds1 = documentsPaged.stream().map(TestObject::getId).collect(Collectors.toList());
-        List<String> docIds2 = allDocuments.stream().map(TestObject::getId).collect(Collectors.toList());
-
-        assertThat(docIds2).containsExactlyInAnyOrderElementsOf(expectedResourceIds);
-        assertThat(docIds1).containsExactlyElementsOf(docIds2);
-
+        queryWithOrderByAndAssert(
+            DEFAULT_PAGE_SIZE,
+            DEFAULT_NUM_DOCUMENTS,
+            query,
+            createdContainer,
+            d -> d.getProp(),
+            createdDocuments);
     }
 
-    private <T> List<T> queryWithContinuationTokens(String query, int pageSize, Class<T> klass) {
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void orderByQueryForLargeCollection() {
+        CosmosContainerProperties containerProperties = getCollectionDefinition();
+        createdDatabase.createContainer(
+            containerProperties,
+            ThroughputProperties.createManualThroughput(100000), // Create container with large number physical partitions
+            new CosmosContainerRequestOptions()
+        ).block();
+
+        CosmosAsyncContainer container = createdDatabase.getContainer(containerProperties.getId());
+
+        int partitionDocCount = 5;
+        int pageSize = partitionDocCount + 1;
+
+        String partition1Key = UUID.randomUUID().toString();
+        String partition2Key = UUID.randomUUID().toString();
+
+        List<TestObject> documentsInserted = new ArrayList<>();
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(partition1Key),
+            container));
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(partition2Key),
+            container));
+
+        String query = String.format(
+            "select * from c where c.mypk in ('%s', '%s') order by c.constantProp DESC",
+            partition1Key,
+            partition2Key);
+
+        queryWithOrderByAndAssert(
+            pageSize,
+            partitionDocCount * 2,
+            query,
+            container,
+            d -> d.getConstantProp(),
+            documentsInserted);
+    }
+
+    private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {
         logger.info("querying: " + query);
         String requestContinuation = null;
 
@@ -87,7 +119,7 @@ public class QueryValidationTests extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         do {
-            CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(query, options, klass);
+            CosmosPagedFlux<T> queryPagedFlux = container.queryItems(query, options, klass);
             FeedResponse<T> firstPage = queryPagedFlux.byPage(requestContinuation, pageSize).blockFirst();
             assert firstPage != null;
             requestContinuation = firstPage.getContinuationToken();
@@ -97,34 +129,77 @@ public class QueryValidationTests extends TestSuiteBase {
         return receivedDocuments;
     }
 
-    private TestObject getDocumentDefinition(String documentId) {
-        String uuid = UUID.randomUUID().toString();
+    private TestObject getDocumentDefinition(String documentId, String partitionKey) {
         // Doing NUM_DOCUMENTS/2 just to ensure there will be good number of repetetions for int value.
-        int randInt = random.nextInt(NUM_DOCUMENTS / 2);
-        TestObject doc = new TestObject(documentId, "name" + randInt, randInt);
+        int randInt = random.nextInt(DEFAULT_NUM_DOCUMENTS / 2);
+
+        TestObject doc = new TestObject(documentId, "name" + randInt, randInt, partitionKey);
         return doc;
     }
 
     private <T> List<String> sortTestObjectsAndCollectIds(
-        List<TestObject> createdDocuments, String propName,
-        Function<TestObject, T> extractProp, Comparator<T> comparer) {
+        List<TestObject> createdDocuments, Function<TestObject, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                   .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
-                   .map(d -> d.getId()).collect(Collectors.toList());
+            .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
+            .map(d -> d.getId()).collect(Collectors.toList());
+    }
+
+    private List<TestObject> insertDocuments(int documentCount, List<String> partitionKeys, CosmosAsyncContainer container) {
+        List<TestObject> documentsToInsert = new ArrayList<>();
+
+        for (int i = 0; i < documentCount; i++) {
+            documentsToInsert.add(
+                getDocumentDefinition(
+                    UUID.randomUUID().toString(),
+                    partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
+        }
+
+        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
+
+        return documentInserted;
+    }
+
+    private <T extends Comparable> void queryWithOrderByAndAssert(
+        int pageSize,
+        int documentCount,
+        String query,
+        CosmosAsyncContainer container,
+        Function<TestObject, T> extractProp,
+        List<TestObject> documentsInserted) {
+
+        List<TestObject> documentsPaged = queryWithContinuationTokens(query, pageSize, container, TestObject.class);
+
+        List<TestObject> allDocuments = queryWithContinuationTokens(query, documentCount, container, TestObject.class);
+
+        Comparator<T> validatorComparator = Comparator.nullsFirst(Comparator.<T>naturalOrder());
+        List<String> expectedResourceIds = sortTestObjectsAndCollectIds(documentsInserted,
+            extractProp,
+            validatorComparator);
+
+        List<String> docIds1 = documentsPaged.stream().map(TestObject::getId).collect(Collectors.toList());
+        List<String> docIds2 = allDocuments.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        assertThat(docIds2).containsExactlyInAnyOrderElementsOf(expectedResourceIds);
+        assertThat(docIds1).containsExactlyElementsOf(docIds2);
     }
 
     static class TestObject {
         String id;
         String name;
         int prop;
+        String mypk;
+        String constantProp = "constantProp";
 
         public TestObject() {
         }
 
-        public TestObject(String id, String name, int prop) {
+        public TestObject(String id, String name, int prop, String mypk) {
             this.id = id;
             this.name = name;
             this.prop = prop;
+            this.mypk = mypk;
         }
 
         public String getId() {
@@ -149,6 +224,18 @@ public class QueryValidationTests extends TestSuiteBase {
 
         public void setProp(final int prop) {
             this.prop = prop;
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
+
+        public String getConstantProp() {
+            return constantProp;
         }
     }
 }
