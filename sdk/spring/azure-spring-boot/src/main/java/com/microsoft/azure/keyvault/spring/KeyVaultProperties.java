@@ -4,6 +4,8 @@
 package com.microsoft.azure.keyvault.spring;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.microsoft.azure.utils.Constants;
 import lombok.Data;
@@ -67,7 +69,10 @@ public class KeyVaultProperties {
     }
 
     public static String getPropertyName(String normalizedName, Property property) {
-        return String.join(DELIMITER, PREFIX, normalizedName + property.getName());
+        return Stream.of(PREFIX, normalizedName, property.getName())
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.joining(DELIMITER));
     }
 
     public static void main(String[] args) {

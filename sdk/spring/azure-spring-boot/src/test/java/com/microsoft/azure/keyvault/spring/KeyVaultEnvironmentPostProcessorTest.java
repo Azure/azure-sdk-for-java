@@ -143,10 +143,10 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
 
-        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault.");
+        final TokenCredential credentials = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault");
         assertThat(credentials, IsInstanceOf.instanceOf(ClientSecretCredential.class));
 
-        final TokenCredential credentials2 = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault2.");
+        final TokenCredential credentials2 = keyVaultEnvironmentPostProcessorHelper.getCredentials("myvault2");
         assertThat(credentials2, IsInstanceOf.instanceOf(ClientSecretCredential.class));
     }
 }

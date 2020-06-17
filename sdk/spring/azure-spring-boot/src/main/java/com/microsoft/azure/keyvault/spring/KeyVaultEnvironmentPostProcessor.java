@@ -41,7 +41,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             final String property = environment.getProperty(KeyVaultProperties.getPropertyName(Property.ORDER), "");
             final String[] keyVaultNames = property.split(",");
             for (int i = keyVaultNames.length - 1; i >= 0; i--) {
-                final String normalizedName = keyVaultNames[i].trim() + ".";
+                final String normalizedName = keyVaultNames[i].trim();
                 if (isKeyVaultEnabled(environment, normalizedName)) {
                     helper.addKeyVaultPropertySource(normalizedName);
                 }
