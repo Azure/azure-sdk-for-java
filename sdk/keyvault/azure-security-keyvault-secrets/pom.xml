@@ -116,22 +116,13 @@
       <activation>
         <jdk>[12,)</jdk>
       </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <dependencies>
-              <dependency>
-                <groupId>com.azure</groupId>
-                <artifactId>azure-core-http-jdk-httpclient</artifactId>
-                <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-              </dependency>
-            </dependencies>
-          </plugin>
-        </plugins>
-      </build>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 </project>
