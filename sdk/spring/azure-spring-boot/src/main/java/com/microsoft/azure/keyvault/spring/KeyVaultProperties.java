@@ -22,6 +22,7 @@ public class KeyVaultProperties {
     private String clientKey;
     private String tenantId;
     private String certificatePath;
+    private String certificatePassword;
     private Boolean enabled;
     private String uri;
     private Long refreshInterval = Constants.DEFAULT_REFRESH_INTERVAL_MS;
@@ -77,6 +78,20 @@ public class KeyVaultProperties {
 
     public static void main(String[] args) {
         KeyVaultProperties keyVaultProperties = new KeyVaultProperties();
-        System.out.println(keyVaultProperties.toString());
+        System.out.println(
+            "" +
+            keyVaultProperties.getAllowTelemetry() +
+            keyVaultProperties.getCaseSensitiveKeys() +
+            keyVaultProperties.getCertificatePassword() +
+            keyVaultProperties.getCertificatePath() +
+            keyVaultProperties.getClientId() +
+            keyVaultProperties.getClientKey() +
+            keyVaultProperties.getOrder() +
+            keyVaultProperties.getTenantId() +
+            keyVaultProperties.getUri() +
+            keyVaultProperties.getEnabled() +
+            keyVaultProperties.getRefreshInterval() +
+            keyVaultProperties.getSecretKeys()
+        );
     }
 }
