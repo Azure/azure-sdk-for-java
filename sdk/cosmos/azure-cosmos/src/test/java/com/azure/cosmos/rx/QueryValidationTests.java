@@ -50,7 +50,7 @@ public class QueryValidationTests extends TestSuiteBase {
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
 
-        this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer);
+        createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
