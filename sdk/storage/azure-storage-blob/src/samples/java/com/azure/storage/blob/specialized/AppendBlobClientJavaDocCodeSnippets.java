@@ -71,7 +71,8 @@ public class AppendBlobClientJavaDocCodeSnippets {
         Context context = new Context("key", "value");
 
         System.out.printf("Created AppendBlob at %s%n",
-            client.createWithResponse(headers, metadata, requestConditions, timeout, context).getValue().getLastModified());
+            client.createWithResponse(headers, metadata, requestConditions, timeout, context).getValue()
+                .getLastModified());
         // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context
     }
 

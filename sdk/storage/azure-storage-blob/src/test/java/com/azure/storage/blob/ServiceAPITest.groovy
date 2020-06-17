@@ -341,7 +341,7 @@ class ServiceAPITest extends APISpec {
     def "Find blobs anonymous"() {
         when:
         // Invalid query, but the anonymous check will fail before hitting the wire
-        anonymousClient.findBlobsByTags("foo=bar").iterator()
+        anonymousClient.findBlobsByTags("foo=bar").iterator().next()
 
         then:
         thrown(IllegalStateException)
@@ -780,8 +780,8 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
-            Duration.ofMinutes(1), Context.NONE)
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+            .setTimeout(Duration.ofMinutes(1)), Context.NONE)
         def restoredContainerClient = response.getValue()
 
         then:
@@ -884,7 +884,7 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
                 .setDestinationContainerName(cc2.getBlobContainerName()),
-            null, Context.NONE)
+            Context.NONE)
 
         then:
         thrown(BlobStorageException.class)

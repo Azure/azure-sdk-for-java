@@ -43,6 +43,7 @@ import java.nio.ByteBuffer;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -290,17 +291,16 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     @Override
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
-            Objects.requireNonNull(options);
+            StorageImplUtils.assertNotNull("options", options);
             final Map<String, String> metadataFinal = options.getMetadata() == null
-                ? new HashMap<>() : options.getMetadata();
-            options.setMetadata(metadataFinal);
+                ? Collections.emptyMap() : options.getMetadata();
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
                 : options.getDataFlux();
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return dataFinal.flatMap(df -> super.uploadWithResponse(new BlobParallelUploadOptions(df)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
-                .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
+                .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
                 .setRequestConditions(options.getRequestConditions()).setTimeout(options.getTimeout())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
