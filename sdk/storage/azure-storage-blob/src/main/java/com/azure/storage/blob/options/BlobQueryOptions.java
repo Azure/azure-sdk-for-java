@@ -63,7 +63,7 @@ public class BlobQueryOptions {
     /**
      * Gets the outputStream where the downloaded data will be written.
      *
-     * @rturn the outputStream.
+     * @return the outputStream.
      */
     public OutputStream getOutputStream() {
         return this.outputStream;

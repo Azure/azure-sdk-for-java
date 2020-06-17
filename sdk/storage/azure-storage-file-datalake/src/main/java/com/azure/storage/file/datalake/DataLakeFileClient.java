@@ -614,7 +614,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(stream, new FileQueryOptions(expression), null, Context.NONE);
+        queryWithResponse(new FileQueryOptions(expression, stream), Context.NONE);
     }
 
     /**
@@ -625,21 +625,18 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Context}
      *
-     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param queryOptions {@link FileQueryOptions The query options}.
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public FileQueryResponse queryWithResponse(OutputStream stream, FileQueryOptions queryOptions,
-        Duration timeout, Context context) {
+    public FileQueryResponse queryWithResponse(FileQueryOptions queryOptions, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            BlobQueryResponse response = blockBlobClient.queryWithResponse(stream,
-                Transforms.toBlobQueryOptions(queryOptions), timeout, context);
+            BlobQueryResponse response = blockBlobClient.queryWithResponse(
+                Transforms.toBlobQueryOptions(queryOptions), context);
             return Transforms.toFileQueryResponse(response);
         }, logger);
     }
