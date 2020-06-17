@@ -40,32 +40,31 @@ public class ChainedTokenCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
-                   .flatMap(p -> p.getToken(request)
-                       .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
-                           p.getClass().getSimpleName()))
-                       .onErrorResume(CredentialUnavailableException.class, t -> {
-                           exceptions.add(t);
-                           logger.info("Azure Identity => Attempted credential {} is unavailable.",
-                               p.getClass().getSimpleName());
-                           return Mono.empty();
-                   }), 1)
-                   .next()
-                   .switchIfEmpty(Mono.defer(() -> {
+            .flatMap(p -> p.getToken(request)
+                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                    p.getClass().getSimpleName()))
+                .onErrorResume(CredentialUnavailableException.class, t -> {
+                    exceptions.add(t);
+                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                        p.getClass().getSimpleName());
+                    return Mono.empty();
+                }), 1)
+            .next()
+            .switchIfEmpty(Mono.defer(() -> {
+                StringBuilder message = new StringBuilder("Tried "
+                    + credentials.stream().map(c -> c.getClass().getSimpleName())
+                    .collect(Collectors.joining(", "))
+                    + " but failed to acquire a token for any of them. Please verify the"
+                    + " environment for the credentials"
+                    + " and see more details in the causes below.");
 
-                       StringBuilder message = new StringBuilder("Tried "
-                             + credentials.stream().map(c -> c.getClass().getSimpleName())
-                                   .collect(Collectors.joining(", "))
-                             + " but failed to acquire a token for any of them. Please verify the"
-                             + " environment for the credentials"
-                             + " and see more details in the causes below.");
-
-                       // Chain Exceptions.
-                       CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
-                       for (int z = exceptions.size() - 2; z >= 0; z--) {
-                           CredentialUnavailableException current = exceptions.get(z);
-                           last = new CredentialUnavailableException(current.getMessage(), last);
-                       }
-                       return Mono.error(new CredentialUnavailableException(message.toString(), last));
-                   }));
+                // Chain Exceptions.
+                CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                for (int z = exceptions.size() - 2; z >= 0; z--) {
+                    CredentialUnavailableException current = exceptions.get(z);
+                    last = new CredentialUnavailableException(current.getMessage(), last);
+                }
+                return Mono.error(new CredentialUnavailableException(message.toString(), last));
+            }));
     }
 }

@@ -28,7 +28,7 @@ import java.util.Objects;
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
     private final IdentityClient identityClient;
-    private final ClientLogger logger = new ClientLogger(ClientSecretCredential.class);
+    private final ClientLogger logger = new ClientLogger(ClientCertificateCredential.class);
 
     /**
      * Creates a ClientSecretCredential with default identity client options.
