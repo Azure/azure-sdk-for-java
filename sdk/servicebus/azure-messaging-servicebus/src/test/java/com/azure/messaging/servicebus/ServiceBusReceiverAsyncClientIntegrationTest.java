@@ -937,10 +937,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and receive a message.
      */
-    @Test
-    void receiveFromDeadLetter() {
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
+    @ParameterizedTest
+    void receiveFromDeadLetter(MessagingEntityType entityType) {
         // Arrange
-        MessagingEntityType entityType = MessagingEntityType.QUEUE;
         final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
         ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder( false, entityType,

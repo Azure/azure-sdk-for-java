@@ -238,7 +238,7 @@ public final class ServiceBusClientBuilder {
 
     /**
      * A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder} used to configure Service Bus message
-     * consumers from dead letter queue..
+     * consumers from dead letter queue.
      *
      * @return A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder}.
      */
