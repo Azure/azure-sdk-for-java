@@ -33,6 +33,7 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -219,7 +220,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options, Context context) {
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
 

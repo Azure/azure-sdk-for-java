@@ -169,7 +169,6 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(BlockBlobOutputStreamOptions options) {
-
         BlobAsyncClient blobClient = prepareBuilder().buildAsyncClient();
 
         return BlobOutputStream.blockBlobOutputStream(blobClient, options, null);

@@ -472,7 +472,7 @@ public class BlobAsyncClientBase {
      * cancelled.
      */
     public PollerFlux<BlobCopyInfo, Void> beginCopy(BlobBeginCopyOptions options) {
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
         final Duration interval = options.getPollInterval() != null
             ? options.getPollInterval() : Duration.ofSeconds(1);
         final RequestConditions sourceModifiedCondition = options.getSourceRequestConditions() == null
@@ -740,7 +740,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<String>> copyFromUrlWithResponse(BlobCopyFromUrlOptions options, Context context) {
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
         RequestConditions sourceModifiedRequestConditions = options.getSourceRequestConditions() == null
             ? new RequestConditions() : options.getSourceRequestConditions();
         BlobRequestConditions destRequestConditions = options.getDestinationRequestConditions() == null

@@ -12,7 +12,6 @@ module com.azure.storage.blob {
     exports com.azure.storage.blob.options;
     exports com.azure.storage.blob.sas;
     exports com.azure.storage.blob.specialized;
-    exports com.azure.storage.blob.options;
 
     // Blob batch needs to interact with the generated layer but shouldn't replicate it.
     exports com.azure.storage.blob.implementation to

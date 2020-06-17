@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -244,7 +245,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     }
 
     Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
         Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
             options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
             .subscribeOn(Schedulers.elastic())
@@ -583,7 +584,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Context context) {
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;

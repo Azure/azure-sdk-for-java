@@ -53,7 +53,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -360,7 +359,7 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of blobs.
      */
     public PagedFlux<FilterBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(new FindBlobsOptions(query), null);
+        return this.findBlobsByTags(new FindBlobsOptions(query));
     }
 
     /**
@@ -376,18 +375,18 @@ public final class BlobServiceAsyncClient {
      */
     public PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
-            return findBlobsByTags(options, null);
+            return findBlobsByTagsInternal(options);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTagsInternal(FindBlobsOptions options) {
         throwOnAnonymousAccess();
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
 
         Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(options.getQuery(), marker, options.getMaxResultsPerPage(), timeout)
+            marker -> findBlobsByTags(options.getQuery(), marker, options.getMaxResultsPerPage(), options.getTimeout())
                 .map(response -> {
                     List<FilterBlobItem> value = response.getValue().getBlobs() == null
                         ? Collections.emptyList()

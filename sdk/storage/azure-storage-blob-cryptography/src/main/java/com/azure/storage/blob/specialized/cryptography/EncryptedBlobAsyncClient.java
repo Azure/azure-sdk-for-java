@@ -23,6 +23,7 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -293,7 +294,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             final Map<String, String> metadataFinal = options.getMetadata() == null
                 ? new HashMap<>() : options.getMetadata();
             options.setMetadata(metadataFinal);
-            Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(options.getDataFlux(), metadataFinal);
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : options.getDataFlux();
+            Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return dataFinal.flatMap(df -> super.uploadWithResponse(new BlobParallelUploadOptions(df)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                 .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())

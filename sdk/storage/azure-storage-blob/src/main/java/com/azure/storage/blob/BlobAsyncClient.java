@@ -412,17 +412,15 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions}
      *
-     * @param options {@link BlobParallelUploadOptions}. Unlike other upload methods, this method does not require that the
-     * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
-     * to produce the same values across subscriptions.
+     * @param options {@link BlobParallelUploadOptions}. Unlike other upload methods, this method does not require that
+     * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
+     * expected to produce the same values across subscriptions.
      * @return A reactive response containing the information of the uploaded block blob.
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
-            Objects.requireNonNull(options, "'options' must not be null");
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : options.getDataFlux();
+            StorageImplUtils.assertNotNull("options", options);
+
             BlobRequestConditions validatedRequestConditions = options.getRequestConditions() == null
                 ? new BlobRequestConditions() : options.getRequestConditions();
             final ParallelTransferOptions validatedParallelTransferOptions =
@@ -442,6 +440,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                         .setMetadata(options.getMetadata()).setTags(options.getTags())
                         .setTier(options.getTier()).setRequestConditions(options.getRequestConditions()));
 
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : options.getDataFlux();
             return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(validatedParallelTransferOptions),
                 uploadInChunksFunction, uploadFullBlobMethod);
         } catch (RuntimeException ex) {

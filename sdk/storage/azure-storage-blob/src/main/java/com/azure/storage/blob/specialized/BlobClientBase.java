@@ -1107,7 +1107,7 @@ public class BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String}
      *
-     * @param stream A non-null {@link OutputStream} instance
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @param expression The query expression.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.

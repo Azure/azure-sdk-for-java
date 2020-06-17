@@ -220,7 +220,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              subscribe. */
             fbb.subscribe();
 
-            client.uploadWithResponse(fbb, new BlobParallelUploadOptions().
+            client.uploadWithResponse(new BlobParallelUploadOptions(fbb).
                 setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
