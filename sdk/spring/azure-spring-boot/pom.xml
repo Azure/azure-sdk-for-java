@@ -269,6 +269,7 @@
         <configuration>
           <compilerArgs combine.self="override">
           </compilerArgs>
+          <failOnWarning>false</failOnWarning>
         </configuration>
       </plugin>
       <plugin>

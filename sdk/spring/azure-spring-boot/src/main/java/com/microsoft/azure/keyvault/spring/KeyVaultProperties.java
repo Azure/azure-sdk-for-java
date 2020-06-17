@@ -67,7 +67,7 @@ public class KeyVaultProperties {
     }
 
     public static String getPropertyName(String normalizedName, Property property) {
-        return String.join(DELIMITER, PREFIX + normalizedName, property.getName());
+        return String.join(DELIMITER, PREFIX, normalizedName + property.getName());
     }
 
     public static void main(String[] args) {
