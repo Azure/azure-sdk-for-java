@@ -316,4 +316,5 @@ If you would like to become an active contributor to this project please follow 
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
+[design]: docs/DESIGN.md
 [reactor]: https://projectreactor.io/

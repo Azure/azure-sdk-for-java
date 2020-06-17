@@ -93,6 +93,20 @@ For any resource that accept another dependent resource, consider supporting fol
 - `withExistingResource(T resource)` takes the existing dependent resource.
 - `withExistingResource(String id)` or `withExistingResource(SubResource resource)` takes the resource ID of the existing dependent resource, if only the ID is required by current resource.
 
+### List and paging
+
+The method verb `list` in resource collection API usually returns a `PagedIterable<T>` instance.
+
+The results can be iterated by items, in a for-loop, or via `forEach`.
+Alternatively, the results can be iterated by pages, e.g.
+```
+computeManager.virtualMachines().list()
+    .iterableByPage()
+    .forEach(page -> ...);
+```
+
+It is worth noting that page is requested on demand. Therefore, after result found, it helps to `break` in for-loop, or to `findFirst` in stream, by avoiding unnecessary requests.
+
 <!-- LINKS -->
 [authenticate]: AUTH.md
 [sample_creatable_dependency]: ../README.md#dependency-across-azure-resources
