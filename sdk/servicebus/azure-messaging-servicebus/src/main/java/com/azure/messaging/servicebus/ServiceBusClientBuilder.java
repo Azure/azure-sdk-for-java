@@ -511,6 +511,11 @@ public final class ServiceBusClientBuilder {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
 
+            if (!CoreUtils.isNullOrEmpty(viaQueueName) && !CoreUtils.isNullOrEmpty(topicName)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "(%s), Via queue feature work only with a queue.", viaQueueName)));
+            }
+
             final String entityName;
             switch (entityType) {
                 case QUEUE:

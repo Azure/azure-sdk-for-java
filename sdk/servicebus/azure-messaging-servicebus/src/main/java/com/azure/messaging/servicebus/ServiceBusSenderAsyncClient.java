@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -552,7 +553,13 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(entityName, viaEntityName, retryOptions))
+            .flatMap(connection -> {
+                String linkName = entityName;
+                if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
+                    linkName = String.format("VIA-%s", viaEntityName);
+                }
+                return connection.createSendLink(linkName, entityName, viaEntityName, retryOptions);
+            })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
     }
 

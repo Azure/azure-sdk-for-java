@@ -23,13 +23,15 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
      * linkName}. Otherwise, a new link is created and returned.
      *
+     * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param viaEntityPath The intermediate remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
-    Mono<AmqpSendLink> createSendLink(String entityPath, String viaEntityPath, AmqpRetryOptions retryOptions);
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, String viaEntityPath,
+        AmqpRetryOptions retryOptions);
 
     /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the

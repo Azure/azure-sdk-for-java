@@ -213,7 +213,7 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(dispatcher).invoke(any(Runnable.class));
 
         // Act
-        serviceBusReactorSession.createSenderLink(entityPath, viaEntityPath, timeout, retryMock)
+        serviceBusReactorSession.createSenderLink(viaEntityPathSenderLinkName, entityPath, viaEntityPath, timeout, retryMock)
             .subscribe();
 
         // Assert
@@ -242,7 +242,7 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(dispatcher).invoke(any(Runnable.class));
 
         // Act
-        serviceBusReactorSession.createSenderLink(entityPath, null, timeout, retryMock)
+        serviceBusReactorSession.createSenderLink(entityPath, entityPath, null, timeout, retryMock)
             .subscribe();
 
         // Assert

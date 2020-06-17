@@ -188,7 +188,7 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void createBatchDefault() {
         // Arrange
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), any(AmqpRetryOptions.class)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
 
@@ -213,7 +213,7 @@ class ServiceBusSenderAsyncClientTest {
         final AmqpSendLink link = mock(AmqpSendLink.class);
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
@@ -242,7 +242,7 @@ class ServiceBusSenderAsyncClientTest {
         when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(link));
 
         // This is 1024 bytes when serialized.
@@ -283,7 +283,7 @@ class ServiceBusSenderAsyncClientTest {
             Assertions.assertTrue(batch.tryAdd(message));
         });
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(any(Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
         when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -322,7 +322,7 @@ class ServiceBusSenderAsyncClientTest {
             Assertions.assertTrue(batch.tryAdd(message));
         });
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
         // Act
@@ -347,7 +347,7 @@ class ServiceBusSenderAsyncClientTest {
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(any(Message.class), any(DeliveryState.class))).thenReturn(Mono.empty());
         when(sendLink.send(anyList(), any(DeliveryState.class))).thenReturn(Mono.empty());
@@ -380,7 +380,7 @@ class ServiceBusSenderAsyncClientTest {
         final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.send(anyList())).thenReturn(Mono.empty());
 
@@ -407,7 +407,7 @@ class ServiceBusSenderAsyncClientTest {
         final Mono<Integer> linkMaxSize = Mono.just(1);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(linkMaxSize);
 
@@ -427,7 +427,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
@@ -461,7 +461,7 @@ class ServiceBusSenderAsyncClientTest {
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), eq(retryOptions)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), eq(retryOptions)))
             .thenReturn(Mono.just(sendLink));
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
@@ -485,7 +485,7 @@ class ServiceBusSenderAsyncClientTest {
         long sequenceNumberReturned = 10;
         Instant instant = mock(Instant.class);
 
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), any(AmqpRetryOptions.class)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
         when(managementNode.schedule(eq(message), eq(instant), any(Integer.class), any(), isNull()))
@@ -504,7 +504,7 @@ class ServiceBusSenderAsyncClientTest {
         // Arrange
         final long sequenceNumberReturned = 10;
         final Instant instant = mock(Instant.class);
-        when(connection.createSendLink(eq(ENTITY_NAME), isNull(), any(AmqpRetryOptions.class)))
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), isNull(), any(AmqpRetryOptions.class)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
         when(managementNode.schedule(eq(message), eq(instant), eq(MAX_MESSAGE_LENGTH_BYTES), eq(LINK_NAME), argThat(e -> e.getTransactionId().equals(transactionContext.getTransactionId()))))

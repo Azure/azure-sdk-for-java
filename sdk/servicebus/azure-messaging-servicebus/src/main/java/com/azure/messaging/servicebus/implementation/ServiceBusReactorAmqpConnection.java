@@ -132,6 +132,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
      * linkName}. Otherwise, a new link is created and returned.
      *
+     * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param viaEntityPath The intermediate remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
@@ -139,15 +140,16 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String entityPath, String viaEntityPath, AmqpRetryOptions retryOptions) {
+    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, String viaEntityPath,
+        AmqpRetryOptions retryOptions) {
 
         String entity = !CoreUtils.isNullOrEmpty(viaEntityPath) ? viaEntityPath : entityPath;
         return createSession(entity).cast(ServiceBusSession.class).flatMap(session -> {
-            logger.verbose("Get or create sender link for path: '{}'", entityPath);
+            logger.verbose("Get or create sender link : '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createSenderLink(entityPath, viaEntityPath, retryOptions.getTryTimeout(), retryPolicy)
-                .cast(AmqpSendLink.class);
+            return session.createSenderLink(linkName, entityPath, viaEntityPath, retryOptions.getTryTimeout(),
+                retryPolicy).cast(AmqpSendLink.class);
         });
     }
 

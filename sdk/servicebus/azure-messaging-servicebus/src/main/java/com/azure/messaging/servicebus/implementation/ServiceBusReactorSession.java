@@ -99,7 +99,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpLink> createSenderLink(String entityPath, String viaEntityPath, Duration timeout,
+    public Mono<AmqpLink> createSenderLink(String linkName, String entityPath, String viaEntityPath, Duration timeout,
         AmqpRetryPolicy retry) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
@@ -118,11 +118,11 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
             return RetryUtil.withRetry(
                 getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
-                .then(tokenManager.authorize()).then(createProducer(String.format("VIA-%s", viaEntityPath),
-                    viaEntityPath, timeout, retry, linkProperties));
+                .then(tokenManager.authorize()).then(createProducer(linkName, viaEntityPath, timeout, retry,
+                    linkProperties));
         } else {
             logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
-            return createProducer(entityPath, entityPath, timeout, retry, linkProperties);
+            return createProducer(linkName, entityPath, timeout, retry, linkProperties);
         }
     }
 
