@@ -12,7 +12,6 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -33,8 +32,6 @@ import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -210,7 +207,7 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        return createProducer(linkName, entityPath, null, timeout, retry, null);
+        return createProducer(linkName, entityPath, timeout, retry, null);
     }
 
     /**
@@ -430,25 +427,8 @@ public class ReactorSession implements AmqpSession {
      *
      * @return A new instance of an {@link AmqpLink} with the correct properties set.
      */
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
-        Map<Symbol, Object> linkProperties) {
-        return createProducer(linkName, entityPath, null, timeout, retry, linkProperties);
-    }
-
-    /**
-     * Creates an {@link AmqpLink} that has AMQP specific capabilities set.
-     *
-     * @param linkName Name of the receive link.
-     * @param entityPath Address in the message broker for the link.
-     * @param finalDestinationPath Final destination address in the message broker for the link.
-     * @param linkProperties The properties needed to be set on the link.
-     * @param timeout Operation timeout when creating the link.
-     * @param retry Retry policy to apply when link creation times out.
-     *
-     * @return A new instance of an {@link AmqpLink} with the correct properties set.
-     */
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, String finalDestinationPath,
-        Duration timeout, AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
+         AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
 
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
@@ -462,15 +442,10 @@ public class ReactorSession implements AmqpSession {
         }
 
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
-        List<TokenManager> tokenManagers = new ArrayList<>();
-        tokenManagers.add(tokenManager);
-        if (!CoreUtils.isNullOrEmpty(finalDestinationPath) && !finalDestinationPath.equalsIgnoreCase(entityPath)) {
-            tokenManagers.add(tokenManagerProvider.getTokenManager(cbsNodeSupplier, finalDestinationPath));
-        }
 
         return RetryUtil.withRetry(
             getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
-            timeout, retry).then(authorizeEntityPath(tokenManagers)).then(Mono.<AmqpLink>create(sink -> {
+            timeout, retry).then(tokenManager.authorize()).then(Mono.<AmqpLink>create(sink -> {
                 try {
                     // We have to invoke this in the same thread or else proton-j will not properly link up the created
                     // sender because the link names are not unique. Link name == entity path.
@@ -480,7 +455,7 @@ public class ReactorSession implements AmqpSession {
                                 if (existingLink != null) {
                                     logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
                                         linkName);
-                                    tokenManagers.stream().forEach(manager -> manager.close());
+                                    tokenManager.close();
                                     return existingLink;
                                 }
 
@@ -495,11 +470,6 @@ public class ReactorSession implements AmqpSession {
                     sink.error(e);
                 }
             }));
-    }
-
-    private Mono<Void> authorizeEntityPath(List<TokenManager> tokenManagers) {
-        return Flux.fromIterable(tokenManagers)
-            .flatMap(tokenManager -> tokenManager.authorize()).then();
     }
 
     /**

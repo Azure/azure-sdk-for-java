@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
@@ -12,6 +13,7 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.ReactorSession;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
@@ -25,10 +27,12 @@ import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -49,6 +53,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private final ClientLogger logger = new ClientLogger(ServiceBusReactorSession.class);
     private final Duration openTimeout;
     private final AmqpRetryPolicy retryPolicy;
+    private final TokenManagerProvider tokenManagerProvider;
+    private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -71,6 +77,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
             messageSerializer, openTimeout, retryPolicy);
         this.openTimeout = openTimeout;
         this.retryPolicy = retryPolicy;
+        this.tokenManagerProvider = tokenManagerProvider;
+        this.cbsNodeSupplier = cbsNodeSupplier;
     }
 
     @Override
@@ -107,8 +115,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         if (!CoreUtils.isNullOrEmpty(viaEntityPath)) {
             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, entityPath);
             logger.verbose("Get or create sender link for via entity path: '{}'", viaEntityPath);
-            return createProducer(String.format("VIA-%s", viaEntityPath), viaEntityPath, entityPath, timeout, retry,
-                linkProperties);
+
+            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
+
+            return RetryUtil.withRetry(
+                getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
+                .then(tokenManager.authorize()).then(createProducer(String.format("VIA-%s", viaEntityPath), viaEntityPath, timeout, retry,
+                linkProperties));
         } else {
             logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
             return createProducer(entityPath, entityPath, timeout, retry, linkProperties);
