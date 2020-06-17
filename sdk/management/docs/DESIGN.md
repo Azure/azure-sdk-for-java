@@ -82,7 +82,7 @@ It is important to note that the resource instance, as client-side representatio
 
 ### Lazy resource creation
 
-Azure resource provision occurs when method verb `create` or `update` is called.
+Azure resource provision occurs when method verb `create` or `apply` is called.
 
 Without calling `create`, the resource is a `Creatable<T>` instance, which can be provided to another resource as [dependent resource][sample_creatable_dependency], or be used in [batch creation][sample_creatable_batch].
 
