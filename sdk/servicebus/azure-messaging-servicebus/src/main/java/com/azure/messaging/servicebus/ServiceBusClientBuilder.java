@@ -237,8 +237,8 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder} used to configure <b>session aware</b> Service
-     * Bus message consumers.
+     * A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder} used to configure Service Bus message
+     * consumers from dead letter queue..
      *
      * @return A new instance of {@link ServiceBusDeadLetterReceiverClientBuilder}.
      */
@@ -425,7 +425,6 @@ public final class ServiceBusClientBuilder {
 
         return entityType;
     }
-
 
     private static String getEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
         String topicName, String subscriptionName) {
@@ -916,8 +915,12 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
-     * messages from Service Bus.
+     * Azure Service Bus queues and topic subscriptions provide a secondary subqueue, called a dead-letter queue (DLQ).
+     * The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed
+     * independent of the main entity.
+     *
+     * This is builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
+     * consume dead-letter messages from Service Bus entity.
      *
      * @see ServiceBusReceiverAsyncClient
      * @see ServiceBusReceiverClient
@@ -939,7 +942,7 @@ public final class ServiceBusClientBuilder {
          * has elapsed.
          *
          * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          */
         public ServiceBusDeadLetterReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
             this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
@@ -956,7 +959,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param prefetchCount The prefetch count.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          */
         public ServiceBusDeadLetterReceiverClientBuilder prefetchCount(int prefetchCount) {
             this.prefetchCount = prefetchCount;
@@ -968,7 +971,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param queueName Name of the queue.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          */
         public ServiceBusDeadLetterReceiverClientBuilder queueName(String queueName) {
             this.queueName = queueName;
@@ -980,7 +983,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param receiveMode Mode for receiving messages.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          */
         public ServiceBusDeadLetterReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
             this.receiveMode = receiveMode;
@@ -993,7 +996,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param subscriptionName Name of the subscription.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          * @see #topicName A topic name should be set as well.
          */
         public ServiceBusDeadLetterReceiverClientBuilder subscriptionName(String subscriptionName) {
@@ -1006,7 +1009,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param topicName Name of the topic.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          * @see #subscriptionName A subscription name should be set as well.
          */
         public ServiceBusDeadLetterReceiverClientBuilder topicName(String topicName) {
