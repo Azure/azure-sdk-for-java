@@ -1,12 +1,35 @@
-parameters:
-  Artifacts: []
-  AdditionalModules: []
-  SDKType: data
-  ServiceDirectory: not-specified
-  TargetDocRepoOwner: 'Azure'
-  TargetDocRepoName: 'azure-docs-sdk-java'
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20200514.1
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+      ref: refs/tags/azure-sdk-tools_20200514.1
 
-  
+parameters:
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: SDKType
+  type: string
+  default: data
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: TargetDocRepoOwner
+  type: string
+  default: Azure
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
+
 stages:
   - stage: Build
     jobs:

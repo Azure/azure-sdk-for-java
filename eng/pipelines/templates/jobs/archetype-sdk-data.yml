@@ -77,7 +77,7 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
-      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
         parameters:
           TargetFolder: $(Build.SourcesDirectory)
           RootFolder: $(Build.SourcesDirectory)
