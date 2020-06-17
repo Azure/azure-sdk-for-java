@@ -135,7 +135,7 @@ linuxVM.update()
     .apply();
 ```
 
-### Dependency across Azure resources.
+### Dependency across Azure resources
 
 You can create a function app, together with required storage account and app service plan created on specification.
 

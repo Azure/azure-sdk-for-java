@@ -36,10 +36,50 @@ Azure Management Libraries for Java is object-oriented API for managing Azure re
 
 There are 3 levels of object for Azure resource management.
 
-Topmost, there is service management API, e.g. `ComputeManager` for Azure compute service or `Azure` for all supported services.
-Authentication is required to instantiate the service management API.
+Topmost, there is **service** API, e.g. `ComputeManager` for Azure compute service or `Azure` for all supported services.
+[Authentication][authenticate] is required to instantiate the service API.
 
-Next, there is resource management API, e.g. `VirtualMachines` under Azure compute service, to manage Azure virtual machine.
-It can be instantiated from service management API, e.g. as `computeManager.virtualMachines()` or `azure.virtualMachines()`.
+Next, there is **resource collection** API, e.g. `VirtualMachines` to manage Azure virtual machine.
+It can be instantiated from service API, e.g. as `computeManager.virtualMachines()` or `azure.virtualMachines()`.
 
-Finally, there is resource instance, e.g. `VirtualMachine` as a client-side representation of Azure virtual machine.
+Finally, there is **resource** instance, e.g. `VirtualMachine` as a client-side representation of Azure virtual machine.
+
+### Resource provision
+
+A resource instance can be instantiated as:
+
+- Creating a new Azure resource from resource collection API, with method verb `define` till `create`, e.g.
+
+```
+VirtualMachine virtualMachine = computeManager.virtualMachines()
+    .define(name)...create();
+```
+
+- Getting an existing Azure resource from resource collection API, with method verb `get` or `list`, e.g.
+
+```
+VirtualMachine virtualMachine = computeManager.virtualMachines()
+    .getByResourceGroup(resourceGroupName, name);
+```
+
+After a resource instance is instantiated, it can be modified as:
+
+- Updating the Azure resource, with method verb `update` till `apply`, e.g.
+
+```
+virtualMachine.update()...apply();
+```
+
+After the Azure resource served its purpose, it can be deleted as:
+
+- Deleting the Azure resource from resource collection API, with method verb `delete`, e.g.
+
+```
+computeManager.virtualMachines().deleteByResourceGroup(resourceGroupName, name);
+```
+
+It is important to note that the resource instance, as client-side representation of the Azure resource, could be outdated as the Azure resource on service being modified or deleted by Portal, CLI, other SDKs, or even another thread in the same Java application.
+
+
+<!-- LINKS -->
+[authenticate]: AUTH.md
