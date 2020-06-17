@@ -3,7 +3,12 @@
 
 package com.azure.core.serializer.avro.jackson;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Objects;
 
 /**
  * Fluent builder class that configures and instantiates instances of {@link JacksonAvroSerializer}.
@@ -11,15 +16,39 @@ import com.fasterxml.jackson.dataformat.avro.AvroMapper;
  * @see JacksonAvroSerializer
  */
 public class JacksonAvroSerializerBuilder {
+    private final ClientLogger logger = new ClientLogger(JacksonAvroSerializerBuilder.class);
+
+    private String schema;
     private AvroMapper avroMapper;
 
     /**
      * Instantiates a new instance of {@link JacksonAvroSerializer} based on the configurations set on the builder.
      *
      * @return A new instance of {@link JacksonAvroSerializer}.
+     * @throws NullPointerException If {@code schema} is {@code null}.
+     * @throws UncheckedIOException If {@code schema} cannot be parsed.
      */
     public JacksonAvroSerializer build() {
-        return new JacksonAvroSerializer((avroMapper == null) ? new AvroMapper() : avroMapper);
+        Objects.requireNonNull(schema, "'schema' cannot be null.");
+
+        AvroMapper buildAvroMapper = (avroMapper == null) ? new AvroMapper() : avroMapper;
+        try {
+            return new JacksonAvroSerializer(buildAvroMapper.schemaFrom(schema), buildAvroMapper);
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Configures the schema that will be associated to the {@link JacksonAvroSerializer} when {@link #build()} is
+     * called.
+     *
+     * @param schema Avro schema to associate to the serializer that is built.
+     * @return The updated JacksonAvroSerializerBuilder object.
+     */
+    public JacksonAvroSerializerBuilder schema(String schema) {
+        this.schema = schema;
+        return this;
     }
 
     /**

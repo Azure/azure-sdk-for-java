@@ -8,24 +8,22 @@ import reactor.core.publisher.Mono;
 /**
  * Generic interface covering basic schema serialization and deserialization methods.
  */
-public interface SchemaSerializer {
+public interface ObjectSerializer {
     /**
      * Reads the byte stream into its object representation.
      *
-     * @param input Incoming byte stream.
-     * @param schema String representing the schema.
-     * @param clazz The {@link Class} representing the object.
      * @param <T> Type of the object.
+     * @param input Incoming byte stream.
+     * @param clazz The {@link Class} representing the object.
      * @return The object representing the byte stream based on the schema.
      */
-    <T> Mono<T> deserialize(byte[] input, String schema, Class<T> clazz);
+    <T> Mono<T> deserialize(byte[] input, Class<T> clazz);
 
     /**
      * Writes the object into its byte stream.
      *
      * @param value The object.
-     * @param schema String representing the schema.
      * @return The byte stream representing the object based on the schema.
      */
-    Mono<byte[]> serialize(Object value, String schema);
+    Mono<byte[]> serialize(Object value);
 }

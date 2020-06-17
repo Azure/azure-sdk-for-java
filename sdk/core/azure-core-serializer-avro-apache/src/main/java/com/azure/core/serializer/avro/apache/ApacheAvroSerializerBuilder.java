@@ -3,9 +3,12 @@
 
 package com.azure.core.serializer.avro.apache;
 
+import org.apache.avro.Schema;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.specific.SpecificData;
+
+import java.util.Objects;
 
 /**
  * Fluent builder class that configures and instantiates instances of {@link ApacheAvroSerializer}.
@@ -13,8 +16,7 @@ import org.apache.avro.specific.SpecificData;
  * @see ApacheAvroSerializer
  */
 public class ApacheAvroSerializerBuilder {
-    private boolean validateSchema = true;
-    private boolean validateSchemaDefaults = true;
+    private String schema;
     private DecoderFactory decoderFactory;
     private EncoderFactory encoderFactory;
     private SpecificData specificData;
@@ -23,39 +25,28 @@ public class ApacheAvroSerializerBuilder {
      * Instantiates a new instance of {@link ApacheAvroSerializer} based on the configurations set on the builder.
      *
      * @return A new instance of {@link ApacheAvroSerializer}.
+     * @throws NullPointerException If {@code schema} is {@code null}.
      */
     public ApacheAvroSerializer build() {
+        Objects.requireNonNull(schema, "'schema' cannot be null.");
+
         DecoderFactory buildDecoderFactory = (decoderFactory == null) ? DecoderFactory.get() : decoderFactory;
         EncoderFactory buildEncoderFactory = (encoderFactory == null) ? EncoderFactory.get() : encoderFactory;
         SpecificData buildSpecificData = (specificData == null) ? SpecificData.get() : specificData;
 
-        return new ApacheAvroSerializer(validateSchema, validateSchemaDefaults, buildDecoderFactory,
-            buildEncoderFactory, buildSpecificData);
+        return new ApacheAvroSerializer(new Schema.Parser().parse(schema), buildDecoderFactory, buildEncoderFactory,
+            buildSpecificData);
     }
 
     /**
-     * Configures the {@link ApacheAvroSerializer} to validate that a passed schema meets Avro specifications.
-     * <p>
-     * By default {@code validateSchema} is {@code true}.
+     * Configures the schema that will be associated to the {@link ApacheAvroSerializer} when {@link #build()} is
+     * called.
      *
-     * @param validateSchema Flag indicating if schema should be validated.
+     * @param schema Avro schema to associate to the serializer that is built.
      * @return The updated ApacheAvroSerializerBuilder object.
      */
-    public ApacheAvroSerializerBuilder validateSchema(boolean validateSchema) {
-        this.validateSchema = validateSchema;
-        return this;
-    }
-
-    /**
-     * Configures the {@link ApacheAvroSerializer} to validate default values in the passed schema.
-     * <p>
-     * By default {@code validateSchemaDefaults} is {@code true}.
-     *
-     * @param validateSchemaDefaults Flag indicating if schema defaults should be validated.
-     * @return The updated ApacheAvroSerializerBuilder object.
-     */
-    public ApacheAvroSerializerBuilder validateSchemaDefaults(boolean validateSchemaDefaults) {
-        this.validateSchemaDefaults = validateSchemaDefaults;
+    public ApacheAvroSerializerBuilder schema(String schema) {
+        this.schema = schema;
         return this;
     }
 

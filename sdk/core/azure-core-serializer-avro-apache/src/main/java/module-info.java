@@ -6,4 +6,7 @@ module com.azure.core.serializer.avro.apache {
     requires transitive org.apache.avro;
 
     exports com.azure.core.serializer.avro.apache;
+
+    provides com.azure.core.serializer.AvroSerializerProvider
+        with com.azure.core.serializer.avro.apache.ApacheAvroSerializerProvider;
 }

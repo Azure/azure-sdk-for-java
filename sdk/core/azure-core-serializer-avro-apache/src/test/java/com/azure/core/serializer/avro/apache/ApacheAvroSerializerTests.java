@@ -3,7 +3,6 @@
 
 package com.azure.core.serializer.avro.apache;
 
-import com.azure.core.serializer.SchemaSerializer;
 import com.azure.core.serializer.avro.apache.generatedtestsources.HandOfCards;
 import com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList;
 import com.azure.core.serializer.avro.apache.generatedtestsources.PlayingCard;
@@ -25,11 +24,10 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ApacheAvroSerializerTests {
-    private static final SchemaSerializer AVRO_SERIALIZER = new ApacheAvroSerializerBuilder().build();
-
     /*
      * This Avro schema specifies the Java string type that should be used to deserialize STRING. Without specifying
      * 'String' the default is 'CharSequence' which ends up being wrapped in Apache's 'Utf8' class. Additionally, this
@@ -45,10 +43,16 @@ public class ApacheAvroSerializerTests {
     private static final String INT_MAP_SCHEMA = "{\"type\":\"map\",\"values\":\"int\","
         + "\"avro.java.string\":\"String\"}";
 
+    private static ApacheAvroSerializer getSerializer(String schema) {
+        return new ApacheAvroSerializerBuilder()
+            .schema(schema)
+            .build();
+    }
+
     @ParameterizedTest
     @MethodSource("deserializePrimitiveTypesSupplier")
     public <T> void deserializePrimitiveTypes(byte[] avro, String schema, Class<T> clazz, T expected) {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(avro, schema, clazz))
+        StepVerifier.create(getSerializer(schema).deserialize(avro, clazz))
             .assertNext(actual -> {
                 assertTrue(clazz.isAssignableFrom(actual.getClass()));
                 assertEquals(expected, actual);
@@ -89,14 +93,14 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeNull() {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(new byte[0], schemaCreator("null"), void.class))
+        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(new byte[0], void.class))
             .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("deserializeEnumSupplier")
     public void deserializeEnum(byte[] avro, PlayingCardSuit expected) {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(avro, PlayingCardSuit.getClassSchema().toString(),
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(avro,
             PlayingCardSuit.class))
             .assertNext(actual -> {
                 assertTrue(PlayingCardSuit.class.isAssignableFrom(actual.getClass()));
@@ -116,7 +120,7 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeInvalidEnum() {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(new byte[] { 8 }, PlayingCardSuit.getClassSchema().toString(),
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).deserialize(new byte[] { 8 },
             PlayingCardSuit.class))
             .verifyError();
     }
@@ -124,7 +128,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializeListAndMapSupplier")
     public <T> void deserializeListAndMap(byte[] avro, String schema, Class<T> clazz, T expected) {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(avro, schema, clazz))
+        StepVerifier.create(getSerializer(schema).deserialize(avro, clazz))
             .assertNext(actual -> {
                 assertTrue(clazz.isAssignableFrom(actual.getClass()));
                 assertEquals(expected, actual);
@@ -155,7 +159,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializeRecordSupplier")
     public <T> void deserializeRecord(byte[] avro, String schema, Class<T> clazz, T expected) {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(avro, schema, clazz))
+        StepVerifier.create(getSerializer(schema).deserialize(avro, clazz))
             .assertNext(actual -> {
                 assertTrue(clazz.isAssignableFrom(actual.getClass()));
                 assertEquals(expected, actual);
@@ -217,20 +221,19 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void deserializeNullReturnsNull() {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(null, "ignored", void.class))
+        StepVerifier.create(getSerializer(schemaCreator("null")).deserialize(null, void.class))
             .verifyComplete();
     }
 
     @Test
     public void deserializeNullSchemaThrows() {
-        StepVerifier.create(AVRO_SERIALIZER.deserialize(null, null, void.class))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class, () -> getSerializer(null));
     }
 
     @ParameterizedTest
     @MethodSource("simpleSerializationSupplier")
     public void simpleSerialization(String schema, Object value, byte[] expected) {
-        StepVerifier.create(AVRO_SERIALIZER.serialize(value, schema))
+        StepVerifier.create(getSerializer(schema).serialize(value))
             .assertNext(actual -> assertArrayEquals(expected, actual))
             .verifyComplete();
     }
@@ -258,7 +261,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeEnumSupplier")
     public void serializeEnum(PlayingCardSuit playingCardSuit, byte[] expected) {
-        StepVerifier.create(AVRO_SERIALIZER.serialize(playingCardSuit, PlayingCardSuit.getClassSchema().toString()))
+        StepVerifier.create(getSerializer(PlayingCardSuit.getClassSchema().toString()).serialize(playingCardSuit))
             .assertNext(actual -> assertArrayEquals(expected, actual))
             .verifyComplete();
     }
@@ -275,7 +278,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeListAndMapSupplier")
     public void serializeListAndMap(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(AVRO_SERIALIZER.serialize(obj, schema))
+        StepVerifier.create(getSerializer(schema).serialize(obj))
             .assertNext(actual -> assertArrayEquals(expected, actual))
             .verifyComplete();
     }
@@ -303,7 +306,7 @@ public class ApacheAvroSerializerTests {
     @ParameterizedTest
     @MethodSource("serializeRecordSupplier")
     public void serializeRecord(Object obj, String schema, byte[] expected) {
-        StepVerifier.create(AVRO_SERIALIZER.serialize(obj, schema))
+        StepVerifier.create(getSerializer(schema).serialize(obj))
             .assertNext(actual -> assertArrayEquals(expected, actual))
             .verifyComplete();
     }
@@ -361,8 +364,7 @@ public class ApacheAvroSerializerTests {
 
     @Test
     public void serializeNullSchemaThrows() {
-        StepVerifier.create(AVRO_SERIALIZER.serialize(null, null))
-            .verifyError(NullPointerException.class);
+        assertThrows(NullPointerException.class, () -> getSerializer(null));
     }
 
     private static String schemaCreator(String type) {

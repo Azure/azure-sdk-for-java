@@ -47,11 +47,12 @@ module com.azure.core {
         com.azure.core.serializer.json.jackson;
 
     // Service Provider Interfaces
-    uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
     uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
+    uses com.azure.core.serializer.AvroSerializerProvider;
+    uses com.azure.core.util.tracing.Tracer;
 
     // indicate JacksonPlugin provides a service implementation for JsonPlugin
     provides com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin

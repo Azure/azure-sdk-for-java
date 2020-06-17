@@ -3,33 +3,30 @@
 
 package com.azure.core.serializer.avro.jackson;
 
-import com.azure.core.serializer.SchemaSerializer;
+import com.azure.core.serializer.ObjectSerializer;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
 /**
- * Jackson Avro based implementation of the {@link SchemaSerializer} interface.
+ * Jackson Avro based implementation of the {@link ObjectSerializer} interface.
  */
-public final class JacksonAvroSerializer implements SchemaSerializer {
+public final class JacksonAvroSerializer implements ObjectSerializer {
+    private final AvroSchema avroSchema;
     private final AvroMapper avroMapper;
 
-    JacksonAvroSerializer(AvroMapper avroMapper) {
+    JacksonAvroSerializer(AvroSchema avroSchema, AvroMapper avroMapper) {
+        this.avroSchema = avroSchema;
         this.avroMapper = avroMapper;
     }
 
     @Override
-    public <T> Mono<T> deserialize(byte[] input, String schema, Class<T> clazz) {
+    public <T> Mono<T> deserialize(byte[] input, Class<T> clazz) {
         return Mono.fromCallable(() -> {
-            Objects.requireNonNull(schema, "'schema' cannot be null.");
-
             if (input == null) {
                 return null;
             }
 
-            AvroSchema avroSchema = avroMapper.schemaFrom(schema);
             if ("null".equalsIgnoreCase(avroSchema.getAvroSchema().getType().getName())) {
                 return null;
             }
@@ -39,11 +36,7 @@ public final class JacksonAvroSerializer implements SchemaSerializer {
     }
 
     @Override
-    public Mono<byte[]> serialize(Object value, String schema) {
-        return Mono.fromCallable(() -> {
-            Objects.requireNonNull(schema, "'schema' cannot be null.");
-
-            return avroMapper.writer().with(avroMapper.schemaFrom(schema)).writeValueAsBytes(value);
-        });
+    public Mono<byte[]> serialize(Object value) {
+        return Mono.fromCallable(() -> avroMapper.writer().with(avroSchema).writeValueAsBytes(value));
     }
 }
