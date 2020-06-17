@@ -82,7 +82,7 @@ It is important to note that the resource instance, as client-side representatio
 
 ### Lazy resource creation
 
-Azure resource provision occurs when method verb `create` or `apply` is called.
+Azure resource provision occurs when method verb `create` or `update` is called.
 
 Without calling `create`, the resource is a `Creatable<T>` instance, which can be provided to another resource as [dependent resource][sample_creatable_dependency], or be used in [batch creation][sample_creatable_batch].
 
@@ -92,6 +92,15 @@ For any resource that accept another dependent resource, consider supporting fol
 - `withNewResource(String name, Sku sku, ...)` takes a few required parameters for the dependent resource, and create it automatically when provisioning current resource.
 - `withExistingResource(T resource)` takes the existing dependent resource.
 - `withExistingResource(String id)` or `withExistingResource(SubResource resource)` takes the resource ID of the existing dependent resource, if only the ID is required by current resource.
+
+### Action on resource
+
+Other than management of life-cycle on Azure resource, resource collection API and resource instance supports action method, which could trigger change of state on the Azure resource.
+
+Actions should be supported by resource API, e.g. `virtualMachine.restart()`.
+
+For actions that is frequently called, consider providing it in resource collection API as well, e.g. `computeManager.virtualMachines().restart(resourceGroupName, name)`.
+This saves the request to initiate the resource instance.
 
 ### List and paging
 
@@ -106,6 +115,13 @@ computeManager.virtualMachines().list()
 ```
 
 It is worth noting that page is requested on demand. Therefore, after result found, it helps to `break` in for-loop, or to `findFirst` in stream, by avoiding unnecessary requests.
+
+### Conditional request
+
+For services support ETag and conditional request, consider supporting following methods in create flow and update flow:
+
+- `withETagCheck()` enables implicit ETag check, which create if resource does not exist on service, and update if resource on service has not been modified.
+- `withETagCheck(String etag)` enables explicit ETag check on update.
 
 <!-- LINKS -->
 [authenticate]: AUTH.md
