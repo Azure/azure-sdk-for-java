@@ -78,6 +78,7 @@ org.springframework.security:spring-security-oauth2-jose;5.2.0.RELEASE
 org.springframework:spring-web;5.2.5.RELEASE
 org.springframework:spring-jms;5.2.5.RELEASE
 pl.pragmatists:JUnitParams;1.1.1
+org.projectlombok:lombok;1.16.20
 
 ## Test dependency versions
 cglib:cglib-nodep;3.2.7

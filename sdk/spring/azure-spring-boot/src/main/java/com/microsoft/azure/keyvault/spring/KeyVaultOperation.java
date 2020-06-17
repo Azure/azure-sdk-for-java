@@ -36,10 +36,10 @@ public class KeyVaultOperation {
 
     public KeyVaultOperation(
         final SecretClient keyVaultClient,
-        String vaultUri,
+        final String vaultUri,
         final long secretKeysRefreshIntervalInMs,
         final List<String> secretNames,
-        boolean caseSensitive
+        final boolean caseSensitive
     ) {
         this.caseSensitive = caseSensitive;
         this.keyVaultClient = keyVaultClient;

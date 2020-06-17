@@ -7,7 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
-import com.microsoft.azure.utils.Constants;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +22,11 @@ import org.springframework.mock.env.MockEnvironment;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_CERTIFICATE_PATH;
-import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_CLIENT_ID;
-import static com.microsoft.azure.utils.Constants.AZURE_KEYVAULT_PREFIX;
+import static com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property.ALLOW_TELEMETRY;
+import static com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property.CERTIFICATE_PATH;
+import static com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property.CLIENT_ID;
+import static com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property.CLIENT_KEY;
+import static com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property.TENANT_ID;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
@@ -38,16 +39,16 @@ public class KeyVaultEnvironmentPostProcessorTest {
     @Before
     public void setup() {
         environment = new MockEnvironment();
-        environment.setProperty(Constants.AZURE_KEYVAULT_ALLOW_TELEMETRY, "false");
+        environment.setProperty(KeyVaultProperties.getPropertyName(ALLOW_TELEMETRY), "false");
         testProperties.clear();
         propertySources = environment.getPropertySources();
     }
 
     @Test
     public void testGetCredentialsWhenUsingClientAndKey() {
-        testProperties.put("azure.keyvault.client-id", "aaaa-bbbb-cccc-dddd");
-        testProperties.put("azure.keyvault.client-key", "mySecret");
-        testProperties.put("azure.keyvault.tenant-id", "myid");
+        testProperties.put(KeyVaultProperties.getPropertyName(CLIENT_ID), "aaaa-bbbb-cccc-dddd");
+        testProperties.put(KeyVaultProperties.getPropertyName(CLIENT_KEY), "mySecret");
+        testProperties.put(KeyVaultProperties.getPropertyName(TENANT_ID), "myid");
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
 
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);
@@ -59,9 +60,9 @@ public class KeyVaultEnvironmentPostProcessorTest {
 
     @Test
     public void testGetCredentialsWhenPFXCertConfigured() {
-        testProperties.put(AZURE_KEYVAULT_PREFIX + AZURE_KEYVAULT_CLIENT_ID, "aaaa-bbbb-cccc-dddd");
-        testProperties.put("azure.keyvault.tenant-id", "myid");
-        testProperties.put(AZURE_KEYVAULT_PREFIX + AZURE_KEYVAULT_CERTIFICATE_PATH, "fake-pfx-cert.pfx");
+        testProperties.put(KeyVaultProperties.getPropertyName(CLIENT_ID), "aaaa-bbbb-cccc-dddd");
+        testProperties.put(KeyVaultProperties.getPropertyName(TENANT_ID), "myid");
+        testProperties.put(KeyVaultProperties.getPropertyName(CERTIFICATE_PATH), "fake-pfx-cert.pfx");
 
         propertySources.addLast(new MapPropertySource("Test_Properties", testProperties));
         keyVaultEnvironmentPostProcessorHelper = new KeyVaultEnvironmentPostProcessorHelper(environment);

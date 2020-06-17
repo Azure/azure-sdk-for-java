@@ -185,6 +185,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version> <!-- {x-version-update;org.projectlombok:lombok;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
       <version>6.0.17.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
@@ -257,6 +264,15 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <compilerArgs combine.self="override">
+          </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
@@ -279,6 +295,7 @@
                 <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.0.17.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.projectlombok:lombok:[1.16.20]</include> <!-- {x-include-update;org.projectlombok:lombok;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
