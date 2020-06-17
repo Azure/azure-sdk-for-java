@@ -1,7 +1,7 @@
 #!/bin/bash
 
-serviceEndpoint=$Endpoint
-masterKey=$Key
+service_endpoint=$Endpoint
+master_key=$Key
 
 if [ -z "$Operation" ]
 then
@@ -19,53 +19,53 @@ fi
 
 if [ -z "$ConsistencyLevel" ]
 then
-consistencyLevel=Eventual
+consistency_level=Eventual
 else
-consistencyLevel=$ConsistencyLevel
+consistency_level=$ConsistencyLevel
 fi
 
 if [ -z "$NumberOfOperations" ]
 then
-numberOfOperations=-1
+number_of_operations=-1
 else
-numberOfOperations=$NumberOfOperations
+number_of_operations=$NumberOfOperations
 fi
 
 if [ -z "$MaxRunningTimeDuration" ]
 then
-maxRunningTimeDuration=PT10H
+max_running_time_duration=PT10H
 else
-maxRunningTimeDuration=$MaxRunningTimeDuration
+max_running_time_duration=$MaxRunningTimeDuration
 fi
 
-connectionMode=Direct
-numberOfPreCreatedDocuments=1000
-gatewayConnectionPoolSize=5
+connection_mode=Direct
+number_of_precreated_documents=1000
+gateway_connection_poolsize=5
 
 protocol=Tcp
 
-colName="testCol"
-dbName="testdb"
+col_name="testCol"
+db_name="testdb"
 
-logFileName="/tmp/javactl.log"
+log_filename="/tmp/javactl.log"
 
-echo "log file name is $logFileName"
+echo "log file name is $log_filename"
 
-echo "serviceEndpoint $serviceEndpoint, colNmae $colName operation: $operation, consistencyLevel: $consistencyLevel, connectionMode: $connectionMode, protocol: $protocol, concurrency: $concurrency" > $logFileName
+echo "serviceEndpoint $service_endpoint, colNmae $col_name operation: $operation, consistencyLevel: $consistency_level, connectionMode: $connection_mode, protocol: $protocol, concurrency: $concurrency" > $log_filename
 start=`test "x$1" == x && date +%s`
 jar_file=./azure-cosmos-benchmark-jar-with-dependencies.jar
 
-JVM_OPT=""
-#JVM_OPT='-Dazure.cosmos.rntbd.threadcount=16 -Dazure.cosmos.directTcp.defaultOptions={"maxRequestsPerChannel":10}'
-additionalBenchmarkOptions="" 
-additionalBenchmarkOptions="-documentDataFieldSize 10 -documentDataFieldCount 10" 
-additionalBenchmarkOptions="$additionalBenchmarkOptions -maxConnectionPoolSize $gatewayConnectionPoolSize"
+jvm_opt=""
+#jvm_opt='-Dazure.cosmos.rntbd.threadcount=16 -Dazure.cosmos.directTcp.defaultOptions={"maxRequestsPerChannel":10}'
+additional_benchmark_options="" 
+additional_benchmark_options="-documentDataFieldSize 10 -documentDataFieldCount 10" 
+additional_benchmark_options="$additional_benchmark_options -maxConnectionPoolSize $gateway_connection_poolsize"
 
 if [ -z "$GraphiteEndpoint" ]
 then
-java -Xmx2g -Xms2g  $JVM_OPT -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$serviceEndpoint" -masterKey "$masterKey" -databaseId "$dbName"  -collectionId "$colName" -consistencyLevel $consistencyLevel -concurrency $concurrency -numberOfOperations $numberOfOperations -operation $operation -connectionMode $connectionMode -maxRunningTimeDuration $maxRunningTimeDuration -numberOfPreCreatedDocuments $numberOfPreCreatedDocuments $additionalBenchmarkOptions 2>&1 | tee -a "$logFileName"
+java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 else
-java -Xmx2g -Xms2g  $JVM_OPT -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$serviceEndpoint" -masterKey "$masterKey" -databaseId "$dbName"  -collectionId "$colName" -consistencyLevel $consistencyLevel -concurrency $concurrency -numberOfOperations $numberOfOperations -operation $operation -connectionMode $connectionMode -maxRunningTimeDuration $maxRunningTimeDuration -graphiteEndpoint $GraphiteEndpoint -numberOfPreCreatedDocuments $numberOfPreCreatedDocuments $additionalBenchmarkOptions 2>&1 | tee -a "$logFileName"
+java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $GraphiteEndpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 fi
 
 end=`test "x$1" == x && date +%s`
