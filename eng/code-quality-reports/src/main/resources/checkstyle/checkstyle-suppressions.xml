@@ -460,11 +460,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.microsoft.azure.spring.data.cosmosdb.config.AbstractCosmosConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files="com.microsoft.azure.spring.data.cosmosdb.core.*\.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
-            files="com.microsoft.azure.spring.data.cosmosdb.repository.support.CosmosEntityInformation.java"/>
-<!--  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"-->
-<!--            files="com.microsoft.azure.spring.data.cosmosdb.core.ReactiveCosmosTemplate.java"/>-->
+            files="com.microsoft.azure.spring.data.cosmosdb.core.query.CosmosPageRequest.java"/>
 
   <!-- Checkstyle suppressions for azure-test-watch package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
@@ -474,7 +470,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
   <!-- Checkstyle suppressions for spring-data-cosmosdb package -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck|ExternalDependencyExposedCheck|ThrowFromClientLoggerCheck" files="com.microsoft.azure.spring.data.cosmosdb.*\.java"/>
-  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository.*\.java"/>
+  <suppress checks="MethodName|MemberName|ParameterName|VisibilityModifier" files="com.microsoft.azure.spring.data.cosmosdb.domain|repository|config.*\.java"/>
   <suppress checks="ConstantName" files="com.microsoft.azure.spring.data.cosmosdb.repository|common.*\.java" />
 
 </suppressions>

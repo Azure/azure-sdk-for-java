@@ -23,6 +23,6 @@ public class PerfConfiguration extends AbstractCosmosConfiguration {
 
     @Bean
     public CosmosDBConfig getConfig() {
-        return CosmosDBConfig.cosmosDBConfigbuilder(cosmosDbUri, cosmosDbKey, Constants.PERF_DATABASE_NAME).build();
+        return CosmosDBConfig.builder(cosmosDbUri, cosmosDbKey, Constants.PERF_DATABASE_NAME).build();
     }
 }

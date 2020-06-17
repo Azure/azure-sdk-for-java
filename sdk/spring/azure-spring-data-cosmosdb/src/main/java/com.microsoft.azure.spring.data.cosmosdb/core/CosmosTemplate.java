@@ -65,7 +65,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final boolean isPopulateQueryMetrics;
 
     private final CosmosClient cosmosClient;
-    private Function<Class<?>, CosmosEntityInformation<?, ?>> entityInfoCreator =
+    private final Function<Class<?>, CosmosEntityInformation<?, ?>> entityInfoCreator =
             Memoizer.memoize(this::getCosmosEntityInformation);
 
     /**

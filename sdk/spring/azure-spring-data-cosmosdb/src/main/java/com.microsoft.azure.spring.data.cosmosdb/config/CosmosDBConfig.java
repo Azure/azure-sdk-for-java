@@ -171,8 +171,8 @@ public class CosmosDBConfig {
      * @param database must not be {@literal null}
      * @return CosmosDBConfigBuilder
      */
-    public static CosmosDBConfigBuilder cosmosDBConfigbuilder(String uri, CosmosKeyCredential cosmosKeyCredential,
-                                                              String database) {
+    public static CosmosDBConfigBuilder builder(String uri, CosmosKeyCredential cosmosKeyCredential,
+                                                String database) {
         return defaultBuilder()
             .uri(uri)
             .cosmosKeyCredential(cosmosKeyCredential)
@@ -189,7 +189,7 @@ public class CosmosDBConfig {
      * @param database must not be {@literal null}
      * @return CosmosDBConfigBuilder
      */
-    public static CosmosDBConfigBuilder cosmosDBConfigbuilder(String uri, String key, String database) {
+    public static CosmosDBConfigBuilder builder(String uri, String key, String database) {
         return defaultBuilder()
             .uri(uri)
             .key(key)
@@ -206,12 +206,12 @@ public class CosmosDBConfig {
      * @return CosmosDBConfigBuilder
      * @throws CosmosDBAccessException for invalid connection string
      */
-    public static CosmosDBConfigBuilder cosmosDBConfigbuilder(String connectionString, String database) {
+    public static CosmosDBConfigBuilder builder(String connectionString, String database) {
         Assert.hasText(connectionString, "connection string should have text!");
         try {
             final String uri = connectionString.split(";")[0].split("=")[1];
             final String key = connectionString.split(";")[1].split("=")[1];
-            return cosmosDBConfigbuilder(uri, key, database);
+            return builder(uri, key, database);
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new CosmosDBAccessException("could not parse connection string");
         }
