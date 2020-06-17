@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 
 /**
@@ -41,6 +42,19 @@ public class ChainedTokenCredentialBuilder {
      */
     public ChainedTokenCredentialBuilder addLast(TokenCredential credential) {
         credentials.addLast(credential);
+        return this;
+    }
+
+    /**
+     * Adds all of the credentials in the specified collection at the end
+     * of this chain, as if by calling {@link ChainedTokenCredentialBuilder#addLast(TokenCredential)} on each one,
+     * in the order that they are returned by the collection's iterator.
+     *
+     * @param credentials the collection of credentials to be appended to the chain.
+     * @return An updated instance of the builder.
+     */
+    public ChainedTokenCredentialBuilder addAll(Collection<? extends TokenCredential> credentials) {
+        this.credentials.addAll(credentials);
         return this;
     }
 

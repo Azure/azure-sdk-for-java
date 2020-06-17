@@ -7,6 +7,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -23,6 +26,8 @@ import java.util.ArrayDeque;
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
 
+    private final List<TokenCredential> tokenCredentials;
+
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
      * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
@@ -35,5 +40,18 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      */
     DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
+        this.tokenCredentials = new ArrayList<TokenCredential>(tokenCredentials.size());
+        this.tokenCredentials.addAll(tokenCredentials);
+    }
+
+    /**
+     * Get the list of credentials sequentially used by {@link DefaultAzureCredential} to attempt authentication.
+     * This credentials in the returned list and their order may change in future versions of Identity.
+     * This API is not intended to be used in production ready code and should only be used for development purposes.
+     *
+     * @return The list of {@link TokenCredential}.
+     */
+    public List<TokenCredential> getCredentials() {
+        return Collections.unmodifiableList(tokenCredentials);
     }
 }
