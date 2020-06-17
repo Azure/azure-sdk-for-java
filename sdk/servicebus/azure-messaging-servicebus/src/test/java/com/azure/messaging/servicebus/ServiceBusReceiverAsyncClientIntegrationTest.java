@@ -9,8 +9,6 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
-import com.ctc.wstx.shaded.msv_core.datatype.xsd.EntityType;
-import org.apache.http.entity.EntityTemplate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -935,7 +933,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can send and receive a message.
+     * Verifies that we can receive a message from dead letter queue.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
@@ -944,7 +942,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
         ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder( false, entityType,
-            0,  Function.identity(), false).buildAsyncClient();
+            0,  Function.identity(), false)
+            .buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
