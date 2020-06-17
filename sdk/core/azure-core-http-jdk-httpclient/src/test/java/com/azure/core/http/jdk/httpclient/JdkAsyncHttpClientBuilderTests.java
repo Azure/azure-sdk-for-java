@@ -16,6 +16,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -34,6 +36,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests {@link JdkAsyncHttpClientBuilder}.
  */
+@DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkAsyncHttpClientBuilderTests {
     /**
      * Tests that an {@link JdkAsyncHttpClient} is able to be built from an existing
