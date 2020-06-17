@@ -22,7 +22,7 @@ public class SshConfiguration {
     private List<SshPublicKey> publicKeys;
 
     /**
-     * Get the publicKeys value.
+     * Get the list of SSH public keys used to authenticate with linux based VMs.
      *
      * @return the publicKeys value
      */
@@ -31,7 +31,7 @@ public class SshConfiguration {
     }
 
     /**
-     * Set the publicKeys value.
+     * Set the list of SSH public keys used to authenticate with linux based VMs.
      *
      * @param publicKeys the publicKeys value to set
      * @return the SshConfiguration object itself.
