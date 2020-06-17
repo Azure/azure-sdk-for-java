@@ -21,7 +21,7 @@ This package supports client side encryption for blob storage.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.6.1</version>
+  <version>12.6.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

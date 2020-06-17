@@ -14,8 +14,8 @@ import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.VirtualMachi
 import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.HostInfoListResult;
 import java.util.List;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.HostInfo;
 
 class VirtualMachinesImpl extends WrapperImpl<VirtualMachinesInner> implements VirtualMachines {
     private final HDInsightManager manager;
@@ -30,13 +30,19 @@ class VirtualMachinesImpl extends WrapperImpl<VirtualMachinesInner> implements V
     }
 
     @Override
-    public Observable<HostInfoListResult> listHostsAsync(String resourceGroupName, String clusterName) {
+    public Observable<HostInfo> listHostsAsync(String resourceGroupName, String clusterName) {
         VirtualMachinesInner client = this.inner();
         return client.listHostsAsync(resourceGroupName, clusterName)
-        .map(new Func1<HostInfoListResultInner, HostInfoListResult>() {
+        .flatMap(new Func1<List<HostInfoInner>, Observable<HostInfoInner>>() {
             @Override
-            public HostInfoListResult call(HostInfoListResultInner inner) {
-                return new HostInfoListResultImpl(inner, manager());
+            public Observable<HostInfoInner> call(List<HostInfoInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<HostInfoInner, HostInfo>() {
+            @Override
+            public HostInfo call(HostInfoInner inner) {
+                return new HostInfoImpl(inner, manager());
             }
         });
     }

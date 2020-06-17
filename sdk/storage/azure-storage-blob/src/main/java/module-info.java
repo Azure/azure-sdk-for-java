@@ -8,6 +8,7 @@ module com.azure.storage.blob {
 
     exports com.azure.storage.blob;
     exports com.azure.storage.blob.models;
+    exports com.azure.storage.blob.options;
     exports com.azure.storage.blob.sas;
     exports com.azure.storage.blob.specialized;
 
