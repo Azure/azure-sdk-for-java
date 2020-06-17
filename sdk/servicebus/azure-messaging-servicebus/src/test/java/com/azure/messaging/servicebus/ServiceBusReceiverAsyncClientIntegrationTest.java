@@ -9,6 +9,8 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
+import com.ctc.wstx.shaded.msv_core.datatype.xsd.EntityType;
+import org.apache.http.entity.EntityTemplate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -935,11 +937,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and receive a message.
      */
-    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
-    @ParameterizedTest
-    void receiveFromDeadLetter(MessagingEntityType entityType, boolean isSessionEnabled) {
+    @Test
+    void receiveFromDeadLetter() {
         // Arrange
+        MessagingEntityType entityType = MessagingEntityType.QUEUE;
+        final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder( false, entityType,
+            0,  Function.identity(), false).buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -947,19 +952,26 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message).block(TIMEOUT);
 
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive().next().block(OPERATION_TIMEOUT);
+        assertNotNull(receivedContext);
+
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+
+        StepVerifier.create(receiver.deadLetter(receivedMessage))
+            .verifyComplete();
+
         // Assert & Act
         try {
-            //TODO 1.receive and deadletter the message
-            //     2. receive from dead letter
-            StepVerifier.create(receiver.receive())
-                .assertNext(receivedMessage -> {
-                    lockTokens.add(receivedMessage.getMessage().getLockToken());
+            StepVerifier.create(deadLetterReceiver.receive().take(1))
+                .assertNext(messageContext -> {
+                    lockTokens.add(messageContext.getMessage().getLockToken());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 })
                 .thenCancel()
                 .verify();
         } finally {
-            int numberCompleted = completeMessages(receiver, lockTokens);
+            int numberCompleted = completeMessages(deadLetterReceiver, lockTokens);
             messagesPending.addAndGet(-numberCompleted);
         }
     }

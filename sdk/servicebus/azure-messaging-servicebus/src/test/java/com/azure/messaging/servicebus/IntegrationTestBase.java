@@ -273,6 +273,16 @@ public abstract class IntegrationTestBase extends TestBase {
 
     }
 
+    protected ServiceBusClientBuilder.ServiceBusDeadLetterReceiverClientBuilder getDeadLetterReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
+                                                                                                             int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
+        ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
+        final String queueName = getQueueName(entityIndex);
+        assertNotNull(queueName, "'queueName' cannot be null.");
+
+        return builder.deadLetterReceiver()
+            .queueName(queueName);
+    }
+
     protected ServiceBusReceiverClientBuilder getReceiverBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate, boolean sharedConnection) {
 

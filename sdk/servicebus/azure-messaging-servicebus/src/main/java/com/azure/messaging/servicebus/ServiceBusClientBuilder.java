@@ -455,7 +455,7 @@ public final class ServiceBusClientBuilder {
     private static String getDeadLetterEntityPath(ClientLogger logger, MessagingEntityType entityType, String queueName,
         String topicName, String subscriptionName) {
         String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName);
-        return  entityPath + "$DeadLetterQueue";
+        return  entityPath + "/$deadletterqueue";
     }
 
     /**
