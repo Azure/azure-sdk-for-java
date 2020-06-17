@@ -23,7 +23,7 @@
       "properties": {
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
-        "enableMultipleWriteLocations": "[variables('enableMultipleWriteLocations')]",
+        "enableMultipleWriteLocations": false,
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -31,7 +31,7 @@
         "enableAnalyticalStorage": false,
         "databaseAccountOfferType": "Standard",
         "consistencyPolicy": {
-          "defaultConsistencyLevel": "[variables('defaultConsistencyLevel')]",
+          "defaultConsistencyLevel": "Session",
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
