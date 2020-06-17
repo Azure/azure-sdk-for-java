@@ -123,7 +123,7 @@ For services support ETag and conditional request, consider supporting following
 - `withETagCheck()` enables implicit ETag check, which fails creation if resource already exists on service, and fails modification if resource on service has been modified by others.
 - `withETagCheck(String etag)` enables explicit ETag check on update.
 
-### Exception
+## Exception
 
 Exception on management of Azure resource is a `ManagementException` instance. Detail of the error is a `ManagementError` instance.
 
