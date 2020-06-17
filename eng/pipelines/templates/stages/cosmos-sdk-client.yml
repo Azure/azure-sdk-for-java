@@ -8,7 +8,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-      ref: refs/tags/azure-sdk-tools_20200514.1
+      azure-sdk-tools_20200617.3
 
 parameters:
 - name: Artifacts
@@ -171,3 +171,4 @@ stages:
         ArtifactName: packages
         TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
         TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+
