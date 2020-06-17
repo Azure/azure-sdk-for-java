@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 /**
  * Helper class to build a {@link ChangeFeedProcessor} instance.
- * 
+ *
  * {@codesnippet com.azure.cosmos.changeFeedProcessor.builder}
  */
 public class ChangeFeedProcessorBuilder {
@@ -80,12 +80,14 @@ public class ChangeFeedProcessorBuilder {
     /**
      * Sets the {@link ChangeFeedProcessorOptions} to be used.
      * Unless specifically set the default values that will be used are:
-     * - maximum items per page or FeedResponse: 100
-     * - lease renew interval: 17 seconds
-     * - lease acquire interval: 13 seconds
-     * - lease expiration interval: 60 seconds
-     * - feed poll delay: 5 seconds
-     * - maximum scale count: unlimited
+     * <ul>
+     * <li>maximum items per page or FeedResponse: 100</li>
+     * <li>lease renew interval: 17 seconds</li>
+     * <li>lease acquire interval: 13 seconds</li>
+     * <li>lease expiration interval: 60 seconds</li>
+     * <li>feed poll delay: 5 seconds</li>
+     * <li>maximum scale count: unlimited</li>
+     * </ul>
      *
      * @param changeFeedProcessorOptions the change feed processor options to use.
      * @return current Builder.
