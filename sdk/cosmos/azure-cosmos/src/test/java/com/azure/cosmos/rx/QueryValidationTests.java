@@ -161,7 +161,7 @@ public class QueryValidationTests extends TestSuiteBase {
         return documentInserted;
     }
 
-    private <T extends Comparable> void queryWithOrderByAndAssert(
+    private <T extends Comparable<T>> void queryWithOrderByAndAssert(
         int pageSize,
         int documentCount,
         String query,
