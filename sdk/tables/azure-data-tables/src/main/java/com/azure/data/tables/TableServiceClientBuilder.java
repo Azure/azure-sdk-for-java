@@ -5,15 +5,16 @@ public class TableServiceClientBuilder {
     String connectionString;
 
 
-    public TableServiceClientBuilder connectionString(String connectionString){
+    public TableServiceClientBuilder connectionString(String connectionString) {
         connectionString = connectionString;
         return this;
     }
-    public TableServiceClient build(){
+
+    public TableServiceClient build() {
         return new TableServiceClient();
     }
 
-    public TableServiceClientBuilder(){
+    public TableServiceClientBuilder() {
 
     }
 

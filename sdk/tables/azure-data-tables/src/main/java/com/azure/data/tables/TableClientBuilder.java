@@ -5,20 +5,21 @@ public class TableClientBuilder {
     String tableName;
 
 
-    public TableClientBuilder connectionString(String connectionString){
+    public TableClientBuilder connectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
     }
+
     public TableClientBuilder tableName(String tableName) {
         this.tableName = tableName;
         return this;
     }
 
-    public TableClient build(){
+    public TableClient build() {
         return new TableClient(tableName);
     }
 
-    public TableClientBuilder(){
+    public TableClientBuilder() {
 
     }
 

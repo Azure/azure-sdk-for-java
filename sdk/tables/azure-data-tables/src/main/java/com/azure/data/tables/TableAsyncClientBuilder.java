@@ -6,7 +6,7 @@ public class TableAsyncClientBuilder {
     String tableName;
 
 
-    public TableAsyncClientBuilder connectionString(String connectionString){
+    public TableAsyncClientBuilder connectionString(String connectionString) {
         connectionString = connectionString;
         return this;
     }
@@ -15,11 +15,12 @@ public class TableAsyncClientBuilder {
         this.tableName = tableName;
         return this;
     }
-    public TableAsyncClient build(){
+
+    public TableAsyncClient build() {
         return new TableAsyncClient(tableName);
     }
 
-    public void TableAysncClientBuilder(){
+    public void TableAysncClientBuilder() {
 
     }
 }

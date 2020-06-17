@@ -13,7 +13,6 @@ public class AzureTableAsyncClient {
      * Creates a table. This artificially takes 3 seconds.
      *
      * @param name The name of the table.
-     *
      * @return A Mono that completes when the table is created.
      */
     public Mono<AzureTable> createTable(String name) {

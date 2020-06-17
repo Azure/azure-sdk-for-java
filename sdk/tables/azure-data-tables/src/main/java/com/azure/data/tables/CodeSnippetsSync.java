@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CodeSnippetsSync {
 
-    public static void methods(){
+    public static void methods() {
 
         //create a tableServiceClient
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
@@ -43,7 +43,7 @@ public class CodeSnippetsSync {
         try {
             //TODO: create Table class TableName is the odata feild
             List<AzureTable> responseTables = tableServiceClient.queryTables(selectString);
-        } catch (HttpResponseException e){
+        } catch (HttpResponseException e) {
             System.out.println("Table Query Unsuccessful. Error: " + e);
         }
 
@@ -55,34 +55,34 @@ public class CodeSnippetsSync {
         HashMap<String, Object> tableEntityProperties = new HashMap<>();
         TableEntity tableEntity = new TableEntity(tableName, row, partitionKey, tableEntityProperties);
         try {
-           tableEntity = tableClient.insertEntity(tableEntity);
-        } catch (HttpResponseException e){
+            tableEntity = tableClient.insertEntity(tableEntity);
+        } catch (HttpResponseException e) {
             System.out.println("Insert Entity Unsuccessful. Error: " + e);
         }
 
 
         //update entity
-        tableEntity.addProperty("Seller","Crayola");
+        tableEntity.addProperty("Seller", "Crayola");
         try {
             tableClient.updateEntity(tableEntity);
-        } catch (HttpResponseException e){
+        } catch (HttpResponseException e) {
             System.out.println("Update Entity Unsuccessful. Error: " + e);
         }
 
 
         //upsert entity (where it is an update and replace)
-        tableEntity.addProperty("Price","5");
+        tableEntity.addProperty("Price", "5");
         try {
             tableClient.updateAndReplaceEntity(tableEntity);
-        } catch (HttpResponseException e){
+        } catch (HttpResponseException e) {
             System.out.println("Upsert Entity Unsuccessful. Error: " + e);
         }
 
         //upsert entity (where it is an update and replace)
-        tableEntity.addProperty("Price","5");
+        tableEntity.addProperty("Price", "5");
         try {
             tableClient.updateAndMergeEntity(tableEntity);
-        } catch (HttpResponseException e){
+        } catch (HttpResponseException e) {
             System.out.println("Upsert Entity Unsuccessful. Error: " + e);
         }
 
@@ -90,7 +90,7 @@ public class CodeSnippetsSync {
         //delete entity
         try {
             tableClient.deleteEntity(tableEntity);
-        } catch (HttpResponseException e){
+        } catch (HttpResponseException e) {
             System.out.println("Delete Entity Unsuccessful. Error: " + e);
         }
 
@@ -99,8 +99,8 @@ public class CodeSnippetsSync {
         String filterString2 = "$filter = Product eq 'markers'";
         String selectString2 = "$select = Seller eq 'crayola'";
         try {
-            List<TableEntity> list= tableClient.queryEntity(tableName, filterString2, selectString2);
-        } catch (HttpResponseException e){
+            List<TableEntity> list = tableClient.queryEntity(tableName, filterString2, selectString2);
+        } catch (HttpResponseException e) {
             System.out.println("Query Table Entities Unsuccessful. Error: " + e);
         }
     }
