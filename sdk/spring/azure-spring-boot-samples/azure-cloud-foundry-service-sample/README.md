@@ -1,8 +1,10 @@
 # Cloud Foundry Sample for Azure Spring Boot client library for Java
+## Key concepts
 This sample project demonstrates how to consume azure services exposed through the Microsoft Azure Service Broker for
 applications running in Cloud Foundry or by consuming the service configuration through a user provided service.
  
-## Key concepts
+
+## Getting started
 ### Pre-reqs:  Create required service instances in Cloud Foundry
 Before you can create any service instances, you'll need to create a resource group on Azure. Then you'll reference that
 resource group name below.  You'll also need access to a Cloud Foundry environment with the Azure Service Broker installed.
@@ -83,7 +85,7 @@ Now you can create the new service
 cf create-service azure-storage standard azure-storage-service -c ./azure-storage.json
 ```
 
-### DocumentDB
+### Cosmos DB
 To create the service instance, you'll need to create a JSON file (ex. azure-documentdb.json) 
 with the configuration details for your service instance.
 Specify your existing resource group name for RESOURCE_GROUP_NAME, then a new
