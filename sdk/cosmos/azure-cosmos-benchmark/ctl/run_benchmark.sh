@@ -41,7 +41,6 @@ fi
 connectionMode=Direct
 numberOfPreCreatedDocuments=1000
 gatewayConnectionPoolSize=5
-#directHttpConnectionPoolSize=4000
 
 protocol=Tcp
 
