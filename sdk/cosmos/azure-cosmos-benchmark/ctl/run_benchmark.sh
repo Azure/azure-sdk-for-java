@@ -3,7 +3,6 @@
 serviceEndpoint=$Endpoint
 masterKey=$Key
 
-
 if [ -z "$Operation" ]
 then
 operation=ReadLatency
@@ -24,7 +23,6 @@ consistencyLevel=Eventual
 else
 consistencyLevel=$ConsistencyLevel
 fi
-
 
 if [ -z "$NumberOfOperations" ]
 then
