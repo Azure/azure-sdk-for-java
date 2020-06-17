@@ -30,7 +30,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.2.5.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -52,7 +52,7 @@
               <includes>
                 <include>com.microsoft.azure:azure-servicebus-jms:[0.0.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
-                <include>org.springframework:spring-jms:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-jms:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
