@@ -22,7 +22,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -105,7 +105,7 @@
                 <include>org.eclipse.aether:aether-transport-wagon:[1.1.0]</include>
                 <include>org.springframework.boot:spring-boot:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-web:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework:spring-context:[5.2.0.RELEASE]</include>
+                <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
