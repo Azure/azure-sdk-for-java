@@ -2,23 +2,26 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "accountName": {
-      "type": "string",
-      "defaultValue": "[concat('sql-', uniqueString(resourceGroup().id))]"
+    "baseName": {
+      "type": "string"
     }
   },
-  "variables": {},
+  "variables": {
+    "apiVersion": "2020-04-01",
+    "accountName": "[toLower(parameters('baseName'))]",
+    "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]"
+  },
   "resources": [
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
-      "apiVersion": "2020-04-01",
-      "name": "PARAM_VALUE",
-      "location": "Central US / may be PARAM_VALUE",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('accountName')]",
+      "location": "[resourceGroup().location]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
-        "enableMultipleWriteLocations": "PARAM_VALUE",
+        "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -26,13 +29,13 @@
         "enableAnalyticalStorage": false,
         "databaseAccountOfferType": "Standard",
         "consistencyPolicy": {
-          "defaultConsistencyLevel": "PARAM_VALUE",
+          "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]",
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
         "locations": [
           {
-            "locationName": "PARAM_VALUE",
+            "locationName": "[resourceGroup().location]",
             "provisioningState": "Succeeded",
             "failoverPriority": 0,
             "isZoneRedundant": false
@@ -42,5 +45,19 @@
         "ipRules": []
       }
     }
-  ]
+  ],
+  "outputs": {
+    "ACCOUNT_HOST": {
+      "type": "string",
+      "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
+    },
+    "ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
+    },
+    "SECONDARY_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
+    }
+  }
 }
