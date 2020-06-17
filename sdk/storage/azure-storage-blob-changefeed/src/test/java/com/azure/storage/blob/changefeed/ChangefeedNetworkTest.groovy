@@ -72,7 +72,7 @@ class ChangefeedNetworkTest extends APISpec {
     }
 
     @Unroll
-//    @Requires( { playbackMode() })
+    @Requires( { playbackMode() })
     def "continuationToken"() {
         setup:
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)

@@ -111,11 +111,12 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
             changefeed = changefeedFactory.getChangefeed(startTime, endTime);
         }
 
-        return changefeed.getEvents()
+        int finalPreferredPageSize = preferredPageSize;
+        return Flux.defer(() -> changefeed.getEvents()
             /* Window the events to the page size. This takes the Flux<BlobChangefeedEventWrapper> and
                transforms it into a Flux<Flux<BlobChangefeedEventWrapper>>, where the internal Fluxes can have at most
                preferredPageSize elements. */
-            .window(preferredPageSize)
+            .window(finalPreferredPageSize)
             /* Convert the BlobChangefeedEventWrappers into BlobChangefeedEvents, and bundle them up with the last
                element's cursor. */
             .concatMap(eventWrappers -> {
@@ -134,7 +135,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
                 return Mono.zip(e, c);
             })
             /* Construct the BlobChangefeedPagedResponse. */
-            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
+            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2())));
     }
 
     @Override
