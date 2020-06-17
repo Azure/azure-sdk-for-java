@@ -102,7 +102,7 @@ Actions should be supported by resource API, e.g. `virtualMachine.restart()`.
 For actions that is frequently called, consider providing it in resource collection API as well, e.g. `computeManager.virtualMachines().restart(resourceGroupName, name)`.
 This saves the request to initiate the resource instance.
 
-### List and paging
+### List and pagination
 
 The method verb `list` in resource collection API usually returns a `PagedIterable<T>` instance.
 
@@ -118,10 +118,16 @@ It is worth noting that page is requested on demand. Therefore, after result fou
 
 ### Conditional request
 
-For services support ETag and conditional request, consider supporting following methods in create flow and update flow:
+For services support ETag and conditional request, consider supporting following methods in `define...create` and `update...apply`:
 
-- `withETagCheck()` enables implicit ETag check, which create if resource does not exist on service, and update if resource on service has not been modified.
+- `withETagCheck()` enables implicit ETag check, which fails creation if resource already exists on service, and fails modification if resource on service has been modified by others.
 - `withETagCheck(String etag)` enables explicit ETag check on update.
+
+### Exception
+
+Exception on management of Azure resource is a `ManagementException` instance. Detail of the error is a `ManagementError` instance.
+
+`managementError.getCode()` and `managementError.getMessage()` returns code and message of the error response.
 
 <!-- LINKS -->
 [authenticate]: AUTH.md
