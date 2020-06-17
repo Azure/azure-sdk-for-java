@@ -75,13 +75,6 @@ stages:
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          Examples_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pexamples'
-            DisplayName: 'Examples Integration Tests'
-            PROTOCOLS: '["Https", "Tcp"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
         TestStepMavenInputs:
           goals: 'verify'

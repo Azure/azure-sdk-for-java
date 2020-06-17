@@ -54,7 +54,5 @@ stages:
           groupId: com.azure
           safeName: azurecosmos
       AdditionalModules:
-        - name: azure-cosmos-examples
-          groupId: com.azure
         - name: azure-cosmos-benchmark
           groupId: com.azure
