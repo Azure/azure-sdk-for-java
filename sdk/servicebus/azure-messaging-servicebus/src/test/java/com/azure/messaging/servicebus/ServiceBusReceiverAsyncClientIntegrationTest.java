@@ -933,6 +933,38 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can send and receive a message.
+     */
+    @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
+    @ParameterizedTest
+    void receiveFromDeadLetter(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final List<String> lockTokens = new ArrayList<>();
+
+        sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        try {
+            //TODO 1.receive and deadletter the message
+            //     2. receive from dead letter
+            StepVerifier.create(receiver.receive())
+                .assertNext(receivedMessage -> {
+                    lockTokens.add(receivedMessage.getMessage().getLockToken());
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                })
+                .thenCancel()
+                .verify();
+        } finally {
+            int numberCompleted = completeMessages(receiver, lockTokens);
+            messagesPending.addAndGet(-numberCompleted);
+        }
+    }
+
+    /**
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled) {
