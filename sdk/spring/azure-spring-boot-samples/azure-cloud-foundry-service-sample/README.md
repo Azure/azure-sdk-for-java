@@ -1,7 +1,9 @@
+# Cloud Foundry Sample for Azure Spring Boot client library for Java
 This sample project demonstrates how to consume azure services exposed through the Microsoft Azure Service Broker for
 applications running in Cloud Foundry or by consuming the service configuration through a user provided service.
  
-# Pre-reqs:  Create required service instances in Cloud Foundry
+## Key concepts
+### Pre-reqs:  Create required service instances in Cloud Foundry
 Before you can create any service instances, you'll need to create a resource group on Azure. Then you'll reference that
 resource group name below.  You'll also need access to a Cloud Foundry environment with the Azure Service Broker installed.
 You can issue the following command to see if it is installed:
@@ -32,7 +34,7 @@ TIP:  Use 'cf marketplace -s SERVICE' to view descriptions of individual plans o
 ```
 
 
-# Service Bus
+### Service Bus
 To create the service instance, you'll need to create a JSON file (ex. azure-servicebus.json) 
 with the configuration details for your service instance.
 Specify your existing resource group name for RESOURCE_GROUP_NAME, then a new
@@ -59,7 +61,7 @@ The Service Bus Spring Starter assumes you've already created a queue and topic 
 running this sample application.  You can provide their names in the application.properties file, or as environment variables that Spring translates into properties.
 See the application.properties file in this project for an example. 
 
-# Storage
+### Storage
 To create the service instance, you'll need to create a JSON file (ex. azure-storage.json) 
 with the configuration details for your service instance.
 Specify your existing resource group name for RESOURCE_GROUP_NAME, then a new
@@ -81,7 +83,7 @@ Now you can create the new service
 cf create-service azure-storage standard azure-storage-service -c ./azure-storage.json
 ```
 
-# DocumentDB
+### DocumentDB
 To create the service instance, you'll need to create a JSON file (ex. azure-documentdb.json) 
 with the configuration details for your service instance.
 Specify your existing resource group name for RESOURCE_GROUP_NAME, then a new
@@ -103,7 +105,7 @@ Now you can create the new service
 cf create-service azure-documentdb standard azure-documentdb-service -c ./azure-documentdb.json
 ```
 
-# User Provided Service
+### User Provided Service
 
 It is also possible to use a user provided service to get the credentials used to connect to the service, and make use of the start to automatically bind just as if with an azure broker service.
 
@@ -131,7 +133,8 @@ cf create-user-provided-service user-provided-azure-service -p ./azure-service-c
 
 It is worth noticing that the Microsoft Azure Service Broker doesn't actually need to be available for this to work, but the broker names should be the same as the ones the Service Broker provide (as shown at the beginning).
 
-## Example Service Creation with a Microsoft Azure Service Broker service
+## Examples
+### Example Service Creation with a Microsoft Azure Service Broker service
 
 Taking as an example the documentdb service created in the previous section, you may inspect the environment of the application to see which credentials the service has
 ```
@@ -170,7 +173,7 @@ The credentials attribute can be used to create the json file for the user provi
 ```
 Which can then be used to create user provided services in any space or foundation, and sharing the same storage.
 
-# To push sample application to PCF
+### To push sample application to PCF
 Login to your PCF environment and run "cf push" from the cloudfoundry/azure-cloud-foundry-service-sample folder.
 
 The manifest.yml file in that folder specifies meta-data about the application, including the service bindings to the service instances.
@@ -189,14 +192,16 @@ applications:
 
 ```
 
-# Try the Cloud Foundry Demo
+### Try the Cloud Foundry Demo
 Get the URL from the output of the "cf-push" command, and append
 the following endpoints:
 * "/" - web page with links to the demos below
 * "/sb" - this demo uses Azure Service Bus to put a message on a queue, retrieve it, and delete it.
 * "/docdb" -  this demo uses Azure DocumentDB to store a new User object.
 
-
+## Troubleshooting
+## Next steps
+## Contributing
 
 
 
