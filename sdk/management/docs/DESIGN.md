@@ -80,6 +80,20 @@ computeManager.virtualMachines().deleteByResourceGroup(resourceGroupName, name);
 
 It is important to note that the resource instance, as client-side representation of the Azure resource, could be outdated as the Azure resource on service being modified or deleted by Portal, CLI, other SDKs, or even another thread in the same Java application.
 
+### Lazy resource creation
+
+Azure resource provision occurs when method verb `create` or `update` is called.
+
+Without calling `create`, the resource is a `Creatable<T>` instance, which can be provided to another resource as [dependent resource][sample_creatable_dependency], or be used in [batch creation][sample_creatable_batch].
+
+For any resource that accept another dependent resource, consider supporting following methods:
+
+- `withNewResource(Creatable<T> resource)` takes a `Creatable<T>` instance, and create it when provisioning current resource.
+- `withNewResource(String name, Sku sku, ...)` takes a few required parameters for the dependent resource, and create it automatically when provisioning current resource.
+- `withExistingResource(T resource)` takes the existing dependent resource.
+- `withExistingResource(String id)` or `withExistingResource(SubResource resource)` takes the resource ID of the existing dependent resource, if only the ID is required by current resource.
 
 <!-- LINKS -->
 [authenticate]: AUTH.md
+[sample_creatable_dependency]: ../README.md#dependency-across-azure-resources
+[sample_creatable_batch]: ../README.md#batch-azure-resource-provisioning
