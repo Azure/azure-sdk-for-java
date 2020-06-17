@@ -78,24 +78,26 @@ jobs:
           DisplayName: Session Single Region Fast
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
         # 41m 14s, expect passed
         Session_Tcp_Direct:
           DisplayName: Session Single Region Direct
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Tcp"]'
         # 33m 10s, expect passed
         Session_Tcp_NonEmulator:
           DisplayName: Session Single Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Tcp"]'
         # 42m 42s, expect passed
         Session_Tcp_Long:
           DisplayName: Session Single Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
           DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
-          PROTOCOLS: ''
+          PROTOCOLS: '["Tcp"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -251,26 +253,31 @@ jobs:
           DisplayName: Multimaster Multi Region Long
           OSVmImage: 'windows-2019'
           ProfileFlag: '-e -Plong'
+          PROTOCOLS: '["Tcp"]'
         # 15m 34s, previously failing
         Tcp_MultiMaster:
           DisplayName: Multimaster Multi Region Multi-Master
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pmulti-master'
+          PROTOCOLS: '["Tcp"]'
         # 1h 30m 43s, expect passed
         Tcp_Fast:
           DisplayName: Multimaster Multi Region Fast
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
         # 30m 10s, expect passed
         Tcp_Direct:
           DisplayName: Multimaster Multi Region Direct
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Tcp"]'
         # 35m 0s, expect passed
         NonEmulator:
           DisplayName: Multimaster Multi Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Tcp"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -307,22 +314,26 @@ jobs:
           DisplayName: MultiMaster Single Region Multi-Master
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pmulti-master'
+          PROTOCOLS: '["Tcp"]'
         # 1h 30m 34s, expect passed
         Tcp_Fast:
           DisplayName: Multimaster Single Region Fast
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
         # 45m 05s, expect passed
         Tcp_Direct:
           DisplayName: Multimaster Single Region Direct
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pdirect'
           AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
+          PROTOCOLS: '["Tcp"]'
         # 25m 10s, expect passed
         Tcp_NonEmulator:
           DisplayName: Multimaster Single Region NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Tcp"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
