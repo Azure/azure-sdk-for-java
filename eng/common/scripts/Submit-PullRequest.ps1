@@ -41,8 +41,6 @@ param(
   $PRBody = $PRTitle
 )
 
-Write-Host "> $PSCommandPath $args"
-
 $query = "state=open&head=${PROwner}:${PRBranch}&base=${BaseBranch}"
 
 $resp = Invoke-RestMethod "https://api.github.com/repos/$RepoOwner/$RepoName/pulls?$query"
