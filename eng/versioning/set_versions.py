@@ -99,7 +99,7 @@ def set_dev_zero_version(build_type, build_qualifier):
                 set_both = module.current == module.dependency
 
                 if '-' in module.current:
-                    # if the module is 1.2.3-beta.x, strip off everthing after the '-' and add the qualifier
+                    # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
                     module.current = module.current[:module.current.rfind('-') + 1] + zero_qualifier
                 else:
                     # if the module is a GA version 1.2.3, add '-' and the qualifier
@@ -155,7 +155,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         if module.current == module.dependency:
                             set_both = True
                         if '-' in module.current:
-                            # if the module is 1.2.3-beta.x, strip off everthing after the '-' and add the qualifier
+                            # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
                             module.current = module.current[:module.current.rfind('-') + 1] + build_qualifier
                         else:
                             module.current += '-' + build_qualifier
@@ -179,7 +179,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                     unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
 
                     if '-' in module.dependency:
-                        # if the module is 1.2.3-beta.x, strip off everthing after the '-' and add the qualifier
+                        # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
                         module.dependency = module.dependency[:module.dependency.rfind('-') + 1] + unreleased_build_qualifier
                     else:
                         module.dependency += '-' + unreleased_build_qualifier
