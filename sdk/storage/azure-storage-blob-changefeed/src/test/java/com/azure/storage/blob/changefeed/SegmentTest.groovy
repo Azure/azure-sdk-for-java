@@ -130,12 +130,18 @@ class SegmentTest extends Specification {
         if (shardPath == 'log/00/2020/03/25/0200/') {
             verify(mockShardFactory).getShard('log/00/2020/03/25/0200/', cfCursor.toShardCursor('log/00/2020/03/25/0200/'), userCursor) || true
             verify(mockShard0).getEvents() || true
+            verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), null) || true
+            verify(mockShard1).getEvents() || true
+            verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
+            verify(mockShard2).getEvents() || true
         }
-        if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/') {
+        if (shardPath == 'log/01/2020/03/25/0200/') {
             verify(mockShardFactory).getShard('log/01/2020/03/25/0200/', cfCursor.toShardCursor('log/01/2020/03/25/0200/'), userCursor) || true
             verify(mockShard1).getEvents() || true
+            verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), null) || true
+            verify(mockShard2).getEvents() || true
         }
-        if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/' || shardPath == 'log/02/2020/03/25/0200/') {
+        if (shardPath == 'log/02/2020/03/25/0200/') {
             verify(mockShardFactory).getShard('log/02/2020/03/25/0200/', cfCursor.toShardCursor('log/02/2020/03/25/0200/'), userCursor) || true
             verify(mockShard2).getEvents() || true
         }
