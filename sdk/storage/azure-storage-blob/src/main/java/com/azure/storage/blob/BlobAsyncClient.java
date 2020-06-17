@@ -406,7 +406,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions}
      *
      * <p><strong>Using Progress Reporting</strong></p>
      *

@@ -292,8 +292,9 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
+            // Can't use a Collections.emptyMap() because we add metadata for encryption.
             final Map<String, String> metadataFinal = options.getMetadata() == null
-                ? Collections.emptyMap() : options.getMetadata();
+                ? new HashMap<>() : options.getMetadata();
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
                 : options.getDataFlux();
