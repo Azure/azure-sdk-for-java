@@ -19,8 +19,6 @@ import java.util.function.Supplier;
  * A token cache that supports caching a token and refreshing it.
  */
 public class SimpleTokenCache {
-    private static final Duration REFRESH_TIMEOUT = Duration.ofSeconds(30);
-
     private final AtomicBoolean wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
@@ -28,6 +26,7 @@ public class SimpleTokenCache {
     private final FluxSink<AccessToken> sink = emitterProcessor.sink(OverflowStrategy.BUFFER);
     private final Supplier<Mono<AccessToken>> tokenSupplier;
     private final Predicate<AccessToken> shouldRefresh;
+    private final Duration refreshTimeout;
     private final ClientLogger logger = new ClientLogger(SimpleTokenCache.class);
 
     /**
@@ -36,20 +35,21 @@ public class SimpleTokenCache {
      * @param tokenSupplier a method to get a new token
      */
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
-        this(tokenSupplier,
-            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET)));
+        this(tokenSupplier, new TokenRefreshOptions());
     }
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
      * @param tokenSupplier a method to get a new token
-     * @param shouldRefresh a method to check if the cached token is expired
+     * @param tokenRefreshOptions the options to configure the token refresh behavior
      */
-    public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier, Predicate<AccessToken> shouldRefresh) {
+    public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier, TokenRefreshOptions tokenRefreshOptions) {
         this.wip = new AtomicBoolean(false);
         this.tokenSupplier = tokenSupplier;
-        this.shouldRefresh = shouldRefresh;
+        this.shouldRefresh = accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt()
+            .minus(tokenRefreshOptions.getTokenRefreshOffset()));
+        this.refreshTimeout = tokenRefreshOptions.getTokenRefreshTimeout();
     }
 
     /**
@@ -95,11 +95,11 @@ public class SimpleTokenCache {
                         logger.info(refreshLog(cache, now, "Acquired a new access token"));
                         sink.next(accessToken);
                         cache = accessToken;
-                        nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_TIMEOUT);
+                        nextTokenRefresh = OffsetDateTime.now().plus(refreshTimeout);
                     })
                     .onErrorResume(err -> {
                         logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
-                        nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_TIMEOUT);
+                        nextTokenRefresh = OffsetDateTime.now().plus(refreshTimeout);
                         return fallback.switchIfEmpty(Mono.error(err));
                     })
                     .switchIfEmpty(fallback)
@@ -123,7 +123,7 @@ public class SimpleTokenCache {
             Duration tte = Duration.between(now, cache.getExpiresAt());
             info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
                 .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_TIMEOUT.getSeconds()).append(" seconds.");
+                .append("Retry may be attempted after ").append(refreshTimeout.getSeconds()).append(" seconds.");
             if (!tte.isNegative()) {
                 info.append(" The token currently cached will be used.");
             }
