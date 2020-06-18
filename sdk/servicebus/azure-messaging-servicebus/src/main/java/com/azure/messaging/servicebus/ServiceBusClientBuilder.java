@@ -944,7 +944,8 @@ public final class ServiceBusClientBuilder {
          * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
          * @return The modified {@link ServiceBusDeadLetterReceiverClientBuilder} object.
          */
-        public ServiceBusDeadLetterReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
+        public ServiceBusDeadLetterReceiverClientBuilder maxAutoLockRenewalDuration(
+            Duration maxAutoLockRenewalDuration) {
             this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
             return this;
         }

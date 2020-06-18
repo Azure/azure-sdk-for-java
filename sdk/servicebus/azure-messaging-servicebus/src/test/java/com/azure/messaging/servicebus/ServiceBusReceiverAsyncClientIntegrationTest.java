@@ -941,8 +941,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final boolean isSessionEnabled = false;
         setSenderAndReceiver(entityType, 0, isSessionEnabled);
-        ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder( false, entityType,
-            0,  Function.identity(), false)
+        ServiceBusReceiverAsyncClient deadLetterReceiver = getDeadLetterReceiverBuilder(false, entityType,
+            0, Function.identity(), false)
             .buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
