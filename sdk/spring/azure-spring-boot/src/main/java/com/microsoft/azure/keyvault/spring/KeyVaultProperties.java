@@ -168,22 +168,4 @@ public class KeyVaultProperties {
             .filter(s -> !s.isEmpty())
             .collect(Collectors.joining(DELIMITER));
     }
-
-    public static void main(String[] args) {
-        KeyVaultProperties keyVaultProperties = new KeyVaultProperties();
-        System.out.println(""
-            + keyVaultProperties.getAllowTelemetry()
-            + keyVaultProperties.getCaseSensitiveKeys()
-            + keyVaultProperties.getCertificatePassword()
-            + keyVaultProperties.getCertificatePath()
-            + keyVaultProperties.getClientId()
-            + keyVaultProperties.getClientKey()
-            + keyVaultProperties.getEnabled()
-            + keyVaultProperties.getOrder()
-            + keyVaultProperties.getRefreshInterval()
-            + keyVaultProperties.getSecretKeys()
-            + keyVaultProperties.getTenantId()
-            + keyVaultProperties.getUri()
-        );
-    }
 }
