@@ -65,7 +65,7 @@ class KeyVaultEnvironmentPostProcessorHelper {
     public void addKeyVaultPropertySource(String normalizedName) {
         final String vaultUri = getPropertyValue(normalizedName, Property.URI);
         Assert.notNull(vaultUri, "vaultUri must not be null!");
-        final Long refreshInterval = Optional.of(getPropertyValue(normalizedName, Property.REFRESH_INTERVAL))
+        final Long refreshInterval = Optional.ofNullable(getPropertyValue(normalizedName, Property.REFRESH_INTERVAL))
                 .map(Long::valueOf)
                 .orElse(DEFAULT_REFRESH_INTERVAL_MS);
         final List<String> secretKeys = Binder.get(this.environment)
