@@ -72,7 +72,7 @@ class ChangefeedNetworkTest extends APISpec {
     }
 
     @Unroll
-//    @Requires( { playbackMode() })
+    @Requires( { playbackMode() })
     def "continuationToken"() {
         setup:
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
@@ -87,6 +87,7 @@ class ChangefeedNetworkTest extends APISpec {
             contToken = resp.getContinuationToken()
             i++
         }
+        Thread.sleep(10000) /* Simulate coming back to the cursor after a "long" time. */
 
         when:
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
@@ -102,7 +103,7 @@ class ChangefeedNetworkTest extends APISpec {
         numPagesToIterate || numEventsFromContinuationToken
         33                || 0
         1                 || 3138
-//        5                 || 2738
-//        10                || 2238
+        5                 || 2738
+        10                || 2238
     }
 }
