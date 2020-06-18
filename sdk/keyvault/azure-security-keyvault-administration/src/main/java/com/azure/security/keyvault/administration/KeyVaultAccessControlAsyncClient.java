@@ -6,13 +6,12 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionListResult;
 import reactor.core.publisher.Mono;
@@ -80,7 +79,7 @@ public class KeyVaultAccessControlAsyncClient {
      * @param scope  The scope of the role definition.
      * @param filter The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
      *               scope as well.
-     * @return A Mono containing a {@link SimpleResponse response} whose {@link Response#getValue() value} contains the
+     * @return A {@link PagedFlux} containing the {@link RoleDefinition role definitions} the given scope.
      * {@link RoleDefinitionListResult list of role definitions}.
      * @throws com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException if the
      * operation is unsuccessful.
@@ -103,7 +102,7 @@ public class KeyVaultAccessControlAsyncClient {
      * @param filter The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
      *               scope as well.
      * @param context  Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A Mono containing a {@link SimpleResponse response} whose {@link Response#getValue() value} contains the
+     * @return A {@link PagedFlux} containing the {@link RoleDefinition role definitions} the given scope.
      * {@link RoleDefinitionListResult list of role definitions}.
      */
     PagedFlux<RoleDefinition> listRoleDefinitions(String scope, String filter, Context context) {
@@ -120,7 +119,8 @@ public class KeyVaultAccessControlAsyncClient {
      * @param filter   The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
      *                 scope as well.
      * @param context  Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link Mono} of {@link PagedResponse<RoleDefinition>} from the first page of results.
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link RoleDefinition role definitions} for the
+     * given scope from the first page of results.
      */
     Mono<PagedResponse<RoleDefinition>> listRoleDefinitionsFirstPage(String vaultUrl, String scope, String filter,
                                                                      Context context) {
@@ -140,12 +140,13 @@ public class KeyVaultAccessControlAsyncClient {
 
     /**
      * Gets all the role definitions given by the {@code nextPageLink} that was retrieved from a call to
-     * {@link KeyVaultAccessControlAsyncClient#listRoleDefinitions(String, String)} ()}.
+     * {@link KeyVaultAccessControlAsyncClient#listRoleDefinitions(String, String)}.
      *
      * @param continuationToken The {@link PagedResponse#getContinuationToken() continuationToken} from a previous,
      *                          successful call to one of the listRoleDefinitions operations.
      * @param context           Additional context that is passed through the HTTP pipeline during the service call.
-     * @return A {@link Mono} of {@link PagedResponse<RoleDefinition>} from the next page of results.
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link RoleDefinition role definitions} for the
+     * given scope from the next page of results.
      */
     Mono<PagedResponse<RoleDefinition>> listRoleDefinitionsNextPage(String continuationToken, Context context) {
         try {
@@ -154,6 +155,92 @@ public class KeyVaultAccessControlAsyncClient {
                 .doOnRequest(ignored -> logger.info("Listing next role definitions page - Page {}", continuationToken))
                 .doOnSuccess(response -> logger.info("Listed next role definitions page - Page {}", continuationToken))
                 .doOnError(error -> logger.warning("Failed to list next role definitions page - Page {}",
+                    continuationToken, error));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Get all role assignments that are applicable at scope and above.
+     *
+     * @param scope  The scope of the role assignment.
+     * @param filter The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
+     *               scope as well.
+     * @return A {@link PagedFlux} containing the {@link RoleAssignment role assignments} the given scope.
+     * @throws com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException if the
+     * operation is unsuccessful.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedFlux<RoleAssignment> listRoleAssignments(String scope, String filter) {
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context -> listRoleAssignmentsFirstPage(vaultUrl, scope, filter, context)),
+                continuationToken -> withContext(context -> listRoleAssignmentsNextPage(continuationToken, context)));
+        } catch (RuntimeException e) {
+            return new PagedFlux<>(() -> monoError(logger, e));
+        }
+    }
+
+    /**
+     * Get all role assignments that are applicable at scope and above.
+     *
+     * @param scope   The scope of the role assignment.
+     * @param filter  The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
+     *                scope as well.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link PagedFlux} containing the {@link RoleAssignment role assignments} the given scope.
+     */
+    PagedFlux<RoleAssignment> listRoleAssignments(String scope, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listRoleAssignmentsFirstPage(vaultUrl, scope, filter, context),
+            continuationToken -> listRoleAssignmentsNextPage(continuationToken, context));
+    }
+
+    /**
+     * Gets role assignments in the first page.
+     *
+     * @param vaultUrl The URL for the Key Vault this client is associated with.
+     * @param scope    The scope of the role assignment.
+     * @param filter   The filter to apply on the operation. Use a "atScopeAndBelow" filter to search below the given
+     *                 scope as well.
+     * @param context  Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link RoleAssignment role assignments} for the
+     * given scope from the first page of results.
+     */
+    Mono<PagedResponse<RoleAssignment>> listRoleAssignmentsFirstPage(String vaultUrl, String scope, String filter,
+                                                                     Context context) {
+        try {
+            return clientImpl.getRoleAssignments().listForScopeSinglePageAsync(vaultUrl, scope, filter,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored ->
+                    logger.info("Listing role assignments for scope - {}", scope))
+                .doOnSuccess(response ->
+                    logger.info("Listed role assignments for scope - {}", scope))
+                .doOnError(error ->
+                    logger.warning(String.format("Failed to list role assignments for scope - %s", scope), error));
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Gets all the role assignments given by the {@code nextPageLink} that was retrieved from a call to
+     * {@link KeyVaultAccessControlAsyncClient#listRoleAssignments(String, String)}.
+     *
+     * @param continuationToken The {@link PagedResponse#getContinuationToken() continuationToken} from a previous,
+     *                          successful call to one of the listRoleAssignments operations.
+     * @param context           Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link Mono} containing a {@link PagedResponse} of {@link RoleAssignment role assignments} for the
+     * given scope from the first page of results.
+     */
+    Mono<PagedResponse<RoleAssignment>> listRoleAssignmentsNextPage(String continuationToken, Context context) {
+        try {
+            return clientImpl.getRoleAssignments().listForScopeNextSinglePageAsync(continuationToken,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+                .doOnRequest(ignored -> logger.info("Listing next role assignments page - Page {}", continuationToken))
+                .doOnSuccess(response -> logger.info("Listed next role assignments page - Page {}", continuationToken))
+                .doOnError(error -> logger.warning("Failed to list next role assignments page - Page {}",
                     continuationToken, error));
         } catch (RuntimeException e) {
             return monoError(logger, e);
