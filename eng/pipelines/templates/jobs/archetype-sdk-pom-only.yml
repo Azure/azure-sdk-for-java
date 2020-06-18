@@ -9,8 +9,6 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
-      - name: JavaBuildVersion
-        value: $(JavaLTSVersion)
 
     pool:
       vmImage: 'ubuntu-18.04'

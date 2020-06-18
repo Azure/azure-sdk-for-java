@@ -44,9 +44,6 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
-      # Default $(JavaBuildVersion) if the matrix does not specify a $(JavaBuildVersion)
-      - name: JavaBuildVersion
-        value: $(JavaLTSVersion)
 
     pool:
       vmImage: 'ubuntu-18.04'

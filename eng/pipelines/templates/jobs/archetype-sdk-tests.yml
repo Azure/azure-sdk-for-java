@@ -64,9 +64,6 @@ jobs:
       # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
       - name: SubscriptionConfiguration
         value: $(sub-config-azure-cloud-test-resources)
-      # Default $(JavaBuildVersion) if the matrix does not specify a $(JavaBuildVersion)
-      - name: JavaBuildVersion
-        value: $(JavaLTSVersion)
 
     strategy:
       matrix: ${{ parameters.Matrix }}

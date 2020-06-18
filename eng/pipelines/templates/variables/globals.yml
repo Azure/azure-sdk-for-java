@@ -11,3 +11,4 @@ variables:
   PLSkipOptions: ''
   # This is the default Java version. It's the version used to build the shipping libraries, spot bugs etc.
   JavaLTSVersion: '1.11'
+  JavaBuildVersion: '1.11'

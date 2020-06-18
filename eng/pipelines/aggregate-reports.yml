@@ -17,7 +17,7 @@ jobs:
         options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: $(JavaLTSVersion)
+        jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: 'clean verify site:site site:stage'
@@ -26,7 +26,7 @@ jobs:
       condition: succeededOrFailed()
       inputs:
         mergeTestResults: true
-        testRunTitle: 'Linux on Java $(JavaLTSVersion)'
+        testRunTitle: 'Linux on Java $(JavaBuildVersion)'
 
     # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
     # Code coverage reporting is setup only for Track 2 modules.
