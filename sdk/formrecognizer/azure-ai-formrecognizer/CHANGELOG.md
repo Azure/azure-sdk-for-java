@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
+- Change `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
+- Rename `fieldMap` property to `fields` on `CustomFormSubmodel` model 
 - Rename `elements` property on model `FormTableCell` to `textContent`
 - Remove `TextContentType` model and use `instanceOf` to detect the FormContent type
 

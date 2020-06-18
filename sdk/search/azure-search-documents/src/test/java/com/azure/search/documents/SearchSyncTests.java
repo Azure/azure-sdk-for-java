@@ -5,7 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.CoordinateSystem;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.GeoPoint;
@@ -13,28 +18,23 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
-import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
-import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.ValueFacetResult;
 import com.azure.search.documents.test.environment.models.Bucket;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,12 +45,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
@@ -240,12 +240,7 @@ public class SearchSyncTests extends SearchTestBase {
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        df.setTimeZone(TimeZone.getDefault());
-        objectMapper.setDateFormat(df);
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        SerializationUtil.configureMapper(objectMapper);
         List<Hotel> hotelsList = hotels.stream().map(hotel -> {
             Hotel h = objectMapper.convertValue(hotel, Hotel.class);
             if (h.location() != null) {
@@ -262,17 +257,20 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundTripNonNullableValueTypes() throws Exception {
+    public void canRoundTripNonNullableValueTypes() {
         client = setupClient(this::createIndexWithNonNullableTypes);
 
+        Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
             .key("123")
             .count(3)
             .isEnabled(true)
             .rating(5)
             .ratio(3.14)
-            .startDate(TestHelpers.DATE_FORMAT.parse("2010-06-01T00:00:00Z"))
-            .endDate(TestHelpers.DATE_FORMAT.parse("2010-06-15T00:00:00Z"))
+            .startDate(new Date(startEpoch.getYear(), startEpoch.getMonth(), startEpoch.getDate(), startEpoch.getHours(),
+                startEpoch.getMinutes(), startEpoch.getSeconds()))
+            .endDate(new Date(startEpoch.getYear(), startEpoch.getMonth(), startEpoch.getDate(), startEpoch.getHours(),
+                startEpoch.getMinutes(), startEpoch.getSeconds()))
             .topLevelBucket(new Bucket().bucketName("A").count(12))
             .buckets(new Bucket[]{new Bucket().bucketName("B").count(20), new Bucket().bucketName("C").count(7)});
 
@@ -297,7 +295,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         // check if deserialization of Date type object is successful
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        Date expected = TestHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z");
+        OffsetDateTime expected = OffsetDateTime.parse("2010-06-27T00:00:00Z");
 
         SearchPagedIterable results = client.search("Fancy", new SearchOptions(), generateRequestOptions(), Context.NONE);
         assertNotNull(results);
@@ -307,7 +305,8 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedResponse result = iterator.next();
         assertEquals(1, result.getValue().size());
         Date actual = convertToType(result.getValue().get(0).getDocument(), Hotel.class).lastRenovationDate();
-        assertEquals(expected, actual);
+        long epochMilli = expected.toInstant().toEpochMilli();
+        assertEquals(new Date(epochMilli), actual);
     }
 
     @Test
@@ -470,12 +469,12 @@ public class SearchSyncTests extends SearchTestBase {
                     new ValueFacetResult<>(1L, "Luxury"))));
 
             assertValueFacetsEqual(getValueFacetsForField(facets, "LastRenovationDate", 6),
-                new ArrayList<>(Arrays.asList(new ValueFacetResult<>(1L, OffsetDateTime.parse("1970-01-01T00:00:00Z")),
-                    new ValueFacetResult<>(1L, OffsetDateTime.parse("1982-01-01T00:00:00Z")),
-                    new ValueFacetResult<>(2L, OffsetDateTime.parse("1995-01-01T00:00:00Z")),
-                    new ValueFacetResult<>(1L, OffsetDateTime.parse("1999-01-01T00:00:00Z")),
-                    new ValueFacetResult<>(1L, OffsetDateTime.parse("2010-01-01T00:00:00Z")),
-                    new ValueFacetResult<>(1L, OffsetDateTime.parse("2012-01-01T00:00:00Z")))));
+                new ArrayList<>(Arrays.asList(new ValueFacetResult<>(1L, OffsetDateTime.parse("1970-01-01T00:00:00Z").format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
+                    new ValueFacetResult<>(1L, OffsetDateTime.parse("1982-01-01T00:00:00Z").format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
+                    new ValueFacetResult<>(2L, OffsetDateTime.parse("1995-01-01T00:00:00Z").format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
+                    new ValueFacetResult<>(1L, OffsetDateTime.parse("1999-01-01T00:00:00Z").format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
+                    new ValueFacetResult<>(1L, OffsetDateTime.parse("2010-01-01T00:00:00Z").format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)),
+                    new ValueFacetResult<>(1L, OffsetDateTime.parse("2012-01-01T00:00:00Z").format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)))));
 
             assertValueFacetsEqual(
                 getValueFacetsForField(facets, "Rooms/BaseRate", 4),
@@ -891,16 +890,10 @@ public class SearchSyncTests extends SearchTestBase {
             Map<String, Object> result = searchIterator.next();
             Map<String, Object> hotel = hotelsIterator.next();
 
-            hotel.entrySet().forEach(e -> checkEquals(result, e));
+            assertMapEquals(hotel, result, "crs");
         }
 
         return true;
-    }
-
-    private void checkEquals(Map<String, Object> result, Map.Entry<String, Object> hotel) {
-        if (hotel.getValue() != null && result.get(hotel.getKey()) != null) {
-            assertObjectEquals(result.get(hotel.getKey()), hotel.getValue());
-        }
     }
 
     <T> void assertRangeFacets(List<RangeFacetResult<T>> baseRateFacets, List<RangeFacetResult<T>> lastRenovationDateFacets) {

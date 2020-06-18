@@ -179,8 +179,6 @@ container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SE
 // ...
 ```
 
-See the complete code in [`HelloWorldDemo.java`](../azure-cosmos-examples/src/main/java/com/azure/cosmos/examples/HelloWorldDemo.java)
-
 We have a get started sample app available [here][getting_started].
 
 Also, we have more examples [examples project][samples].

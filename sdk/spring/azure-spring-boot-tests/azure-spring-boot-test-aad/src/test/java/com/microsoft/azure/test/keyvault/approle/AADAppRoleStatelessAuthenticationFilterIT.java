@@ -7,7 +7,6 @@ import com.microsoft.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthentic
 import com.microsoft.azure.test.utils.AppRunner;
 import com.microsoft.azure.test.oauth.OAuthResponse;
 import com.microsoft.azure.test.oauth.OAuthUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
