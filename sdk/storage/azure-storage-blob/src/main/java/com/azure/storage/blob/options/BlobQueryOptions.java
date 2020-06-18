@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
+import java.io.OutputStream;
 import java.util.function.Consumer;
 
 /**
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
 public class BlobQueryOptions {
 
     private final String expression;
+    private final OutputStream outputStream;
     private BlobQuerySerialization inputSerialization;
     private BlobQuerySerialization outputSerialization;
     private BlobRequestConditions requestConditions;
@@ -32,6 +34,19 @@ public class BlobQueryOptions {
     public BlobQueryOptions(String expression) {
         StorageImplUtils.assertNotNull("expression", expression);
         this.expression = expression;
+        this.outputStream = null;
+    }
+
+    /**
+     * Constructs a {@link BlobQueryOptions}.
+     * @param expression The query expression.
+     * @param outputStream The OutputStream where the downloaded data will be written.
+     */
+    public BlobQueryOptions(String expression, OutputStream outputStream) {
+        StorageImplUtils.assertNotNull("expression", expression);
+        StorageImplUtils.assertNotNull("outputStream", outputStream);
+        this.expression = expression;
+        this.outputStream = outputStream;
     }
 
     /**
@@ -41,6 +56,15 @@ public class BlobQueryOptions {
      */
     public String getExpression() {
         return expression;
+    }
+
+    /**
+     * Gets the outputStream where the downloaded data will be written.
+     *
+     * @return the outputStream.
+     */
+    public OutputStream getOutputStream() {
+        return this.outputStream;
     }
 
     /**

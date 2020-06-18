@@ -14,11 +14,11 @@ import com.azure.storage.blob.models.FilterBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
-import com.azure.storage.blob.models.FindBlobsOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -212,7 +212,7 @@ public final class BlobServiceClient {
      * @return The list of blobs.
      */
     public PagedIterable<FilterBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(query, null, null);
+        return this.findBlobsByTags(new FindBlobsOptions(query), null);
     }
 
     /**
@@ -222,15 +222,14 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String-FindBlobsOptions-Duration}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration}
      *
-     * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @param options {@link FindBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
-        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(query, options, timeout));
+    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options, timeout));
     }
 
     /**
@@ -456,8 +455,8 @@ public final class BlobServiceClient {
      */
     public BlobContainerClient undeleteBlobContainer(String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion),
-            null, Context.NONE).getValue();
+            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion), null,
+            Context.NONE).getValue();
     }
 
     /**
@@ -484,8 +483,7 @@ public final class BlobServiceClient {
     public Response<BlobContainerClient> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options, Duration timeout, Context context) {
         Mono<Response<BlobContainerClient>> response =
-            this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                options, context)
+            this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(options, context)
             .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
 
         return blockWithOptionalTimeout(response, timeout);

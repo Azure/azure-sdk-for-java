@@ -1,7 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
+
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
 
 import java.util.Map;
 
@@ -9,11 +12,28 @@ import java.util.Map;
  * Extended options that may be passed when creating a Page Blob.
  */
 public class PageBlobCreateOptions {
+    private final long size;
     private Long sequenceNumber;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private BlobRequestConditions requestConditions;
+
+    /**
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     */
+    public PageBlobCreateOptions(long size) {
+        this.size = size;
+    }
+
+    /**
+     * @return Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     */
+    public long getSize() {
+        return this.size;
+    }
 
     /**
      * @return A user-controlled value that you can use to track requests. The value of the sequence

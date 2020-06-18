@@ -10,10 +10,10 @@ import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
-import com.azure.storage.blob.models.FindBlobsOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
@@ -106,17 +106,17 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippets for {@link BlobServiceAsyncClient#findBlobsByTags(String)} and
-     * {@link BlobServiceAsyncClient#findBlobsByTags(String, com.azure.storage.blob.models.FindBlobsOptions)}
+     * {@link BlobServiceAsyncClient#findBlobsByTags(FindBlobsOptions)}
      */
     public void findBlobsByTag() {
         // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
         client.findBlobsByTags("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
         // END: com.azure.storage.blob.BlobServiceAsyncClient.findBlobsByTag#String
 
-        // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions
-        client.findBlobsByTags("where=tag=value", new FindBlobsOptions().setMaxResultsPerPage(10))
+        // BEGIN: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10))
             .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
-        // END: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions
+        // END: com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions
     }
 
     /**

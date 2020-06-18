@@ -303,10 +303,10 @@ public class DataLakeFileClientJavaDocSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileClient#queryWithResponse(OutputStream, FileQueryOptions, Duration, Context)}
+     * Code snippet for {@link DataLakeFileClient#queryWithResponse(FileQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Duration-Context
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT * from BlobStorage";
         FileQueryJsonSerialization input = new FileQueryJsonSerialization()
@@ -321,16 +321,16 @@ public class DataLakeFileClientJavaDocSamples {
         Consumer<FileQueryError> errorConsumer = System.out::println;
         Consumer<FileQueryProgress> progressConsumer = progress -> System.out.println("total file bytes read: "
             + progress.getBytesScanned());
-        FileQueryOptions queryOptions = new FileQueryOptions(expression)
+        FileQueryOptions queryOptions = new FileQueryOptions(expression, queryData)
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
             .setProgressConsumer(progressConsumer);
         System.out.printf("Query completed with status %d%n",
-            client.queryWithResponse(queryData, queryOptions, timeout, new Context(key1, value1))
+            client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#OutputStream-FileQueryOptions-Duration-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Duration-Context
     }
 
 }

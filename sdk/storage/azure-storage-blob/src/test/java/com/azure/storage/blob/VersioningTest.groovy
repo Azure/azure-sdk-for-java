@@ -35,7 +35,7 @@ class VersioningTest extends APISpec {
     }
 
     def cleanup() {
-        blobContainerClient.delete();
+        blobContainerClient.delete()
     }
 
     def "Create Block Blob with Version"() {
@@ -62,8 +62,8 @@ class VersioningTest extends APISpec {
 
     def "Create Append Blob with Version"() {
         when:
-        def blobItemV1 = blobClient.getAppendBlobClient().create();
-        def blobItemV2 = blobClient.getAppendBlobClient().create(true);
+        def blobItemV1 = blobClient.getAppendBlobClient().create()
+        def blobItemV2 = blobClient.getAppendBlobClient().create(true)
 
         then:
         blobItemV1.getVersionId() != null
@@ -114,7 +114,7 @@ class VersioningTest extends APISpec {
         def permission = new BlobSasPermission()
             .setDeleteVersionPermission(true)
         def sasToken = blobClient.getVersionClient(blobItemV1.getVersionId())
-            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission));
+            .generateSas(new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission))
 
         def sasClient = getBlobClient(blobClient.getVersionClient(blobItemV1.getVersionId()).getBlobUrl(), sasToken)
 
@@ -178,8 +178,8 @@ class VersioningTest extends APISpec {
         def valV2 = "val2"
         def valV3 = "val3"
         def blobItemV1 = blobClient.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
-        def responseV2 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE);
-        def responseV3 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE);
+        def responseV2 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV2), null, null, Context.NONE)
+        def responseV3 = blobClient.getBlockBlobClient().setMetadataWithResponse(Collections.singletonMap(key, valV3), null, null, Context.NONE)
         def versionId1 = blobItemV1.getVersionId()
         def versionId2 = responseV2.getHeaders().getValue("x-ms-version-id")
         def versionId3 = responseV3.getHeaders().getValue("x-ms-version-id")

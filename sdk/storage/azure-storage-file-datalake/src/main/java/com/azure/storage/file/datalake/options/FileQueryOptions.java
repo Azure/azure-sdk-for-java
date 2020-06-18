@@ -10,6 +10,7 @@ import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
 
+import java.io.OutputStream;
 import java.util.function.Consumer;
 
 /**
@@ -19,6 +20,7 @@ import java.util.function.Consumer;
 public class FileQueryOptions {
 
     private final String expression;
+    private final OutputStream outputStream;
     private FileQuerySerialization inputSerialization;
     private FileQuerySerialization outputSerialization;
     private DataLakeRequestConditions requestConditions;
@@ -32,6 +34,19 @@ public class FileQueryOptions {
     public FileQueryOptions(String expression) {
         StorageImplUtils.assertNotNull("expression", expression);
         this.expression = expression;
+        this.outputStream = null;
+    }
+
+    /**
+     * Constructs a {@link FileQueryOptions}.
+     * @param expression The query expression.
+     * @param outputStream Gets the OutputStream where the downloaded data will be written.
+     */
+    public FileQueryOptions(String expression, OutputStream outputStream) {
+        StorageImplUtils.assertNotNull("expression", expression);
+        StorageImplUtils.assertNotNull("outputStream", outputStream);
+        this.expression = expression;
+        this.outputStream = outputStream;
     }
 
     /**
@@ -41,6 +56,15 @@ public class FileQueryOptions {
      */
     public String getExpression() {
         return expression;
+    }
+
+    /**
+     * Gets the outputStream where the downloaded data will be written.
+     *
+     * @return the outputStream.
+     */
+    public OutputStream getOutputStream() {
+        return this.outputStream;
     }
 
     /**

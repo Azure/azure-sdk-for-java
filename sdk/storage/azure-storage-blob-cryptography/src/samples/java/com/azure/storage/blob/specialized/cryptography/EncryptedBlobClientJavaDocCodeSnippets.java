@@ -7,8 +7,8 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -105,7 +105,7 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link EncryptedBlobClient#uploadFromFile(String, com.azure.storage.blob.models.BlobUploadFromFileOptions, Duration)}
+     * Code snippet for {@link EncryptedBlobClient#uploadFromFileWithResponse(BlobUploadFromFileOptions, Duration, Context)}
      *
      * @throws IOException If an I/O error occurs
      */
@@ -127,7 +127,8 @@ public class EncryptedBlobClientJavaDocCodeSnippets {
         try {
             client.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout, Context.NONE);
+                .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions), timeout,
+                Context.NONE);
             System.out.println("Upload from file succeeded");
         } catch (UncheckedIOException ex) {
             System.err.printf("Failed to upload from file %s%n", ex.getMessage());

@@ -20,7 +20,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.PageBlobCreateOptions
+import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -685,7 +685,7 @@ class ContainerAPITest extends APISpec {
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
         tags.put("tag", "value")
-        tagsBlob.createWithResponse(512, new PageBlobCreateOptions().setTags(tags), null, null)
+        tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
         uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())

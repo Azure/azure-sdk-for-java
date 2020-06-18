@@ -19,16 +19,19 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
-import com.azure.storage.blob.models.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -207,7 +210,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(data, length, new BlockBlobSimpleUploadOptions().setHeaders(headers)
+        return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
             .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
     }
 
@@ -226,35 +229,35 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlockBlobSimpleUploadOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#BlockBlobSimpleUploadOptions}
      *
-     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
-     * @param length The exact length of the data. It is important that this value match precisely the length of the
-     * data emitted by the {@code Flux}.
      * @param options {@link BlockBlobSimpleUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length,
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(
         BlockBlobSimpleUploadOptions options) {
         try {
-            return withContext(context -> uploadWithResponse(data, length, options, context));
+            return withContext(context -> uploadWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length,
-        BlockBlobSimpleUploadOptions options, Context context) {
-        options = options == null ? new BlockBlobSimpleUploadOptions() : options;
+    Mono<Response<BlockBlobItem>> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+            options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+            .subscribeOn(Schedulers.elastic())
+            : options.getDataFlux();
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, length, null, options.getContentMd5(), options.getMetadata(), requestConditions.getLeaseId(),
-            options.getTier(), requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()),
+            null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(),
+            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
@@ -550,7 +553,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions) {
-        return this.commitBlockListWithResponse(base64BlockIds, new BlockBlobCommitBlockListOptions()
+        return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds)
             .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions));
     }
 
@@ -566,30 +569,28 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlockBlobCommitBlockListOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#BlockBlobCommitBlockListOptions}
      *
-     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param options {@link BlockBlobCommitBlockListOptions}
      * @return A reactive response containing the information of the block blob.
      */
-    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
-        BlockBlobCommitBlockListOptions options) {
+    public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options) {
         try {
-            return withContext(context -> commitBlockListWithResponse(base64BlockIds, options, context));
+            return withContext(context -> commitBlockListWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
-            BlockBlobCommitBlockListOptions options, Context context) {
-        options = options == null ? new BlockBlobCommitBlockListOptions() : options;
+    Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
+        Context context) {
+        StorageImplUtils.assertNotNull("options", options);
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
-            new BlockLookupList().setLatest(base64BlockIds), null, null, null, options.getMetadata(),
+            new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()), options.getHeaders(),

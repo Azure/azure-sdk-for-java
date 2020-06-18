@@ -1,10 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobRequestConditions;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,11 +17,26 @@ import java.util.Map;
  */
 @Fluent
 public class BlockBlobCommitBlockListOptions {
+    private final List<String> base64BlockIds;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+
+    /**
+     * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     */
+    public BlockBlobCommitBlockListOptions(List<String> base64BlockIds) {
+        this.base64BlockIds = base64BlockIds == null ? null : Collections.unmodifiableList(base64BlockIds);
+    }
+
+    /**
+     * @return A list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     */
+    public List<String> getBase64BlockIds() {
+        return this.base64BlockIds;
+    }
 
     /**
      * @return {@link BlobHttpHeaders}

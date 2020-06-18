@@ -30,13 +30,13 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.FindBlobsOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -359,7 +359,7 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of blobs.
      */
     public PagedFlux<FilterBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(query, null, null);
+        return this.findBlobsByTags(new FindBlobsOptions(query));
     }
 
     /**
@@ -368,26 +368,25 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions}
      *
-     * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @param options {@link FindBlobsOptions}
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options) {
+    public PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
-            return findBlobsByTags(query, options, null);
+            return findBlobsByTags(options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
-        FindBlobsOptions finalOptions = options == null ? new FindBlobsOptions() : options;
+        StorageImplUtils.assertNotNull("options", options);
 
         Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(query, marker, finalOptions.getMaxResultsPerPage(), timeout)
+            marker -> findBlobsByTags(options.getQuery(), marker, options.getMaxResultsPerPage(), timeout)
                 .map(response -> {
                     List<FilterBlobItem> value = response.getValue().getBlobs() == null
                         ? Collections.emptyList()
@@ -877,13 +876,13 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        UndeleteBlobContainerOptions options,
-        Context context) {
+        UndeleteBlobContainerOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         boolean hasOptionalDestinationContainerName = options.getDestinationContainerName() != null;
         String finalDestinationContainerName =
             hasOptionalDestinationContainerName ? options.getDestinationContainerName()
                 : options.getDeletedContainerName();
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().restoreWithRestResponseAsync(finalDestinationContainerName, null,
             null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

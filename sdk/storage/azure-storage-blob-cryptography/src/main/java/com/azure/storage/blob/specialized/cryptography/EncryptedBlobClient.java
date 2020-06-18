@@ -17,9 +17,9 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
-import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -193,8 +193,8 @@ public class EncryptedBlobClient extends BlobClient {
         Duration timeout) throws UncheckedIOException {
         this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions),
-            timeout, null);
+                .setTier(tier).setRequestConditions(requestConditions), timeout,
+            null);
     }
 
     /**
@@ -206,12 +206,13 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * @param options {@link BlobUploadFromFileOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws UncheckedIOException If an I/O error occurs
      * @return Information about the uploaded block blob.
      */
     @Override
     public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options,
-                                                              Duration timeout, Context context)
+        Duration timeout, Context context)
         throws UncheckedIOException {
         Mono<Response<BlockBlobItem>> upload =
             this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
@@ -282,7 +283,7 @@ public class EncryptedBlobClient extends BlobClient {
      * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
-    public BlobQueryResponse queryWithResponse(OutputStream stream, BlobQueryOptions queryOptions,
+    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
         Duration timeout, Context context) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));

@@ -580,11 +580,21 @@ class Transforms {
         if (options == null) {
             return null;
         }
-        return new BlobQueryOptions(options.getExpression())
-            .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
-            .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
-            .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-            .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
-            .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
+        if (options.getOutputStream() == null) {
+            return new BlobQueryOptions(options.getExpression())
+                .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
+                .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
+                .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
+                .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
+                .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
+        } else {
+            return new BlobQueryOptions(options.getExpression(), options.getOutputStream())
+                .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
+                .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
+                .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
+                .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
+                .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
+        }
+
     }
 }

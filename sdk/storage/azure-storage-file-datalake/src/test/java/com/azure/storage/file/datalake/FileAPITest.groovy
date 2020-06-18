@@ -2848,7 +2848,8 @@ class FileAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        fc.queryWithResponse(os, new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        fc.queryWithResponse(new FileQueryOptions(expression, os)
+            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -2914,7 +2915,8 @@ class FileAPITest extends APISpec {
         /* Output Stream. */
         when:
         OutputStream os = new ByteArrayOutputStream()
-        fc.queryWithResponse(os, new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        fc.queryWithResponse(new FileQueryOptions(expression, os)
+            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -2935,11 +2937,13 @@ class FileAPITest extends APISpec {
         fc.read(downloadData)
         downloadData.write(10) /* writing extra new line */
         byte[] downloadedData = downloadData.toByteArray()
-        FileQueryOptions options = new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)
+        FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(ser).setOutputSerialization(ser)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(optionsIs)
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -2948,8 +2952,7 @@ class FileAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        OutputStream os = new ByteArrayOutputStream()
-        fc.queryWithResponse(os, options, null, null)
+        fc.queryWithResponse(optionsOs, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -2977,11 +2980,13 @@ class FileAPITest extends APISpec {
             .setRecordSeparator('\n' as char)
         def expression = "SELECT * from BlobStorage"
         byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes()
-        FileQueryOptions options = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
+        FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(optionsIs)
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -2992,8 +2997,7 @@ class FileAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        OutputStream os = new ByteArrayOutputStream()
-        fc.queryWithResponse(os, options, null, null)
+        fc.queryWithResponse(optionsOs, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -3016,11 +3020,13 @@ class FileAPITest extends APISpec {
             .setHeadersPresent(false)
         def expression = "SELECT * from BlobStorage"
         byte[] expectedData = "owner0,owner1\n".getBytes()
-        FileQueryOptions options = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
+        FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
+        OutputStream os = new ByteArrayOutputStream()
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStream(options)
+        InputStream qqStream = fc.openQueryInputStream(optionsIs)
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -3031,8 +3037,7 @@ class FileAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        OutputStream os = new ByteArrayOutputStream()
-        fc.queryWithResponse(os, options, null, null)
+        fc.queryWithResponse(optionsOs, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -3069,11 +3074,11 @@ class FileAPITest extends APISpec {
         /* Output Stream. */
         when:
         receiver = new MockErrorReceiver("InvalidColumnOrdinal")
-        options = new FileQueryOptions(expression)
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
             .setErrorConsumer(receiver)
-        fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
+        fc.queryWithResponse(options, null, null)
 
         then:
         notThrown(IOException)
@@ -3102,7 +3107,9 @@ class FileAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(new FileQueryJsonSerialization())
+        fc.queryWithResponse(options, null, null)
 
         then:
         thrown(Exceptions.ReactiveException)
@@ -3142,9 +3149,9 @@ class FileAPITest extends APISpec {
         /* Output Stream. */
         when:
         mockReceiver = new MockProgressReceiver()
-        options = new FileQueryOptions(expression)
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
             .setProgressConsumer(mockReceiver as Consumer)
-        fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
+        fc.queryWithResponse(options, null, null)
 
         then:
         mockReceiver.progressList.contains(sizeofBlobToRead)
@@ -3189,9 +3196,9 @@ class FileAPITest extends APISpec {
         when:
         mockReceiver = new MockProgressReceiver()
         temp = 0
-        options = new FileQueryOptions()
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
             .setProgressConsumer(mockReceiver as Consumer)
-        fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
+        fc.queryWithResponse(options, null, null)
 
         then:
         // Make sure theyre all increasingly bigger
@@ -3221,7 +3228,10 @@ class FileAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         when:
-        fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(inSer)
+            .setOutputSerialization(outSer)
+        fc.queryWithResponse(options, null, null)
 
         then:
         thrown(IllegalArgumentException)
@@ -3256,7 +3266,9 @@ class FileAPITest extends APISpec {
         notThrown(DataLakeStorageException)
 
         when:
-        fc.queryWithResponse(new ByteArrayOutputStream(), options,null, null)
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setRequestConditions(bac)
+        fc.queryWithResponse(options, null, null)
 
         then:
         notThrown(DataLakeStorageException)
@@ -3292,7 +3304,9 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
 
         when:
-        fc.queryWithResponse(new ByteArrayOutputStream(), options, null, null)
+        options = new FileQueryOptions(expression, new ByteArrayOutputStream())
+            .setRequestConditions(bac)
+        fc.queryWithResponse(options, null, null)
 
         then:
         thrown(DataLakeStorageException)
@@ -3345,5 +3359,4 @@ class FileAPITest extends APISpec {
             return this;
         }
     }
-
 }

@@ -9,8 +9,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobBeginCopyOptions
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobBeginCopyOptions
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -30,6 +30,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -151,7 +152,8 @@ class BlobAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getValue().getETag() != null
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
+            .getValue().getETag() != null
     }
 
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.
@@ -1511,7 +1513,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), new BlobBeginCopyOptions().setTags(tags)
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
             .setPollInterval(Duration.ofSeconds(1)))
         poller.blockLast()
 
@@ -1826,7 +1828,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), new BlobCopyFromUrlOptions().setTags(tags), null, null)
+        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTags(tags), null, null)
 
         then:
         bu2.getTags() == tags

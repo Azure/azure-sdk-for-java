@@ -1,28 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.models;
+package com.azure.storage.blob.options;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 
 /**
  * Defines options available to configure the behavior of a call to
- * {@link com.azure.storage.blob.BlobServiceClient#findBlobsByTags(String, FindBlobsOptions, Duration)} or
- * {@link com.azure.storage.blob.BlobServiceAsyncClient#findBlobsByTags(String, FindBlobsOptions)}. See the constructor
+ * {@link com.azure.storage.blob.BlobServiceClient#findBlobsByTags(FindBlobsOptions, Duration)} or
+ * {@link com.azure.storage.blob.BlobServiceAsyncClient#findBlobsByTags(FindBlobsOptions)}. See the constructor
  * for details on each of the options.
  */
 public class FindBlobsOptions {
     private final ClientLogger logger = new ClientLogger(FindBlobsOptions.class);
 
+    private final String query;
     private Integer maxResultsPerPage;
 
     /**
-     * Constructs an unpopulated {@link FindBlobsOptions}.
+     * @param query Filters the results to return only blobs whose tags match the specified expression.
      */
-    public FindBlobsOptions() {
+    public FindBlobsOptions(String query) {
+        StorageImplUtils.assertNotNull("query", query);
+        this.query = query;
+    }
 
+    /**
+     * @return Filters the results to return only blobs whose tags match the specified expression.
+     */
+    public String getQuery() {
+        return this.query;
     }
 
     /**
