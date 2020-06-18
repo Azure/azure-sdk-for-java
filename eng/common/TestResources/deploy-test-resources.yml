@@ -1,6 +1,6 @@
 parameters:
   ServiceDirectory: not-set
-  ArmTemplateParameters: '@{ default = "default" }'
+  ArmTemplateParameters: '@{}'
   DeleteAfterHours: 24
   Location: ''
   SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
