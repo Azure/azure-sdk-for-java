@@ -72,7 +72,7 @@ class ChangefeedNetworkTest extends APISpec {
     }
 
     @Unroll
-    @Requires( { playbackMode() })
+//    @Requires( { playbackMode() })
     def "continuationToken"() {
         setup:
         BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
@@ -100,9 +100,9 @@ class ChangefeedNetworkTest extends APISpec {
 
         where:
         numPagesToIterate || numEventsFromContinuationToken
-//        1                 || 3138
+        33                || 0
+        1                 || 3138
 //        5                 || 2738
 //        10                || 2238
-        33                || 0
     }
 }
