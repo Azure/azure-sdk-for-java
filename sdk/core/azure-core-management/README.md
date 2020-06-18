@@ -10,7 +10,7 @@ Azure Core Management library is a collection of classes common to the Azure ARM
 
 ### Adding the package to your product
 
-[//]: # ({x-version-update-start;com.azure:azure-core-management;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-core-management;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
