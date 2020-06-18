@@ -623,6 +623,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
         for (Channel channel : this.availableChannels) {
 
             final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
+
+            if (manager == null) {
+                logger.debug("Channel({}) unavailable", channel);
+                continue;
+            }
+
             final long pendingRequestCount = manager.pendingRequestCount();
 
             if (pendingRequestCount < pendingRequestCountMin) {
