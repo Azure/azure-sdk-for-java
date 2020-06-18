@@ -25,6 +25,12 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     private String name;
 
     /*
+     * Resource type
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /*
      * If a value is provided and is different from the previous value, the
      * extension handler will be forced to update even if the extension
      * configuration has not changed.
@@ -43,7 +49,7 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      * "CustomScriptExtension".
      */
     @JsonProperty(value = "properties.type")
-    private String type;
+    private String typePropertiesType;
 
     /*
      * Specifies the version of the script handler.
@@ -107,6 +113,15 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     }
 
     /**
+     * Get the type property: Resource type.
+     *
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
      *
@@ -149,22 +164,22 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     }
 
     /**
-     * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Get the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @return the type value.
+     * @return the typePropertiesType value.
      */
-    public String type() {
-        return this.type;
+    public String typePropertiesType() {
+        return this.typePropertiesType;
     }
 
     /**
-     * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @param type the type value to set.
+     * @param typePropertiesType the typePropertiesType value to set.
      * @return the VirtualMachineScaleSetExtensionInner object itself.
      */
-    public VirtualMachineScaleSetExtensionInner withType(String type) {
-        this.type = type;
+    public VirtualMachineScaleSetExtensionInner withTypePropertiesType(String typePropertiesType) {
+        this.typePropertiesType = typePropertiesType;
         return this;
     }
 

@@ -33,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.inner.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.inner.SnapshotInner;
@@ -310,7 +311,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -366,7 +367,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
@@ -391,7 +392,7 @@ public final class SnapshotsClient
      * @return snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, snapshotName, snapshot);
@@ -415,7 +416,7 @@ public final class SnapshotsClient
      * @return snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(
+    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(resourceGroupName, snapshotName, snapshot, context);
@@ -438,14 +439,46 @@ public final class SnapshotsClient
      * @return snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(
+        String resourceGroupName, String snapshotName, SnapshotInner snapshot) {
+        return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param snapshot Snapshot resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreateOrUpdate(
+        String resourceGroupName, String snapshotName, SnapshotInner snapshot, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot, context).getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param snapshot Snapshot resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> createOrUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, snapshotName, snapshot);
-        return this
-            .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -466,12 +499,7 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> createOrUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotInner snapshot, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, snapshotName, snapshot, context);
-        return this
-            .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class)
+        return beginCreateOrUpdateAsync(resourceGroupName, snapshotName, snapshot, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -551,7 +579,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -607,7 +635,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .update(
                 this.client.getEndpoint(),
@@ -632,7 +660,7 @@ public final class SnapshotsClient
      * @return snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
+    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, snapshotName, snapshot);
         return this
@@ -655,7 +683,7 @@ public final class SnapshotsClient
      * @return snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
+    public PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateWithResponseAsync(resourceGroupName, snapshotName, snapshot, context);
@@ -678,12 +706,45 @@ public final class SnapshotsClient
      * @return snapshot resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
+        String resourceGroupName, String snapshotName, SnapshotUpdate snapshot) {
+        return beginUpdateAsync(resourceGroupName, snapshotName, snapshot).getSyncPoller();
+    }
+
+    /**
+     * Updates (patches) a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param snapshot Snapshot update resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
+        String resourceGroupName, String snapshotName, SnapshotUpdate snapshot, Context context) {
+        return beginUpdateAsync(resourceGroupName, snapshotName, snapshot, context).getSyncPoller();
+    }
+
+    /**
+     * Updates (patches) a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param snapshot Snapshot update resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return snapshot resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> updateAsync(String resourceGroupName, String snapshotName, SnapshotUpdate snapshot) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, snapshotName, snapshot);
-        return this
-            .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class)
+        return beginUpdateAsync(resourceGroupName, snapshotName, snapshot)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -704,12 +765,7 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SnapshotInner> updateAsync(
         String resourceGroupName, String snapshotName, SnapshotUpdate snapshot, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, snapshotName, snapshot, context);
-        return this
-            .client
-            .<SnapshotInner, SnapshotInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), SnapshotInner.class, SnapshotInner.class)
+        return beginUpdateAsync(resourceGroupName, snapshotName, snapshot, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -783,7 +839,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -832,7 +888,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .getByResourceGroup(
                 this.client.getEndpoint(),
@@ -957,7 +1013,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1006,7 +1062,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .delete(
                 this.client.getEndpoint(),
@@ -1029,7 +1085,7 @@ public final class SnapshotsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(String resourceGroupName, String snapshotName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String snapshotName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, snapshotName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1047,7 +1103,7 @@ public final class SnapshotsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDelete(
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String snapshotName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, snapshotName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -1065,13 +1121,42 @@ public final class SnapshotsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String snapshotName) {
+        return beginDeleteAsync(resourceGroupName, snapshotName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String snapshotName, Context context) {
+        return beginDeleteAsync(resourceGroupName, snapshotName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String snapshotName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, snapshotName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginDeleteAsync(resourceGroupName, snapshotName).last().flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -1088,10 +1173,7 @@ public final class SnapshotsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String snapshotName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, snapshotName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginDeleteAsync(resourceGroupName, snapshotName, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -1154,7 +1236,7 @@ public final class SnapshotsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1206,7 +1288,7 @@ public final class SnapshotsClient
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
@@ -1304,7 +1386,7 @@ public final class SnapshotsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1344,7 +1426,7 @@ public final class SnapshotsClient
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
             .map(
@@ -1450,7 +1532,7 @@ public final class SnapshotsClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1507,7 +1589,7 @@ public final class SnapshotsClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .grantAccess(
                 this.client.getEndpoint(),
@@ -1532,7 +1614,7 @@ public final class SnapshotsClient
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             grantAccessWithResponseAsync(resourceGroupName, snapshotName, grantAccessData);
@@ -1556,7 +1638,7 @@ public final class SnapshotsClient
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+    public PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             grantAccessWithResponseAsync(resourceGroupName, snapshotName, grantAccessData, context);
@@ -1579,14 +1661,46 @@ public final class SnapshotsClient
      * @return a disk access SAS uri.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+        String resourceGroupName, String snapshotName, GrantAccessData grantAccessData) {
+        return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData).getSyncPoller();
+    }
+
+    /**
+     * Grants access to a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param grantAccessData Data used for requesting a SAS.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a disk access SAS uri.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
+        String resourceGroupName, String snapshotName, GrantAccessData grantAccessData, Context context) {
+        return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData, context).getSyncPoller();
+    }
+
+    /**
+     * Grants access to a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param grantAccessData Data used for requesting a SAS.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a disk access SAS uri.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessUriInner> grantAccessAsync(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            grantAccessWithResponseAsync(resourceGroupName, snapshotName, grantAccessData);
-        return this
-            .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class)
+        return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -1607,12 +1721,7 @@ public final class SnapshotsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessUriInner> grantAccessAsync(
         String resourceGroupName, String snapshotName, GrantAccessData grantAccessData, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            grantAccessWithResponseAsync(resourceGroupName, snapshotName, grantAccessData, context);
-        return this
-            .client
-            .<AccessUriInner, AccessUriInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), AccessUriInner.class, AccessUriInner.class)
+        return beginGrantAccessAsync(resourceGroupName, snapshotName, grantAccessData, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -1686,7 +1795,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1735,7 +1844,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .revokeAccess(
                 this.client.getEndpoint(),
@@ -1758,7 +1867,7 @@ public final class SnapshotsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String snapshotName) {
+    public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName, String snapshotName) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, snapshotName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -1776,7 +1885,7 @@ public final class SnapshotsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRevokeAccess(
+    public PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(
         String resourceGroupName, String snapshotName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, snapshotName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -1794,11 +1903,42 @@ public final class SnapshotsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String snapshotName) {
+        return beginRevokeAccessAsync(resourceGroupName, snapshotName).getSyncPoller();
+    }
+
+    /**
+     * Revokes access to a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginRevokeAccess(
+        String resourceGroupName, String snapshotName, Context context) {
+        return beginRevokeAccessAsync(resourceGroupName, snapshotName, context).getSyncPoller();
+    }
+
+    /**
+     * Revokes access to a snapshot.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param snapshotName The name of the snapshot that is being created. The name can't be changed after the snapshot
+     *     is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The max name length is 80 characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String snapshotName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, snapshotName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginRevokeAccessAsync(resourceGroupName, snapshotName)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -1817,10 +1957,7 @@ public final class SnapshotsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeAccessAsync(String resourceGroupName, String snapshotName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = revokeAccessWithResponseAsync(resourceGroupName, snapshotName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginRevokeAccessAsync(resourceGroupName, snapshotName, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -1895,7 +2032,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1951,7 +2088,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginCreateOrUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -2092,7 +2229,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2148,7 +2285,7 @@ public final class SnapshotsClient
         } else {
             snapshot.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginUpdateWithoutPolling(
                 this.client.getEndpoint(),
@@ -2283,7 +2420,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2332,7 +2469,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginDeleteWithoutPolling(
                 this.client.getEndpoint(),
@@ -2449,7 +2586,7 @@ public final class SnapshotsClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2506,7 +2643,7 @@ public final class SnapshotsClient
         } else {
             grantAccessData.validate();
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginGrantAccessWithoutPolling(
                 this.client.getEndpoint(),
@@ -2642,7 +2779,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2691,7 +2828,7 @@ public final class SnapshotsClient
         if (snapshotName == null) {
             return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
         }
-        final String apiVersion = "2019-07-01";
+        final String apiVersion = "2019-11-01";
         return service
             .beginRevokeAccessWithoutPolling(
                 this.client.getEndpoint(),
