@@ -2982,7 +2982,7 @@ class FileAPITest extends APISpec {
         byte[] expectedData = "{\"_1\":\"100\",\"_2\":\"200\",\"_3\":\"300\",\"_4\":\"400\"}".getBytes()
         FileQueryOptions optionsIs = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
         OutputStream os = new ByteArrayOutputStream()
-        FileQueryOptions optionsOs = new FileQueryOptions(expression).setInputSerialization(inSer).setOutputSerialization(outSer)
+        FileQueryOptions optionsOs = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
@@ -3359,5 +3359,4 @@ class FileAPITest extends APISpec {
             return this;
         }
     }
-
 }
