@@ -26,6 +26,7 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
