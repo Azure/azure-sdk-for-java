@@ -5,23 +5,26 @@
 
 #Azure Cosmos DB client library for Java
 
+## Getting started
 [Azure Cosmos DB](https://docs.microsoft.com/en-us/azure/cosmos-db/introduction) is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Cassandra, Graph, and Table.
 
 **Spring Data Azure Cosmos DB** provides initial Spring Data support for Azure Cosmos DB using the [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-introduction), based on Spring Data framework. Currently it only supports SQL API, the other APIs are in the plan. 
 
 ## TOC
 
-* [Sample Code](#sample-code)
+* [Examples](#Examples)
 * [Spring data version support](#spring-data-version-support)
 * [Feature List](#feature-list)
 * [Quick Start](#quick-start)
 * [Query Partitioned Collection](QueryPartitionedCollection.md)
 * [Snapshots](#snapshots)
-* [Filing Issues](#filing-issues)
-* [How to Contribute](#how-to-contribute)
+* [Troubleshooting](#Troubleshooting)
+* [Contributing](#Contributing)
 * [Code of Conduct](#code-of-conduct)
+* [Key concepts](#Key concepts)
+* [Next steps](#Next steps)
 
-## Sample Code
+## Examples
 Please refer to [sample project here](./samplecode).
 
 ## Spring Data Version Support
@@ -316,13 +319,13 @@ Snapshots built from `master` branch are available, add [maven repositories](htt
 </repositories>
 ```
 
-## Filing Issues
+## Troubleshooting
 
 If you encounter any bug, please file an issue [here](https://github.com/Microsoft/spring-data-cosmosdb/issues/new).
 
 To suggest a new feature or changes that could be made, file an issue the same way you would for a bug.
 
-## How To Contribute
+## Contributing
 
 Contribution is welcome. Please follow [this instruction](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md) to contribute code.
 
@@ -333,3 +336,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 ### Data/Telemetry
 
  This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy](https://privacy.microsoft.com/en-us/privacystatement) statement to learn more.
+
+## Key concepts
+
+## Next steps
