@@ -302,7 +302,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             return dataFinal.flatMap(df -> super.uploadWithResponse(new BlobParallelUploadOptions(df)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                 .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
-                .setRequestConditions(options.getRequestConditions()).setTimeout(options.getTimeout())));
+                .setRequestConditions(options.getRequestConditions())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
