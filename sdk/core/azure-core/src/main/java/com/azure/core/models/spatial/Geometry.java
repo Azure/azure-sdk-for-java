@@ -3,25 +3,36 @@
 
 package com.azure.core.models.spatial;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * An abstract representation of a geometry.
  */
+@JsonSubTypes({
+    @JsonSubTypes.Type(PointGeometry.class),
+    @JsonSubTypes.Type(LineGeometry.class),
+    @JsonSubTypes.Type(PolygonGeometry.class),
+    @JsonSubTypes.Type(MultiPointGeometry.class),
+    @JsonSubTypes.Type(MultiLineGeometry.class),
+    @JsonSubTypes.Type(MultiPolygonGeometry.class),
+    @JsonSubTypes.Type(CollectionGeometry.class)
+})
 public abstract class Geometry {
     private final GeometryBoundingBox boundingBox;
     private final Map<String, Object> properties;
 
-    Geometry(GeometryBoundingBox boundingBox, Map<String, Object> properties) {
+    protected Geometry(GeometryBoundingBox boundingBox, Map<String, Object> properties) {
         this.boundingBox = boundingBox;
 
         if (properties == null) {
-            this.properties = Collections.emptyMap();
+            this.properties = null;
         } else {
-            this.properties = properties.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            this.properties = Collections.unmodifiableMap(new HashMap<>(properties));
         }
     }
 
@@ -41,5 +52,25 @@ public abstract class Geometry {
      */
     public Map<String, Object> getProperties() {
         return properties;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(boundingBox, properties);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Geometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        Geometry other = (Geometry) obj;
+
+        return Objects.equals(boundingBox, other.boundingBox) && Objects.equals(properties, other.properties);
     }
 }

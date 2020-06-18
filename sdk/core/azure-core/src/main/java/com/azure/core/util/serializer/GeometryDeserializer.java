@@ -18,7 +18,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.node.TreeTraversingParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,52 +61,62 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
     static final SimpleModule MODULE;
 
     static {
-        MODULE = new SimpleModule();
-        MODULE.addDeserializer(Geometry.class, new GeometryDeserializer());
+        MODULE = new SimpleModule()
+            .addDeserializer(Geometry.class, new GeometryDeserializer())
+            .addDeserializer(PointGeometry.class, geometrySubclassDeserializer(PointGeometry.class))
+            .addDeserializer(LineGeometry.class, geometrySubclassDeserializer(LineGeometry.class))
+            .addDeserializer(PolygonGeometry.class, geometrySubclassDeserializer(PolygonGeometry.class))
+            .addDeserializer(MultiPointGeometry.class, geometrySubclassDeserializer(MultiPointGeometry.class))
+            .addDeserializer(MultiLineGeometry.class, geometrySubclassDeserializer(MultiLineGeometry.class))
+            .addDeserializer(MultiPolygonGeometry.class, geometrySubclassDeserializer(MultiPolygonGeometry.class))
+            .addDeserializer(CollectionGeometry.class, geometrySubclassDeserializer(CollectionGeometry.class));
     }
 
     @Override
     public Geometry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        return read(ctxt.readTree(p));
+        return read(ctxt.readTree(p), ctxt);
     }
 
-    private static Geometry read(JsonNode node) {
+    private static Geometry read(JsonNode node, DeserializationContext ctxt) throws IOException {
         String type = getRequiredProperty(node, TYPE_PROPERTY).asText();
 
         if (GEOMETRY_COLLECTION_TYPE.equalsIgnoreCase(type)) {
             List<Geometry> geometries = new ArrayList<>();
-            getRequiredProperty(node, GEOMETRIES_PROPERTY).forEach(geometryNode -> geometries.add(read(geometryNode)));
+            for (JsonNode geometryNode : getRequiredProperty(node, GEOMETRIES_PROPERTY)) {
+                geometries.add(read(geometryNode, ctxt));
+            }
 
-            return new CollectionGeometry(geometries, readBoundingBox(node), readProperties(node, GEOMETRIES_PROPERTY));
+            return new CollectionGeometry(geometries, readBoundingBox(node),
+                readProperties(node, GEOMETRIES_PROPERTY, ctxt));
         }
 
         JsonNode coordinates = getRequiredProperty(node, COORDINATES_PROPERTY);
 
         GeometryBoundingBox boundingBox = readBoundingBox(node);
-        Map<String, Object> properties = readProperties(node);
+        Map<String, Object> properties = readProperties(node, ctxt);
 
         switch (type) {
             case POINT_TYPE:
                 return new PointGeometry(readCoordinate(coordinates), boundingBox, properties);
             case LINE_STRING_TYPE:
                 return new LineGeometry(readCoordinates(coordinates), boundingBox, properties);
+            case POLYGON_TYPE:
+                List<LineGeometry> rings = new ArrayList<>();
+                coordinates.forEach(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
+
+                return new PolygonGeometry(rings, boundingBox, properties);
             case MULTI_POINT_TYPE:
                 List<PointGeometry> points = new ArrayList<>();
                 readCoordinates(coordinates).forEach(position -> points.add(new PointGeometry(position)));
 
                 return new MultiPointGeometry(points, boundingBox, properties);
-            case POLYGON_TYPE:
-                List<LineGeometry> rings = new ArrayList<>();
-                node.forEach(ring -> rings.add(new LineGeometry(readCoordinates(ring))));
-
-                return new PolygonGeometry(rings, boundingBox, properties);
             case MULTI_LINE_STRING_TYPE:
                 List<LineGeometry> lines = new ArrayList<>();
-                node.forEach(line -> lines.add(new LineGeometry(readCoordinates(line))));
+                coordinates.forEach(line -> lines.add(new LineGeometry(readCoordinates(line))));
 
                 return new MultiLineGeometry(lines, boundingBox, properties);
             case MULTI_POLYGON_TYPE:
-                return readMultiPolygon(node, boundingBox, properties);
+                return readMultiPolygon(coordinates, boundingBox, properties);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     String.format("Unsupported geometry type %s.", type)));
@@ -164,11 +176,12 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         return null;
     }
 
-    private static Map<String, Object> readProperties(JsonNode node) {
-        return readProperties(node, COORDINATES_PROPERTY);
+    private static Map<String, Object> readProperties(JsonNode node, DeserializationContext ctxt) throws IOException {
+        return readProperties(node, COORDINATES_PROPERTY, ctxt);
     }
 
-    private static Map<String, Object> readProperties(JsonNode node, String knownProperty) {
+    private static Map<String, Object> readProperties(JsonNode node, String knownProperty,
+        DeserializationContext ctxt) throws IOException {
         Map<String, Object> additionalProperties = null;
         Iterator<Map.Entry<String, JsonNode>> fieldsIterator = node.fields();
         while (fieldsIterator.hasNext()) {
@@ -184,13 +197,13 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
                 additionalProperties = new HashMap<>();
             }
 
-            additionalProperties.put(propertyName, readAdditionalPropertyValue(field.getValue()));
+            additionalProperties.put(propertyName, readAdditionalPropertyValue(field.getValue(), ctxt));
         }
 
         return additionalProperties;
     }
 
-    private static Object readAdditionalPropertyValue(JsonNode node) {
+    private static Object readAdditionalPropertyValue(JsonNode node, DeserializationContext ctxt) throws IOException {
         switch (node.getNodeType()) {
             case STRING:
                 return node.asText();
@@ -210,14 +223,9 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
             case MISSING:
                 return null;
             case OBJECT:
-                Map<String, Object> map = new HashMap<>();
-                node.fields()
-                    .forEachRemaining(field -> map.put(field.getKey(), readAdditionalPropertyValue(field.getValue())));
-                return map;
             case ARRAY:
-                List<Object> list = new ArrayList<>(node.size());
-                node.forEach(element -> list.add(readAdditionalPropertyValue(element)));
-                return list;
+                JsonParser parser = new TreeTraversingParser(node);
+                return UntypedObjectDeserializer.Vanilla.std.deserialize(parser, ctxt);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     String.format("Unsupported additional property type %s.", node.getNodeType())));
@@ -248,5 +256,14 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         }
 
         return new GeometryPosition(longitude, latitude, altitude);
+    }
+
+    private static <T extends Geometry> JsonDeserializer<T> geometrySubclassDeserializer(Class<T> subclass) {
+        return new JsonDeserializer<T>() {
+            @Override
+            public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+                return subclass.cast(read(ctxt.readTree(p), ctxt));
+            }
+        };
     }
 }

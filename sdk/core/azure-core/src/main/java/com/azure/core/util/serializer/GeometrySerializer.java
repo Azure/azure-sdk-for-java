@@ -93,7 +93,7 @@ final class GeometrySerializer extends JsonSerializer<Geometry> {
             }
             gen.writeEndArray();
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("Geometry type '%s' isn't supported.", value.getClass().getName())));
         }
 

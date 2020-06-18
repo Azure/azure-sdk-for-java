@@ -45,4 +45,24 @@ public final class PointGeometry extends Geometry {
     public GeometryPosition getPosition() {
         return position;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PointGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        PointGeometry other = (PointGeometry) obj;
+
+        return super.equals(obj) && Objects.equals(position, other.position);
+    }
 }

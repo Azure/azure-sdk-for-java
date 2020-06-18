@@ -50,4 +50,24 @@ public final class MultiPolygonGeometry extends Geometry {
     public List<PolygonGeometry> getPolygons() {
         return polygons;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(polygons, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MultiPolygonGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        MultiPolygonGeometry other = (MultiPolygonGeometry) obj;
+
+        return super.equals(obj) && Objects.equals(polygons, other.polygons);
+    }
 }

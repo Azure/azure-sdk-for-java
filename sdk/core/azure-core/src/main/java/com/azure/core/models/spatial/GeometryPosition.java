@@ -3,6 +3,8 @@
 
 package com.azure.core.models.spatial;
 
+import java.util.Objects;
+
 /**
  * Represents a geometric position.
  */
@@ -60,5 +62,26 @@ public final class GeometryPosition {
      */
     public Double getAltitude() {
         return altitude;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(longitude, latitude, altitude);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof GeometryPosition)) {
+            return false;
+        }
+
+        if (obj == this) {
+            return true;
+        }
+
+        GeometryPosition other = (GeometryPosition) obj;
+        return longitude == other.longitude
+            && latitude == other.latitude
+            && Objects.equals(altitude, other.altitude);
     }
 }

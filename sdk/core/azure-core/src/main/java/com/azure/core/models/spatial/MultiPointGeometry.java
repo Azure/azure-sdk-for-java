@@ -50,4 +50,24 @@ public final class MultiPointGeometry extends Geometry {
     public List<PointGeometry> getPoints() {
         return points;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(points, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MultiPointGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        MultiPointGeometry other = (MultiPointGeometry) obj;
+
+        return super.equals(obj) && Objects.equals(points, other.points);
+    }
 }

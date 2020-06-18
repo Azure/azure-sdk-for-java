@@ -3,6 +3,8 @@
 
 package com.azure.core.models.spatial;
 
+import java.util.Objects;
+
 /**
  * Represents a geometric bounding box.
  */
@@ -99,5 +101,29 @@ public final class GeometryBoundingBox {
      */
     public Double getMaxAltitude() {
         return maxAltitude;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(west, south, east, north, minAltitude, maxAltitude);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof GeometryBoundingBox)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        GeometryBoundingBox other = (GeometryBoundingBox) obj;
+        return west == other.west
+            && south == other.south
+            && east == other.east
+            && north == other.north
+            && Objects.equals(minAltitude, other.minAltitude)
+            && Objects.equals(maxAltitude, other.maxAltitude);
     }
 }

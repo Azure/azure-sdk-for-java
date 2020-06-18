@@ -49,4 +49,24 @@ public final class MultiLineGeometry extends Geometry {
     public List<LineGeometry> getLines() {
         return lines;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lines, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MultiLineGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        MultiLineGeometry other = (MultiLineGeometry) obj;
+
+        return super.equals(obj) && Objects.equals(lines, other.lines);
+    }
 }

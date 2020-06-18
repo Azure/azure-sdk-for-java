@@ -50,4 +50,23 @@ public final class LineGeometry extends Geometry {
     public List<GeometryPosition> getPositions() {
         return positions;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(positions, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LineGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        LineGeometry other = (LineGeometry) obj;
+        return super.equals(other) && Objects.equals(positions, other.positions);
+    }
 }

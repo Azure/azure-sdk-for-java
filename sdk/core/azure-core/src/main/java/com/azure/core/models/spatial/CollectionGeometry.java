@@ -49,4 +49,24 @@ public final class CollectionGeometry extends Geometry {
     public List<Geometry> getGeometries() {
         return geometries;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(geometries, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CollectionGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        CollectionGeometry other = (CollectionGeometry) obj;
+
+        return super.equals(other) && Objects.equals(geometries, other.geometries);
+    }
 }

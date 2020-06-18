@@ -48,4 +48,24 @@ public final class PolygonGeometry extends Geometry {
     public List<LineGeometry> getRings() {
         return rings;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rings, super.hashCode());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PolygonGeometry)) {
+            return false;
+        }
+
+        if (this == obj) {
+            return true;
+        }
+
+        PolygonGeometry other = (PolygonGeometry) obj;
+
+        return super.equals(obj) && Objects.equals(rings, other.rings);
+    }
 }
