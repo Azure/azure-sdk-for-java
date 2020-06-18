@@ -9,3 +9,5 @@ variables:
   AdditionalOptions: ''
   # format !<group1Id>:<artifact1Id>, !<group2Id>:<artifact2Id>,... no trailing comma is necessary
   PLSkipOptions: ''
+  # This is the default Java version. It's the version used to build the shipping libraries, spot bugs etc.
+  JavaLTSVersion: '1.11'

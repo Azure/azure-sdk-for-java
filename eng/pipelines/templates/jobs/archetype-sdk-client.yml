@@ -9,31 +9,31 @@ parameters:
   TestMatrix:
     Linux - Java 8:
       OSVmImage: 'ubuntu-18.04'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'macOS on Java 1.8'
     Windows - Java 8:
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
       OSVmImage: 'ubuntu-18.04'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       RunTitle: 'macOS on Java 1.11'
     Windows - Java 11:
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
     Windows From Source - Java 8:
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'From Source: Windows on Java 1.8'
       PLSkipOptions: '!com.azure:jacoco-test-coverage'
       AdditionalOptions: '-amd'
@@ -44,6 +44,9 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      # Default $(JavaBuildVersion) if the matrix does not specify a $(JavaBuildVersion)
+      - name: JavaBuildVersion
+        value: $(JavaLTSVersion)
 
     pool:
       vmImage: 'ubuntu-18.04'
@@ -52,7 +55,6 @@ jobs:
       matrix:
         Client Libraries:
           ArtifactName: 'packages'
-          JavaVersion: '1.11'
 
     steps:
       - script: |
@@ -105,14 +107,14 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Package'
+        displayName: 'Build and Package $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
           options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -166,14 +168,14 @@ jobs:
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
-        displayName: 'Build and Install'
+        displayName: 'Build and Install $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -190,7 +192,7 @@ jobs:
           options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
@@ -260,7 +262,7 @@ jobs:
           options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}
