@@ -112,7 +112,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code recognizeCustomFormsOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedForm>>
@@ -182,7 +182,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContent(RecognizeOptions recognizeOptions) {
@@ -253,7 +253,7 @@ public final class FormRecognizerClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<OperationResult, List<RecognizedReceipt>>

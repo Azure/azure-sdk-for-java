@@ -99,17 +99,22 @@ public final class FormRecognizerAsyncClient {
         return beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(formUrl, modelId));
     }
 
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
-        final String modelId = recognizeCustomFormsOptions.getModelId();
-        return new PollerFlux<OperationResult, List<RecognizedForm>>(
-            recognizeCustomFormsOptions.getPollInterval(),
-            analyzeFormActivationOperation(recognizeCustomFormsOptions.getFormUrl(), modelId,
-                recognizeCustomFormsOptions.isIncludeTextContent()),
-            createAnalyzeFormPollOperation(modelId),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeTextContent()));
+        try {
+            Objects.requireNonNull(recognizeCustomFormsOptions,
+                "'recognizeCustomFormsOptions' is required and cannot be null.");
+            final String modelId = recognizeCustomFormsOptions.getModelId();
+            return new PollerFlux<OperationResult, List<RecognizedForm>>(
+                recognizeCustomFormsOptions.getPollInterval(),
+                analyzeFormActivationOperation(recognizeCustomFormsOptions.getFormUrl(), modelId,
+                    recognizeCustomFormsOptions.isIncludeTextContent()),
+                createAnalyzeFormPollOperation(modelId),
+                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeTextContent()));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
@@ -162,25 +167,31 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form}, {@code modelId} is {@code null}.
+     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
-        if (recognizeCustomFormsOptions.getFormUrl() != null) {
-            return beginRecognizeCustomFormsFromUrl(recognizeCustomFormsOptions);
+        try {
+            Objects.requireNonNull(recognizeCustomFormsOptions,
+                "'recognizeCustomFormsOptions' is required and cannot be null.");
+            if (recognizeCustomFormsOptions.getFormUrl() != null) {
+                return beginRecognizeCustomFormsFromUrl(recognizeCustomFormsOptions);
+            }
+            final String modelId = recognizeCustomFormsOptions.getModelId();
+            Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeCustomFormsOptions.getForm(),
+                recognizeCustomFormsOptions.getFormData());
+            return new PollerFlux<OperationResult, List<RecognizedForm>>(
+                recognizeCustomFormsOptions.getPollInterval(),
+                analyzeFormStreamActivationOperation(buffer, modelId,
+                    recognizeCustomFormsOptions.getLength(), recognizeCustomFormsOptions.getFormContentType(),
+                    recognizeCustomFormsOptions.isIncludeTextContent()),
+                createAnalyzeFormPollOperation(modelId),
+                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeTextContent()));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
         }
-        final String modelId = recognizeCustomFormsOptions.getModelId();
-        Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeCustomFormsOptions.getForm(),
-            recognizeCustomFormsOptions.getFormData());
-        return new PollerFlux<OperationResult, List<RecognizedForm>>(
-            recognizeCustomFormsOptions.getPollInterval(),
-            analyzeFormStreamActivationOperation(buffer, modelId,
-                recognizeCustomFormsOptions.getLength(), recognizeCustomFormsOptions.getFormContentType(),
-                recognizeCustomFormsOptions.isIncludeTextContent()),
-            createAnalyzeFormPollOperation(modelId),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeFormResultOperation(modelId, recognizeCustomFormsOptions.isIncludeTextContent()));
     }
 
     /**
@@ -205,15 +216,20 @@ public final class FormRecognizerAsyncClient {
         return beginRecognizeContentFromUrl(new RecognizeOptions(formUrl));
     }
 
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     PollerFlux<OperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(RecognizeOptions recognizeOptions) {
-        return new PollerFlux<OperationResult, List<FormPage>>(recognizeOptions.getPollInterval(),
-            contentAnalyzeActivationOperation(recognizeOptions.getFormUrl()),
-            extractContentPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractContentResult());
+        try {
+            Objects.requireNonNull(recognizeOptions,
+                "'recognizeOptions' is required and cannot be null.");
+            return new PollerFlux<OperationResult, List<FormPage>>(recognizeOptions.getPollInterval(),
+                contentAnalyzeActivationOperation(recognizeOptions.getFormUrl()),
+                extractContentPollOperation(),
+                (activationResponse, context) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchExtractContentResult());
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
@@ -264,21 +280,28 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link FormPage}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code form} is {@code null}.
+     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<FormPage>> beginRecognizeContent(RecognizeOptions recognizeOptions) {
-        if (recognizeOptions.getFormUrl() != null) {
-            return beginRecognizeContentFromUrl(recognizeOptions);
+        try {
+            Objects.requireNonNull(recognizeOptions,
+                "'recognizeOptions' is required and cannot be null.");
+            if (recognizeOptions.getFormUrl() != null) {
+                return beginRecognizeContentFromUrl(recognizeOptions);
+            }
+            Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeOptions.getForm(), recognizeOptions.getFormData());
+            return new PollerFlux<>(
+                recognizeOptions.getPollInterval(),
+                contentStreamActivationOperation(buffer, recognizeOptions.getLength(),
+                    recognizeOptions.getFormContentType()),
+                extractContentPollOperation(),
+                (activationResponse, context) ->
+                    monoError(logger, new RuntimeException("Cancellation is not supported")),
+                fetchExtractContentResult());
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
         }
-        Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeOptions.getForm(), recognizeOptions.getFormData());
-        return new PollerFlux<>(
-            recognizeOptions.getPollInterval(),
-            contentStreamActivationOperation(buffer, recognizeOptions.getLength(),
-                recognizeOptions.getFormContentType()),
-            extractContentPollOperation(),
-            (activationResponse, context) -> monoError(logger, new RuntimeException("Cancellation is not supported")),
-            fetchExtractContentResult());
     }
 
     /**
@@ -304,15 +327,21 @@ public final class FormRecognizerAsyncClient {
         return beginRecognizeReceiptsFromUrl(new RecognizeOptions(receiptUrl));
     }
 
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     PollerFlux<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(RecognizeOptions recognizeOptions) {
-        return new PollerFlux<OperationResult, List<RecognizedReceipt>>(recognizeOptions.getPollInterval(),
-            receiptAnalyzeActivationOperation(recognizeOptions.getFormUrl(), recognizeOptions.isIncludeTextContent()),
-            extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult(recognizeOptions.isIncludeTextContent()));
+        try {
+            Objects.requireNonNull(recognizeOptions,
+                "'recognizeOptions' is required and cannot be null.");
+            return new PollerFlux<OperationResult, List<RecognizedReceipt>>(recognizeOptions.getPollInterval(),
+                receiptAnalyzeActivationOperation(recognizeOptions.getFormUrl(),
+                    recognizeOptions.isIncludeTextContent()),
+                extractReceiptPollOperation(),
+                (activationResponse, context) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchExtractReceiptResult(recognizeOptions.isIncludeTextContent()));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
     }
 
     /**
@@ -363,23 +392,29 @@ public final class FormRecognizerAsyncClient {
      * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code receipt} is {@code null}.
+     * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceipts(RecognizeOptions recognizeOptions) {
-        if (recognizeOptions.getFormUrl() != null) {
-            return beginRecognizeReceiptsFromUrl(recognizeOptions);
+        try {
+            Objects.requireNonNull(recognizeOptions,
+                "'recognizeOptions' is required and cannot be null.");
+            if (recognizeOptions.getFormUrl() != null) {
+                return beginRecognizeReceiptsFromUrl(recognizeOptions);
+            }
+            Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeOptions.getForm(), recognizeOptions.getFormData());
+            return new PollerFlux<>(
+                recognizeOptions.getPollInterval(),
+                receiptStreamActivationOperation(buffer, recognizeOptions.getLength(),
+                    recognizeOptions.getFormContentType(), recognizeOptions.isIncludeTextContent()),
+                extractReceiptPollOperation(),
+                (activationResponse, context) -> monoError(logger,
+                    new RuntimeException("Cancellation is not supported")),
+                fetchExtractReceiptResult(recognizeOptions.isIncludeTextContent()));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
         }
-        Flux<ByteBuffer> buffer = getByteBufferFlux(recognizeOptions.getForm(), recognizeOptions.getFormData());
-        return new PollerFlux<>(
-            recognizeOptions.getPollInterval(),
-            receiptStreamActivationOperation(buffer, recognizeOptions.getLength(),
-                recognizeOptions.getFormContentType(), recognizeOptions.isIncludeTextContent()),
-            extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult(recognizeOptions.isIncludeTextContent()));
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
