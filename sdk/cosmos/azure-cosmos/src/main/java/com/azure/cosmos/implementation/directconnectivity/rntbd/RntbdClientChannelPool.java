@@ -625,7 +625,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             final RntbdRequestManager manager = channel.pipeline().get(RntbdRequestManager.class);
 
             if (manager == null) {
-                logger.debug("Channel({}) unavailable", channel);
+                logger.debug("Channel({}) connection lost", channel);
                 continue;
             }
 
