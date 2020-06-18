@@ -74,20 +74,19 @@ class ChangefeedNetworkTest extends APISpec {
     @Unroll
     @Requires( { playbackMode() })
     def "continuationToken"() {
-        setup:
-        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
-            .buildClient()
-            .getEvents()
-        Iterator<BlobChangefeedPagedResponse> pagedResponses = iterable.iterableByPage(100).iterator()
-
-        def i = 0
-        def contToken = ""
-        while (pagedResponses.hasNext() && i < numPagesToIterate) {
-            BlobChangefeedPagedResponse resp = pagedResponses.next()
-            contToken = resp.getContinuationToken()
-            i++
-        }
-        Thread.sleep(10000) /* Simulate coming back to the cursor after a "long" time. */
+//        setup:
+//        BlobChangefeedPagedIterable iterable = new BlobChangefeedClientBuilder(primaryBlobServiceClient)
+//            .buildClient()
+//            .getEvents()
+//        Iterator<BlobChangefeedPagedResponse> pagedResponses = iterable.iterableByPage(100).iterator()
+//
+//        def i = 0
+//        def contToken = ""
+//        while (pagedResponses.hasNext() && i < numPagesToIterate) {
+//            BlobChangefeedPagedResponse resp = pagedResponses.next()
+//            contToken = resp.getContinuationToken()
+//            i++
+//        }
 
         when:
         BlobChangefeedPagedFlux flux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
@@ -100,10 +99,10 @@ class ChangefeedNetworkTest extends APISpec {
             .verifyComplete()
 
         where:
-        numPagesToIterate || numEventsFromContinuationToken
-        33                || 0
-        1                 || 3138
-        5                 || 2738
-        10                || 2238
+        contToken                                                                                                                                                                                                                                              | numPagesToIterate || numEventsFromContinuationToken
+        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-06-16T05:00Z\",\"shardPath\":\"log/00/2020/06/16/0500/\",\"chunkPath\":\"log/00/2020/06/16/0500/00000.avro\",\"blockOffset\":3706,\"objectBlockIndex\":1}"          | 33                || 0
+        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-12T22:00Z\",\"shardPath\":\"log/00/2020/05/12/2200/\",\"chunkPath\":\"log/00/2020/05/12/2200/00000.avro\",\"blockOffset\":2434,\"objectBlockIndex\":99}"         | 1                 || 3138
+        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-15T22:00Z\",\"shardPath\":\"log/00/2020/05/15/2200/\",\"chunkPath\":\"log/00/2020/05/15/2200/00000.avro\",\"blockOffset\":2434,\"objectBlockIndex\":27}"         | 5                 || 2738
+        "{\"endTime\":\"+999999999-12-31T23:59:59.999999999-18:00\",\"segmentTime\":\"2020-05-15T22:00Z\",\"shardPath\":\"log/00/2020/05/15/2200/\",\"chunkPath\":\"log/00/2020/05/15/2200/00000.avro\",\"blockOffset\":335596,\"objectBlockIndex\":1}"        | 10                || 2238
     }
 }
