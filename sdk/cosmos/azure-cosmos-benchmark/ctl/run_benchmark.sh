@@ -39,7 +39,7 @@ max_running_time_duration=$ctl_max_running_time_duration
 fi
 
 connection_mode=Direct
-number_of_precreated_documents=1000
+number_of_precreated_documents=10000
 gateway_connection_poolsize=5
 
 protocol=Tcp
@@ -63,9 +63,9 @@ additional_benchmark_options="$additional_benchmark_options -maxConnectionPoolSi
 
 if [ -z "$ctl_graphite_endpoint" ]
 then
-java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 else
-java -Xmx2g -Xms2g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
+java -Xmx8g -Xms8g  $jvm_opt -Dcosmos.directModeProtocol=$protocol -Dazure.cosmos.directModeProtocol=$protocol -jar "$jar_file" -serviceEndpoint "$service_endpoint" -masterKey "$master_key" -databaseId "$db_name"  -collectionId "$col_name" -consistencyLevel $consistency_level -concurrency $concurrency -numberOfOperations $number_of_operations -operation $operation -connectionMode $connection_mode -maxRunningTimeDuration $max_running_time_duration -graphiteEndpoint $ctl_graphite_endpoint -numberOfPreCreatedDocuments $number_of_precreated_documents $additional_benchmark_options 2>&1 | tee -a "$log_filename"
 fi
 
 end=`test "x$1" == x && date +%s`
