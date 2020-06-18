@@ -539,7 +539,7 @@ public final class FormTrainingAsyncClient {
                     .setCopyAuthorization(new CopyAuthorizationResult()
                         .setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
-                        .setExpirationDateTimeTicks(target.getExpiresOn()));
+                        .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
                 return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));

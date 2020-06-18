@@ -11,6 +11,9 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
  * The CopyAuthorization model.
@@ -92,8 +95,8 @@ public final class CopyAuthorization {
      *
      * @return the {@code expiresOn} value.
      */
-    public long getExpiresOn() {
-        return this.expiresOn;
+    public OffsetDateTime getExpiresOn() {
+        return OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.expiresOn), ZoneOffset.UTC);
     }
 
     /**

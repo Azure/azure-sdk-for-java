@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,7 +69,7 @@ public final class FormPage {
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
-        this.lines = lines;
+        this.lines = lines == null ? null : Collections.unmodifiableList(new ArrayList<>(lines));
         this.tables = tables;
         this.pageNumber = pageNumber;
     }

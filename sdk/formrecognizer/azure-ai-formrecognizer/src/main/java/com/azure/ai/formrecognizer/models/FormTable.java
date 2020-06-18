@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +47,7 @@ public final class FormTable {
         final Integer pageNumber) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
-        this.cells = cells;
+        this.cells = cells == null ? null : Collections.unmodifiableList(new ArrayList<>(cells));
         this.pageNumber = pageNumber;
     }
 

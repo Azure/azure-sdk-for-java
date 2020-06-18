@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,7 +31,7 @@ public final class FieldText extends FormContent {
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
                      final List<FormContent> textContent) {
         super(text, boundingBox, pageNumber);
-        this.textContent = textContent;
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(new ArrayList<>(textContent));
     }
 
     /**

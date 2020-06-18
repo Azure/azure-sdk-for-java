@@ -5,6 +5,9 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,10 +49,10 @@ public final class RecognizedForm {
      */
     public RecognizedForm(final Map<String, FormField> fields, final String formType,
         final FormPageRange formPageRange, final List<FormPage> pages) {
-        this.fields = fields;
+        this.fields = fields == null ? null : Collections.unmodifiableMap(new HashMap<>(fields));
         this.formType = formType;
         this.formPageRange = formPageRange;
-        this.pages = pages;
+        this.pages = pages == null ? null : Collections.unmodifiableList(new ArrayList<>(pages));
     }
 
     /**

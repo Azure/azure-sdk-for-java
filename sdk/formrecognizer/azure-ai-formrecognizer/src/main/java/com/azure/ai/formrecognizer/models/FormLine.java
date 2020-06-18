@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,7 +32,7 @@ public final class FormLine extends FormContent {
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final List<FormWord> formWords) {
         super(text, boundingBox, pageNumber);
-        this.formWords = formWords;
+        this.formWords = formWords == null ? null : Collections.unmodifiableList(new ArrayList<>(formWords));
     }
 
     /**

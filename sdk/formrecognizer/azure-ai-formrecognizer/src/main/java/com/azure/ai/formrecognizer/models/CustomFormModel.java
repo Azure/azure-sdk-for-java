@@ -6,6 +6,8 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,13 +72,14 @@ public final class CustomFormModel {
         this.modelStatus = modelStatus;
         this.requestedOn = requestedOn;
         this.completedOn = completedOn;
-        this.submodels = submodels;
-        this.modelError = modelError;
-        this.trainingDocuments = trainingDocuments;
+        this.submodels = submodels == null ? null : Collections.unmodifiableList(new ArrayList<>(submodels));
+        this.modelError = modelError == null ? null : Collections.unmodifiableList(new ArrayList<>(modelError));
+        this.trainingDocuments = trainingDocuments == null ? null
+            : Collections.unmodifiableList(new ArrayList<>(trainingDocuments));
     }
 
     /**
-     * Get the Model identifier.
+     * Get the Model identifier.mcn
      *
      * @return the {@code modelId} value.
      */
@@ -124,7 +127,7 @@ public final class CustomFormModel {
      * Get the list of sub model that are part of this model, each of which can recognize
      * and extract fields from a different type of form.
      *
-     * @return the {@code submodels} value.
+     * @return the unmodifiable list of submodels that are a part of this model.
      */
     public List<CustomFormSubmodel> getSubmodels() {
         return this.submodels;

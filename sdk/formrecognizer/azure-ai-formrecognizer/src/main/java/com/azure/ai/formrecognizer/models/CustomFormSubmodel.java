@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,7 +42,7 @@ public final class CustomFormSubmodel {
     public CustomFormSubmodel(final Float accuracy, final Map<String, CustomFormModelField> fields,
         final String formType) {
         this.accuracy = accuracy;
-        this.fields = fields;
+        this.fields = fields == null ? null : Collections.unmodifiableMap(new HashMap<>(fields));
         this.formType = formType;
     }
 

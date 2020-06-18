@@ -7,6 +7,9 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +45,7 @@ public final class FieldValue {
      * @return the FieldValue object itself.
      */
     public FieldValue setFormFieldMap(final Map<String, FormField> formFieldMap) {
-        this.formFieldMap = formFieldMap;
+        this.formFieldMap = formFieldMap == null ? null : Collections.unmodifiableMap(new HashMap<>(formFieldMap));
         return this;
     }
 
@@ -54,7 +57,8 @@ public final class FieldValue {
      * @return the FieldValue object itself.
      */
     public FieldValue setFormFieldList(final List<FormField> formFieldList) {
-        this.formFieldList = formFieldList;
+        this.formFieldList = formFieldList == null ? null
+            : Collections.unmodifiableList(new ArrayList<>(formFieldList));
         return this;
     }
 

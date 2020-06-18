@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,7 +83,7 @@ public final class FormTableCell extends FormContent {
         this.confidence = confidence;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.textContent = textContent;
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(new ArrayList<>(textContent));
     }
 
     /**
