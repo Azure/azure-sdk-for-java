@@ -6,10 +6,6 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.AzureServiceClient;
@@ -286,24 +282,6 @@ public final class StorageManagementClient extends AzureServiceClient {
      */
     public TablesClient getTables() {
         return this.tables;
-    }
-
-    /** Initializes an instance of StorageManagementClient client. */
-    StorageManagementClient(String subscriptionId, String endpoint) {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE,
-            subscriptionId,
-            endpoint);
-    }
-
-    /**
-     * Initializes an instance of StorageManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    StorageManagementClient(HttpPipeline httpPipeline, String subscriptionId, String endpoint) {
-        this(httpPipeline, AzureEnvironment.AZURE, subscriptionId, endpoint);
     }
 
     /**

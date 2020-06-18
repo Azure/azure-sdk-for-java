@@ -19,6 +19,7 @@
     <module>azure-spring-boot-starter-metrics</module>
     <module>azure-spring-boot-starter-servicebus-jms</module>
     <module>azure-spring-boot-samples</module>
+    <module>azure-spring-boot-tests</module>
   </modules>
 
 </project>

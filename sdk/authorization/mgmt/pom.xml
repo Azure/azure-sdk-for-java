@@ -6,9 +6,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-parent</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0-beta.1</version>
     <relativePath>../../management/pom.xml</relativePath>
   </parent>
 
@@ -30,7 +30,7 @@
   <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-    <tag>HEAD</tag>
+    <tag>v2.0.0-beta.1</tag>
   </scm>
 
   <properties>
@@ -47,18 +47,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-management</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
+      <version>2.0.0-beta.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -86,9 +77,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.azure</groupId>
+      <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
+      <version>2.0.0-beta.1</version>
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>

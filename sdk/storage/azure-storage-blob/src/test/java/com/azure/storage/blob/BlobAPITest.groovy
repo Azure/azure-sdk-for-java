@@ -28,6 +28,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -126,7 +127,8 @@ class BlobAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        bc.uploadWithResponse(defaultInputStream.get(), defaultDataSize, null, null, null).getValue().getETag() != null
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null)
+            .getValue().getETag() != null
     }
 
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.

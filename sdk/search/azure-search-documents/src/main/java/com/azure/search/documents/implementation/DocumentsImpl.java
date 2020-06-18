@@ -24,7 +24,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.models.AutocompleteMode;
 import com.azure.search.documents.implementation.models.AutocompleteOptions;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
@@ -42,7 +41,6 @@ import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -65,10 +63,9 @@ public final class DocumentsImpl {
      * Initializes an instance of DocumentsImpl.
      *
      * @param client the instance of the service client containing this operation class.
-     * @param serializer the serializer to be used for service client requests.
      */
-    public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {
-        this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);
+    public DocumentsImpl(SearchIndexRestClientImpl client) {
+        this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -98,7 +95,7 @@ public final class DocumentsImpl {
         @Get("docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Map<? extends String, Object>>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Object>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("docs/search.suggest")
         @ExpectedResponses({200})
@@ -328,7 +325,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, Context context) {
+    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, Context context) {
 		final String accept = "application/json;odata.metadata=none";
 
         final UUID xMsClientRequestId = null;
@@ -347,7 +344,7 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=none";
 
         UUID xMsClientRequestId = null;

@@ -110,6 +110,10 @@
     "source": "specification/devtestlabs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "digitaltwins/resource-manager" : {
+    "source": "specification/digitaltwins/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"

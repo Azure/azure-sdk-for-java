@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-messaging-servicebus
+  - azure-service-bus
 urlFragment: servicebus-samples
 ---
 

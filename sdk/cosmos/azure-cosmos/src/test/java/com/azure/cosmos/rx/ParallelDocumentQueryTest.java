@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -429,7 +430,27 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             TestObject::getProp,
             TestObject::getBoolProp)
             .containsAll(assertTuples);
+    }
 
+    @Test(groups = { "simple" })
+    public void queryDocumentsNestedPropValue(){
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        options.setMaxDegreeOfParallelism(2);
+
+        List<NestedObject> expectedValues = createdDocuments.stream()
+            .map(d -> ModelBridgeInternal.toObjectFromJsonSerializable(d,TestObject.class))
+            .map(d -> d.getNestedProp()).collect(Collectors.toList());
+
+        String query = "Select value c.nestedProp from c";
+
+        CosmosPagedFlux<NestedObject> queryObservable = createdCollection.queryItems(query, options, NestedObject.class);
+
+        List<NestedObject> fetchedResults = new ArrayList<>();
+        queryObservable.byPage().map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
+
+        assertThat(fetchedResults.size()).isEqualTo(expectedValues.size());
+        assertThat(fetchedResults).containsExactlyInAnyOrderElementsOf(expectedValues);
     }
 
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
@@ -486,7 +507,11 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 + "\"_value\" : %f, "
                 + "\"boolProp\" : %b, "
                 + "\"mypk\": \"%s\", "
-                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]], "
+                + "\"nestedProp\": { "
+                + "\"id\": \"nestedObjectId\", "
+                + "\"value\": \"nestedObjectValue\", "
+                + "}"
                 + "}"
             , uuid, cnt, (double)cnt*2.3, boolVal, uuid)); //2.3 is just a random num chosen
         return doc;
@@ -498,6 +523,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         Boolean boolProp;
         String mypk;
         List<List<Integer>> sgmts;
+        NestedObject nestedProp;
 
         public String getId() {
             return id;
@@ -539,6 +565,45 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             this.sgmts = sgmts;
         }
 
+        public NestedObject getNestedProp() {
+            return nestedProp;
+        }
+
+        public void setNestedProp(NestedObject nestedProp) {
+            this.nestedProp = nestedProp;
+        }
+    }
+
+    static class NestedObject {
+        String id;
+        String value;
+
+        public void setId(String id) { this.id = id; }
+        public String getId() { return this.id; }
+        public void setValue(String value) { this.value = value; }
+        public String getValue() { return this.value; }
+
+        @Override
+        public String toString() {
+            return "NestedObject{" +
+                "id='" + id + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            NestedObject that = (NestedObject) o;
+            return Objects.equals(id, that.id) &&
+                Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, value);
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, enabled = false)

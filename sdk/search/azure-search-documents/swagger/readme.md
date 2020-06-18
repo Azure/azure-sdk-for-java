@@ -136,44 +136,6 @@ directive:
           .replace(/(this\.client\.getApiVersion\(\)\,)/g, "$1 accept,")
           .replace(/(public Mono\<(.*)\) \{)/g, "$1\n\t\tfinal String accept \= \"application\/json\;odata\.metadata\=minimal\"\;\n")
 
-    # Enable configuration of RestProxy serializer
-    - from: DocumentsImpl.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(import com.azure.core.util.serializer.JacksonAdapter;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
-          .replace(/(import java.util.List;)/g, "$1\nimport java.util.Map;")
-          .replace(/(Mono\<SimpleResponse\<Object\>\>)/g, "Mono<SimpleResponse<Map<? extends String, Object>>>")
-          .replace(/(@param client the instance of the service client containing this operation class.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
-          .replace(/(public DocumentsImpl\(SearchIndexRestClientImpl client\) {)/g, "public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {")
-          .replace(/(this.service = RestProxy.create\(DocumentsService.class, client.getHttpPipeline\(\)\);)/g, "this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);")
-
-    # Enable configuration of RestProxy serializer
-    - from: SearchIndexRestClientImpl.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(void setApiVersion)/g, "public void setApiVersion")
-          .replace(/(void setIndexName)/g, "public void setIndexName")
-          .replace(/(void setSearchDnsSuffix)/g, "public void setSearchDnsSuffix")
-          .replace(/(void setSearchServiceName)/g, "public void setSearchServiceName")
-          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
-          .replace(/(this\(RestProxy.createDefaultPipeline\(\)\);)/g, "this(RestProxy.createDefaultPipeline(), JacksonAdapter.createDefaultSerializerAdapter());")
-          .replace(/(@param httpPipeline The HTTP pipeline to send requests through.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
-          .replace(/(this\(new HttpPipelineBuilder\(\)\.policies\(new UserAgentPolicy\(\)\, new RetryPolicy\(\)\, new CookiePolicy\(\)\)\.build\(\)\)\;)/g, "this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), new JacksonAdapter());")
-          .replace(/(public SearchIndexRestClientImpl\(HttpPipeline httpPipeline\) {)/g, "public SearchIndexRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializer) {")
-          .replace(/(this.documents = new DocumentsImpl\(this\);)/g, "this.documents = new DocumentsImpl(this, serializer);")
-
-    # Enable configuration of RestProxy serializer
-    - from: SearchIndexRestClientBuilder.java
-      where: $
-      transform: >-
-          return $
-          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
-          .replace(/(\* The HTTP pipeline to send requests through)/g, "\* The serializer to use for requests\n     \*\/\n    private SerializerAdapter serializer;\n\n    \/\*\*\n     \* Sets The serializer to use for requests.\n     \*\n     \* @param serializer the serializer value.\n     \* @return the SearchIndexRestClientBuilder.\n     \*\/\n    public SearchIndexRestClientBuilder serializer\(SerializerAdapter serializer\) {\n        this.serializer = serializer;\n        return this;\n    }\n\n    \/\*\n     $1")
-          .replace(/(new SearchIndexRestClientImpl\(pipeline)/g, "$1, serializer")
-          .replace(/(this.pipeline = RestProxy.createDefaultPipeline\(\);\s+})/g, "$1\n        if \(serializer == null\) {\n            this.serializer = JacksonAdapter.createDefaultSerializerAdapter\(\);\n        }")
-    
     # Workaround to fix bad host path parameters
     - from:
         - SkillsetsImpl.java
