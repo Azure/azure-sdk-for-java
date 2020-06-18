@@ -161,7 +161,8 @@ public final class AppendBlobClient extends BlobClientBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout, Context context) {
+    public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout,
+        Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
             createWithResponse(options, context), timeout);
     }
