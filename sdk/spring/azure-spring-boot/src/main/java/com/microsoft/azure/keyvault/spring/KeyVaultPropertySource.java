@@ -31,7 +31,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
 
     @Override
     public Object getProperty(String name) {
-        return operations.get(name);
+        return operations.getProperty(name);
     }
 
     boolean isUp() {
