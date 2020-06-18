@@ -64,7 +64,7 @@
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-core-management</artifactId>
-                <version>1.0.0-beta.8-SNAPSHOT</version>
+                <version>1.0.0-beta.1</version>
             </dependency>
             <dependency>
                 <groupId>com.azure</groupId>
@@ -427,18 +427,6 @@
         </pluginManagement>
     </build>
     <profiles>
-        <profile>
-        <id>allow-snapshots</id>
-        <activation><activeByDefault>true</activeByDefault></activation>
-        <repositories>
-            <repository>
-            <id>azuresdkmaven</id>
-            <url>https://azuresdkmaven.blob.core.windows.net/snapshot/m2</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-            </repository>
-        </repositories>
-        </profile>
         <profile>
             <id>run-shade-plugin</id>
             <activation>
