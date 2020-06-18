@@ -104,7 +104,7 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Package $(JavaBuildVersion)'
+        displayName: 'Build and Package , JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
@@ -165,7 +165,7 @@ jobs:
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
-        displayName: 'Build and Install $(JavaBuildVersion)'
+        displayName: 'Build and Install'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'

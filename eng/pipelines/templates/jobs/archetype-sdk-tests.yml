@@ -41,6 +41,13 @@ parameters:
       DisplayName: 'Windows - Java 11'
       SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: okhttp
+    Windows - Java 13 (AzureCloud):
+      OSVmImage: 'windows-2019'
+      JavaBuildVersion:  '1.13'
+      JavaTestVersion: '1.13'
+      DisplayName: 'Windows - Java 13'
+      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      AZURE_TEST_HTTP_CLIENTS: netty
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
@@ -91,7 +98,7 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Install $(JavaBuildVersion)'
+        displayName: 'Build and Install, JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
