@@ -36,9 +36,9 @@ public final class FormLine extends FormContent {
     }
 
     /**
-     * Get the words property: List of words in the text line.
+     * Get the List of words in the text line.
      *
-     * @return the words value.
+     * @return the unmodifiable list of words in the {@code FormLine}.
      */
     public List<FormWord> getFormWords() {
         return this.formWords;

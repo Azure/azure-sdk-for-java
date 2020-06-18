@@ -82,7 +82,7 @@ public final class TrainingDocumentInfo {
     /**
      * Get the list of errors.
      *
-     * @return the errors value.
+     * @return the unmodifiable list of errors.
      */
     public List<FormRecognizerError> getDocumentErrors() {
         return this.documentErrors;

@@ -200,7 +200,7 @@ public final class FieldValue {
     /**
      * Gets the value of the field as a {@link List}.
      *
-     * @return the value of the field as a {@link List}.
+     * @return the value of the field as an unmodifiable {@link List}.
      */
     public List<FormField> asList() {
         return this.formFieldList;
@@ -209,7 +209,7 @@ public final class FieldValue {
     /**
      * Gets the value of the field as a {@link Map}.
      *
-     * @return the value of the field as a {@link Map}.
+     * @return the value of the field as an unmodifiable {@link Map}.
      */
     public Map<String, FormField> asMap() {
         return this.formFieldMap;

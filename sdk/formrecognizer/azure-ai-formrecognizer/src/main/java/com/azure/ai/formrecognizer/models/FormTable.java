@@ -72,7 +72,7 @@ public final class FormTable {
     /**
      * Get the cells property: List of cells contained in the table.
      *
-     * @return the cells value.
+     * @return the unmodifiable list of cells in the table.
      */
     public List<FormTableCell> getCells() {
         return this.cells;

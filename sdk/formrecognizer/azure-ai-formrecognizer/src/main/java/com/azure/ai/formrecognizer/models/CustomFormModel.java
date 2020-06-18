@@ -79,7 +79,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the Model identifier.mcn
+     * Get the Model identifier.
      *
      * @return the {@code modelId} value.
      */
@@ -117,7 +117,7 @@ public final class CustomFormModel {
     /**
      * Get the errors returned during the training operation.
      *
-     * @return the {@code modelError} value.
+     * @return the unmodifiable list of model errors returned during the training operation.
      */
     public List<FormRecognizerError> getModelError() {
         return this.modelError;
@@ -136,7 +136,7 @@ public final class CustomFormModel {
     /**
      * Get the list of the documents used to train the model and any errors reported in each document.
      *
-     * @return the {@code trainingDocuments} value.
+     * @return the unmodifiable of the documents used to train the model.
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;

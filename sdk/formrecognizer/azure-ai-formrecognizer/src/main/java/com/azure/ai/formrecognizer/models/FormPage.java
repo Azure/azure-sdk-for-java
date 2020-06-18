@@ -88,7 +88,7 @@ public final class FormPage {
      * Get the lines property: When includeTextContent is set to true, a list
      * of recognized text lines.
      *
-     * @return the lines value.
+     * @return the unmodifiable list of recognized lines.
      */
     public List<FormLine> getLines() {
         return this.lines;

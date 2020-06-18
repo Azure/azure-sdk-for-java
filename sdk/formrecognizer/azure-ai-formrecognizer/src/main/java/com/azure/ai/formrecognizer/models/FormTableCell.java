@@ -160,7 +160,7 @@ public final class FormTableCell extends FormContent {
      * Get the list of references to the text elements constituting this table cell
      * When includeTextContent is set to true.
      *
-     * @return the {@code textContent} value.
+     * @return the unmodifiable list of list of references to the text elements constituting this table cell.
      */
     public List<FormContent> getTextContent() {
         return this.textContent;

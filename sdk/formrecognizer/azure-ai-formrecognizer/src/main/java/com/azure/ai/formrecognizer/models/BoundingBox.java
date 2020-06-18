@@ -36,7 +36,7 @@ public final class BoundingBox {
     /**
      * Gets the list of all point coordinates of the bounding box.
      *
-     * @return The list of all point coordinates of the Bounding box.
+     * @return The unmodifiable list of all point coordinates of the Bounding box.
      */
     public List<Point> getPoints() {
         return this.points;

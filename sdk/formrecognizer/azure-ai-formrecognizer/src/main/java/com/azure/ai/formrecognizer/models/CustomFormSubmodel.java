@@ -69,7 +69,7 @@ public final class CustomFormSubmodel {
      * For models trained with labels, this is the training-time label of the field. For models trained with forms
      * only, a unique name is generated for each field.
      *
-     * @return the {@code fields} value
+     * @return the unmodifiable map of recognized fields.
      */
     public Map<String, CustomFormModelField> getFields() {
         return this.fields;

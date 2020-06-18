@@ -59,9 +59,9 @@ public final class FieldText extends FormContent {
     }
 
     /**
-     * Gets the list of reference text elements.
+     * Gets the list of reference text elements constituting this {@code FieldText}.
      *
-     * @return The list of reference elements.
+     * @return The unmodifiable list of reference elements constituting this {@code FieldText}.
      */
     public List<FormContent> getTextContent() {
         return this.textContent;
