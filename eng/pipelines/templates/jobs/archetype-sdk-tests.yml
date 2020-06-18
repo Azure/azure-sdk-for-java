@@ -65,7 +65,7 @@ jobs:
       - name: SubscriptionConfiguration
         value: $(sub-config-azure-cloud-test-resources)
       - name: ArmTemplateParameters
-        value: '@{}'
+        value: '@{ comingFrom = "variables" }'
 
     strategy:
       matrix: ${{ parameters.Matrix }}
