@@ -5,9 +5,9 @@ package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
 
-import java.time.Duration;
 import java.util.ArrayDeque;
 
 /**
@@ -43,7 +43,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
     }
 
     @Override
-    public Duration getTokenRefreshOffset() {
-        return identityClientOptions.getTokenRefreshOffset();
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return identityClientOptions.getTokenRefreshOptions();
     }
 }

@@ -106,4 +106,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
         this.identityClientOptions.setTokenRefreshOffset(tokenRefreshOffset);
         return (T) this;
     }
+
+    /**
+     * Specifies a Duration value representing the amount of time to wait between token refreshes. This is to prevent
+     * sending too many requests to the authentication service.
+     *
+     * @param tokenRefreshTimeout the duration value representing the amount of time to wait between token refreshes
+     * @return An updated instance of this builder with the token refresh offset set as specified.
+     */
+    @SuppressWarnings("unchecked")
+    public T setTokenRefreshTimeout(Duration tokenRefreshTimeout) {
+        this.identityClientOptions.setTokenRefreshTimeout(tokenRefreshTimeout);
+        return (T) this;
+    }
 }

@@ -6,14 +6,13 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 /**
  * The base class for Managed Service Identity token based credentials.
@@ -63,7 +62,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
     }
 
     @Override
-    public Duration getTokenRefreshOffset() {
-        return identityClientOptions.getTokenRefreshOffset();
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return identityClientOptions.getTokenRefreshOptions();
     }
 }

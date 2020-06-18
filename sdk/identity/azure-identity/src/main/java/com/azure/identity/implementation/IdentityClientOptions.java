@@ -3,7 +3,7 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -47,7 +47,7 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private Duration tokenRefreshOffset = TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET;
+    private TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions();
     private HttpClient httpClient;
     private boolean allowUnencryptedCache;
     private boolean sharedTokenCacheEnabled;
@@ -187,10 +187,10 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * @return how long before the actual token expiry to refresh the token.
+     * @return the options to configure the token refresh behavior.
      */
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return tokenRefreshOptions;
     }
 
     /**
@@ -207,7 +207,21 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
         Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
-        this.tokenRefreshOffset = tokenRefreshOffset;
+        this.tokenRefreshOptions.setTokenRefreshOffset(tokenRefreshOffset);
+        return this;
+    }
+
+    /**
+     * Specifies a Duration value representing the amount of time to wait between token refreshes. This is to prevent
+     * sending too many requests to the authentication service.
+     *
+     * @param tokenRefreshTimeout the duration value representing the amount of time to wait between token refreshes
+     * @return IdentityClientOptions
+     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
+     */
+    public IdentityClientOptions setTokenRefreshTimeout(Duration tokenRefreshTimeout) {
+        Objects.requireNonNull(tokenRefreshTimeout, "The token refresh timeout cannot be null.");
+        this.tokenRefreshOptions.setTokenRefreshTimeout(tokenRefreshTimeout);
         return this;
     }
 

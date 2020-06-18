@@ -6,15 +6,14 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -27,7 +26,7 @@ import java.util.stream.Collectors;
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
-    private final AtomicReference<Duration> tokenRefreshOffset;
+    private volatile TokenRefreshOptions tokenRefreshOptions;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -35,7 +34,7 @@ public class ChainedTokenCredential implements TokenCredential {
      */
     ChainedTokenCredential(Deque<TokenCredential> credentials) {
         this.credentials = credentials;
-        tokenRefreshOffset = new AtomicReference<>(TokenCredential.DEFAULT_TOKEN_REFRESH_OFFSET);
+        tokenRefreshOptions = new TokenRefreshOptions();
     }
 
     @Override
@@ -45,7 +44,7 @@ public class ChainedTokenCredential implements TokenCredential {
                    .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
                        exceptions.add(t);
                        return Mono.empty();
-                   }).doOnNext(t -> tokenRefreshOffset.set(p.getTokenRefreshOffset())), 1)
+                   }).doOnNext(t -> tokenRefreshOptions = p.getTokenRefreshOptions()), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
 
@@ -67,7 +66,7 @@ public class ChainedTokenCredential implements TokenCredential {
     }
 
     @Override
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset.get();
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return tokenRefreshOptions;
     }
 }

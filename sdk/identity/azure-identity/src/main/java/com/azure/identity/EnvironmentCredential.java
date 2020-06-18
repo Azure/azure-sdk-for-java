@@ -6,13 +6,12 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRefreshOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 /**
  * A credential provider that provides token credentials based on environment variables.  The environment variables
@@ -86,8 +85,8 @@ public class EnvironmentCredential implements TokenCredential {
     }
 
     @Override
-    public Duration getTokenRefreshOffset() {
-        return identityClientOptions.getTokenRefreshOffset();
+    public TokenRefreshOptions getTokenRefreshOptions() {
+        return identityClientOptions.getTokenRefreshOptions();
     }
 
     private boolean verifyNotNull(String... configs) {
