@@ -374,7 +374,6 @@
               <reporters>html</reporters>
               <showAll>true</showAll>
               <analyseBom>true</analyseBom>
-              <!--<failOnDependencyConflict>true</failOnDependencyConflict>-->
             </configuration>
           </execution>
         </executions>
