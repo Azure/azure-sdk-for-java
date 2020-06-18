@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Role definition.
- */
+/** The RoleDefinition model. */
 @JsonFlatten
 @Fluent
 public class RoleDefinition {

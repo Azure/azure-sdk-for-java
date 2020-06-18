@@ -7,9 +7,7 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Role Assignments filter.
- */
+/** The RoleAssignmentFilter model. */
 @Fluent
 public final class RoleAssignmentFilter {
     /*
@@ -19,8 +17,7 @@ public final class RoleAssignmentFilter {
     private String principalId;
 
     /**
-     * Get the principalId property: Returns role assignment of the specific
-     * principal.
+     * Get the principalId property: Returns role assignment of the specific principal.
      *
      * @return the principalId value.
      */
@@ -29,8 +26,7 @@ public final class RoleAssignmentFilter {
     }
 
     /**
-     * Set the principalId property: Returns role assignment of the specific
-     * principal.
+     * Set the principalId property: Returns role assignment of the specific principal.
      *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentFilter object itself.

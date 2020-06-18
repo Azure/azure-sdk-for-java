@@ -4,22 +4,20 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The key vault error exception.
- */
-@Fluent
+/** The KeyVaultError model. */
+@Immutable
 public final class KeyVaultError {
     /*
-     * The error property.
+     * The key vault server error.
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Error error;
 
     /**
-     * Get the error property: The error property.
+     * Get the error property: The key vault server error.
      *
      * @return the error value.
      */

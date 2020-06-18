@@ -11,27 +11,9 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/**
- * A builder for creating a new instance of the AccessControlRestClient type.
- */
-@ServiceClientBuilder(serviceClients = AccessControlRestClientImpl.class)
-public final class AccessControlRestClientBuilder {
-    /*
-     * Client API version.
-     */
-    private String apiVersion;
-
-    /**
-     * Sets Client API version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the AccessControlRestClientBuilder.
-     */
-    public AccessControlRestClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
+/** A builder for creating a new instance of the AccessControlRestClient type. */
+@ServiceClientBuilder(serviceClients = {AccessControlRestClientImpl.class})
+public final class AccessControlRestClientImplBuilder {
     /*
      * The HTTP pipeline to send requests through
      */
@@ -41,9 +23,9 @@ public final class AccessControlRestClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the AccessControlRestClientBuilder.
+     * @return the AccessControlRestClientImplBuilder.
      */
-    public AccessControlRestClientBuilder pipeline(HttpPipeline pipeline) {
+    public AccessControlRestClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -53,14 +35,14 @@ public final class AccessControlRestClientBuilder {
      *
      * @return an instance of AccessControlRestClientImpl.
      */
-    public AccessControlRestClientImpl build() {
+    public AccessControlRestClientImpl buildClient() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                    new HttpPipelineBuilder()
+                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                            .build();
         }
         AccessControlRestClientImpl client = new AccessControlRestClientImpl(pipeline);
-        if (this.apiVersion != null) {
-            client.setApiVersion(this.apiVersion);
-        }
         return client;
     }
 }

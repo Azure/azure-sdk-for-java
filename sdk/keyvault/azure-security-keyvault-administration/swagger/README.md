@@ -20,13 +20,13 @@ There is one swagger for KeyVault Administration: rbac. It uses the following ta
 
 ```ps
 cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --tag=${package} --version=2.0.4413 
+autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=${package} 
 ```
 
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@3.0.4 --tag=rbac-preview --version=2.0.4413  
+autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=rbac-preview  
 ```
 ## Code generation settings
 ``` yaml
@@ -37,9 +37,9 @@ license-header: MICROSOFT_MIT_SMALL
 models-subpackage: implementation.models
 custom-types-subpackage: models
 generate-client-as-impl: true
-generate-client-interfaces: false
 sync-methods: none
 add-context-parameter: true
+context-client-method-parameter: true
 ```
 
 ### Tag: rbac-preview

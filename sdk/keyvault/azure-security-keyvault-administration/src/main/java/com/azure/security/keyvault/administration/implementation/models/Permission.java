@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Role definition permissions.
- */
+/** The Permission model. */
 @Fluent
 public final class Permission {
     /*

@@ -4,13 +4,11 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The key vault server error.
- */
-@Fluent
+/** The Error model. */
+@Immutable
 public final class Error {
     /*
      * The error code.
@@ -25,7 +23,7 @@ public final class Error {
     private String message;
 
     /*
-     * The innerError property.
+     * The key vault server error.
      */
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private Error innerError;
@@ -49,7 +47,7 @@ public final class Error {
     }
 
     /**
-     * Get the innerError property: The innerError property.
+     * Get the innerError property: The key vault server error.
      *
      * @return the innerError value.
      */

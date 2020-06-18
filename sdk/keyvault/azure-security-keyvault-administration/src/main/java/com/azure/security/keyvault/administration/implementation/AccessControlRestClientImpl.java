@@ -10,17 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/**
- * Initializes a new instance of the AccessControlRestClient type.
- */
+/** Initializes a new instance of the AccessControlRestClient type. */
 public final class AccessControlRestClientImpl {
-    /**
-     * Client API version.
-     */
-    private String apiVersion;
+    /** Api Version. */
+    private final String apiVersion;
 
     /**
-     * Gets Client API version.
+     * Gets Api Version.
      *
      * @return the apiVersion value.
      */
@@ -28,20 +24,8 @@ public final class AccessControlRestClientImpl {
         return this.apiVersion;
     }
 
-    /**
-     * Sets Client API version.
-     *
-     * @param apiVersion the apiVersion value.
-     */
-    AccessControlRestClientImpl setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
-    }
-
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -52,38 +36,32 @@ public final class AccessControlRestClientImpl {
         return this.httpPipeline;
     }
 
-    /**
-     * The RoleDefinitionsImpl object to access its operations.
-     */
-    private RoleDefinitionsImpl roleDefinitions;
+    /** The RoleDefinitionsImpl object to access its operations. */
+    private final RoleDefinitionsImpl roleDefinitions;
 
     /**
      * Gets the RoleDefinitionsImpl object to access its operations.
      *
      * @return the RoleDefinitionsImpl object.
      */
-    public RoleDefinitionsImpl roleDefinitions() {
+    public RoleDefinitionsImpl getRoleDefinitions() {
         return this.roleDefinitions;
     }
 
-    /**
-     * The RoleAssignmentsImpl object to access its operations.
-     */
-    private RoleAssignmentsImpl roleAssignments;
+    /** The RoleAssignmentsImpl object to access its operations. */
+    private final RoleAssignmentsImpl roleAssignments;
 
     /**
      * Gets the RoleAssignmentsImpl object to access its operations.
      *
      * @return the RoleAssignmentsImpl object.
      */
-    public RoleAssignmentsImpl roleAssignments() {
+    public RoleAssignmentsImpl getRoleAssignments() {
         return this.roleAssignments;
     }
 
-    /**
-     * Initializes an instance of AccessControlRestClient client.
-     */
-    public AccessControlRestClientImpl() {
+    /** Initializes an instance of AccessControlRestClient client. */
+    AccessControlRestClientImpl() {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
@@ -92,8 +70,9 @@ public final class AccessControlRestClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    public AccessControlRestClientImpl(HttpPipeline httpPipeline) {
+    AccessControlRestClientImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
+        this.apiVersion = "7.2-preview";
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
     }

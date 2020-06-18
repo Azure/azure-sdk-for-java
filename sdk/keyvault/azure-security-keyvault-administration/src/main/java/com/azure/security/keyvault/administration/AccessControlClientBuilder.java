@@ -65,7 +65,6 @@ public class AccessControlClientBuilder {
     private HttpLogOptions httpLogOptions;
     private RetryPolicy retryPolicy;
     private Configuration configuration;
-    private AccessControlServiceVersion version;
 
     /**
      * Creates a {@link AccessControlClientBuilder} instance that is able to configure and construct
@@ -117,12 +116,8 @@ public class AccessControlClientBuilder {
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
-        AccessControlServiceVersion buildVersion = (version == null)
-            ? AccessControlServiceVersion.getLatest()
-            : version;
-
         if (pipeline != null) {
-            return new AccessControlAsyncClient(vaultUrl, pipeline, buildVersion);
+            return new AccessControlAsyncClient(vaultUrl, pipeline);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -145,11 +140,11 @@ public class AccessControlClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new AccessControlAsyncClient(vaultUrl, buildPipeline, buildVersion);
+        return new AccessControlAsyncClient(vaultUrl, buildPipeline);
     }
 
     /**
-     * Sets the URI to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
+     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
      *
      * @param vaultUrl The vault URL is used as destination on Azure to send requests to.
      * @return The updated {@link AccessControlClientBuilder} object.
@@ -239,22 +234,6 @@ public class AccessControlClientBuilder {
     public AccessControlClientBuilder pipeline(HttpPipeline pipeline) {
         Objects.requireNonNull(pipeline);
         this.pipeline = pipeline;
-        return this;
-    }
-
-    /**
-     * Sets the {@link AccessControlServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
-     *
-     * @param version {@link AccessControlServiceVersion} of the service to be used when making requests.
-     * @return The updated {@link AccessControlClientBuilder} object.
-     */
-    public AccessControlClientBuilder serviceVersion(AccessControlServiceVersion version) {
-        this.version = version;
-
         return this;
     }
 

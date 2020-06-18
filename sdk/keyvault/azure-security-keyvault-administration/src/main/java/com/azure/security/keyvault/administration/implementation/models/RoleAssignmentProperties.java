@@ -7,9 +7,7 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Role assignment properties.
- */
+/** The RoleAssignmentProperties model. */
 @Fluent
 public final class RoleAssignmentProperties {
     /*
@@ -27,8 +25,7 @@ public final class RoleAssignmentProperties {
     private String principalId;
 
     /**
-     * Get the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
+     * Get the roleDefinitionId property: The role definition ID used in the role assignment.
      *
      * @return the roleDefinitionId value.
      */
@@ -37,8 +34,7 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Set the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
+     * Set the roleDefinitionId property: The role definition ID used in the role assignment.
      *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentProperties object itself.
@@ -49,9 +45,8 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Get the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
+     * Get the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
      *
      * @return the principalId value.
      */
@@ -60,9 +55,8 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Set the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
+     * Set the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
      *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentProperties object itself.

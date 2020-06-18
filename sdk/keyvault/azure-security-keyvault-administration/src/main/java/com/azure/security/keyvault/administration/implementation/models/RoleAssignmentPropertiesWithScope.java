@@ -7,9 +7,7 @@ package com.azure.security.keyvault.administration.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Role assignment properties with scope.
- */
+/** The RoleAssignmentPropertiesWithScope model. */
 @Fluent
 public final class RoleAssignmentPropertiesWithScope {
     /*
