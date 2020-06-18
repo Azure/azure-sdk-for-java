@@ -84,6 +84,7 @@ jobs:
           parameters:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
+            ArmTemplateParameters: $(ArmTemplateParameters)
 
       - ${{ parameters.PreRunSteps }}
 
@@ -118,7 +119,6 @@ jobs:
           parameters:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
-            ArmTemplateParameters: $(ArmTemplateParameters)
 
 
       - task: PublishTestResults@2
