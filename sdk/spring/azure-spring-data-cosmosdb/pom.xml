@@ -20,8 +20,8 @@
 
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
-    <jacoco.min.branchcoverage>0.22</jacoco.min.branchcoverage>
-    <jacoco.min.linecoverage>0.22</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
 
     <azure.test.resourcegroup>spring-data-cosmosdb-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
@@ -169,6 +169,12 @@
       <version>2.8.5</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.7</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
@@ -191,6 +197,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.azure:*</include>
                 <include>org.springframework:spring-beans:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-tx:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
