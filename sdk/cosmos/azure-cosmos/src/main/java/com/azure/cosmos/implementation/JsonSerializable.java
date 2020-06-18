@@ -599,10 +599,10 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
     public <T> T toObject(Class<T> c) {
-        // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
+        // TODO: We have to remove this if we do not want to support InternalObjectNode anymore, and change all the
         //  tests accordingly
-        if (CosmosItemProperties.class.isAssignableFrom(c)) {
-            return (T) new CosmosItemProperties(this.propertyBag);
+        if (InternalObjectNode.class.isAssignableFrom(c)) {
+            return (T) new InternalObjectNode(this.propertyBag);
         }
         if (JsonSerializable.class.isAssignableFrom(c)
             || String.class.isAssignableFrom(c)
