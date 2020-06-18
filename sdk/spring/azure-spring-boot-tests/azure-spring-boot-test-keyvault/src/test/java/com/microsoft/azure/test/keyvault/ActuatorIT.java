@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.test.keyvault;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import com.microsoft.azure.test.management.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
 import lombok.extern.slf4j.Slf4j;
@@ -9,12 +12,10 @@ import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 @Slf4j
 public class ActuatorIT {
-    private static final RestTemplate restTemplate = new RestTemplate();
+
+    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
 
@@ -36,8 +37,8 @@ public class ActuatorIT {
             app.property("management.health.azure-key-vault.enabled", "true");
             app.start();
 
-            final String response = restTemplate.getForObject(
-                "http://localhost:" + app.port() + "/actuator/health/keyVault", String.class);
+            final String response = REST_TEMPLATE.getForObject(
+                    "http://localhost:" + app.port() + "/actuator/health/keyVault", String.class);
             assertEquals("{\"status\":\"UP\"}", response);
         }
     }
@@ -58,8 +59,8 @@ public class ActuatorIT {
             app.property("management.health.azure-key-vault.enabled", "true");
             app.start();
 
-            final String response = restTemplate.getForObject(
-                "http://localhost:" + app.port() + "/actuator/env", String.class);
+            final String response = REST_TEMPLATE.getForObject(
+                    "http://localhost:" + app.port() + "/actuator/env", String.class);
             assert response != null;
             assertTrue(response.contains("azurekv"));
         }
@@ -67,5 +68,6 @@ public class ActuatorIT {
 
     @SpringBootApplication(scanBasePackages = {"com.microsoft.azure.keyvault.spring"})
     public static class ActuatorTestApp {
+
     }
 }

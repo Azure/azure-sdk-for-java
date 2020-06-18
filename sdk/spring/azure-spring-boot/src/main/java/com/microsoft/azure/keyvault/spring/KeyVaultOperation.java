@@ -3,8 +3,14 @@
 
 package com.microsoft.azure.keyvault.spring;
 
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -22,6 +28,8 @@ import java.util.stream.Stream;
  */
 public class KeyVaultOperation {
 
+    private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
+
     /**
      * Stores the case sensitive flag.
      */
@@ -35,11 +43,11 @@ public class KeyVaultOperation {
     private volatile long secretNamesLastUpdateTime;
 
     public KeyVaultOperation(
-        final SecretClient keyVaultClient,
-        final String vaultUri,
-        final long secretKeysRefreshIntervalInMs,
-        final List<String> secretNames,
-        final boolean caseSensitive
+            final SecretClient keyVaultClient,
+            String vaultUri,
+            final long secretKeysRefreshIntervalInMs,
+            final List<String> secretNames,
+            boolean caseSensitive
     ) {
         this.caseSensitive = caseSensitive;
         this.keyVaultClient = keyVaultClient;
@@ -60,17 +68,17 @@ public class KeyVaultOperation {
         refreshSecretKeysIfNeeded();
         if (!caseSensitive) {
             return Optional.ofNullable(secretNames)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
-                .distinct()
-                .toArray(String[]::new);
+                    .map(Collection::stream)
+                    .orElseGet(Stream::empty)
+                    .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
+                    .distinct()
+                    .toArray(String[]::new);
         } else {
             return Optional.ofNullable(secretNames)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .distinct()
-                .toArray(String[]::new);
+                    .map(Collection::stream)
+                    .orElseGet(Stream::empty)
+                    .distinct()
+                    .toArray(String[]::new);
         }
     }
 
@@ -153,6 +161,26 @@ public class KeyVaultOperation {
                 .map(keyVaultClient::getSecret)
                 .map(KeyVaultSecret::getValue)
                 .orElse(null);
+    }
+
+    boolean isUp() {
+        boolean result;
+        try {
+            final Response<KeyVaultSecret> response = keyVaultClient
+                    .getSecretWithResponse("should-not-be-empty", null, Context.NONE);
+            result = response.getStatusCode() < 500;
+        } catch (ResourceNotFoundException resourceNotFoundException) {
+            result = true;
+        } catch (HttpRequestException httpRequestException) {
+            LOG.error("An HTTP error occurred while checking key vault connectivity",
+                    httpRequestException);
+            result = true;
+        } catch (RuntimeException runtimeException) {
+            LOG.error("A runtime error occurred while checking key vault connectivity",
+                    runtimeException);
+            result = false;
+        }
+        return result;
     }
 
 }
