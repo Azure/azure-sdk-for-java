@@ -120,10 +120,10 @@
                 </goals>
                 <configuration>
                   <properties>
-                    <property>
+                    <systemProperty>
                       <name>jdk.httpclient.allowRestrictedHeaders</name>
                       <value>Content-Length,Host</value>
-                    </property>
+                    </systemProperty>
                   </properties>
                 </configuration>
               </execution>
