@@ -13,7 +13,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-servicebus-jms-spring-boot-starter</artifactId>
-  <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current} -->
+  <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms-spring-boot-starter;current} -->
 
   <name>Azure Service Bus JMS Spring Boot Starter</name>
   <description>Spring Boot Starter for Azure Service Bus JMS</description>
@@ -23,14 +23,14 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-spring-boot</artifactId>
-      <version>2.2.5-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
+      <version>2.3.3-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-spring-boot;current} -->
     </dependency>
 
     <!--Spring JMS-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.2.5.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -51,8 +51,8 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure-servicebus-jms:[0.0.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-                <include>com.microsoft.azure:azure-spring-boot:[2.2.5-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
-                <include>org.springframework:spring-jms:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
+                <include>org.springframework:spring-jms:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

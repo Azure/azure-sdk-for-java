@@ -405,11 +405,11 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
   <tr>
     <td>Cosmos DB</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmosdb/samples/ManageHACosmosDB.java">Create a CosmosDB and configure it for high availability</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmosdb/samples/CreateCosmosDBWithEventualConsistency.java">Create a CosmosDB and configure it with eventual consistency</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmosdb/samples/CreateCosmosDBWithIPRange.java">Create a CosmosDB, configure it for high availability and create a firewall to limit access from an approved set of IP addresses</li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmosdb/samples/CreateCosmosDBWithKindMongoDB.java">Create a CosmosDB and get MongoDB connection string</li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmosdb/samples/CreateCosmosDBTableWithVirtualNetworkRule.java">Create a CosmosDB Table with a virtual network rule</li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmos/samples/ManageHACosmosDB.java">Create a CosmosDB and configure it for high availability</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmos/samples/CreateCosmosDBWithEventualConsistency.java">Create a CosmosDB and configure it with eventual consistency</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmos/samples/CreateCosmosDBWithIPRange.java">Create a CosmosDB, configure it for high availability and create a firewall to limit access from an approved set of IP addresses</li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmos/samples/CreateCosmosDBWithKindMongoDB.java">Create a CosmosDB and get MongoDB connection string</li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/cosmos/samples/CreateCosmosDBTableWithVirtualNetworkRule.java">Create a CosmosDB Table with a virtual network rule</li>
 </ul></td>
   </tr>
 
@@ -426,9 +426,9 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <tr>
     <td>Active Directory</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/graphrbac/samples/ManageServicePrincipal.java">Manage service principals using Java</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/graphrbac/samples/ManageServicePrincipalCredentials.java">Manage credentials for service principals using Java</a></li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/graphrbac/samples/ManageUsersGroupsAndRoles.java">Manage users and groups and manage their roles</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/authorization/samples/ManageServicePrincipal.java">Manage service principals using Java</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/authorization/samples/ManageServicePrincipalCredentials.java">Manage credentials for service principals using Java</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/authorization/samples/ManageUsersGroupsAndRoles.java">Manage users and groups and manage their roles</a></li>
 <!--li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li-->
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/resourcemanager/compute/samples/ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.java">Manage Azure resources from a managed service identity (MSI) enabled virtual machine that belongs to an Azure Active Directory (AAD) security group</a></li>
 </ul></td>

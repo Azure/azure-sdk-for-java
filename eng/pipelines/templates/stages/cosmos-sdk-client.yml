@@ -1,8 +1,34 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20200514.1
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+      ref: refs/tags/azure-sdk-tools_20200514.1
+
 parameters:
-  Artifacts: []
-  ServiceDirectory: not-specified
-  TargetDocRepoOwner: 'Azure'
-  TargetDocRepoName: 'azure-docs-sdk-java'
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: SDKType
+  type: string
+  default: not-specified
+- name: TargetDocRepoOwner
+  type: string
+  default: Azure
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
 
 stages:
   - stage: Build
@@ -74,13 +100,6 @@ stages:
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          Examples_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pexamples'
-            DisplayName: 'Examples Integration Tests'
-            PROTOCOLS: '["Https", "Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
         TestStepMavenInputs:
