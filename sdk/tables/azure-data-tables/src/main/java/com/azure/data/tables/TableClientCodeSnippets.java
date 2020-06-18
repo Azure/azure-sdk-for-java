@@ -71,18 +71,18 @@ public class TableClientCodeSnippets {
         }
 
 
-        //upsert entity (where it is an update and replace)
+        //upsert entity (where it is an insert or replace)
         tableEntity.addProperty("Price", "5");
         try {
-            tableClient.updateAndReplaceEntity(tableEntity);
+            tableClient.insertOrReplaceEntity(tableEntity);
         } catch (HttpResponseException e) {
             System.out.println("Upsert Entity Unsuccessful. Error: " + e);
         }
 
-        //upsert entity (where it is an update and replace)
+        //upsert entity (where it is an insert or merge)
         tableEntity.addProperty("Price", "5");
         try {
-            tableClient.updateAndMergeEntity(tableEntity);
+            tableClient.insertOrMergeEntity(tableEntity);
         } catch (HttpResponseException e) {
             System.out.println("Upsert Entity Unsuccessful. Error: " + e);
         }
@@ -100,7 +100,7 @@ public class TableClientCodeSnippets {
         String filterString2 = "$filter = Product eq 'markers'";
         String selectString2 = "$select = Seller eq 'crayola'";
         try {
-            List<TableEntity> list = tableClient.queryEntity(tableName, filterString2, selectString2);
+            List<TableEntity> list = tableClient.queryEntity(filterString2, selectString2);
         } catch (HttpResponseException e) {
             System.out.println("Query Table Entities Unsuccessful. Error: " + e);
         }

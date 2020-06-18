@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.tables;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -56,8 +55,7 @@ public class TableClientAsyncCodeSnippets {
         String partitionKey = "markers";
         HashMap<String, Object> tableEntityProperties = new HashMap<>();
 
-        tableAsyncClient.insertEntity(tableName, row, partitionKey,
-            tableEntityProperties).subscribe(tableEntity -> {
+        tableAsyncClient.insertEntity(row, partitionKey, tableEntityProperties).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error inserting the Entity. Error: " + error);
@@ -122,7 +120,7 @@ public class TableClientAsyncCodeSnippets {
         String filterString2 = "$filter = price eq '5'";
         String selectString2 = "$select = PartitionKey eq 'markers'";
 
-        tableAsyncClient.queryEntity("OfficeSupplies", filterString2, selectString2).subscribe(tableEntity -> {
+        tableAsyncClient.queryEntity(filterString2, selectString2).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error querying the table. Error: " + error);

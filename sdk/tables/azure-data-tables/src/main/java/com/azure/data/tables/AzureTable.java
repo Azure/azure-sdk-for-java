@@ -10,7 +10,9 @@ public class AzureTable {
     }
 
     /**
-     * Returns the name of this Table
+     * returns the name of this table
+     *
+     * @return table name
      */
     public String getName() {
         return name;

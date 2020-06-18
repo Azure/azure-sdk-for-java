@@ -3,7 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClient;
-import reactor.core.publisher.Flux;
+import com.azure.core.http.rest.PagedFlux;
 import reactor.core.publisher.Mono;
 
 @ServiceClient(
@@ -14,26 +14,43 @@ public class TableServiceAsyncClient {
     TableServiceAsyncClient() {
     }
 
+    /**
+     * creates the table with the given name.  If a table with the same name already exists, the operation fails.
+     *
+     * @param name the name of the table to create
+     * @return a table client connected to the given table
+     */
     public Mono<TableAsyncClient> createTable(String name) {
         return null;
     }
 
-    public Mono<Void> createTableIfNotExist(String name) {
-        return Mono.empty();
-    }
-
+    /**
+     * deletes the given table. Will error if the table doesn't exists or cannot be found with the given name.
+     *
+     * @param name the name of the table to create
+     * @return mono void
+     */
     public Mono<Void> deleteTable(String name) {
         return Mono.empty();
     }
 
-    public Flux<AzureTable> queryTables(String filterString) {
+    /**
+     * query all the tables under the storage account and return them
+     *
+     * @param filterString the odata filter string
+     * @return a flux of the tables that met this criteria
+     */
+    public PagedFlux<AzureTable> queryTables(String filterString) {
         return null;
     }
 
-    public Mono<TableAsyncClient> getTable(String tableName) {
-        return null;
-    }
 
+    /**
+     * gets the client for this table
+     *
+     * @param tableName the table to get the client from
+     * @return the table client
+     */
     public TableAsyncClient getClient(String tableName) {
         return null;
     }

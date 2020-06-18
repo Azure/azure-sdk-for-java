@@ -10,20 +10,42 @@ public class TableClientBuilder {
     String tableName;
 
 
+    /**
+     * Sets the connection string to help build the client
+     *
+     * @param connectionString the connection string to the storage account
+     * @return the TableClientBuilder
+     */
     public TableClientBuilder connectionString(String connectionString) {
         this.connectionString = connectionString;
         return this;
     }
 
+    /**
+     * Sets the table name to help build the client
+     *
+     * @param tableName name of the table for which the client is created for
+     * @return the TableClientBuilder
+     */
     public TableClientBuilder tableName(String tableName) {
         this.tableName = tableName;
         return this;
     }
 
+    /**
+     * builds a sync tableClient
+     *
+     * @return a sync tableClient
+     */
     public TableClient buildClient() {
         return new TableClient(tableName);
     }
 
+    /**
+     * builds an async tableClient
+     *
+     * @return an aysnc tableClient
+     */
     public TableAsyncClient buildAsyncClient() {
         return new TableAsyncClient(tableName);
     }
