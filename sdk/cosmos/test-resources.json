@@ -21,7 +21,7 @@
       "properties": {
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
-        "enableMultipleWriteLocations": false,
+        "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
@@ -29,13 +29,13 @@
         "enableAnalyticalStorage": false,
         "databaseAccountOfferType": "Standard",
         "consistencyPolicy": {
-          "defaultConsistencyLevel": "Session",
+          "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]",
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
         "locations": [
           {
-            "locationName": "[resourceGroup().location]",
+            "locationName": "East US 2",
             "provisioningState": "Succeeded",
             "failoverPriority": 0,
             "isZoneRedundant": false

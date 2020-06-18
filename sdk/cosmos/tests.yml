@@ -21,7 +21,7 @@ jobs:
       Matrix:
         # 33m 10s, expect passed
         Session_Tcp_NonEmulator:
-          ArmTemplateParameters: "@{ 'enableMultipleWriteLocations' = $false; 'defaultConsistencyLevel' = 'Session' }"
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Single Region TCP NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
