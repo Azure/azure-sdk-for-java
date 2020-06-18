@@ -44,7 +44,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.6.RELEASE</version> <!-- {x-version-update;spring_org.springframework:spring-web;external_dependency} -->
+      <version>5.2.6.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>3.7.3</version> <!-- {x-version-update;spring_com.microsoft.azure:azure-cosmos;external_dependency} -->
+      <version>3.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-cosmos;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -131,7 +131,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.3.0.RELEASE</version> <!-- {x-version-update;spring_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>2.3.0.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -183,13 +183,19 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:*:5.2.6.RELEASE</include> <!-- {x-include-update;org.springframework:*;external_dependency} -->
-                <include>org.springframework.data:spring-data-commons:2.3.0.RELEASE</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
-                <include>com.microsoft.azure:azure-cosmos:3.7.3</include> <!-- {x-include-update;com.microsoft.azure:azure-cosmos;external_dependency} -->
-                <include>org.javatuples:javatuples:1.2</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:*:2.10.0</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:*;external_dependency} -->
-                <include>org.json:json:20140107</include> <!-- {x-include-update;org.json:json;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:2.10.0</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
+                <include>org.springframework:spring-beans:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
+                <include>org.springframework:spring-web:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-tx:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-expression:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-expression;external_dependency} -->
+                <include>org.springframework:spring-core:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
+                <include>org.springframework:spring-context:[5.2.6.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework.data:spring-data-commons:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
+                <include>com.microsoft.azure:azure-cosmos:[3.7.3]</include> <!-- {x-include-update;com.microsoft.azure:azure-cosmos;external_dependency} -->
+                <include>org.javatuples:javatuples:[1.2]</include> <!-- {x-include-update;org.javatuples:javatuples;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jdk8:[2.10.0]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jdk8;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.10.1]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>org.json:json:[20140107]</include> <!-- {x-include-update;org.json:json;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-parameter-names:[2.10.0]</include> <!-- {x-include-update;com.fasterxml.jackson.module:jackson-module-parameter-names;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.25]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->
               </includes>
             </bannedDependencies>
