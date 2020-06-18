@@ -1,0 +1,158 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/$blobchangefeed?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d21231e4-b094-41ab-a4ac-94efc83270a2"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-deny-encryption-scope-override" : "false",
+      "Last-Modified" : "Tue, 12 May 2020 22:30:20 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 18 Jun 2020 20:42:00 GMT",
+      "x-ms-has-legal-hold" : "false",
+      "x-ms-default-encryption-scope" : "$account-encryption-key",
+      "ETag" : "0x8D7F6C40E07B5B9",
+      "x-ms-has-immutability-policy" : "false",
+      "Vary" : "Origin",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "2ff2edc2-901e-008c-31b0-453bfa000000",
+      "x-ms-client-request-id" : "d21231e4-b094-41ab-a4ac-94efc83270a2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/$blobchangefeed/meta%2Fsegments.json",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "79efa39e-3927-4be2-9661-4e76b7f38d74"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Tue, 16 Jun 2020 06:10:30 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 18 Jun 2020 20:42:00 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "gmUb6pDUwGbwthijdH5EQA==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8D811BBF8BA3606",
+      "Vary" : "Origin",
+      "x-ms-creation-time" : "Tue, 12 May 2020 22:31:01 GMT",
+      "Content-Length" : "225",
+      "x-ms-request-id" : "74e5e481-c01e-0081-5eb0-45f32e000000",
+      "Body" : "{\"version\":0,\"lastConsumable\":\"2020-06-16T06:00:00.000Z\",\"storageDiagnostics\":{\"version\":0,\"lastModifiedTime\":\"2020-06-16T06:10:30.239Z\",\"data\":{\"aid\":\"94e8ae63-0006-0023-00a4-430f950631b8\",\"lfz\":\"2020-06-16T05:00:00.000Z\"}}}",
+      "x-ms-client-request-id" : "79efa39e-3927-4be2-9661-4e76b7f38d74",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/$blobchangefeed?prefix=idx/segments/&delimiter=/&restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "d8b69ab3-5e88-49ff-afc3-803533927e30"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "aa250244-401e-007b-13b0-451168000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://emilydevtest.blob.core.windows.net/\" ContainerName=\"$blobchangefeed\"><Prefix>idx/segments/</Prefix><Delimiter>/</Delimiter><Blobs><BlobPrefix><Name>idx/segments/1601/</Name></BlobPrefix><BlobPrefix><Name>idx/segments/2020/</Name></BlobPrefix></Blobs><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 18 Jun 2020 20:42:01 GMT",
+      "x-ms-client-request-id" : "d8b69ab3-5e88-49ff-afc3-803533927e30",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/$blobchangefeed?prefix=idx/segments/1601/&restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "deb09ce7-9795-4e21-9d7e-48437ce67937"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "c334977a-c01e-0075-3ab0-4538d8000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://emilydevtest.blob.core.windows.net/\" ContainerName=\"$blobchangefeed\"><Prefix>idx/segments/1601/</Prefix><Blobs><Blob><Name>idx/segments/1601/01/01/0000/meta.json</Name><Properties><Creation-Time>Tue, 12 May 2020 22:31:01 GMT</Creation-Time><Last-Modified>Tue, 12 May 2020 22:31:01 GMT</Last-Modified><Etag>0x8D7F6C4267FAC1F</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>y7e+zuvBp1znkGl6n+zwOQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob></Blobs><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 18 Jun 2020 20:42:01 GMT",
+      "x-ms-client-request-id" : "deb09ce7-9795-4e21-9d7e-48437ce67937",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/$blobchangefeed/idx%2Fsegments%2F1601%2F01%2F01%2F0000%2Fmeta.json",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c7443574-038f-4982-b886-d25b2dddf36d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Tue, 12 May 2020 22:31:01 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Thu, 18 Jun 2020 20:42:01 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "y7e+zuvBp1znkGl6n+zwOQ==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "ETag" : "0x8D7F6C4267FAC1F",
+      "Vary" : "Origin",
+      "x-ms-creation-time" : "Tue, 12 May 2020 22:31:01 GMT",
+      "Content-Length" : "432",
+      "x-ms-request-id" : "c065451d-a01e-00e5-4eb0-4502b6000000",
+      "Body" : "{\"version\":0,\"begin\":\"1601-01-01T00:00:00.000Z\",\"intervalSecs\":3600,\"status\":\"Finalized\",\"config\":{\"version\":0,\"configVersionEtag\":\"0x8d7f6c4265cb46c\",\"numShards\":1,\"recordsFormat\":\"avro\",\"formatSchemaVersion\":4,\"shardDistFnVersion\":1},\"chunkFilePaths\":[\"$blobchangefeed/log/00/1601/01/01/0000/\"],\"storageDiagnostics\":{\"version\":0,\"lastModifiedTime\":\"2020-05-12T22:31:01.598Z\",\"data\":{\"aid\":\"bc870c6c-0006-00ec-00ad-28476506b1d6\"}}}",
+      "x-ms-client-request-id" : "c7443574-038f-4982-b886-d25b2dddf36d",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net/$blobchangefeed?prefix=idx/segments/2020/&restype=container&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.7; Windows 10 10.0)",
+      "x-ms-client-request-id" : "5f21a3e3-3882-479d-97c5-82e8a855427c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "7836e5f8-f01e-007e-2cb0-45c3b3000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://emilydevtest.blob.core.windows.net/\" ContainerName=\"$blobchangefeed\"><Prefix>idx/segments/2020/</Prefix><Blobs><Blob><Name>idx/segments/2020/05/12/2200/meta.json</Name><Properties><Creation-Time>Tue, 12 May 2020 22:32:01 GMT</Creation-Time><Last-Modified>Fri, 15 May 2020 22:05:53 GMT</Last-Modified><Etag>0x8D7F91C229EC7B9</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>lVyYlETGVwFDoialKA82PQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/15/2200/meta.json</Name><Properties><Creation-Time>Fri, 15 May 2020 22:05:53 GMT</Creation-Time><Last-Modified>Fri, 15 May 2020 23:27:00 GMT</Last-Modified><Etag>0x8D7F9277781F5D6</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>ANdNfdv5SKPd7x2BB7Rrbg==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/15/2300/meta.json</Name><Properties><Creation-Time>Fri, 15 May 2020 23:26:59 GMT</Creation-Time><Last-Modified>Tue, 19 May 2020 22:33:49 GMT</Last-Modified><Etag>0x8D7FC44B337ABBC</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>cO73TlIisgSi8irRmgfHUA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/19/2200/meta.json</Name><Properties><Creation-Time>Tue, 19 May 2020 22:33:49 GMT</Creation-Time><Last-Modified>Wed, 20 May 2020 00:41:47 GMT</Last-Modified><Etag>0x8D7FC5693D6DF96</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>pzXDNez+/tMdFTLCGVwUVg==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/20/0000/meta.json</Name><Properties><Creation-Time>Wed, 20 May 2020 00:41:47 GMT</Creation-Time><Last-Modified>Thu, 21 May 2020 06:28:11 GMT</Last-Modified><Etag>0x8D7FD5022CB4AF1</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>FRSd08uY+rhWel+k3hFxWA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/21/0600/meta.json</Name><Properties><Creation-Time>Thu, 21 May 2020 06:28:11 GMT</Creation-Time><Last-Modified>Thu, 21 May 2020 07:14:25 GMT</Last-Modified><Etag>0x8D7FD5698414A6A</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>C0x3o6KtKDJYL6L5ZJUb7w==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/21/0700/meta.json</Name><Properties><Creation-Time>Thu, 21 May 2020 07:14:25 GMT</Creation-Time><Last-Modified>Sun, 24 May 2020 04:47:06 GMT</Last-Modified><Etag>0x8D7FF9D82818A3B</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>y83slvbDTWVbf2iJqHl2eg==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/24/0400/meta.json</Name><Properties><Creation-Time>Sun, 24 May 2020 04:47:05 GMT</Creation-Time><Last-Modified>Sun, 24 May 2020 05:02:59 GMT</Last-Modified><Etag>0x8D7FF9FBAECF1B3</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>3nVFepJF8SbxbBgKOZVuVA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/24/0500/meta.json</Name><Properties><Creation-Time>Sun, 24 May 2020 05:02:59 GMT</Creation-Time><Last-Modified>Sun, 24 May 2020 07:29:21 GMT</Last-Modified><Etag>0x8D7FFB42D5D18CC</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>ZVwaEosFGbDbgULX5192KA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/24/0700/meta.json</Name><Properties><Creation-Time>Sun, 24 May 2020 07:29:21 GMT</Creation-Time><Last-Modified>Wed, 27 May 2020 09:21:06 GMT</Last-Modified><Etag>0x8D8021F491424B4</Etag><Content-Length>432</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>MXOvVkP5/eKrb3U7GIglLw==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/05/27/0900/meta.json</Name><Properties><Creation-Time>Wed, 27 May 2020 09:21:06 GMT</Creation-Time><Last-Modified>Wed, 03 Jun 2020 00:40:08 GMT</Last-Modified><Etag>0x8D80756AACF64CE</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>EXInat+Kog82gNRuDP+ThQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/03/0000/meta.json</Name><Properties><Creation-Time>Wed, 03 Jun 2020 00:40:08 GMT</Creation-Time><Last-Modified>Wed, 03 Jun 2020 01:05:31 GMT</Last-Modified><Etag>0x8D8075A3657353F</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>dF3VDaMbpcQslvZ20w2tGg==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/03/0100/meta.json</Name><Properties><Creation-Time>Wed, 03 Jun 2020 01:05:31 GMT</Creation-Time><Last-Modified>Wed, 03 Jun 2020 06:04:08 GMT</Last-Modified><Etag>0x8D80783EDE05CF2</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>XwMTfj94IvGVUpxZkDNGGQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/03/0600/meta.json</Name><Properties><Creation-Time>Wed, 03 Jun 2020 06:04:08 GMT</Creation-Time><Last-Modified>Fri, 05 Jun 2020 19:38:03 GMT</Last-Modified><Etag>0x8D80987F6A23CA3</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>0xdLkJHzDQRvGu4sVZxiLQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/05/1900/meta.json</Name><Properties><Creation-Time>Fri, 05 Jun 2020 19:38:02 GMT</Creation-Time><Last-Modified>Fri, 05 Jun 2020 22:57:58 GMT</Last-Modified><Etag>0x8D809A3E414F865</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>IUDZfERZQer/5EyfJf8ZWw==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/05/2200/meta.json</Name><Properties><Creation-Time>Fri, 05 Jun 2020 22:57:58 GMT</Creation-Time><Last-Modified>Fri, 05 Jun 2020 23:02:01 GMT</Last-Modified><Etag>0x8D809A474B8910A</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>Qb7f+ITdQ/kcnaPs/tMbcA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/05/2300/meta.json</Name><Properties><Creation-Time>Fri, 05 Jun 2020 23:02:01 GMT</Creation-Time><Last-Modified>Sat, 06 Jun 2020 00:05:17 GMT</Last-Modified><Etag>0x8D809AD4B92126B</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>thNrR4KASu+XG1XAfEAu4A==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/06/0000/meta.json</Name><Properties><Creation-Time>Sat, 06 Jun 2020 00:05:17 GMT</Creation-Time><Last-Modified>Sat, 06 Jun 2020 01:04:20 GMT</Last-Modified><Etag>0x8D809B58B19AA60</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>jhy0/RgIZuEIgOEkOgfBHQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/06/0100/meta.json</Name><Properties><Creation-Time>Sat, 06 Jun 2020 01:04:19 GMT</Creation-Time><Last-Modified>Sat, 06 Jun 2020 03:23:30 GMT</Last-Modified><Etag>0x8D809C8FC1691FA</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>DvwBtbWClmW1X/wNsMQZnQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/06/0300/meta.json</Name><Properties><Creation-Time>Sat, 06 Jun 2020 03:23:29 GMT</Creation-Time><Last-Modified>Sat, 06 Jun 2020 04:18:51 GMT</Last-Modified><Etag>0x8D809D0B7F2354E</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>l87L5psoFCwB3gTZI9RXiQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/06/0400/meta.json</Name><Properties><Creation-Time>Sat, 06 Jun 2020 04:18:51 GMT</Creation-Time><Last-Modified>Tue, 09 Jun 2020 01:47:18 GMT</Last-Modified><Etag>0x8D80C170B656349</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>233nWSuK7JmaUv26r601pQ==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/09/0100/meta.json</Name><Properties><Creation-Time>Tue, 09 Jun 2020 01:47:18 GMT</Creation-Time><Last-Modified>Tue, 09 Jun 2020 02:06:00 GMT</Last-Modified><Etag>0x8D80C19A7F23272</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>tFE0CEh+p7aZkR0NramHgA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/09/0200/meta.json</Name><Properties><Creation-Time>Tue, 09 Jun 2020 02:06:00 GMT</Creation-Time><Last-Modified>Tue, 09 Jun 2020 03:04:11 GMT</Last-Modified><Etag>0x8D80C21C8E0D8A8</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>Ys582fbuvFDzaO8X+ABD3w==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/09/0300/meta.json</Name><Properties><Creation-Time>Tue, 09 Jun 2020 03:04:11 GMT</Creation-Time><Last-Modified>Thu, 11 Jun 2020 00:10:16 GMT</Last-Modified><Etag>0x8D80D9BD1C14E3A</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>JagtXetwYToYamCA6RVaTg==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/11/0000/meta.json</Name><Properties><Creation-Time>Thu, 11 Jun 2020 00:10:16 GMT</Creation-Time><Last-Modified>Thu, 11 Jun 2020 02:43:43 GMT</Last-Modified><Etag>0x8D80DB141EC3137</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>EivOjes5eN8RJ2CKtRFIYA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/11/0200/meta.json</Name><Properties><Creation-Time>Thu, 11 Jun 2020 02:43:43 GMT</Creation-Time><Last-Modified>Thu, 11 Jun 2020 03:01:13 GMT</Last-Modified><Etag>0x8D80DB3B3647F56</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>2TMTLKMyu2JNrBNFeyanYg==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/11/0300/meta.json</Name><Properties><Creation-Time>Thu, 11 Jun 2020 03:01:13 GMT</Creation-Time><Last-Modified>Thu, 11 Jun 2020 04:22:20 GMT</Last-Modified><Etag>0x8D80DBF0866675D</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>E1Bkz4AU6AyfBlEiABwXfw==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/11/0400/meta.json</Name><Properties><Creation-Time>Thu, 11 Jun 2020 04:22:20 GMT</Creation-Time><Last-Modified>Tue, 16 Jun 2020 04:53:34 GMT</Last-Modified><Etag>0x8D811B139ACB3B7</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>TQz/esm8KpVkFu/1jbfVGA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/16/0400/meta.json</Name><Properties><Creation-Time>Tue, 16 Jun 2020 04:53:34 GMT</Creation-Time><Last-Modified>Tue, 16 Jun 2020 05:02:19 GMT</Last-Modified><Etag>0x8D811B2723A81A2</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>f+W3KKHj7im//94qA36igw==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/16/0500/meta.json</Name><Properties><Creation-Time>Tue, 16 Jun 2020 05:02:19 GMT</Creation-Time><Last-Modified>Tue, 16 Jun 2020 06:10:30 GMT</Last-Modified><Etag>0x8D811BBF8B77635</Etag><Content-Length>453</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>XYzv/MEQUpJWp7I6L2Q3jA==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob><Blob><Name>idx/segments/2020/06/16/0600/meta.json</Name><Properties><Creation-Time>Tue, 16 Jun 2020 06:10:30 GMT</Creation-Time><Last-Modified>Tue, 16 Jun 2020 06:10:30 GMT</Last-Modified><Etag>0x8D811BBF8AEE8A1</Etag><Content-Length>454</Content-Length><Content-Type>application/json</Content-Type><Content-Encoding /><Content-Language /><Content-CRC64 /><Content-MD5>5uMmXCzFlRbAjixjuNBgXw==</Content-MD5><Cache-Control /><Content-Disposition /><BlobType>BlockBlob</BlobType><AccessTier>Hot</AccessTier><AccessTierInferred>true</AccessTierInferred><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><ServerEncrypted>true</ServerEncrypted></Properties><OrMetadata /></Blob></Blobs><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 18 Jun 2020 20:42:01 GMT",
+      "x-ms-client-request-id" : "5f21a3e3-3882-479d-97c5-82e8a855427c",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }
