@@ -27,7 +27,6 @@ parameters:
       OSVmImage: 'macOS-10.15'
       JavaTestVersion: '1.11'
       RunTitle: 'macOS on Java 1.11'
-      AdditionalOptions: '-X'
     Windows - Java 11:
       OSVmImage: 'windows-2019'
       JavaTestVersion: '1.11'
@@ -37,7 +36,7 @@ parameters:
       JavaTestVersion: '1.8'
       RunTitle: 'From Source: Windows on Java 1.8'
       PLSkipOptions: '!com.azure:jacoco-test-coverage'
-      AdditionalOptions: '-amd -X'
+      AdditionalOptions: '-amd'
       TestFromSource: true
 
 jobs:
