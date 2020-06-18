@@ -167,7 +167,7 @@ public class KeyVaultOperation {
         boolean result;
         try {
             final Response<KeyVaultSecret> response = keyVaultClient
-                    .getSecretWithResponse("should-not-be-empty", null, Context.NONE);
+                    .getSecretWithResponse("it-is-ok-to-be-empty", null, Context.NONE);
             result = response.getStatusCode() < 500;
         } catch (ResourceNotFoundException resourceNotFoundException) {
             result = true;
