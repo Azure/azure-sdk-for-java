@@ -10,7 +10,6 @@
     "apiVersion": "2020-04-01",
     "accountName": "[toLower(parameters('baseName'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
-    "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
     "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]"
   },
   "resources": [
