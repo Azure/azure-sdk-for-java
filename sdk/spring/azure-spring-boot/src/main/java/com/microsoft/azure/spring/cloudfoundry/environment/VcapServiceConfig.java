@@ -74,19 +74,23 @@ public class VcapServiceConfig {
     }
 
     public String[] getTags() {
-        return tags;
+        return arrayCopy(tags);
     }
 
     public void setTags(String[] tags) {
-        this.tags = tags;
+        this.tags = arrayCopy(tags);
     }
 
     public String[] getVolumeMounts() {
-        return volumeMounts;
+        return arrayCopy(volumeMounts);
     }
 
     public void setVolumeMounts(String[] volumeMounts) {
-        this.volumeMounts = volumeMounts;
+        this.volumeMounts = arrayCopy(volumeMounts);
+    }
+
+    private static <T> T[] arrayCopy(T[] origin) {
+        return origin == null ? null : Arrays.copyOf(origin, origin.length);
     }
 
     @Override

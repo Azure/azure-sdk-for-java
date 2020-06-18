@@ -12,7 +12,7 @@ public enum VcapServiceType {
 
     private String text;
 
-    private VcapServiceType(String text) {
+    VcapServiceType(String text) {
         this.text = text;
     }
 
