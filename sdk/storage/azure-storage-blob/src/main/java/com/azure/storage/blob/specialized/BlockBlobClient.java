@@ -27,6 +27,7 @@ import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -38,7 +39,6 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -303,7 +303,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
-        Objects.requireNonNull(options);
+        StorageImplUtils.assertNotNull("options", options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
         try {
             return blockWithOptionalTimeout(upload, timeout);
@@ -360,7 +360,7 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
-        Objects.requireNonNull(data);
+        StorageImplUtils.assertNotNull("data", data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 

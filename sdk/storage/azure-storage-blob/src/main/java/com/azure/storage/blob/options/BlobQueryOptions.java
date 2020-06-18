@@ -40,7 +40,7 @@ public class BlobQueryOptions {
     /**
      * Constructs a {@link BlobQueryOptions}.
      * @param expression The query expression.
-     * @param outputStream Gets the OutputStream where the downloaded data will be written.
+     * @param outputStream The OutputStream where the downloaded data will be written.
      */
     public BlobQueryOptions(String expression, OutputStream outputStream) {
         StorageImplUtils.assertNotNull("expression", expression);

@@ -89,7 +89,7 @@ public class PageBlobClientJavaDocCodeSnippets {
      * Code snippets for {@link PageBlobClient#createWithResponse(PageBlobCreateOptions, Duration, Context)}
      */
     public void createWithResponse2CodeSnippet() {
-        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Context
+        // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentLanguage("en-US")
             .setContentType("binary");
@@ -104,7 +104,7 @@ public class PageBlobClientJavaDocCodeSnippets {
             .getValue();
 
         System.out.printf("Created page blob with sequence number %s%n", pageBlob.getBlobSequenceNumber());
-        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Context
+        // END: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context
     }
 
     /**

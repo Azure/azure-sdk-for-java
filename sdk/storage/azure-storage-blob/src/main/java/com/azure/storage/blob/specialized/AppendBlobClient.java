@@ -163,7 +163,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createWithResponse(options, context), options == null ? null : timeout);
+            createWithResponse(options, context), timeout);
     }
 
     /**
