@@ -110,24 +110,14 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>properties-maven-plugin</artifactId>
-            <version>1.0.0</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>set-system-properties</goal>
-                </goals>
-                <configuration>
-                  <properties>
-                    <systemProperty>
-                      <name>jdk.httpclient.allowRestrictedHeaders</name>
-                      <value>Content-Length,Host</value>
-                    </systemProperty>
-                  </properties>
-                </configuration>
-              </execution>
-            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.0</version>
+            <configuration>
+              <systemPropertyVariables>
+                <jdk.httpclient.allowRestrictedHeaders>Content-Length,Host</jdk.httpclient.allowRestrictedHeaders>
+              </systemPropertyVariables>
+            </configuration>
           </plugin>
         </plugins>
       </build>
