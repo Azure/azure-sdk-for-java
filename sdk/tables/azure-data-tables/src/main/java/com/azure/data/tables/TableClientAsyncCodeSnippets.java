@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables;
 
 import reactor.core.publisher.Flux;
@@ -6,17 +8,17 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 
 
-public class CodeSnippetsAysnc {
+public class TableClientAsyncCodeSnippets {
 
 
     public void AsyncSnippets() {
 
-        //build service client
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
-            .build();
+            .buildAsyncClient();
 
-        //add table
+        // Add a table
         tableServiceAsyncClient.createTable("OfficeSupplies").subscribe(Void -> {
             System.out.println("Table creation successful.");
         }, error -> {
@@ -24,20 +26,17 @@ public class CodeSnippetsAysnc {
         });
 
 
-        //delete a table
-        Mono<Void> deleteTableMono = tableServiceAsyncClient.deleteTable("OfficeSupplies");
-
-        deleteTableMono.subscribe(Void -> {
+        // Delete a table
+        tableServiceAsyncClient.deleteTable("OfficeSupplies").subscribe(Void -> {
             System.out.println("Table deletion successful");
         }, error -> {
             System.out.println("There was an error deleting the table. Error: " + error);
         });
 
 
-        //query tables
+        // Query tables
         String selectString = "$select= TableName eq 'OfficeSupplies'";
-        Flux<AzureTable> queryTableFlux = tableServiceAsyncClient.queryTables(selectString);
-        queryTableFlux.subscribe(azureTable -> {
+        tableServiceAsyncClient.queryTables(selectString).subscribe(azureTable -> {
             System.out.println(azureTable.getName());
         }, error -> {
             System.out.println("There was an error querying the service. Error: " + error);
@@ -46,21 +45,19 @@ public class CodeSnippetsAysnc {
 
     public void InsertEntity() {
 
-        //build service client
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
-            .build();
+            .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-
-
         String tableName = "OfficeSupplies";
         String row = "crayolaMarkers";
         String partitionKey = "markers";
         HashMap<String, Object> tableEntityProperties = new HashMap<>();
-        Mono<TableEntity> insertEntityMono = tableAsyncClient.insertEntity(tableName, row, partitionKey,
-            tableEntityProperties);
-        insertEntityMono.subscribe(tableEntity -> {
+
+        tableAsyncClient.insertEntity(tableName, row, partitionKey,
+            tableEntityProperties).subscribe(tableEntity -> {
             System.out.println("Insert Entity Successful. Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error inserting the Entity. Error: " + error);
@@ -71,17 +68,15 @@ public class CodeSnippetsAysnc {
 
     public void DeleteEntity() {
 
-        //build service client
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
-            .build();
+            .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-
         String selectString = "$select = RowKey eq 'crayolaMarkers'";
-        Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("OfficeSupplies", selectString);
 
-        queryTableEntity.flatMap(tableEntity -> {
+        tableAsyncClient.queryEntity("OfficeSupplies", selectString).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
             Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity);
             return deleteEntityMono;
@@ -94,17 +89,15 @@ public class CodeSnippetsAysnc {
 
     public void UpdateEntity() {
 
-        //build service client
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
-            .build();
+            .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-
         String selectString2 = "$select = RowKey eq 'crayolaMarkers'";
-        Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("OfficeSupplies", selectString2);
 
-        queryTableEntity.flatMap(tableEntity -> {
+        tableAsyncClient.queryEntity("OfficeSupplies", selectString2).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(tableEntity);
@@ -120,18 +113,16 @@ public class CodeSnippetsAysnc {
 
     public void QueryEntities() {
 
-        //build service client
-        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceAsyncClientBuilder()
+        // Build service client
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
-            .build();
+            .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-
         String filterString2 = "$filter = price eq '5'";
         String selectString2 = "$select = PartitionKey eq 'markers'";
-        Flux<TableEntity> queryTableEntity = tableAsyncClient.queryEntity("OfficeSupplies", filterString2, selectString2);
 
-        queryTableEntity.subscribe(tableEntity -> {
+        tableAsyncClient.queryEntity("OfficeSupplies", filterString2, selectString2).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error querying the table. Error: " + error);

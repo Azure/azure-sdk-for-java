@@ -1,13 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.annotation.ServiceClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@ServiceClient(
+    builder = TableServiceClientBuilder.class,
+    isAsync = true)
 public class TableServiceAsyncClient {
 
-    public TableServiceAsyncClient() {
+    TableServiceAsyncClient() {
     }
-    //public Mono<Void> createTable(String name){return  Mono.empty(); }
 
     public Mono<TableAsyncClient> createTable(String name) {
         return null;

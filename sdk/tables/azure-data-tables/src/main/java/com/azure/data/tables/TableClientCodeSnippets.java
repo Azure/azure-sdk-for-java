@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables;
 
 import com.azure.core.exception.HttpResponseException;
@@ -6,20 +8,20 @@ import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import java.util.HashMap;
 import java.util.List;
 
-public class CodeSnippetsSync {
+public class TableClientCodeSnippets {
 
     public static void methods() {
 
         //create a tableServiceClient
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .connectionString("connectionString")
-            .build();
+            .buildClient();
 
         //create TableClient
         TableClient tableClient = new TableClientBuilder()
             .connectionString("connectionString")
             .tableName("OfficeSupplies")
-            .build();
+            .buildClient();
 
 
         //create a table
@@ -41,7 +43,6 @@ public class CodeSnippetsSync {
         String selectString = "$selectString= TableName eq 'OfficeSupplies'";
 
         try {
-            //TODO: create Table class TableName is the odata feild
             List<AzureTable> responseTables = tableServiceClient.queryTables(selectString);
         } catch (HttpResponseException e) {
             System.out.println("Table Query Unsuccessful. Error: " + e);

@@ -1,8 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables;
-
-import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 public class AzureTable {
     private final String name;
@@ -11,13 +9,10 @@ public class AzureTable {
         this.name = name;
     }
 
+    /**
+     * Returns the name of this Table
+     */
     public String getName() {
         return name;
-    }
-
-    public Mono<AzureTableEntity> createEntity(String key, Object value) {
-        AzureTableEntity azureTableEntity = new AzureTableEntity(key, value);
-        System.out.println("Creating entity with key: " +  key + ". Value: " + value);
-        return Mono.delay(Duration.ofSeconds(3)).thenReturn(azureTableEntity);
     }
 }

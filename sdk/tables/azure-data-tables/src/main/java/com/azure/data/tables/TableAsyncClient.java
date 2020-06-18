@@ -1,13 +1,21 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.data.tables;
 
+import com.azure.core.annotation.ServiceClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
+@ServiceClient(
+    builder = TableClientBuilder.class,
+    isAsync = true)
 public class TableAsyncClient {
+    String tableName;
 
-    public TableAsyncClient(String tableName) {
+    TableAsyncClient(String tableName) {
+        this.tableName = tableName;
     }
 
     public Flux<TableEntity> queryEntity(String az, String selectString, String filterString) {
