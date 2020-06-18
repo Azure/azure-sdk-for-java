@@ -34,24 +34,24 @@ public final class RoleAssignmentsImpl {
     private final RoleAssignmentsService service;
 
     /** The service client containing this operation class. */
-    private final AccessControlRestClientImpl client;
+    private final KeyVaultAccessControlClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RoleAssignmentsImpl(AccessControlRestClientImpl client) {
+    RoleAssignmentsImpl(KeyVaultAccessControlClientImpl client) {
         this.service = RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AccessControlRestClientRoleAssignments to be used by the proxy
+     * The interface defining all the services for KeyVaultAccessControlClientRoleAssignments to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "AccessControlRestCli")
+    @ServiceInterface(name = "KeyVaultAccessContro")
     private interface RoleAssignmentsService {
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({200})

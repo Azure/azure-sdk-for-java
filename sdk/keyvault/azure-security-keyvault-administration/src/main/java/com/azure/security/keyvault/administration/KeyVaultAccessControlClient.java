@@ -3,21 +3,18 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
-import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionListResult;
 
-public class AccessControlClient {
-    private final AccessControlAsyncClient asyncClient;
+public class KeyVaultAccessControlClient {
+    private final KeyVaultAccessControlAsyncClient asyncClient;
 
     /**
-     * Creates an {@link AccessControlClient} that uses a {@code pipeline} to service requests
+     * Creates an {@link KeyVaultAccessControlClient} that uses a {@code pipeline} to service requests
      *
-     * @param asyncClient The {@link AccessControlAsyncClient} that the client routes its request through.
+     * @param asyncClient The {@link KeyVaultAccessControlAsyncClient} that the client routes its request through.
      */
-    AccessControlClient(AccessControlAsyncClient asyncClient) {
+    KeyVaultAccessControlClient(KeyVaultAccessControlAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 

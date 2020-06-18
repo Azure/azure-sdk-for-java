@@ -10,8 +10,8 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/** Initializes a new instance of the AccessControlRestClient type. */
-public final class AccessControlRestClientImpl {
+/** Initializes a new instance of the KeyVaultAccessControlClient type. */
+public final class KeyVaultAccessControlClientImpl {
     /** Api Version. */
     private final String apiVersion;
 
@@ -60,17 +60,17 @@ public final class AccessControlRestClientImpl {
         return this.roleAssignments;
     }
 
-    /** Initializes an instance of AccessControlRestClient client. */
-    AccessControlRestClientImpl() {
+    /** Initializes an instance of KeyVaultAccessControlClient client. */
+    KeyVaultAccessControlClientImpl() {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**
-     * Initializes an instance of AccessControlRestClient client.
+     * Initializes an instance of KeyVaultAccessControlClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    AccessControlRestClientImpl(HttpPipeline httpPipeline) {
+    KeyVaultAccessControlClientImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         this.apiVersion = "7.2-preview";
         this.roleDefinitions = new RoleDefinitionsImpl(this);

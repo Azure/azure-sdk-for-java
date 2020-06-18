@@ -30,24 +30,24 @@ public final class RoleDefinitionsImpl {
     private final RoleDefinitionsService service;
 
     /** The service client containing this operation class. */
-    private final AccessControlRestClientImpl client;
+    private final KeyVaultAccessControlClientImpl client;
 
     /**
      * Initializes an instance of RoleDefinitionsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RoleDefinitionsImpl(AccessControlRestClientImpl client) {
+    RoleDefinitionsImpl(KeyVaultAccessControlClientImpl client) {
         this.service = RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AccessControlRestClientRoleDefinitions to be used by the proxy
+     * The interface defining all the services for KeyVaultAccessControlClientRoleDefinitions to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "AccessControlRestCli")
+    @ServiceInterface(name = "KeyVaultAccessContro")
     private interface RoleDefinitionsService {
         @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions")
         @ExpectedResponses({200})

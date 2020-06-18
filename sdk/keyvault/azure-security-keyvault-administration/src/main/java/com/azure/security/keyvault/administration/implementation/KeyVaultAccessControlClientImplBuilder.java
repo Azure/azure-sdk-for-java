@@ -11,9 +11,9 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/** A builder for creating a new instance of the AccessControlRestClient type. */
-@ServiceClientBuilder(serviceClients = {AccessControlRestClientImpl.class})
-public final class AccessControlRestClientImplBuilder {
+/** A builder for creating a new instance of the KeyVaultAccessControlClient type. */
+@ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClientImpl.class})
+public final class KeyVaultAccessControlClientImplBuilder {
     /*
      * The HTTP pipeline to send requests through
      */
@@ -23,26 +23,26 @@ public final class AccessControlRestClientImplBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the AccessControlRestClientImplBuilder.
+     * @return the KeyVaultAccessControlClientImplBuilder.
      */
-    public AccessControlRestClientImplBuilder pipeline(HttpPipeline pipeline) {
+    public KeyVaultAccessControlClientImplBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
 
     /**
-     * Builds an instance of AccessControlRestClientImpl with the provided parameters.
+     * Builds an instance of KeyVaultAccessControlClientImpl with the provided parameters.
      *
-     * @return an instance of AccessControlRestClientImpl.
+     * @return an instance of KeyVaultAccessControlClientImpl.
      */
-    public AccessControlRestClientImpl buildClient() {
+    public KeyVaultAccessControlClientImpl buildClient() {
         if (pipeline == null) {
             this.pipeline =
                     new HttpPipelineBuilder()
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        AccessControlRestClientImpl client = new AccessControlRestClientImpl(pipeline);
+        KeyVaultAccessControlClientImpl client = new KeyVaultAccessControlClientImpl(pipeline);
         return client;
     }
 }

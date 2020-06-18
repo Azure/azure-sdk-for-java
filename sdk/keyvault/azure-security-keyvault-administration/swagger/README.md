@@ -47,5 +47,5 @@ These settings apply only when `--tag=package-2019-05-searchservice-preview` is 
 
 ``` yaml $(tag) == 'rbac-preview'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.2-preview/rbac.json
-title: AccessControlRestClient
+title: KeyVaultAccessControlClient
 ```
