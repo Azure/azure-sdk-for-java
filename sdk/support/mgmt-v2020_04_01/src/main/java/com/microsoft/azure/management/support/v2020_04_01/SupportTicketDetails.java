@@ -208,7 +208,7 @@ public interface SupportTicketDetails extends HasInner<SupportTicketDetailsInner
         interface WithSeverity {
            /**
             * Specifies severity.
-            * @param severity A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact' severity is reserved only for our Premium customers. Possible values include: 'minimal', 'moderate', 'critical', 'highestcriticalimpact'
+            * @param severity A value that indicates the urgency of the case, which in turn determines the response time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for our Premium customers. Possible values include: 'minimal', 'moderate', 'critical', 'highestcriticalimpact'
             * @return the next definition stage
             */
             WithTitle withSeverity(SeverityLevel severity);

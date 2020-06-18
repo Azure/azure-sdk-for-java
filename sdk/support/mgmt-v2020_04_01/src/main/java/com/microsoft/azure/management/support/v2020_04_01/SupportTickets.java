@@ -19,7 +19,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface SupportTickets extends SupportsCreating<SupportTicketDetails.DefinitionStages.Blank>, SupportsListing<SupportTicketDetails>, HasInner<SupportTicketsInner> {
     /**
-     * Get ticket details for an Azure subscription. Support ticket data is available for 12 months after ticket creation. If a ticket was created more than 12 months ago, a request for data might cause an error.
+     * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
      *
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
