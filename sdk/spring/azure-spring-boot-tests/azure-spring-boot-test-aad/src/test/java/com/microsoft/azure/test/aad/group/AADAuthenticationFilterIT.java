@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.test.keyvault.group;
+package com.microsoft.azure.test.aad.group;
 
 import com.microsoft.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.microsoft.azure.test.utils.AppRunner;
