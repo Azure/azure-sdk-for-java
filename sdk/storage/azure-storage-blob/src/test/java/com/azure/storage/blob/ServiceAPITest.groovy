@@ -361,7 +361,7 @@ class ServiceAPITest extends APISpec {
 
         when: "Consume results by page"
         primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
-            .setMaxResultsPerPage(PAGE_RESULTS).setTimeout(Duration.ofSeconds(10)))
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10))
             .streamByPage().count()
 
         then: "Still have paging functionality"
@@ -779,8 +779,8 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-            .setTimeout(Duration.ofMinutes(1)), null, Context.NONE)
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
+            Duration.ofMinutes(1), Context.NONE)
         def restoredContainerClient = response.getValue()
 
         then:

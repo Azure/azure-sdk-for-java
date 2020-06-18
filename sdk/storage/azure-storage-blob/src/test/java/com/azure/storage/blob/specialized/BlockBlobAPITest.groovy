@@ -1007,7 +1007,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blockBlobClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(defaultInputStream.get(), defaultDataSize)
-            .setTags(tags), null)
+            .setTags(tags), null, null)
         def response = blockBlobClient.getTagsWithResponse(null, null)
 
         then:

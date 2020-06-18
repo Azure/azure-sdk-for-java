@@ -169,7 +169,7 @@ class BlobBaseAPITest extends APISpec {
         when:
         OutputStream os = new ByteArrayOutputStream()
         bc.queryWithResponse(new BlobQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser, null), null)
+            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
         byte[] osData = os.toByteArray()
 
         then:
