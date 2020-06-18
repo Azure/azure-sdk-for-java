@@ -6,15 +6,13 @@
       "type": "string"
     },
     "enableMultipleWriteLocations" : {
-      "type": "boolean",
-      "defaultValue": false,
+      "type": "bool",
       "metadata": {
         "description": "Flag to enable or disable multiple write locations on CosmosDB Account"
       }
     },
     "defaultConsistencyLevel": {
       "type": "string",
-      "defaultValue": "Session",
       "metadata": {
         "description": "Default Cosmosdb Account level consistency"
       }
