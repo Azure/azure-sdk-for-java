@@ -20,6 +20,7 @@
 
   <properties>
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
+    <jacoco.min.branchcoverage>0.22</jacoco.min.branchcoverage>
 
     <azure.test.resourcegroup>spring-data-cosmosdb-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
