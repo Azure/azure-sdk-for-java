@@ -11,32 +11,32 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CosmosItemProperties extends Resource {
+public class InternalObjectNode extends Resource {
 
     private static final ObjectMapper MAPPER = Utils.getSimpleObjectMapper();
 
     /**
-     * Initialize an empty CosmosItemProperties object.
+     * Initialize an empty InternalObjectNode object.
      */
-    public CosmosItemProperties() {
+    public InternalObjectNode() {
     }
 
     /**
-     * Initialize a CosmosItemProperties object from json string.
+     * Initialize a InternalObjectNode object from json string.
      *
      * @param bytes the json string that represents the document object.
      */
-    public CosmosItemProperties(byte[] bytes) {
+    public InternalObjectNode(byte[] bytes) {
         super(bytes);
     }
 
 
     /**
-     * Initialize a CosmosItemProperties object from json string.
+     * Initialize a InternalObjectNode object from json string.
      *
      * @param byteBuffer the json string that represents the document object.
      */
-    public CosmosItemProperties(ByteBuffer byteBuffer) {
+    public InternalObjectNode(ByteBuffer byteBuffer) {
         super(byteBuffer);
     }
 
@@ -46,21 +46,21 @@ public class CosmosItemProperties extends Resource {
      * @param id the name of the resource.
      * @return the cosmos item properties with id set
      */
-    public CosmosItemProperties setId(String id) {
+    public InternalObjectNode setId(String id) {
         super.setId(id);
         return this;
     }
 
     /**
-     * Initialize a CosmosItemProperties object from json string.
+     * Initialize a InternalObjectNode object from json string.
      *
      * @param jsonString the json string that represents the document object.
      */
-    public CosmosItemProperties(String jsonString) {
+    public InternalObjectNode(String jsonString) {
         super(jsonString);
     }
 
-    public CosmosItemProperties(ObjectNode propertyBag) {
+    public InternalObjectNode(ObjectNode propertyBag) {
         super(propertyBag);
     }
 
@@ -69,11 +69,11 @@ public class CosmosItemProperties extends Resource {
      */
     public static Document fromObject(Object cosmosItem) {
         Document typedItem;
-        if (cosmosItem instanceof CosmosItemProperties) {
-            typedItem = new Document(((CosmosItemProperties) cosmosItem).toJson());
+        if (cosmosItem instanceof InternalObjectNode) {
+            typedItem = new Document(((InternalObjectNode) cosmosItem).toJson());
         } else {
             try {
-                return new Document(CosmosItemProperties.MAPPER.writeValueAsString(cosmosItem));
+                return new Document(InternalObjectNode.MAPPER.writeValueAsString(cosmosItem));
             } catch (IOException e) {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
@@ -83,8 +83,8 @@ public class CosmosItemProperties extends Resource {
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
-        if (cosmosItem instanceof com.azure.cosmos.implementation.CosmosItemProperties) {
-            return ((com.azure.cosmos.implementation.CosmosItemProperties) cosmosItem).serializeJsonToByteBuffer();
+        if (cosmosItem instanceof InternalObjectNode) {
+            return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
         } else {
             if (cosmosItem instanceof Document) {
                 return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
