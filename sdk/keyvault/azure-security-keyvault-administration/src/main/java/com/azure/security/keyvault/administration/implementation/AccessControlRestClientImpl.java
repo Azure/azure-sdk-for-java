@@ -11,9 +11,9 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
 /**
- * Initializes a new instance of the AccessControlClient type.
+ * Initializes a new instance of the AccessControlRestClient type.
  */
-public final class AccessControlClientImpl {
+public final class AccessControlRestClientImpl {
     /**
      * Client API version.
      */
@@ -33,7 +33,7 @@ public final class AccessControlClientImpl {
      *
      * @param apiVersion the apiVersion value.
      */
-    AccessControlClientImpl setApiVersion(String apiVersion) {
+    AccessControlRestClientImpl setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }
@@ -81,18 +81,18 @@ public final class AccessControlClientImpl {
     }
 
     /**
-     * Initializes an instance of AccessControlClient client.
+     * Initializes an instance of AccessControlRestClient client.
      */
-    public AccessControlClientImpl() {
+    public AccessControlRestClientImpl() {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**
-     * Initializes an instance of AccessControlClient client.
+     * Initializes an instance of AccessControlRestClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    public AccessControlClientImpl(HttpPipeline httpPipeline) {
+    public AccessControlRestClientImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);

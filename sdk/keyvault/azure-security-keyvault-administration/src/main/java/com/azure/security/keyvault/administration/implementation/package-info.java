@@ -4,7 +4,7 @@
 
 /**
  * Package containing the implementations and inner classes for
- * AccessControlClient.
+ * AccessControlRestClient.
  * The key vault client performs cryptographic key operations and vault
  * operations against the Key Vault service.
  */

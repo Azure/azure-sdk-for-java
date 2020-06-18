@@ -38,7 +38,7 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 generate-client-as-impl: true
 generate-client-interfaces: false
-sync-methods: all
+sync-methods: none
 add-context-parameter: true
 ```
 
@@ -46,6 +46,6 @@ add-context-parameter: true
 These settings apply only when `--tag=package-2019-05-searchservice-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'rbac-preview'
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.2/rbac.json
-title: AccessControlClient
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.2-preview/rbac.json
+title: AccessControlRestClient
 ```

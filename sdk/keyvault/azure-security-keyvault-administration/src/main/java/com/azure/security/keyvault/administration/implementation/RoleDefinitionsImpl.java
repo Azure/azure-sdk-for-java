@@ -34,46 +34,30 @@ public final class RoleDefinitionsImpl {
     /**
      * The service client containing this operation class.
      */
-    private AccessControlClientImpl client;
+    private AccessControlRestClientImpl client;
 
     /**
      * Initializes an instance of RoleDefinitionsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    public RoleDefinitionsImpl(AccessControlClientImpl client) {
+    public RoleDefinitionsImpl(AccessControlRestClientImpl client) {
         this.service = RestProxy.create(RoleDefinitionsService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
      * The interface defining all the services for
-     * AccessControlClientRoleDefinitions to be used by the proxy service to
-     * perform REST calls.
+     * AccessControlRestClientRoleDefinitions to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{vaultBaseUrl}")
-    @ServiceInterface(name = "AccessControlClientRoleDefinitions")
+    @ServiceInterface(name = "AccessControlRestClientRoleDefinitions")
     private interface RoleDefinitionsService {
         @Get("{scope}/providers/Microsoft.Authorization/roleDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<SimpleResponse<RoleDefinitionListResult>> list(@PathParam("scope") String scope, @HostParam("vaultBaseUrl") String vaultBaseUrl, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, Context context);
-    }
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-     * @param scope The scope of the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws KeyVaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoleDefinitionListResult object if successful.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinitionListResult list(String vaultBaseUrl, String scope, Context context) {
-        return listAsync(vaultBaseUrl, scope, context).block();
     }
 
     /**
@@ -96,44 +80,6 @@ public final class RoleDefinitionsImpl {
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param scope The scope of the role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleDefinitionListResult> listAsync(String vaultBaseUrl, String scope, Context context) {
-        return listWithRestResponseAsync(vaultBaseUrl, scope, context)
-            .flatMap((SimpleResponse<RoleDefinitionListResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
-    }
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-     * @param scope The scope of the role definition.
-     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws KeyVaultErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RoleDefinitionListResult object if successful.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleDefinitionListResult list(String vaultBaseUrl, String scope, String filter, Context context) {
-        return listAsync(vaultBaseUrl, scope, filter, context).block();
-    }
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-     * @param scope The scope of the role definition.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,27 +88,5 @@ public final class RoleDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleDefinitionListResult>> listWithRestResponseAsync(String vaultBaseUrl, String scope, String filter, Context context) {
         return service.list(scope, vaultBaseUrl, filter, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-     * @param scope The scope of the role definition.
-     * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleDefinitionListResult> listAsync(String vaultBaseUrl, String scope, String filter, Context context) {
-        return listWithRestResponseAsync(vaultBaseUrl, scope, filter, context)
-            .flatMap((SimpleResponse<RoleDefinitionListResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
     }
 }
