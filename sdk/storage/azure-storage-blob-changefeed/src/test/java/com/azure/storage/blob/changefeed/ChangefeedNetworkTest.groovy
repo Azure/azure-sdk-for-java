@@ -100,9 +100,9 @@ class ChangefeedNetworkTest extends APISpec {
 
         where:
         numPagesToIterate || numEventsFromContinuationToken
-        1                 || 3138
-        5                 || 2738
-        10                || 2238
+//        1                 || 3138
+//        5                 || 2738
+//        10                || 2238
         33                || 0
     }
 }
