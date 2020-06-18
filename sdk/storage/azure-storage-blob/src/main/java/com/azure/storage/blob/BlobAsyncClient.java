@@ -21,7 +21,6 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -45,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -436,9 +434,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlobMethod =
                 (stream, length) -> blockBlobAsyncClient.uploadWithResponse(new BlockBlobSimpleUploadOptions(
                     ProgressReporter.addProgressReporting(stream,
-                        validatedParallelTransferOptions.getProgressReceiver()), length).setHeaders(options.getHeaders())
-                        .setMetadata(options.getMetadata()).setTags(options.getTags())
-                        .setTier(options.getTier()).setRequestConditions(options.getRequestConditions()));
+                        validatedParallelTransferOptions.getProgressReceiver()), length)
+                    .setHeaders(options.getHeaders()).setMetadata(options.getMetadata()).setTags(options.getTags())
+                    .setTier(options.getTier()).setRequestConditions(options.getRequestConditions()));
 
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)

@@ -263,10 +263,10 @@ class ServiceAPITest extends APISpec {
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
-            .setTags(Collections.singletonMap("key", "value")), null)
+            .setTags(Collections.singletonMap("key", "value")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
-            .setTags(Collections.singletonMap("bar", "foo")), null)
+            .setTags(Collections.singletonMap("bar", "foo")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -286,17 +286,17 @@ class ServiceAPITest extends APISpec {
         def tags = Collections.singletonMap("tag", "value")
         for (int i = 0; i < 10; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
-            .setMaxResultsPerPage(5))
+            .setMaxResultsPerPage(5), null)
             .iterableByPage().iterator().next()
         def marker = firstPage.getContinuationToken()
         def firstBlobName = firstPage.getValue().first().getName()
 
         def secondPage = primaryBlobServiceClient.findBlobsByTags(
-            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5))
+            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5), null)
             .iterableByPage(marker).iterator().next()
 
         expect:
@@ -316,13 +316,13 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
 
         expect:
         for (ContinuablePage page :
             primaryBlobServiceClient.findBlobsByTags(
-                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS)).iterableByPage()) {
+                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null).iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 
@@ -356,7 +356,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
 
         when: "Consume results by page"
@@ -752,8 +752,7 @@ class ServiceAPITest extends APISpec {
         when:
         def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationContainerName(generateContainerName()),
-            Context.NONE)
+                .setDestinationContainerName(generateContainerName()), null, Context.NONE)
             .getValue()
 
         then:
@@ -781,7 +780,7 @@ class ServiceAPITest extends APISpec {
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-            .setTimeout(Duration.ofMinutes(1)), Context.NONE)
+            .setTimeout(Duration.ofMinutes(1)), null, Context.NONE)
         def restoredContainerClient = response.getValue()
 
         then:
@@ -883,8 +882,7 @@ class ServiceAPITest extends APISpec {
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         primaryBlobServiceClient.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationContainerName(cc2.getBlobContainerName()),
-            Context.NONE)
+                .setDestinationContainerName(cc2.getBlobContainerName()), null, Context.NONE)
 
         then:
         thrown(BlobStorageException.class)

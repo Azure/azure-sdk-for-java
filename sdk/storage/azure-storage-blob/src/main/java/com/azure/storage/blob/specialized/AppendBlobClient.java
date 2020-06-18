@@ -144,7 +144,7 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return this.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
-            .setRequestConditions(requestConditions).setTimeout(timeout), context);
+            .setRequestConditions(requestConditions), timeout, context);
     }
 
     /**
@@ -154,15 +154,16 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context}
      *
      * @param options {@link AppendBlobCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the created appended blob.
      */
-    public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Context context) {
+    public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout, Context context) {
         return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createWithResponse(options, context), options == null ? null : options.getTimeout());
+            createWithResponse(options, context), options == null ? null : timeout);
     }
 
     /**

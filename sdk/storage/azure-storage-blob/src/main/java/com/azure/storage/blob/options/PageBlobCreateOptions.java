@@ -6,7 +6,6 @@ package com.azure.storage.blob.options;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
-import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -19,10 +18,9 @@ public class PageBlobCreateOptions {
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private BlobRequestConditions requestConditions;
-    private Duration timeout;
 
     /**
-     * @param size  Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
      * 512-byte boundary.
      */
     public PageBlobCreateOptions(long size) {
@@ -116,28 +114,6 @@ public class PageBlobCreateOptions {
      */
     public PageBlobCreateOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public PageBlobCreateOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

@@ -105,12 +105,12 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#uploadWithResponse(BlockBlobSimpleUploadOptions, Context)}
+     * Code snippet for {@link BlockBlobClient#uploadWithResponse(BlockBlobSimpleUploadOptions, Duration, Context)}
      *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
      */
     public void upload3() throws NoSuchAlgorithmException {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -129,10 +129,10 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
             .encodeToString(client.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length)
                 .setHeaders(headers).setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
-                .setRequestConditions(requestConditions).setTimeout(timeout), context)
+                .setRequestConditions(requestConditions), timeout, context)
                 .getValue()
                 .getContentMd5()));
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context
     }
 
     /**
@@ -256,10 +256,10 @@ public class BlockBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(BlockBlobCommitBlockListOptions, Context)}
+     * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(BlockBlobCommitBlockListOptions, Duration, Context)}
      */
     public void commitBlockList3() {
-        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -275,9 +275,9 @@ public class BlockBlobClientJavaDocCodeSnippets {
         System.out.printf("Committing block list completed with status %d%n",
             client.commitBlockListWithResponse(
                 new BlockBlobCommitBlockListOptions(Collections.singletonList(base64BlockId)).setHeaders(headers)
-                    .setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions)
-                    .setTimeout(timeout), context)
+                    .setMetadata(metadata).setTags(tags).setTier(AccessTier.HOT)
+                    .setRequestConditions(requestConditions), timeout, context)
                 .getStatusCode());
-        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Context
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context
     }
 }

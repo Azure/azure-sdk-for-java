@@ -162,7 +162,7 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
-            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions).setTimeout(timeout),
+            .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions), timeout,
             context);
     }
 
@@ -175,15 +175,16 @@ public final class PageBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Duration-Context}
      *
      * @param options {@link PageBlobCreateOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The information of the created page blob.
      */
-    public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Context context) {
+    public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, options.getTimeout());
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

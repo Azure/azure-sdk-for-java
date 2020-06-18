@@ -152,7 +152,7 @@ class BlobAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null)
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
             .getValue().getETag() != null
     }
 
@@ -1828,7 +1828,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTags(tags), null)
+        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTags(tags), null, null)
 
         then:
         bu2.getTags() == tags

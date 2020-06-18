@@ -8,7 +8,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,6 @@ public class BlockBlobCommitBlockListOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private Duration timeout;
 
     /**
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
@@ -117,28 +115,6 @@ public class BlockBlobCommitBlockListOptions {
      */
     public BlockBlobCommitBlockListOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public BlockBlobCommitBlockListOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

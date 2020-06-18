@@ -77,10 +77,10 @@ public class AppendBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link AppendBlobClient#createWithResponse(AppendBlobCreateOptions, Context)}
+     * Code snippet for {@link AppendBlobClient#createWithResponse(AppendBlobCreateOptions, Duration, Context)}
      */
     public void createWithResponse2() {
-        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Context
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentType("binary")
             .setContentLanguage("en-US");
@@ -93,9 +93,9 @@ public class AppendBlobClientJavaDocCodeSnippets {
 
         System.out.printf("Created AppendBlob at %s%n",
             client.createWithResponse(new AppendBlobCreateOptions().setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setRequestConditions(requestConditions).setTimeout(timeout), context).getValue()
+                .setTags(tags).setRequestConditions(requestConditions), timeout, context).getValue()
                 .getLastModified());
-        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Context
+        // END: com.azure.storage.blob.specialized.AppendBlobClient.createWithResponse#AppendBlobCreateOptions-Duration-Context
     }
 
     /**

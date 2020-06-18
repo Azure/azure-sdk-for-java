@@ -9,7 +9,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
-import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -23,7 +22,6 @@ public class BlobCopyFromUrlOptions {
     private AccessTier tier;
     private RequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
-    private Duration timeout;
 
     /**
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -118,28 +116,6 @@ public class BlobCopyFromUrlOptions {
      */
     public BlobCopyFromUrlOptions setDestinationRequestConditions(BlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public BlobCopyFromUrlOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

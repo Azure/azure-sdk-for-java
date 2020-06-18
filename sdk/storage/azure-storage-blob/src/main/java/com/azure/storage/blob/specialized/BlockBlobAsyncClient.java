@@ -255,9 +255,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
-            null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(), requestConditions.getLeaseId(),
-            options.getTier(), requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
-            requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()),
+            null, data, options.getLength(), null, options.getContentMd5(), options.getMetadata(),
+            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+            requestConditions.getIfNoneMatch(), null, tagsToString(options.getTags()),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {

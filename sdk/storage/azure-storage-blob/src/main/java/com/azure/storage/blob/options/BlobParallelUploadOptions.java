@@ -13,7 +13,6 @@ import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -30,7 +29,6 @@ public class BlobParallelUploadOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
-    private Duration timeout;
 
     /**
      * Constructs a new {@code BlobParallelUploadOptions}.
@@ -207,28 +205,6 @@ public class BlobParallelUploadOptions {
      */
     public BlobParallelUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public BlobParallelUploadOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

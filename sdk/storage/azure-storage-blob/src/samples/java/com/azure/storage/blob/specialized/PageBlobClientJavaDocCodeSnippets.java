@@ -86,7 +86,7 @@ public class PageBlobClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link PageBlobClient#createWithResponse(PageBlobCreateOptions, Context)}
+     * Code snippets for {@link PageBlobClient#createWithResponse(PageBlobCreateOptions, Duration, Context)}
      */
     public void createWithResponse2CodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#PageBlobCreateOptions-Context
@@ -99,7 +99,7 @@ public class PageBlobClientJavaDocCodeSnippets {
         PageBlobItem pageBlob = client
             .createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
                     .setHeaders(headers).setMetadata(metadata).setTags(tags)
-                    .setRequestConditions(blobRequestConditions).setTimeout(timeout),
+                    .setRequestConditions(blobRequestConditions), timeout,
                 context)
             .getValue();
 

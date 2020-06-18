@@ -212,7 +212,7 @@ public final class BlobServiceClient {
      * @return The list of blobs.
      */
     public PagedIterable<FilterBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(new FindBlobsOptions(query));
+        return this.findBlobsByTags(new FindBlobsOptions(query), null);
     }
 
     /**
@@ -222,13 +222,14 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration}
      *
      * @param options {@link FindBlobsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options) {
-        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options));
+    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
+        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options, timeout));
     }
 
     /**
@@ -454,7 +455,7 @@ public final class BlobServiceClient {
      */
     public BlobContainerClient undeleteBlobContainer(String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion),
+            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion), null,
             Context.NONE).getValue();
     }
 
@@ -471,19 +472,20 @@ public final class BlobServiceClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Context}
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions-Duration-Context}
      *
      * @param options {@link UndeleteBlobContainerOptions}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
      * to interact with the restored container.
      */
     public Response<BlobContainerClient> undeleteBlobContainerWithResponse(
-        UndeleteBlobContainerOptions options, Context context) {
+        UndeleteBlobContainerOptions options, Duration timeout, Context context) {
         Mono<Response<BlobContainerClient>> response =
             this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(options, context)
             .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
 
-        return blockWithOptionalTimeout(response, options.getTimeout());
+        return blockWithOptionalTimeout(response, timeout);
     }
 }

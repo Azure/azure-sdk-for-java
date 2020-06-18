@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.util.Map;
 
 /**
@@ -28,7 +27,6 @@ public class BlockBlobSimpleUploadOptions {
     private AccessTier tier;
     private byte[] contentMd5;
     private BlobRequestConditions requestConditions;
-    private Duration timeout;
 
     /**
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
@@ -36,7 +34,7 @@ public class BlockBlobSimpleUploadOptions {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the data source.
      */
-    public BlockBlobSimpleUploadOptions(Flux<ByteBuffer> data, long length){
+    public BlockBlobSimpleUploadOptions(Flux<ByteBuffer> data, long length) {
         StorageImplUtils.assertNotNull("dataFlux", data);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataFlux = data;
@@ -179,28 +177,6 @@ public class BlockBlobSimpleUploadOptions {
      */
     public BlockBlobSimpleUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public BlockBlobSimpleUploadOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

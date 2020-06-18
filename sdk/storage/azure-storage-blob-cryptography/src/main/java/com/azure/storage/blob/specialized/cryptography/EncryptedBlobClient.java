@@ -194,7 +194,7 @@ public class EncryptedBlobClient extends BlobClient {
         Duration timeout) throws UncheckedIOException {
         this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
                 .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions).setTimeout(timeout),
+                .setTier(tier).setRequestConditions(requestConditions), timeout,
             null);
     }
 
@@ -203,22 +203,24 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFileWithResponse#BlobUploadFromFileOptions-Duration-Context}
      *
      * @param options {@link BlobUploadFromFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws UncheckedIOException If an I/O error occurs
      * @return Information about the uploaded block blob.
      */
     @Override
     public Response<BlockBlobItem> uploadFromFileWithResponse(BlobUploadFromFileOptions options,
-                Context context)
+        Duration timeout, Context context)
         throws UncheckedIOException {
         Mono<Response<BlockBlobItem>> upload =
             this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
                 .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
-            return StorageImplUtils.blockWithOptionalTimeout(upload, options.getTimeout());
+            return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -283,7 +285,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
-        Context context) {
+        Duration timeout, Context context) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }

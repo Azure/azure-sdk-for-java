@@ -334,11 +334,11 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(BlobCopyFromUrlOptions, Context)}
+     * Code snippets for {@link BlobClientBase#copyFromUrlWithResponse(BlobCopyFromUrlOptions, Duration, Context)}
      */
     public void copyFromUrlWithResponse2CodeSnippets() {
 
-        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Context
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context
         Map<String, String> metadata = Collections.singletonMap("metadata", "value");
         Map<String, String> tags = Collections.singletonMap("tag", "value");
         RequestConditions modifiedRequestConditions = new RequestConditions()
@@ -348,9 +348,9 @@ public class BlobClientBaseJavaDocCodeSnippets {
         System.out.printf("Copy identifier: %s%n",
             client.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(url).setMetadata(metadata).setTags(tags)
                 .setTier(AccessTier.HOT).setSourceRequestConditions(modifiedRequestConditions)
-                .setDestinationRequestConditions(blobRequestConditions).setTimeout(timeout),
+                .setDestinationRequestConditions(blobRequestConditions), timeout,
                 new Context(key1, value1)).getValue());
-        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Context
+        // END: com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context
     }
 
     /**
@@ -575,7 +575,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobClientBase#queryWithResponse(BlobQueryOptions, Context)}
+     * Code snippet for {@link BlobClientBase#queryWithResponse(BlobQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context
@@ -598,10 +598,9 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
-            .setProgressConsumer(progressConsumer)
-            .setTimeout(timeout);
+            .setProgressConsumer(progressConsumer);
         System.out.printf("Query completed with status %d%n",
-            client.queryWithResponse(queryOptions, new Context(key1, value1))
+            client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
         // END: com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context
     }

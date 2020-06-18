@@ -169,7 +169,7 @@ class BlobBaseAPITest extends APISpec {
         when:
         OutputStream os = new ByteArrayOutputStream()
         bc.queryWithResponse(new BlobQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser), null)
+            .setInputSerialization(ser).setOutputSerialization(ser, null), null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -236,7 +236,7 @@ class BlobBaseAPITest extends APISpec {
         when:
         OutputStream os = new ByteArrayOutputStream()
         bc.queryWithResponse(new BlobQueryOptions(expression, os)
-            .setInputSerialization(ser).setOutputSerialization(ser), null)
+            .setInputSerialization(ser).setOutputSerialization(ser), null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -272,7 +272,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -316,7 +316,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -355,7 +355,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
         byte[] osData = os.toByteArray()
 
         then:
@@ -396,7 +396,7 @@ class BlobBaseAPITest extends APISpec {
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
             .setErrorConsumer(receiver)
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
 
         then:
         notThrown(IOException)
@@ -425,7 +425,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
 
         then:
         thrown(Exceptions.ReactiveException)
@@ -467,7 +467,7 @@ class BlobBaseAPITest extends APISpec {
         mockReceiver = new MockProgressConsumer()
         options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
             .setProgressConsumer(mockReceiver as Consumer)
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
 
         then:
         mockReceiver.progressList.contains(sizeofBlobToRead)
@@ -514,7 +514,7 @@ class BlobBaseAPITest extends APISpec {
         temp = 0
         options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
             .setProgressConsumer(mockReceiver as Consumer)
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
 
         then:
         // Make sure theyre all increasingly bigger
@@ -582,7 +582,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         when:
-        bc.queryWithResponse(options, null)
+        bc.queryWithResponse(options, null, null)
 
         then:
         thrown(IllegalArgumentException)
@@ -619,7 +619,7 @@ class BlobBaseAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         when:
-        bc.queryWithResponse(optionsOs, null)
+        bc.queryWithResponse(optionsOs, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -657,7 +657,7 @@ class BlobBaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         when:
-        bc.queryWithResponse(optionsOs, null)
+        bc.queryWithResponse(optionsOs, null, null)
 
         then:
         thrown(BlobStorageException)

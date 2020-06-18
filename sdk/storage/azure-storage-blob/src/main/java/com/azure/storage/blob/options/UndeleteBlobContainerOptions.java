@@ -6,8 +6,6 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
-import java.time.Duration;
-
 /**
  * Extended options that may be passed when restoring a blob container.
  */
@@ -16,7 +14,6 @@ public class UndeleteBlobContainerOptions {
     private final String deletedContainerName;
     private final String deletedContainerVersion;
     private String destinationContainerName;
-    private Duration timeout;
 
     /**
      * Constructs a {@link UndeleteBlobContainerOptions}.
@@ -74,28 +71,6 @@ public class UndeleteBlobContainerOptions {
      */
     public UndeleteBlobContainerOptions setDestinationContainerName(String destinationContainerName) {
         this.destinationContainerName = destinationContainerName;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public UndeleteBlobContainerOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

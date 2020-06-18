@@ -126,7 +126,7 @@ class PageBlobAPITest extends APISpec {
         }
 
         when:
-        bc.createWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags), null)
+        bc.createWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setTags(tags), null, null)
 
         def response = bc.getTagsWithResponse(null, null)
 

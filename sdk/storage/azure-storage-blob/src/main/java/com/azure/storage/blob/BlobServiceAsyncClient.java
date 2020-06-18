@@ -375,18 +375,18 @@ public final class BlobServiceAsyncClient {
      */
     public PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
-            return findBlobsByTagsInternal(options);
+            return findBlobsByTags(options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<FilterBlobItem> findBlobsByTagsInternal(FindBlobsOptions options) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
         StorageImplUtils.assertNotNull("options", options);
 
         Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(options.getQuery(), marker, options.getMaxResultsPerPage(), options.getTimeout())
+            marker -> findBlobsByTags(options.getQuery(), marker, options.getMaxResultsPerPage(), timeout)
                 .map(response -> {
                     List<FilterBlobItem> value = response.getValue().getBlobs() == null
                         ? Collections.emptyList()

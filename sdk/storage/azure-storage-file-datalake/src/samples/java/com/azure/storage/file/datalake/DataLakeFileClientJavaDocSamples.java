@@ -303,10 +303,10 @@ public class DataLakeFileClientJavaDocSamples {
     }
 
     /**
-     * Code snippet for {@link DataLakeFileClient#queryWithResponse(FileQueryOptions, Context)}
+     * Code snippet for {@link DataLakeFileClient#queryWithResponse(FileQueryOptions, Duration, Context)}
      */
     public void queryWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Context
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Duration-Context
         ByteArrayOutputStream queryData = new ByteArrayOutputStream();
         String expression = "SELECT * from BlobStorage";
         FileQueryJsonSerialization input = new FileQueryJsonSerialization()
@@ -326,12 +326,11 @@ public class DataLakeFileClientJavaDocSamples {
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
             .setErrorConsumer(errorConsumer)
-            .setProgressConsumer(progressConsumer)
-            .setTimeout(timeout);
+            .setProgressConsumer(progressConsumer);
         System.out.printf("Query completed with status %d%n",
-            client.queryWithResponse(queryOptions, new Context(key1, value1))
+            client.queryWithResponse(queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());
-        // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Context
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.queryWithResponse#FileQueryOptions-Duration-Context
     }
 
 }

@@ -473,7 +473,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        blockBlobClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(null).setTags(tags), null)
+        blockBlobClient.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(null).setTags(tags), null, null)
         def response = blockBlobClient.getTagsWithResponse(null, null)
 
         then:
@@ -732,7 +732,8 @@ class BlockBlobAPITest extends APISpec {
         def outStream = new ByteArrayOutputStream()
 
         when:
-        blobClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags), null)
+        blobClient.uploadFromFileWithResponse(new BlobUploadFromFileOptions(file.getAbsolutePath()).setTags(tags), null,
+            null)
 
         then:
         tags == blockBlobClient.getTags()

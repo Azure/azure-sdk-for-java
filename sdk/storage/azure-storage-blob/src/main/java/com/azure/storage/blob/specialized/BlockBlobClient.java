@@ -274,8 +274,8 @@ public final class BlockBlobClient extends BlobClientBase {
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
         return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
-            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions)
-            .setTimeout(timeout), context);
+            .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions),
+            timeout, context);
     }
 
     /**
@@ -289,9 +289,10 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context}
      *
      * @param options {@link BlockBlobSimpleUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the uploaded block blob.
@@ -300,11 +301,12 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input data is null.
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Context context) {
+    public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
+        Context context) {
         Objects.requireNonNull(options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
         try {
-            return blockWithOptionalTimeout(upload, options.getTimeout());
+            return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
             throw logger.logExceptionAsError(e);
         }
@@ -534,8 +536,8 @@ public final class BlockBlobClient extends BlobClientBase {
             Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions, Duration timeout,
             Context context) {
         return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds)
-                .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions)
-                .setTimeout(timeout), context);
+                .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions),
+                timeout, context);
     }
 
     /**
@@ -550,18 +552,19 @@ public final class BlockBlobClient extends BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#BlockBlobCommitBlockListOptions-Duration-Context}
      *
      * @param options {@link BlockBlobCommitBlockListOptions options}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The information of the block blob.
      */
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
-        Context context) {
+        Duration timeout, Context context) {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
             options, context);
 
-        return blockWithOptionalTimeout(response, options.getTimeout());
+        return blockWithOptionalTimeout(response, timeout);
     }
 }

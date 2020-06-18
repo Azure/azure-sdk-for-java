@@ -10,7 +10,7 @@ import java.time.Duration;
 
 /**
  * Defines options available to configure the behavior of a call to
- * {@link com.azure.storage.blob.BlobServiceClient#findBlobsByTags(FindBlobsOptions)} or
+ * {@link com.azure.storage.blob.BlobServiceClient#findBlobsByTags(FindBlobsOptions, Duration)} or
  * {@link com.azure.storage.blob.BlobServiceAsyncClient#findBlobsByTags(FindBlobsOptions)}. See the constructor
  * for details on each of the options.
  */
@@ -19,7 +19,6 @@ public class FindBlobsOptions {
 
     private final String query;
     private Integer maxResultsPerPage;
-    private Duration timeout;
 
     /**
      * @param query Filters the results to return only blobs whose tags match the specified expression.
@@ -59,28 +58,6 @@ public class FindBlobsOptions {
             throw logger.logExceptionAsError(new IllegalArgumentException("MaxResultsPerPage must be greater than 0."));
         }
         this.maxResultsPerPage = maxResultsPerPage;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public FindBlobsOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }

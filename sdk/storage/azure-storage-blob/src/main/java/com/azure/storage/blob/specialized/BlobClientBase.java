@@ -417,7 +417,7 @@ public class BlobClientBase {
             Duration timeout, Context context) {
         return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
             .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
-            .setDestinationRequestConditions(destRequestConditions).setTimeout(timeout), context);
+            .setDestinationRequestConditions(destRequestConditions), timeout, context);
     }
 
     /**
@@ -425,22 +425,23 @@ public class BlobClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Context}
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param options {@link BlobCopyFromUrlOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The copy ID for the long running operation.
      * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
      */
-    public Response<String> copyFromUrlWithResponse(BlobCopyFromUrlOptions options,
+    public Response<String> copyFromUrlWithResponse(BlobCopyFromUrlOptions options, Duration timeout,
         Context context) {
         Mono<Response<String>> response = client
             .copyFromUrlWithResponse(options, context);
 
-        return blockWithOptionalTimeout(response, options.getTimeout());
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -1113,7 +1114,7 @@ public class BlobClientBase {
      * @throws NullPointerException if {@code stream} is null.
      */
     public void query(OutputStream stream, String expression) {
-        queryWithResponse(new BlobQueryOptions(expression, stream), Context.NONE);
+        queryWithResponse(new BlobQueryOptions(expression, stream), null, Context.NONE);
     }
 
     /**
@@ -1127,12 +1128,13 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context}
      *
      * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Context context) {
+    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", queryOptions);
         StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         Mono<BlobQueryResponse> download = client
@@ -1146,6 +1148,6 @@ public class BlobClientBase {
                 }
             }).thenReturn(new BlobQueryResponse(response)));
 
-        return blockWithOptionalTimeout(download, queryOptions.getTimeout());
+        return blockWithOptionalTimeout(download, timeout);
     }
 }

@@ -12,7 +12,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Extended options that may be passed when beginning a copy operation.

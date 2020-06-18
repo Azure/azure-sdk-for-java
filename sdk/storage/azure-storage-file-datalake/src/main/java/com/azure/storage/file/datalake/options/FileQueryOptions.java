@@ -11,7 +11,6 @@ import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
 
 import java.io.OutputStream;
-import java.time.Duration;
 import java.util.function.Consumer;
 
 /**
@@ -27,7 +26,6 @@ public class FileQueryOptions {
     private DataLakeRequestConditions requestConditions;
     private Consumer<FileQueryError> errorConsumer;
     private Consumer<FileQueryProgress> progressConsumer;
-    private Duration timeout;
 
     /**
      * Constructs a {@link FileQueryOptions}.
@@ -166,28 +164,6 @@ public class FileQueryOptions {
      */
     public FileQueryOptions setProgressConsumer(Consumer<FileQueryProgress> progressConsumer) {
         this.progressConsumer = progressConsumer;
-        return this;
-    }
-
-    /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     */
-    public Duration getTimeout() {
-        return this.timeout;
-    }
-
-    /**
-     * Sets the timeout.
-     * <p>
-     * This value will be ignored on async operations and must be set on the returned async object itself.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
-     */
-    public FileQueryOptions setTimeout(Duration timeout) {
-        this.timeout = timeout;
         return this;
     }
 }
