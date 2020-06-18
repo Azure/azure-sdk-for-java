@@ -21,6 +21,7 @@
       "properties": {
         "publicNetworkAccess": "Enabled",
         "enableAutomaticFailover": false,
+        "enableMultipleWriteLocations": false,
         "isVirtualNetworkFilterEnabled": false,
         "virtualNetworkRules": [],
         "disableKeyBasedMetadataWriteAccess": false,
