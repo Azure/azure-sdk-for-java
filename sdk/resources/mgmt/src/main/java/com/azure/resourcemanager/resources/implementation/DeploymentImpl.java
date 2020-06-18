@@ -322,7 +322,7 @@ public final class DeploymentImpl extends
                 DeploymentExtendedInner.class,
                 inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
 
-            setInner(accepted.getAcceptedResult().inner());
+            setInner(accepted.getAcceptedResult().getValue().inner());
             return accepted;
         }
     }

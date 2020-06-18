@@ -210,37 +210,50 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
             .beginCreate();
-        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getAcceptedResult();
+        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getAcceptedResult().getValue();
         Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
 
-        PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
-        while (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            int delayInMills = pollResponse.getRetryAfter() == null
+        LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getAcceptedResult().getStatus();
+        int delayInMills = acceptedVirtualMachine.getAcceptedResult().getRetryAfter() == null
+            ? 0
+            : (int) acceptedVirtualMachine.getAcceptedResult().getRetryAfter().toMillis();
+        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            SdkContext.sleep(delayInMills);
+
+            PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+            pollStatus = pollResponse.getStatus();
+            delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
                 : (int) pollResponse.getRetryAfter().toMillis();
-            SdkContext.sleep(delayInMills);
-            pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
         }
-        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
         VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
         Assertions.assertEquals("Succeeded", virtualMachine.provisioningState());
 
         Accepted<Void> acceptedDelete = computeManager.virtualMachines()
             .beginDeleteByResourceGroup(virtualMachine.resourceGroupName(), virtualMachine.name());
-        pollResponse = acceptedDelete.getSyncPoller().poll();
-        while (pollResponse.getStatus() != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-            int delayInMills = pollResponse.getRetryAfter() == null
+
+        pollStatus = acceptedDelete.getAcceptedResult().getStatus();
+        delayInMills = acceptedDelete.getAcceptedResult().getRetryAfter() == null
+            ? 0
+            : (int) acceptedDelete.getAcceptedResult().getRetryAfter().toMillis();
+
+        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            SdkContext.sleep(delayInMills);
+
+            PollResponse<Void> pollResponse = acceptedDelete.getSyncPoller().poll();
+            pollStatus = pollResponse.getStatus();
+            delayInMills = pollResponse.getRetryAfter() == null
                 ? 10000
                 : (int) pollResponse.getRetryAfter().toMillis();
-            SdkContext.sleep(delayInMills);
-            pollResponse = acceptedDelete.getSyncPoller().poll();
         }
 
         boolean deleted = false;
         try {
             computeManager.virtualMachines().getById(virtualMachine.id());
         } catch (ManagementException e) {
-            if (e.getResponse().getStatusCode() == 404 && "NotFound".equals(e.getValue().getCode())) {
+            if (e.getResponse().getStatusCode() == 404
+                && ("NotFound".equals(e.getValue().getCode()) || "ResourceNotFound".equals(e.getValue().getCode()))) {
                 deleted = true;
             }
         }

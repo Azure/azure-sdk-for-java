@@ -1737,7 +1737,7 @@ class VirtualMachineImpl
                 inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
                     this.storageManager, this.networkManager, this.authorizationManager));
 
-            reset(accepted.getAcceptedResult().inner());
+            reset(accepted.getAcceptedResult().getValue().inner());
             return accepted;
         }
     }

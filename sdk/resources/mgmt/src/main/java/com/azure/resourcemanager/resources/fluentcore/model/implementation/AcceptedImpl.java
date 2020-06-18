@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -56,15 +57,27 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     }
 
     @Override
-    public T getAcceptedResult() {
+    public PollResponse<T> getAcceptedResult() {
         try {
-            return wrapOperation.apply(serializerAdapter.deserialize(
+            T value = wrapOperation.apply(serializerAdapter.deserialize(
                 new String(getResponse(), StandardCharsets.UTF_8),
                 finalResultType,
                 SerializerEncoding.JSON));
+            Duration retryAfter = getRetryAfter(activationResponse.getHeaders());
+            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter);
         } catch (IOException e) {
             return null;
         }
+    }
+
+    private static Duration getRetryAfter(HttpHeaders headers) {
+        if (headers != null) {
+            final String value = headers.getValue("Retry-After");
+            if (value != null) {
+                return Duration.ofSeconds(Long.parseLong(value));
+            }
+        }
+        return null;
     }
 
     @Override

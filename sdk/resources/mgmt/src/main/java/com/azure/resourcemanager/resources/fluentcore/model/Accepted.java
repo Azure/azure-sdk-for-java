@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model;
 
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
@@ -17,7 +18,7 @@ public interface Accepted<T> {
      *
      * @return the accepted result
      */
-    T getAcceptedResult();
+    PollResponse<T> getAcceptedResult();
 
     /**
      * Gets the {@link SyncPoller} of LRO.
