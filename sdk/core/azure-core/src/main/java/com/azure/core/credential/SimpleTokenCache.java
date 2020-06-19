@@ -26,7 +26,7 @@ public class SimpleTokenCache {
     private final FluxSink<AccessToken> sink = emitterProcessor.sink(OverflowStrategy.BUFFER);
     private final Supplier<Mono<AccessToken>> tokenSupplier;
     private final Predicate<AccessToken> shouldRefresh;
-    private final Duration refreshTimeout;
+    private final Duration refreshRetryTimeout;
     private final ClientLogger logger = new ClientLogger(SimpleTokenCache.class);
 
     /**
@@ -49,7 +49,7 @@ public class SimpleTokenCache {
         this.tokenSupplier = tokenSupplier;
         this.shouldRefresh = accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt()
             .minus(tokenRefreshOptions.getTokenRefreshOffset()));
-        this.refreshTimeout = tokenRefreshOptions.getTokenRefreshTimeout();
+        this.refreshRetryTimeout = tokenRefreshOptions.getTokenRefreshRetryTimeout();
     }
 
     /**
@@ -95,11 +95,11 @@ public class SimpleTokenCache {
                         logger.info(refreshLog(cache, now, "Acquired a new access token"));
                         sink.next(accessToken);
                         cache = accessToken;
-                        nextTokenRefresh = OffsetDateTime.now().plus(refreshTimeout);
+                        nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
                     })
                     .onErrorResume(err -> {
                         logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
-                        nextTokenRefresh = OffsetDateTime.now().plus(refreshTimeout);
+                        nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
                         return fallback.switchIfEmpty(Mono.error(err));
                     })
                     .switchIfEmpty(fallback)
@@ -123,7 +123,7 @@ public class SimpleTokenCache {
             Duration tte = Duration.between(now, cache.getExpiresAt());
             info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
                 .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(refreshTimeout.getSeconds()).append(" seconds.");
+                .append("Retry may be attempted after ").append(refreshRetryTimeout.getSeconds()).append(" seconds.");
             if (!tte.isNegative()) {
                 info.append(" The token currently cached will be used.");
             }

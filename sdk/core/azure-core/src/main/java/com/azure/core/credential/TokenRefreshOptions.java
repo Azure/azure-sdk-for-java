@@ -9,31 +9,31 @@ import java.time.Duration;
  * The options to configure the token refresh behavior.
  */
 public class TokenRefreshOptions {
-    private static final Duration DEFAULT_REFRESH_TIMEOUT = Duration.ofSeconds(30);
+    private static final Duration DEFAULT_REFRESH_RETRY_TIMEOUT = Duration.ofSeconds(30);
     private static final Duration DEFAULT_REFRESH_OFFSET = Duration.ofMinutes(2);
 
-    private Duration tokenRefreshTimeout = DEFAULT_REFRESH_TIMEOUT;
+    private Duration tokenRefreshRetryTimeout = DEFAULT_REFRESH_RETRY_TIMEOUT;
     private Duration tokenRefreshOffset = DEFAULT_REFRESH_OFFSET;
 
     /**
-     * Returns a Duration value representing the amount of time to wait between token refreshes. This is to prevent
-     * sending too many requests to the authentication service.
+     * Returns a Duration value representing the amount of time to wait before retrying a token refresh. This is to
+     * prevent sending too many requests to the authentication service.
      *
-     * @return the duration value representing the amount of time to wait between token refreshes
+     * @return the duration value representing the amount of time to wait before retrying a token refresh
      */
-    public Duration getTokenRefreshTimeout() {
-        return tokenRefreshTimeout;
+    public Duration getTokenRefreshRetryTimeout() {
+        return tokenRefreshRetryTimeout;
     }
 
     /**
-     * Specifies a Duration value representing the amount of time to wait between token refreshes. This is to prevent
-     * sending too many requests to the authentication service.
+     * Specifies a Duration value representing the amount of time to wait before retrying a token refresh. This is to
+     * prevent sending too many requests to the authentication service.
      *
-     * @param tokenRefreshTimeout the duration value representing the amount of time to wait between token refreshes
+     * @param tokenRefreshRetryTimeout the amount of time to wait before retrying a token refresh
      * @return TokenRefreshOptions
      */
-    public TokenRefreshOptions setTokenRefreshTimeout(Duration tokenRefreshTimeout) {
-        this.tokenRefreshTimeout = tokenRefreshTimeout;
+    public TokenRefreshOptions setTokenRefreshRetryTimeout(Duration tokenRefreshRetryTimeout) {
+        this.tokenRefreshRetryTimeout = tokenRefreshRetryTimeout;
         return this;
     }
 

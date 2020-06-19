@@ -212,16 +212,16 @@ public final class IdentityClientOptions {
     }
 
     /**
-     * Specifies a Duration value representing the amount of time to wait between token refreshes. This is to prevent
-     * sending too many requests to the authentication service.
+     * Specifies a Duration value representing the amount of time to wait before retrying a token refresh. This is to
+     * prevent sending too many requests to the authentication service.
      *
-     * @param tokenRefreshTimeout the duration value representing the amount of time to wait between token refreshes
+     * @param tokenRefreshRetryTimeout the amount of time to wait before retrying a token refresh
      * @return IdentityClientOptions
-     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
+     * @throws NullPointerException If {@code tokenRefreshRetryTimeout} is null.
      */
-    public IdentityClientOptions setTokenRefreshTimeout(Duration tokenRefreshTimeout) {
-        Objects.requireNonNull(tokenRefreshTimeout, "The token refresh timeout cannot be null.");
-        this.tokenRefreshOptions.setTokenRefreshTimeout(tokenRefreshTimeout);
+    public IdentityClientOptions setTokenRefreshRetryTimeout(Duration tokenRefreshRetryTimeout) {
+        Objects.requireNonNull(tokenRefreshRetryTimeout, "The token refresh retry timeout cannot be null.");
+        this.tokenRefreshOptions.setTokenRefreshRetryTimeout(tokenRefreshRetryTimeout);
         return this;
     }
 
