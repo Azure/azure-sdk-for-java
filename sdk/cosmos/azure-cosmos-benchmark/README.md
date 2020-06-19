@@ -7,9 +7,9 @@
 ```bash
 git clone https://github.com/Azure/azure-sdk-for-java.git
 cd sdk/cosmos/
-
-mvn install -f ../../eng/code-quality-tools/pom.xml
-mvn clean package -f pom.service.xml -DskipTests -Dgpg.skip -Ppackage-assembly
+mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dspotbugs.skip=true  -Dcheckstyle.skip=true  -Drevapi.skip=true clean install
+mvn clean install -f ../../eng/code-quality-reports/pom.xml
+mvn clean package -f pom.xml -DskipTests -Dgpg.skip -Ppackage-assembly
 ```
 
 and then the package will be generated. 
