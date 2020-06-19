@@ -7,12 +7,10 @@ import static org.junit.Assert.assertTrue;
 
 import com.microsoft.azure.test.management.ClientSecretAccess;
 import com.microsoft.azure.test.utils.AppRunner;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.client.RestTemplate;
 
-@Slf4j
 public class ActuatorIT {
 
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
