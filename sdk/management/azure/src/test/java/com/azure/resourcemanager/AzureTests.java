@@ -36,6 +36,7 @@ import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.Location;
+import com.azure.resourcemanager.resources.models.RegionType;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.core.TestBase;
 import com.azure.resourcemanager.resources.core.TestUtilities;
@@ -1258,17 +1259,19 @@ public class AzureTests extends TestBase {
                 .getCurrentSubscription()
                 .listLocations(); // note the region is not complete since it depends on current subscription
         for (Location location : locations) {
-            Region region = Region.findByLabelOrName(location.name());
-            if (region == null) {
-                sb
-                    .append("\n")
-                    .append(
-                        MessageFormat
-                            .format(
-                                "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
-                                location.displayName().toUpperCase().replace(" ", "_"),
-                                location.name(),
-                                location.displayName()));
+            if (location.regionType() == RegionType.PHYSICAL) {
+                Region region = Region.findByLabelOrName(location.name());
+                if (region == null) {
+                    sb
+                        .append("\n")
+                        .append(
+                            MessageFormat
+                                .format(
+                                    "public static final Region {0} = new Region(\"{1}\", \"{2}\");",
+                                    location.displayName().toUpperCase().replace(" ", "_"),
+                                    location.name(),
+                                    location.displayName()));
+                }
             }
         }
 
