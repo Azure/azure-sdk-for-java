@@ -17,7 +17,7 @@ jobs:
       AdditionalModules:
         - name: azure-cosmos-benchmark
           groupId: com.azure
-      TimeoutInMinutes: 90
+      TimeoutInMinutes: 120
       MaxParallel: 8
       Matrix:
         # 59m 59s, expect passed
