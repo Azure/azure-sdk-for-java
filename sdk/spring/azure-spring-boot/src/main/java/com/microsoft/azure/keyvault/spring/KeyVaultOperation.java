@@ -127,13 +127,19 @@ public class KeyVaultOperation {
                     .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
                     .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(KeyVaultSecret::getName, KeyVaultSecret::getValue));
+                    .collect(Collectors.toMap(
+                            s -> toKeyVaultSecretName(s.getName()),
+                            KeyVaultSecret::getValue
+                    ));
         } else {
             properties = secretKeys.stream()
                     .map(this::toKeyVaultSecretName)
                     .map(secretClient::getSecret)
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(KeyVaultSecret::getName, KeyVaultSecret::getValue));
+                    .collect(Collectors.toMap(
+                            s -> toKeyVaultSecretName(s.getName()),
+                            KeyVaultSecret::getValue
+                    ));
         }
     }
 
