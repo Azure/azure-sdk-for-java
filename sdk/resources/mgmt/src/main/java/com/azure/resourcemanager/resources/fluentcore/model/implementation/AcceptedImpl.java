@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
@@ -31,6 +32,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class AcceptedImpl<InnerT, T> implements Accepted<T> {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private final Response<Flux<ByteBuffer>> activationResponse;
     private byte[] responseBytes;
@@ -69,7 +72,8 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
                 activationResponse.getHeaders(), value,
                 LongRunningOperationStatus.IN_PROGRESS, retryAfter);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to deserialize activation response body", e);
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Failed to deserialize activation response body", e));
         }
     }
 

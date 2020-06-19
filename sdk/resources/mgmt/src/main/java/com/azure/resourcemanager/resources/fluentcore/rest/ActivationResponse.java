@@ -27,6 +27,10 @@ public class ActivationResponse<T> extends SimpleResponse<T> {
      * @param statusCode The status code of the HTTP response.
      * @param headers The headers of the HTTP response.
      * @param value The deserialized value of the HTTP response.
+     * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
+     * @param retryAfter Represents the delay the service has requested until the next polling operation is performed. A
+     *     {@code null}, zero or negative value will be taken to mean that the poller should determine on its
+     *     own when the next poll operation is to occur.
      */
     public ActivationResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value,
                               LongRunningOperationStatus status, Duration retryAfter) {
