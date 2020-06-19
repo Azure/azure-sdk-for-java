@@ -58,12 +58,12 @@ class DownloadResponseTest extends APISpec {
 
         where:
         scenario                                                             | tryNumber | setCount
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1 | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1 | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4 | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION   | 4 | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1 | true
-        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA | 1 | false
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_ONE_CHUNK       | 1         | true
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_MULTI_CHUNK     | 1         | true
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES | 4         | true
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION   | 4         | true
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1         | true // Range download
+        DownloadResponseMockFlux.DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA       | 1         | false // Non-range download
     }
 
     @Unroll
@@ -151,7 +151,8 @@ class DownloadResponseTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Requires( {liveMode()} ) // Because this test is inherently slow
+    @Requires({ liveMode() })
+    // Because this test is inherently slow
     @Unroll
     def "Timeout"() {
         setup:
