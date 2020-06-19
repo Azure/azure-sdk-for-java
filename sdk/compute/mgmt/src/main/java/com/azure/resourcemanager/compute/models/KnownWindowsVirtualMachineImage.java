@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.models;
 /** The popular Azure Windows images. */
 public enum KnownWindowsVirtualMachineImage {
     /** Windows 10 2020 H1 Pro */
-    WINDOWS_DESKTOP_10_20H1_PRO("MicrosoftWindowsDesktop", "Windows-10", "20h1-pro")
+    WINDOWS_DESKTOP_10_20H1_PRO("MicrosoftWindowsDesktop", "Windows-10", "20h1-pro"),
     /** Windows Server 2019 Data center. */
     WINDOWS_SERVER_2019_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2019-Datacenter"),
     /** Windows Server 2019 Data center with containers. */
