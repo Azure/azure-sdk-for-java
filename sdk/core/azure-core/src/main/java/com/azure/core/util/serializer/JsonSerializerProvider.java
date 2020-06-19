@@ -6,7 +6,6 @@ package com.azure.core.util.serializer;
 /**
  * Interface to be implemented by an azure-core plugin that wishes to provide a {@link JsonSerializer} implementation.
  */
-@FunctionalInterface
 public interface JsonSerializerProvider {
 
     /**

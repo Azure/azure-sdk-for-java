@@ -5,4 +5,7 @@ module com.azure.core.serializer.json.jackson {
     requires transitive com.azure.core;
 
     exports com.azure.core.serializer.json.jackson;
+
+    provides com.azure.core.util.serializer.JsonSerializerProvider
+        with com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 }
