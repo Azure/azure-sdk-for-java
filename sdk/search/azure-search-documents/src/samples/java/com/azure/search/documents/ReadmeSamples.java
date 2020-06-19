@@ -17,13 +17,13 @@ import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -128,12 +128,18 @@ public class ReadmeSamples {
     }
 
     public void uploadDocumentWithSyncClient() {
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        List<SearchDocument> documents = new ArrayList<>();
+        documents.add(new SearchDocument(new HashMap<>(){{
+            put("HotelId", "100");
+        }}));
+        documents.add(new SearchDocument(new HashMap<>(){{
+            put("HotelId", "200");
+        }}));
+        documents.add(new SearchDocument(new HashMap<>(){{
+            put("HotelId", "300");
+        }}));
         // Upload hotel.
-        searchClient.uploadDocuments(hotels);
+        searchClient.uploadDocuments(documents);
     }
 
     public void searchTextWithSyncClient() {

@@ -10,6 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.RequestOptions;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -52,6 +53,13 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new ObjectMapper();
+        SerializationUtil.configureMapper(MAPPER);
+    }
+
     /**
      * Assert whether two objects are equal.
      *
@@ -88,9 +96,8 @@ public final class TestHelpers {
         } else if (expected instanceof Map) {
             assertMapEquals((Map) expected, (Map) actual, ignoredFields);
         } else {
-            ObjectMapper mapper = new ObjectMapper();
-            ObjectNode expectedNode = mapper.valueToTree(expected);
-            ObjectNode actualNode = mapper.valueToTree(actual);
+            ObjectNode expectedNode = MAPPER.valueToTree(expected);
+            ObjectNode actualNode = MAPPER.valueToTree(actual);
             assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
         }
     }
@@ -241,29 +248,41 @@ public final class TestHelpers {
     }
 
     public static <T> T convertToType(Object document, Class<T> cls) {
-        ObjectMapper mapper = new ObjectMapper();
-        SerializationUtil.configureMapper(mapper);
-        return mapper.convertValue(document, cls);
+        return MAPPER.convertValue(document, cls);
     }
 
+    public static SearchDocument convertToSearchDocument(Object document) {
+        return MAPPER.convertValue(document, SearchDocument.class);
+    }
+
+    public static List<SearchDocument> convertToListSearchDocument(Object document) {
+        TypeReference<List<SearchDocument>> typeRef = new TypeReference<List<SearchDocument>>() {};
+        return MAPPER.convertValue(document, typeRef);
+    }
+
+    public static IndexDocumentsBatch<SearchDocument> convertToBatchSearchDocument(IndexDocumentsBatch<?> document) {
+        TypeReference<IndexDocumentsBatch<SearchDocument>> typeRef =
+            new TypeReference<IndexDocumentsBatch<SearchDocument>>() {};
+        return MAPPER.convertValue(document, typeRef);
+    }
 
     public static <T> void uploadDocuments(SearchClient client, List<T> uploadDoc) {
-        client.uploadDocuments(uploadDoc);
+        client.uploadDocuments(convertToListSearchDocument(uploadDoc));
         waitForIndexing();
     }
 
     public static <T> void uploadDocuments(SearchAsyncClient client, List<T> uploadDoc) {
-        client.uploadDocuments(uploadDoc).block();
+        client.uploadDocuments(convertToListSearchDocument(uploadDoc)).block();
         waitForIndexing();
     }
 
     public static <T> void uploadDocument(SearchClient client, T uploadDoc) {
-        client.uploadDocuments(Collections.singletonList(uploadDoc));
+        client.uploadDocuments(convertToListSearchDocument(Collections.singletonList(uploadDoc)));
         waitForIndexing();
     }
 
     public static <T> void uploadDocument(SearchAsyncClient client, T uploadDoc) {
-        client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
+        client.uploadDocuments(convertToListSearchDocument(Collections.singletonList(uploadDoc))).block();
         waitForIndexing();
     }
 
@@ -286,10 +305,8 @@ public final class TestHelpers {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        SerializationUtil.configureMapper(objectMapper);
         try {
-            return objectMapper.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
+            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

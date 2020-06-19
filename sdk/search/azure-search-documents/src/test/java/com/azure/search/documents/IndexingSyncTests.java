@@ -46,6 +46,8 @@ import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertToListSearchDocument;
+import static com.azure.search.documents.TestHelpers.convertToSearchDocument;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
@@ -93,7 +95,7 @@ public class IndexingSyncTests extends SearchTestBase {
         String expectedHotelId = "1";
         List<Hotel> hotels = Collections.singletonList(new Hotel().hotelId(expectedHotelId));
 
-        List<IndexingResult> result = client.uploadDocuments(hotels).getResults();
+        List<IndexingResult> result = client.uploadDocuments(convertToListSearchDocument(hotels)).getResults();
         this.assertIndexActionSucceeded(expectedHotelId, result.get(0), 201);
 
         waitForIndexing();
@@ -113,7 +115,7 @@ public class IndexingSyncTests extends SearchTestBase {
                 .lastName("Tolkien"))
         );
 
-        List<IndexingResult> result = client.uploadDocuments(books).getResults();
+        List<IndexingResult> result = client.uploadDocuments(convertToListSearchDocument(books)).getResults();
         this.assertIndexActionSucceeded("123", result.get(0), 201);
 
         waitForIndexing();
@@ -124,15 +126,16 @@ public class IndexingSyncTests extends SearchTestBase {
     public void canDeleteBatchByKeys() {
         client = setupClient(this::createHotelIndex);
 
-        client.uploadDocuments(Arrays.asList(
+        client.uploadDocuments(convertToListSearchDocument(Arrays.asList(
             new Hotel().hotelId("1"),
             new Hotel().hotelId("2")
-        ));
+        )));
         waitForIndexing();
         assertEquals(2, client.getDocumentCount());
 
-        IndexDocumentsBatch<Hotel> deleteBatch = new IndexDocumentsBatch<Hotel>()
+        IndexDocumentsBatch<SearchDocument> deleteBatch = new IndexDocumentsBatch<SearchDocument>()
             .addDeleteActions("HotelId", "1", "2");
+
 
         IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
         waitForIndexing();
@@ -154,12 +157,12 @@ public class IndexingSyncTests extends SearchTestBase {
             .category("Luxury");
         hotels.add(hotel);
 
-        client.uploadDocuments(hotels);
+        client.uploadDocuments(convertToListSearchDocument(hotels));
         waitForIndexing();
         assertEquals(1, client.getDocumentCount());
 
         hotel.category("ignored");
-        IndexDocumentsResult documentIndexResult = client.deleteDocuments(hotels);
+        IndexDocumentsResult documentIndexResult = client.deleteDocuments(convertToListSearchDocument(hotels));
         waitForIndexing();
 
         assertEquals(1, documentIndexResult.getResults().size());
@@ -202,12 +205,12 @@ public class IndexingSyncTests extends SearchTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(hotel1)
-            .addDeleteActions(randomHotel)
-            .addMergeActions(nonExistingHotel)
-            .addMergeOrUploadActions(hotel3)
-            .addUploadActions(hotel2);
+        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
+            .addUploadActions(convertToSearchDocument(hotel1))
+            .addDeleteActions(convertToSearchDocument(randomHotel))
+            .addMergeActions(convertToSearchDocument(nonExistingHotel))
+            .addMergeOrUploadActions(convertToSearchDocument(hotel3))
+            .addUploadActions(convertToSearchDocument(hotel2));
 
         try {
             client.indexDocuments(batch);
@@ -314,7 +317,7 @@ public class IndexingSyncTests extends SearchTestBase {
         doc.put("ID", "1");
         docs.add(doc);
 
-        client.uploadDocuments(docs);
+        client.uploadDocuments(convertToListSearchDocument(docs));
 
         SearchDocument actual = client.getDocument("1");
         assertNotNull(actual);
@@ -326,7 +329,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
 
-        client.uploadDocuments(boundaryConditionDocs);
+        client.uploadDocuments(convertToListSearchDocument(boundaryConditionDocs));
         waitForIndexing();
 
         for (Hotel expected : boundaryConditionDocs) {
@@ -363,7 +366,7 @@ public class IndexingSyncTests extends SearchTestBase {
         book2.put("PublishDate", utcTimeMinusEight);
         books.add(book2);
 
-        client.uploadDocuments(books);
+        client.uploadDocuments(convertToListSearchDocument(books));
         waitForIndexing();
 
         SearchDocument actualBook1 = client.getDocument("1");
@@ -394,7 +397,7 @@ public class IndexingSyncTests extends SearchTestBase {
                 ))
         );
 
-        client.uploadDocuments(books);
+        client.uploadDocuments(convertToListSearchDocument(books));
 
         SearchDocument actualBook1 = client.getDocument("1");
         assertEquals(books.get(0).publishDate(), convertToType(actualBook1, Book.class).publishDate());
@@ -505,14 +508,14 @@ public class IndexingSyncTests extends SearchTestBase {
 
         List<Hotel> originalDocs = new ArrayList<>();
         originalDocs.add(originalDoc);
-        client.uploadDocuments(originalDocs);
+        client.uploadDocuments(convertToListSearchDocument(originalDocs));
 
         List<Hotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
-        client.mergeDocuments(updatedDocs);
+        client.mergeDocuments(convertToListSearchDocument(updatedDocs));
         assertObjectEquals(expectedDoc, convertToType(client.getDocument("1"), Hotel.class), true);
 
-        client.mergeDocuments(originalDocs);
+        client.mergeDocuments(convertToListSearchDocument(originalDocs));
         assertObjectEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class), true);
     }
 
@@ -525,7 +528,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
 
         try {
-            client.mergeDocuments(hotels);
+            client.mergeDocuments(convertToListSearchDocument(hotels));
             fail("merge did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -633,19 +636,19 @@ public class IndexingSyncTests extends SearchTestBase {
 
         List<LoudHotel> originalDocs = new ArrayList<>();
         originalDocs.add(originalDoc);
-        client.uploadDocuments(originalDocs);
+        client.uploadDocuments(convertToListSearchDocument(originalDocs));
         waitForIndexing();
 
         List<LoudHotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
-        client.mergeDocuments(updatedDocs);
+        client.mergeDocuments(convertToListSearchDocument(updatedDocs));
         waitForIndexing();
 
         SearchDocument result = client.getDocument("1");
         LoudHotel actualDoc = convertToType(result, LoudHotel.class);
         assertObjectEquals(expectedDoc, actualDoc, true);
 
-        client.uploadDocuments(originalDocs);
+        client.uploadDocuments(convertToListSearchDocument(originalDocs));
         waitForIndexing();
 
         result = client.getDocument("1");
@@ -805,18 +808,20 @@ public class IndexingSyncTests extends SearchTestBase {
         hotelsToDelete.add(new Hotel()
             .hotelId("4"));
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(hotelsToUpload)
-            .addMergeOrUploadActions(hotelsToMergeOrUpload);
+        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
+            .addUploadActions(convertToListSearchDocument(hotelsToUpload))
+            .addMergeOrUploadActions(convertToListSearchDocument(hotelsToMergeOrUpload));
 
-        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
+        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(
+            convertToListSearchDocument(hotelsToUpload), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, indexResponse.getStatusCode());
         IndexDocumentsResult result = indexResponse.getValue();
         assertEquals(2, result.getResults().size());
 
-        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, Context.NONE);
+        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(
+            convertToListSearchDocument(hotelsToMerge), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, updateResponse.getStatusCode());
@@ -824,14 +829,15 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
-            hotelsToMergeOrUpload, Context.NONE);
+            convertToListSearchDocument(hotelsToMergeOrUpload), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, mergeOrUploadResponse.getStatusCode());
         result = mergeOrUploadResponse.getValue();
         assertEquals(2, result.getResults().size());
 
-        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, Context.NONE);
+        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(
+            convertToListSearchDocument(hotelsToDelete), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, deleteResponse.getStatusCode());

@@ -16,12 +16,11 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.ServiceCounters;
 import com.azure.search.documents.indexes.models.ServiceLimits;
-import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.indexes.models.WebApiSkill;
-import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
 import java.util.ArrayList;
@@ -116,13 +115,19 @@ public class RefineSearchCapabilitiesExample {
 
     private static void uploadDocumentsToIndex(SearchClient client) {
 
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        List<SearchDocument> documents = new ArrayList<>();
+        documents.add(new SearchDocument(new HashMap<>(){{
+            put("HotelId", "100");
+        }}));
+        documents.add(new SearchDocument(new HashMap<>(){{
+            put("HotelId", "200");
+        }}));
+        documents.add(new SearchDocument(new HashMap<>(){{
+            put("HotelId", "300");
+        }}));
 
         // Perform index operations on a list of documents
-        IndexDocumentsResult result = client.mergeOrUploadDocuments(hotels);
+        IndexDocumentsResult result = client.mergeOrUploadDocuments(documents);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 

@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.search.documents.TestHelpers.convertToListSearchDocument;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -45,7 +46,7 @@ public class GeoPointTests extends SearchTestBase {
         List<Map<String, Object>> documents = mapper.readValue(docsData,
             new TypeReference<List<Map<String, Object>>>() {
             });
-        client.uploadDocuments(documents);
+        client.uploadDocuments(convertToListSearchDocument(documents));
 
         waitForIndexing();
     }
@@ -102,7 +103,7 @@ public class GeoPointTests extends SearchTestBase {
         doc.put("Name", "test");
         doc.put("Location", GeoPoint.create(1.0, 100.0));
         docs.add(doc);
-        IndexDocumentsResult indexResult = client.uploadDocuments(docs);
+        IndexDocumentsResult indexResult = client.uploadDocuments(convertToListSearchDocument(docs));
 
         assertNotNull(indexResult);
         assertTrue(indexResult.getResults().get(0).isSucceeded());
