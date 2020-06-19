@@ -8,7 +8,6 @@ import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    final Deque<TokenCredential> credentials;
+    private final Deque<TokenCredential> credentials;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
