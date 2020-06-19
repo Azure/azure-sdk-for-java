@@ -75,7 +75,7 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IndexDocumentsResult uploadDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult uploadDocuments(Iterable<SearchDocument> documents) {
         return uploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -94,7 +94,8 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> uploadDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return asyncClient.uploadDocumentsWithResponse(documents, context).block();
     }
 
@@ -119,7 +120,7 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IndexDocumentsResult mergeDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult mergeDocuments(Iterable<SearchDocument> documents) {
         return mergeDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -145,7 +146,8 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> mergeDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return asyncClient.mergeDocumentsWithResponse(documents, context).block();
     }
 
@@ -171,7 +173,7 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IndexDocumentsResult mergeOrUploadDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult mergeOrUploadDocuments(Iterable<SearchDocument> documents) {
         return mergeOrUploadDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -198,7 +200,8 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> mergeOrUploadDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return asyncClient.mergeOrUploadDocumentsWithResponse(documents, context).block();
     }
 
@@ -216,7 +219,7 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IndexDocumentsResult deleteDocuments(Iterable<?> documents) {
+    public IndexDocumentsResult deleteDocuments(Iterable<SearchDocument> documents) {
         return deleteDocumentsWithResponse(documents, Context.NONE).getValue();
     }
 
@@ -235,7 +238,8 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
+    public Response<IndexDocumentsResult> deleteDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return asyncClient.deleteDocumentsWithResponse(documents, context).block();
     }
 
@@ -392,7 +396,7 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<?> batch) {
+    public IndexDocumentsResult indexDocuments(IndexDocumentsBatch<SearchDocument> batch) {
         return indexDocumentsWithResponse(batch, Context.NONE).getValue();
     }
 
@@ -411,7 +415,8 @@ public final class SearchClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
+    public Response<IndexDocumentsResult> indexDocumentsWithResponse(IndexDocumentsBatch<SearchDocument> batch,
+        Context context) {
         return asyncClient.indexDocumentsWithResponse(batch, context).block();
     }
 

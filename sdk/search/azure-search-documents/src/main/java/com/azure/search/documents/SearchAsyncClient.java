@@ -154,7 +154,7 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> uploadDocuments(Iterable<SearchDocument> documents) {
         return uploadDocumentsWithResponse(documents).map(Response::getValue);
     }
 
@@ -172,11 +172,12 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<SearchDocument> documents) {
         return withContext(context -> uploadDocumentsWithResponse(documents, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
     }
 
@@ -201,7 +202,7 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> mergeDocuments(Iterable<SearchDocument> documents) {
         return mergeDocumentsWithResponse(documents).map(Response::getValue);
     }
 
@@ -226,11 +227,12 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<SearchDocument> documents) {
         return withContext(context -> mergeDocumentsWithResponse(documents, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
     }
 
@@ -256,7 +258,7 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<SearchDocument> documents) {
         return mergeOrUploadDocumentsWithResponse(documents).map(Response::getValue);
     }
 
@@ -282,11 +284,12 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<SearchDocument> documents) {
         return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
     }
 
@@ -304,7 +307,7 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
+    public Mono<IndexDocumentsResult> deleteDocuments(Iterable<SearchDocument> documents) {
         return deleteDocumentsWithResponse(documents).map(Response::getValue);
     }
 
@@ -322,11 +325,12 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
+    public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<SearchDocument> documents) {
         return withContext(context -> deleteDocumentsWithResponse(documents, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
+    Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<SearchDocument> documents,
+        Context context) {
         return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
     }
 
@@ -405,7 +409,7 @@ public final class SearchAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all fucntional calls below. 
+        // The firstPageResponse shared among all fucntional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
@@ -416,7 +420,7 @@ public final class SearchAsyncClient {
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all fucntional calls below. 
+        // The firstPageResponse shared among all fucntional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
@@ -562,7 +566,7 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
+    public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<SearchDocument> batch) {
         return indexDocumentsWithResponse(batch).map(Response::getValue);
     }
 
@@ -580,11 +584,12 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch) {
+    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<SearchDocument> batch) {
         return withContext(context -> indexDocumentsWithResponse(batch, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<SearchDocument> batch,
+        Context context) {
         try {
             return restClient.documents()
                 .indexWithRestResponseAsync(IndexBatchBaseConverter.map(batch), context)
