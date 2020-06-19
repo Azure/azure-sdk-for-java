@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * EffectiveRoutes List.
  */
-public class VirtualHubEffectiveRouteEffectiveRouteList {
+public class VirtualHubEffectiveRouteList {
     /**
      * The list of effective routes configured on the virtual hub or the
      * specified resource.
@@ -35,9 +35,9 @@ public class VirtualHubEffectiveRouteEffectiveRouteList {
      * Set the list of effective routes configured on the virtual hub or the specified resource.
      *
      * @param value the value value to set
-     * @return the VirtualHubEffectiveRouteEffectiveRouteList object itself.
+     * @return the VirtualHubEffectiveRouteList object itself.
      */
-    public VirtualHubEffectiveRouteEffectiveRouteList withValue(List<VirtualHubEffectiveRoute> value) {
+    public VirtualHubEffectiveRouteList withValue(List<VirtualHubEffectiveRoute> value) {
         this.value = value;
         return this;
     }
