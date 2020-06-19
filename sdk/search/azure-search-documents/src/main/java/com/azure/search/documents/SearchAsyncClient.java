@@ -30,7 +30,6 @@ import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
@@ -51,7 +50,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -99,11 +97,6 @@ public final class SearchAsyncClient {
     private final HttpPipeline httpPipeline;
 
     private static final ObjectMapper MAPPER;
-
-    private Long firstPagedTotalCount = null;
-
-    private Double firstPagedCoverage = null;
-    private Map<String, List<FacetResult>> firstPagedFacets = null;
 
     static {
         MAPPER = new ObjectMapper();
@@ -433,8 +426,8 @@ public final class SearchAsyncClient {
         if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
             return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
         }
-        SearchRequest requestToUse = (continuationToken == null) ? request :
-            SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
+        SearchRequest requestToUse = (continuationToken == null) ? request
+            : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse,
             RequestOptionsConverter.map(requestOptions), context)
