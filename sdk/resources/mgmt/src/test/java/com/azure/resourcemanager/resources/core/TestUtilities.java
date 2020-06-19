@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.resources.core;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /**
  * Common utility functions for the tests.
@@ -36,12 +35,5 @@ public class TestUtilities {
 
     public static synchronized <T> boolean isEmpty(PagedIterable<T> iterable) {
         return !iterable.iterator().hasNext();
-    }
-
-    /** @return a generated password */
-    public static String password() {
-        String password = new SdkContext().randomResourceName("Pa5$", 12);
-        //System.out.printf("Password: %s%n", password);
-        return password;
     }
 }

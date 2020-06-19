@@ -29,7 +29,6 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -119,7 +118,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(TestUtilities.password())
+                .withRootPassword(password())
                 .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
@@ -156,7 +155,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword(TestUtilities.password())
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_D3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -203,7 +202,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2016_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword(TestUtilities.password())
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_D3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -273,7 +272,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword(TestUtilities.password())
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_A2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -388,7 +387,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword(TestUtilities.password())
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -483,7 +482,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword(TestUtilities.password())
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -680,7 +679,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(TestUtilities.password())
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk1")
                 .withNewVhd(100)
@@ -726,7 +725,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword(TestUtilities.password())
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
