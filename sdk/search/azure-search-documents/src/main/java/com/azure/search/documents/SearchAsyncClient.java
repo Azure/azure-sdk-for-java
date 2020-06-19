@@ -405,7 +405,9 @@ public final class SearchAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
+        // The firstPageResponse shared among all fucntional calls below. 
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
             search(request, requestOptions, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
@@ -414,7 +416,9 @@ public final class SearchAsyncClient {
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
+        // The firstPageResponse shared among all fucntional calls below. 
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
             search(request, requestOptions, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
