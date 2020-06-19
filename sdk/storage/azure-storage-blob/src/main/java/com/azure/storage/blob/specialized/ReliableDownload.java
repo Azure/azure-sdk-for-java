@@ -45,6 +45,14 @@ final class ReliableDownload {
         this.options = (options == null) ? new DownloadRetryOptions() : options;
         this.info = info;
         this.getter = getter;
+        /*
+        If the customer did not specify a count, they are reading to the end of the blob. Extract this value
+        from the response for better book keeping towards the end.
+         */
+        if (this.info.getCount() == null) {
+            long blobLength = BlobAsyncClientBase.getBlobLength(rawResponse.getDeserializedHeaders());
+            info.setCount(blobLength - info.getOffset());
+        }
     }
 
     HttpRequest getRequest() {
@@ -108,16 +116,25 @@ final class ReliableDownload {
         return data
             .timeout(TIMEOUT_VALUE)
             .doOnNext(buffer -> {
-            /*
-            Update how much data we have received in case we need to retry and propagate to the user the data we
-            have received.
-             */
+                /*
+                Update how much data we have received in case we need to retry and propagate to the user the data we
+                have received.
+                 */
                 this.info.setOffset(this.info.getOffset() + buffer.remaining());
                 if (this.info.getCount() != null) {
                     this.info.setCount(this.info.getCount() - buffer.remaining());
                 }
             }).onErrorResume(t2 -> {
-            // Increment the retry count and try again with the new exception.
+                /*
+                 It is possible that the network stream will throw an error after emitting all data but before
+                 completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
+                 and offset values. Because we have read the intended amount of data, we can ignore the error at the end
+                 of the stream. If count is null and we
+                 */
+                if (this.info.getCount() != null && this.info.getCount() == 0) {
+                    return Flux.empty();
+                }
+                // Increment the retry count and try again with the new exception.
                 return tryContinueFlux(t2, currentRetryCount + 1, options);
             });
     }
