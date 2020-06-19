@@ -171,15 +171,15 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 3 * 1000, 2, tryCount),
+            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 4 * 1000, 2, tryCount),
             new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
         AtomicInteger errorCount = new AtomicInteger(0);
 
-        Flux.interval(Duration.ofSeconds(2))
-            .take(6) // 64 seconds after first token, making sure of a refresh
+        Flux.interval(Duration.ofSeconds(1))
+            .take(8) // 64 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
