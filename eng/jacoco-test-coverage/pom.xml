@@ -74,7 +74,7 @@
     <!--    <dependency>-->
     <!--      <groupId>com.azure</groupId>-->
     <!--      <artifactId>azure-core-management</artifactId>-->
-    <!--      <version>1.0.0-beta.8</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-management;current} &ndash;&gt;-->
+    <!--      <version>1.0.0-beta.2</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-management;current} &ndash;&gt;-->
     <!--    </dependency>-->
     <dependency>
       <groupId>com.azure</groupId>
@@ -104,7 +104,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
