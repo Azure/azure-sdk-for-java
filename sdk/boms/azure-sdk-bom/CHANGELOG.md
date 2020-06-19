@@ -1,5 +1,7 @@
 # Release History
 
+## 1.0.2-beta.1 (Unreleased)
+
 ## 1.0.1 (2020-06-19)
 
 - Updated Azure SDK dependency versions to latest release.
