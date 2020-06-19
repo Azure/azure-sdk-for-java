@@ -6,9 +6,6 @@ package com.azure.identity;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,8 +23,6 @@ import java.util.List;
 @Immutable
 public final class DefaultAzureCredential extends ChainedTokenCredential {
 
-    private final List<TokenCredential> tokenCredentials;
-
     /**
      * Creates default DefaultAzureCredential instance to use. This will use AZURE_CLIENT_ID,
      * AZURE_CLIENT_SECRET, and AZURE_TENANT_ID environment variables to create a
@@ -38,21 +33,19 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
      */
-    DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
+    DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
-        this.tokenCredentials = Collections.unmodifiableList(new ArrayList<TokenCredential>(tokenCredentials));
     }
 
+
     /**
-     * Get the read-only list of credentials sequentially used by {@link DefaultAzureCredential} to attempt
-     * authentication. Any changes made to the returned list will not reflect in the list of credentials
-     * used by {@link DefaultAzureCredential} to authenticate.
+     * {@inheritDoc}
      * The credentials in the returned list and their order may change in future versions of Identity.
      * This API is not intended to be used in production ready code and should only be used for development purposes.
      *
      * @return The list of {@link TokenCredential}.
      */
     public List<TokenCredential> getCredentials() {
-        return tokenCredentials;
+        return super.getCredentials();
     }
 }

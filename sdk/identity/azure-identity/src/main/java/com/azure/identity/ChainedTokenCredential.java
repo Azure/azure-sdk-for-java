@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Deque;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,14 +24,14 @@ import java.util.stream.Collectors;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final Deque<TokenCredential> credentials;
+    private final List<TokenCredential> credentials;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
      * credentials.
      */
-    ChainedTokenCredential(Deque<TokenCredential> credentials) {
-        this.credentials = credentials;
+    ChainedTokenCredential(List<TokenCredential> credentials) {
+        this.credentials = Collections.unmodifiableList(credentials);
     }
 
     @Override
@@ -60,5 +60,15 @@ public class ChainedTokenCredential implements TokenCredential {
                        }
                        return Mono.error(new CredentialUnavailableException(message.toString(), last));
                    }));
+    }
+
+
+    /**
+     * Get the read-only list of credentials sequentially used to attempt authentication.
+     *
+     * @return The list of {@link TokenCredential}.
+     */
+    public List<TokenCredential> getCredentials() {
+        return credentials;
     }
 }

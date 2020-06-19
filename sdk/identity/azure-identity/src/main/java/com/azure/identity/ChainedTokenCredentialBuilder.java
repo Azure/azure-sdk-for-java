@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 
@@ -64,6 +65,6 @@ public class ChainedTokenCredentialBuilder {
      * @return a {@link ChainedTokenCredential} with the current configurations.
      */
     public ChainedTokenCredential build() {
-        return new ChainedTokenCredential(new ArrayDeque<>(credentials));
+        return new ChainedTokenCredential(new ArrayList<TokenCredential>(credentials));
     }
 }
