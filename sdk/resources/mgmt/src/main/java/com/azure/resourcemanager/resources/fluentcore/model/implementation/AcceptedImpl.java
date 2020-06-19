@@ -17,6 +17,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
 import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -57,16 +58,18 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     }
 
     @Override
-    public PollResponse<T> getAcceptedResult() {
+    public ActivationResponse<T> getAcceptedResult() {
         try {
             T value = wrapOperation.apply(serializerAdapter.deserialize(
                 new String(getResponse(), StandardCharsets.UTF_8),
                 finalResultType,
                 SerializerEncoding.JSON));
             Duration retryAfter = getRetryAfter(activationResponse.getHeaders());
-            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter);
+            return new ActivationResponse<>(activationResponse.getRequest(), activationResponse.getStatusCode(),
+                activationResponse.getHeaders(), value,
+                LongRunningOperationStatus.IN_PROGRESS, retryAfter);
         } catch (IOException e) {
-            return null;
+            throw new IllegalStateException("Failed to deserialize activation response body", e);
         }
     }
 
