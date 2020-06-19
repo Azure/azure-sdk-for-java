@@ -18,15 +18,224 @@ jobs:
         - name: azure-cosmos-benchmark
           groupId: com.azure
       TimeoutInMinutes: 90
+      MaxParallel: 8
       Matrix:
-        # 33m 10s, expect passed
-        Session_Tcp_NonEmulator:
+        # 59m 59s, expect passed
+        Session_Http_E2E:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Https ReadMyWrites Integration Tests
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'Session'
+          ACCOUNT_CONSISTENCY: 'Session'
+        # 59m 59s, expect passed
+        Session_Tcp_E2E:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          DisplayName: TCP ReadMyWrites Integration Tests
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'Session'
+          ACCOUNT_CONSISTENCY: 'Session'
+        # 36m 46s, expect passed
+        Session_Single_Region_Tcp_NonEmulator:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Single Region TCP NonEmulator
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Session"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+        # 1h 25m 12s, expect passed
+        Session_Single_Region_Tcp_Fast:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Session Single Region Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+        # 41m 14s, expect passed
+        Session_Single_Region_Tcp_Direct:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Session Single Region Direct
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+        # 42m 42s, expect passed
+        Session_Single_Region_Tcp_Long:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Session Single Region Long
+          OSVmImage: 'windows-2019'
+          ProfileFlag: '-e -Plong'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          # 1h 30m 32s, expect passed
+        Strong_Session_Single_Region_Tcp_Fast:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Strong Session Single Region TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 1h 30m 32s, expect passed
+        Bounded_Staleness_Single_Region_Tcp_Fast:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Bounded Staleness Single Region TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 1h 30m 32s, expect passed
+        Consistent_Prefix_Single_Region_Tcp_Fast:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Consistent Prefix Single Region TCP Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 59m 58s, expect passed
+        Strong_Single_Region_Https_E2E:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Strong Single Region Https ReadMyWrites
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
+          DESIRED_CONSISTENCY: 'Strong'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 59m 58s, expect passed
+        Strong_Single_Region_Tcp_E2E:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Strong Single Region TCP ReadMyWrites
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'Strong'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 59m 58s, expect passed
+        Bounded_Staleness_Single_Region_Tcp_E2E:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Bounded Staleness Single Region TCP ReadMyWrites
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pe2e'
+          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
+          DESIRED_CONSISTENCY: 'BoundedStaleness'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 43m 53s, expect passed
+        Strong_Session_Single_Region_Tcp_Direct:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Strong Session Single Region TCP Direct
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 40m 59s, expect passed
+        Strong_Session_Single_Region_Tcp_NonEmulator:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
+          DisplayName: Strong Session Single Region TCP NonEmulator
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Tcp"]'
+          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
+          ACCOUNT_CONSISTENCY: 'Strong'
+        # 45m 23s, expect passed
+        Session_Multimaster_Multi_Region_Tcp_Long:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Multi Region Long
+          OSVmImage: 'windows-2019'
+          ProfileFlag: '-e -Plong'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: '["East US 2"]'
+        # 15m 34s, previously failing
+        Session_Multimaster_Multi_Region_Tcp_MultiMaster:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Multi Region Multi-Master
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pmulti-master'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: '["East US 2"]'
+        # 1h 30m 43s, expect passed
+        Session_Multimaster_Multi_Region_Tcp_Fast:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Multi Region Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: '["East US 2"]'
+        # 30m 10s, expect passed
+        Session_Multimaster_Multi_Region_Tcp_Direct:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Multi Region Direct
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: '["East US 2"]'
+        # 35m 0s, expect passed
+        Session_Multimaster_Multi_Region_Tcp_NonEmulator:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Multi Region NonEmulator
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: '["East US 2"]'
+        # 15m 21s, previously failing
+        Session_Multimaster_Single_Region_Tcp_MultiMaster:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: MultiMaster Single Region Multi-Master
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pmulti-master'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: null
+        # 1h 30m 34s, expect passed
+        Session_Multimaster_Single_Region_Tcp_Fast:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Single Region Fast
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pfast'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: null
+        # 45m 05s, expect passed
+        Session_Multimaster_Single_Region_Tcp_Direct:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Single Region Direct
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pdirect'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: null
+        # 25m 10s, expect passed
+        Session_Multimaster_Single_Region_Tcp_NonEmulator:
+          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
+          DisplayName: Multimaster Single Region NonEmulator
+          OSVmImage: 'ubuntu-18.04'
+          ProfileFlag: '-Pnon-emulator'
+          PROTOCOLS: '["Tcp"]'
+          ACCOUNT_CONSISTENCY: 'Session'
+          DESIRED_CONSISTENCIES: '["Session"]'
+          PREFERRED_LOCATIONS: null
 
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -36,348 +245,3 @@ jobs:
         options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
-
-
-#  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-#    parameters:
-#      DisableAzureResourceCreation: true
-#      TestName: Single_Region_Session
-#      ServiceDirectory: cosmos
-#      Artifacts:
-#        - name: azure-cosmos
-#          groupId: com.azure
-#          safeName: azurecosmos
-#      AdditionalModules:
-#        - name: azure-cosmos-benchmark
-#          groupId: com.azure
-#      TimeoutInMinutes: 120
-#      EnvVars:
-#        ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
-#        ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
-#        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-secondary-key)
-#        ACCOUNT_CONSISTENCY: "Session"
-#      MaxParallel: 1
-#      Matrix:
-#        # 59m 59s, expect passed
-#        Session_Http_E2E:
-#          DisplayName: Https ReadMyWrites Integration Tests
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pe2e'
-#          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-#          DESIRED_CONSISTENCY: 'Session'
-#        # 59m 59s, expect passed
-#        Session_Tcp_E2E:
-#          DisplayName: TCP ReadMyWrites Integration Tests
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pe2e'
-#          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-#          DESIRED_CONSISTENCY: 'Session'
-#
-#      PreRunSteps:
-#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-#
-#      TestStepMavenInputs:
-#          goals: verify
-#          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-#
-#      TestResultsFiles: '**/junitreports/TEST-*.xml'
-#
-#
-#  # This template parllelizes tests that could be run on Single_Region_Session
-#  # by running them against a different cosmosdb instance
-#  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-#    parameters:
-#      DisableAzureResourceCreation: true
-#      TestName: Single_Region_Session_2
-#      ServiceDirectory: cosmos
-#      Artifacts:
-#        - name: azure-cosmos
-#          groupId: com.azure
-#          safeName: azurecosmos
-#      AdditionalModules:
-#        - name: azure-cosmos-benchmark
-#          groupId: com.azure
-#      TimeoutInMinutes: 120
-#      EnvVars:
-#        ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
-#        ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
-#        ACCOUNT_CONSISTENCY: "Session"
-#        SECONDARY_ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-secondary-key)
-#        DESIRED_CONSISTENCIES: '["Session"]'
-#        PROTOCOLS: '["Tcp"]'
-#      MaxParallel: 1
-#      Matrix:
-#        # 1h 25m 12s, expect passed
-#        Session_Tcp_Fast:
-#          DisplayName: Session Single Region Fast
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pfast'
-#          PROTOCOLS: '["Tcp"]'
-#        # 41m 14s, expect passed
-#        Session_Tcp_Direct:
-#          DisplayName: Session Single Region Direct
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pdirect'
-#          PROTOCOLS: '["Tcp"]'
-#        # 33m 10s, expect passed
-#        Session_Tcp_NonEmulator:
-#          DisplayName: Session Single Region NonEmulator
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pnon-emulator'
-#          PROTOCOLS: '["Tcp"]'
-#        # 42m 42s, expect passed
-#        Session_Tcp_Long:
-#          DisplayName: Session Single Region Long
-#          OSVmImage: 'windows-2019'
-#          ProfileFlag: '-e -Plong'
-#          DESIRED_CONSISTENCIES: '["Session"]'
-#          PROTOCOLS: '["Tcp"]'
-#
-#      PreRunSteps:
-#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-#
-#      TestStepMavenInputs:
-#          goals: verify
-#          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-#
-#      TestResultsFiles: '**/junitreports/TEST-*.xml'
-#
-#  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-#    parameters:
-#      DisableAzureResourceCreation: true
-#      TestName: Single_Region_Strong
-#      ServiceDirectory: cosmos
-#      Artifacts:
-#        - name: azure-cosmos
-#          groupId: com.azure
-#          safeName: azurecosmos
-#      AdditionalModules:
-#        - name: azure-cosmos-benchmark
-#          groupId: com.azure
-#      TimeoutInMinutes: 120
-#      EnvVars:
-#        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
-#        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
-#        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
-#      MaxParallel: 1
-#      Matrix:
-#        # 1h 30m 32s, expect passed
-#        Strong_Session_Tcp_Fast:
-#          DisplayName: Strong Session TCP Fast
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pfast'
-#          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-#          PROTOCOLS: '["Tcp"]'
-#          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-#        # 1h 30m 32s, expect passed
-#        Bounded_Staleness_Tcp_Fast:
-#          DisplayName: Bounded Staleness TCP Fast
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pfast'
-#          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-#          PROTOCOLS: '["Tcp"]'
-#          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
-#        # 1h 30m 32s, expect passed
-#        Consistent_Prefix_Tcp_Fast:
-#          DisplayName: Consistent Prefix TCP Fast
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pfast'
-#          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-#          PROTOCOLS: '["Tcp"]'
-#          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
-#
-#      PreRunSteps:
-#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-#
-#      TestStepMavenInputs:
-#          goals: verify
-#          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-#
-#      TestResultsFiles: '**/junitreports/TEST-*.xml'
-#
-#  # Same host as above, parallelizing the e2e tests saves time overall
-#  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-#    parameters:
-#      DisableAzureResourceCreation: true
-#      TestName: Single_Region_Strong_2
-#      ServiceDirectory: cosmos
-#      Artifacts:
-#        - name: azure-cosmos
-#          groupId: com.azure
-#          safeName: azurecosmos
-#      AdditionalModules:
-#        - name: azure-cosmos-benchmark
-#          groupId: com.azure
-#      TimeoutInMinutes: 120
-#      EnvVars:
-#        ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
-#        ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
-#        SECONDARY_ACCOUNT_KEY: $(java-cosmos-strong-singleregion-secondary-key)
-#      MaxParallel: 1
-#      Matrix:
-#        # 59m 58s, expect passed
-#        Strong_Https_E2E:
-#          DisplayName: Single Region Https ReadMyWrites
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pe2e'
-#          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-#          DESIRED_CONSISTENCY: 'Strong'
-#        # 59m 58s, expect passed
-#        Strong_Tcp_E2E:
-#          DisplayName: Single Region TCP ReadMyWrites
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pe2e'
-#          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-#          DESIRED_CONSISTENCY: 'Strong'
-#        # 59m 58s, expect passed
-#        Bounded_Staleness_Tcp_E2E:
-#          DisplayName: Bounded Staleness Single Region TCP ReadMyWrites
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pe2e'
-#          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-#          DESIRED_CONSISTENCY: 'BoundedStaleness'
-#        # 43m 53s, expect passed
-#        Strong_Session_Tcp_Direct:
-#          DisplayName: Strong Session TCP Direct
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pdirect'
-#          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-#          PROTOCOLS: '["Tcp"]'
-#          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-#        # 40m 59s, expect passed
-#        Strong_Session_Tcp_NonEmulator:
-#          DisplayName: Strong Session TCP NonEmulator
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pnon-emulator'
-#          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Strong"'
-#          PROTOCOLS: '["Tcp"]'
-#          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-#
-#      PreRunSteps:
-#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-#
-#      TestStepMavenInputs:
-#          goals: verify
-#          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-#
-#      TestResultsFiles: '**/junitreports/TEST-*.xml'
-#
-#
-#  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-#    parameters:
-#      DisableAzureResourceCreation: true
-#      TestName: MultiMaster_Multi_Region
-#      ServiceDirectory: cosmos
-#      Artifacts:
-#        - name: azure-cosmos
-#          groupId: com.azure
-#          safeName: azurecosmos
-#      AdditionalModules:
-#        - name: azure-cosmos-benchmark
-#          groupId: com.azure
-#      TimeoutInMinutes: 120
-#      EnvVars:
-#        ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
-#        ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
-#        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-secondary-key)
-#        ACCOUNT_CONSISTENCY: "Session"
-#        DESIRED_CONSISTENCIES: '["Session"]'
-#        PREFERRED_LOCATIONS: '["East US 2"]'
-#      MaxParallel: 1
-#      Matrix:
-#        # 45m 23s, expect passed
-#        Tcp_Long:
-#          DisplayName: Multimaster Multi Region Long
-#          OSVmImage: 'windows-2019'
-#          ProfileFlag: '-e -Plong'
-#          PROTOCOLS: '["Tcp"]'
-#        # 15m 34s, previously failing
-#        Tcp_MultiMaster:
-#          DisplayName: Multimaster Multi Region Multi-Master
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pmulti-master'
-#          PROTOCOLS: '["Tcp"]'
-#        # 1h 30m 43s, expect passed
-#        Tcp_Fast:
-#          DisplayName: Multimaster Multi Region Fast
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pfast'
-#          PROTOCOLS: '["Tcp"]'
-#        # 30m 10s, expect passed
-#        Tcp_Direct:
-#          DisplayName: Multimaster Multi Region Direct
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pdirect'
-#          PROTOCOLS: '["Tcp"]'
-#        # 35m 0s, expect passed
-#        NonEmulator:
-#          DisplayName: Multimaster Multi Region NonEmulator
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pnon-emulator'
-#          PROTOCOLS: '["Tcp"]'
-#
-#      PreRunSteps:
-#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-#
-#      TestStepMavenInputs:
-#          goals: verify
-#          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-#
-#      TestResultsFiles: '**/junitreports/TEST-*.xml'
-#
-#
-#  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-#    parameters:
-#      DisableAzureResourceCreation: true
-#      TestName: MultiMaster_Single_Region
-#      ServiceDirectory: cosmos
-#      Artifacts:
-#        - name: azure-cosmos
-#          groupId: com.azure
-#          safeName: azurecosmos
-#      AdditionalModules:
-#        - name: azure-cosmos-benchmark
-#          groupId: com.azure
-#      TimeoutInMinutes: 120
-#      EnvVars:
-#        ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
-#        ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
-#        SECONDARY_ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-secondary-key)
-#        DESIRED_CONSISTENCIES: '["Session"]'
-#        PREFERRED_LOCATIONS: null
-#      MaxParallel: 1
-#      Matrix:
-#        # 15m 21s, previously failing
-#        Tcp_MultiMaster:
-#          DisplayName: MultiMaster Single Region Multi-Master
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pmulti-master'
-#          PROTOCOLS: '["Tcp"]'
-#        # 1h 30m 34s, expect passed
-#        Tcp_Fast:
-#          DisplayName: Multimaster Single Region Fast
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pfast'
-#          PROTOCOLS: '["Tcp"]'
-#        # 45m 05s, expect passed
-#        Tcp_Direct:
-#          DisplayName: Multimaster Single Region Direct
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pdirect'
-#          AdditionalArgs: '-DargLine="-DACCOUNT_CONSISTENCY=Session"'
-#          PROTOCOLS: '["Tcp"]'
-#        # 25m 10s, expect passed
-#        Tcp_NonEmulator:
-#          DisplayName: Multimaster Single Region NonEmulator
-#          OSVmImage: 'ubuntu-18.04'
-#          ProfileFlag: '-Pnon-emulator'
-#          PROTOCOLS: '["Tcp"]'
-#
-#      PreRunSteps:
-#        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-#
-#      TestStepMavenInputs:
-#          goals: verify
-#          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-#
-#      TestResultsFiles: '**/junitreports/TEST-*.xml'
