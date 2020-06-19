@@ -347,7 +347,7 @@
     "source": "specification/timeseriesinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
-  "vmware/resource-manager": {
+  "avs/resource-manager": {
     "source": "specification/vmware/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },  
