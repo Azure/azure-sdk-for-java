@@ -432,11 +432,12 @@ public final class SearchAsyncClient {
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion))
-            .doOnNext(response -> {
+            .map(searchDocumentResponse -> {
+                SearchPagedResponse response = new SearchPagedResponse(searchDocumentResponse, serviceVersion);
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(response);
                 }
+                return response;
             });
     }
 
