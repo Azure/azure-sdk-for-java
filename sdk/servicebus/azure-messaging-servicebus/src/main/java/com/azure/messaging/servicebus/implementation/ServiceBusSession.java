@@ -52,17 +52,17 @@ public interface ServiceBusSession extends AmqpSession {
         Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode, String sessionId);
 
     /**
-     * Creates a new {@link AmqpLink} that can send messages to the message broker.
+     * Creates a new {@link AmqpLink} that can send events to the message broker.
      *
      * @param linkName Name of the link.
      * @param entityPath The entity path this link connects to, so that it may send events to the message broker.
-     * @param viaEntityPath The entity path this link connects to, so that it may send events to the message broker
-     *     via this entity.
      * @param timeout Timeout required for creating and opening an AMQP link.
-     * @param retryPolicy The retry policy to use when consuming messages.
+     * @param retryPolicy The retry policy to use when sending events.
+     * @param transferDestinationPath The entity path this link connects to, so that it may transfer events to
+     *     the message broker via this entity.
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createSenderLink(String linkName, String entityPath, String viaEntityPath, Duration timeout,
-        AmqpRetryPolicy retryPolicy);
+    Mono<AmqpLink> createSenderLink(String linkName, String entityPath, Duration timeout,
+        AmqpRetryPolicy retryPolicy, String transferDestinationPath);
 }

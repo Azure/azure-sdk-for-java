@@ -18,7 +18,6 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -134,22 +133,22 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      *
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
-     * @param viaEntityPath The intermediate remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
+     * @param transferDestinationPath Path if the message should be transferred this destination by message broker.
      *
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, String viaEntityPath,
-        AmqpRetryOptions retryOptions) {
+    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
+         String transferDestinationPath) {
 
-        String entity = !CoreUtils.isNullOrEmpty(viaEntityPath) ? viaEntityPath : entityPath;
-        return createSession(entity).cast(ServiceBusSession.class).flatMap(session -> {
+        //String entity = !CoreUtils.isNullOrEmpty(viaEntityPath) ? viaEntityPath : entityPath;
+        return createSession(entityPath).cast(ServiceBusSession.class).flatMap(session -> {
             logger.verbose("Get or create sender link : '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createSenderLink(linkName, entityPath, viaEntityPath, retryOptions.getTryTimeout(),
-                retryPolicy).cast(AmqpSendLink.class);
+            return session.createSenderLink(linkName, entityPath, retryOptions.getTryTimeout(),
+                retryPolicy, transferDestinationPath).cast(AmqpSendLink.class);
         });
     }
 
@@ -160,12 +159,15 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param receiveMode Consumer options to use when creating the link.
+     * @param transferDestinationPath Path if the events should be transferred to another link after being received
+     *     from this link.
+     * @param entityType {@link MessagingEntityType} to use when creating the link.
      *
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
     public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType) {
+        String transferDestinationPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
@@ -183,7 +185,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param receiveMode Consumer options to use when creating the link.
-     * @param transferEntityPath to use when creating the link.
+     * @param transferDestinationPath to use when creating the link.
      * @param entityType {@link MessagingEntityType} to use when creating the link.
      * @param sessionId to use when creating the link.
      *
@@ -191,7 +193,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        String transferEntityPath, MessagingEntityType entityType, String sessionId) {
+        String transferDestinationPath, MessagingEntityType entityType, String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);

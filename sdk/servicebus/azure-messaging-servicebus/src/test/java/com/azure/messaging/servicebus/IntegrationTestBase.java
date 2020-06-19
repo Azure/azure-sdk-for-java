@@ -253,32 +253,20 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
         int entityIndex, boolean isSessionAware, boolean sharedConnection) {
-        return getSenderBuilder(useCredentials, entityType, entityIndex, -1, isSessionAware, sharedConnection);
-    }
-
-    protected ServiceBusSenderClientBuilder getSenderBuilder(boolean useCredentials, MessagingEntityType entityType,
-        int entityIndex, int viaEntityIndex, boolean isSessionAware, boolean sharedConnection) {
 
         ServiceBusClientBuilder builder = getBuilder(useCredentials, sharedConnection);
 
         switch (entityType) {
             case QUEUE:
                 final String queueName = isSessionAware ? getSessionQueueName(entityIndex) : getQueueName(entityIndex);
-
                 assertNotNull(queueName, "'queueName' cannot be null.");
-                ServiceBusSenderClientBuilder senderBuilder = builder.sender()
+                return builder.sender()
                     .queueName(queueName);
-                if (viaEntityIndex >= 0) {
-                    final String viaQueueName = isSessionAware ? getSessionQueueName(viaEntityIndex) : getQueueName(viaEntityIndex);
-                    senderBuilder.viaQueueName(viaQueueName);
-                }
-                return senderBuilder;
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
 
-                return builder.sender()
-                    .topicName(topicName);
+                return builder.sender().topicName(topicName);
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }

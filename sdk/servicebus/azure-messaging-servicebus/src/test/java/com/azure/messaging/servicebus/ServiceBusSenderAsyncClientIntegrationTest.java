@@ -146,7 +146,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     void viaMessageSendTest() {
         // Arrange
         final Duration shortTimeout = Duration.ofSeconds(15);
-        final int intermediateEntity = TestUtils.USE_CASE_SEND_VIA_1;
+        final int viaIntermediateEntity = TestUtils.USE_CASE_SEND_VIA_1;
         final int destinationEntity = TestUtils.USE_CASE_SEND_VIA_2;
         final boolean shareConnection = true;
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
@@ -155,13 +155,15 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final int total = 1;
         final int totalToDestination = 2;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(total, messageId, CONTENTS_BYTES);
+        final String viaQueueName = getQueueName(viaIntermediateEntity);
 
-        setSenderAndReceiver(entityType, intermediateEntity, false, false, shareConnection);
+        setSenderAndReceiver(entityType, viaIntermediateEntity, false, false, shareConnection);
         final ServiceBusReceiverAsyncClient intermediateReceiver =  receiver;
         final ServiceBusSenderAsyncClient intermediateSender = sender;
 
         final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(false, entityType,
-            destinationEntity, intermediateEntity, false, shareConnection)
+            destinationEntity, false, shareConnection)
+            .viaQueueName(viaQueueName)
             .buildAsyncClient();
 
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(false, entityType, destinationEntity, Function.identity(), shareConnection)

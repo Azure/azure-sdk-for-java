@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
@@ -13,7 +12,6 @@ import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
@@ -99,8 +97,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpLink> createSenderLink(String linkName, String entityPath, String viaEntityPath, Duration timeout,
-        AmqpRetryPolicy retry) {
+    public Mono<AmqpLink> createSenderLink(String linkName, String entityPath, Duration timeout,
+        AmqpRetryPolicy retry, String transferDestinationPath) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
@@ -110,16 +108,16 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         linkProperties.put(LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(serverTimeout.toMillis()));
 
-        if (!CoreUtils.isNullOrEmpty(viaEntityPath)) {
-            linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, entityPath);
-            logger.verbose("Get or create sender link for via entity path: '{}'", viaEntityPath);
+        if (!CoreUtils.isNullOrEmpty(transferDestinationPath)) {
+            linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferDestinationPath);
+            logger.verbose("Get or create sender link : '{}'", linkName);
 
-            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
+            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
+                transferDestinationPath);
 
-            return RetryUtil.withRetry(
-                getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), timeout, retry)
-                .then(tokenManager.authorize()).then(createProducer(linkName, viaEntityPath, timeout, retry,
-                    linkProperties));
+            return tokenManager.authorize().then(createProducer(linkName, entityPath, timeout, retry,
+                linkProperties))
+                .doFinally(signalType -> tokenManager.close());
         } else {
             logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
             return createProducer(linkName, entityPath, timeout, retry, linkProperties);

@@ -503,7 +503,8 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Or the
+         *     {@link #viaQueueName(String) viaQueueName} is specified along with {@link #topicName(String) topicName}.
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
@@ -511,8 +512,8 @@ public final class ServiceBusClientBuilder {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
 
-            if (!CoreUtils.isNullOrEmpty(viaQueueName) && !CoreUtils.isNullOrEmpty(topicName)) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+            if (!CoreUtils.isNullOrEmpty(viaQueueName) && entityType == MessagingEntityType.SUBSCRIPTION) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
                     "(%s), Via queue feature work only with a queue.", viaQueueName)));
             }
 
