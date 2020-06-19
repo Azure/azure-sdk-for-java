@@ -110,7 +110,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
         if (!CoreUtils.isNullOrEmpty(transferDestinationPath)) {
             linkProperties.put(LINK_TRANSFER_DESTINATION_PROPERTY, transferDestinationPath);
-            logger.verbose("Get or create sender link : '{}'", linkName);
+            logger.verbose("Get or create sender link {} for via entity path: '{}'", linkName, entityPath);
 
             final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
                 transferDestinationPath);
@@ -119,7 +119,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 linkProperties))
                 .doFinally(signalType -> tokenManager.close());
         } else {
-            logger.verbose("Get or create sender link for entity path: '{}'", entityPath);
+            logger.verbose("Get or create sender link {} for entity path: '{}'", linkName, entityPath);
             return createProducer(linkName, entityPath, timeout, retry, linkProperties);
         }
     }

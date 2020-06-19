@@ -48,25 +48,28 @@ class ServiceBusClientBuilderTest {
 
     @Test
     void viaQueueNameWithTopicNotAllowed() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-            builder.connectionString(NAMESPACE_CONNECTION_STRING)
-                .sender()
-                .topicName(TOPIC_NAME)
-                .viaQueueName(VIA_QUEUE_NAME)
-                .buildAsyncClient();
-        });
+        // Arrange & Act
+        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .sender()
+            .topicName(TOPIC_NAME)
+            .viaQueueName(VIA_QUEUE_NAME);
+
+        // Assert
+        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
     }
 
     @Test
     void queueClientWithViaQueueName() {
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-        final ServiceBusSenderAsyncClient client = builder.connectionString(NAMESPACE_CONNECTION_STRING)
+        // Arrange & Act
+        final ServiceBusSenderAsyncClient client = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
             .sender()
             .queueName(QUEUE_NAME)
             .viaQueueName(VIA_QUEUE_NAME)
             .buildAsyncClient();
 
+        // Assert
         assertNotNull(client);
     }
 

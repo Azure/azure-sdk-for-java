@@ -174,8 +174,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act
         StepVerifier.create(destination1ViaSender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
             .verifyComplete();
@@ -233,8 +233,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
             .verifyComplete();
@@ -308,8 +308,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(sender.createTransaction())
-            .assertNext(txn -> {
-                transaction.set(txn);
+            .assertNext(transactionContext -> {
+                transaction.set(transactionContext);
                 assertNotNull(transaction);
             })
             .verifyComplete();
