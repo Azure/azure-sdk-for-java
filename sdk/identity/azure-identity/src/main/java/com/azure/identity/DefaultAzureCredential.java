@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,13 +40,12 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      */
     DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
-        this.tokenCredentials = new ArrayList<TokenCredential>(tokenCredentials.size());
-        this.tokenCredentials.addAll(tokenCredentials);
+        this.tokenCredentials = Collections.unmodifiableList(new ArrayList<TokenCredential>(tokenCredentials));
     }
 
     /**
-     * Get the list of credentials sequentially used by {@link DefaultAzureCredential} to attempt authentication.
-     * Any changes made to the returned list will not reflect in the list of credentials
+     * Get the read-only list of credentials sequentially used by {@link DefaultAzureCredential} to attempt
+     * authentication. Any changes made to the returned list will not reflect in the list of credentials
      * used by {@link DefaultAzureCredential} to authenticate.
      * The credentials in the returned list and their order may change in future versions of Identity.
      * This API is not intended to be used in production ready code and should only be used for development purposes.

@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * Fluent credential builder for instantiating a {@link ChainedTokenCredential}.
@@ -53,7 +54,7 @@ public class ChainedTokenCredentialBuilder {
      * @param credentials the collection of credentials to be appended to the chain.
      * @return An updated instance of the builder.
      */
-    public ChainedTokenCredentialBuilder addAll(Collection<? extends TokenCredential> credentials) {
+    public ChainedTokenCredentialBuilder addAll(List<? extends TokenCredential> credentials) {
         this.credentials.addAll(credentials);
         return this;
     }
