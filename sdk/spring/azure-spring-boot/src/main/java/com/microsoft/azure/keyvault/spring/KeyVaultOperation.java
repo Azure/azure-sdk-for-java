@@ -59,10 +59,10 @@ public class KeyVaultOperation {
      * @param caseSensitive   the case sensitive flag.
      */
     public KeyVaultOperation(
-            final SecretClient secretClient,
-            final long refreshInMillis,
-            List<String> secretKeys,
-            boolean caseSensitive
+        final SecretClient secretClient,
+        final long refreshInMillis,
+        List<String> secretKeys,
+        boolean caseSensitive
     ) {
 
         this.caseSensitive = caseSensitive;
@@ -101,15 +101,15 @@ public class KeyVaultOperation {
     public String[] getPropertyNames() {
         if (!caseSensitive) {
             return properties
-                    .keySet()
-                    .stream()
-                    .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
-                    .distinct()
-                    .toArray(String[]::new);
+                .keySet()
+                .stream()
+                .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
+                .distinct()
+                .toArray(String[]::new);
         } else {
             return properties
-                    .keySet()
-                    .toArray(new String[0]);
+                .keySet()
+                .toArray(new String[0]);
         }
     }
 
@@ -119,27 +119,27 @@ public class KeyVaultOperation {
     private void refreshProperties() {
         if (secretKeys == null || secretKeys.isEmpty()) {
             properties = Optional.of(secretClient)
-                    .map(SecretClient::listPropertiesOfSecrets)
-                    .map(ContinuablePagedIterable::iterableByPage)
-                    .map(i -> StreamSupport.stream(i.spliterator(), false))
-                    .orElseGet(Stream::empty)
-                    .map(PagedResponse::getElements)
-                    .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-                    .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(
-                            s -> toKeyVaultSecretName(s.getName()),
-                            KeyVaultSecret::getValue
-                    ));
+                .map(SecretClient::listPropertiesOfSecrets)
+                .map(ContinuablePagedIterable::iterableByPage)
+                .map(i -> StreamSupport.stream(i.spliterator(), false))
+                .orElseGet(Stream::empty)
+                .map(PagedResponse::getElements)
+                .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+                .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                    s -> toKeyVaultSecretName(s.getName()),
+                    KeyVaultSecret::getValue
+                ));
         } else {
             properties = secretKeys.stream()
-                    .map(this::toKeyVaultSecretName)
-                    .map(secretClient::getSecret)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toMap(
-                            s -> toKeyVaultSecretName(s.getName()),
-                            KeyVaultSecret::getValue
-                    ));
+                .map(this::toKeyVaultSecretName)
+                .map(secretClient::getSecret)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                    s -> toKeyVaultSecretName(s.getName()),
+                    KeyVaultSecret::getValue
+                ));
         }
     }
 
@@ -168,9 +168,9 @@ public class KeyVaultOperation {
                 return property.toLowerCase(Locale.US).replaceAll("_", "-");
             } else {
                 return property.toLowerCase(Locale.US)
-                        .replaceAll("-", "") // my-project -> myproject
-                        .replaceAll("_", "") // my_project -> myproject
-                        .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
+                    .replaceAll("-", "") // my-project -> myproject
+                    .replaceAll("_", "") // my_project -> myproject
+                    .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
             }
         } else {
             return property;
@@ -190,7 +190,7 @@ public class KeyVaultOperation {
         boolean result;
         try {
             final Response<KeyVaultSecret> response = secretClient
-                    .getSecretWithResponse("it-is-ok-to-be-empty", null, Context.NONE);
+                .getSecretWithResponse("it-is-ok-to-be-empty", null, Context.NONE);
             result = response.getStatusCode() < 500;
         } catch (ResourceNotFoundException resourceNotFoundException) {
             result = true;
