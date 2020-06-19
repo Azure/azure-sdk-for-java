@@ -28,6 +28,7 @@ e.g.
 cd <swagger-folder>
 autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=rbac-preview  
 ```
+
 ## Code generation settings
 ``` yaml
 java: true
