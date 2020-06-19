@@ -456,7 +456,8 @@ public class IdentityClient {
                     return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
                 }
             }).map(MsalToken::new)
-                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset())))
+                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(
+                    options.getTokenRefreshOptions().getTokenRefreshOffset())))
                 .switchIfEmpty(Mono.fromFuture(() -> {
                     SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
                         new HashSet<>(request.getScopes())).forceRefresh(true);
@@ -488,7 +489,8 @@ public class IdentityClient {
                     return getFailedCompletableFuture(logger.logExceptionAsError(new RuntimeException(e)));
                 }
             }).map(ar -> (AccessToken) new MsalToken(ar))
-                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(options.getTokenRefreshOffset()))));
+                .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(
+                    options.getTokenRefreshOptions().getTokenRefreshOffset()))));
     }
 
     /**
@@ -688,8 +690,7 @@ public class IdentityClient {
                 String result = s.hasNext() ? s.next() : "";
 
                 MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-                return new AccessToken(msiToken.getToken(),
-                    msiToken.getExpiresAt().minus(options.getTokenRefreshOffset()));
+                return new AccessToken(msiToken.getToken(), msiToken.getExpiresAt());
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -743,8 +744,7 @@ public class IdentityClient {
 
                     MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
                             MSIToken.class, SerializerEncoding.JSON);
-                    return new AccessToken(msiToken.getToken(),
-                        msiToken.getExpiresAt().minus(options.getTokenRefreshOffset()));
+                    return new AccessToken(msiToken.getToken(), msiToken.getExpiresAt());
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(
