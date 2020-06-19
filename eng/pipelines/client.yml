@@ -10,7 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-      ref: refs/tags/azure-sdk-tools_20200514.1
+      ref: refs/tags/azure-sdk-tools_20200618.1
 
 variables:
   DefaultOptions: '--batch-mode --fail-at-end -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
