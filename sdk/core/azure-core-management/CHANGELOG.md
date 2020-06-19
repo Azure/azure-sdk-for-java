@@ -1,6 +1,8 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.1 (2020-06-17)
+- `PollerFactory` for polling of long-running operation.
+- `ManagementException` and `ManagementError` for exception and error handling.
 
 ## 1.0.0-preview.4 (2019-09-09)
 
