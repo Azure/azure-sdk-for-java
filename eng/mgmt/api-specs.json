@@ -38,6 +38,10 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "avs/resource-manager": {
+    "source": "specification/vmware/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "azure-kusto/resource-manager": {
     "source": "specification/azure-kusto/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -347,10 +351,6 @@
     "source": "specification/timeseriesinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
-  "avs/resource-manager": {
-    "source": "specification/vmware/resource-manager/readme.md",
-    "args": "--multiapi --fluent"
-  },  
   "vmwarecloudsimple/resource-manager": {
     "source": "specification/vmwarecloudsimple/resource-manager/readme.md",
     "args": "--multiapi --fluent",
