@@ -56,7 +56,7 @@ public class TokenCacheTests {
         SimpleTokenCache cache = new SimpleTokenCache(() -> {
             refreshes.incrementAndGet();
             return remoteGetTokenThatExpiresSoonAsync(1000, 0);
-        });
+        }, new TokenRefreshOptions().setTokenRefreshTimeout(Duration.ZERO));
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -73,7 +73,7 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assertions.assertEquals(2, refreshes.get());
+        Assertions.assertTrue(refreshes.get() <= 11);
     }
 
     @Test
@@ -81,13 +81,13 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         SimpleTokenCache cache = new SimpleTokenCache(
             () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 60 * 1000),
-            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(Duration.ofSeconds(28)))); // refresh at second 32, just past REFRESH_TIMEOUT
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(58)).setTokenRefreshTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Flux.interval(Duration.ofSeconds(2))
-            .take(20) // 38 seconds after first token, making sure of a refresh
+        Flux.interval(Duration.ofSeconds(1))
+            .take(5)
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -109,14 +109,14 @@ public class TokenCacheTests {
     public void testRefreshAfterExpiry() throws Exception {
         AtomicInteger latency = new AtomicInteger(1);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 15 * 1000),
-            t -> OffsetDateTime.now().isAfter(t.getExpiresAt())); // refresh at second 30 because of REFRESH_TIMEOUT
+            () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 1000),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ZERO).setTokenRefreshTimeout(Duration.ofSeconds(5)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
 
-        Flux.interval(Duration.ofSeconds(2))
-            .take(10) // 38 seconds after first token, making sure of a refresh
+        Flux.interval(Duration.ofSeconds(1))
+            .take(4) // 38 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -130,7 +130,7 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assertions.assertTrue(maxMillis.get() >= 15000);
+        Assertions.assertTrue(maxMillis.get() >= 5000);
     }
 
     @Test
@@ -138,15 +138,15 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenWithPersistentError(1000 * latency.getAndIncrement(), 60 * 1000, 2, tryCount),
-            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(Duration.ofSeconds(28)))); // refresh at second 32, just past REFRESH_TIMEOUT
+            () -> remoteGetTokenWithPersistentError(1000 * latency.getAndIncrement(), 3 * 1000, 2, tryCount),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
         AtomicInteger errorCount = new AtomicInteger(0);
 
-        Flux.interval(Duration.ofSeconds(2))
-            .take(32) // 64 seconds after first token, making sure of a refresh
+        Flux.interval(Duration.ofSeconds(1))
+            .take(6) // 64 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -171,15 +171,15 @@ public class TokenCacheTests {
         AtomicInteger latency = new AtomicInteger(1);
         AtomicInteger tryCount = new AtomicInteger(0);
         SimpleTokenCache cache = new SimpleTokenCache(
-            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 60 * 1000, 2, tryCount),
-            t -> OffsetDateTime.now().isAfter(t.getExpiresAt().minus(Duration.ofSeconds(28)))); // refresh at second 32, just past REFRESH_TIMEOUT
+            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 3 * 1000, 2, tryCount),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshTimeout(Duration.ofSeconds(1)));
 
         CountDownLatch latch = new CountDownLatch(1);
         AtomicLong maxMillis = new AtomicLong(0);
         AtomicInteger errorCount = new AtomicInteger(0);
 
         Flux.interval(Duration.ofSeconds(2))
-            .take(32) // 64 seconds after first token, making sure of a refresh
+            .take(6) // 64 seconds after first token, making sure of a refresh
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
