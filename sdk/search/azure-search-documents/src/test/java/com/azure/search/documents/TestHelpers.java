@@ -256,13 +256,13 @@ public final class TestHelpers {
     }
 
     public static List<SearchDocument> convertToListSearchDocument(Object document) {
-        TypeReference<List<SearchDocument>> typeRef = new TypeReference<List<SearchDocument>>() {};
+        TypeReference<List<SearchDocument>> typeRef = new TypeReference<List<SearchDocument>>() { };
         return MAPPER.convertValue(document, typeRef);
     }
 
     public static IndexDocumentsBatch<SearchDocument> convertToBatchSearchDocument(IndexDocumentsBatch<?> document) {
         TypeReference<IndexDocumentsBatch<SearchDocument>> typeRef =
-            new TypeReference<IndexDocumentsBatch<SearchDocument>>() {};
+            new TypeReference<IndexDocumentsBatch<SearchDocument>>() { };
         return MAPPER.convertValue(document, typeRef);
     }
 

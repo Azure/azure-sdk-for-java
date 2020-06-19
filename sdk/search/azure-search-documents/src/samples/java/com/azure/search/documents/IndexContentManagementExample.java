@@ -5,7 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
@@ -46,13 +45,13 @@ public class IndexContentManagementExample {
             .indexName(INDEX_NAME)
             .buildClient();
         List<SearchDocument> documents = new ArrayList<>();
-        documents.add(new SearchDocument(new HashMap<>(){{
+        documents.add(new SearchDocument(new HashMap<String, String>(){{
             put("HotelId", "100");
         }}));
-        documents.add(new SearchDocument(new HashMap<>(){{
+        documents.add(new SearchDocument(new HashMap<String, String>(){{
             put("HotelId", "200");
         }}));
-        documents.add(new SearchDocument(new HashMap<>(){{
+        documents.add(new SearchDocument(new HashMap<String, String>(){{
             put("HotelId", "300");
         }}));
 
@@ -72,10 +71,10 @@ public class IndexContentManagementExample {
             .buildClient();
 
         IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeOrUploadActions(new SearchDocument(new HashMap<>(){{
+            .addMergeOrUploadActions(new SearchDocument(new HashMap<String, String>(){{
                 put("HotelId", "100");
             }}))
-            .addDeleteActions(new SearchDocument(new HashMap<>(){{
+            .addDeleteActions(new SearchDocument(new HashMap<String, String>(){{
                 put("HotelId", "200");
             }}));
 

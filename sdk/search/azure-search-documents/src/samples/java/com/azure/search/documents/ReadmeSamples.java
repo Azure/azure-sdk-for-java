@@ -129,13 +129,13 @@ public class ReadmeSamples {
 
     public void uploadDocumentWithSyncClient() {
         List<SearchDocument> documents = new ArrayList<>();
-        documents.add(new SearchDocument(new HashMap<>(){{
+        documents.add(new SearchDocument(new HashMap<String, String>(){{
             put("HotelId", "100");
         }}));
-        documents.add(new SearchDocument(new HashMap<>(){{
+        documents.add(new SearchDocument(new HashMap<String, String>(){{
             put("HotelId", "200");
         }}));
-        documents.add(new SearchDocument(new HashMap<>(){{
+        documents.add(new SearchDocument(new HashMap<String, String>(){{
             put("HotelId", "300");
         }}));
         // Upload hotel.

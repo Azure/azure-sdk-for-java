@@ -153,21 +153,27 @@ searchIndexClient.createIndex(newIndex);
 
 Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L136 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L142 -->
 ```java
-List<Hotel> hotels = new ArrayList<>();
-hotels.add(new Hotel().setHotelId("100"));
-hotels.add(new Hotel().setHotelId("200"));
-hotels.add(new Hotel().setHotelId("300"));
+List<SearchDocument> documents = new ArrayList<>();
+documents.add(new SearchDocument(new HashMap<String, String>(){{
+    put("HotelId", "100");
+}}));
+documents.add(new SearchDocument(new HashMap<String, String>(){{
+    put("HotelId", "200");
+}}));
+documents.add(new SearchDocument(new HashMap<String, String>(){{
+    put("HotelId", "300");
+}}));
 // Upload hotel.
-searchClient.uploadDocuments(hotels);
+searchClient.uploadDocuments(documents);
 ```
 
 ### Search on hotel name
 
 Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L140-L150 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L146-L156 -->
 ```java
 // Perform a text-based search
 for (SearchResult result : searchClient.search("luxury hotel",
