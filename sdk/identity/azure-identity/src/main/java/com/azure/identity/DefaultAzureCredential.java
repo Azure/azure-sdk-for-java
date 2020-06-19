@@ -46,12 +46,14 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
 
     /**
      * Get the list of credentials sequentially used by {@link DefaultAzureCredential} to attempt authentication.
+     * Any changes made to the returned list will not reflect in the list of credentials
+     * used by {@link DefaultAzureCredential} to authenticate.
      * The credentials in the returned list and their order may change in future versions of Identity.
      * This API is not intended to be used in production ready code and should only be used for development purposes.
      *
      * @return The list of {@link TokenCredential}.
      */
     public List<TokenCredential> getCredentials() {
-        return Collections.unmodifiableList(tokenCredentials);
+        return tokenCredentials;
     }
 }
