@@ -21,6 +21,7 @@
 /sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+/sdk/schemaregistry/                                @arerlend @sjkwak
 /sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
