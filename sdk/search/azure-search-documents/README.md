@@ -153,18 +153,24 @@ searchIndexClient.createIndex(newIndex);
 
 Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L142 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L148 -->
 ```java
 List<SearchDocument> documents = new ArrayList<>();
-documents.add(new SearchDocument(new HashMap<String, String>(){{
-    put("HotelId", "100");
-}}));
-documents.add(new SearchDocument(new HashMap<String, String>(){{
-    put("HotelId", "200");
-}}));
-documents.add(new SearchDocument(new HashMap<String, String>(){{
-    put("HotelId", "300");
-}}));
+documents.add(new SearchDocument(new HashMap<String, String>() {
+    {
+        put("HotelId", "100");
+    }
+}));
+documents.add(new SearchDocument(new HashMap<String, String>() {
+    {
+        put("HotelId", "200");
+    }
+}));
+documents.add(new SearchDocument(new HashMap<String, String>() {
+    {
+        put("HotelId", "300");
+    }
+}));
 // Upload hotel.
 searchClient.uploadDocuments(documents);
 ```
@@ -173,19 +179,19 @@ searchClient.uploadDocuments(documents);
 
 Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L146-L156 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L153-L162 -->
 ```java
-// Perform a text-based search
-for (SearchResult result : searchClient.search("luxury hotel",
-    new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
-    // Each result is a dynamic Map
-    SearchDocument doc = result.getDocument();
-    String hotelName = (String) doc.get("HotelName");
-    Double rating = (Double) doc.get("Rating");
+pload hotel.
+chClient.uploadDocuments(documents);
 
-    System.out.printf("%s: %s%n", hotelName, rating);
-}
+
+oid searchTextWithSyncClient() {
+erform a text-based search
+(SearchResult result : searchClient.search("luxury hotel",
+new SearchOptions(), new RequestOptions(), Context.NONE)) {
+
+// Each result is a dynamic Map
 ```
 
 - Samples are explained in detail [here][samples_readme].

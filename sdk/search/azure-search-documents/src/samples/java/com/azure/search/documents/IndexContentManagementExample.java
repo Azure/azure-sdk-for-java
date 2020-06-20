@@ -45,15 +45,21 @@ public class IndexContentManagementExample {
             .indexName(INDEX_NAME)
             .buildClient();
         List<SearchDocument> documents = new ArrayList<>();
-        documents.add(new SearchDocument(new HashMap<String, String>(){{
-            put("HotelId", "100");
-        }}));
-        documents.add(new SearchDocument(new HashMap<String, String>(){{
-            put("HotelId", "200");
-        }}));
-        documents.add(new SearchDocument(new HashMap<String, String>(){{
-            put("HotelId", "300");
-        }}));
+        documents.add(new SearchDocument(new HashMap<String, String>() {
+            {
+                put("HotelId", "100");
+            }
+        }));
+        documents.add(new SearchDocument(new HashMap<String, String>() {
+            {
+                put("HotelId", "200");
+            }
+        }));
+        documents.add(new SearchDocument(new HashMap<String, String>() {
+            {
+                put("HotelId", "300");
+            }
+        }));
 
         // Perform index operations on a list of documents
         IndexDocumentsResult result = client.mergeOrUploadDocuments(documents);
@@ -71,12 +77,16 @@ public class IndexContentManagementExample {
             .buildClient();
 
         IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addMergeOrUploadActions(new SearchDocument(new HashMap<String, String>(){{
-                put("HotelId", "100");
-            }}))
-            .addDeleteActions(new SearchDocument(new HashMap<String, String>(){{
-                put("HotelId", "200");
-            }}));
+            .addMergeOrUploadActions(new SearchDocument(new HashMap<String, String>() {
+                {
+                    put("HotelId", "100");
+                }
+            }))
+            .addDeleteActions(new SearchDocument(new HashMap<String, String>() {
+                {
+                    put("HotelId", "200");
+                }
+            }));
 
         // Send a single batch that performs many different actions
         IndexDocumentsResult result = client.indexDocuments(batch);
