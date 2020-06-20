@@ -9,13 +9,19 @@ import java.util.ServiceLoader;
 /**
  * This class is a proxy for using a {@link JsonSerializerProvider} loaded from the classpath.
  */
-public class JsonSerializerProxy {
+public final class JsonSerializerProxy {
     private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER =
         "Cannot find any JSON serializer provider on the classpath.";
 
     private static JsonSerializerProvider defaultProvider;
     private static boolean attemptedLoad;
 
+    /**
+     * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
+     * classpath.
+     *
+     * @return A new instance of {@link JsonSerializer}.
+     */
     public static JsonSerializer createInstance() {
         if (defaultProvider == null) {
             loadFromClasspath();
