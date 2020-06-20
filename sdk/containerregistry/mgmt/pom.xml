@@ -80,7 +80,7 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>azure-resourcemanager-sdk-test-jar</id>
+            <id>azure-mgmt-sdk-test-jar</id>
             <activation>
                 <property>
                     <name>!maven.test.skip</name>
