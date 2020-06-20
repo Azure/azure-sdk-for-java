@@ -152,6 +152,9 @@ public abstract class IntegrationTestBase extends TestBase {
     public String getTopicName() {
         return TestUtils.getTopicName();
     }
+    public String getTopicName(int index) {
+        return getEntityName(TestUtils.getTopicBaseName(), index);
+    }
 
     /**
      * Gets the name of the first subscription.
@@ -159,7 +162,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * @return Name of the first subscription.
      */
     public String getSubscriptionName(int index) {
-        return getEntityName(getSubscriptionBaseName(), index);
+        return getEntityName(getSubscriptionBaseName(), 0);
     }
 
     /**
@@ -168,7 +171,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * @return Name of the first session-enabled subscription.
      */
     public String getSessionSubscriptionName(int index) {
-        return getEntityName(getSessionSubscriptionBaseName(), index);
+        return getEntityName(getSessionSubscriptionBaseName(), 0);
     }
 
     /**
@@ -263,7 +266,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 return builder.sender()
                     .queueName(queueName);
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
+                final String topicName = getTopicName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
 
                 return builder.sender().topicName(topicName);
@@ -286,7 +289,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
                 return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
+                final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSubscriptionName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
@@ -312,7 +315,7 @@ public abstract class IntegrationTestBase extends TestBase {
                     .queueName(queueName);
 
             case SUBSCRIPTION:
-                final String topicName = getTopicName();
+                final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = getSessionSubscriptionName(entityIndex);
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
