@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -20,7 +19,7 @@ import reactor.core.publisher.Mono;
  */
 public final class ResourceGroupsImpl
         extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
-        implements ResourceGroups, HasManager<ResourceManager> {
+        implements ResourceGroups {
 
     private final ResourceManager resourceManager;
 
