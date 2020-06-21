@@ -37,7 +37,7 @@ import static org.junit.Assert.assertEquals;
 public class KeyVaultIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultIT.class);
-    private static final String AZURE_KEYVAULT_ENDPOINT = System.getenv("AZURE_KEYVAULT_ENDPOINT");
+    private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
     private static final String KEY_VAULT_SECRET_VALUE = System.getenv("KEY_VAULT_SECRET_VALUE");
     private static final String KEY_VAULT_SECRET_NAME = System.getenv("KEY_VAULT_SECRET_NAME");
     private static final String SPRING_RESOURCE_GROUP = System.getenv("SPRING_RESOURCE_GROUP");
@@ -60,7 +60,7 @@ public class KeyVaultIT {
     public void keyVaultAsPropertySource() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_ENDPOINT);
+            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
@@ -83,7 +83,7 @@ public class KeyVaultIT {
     public void keyVaultAsPropertySourceWithSpecificKeys() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT_ENDPOINT);
+            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
@@ -167,7 +167,7 @@ public class KeyVaultIT {
                 + "-Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n "
                 + "-Dazure.keyvault.uri=%s %s &"
                 + " >/log.txt  2>&1",
-            AZURE_KEYVAULT_ENDPOINT,
+            AZURE_KEYVAULT_URI,
             "app.jar"));
 
         vm.runCommand(new RunCommandInput().withCommandId("RunShellScript").withScript(commands));

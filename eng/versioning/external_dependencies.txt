@@ -62,6 +62,7 @@ org.slf4j:slf4j-api;1.7.28
 org.slf4j:slf4j-simple;1.7.25
 
 ## Spring boot dependency versions
+org.springframework.boot:spring-boot-starter-actuator;2.3.0.RELEASE
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.0.RELEASE
 org.springframework.boot:spring-boot-autoconfigure-processor;2.3.0.RELEASE
 org.springframework.boot:spring-boot-autoconfigure;2.3.0.RELEASE
