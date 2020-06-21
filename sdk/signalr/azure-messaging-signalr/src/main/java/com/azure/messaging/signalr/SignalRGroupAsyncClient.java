@@ -20,13 +20,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.messaging.signalr.SignalRAsyncClient.configureTracing;
 
 /**
- * Async client for connecting to a SignalR group. Created from calling
- * {@link SignalRAsyncClient#getGroupAsyncClient(String)} on a {@link SignalRAsyncClient} instance.
+ * <p>Async client for interacting with a specific SignalR group, contained within a SignalR hub. An instance of this
+ * group client is able to be created by calling {@link SignalRAsyncClient#getGroupAsyncClient(String)} on a
+ * {@link SignalRAsyncClient} instance. All operations performed on an instance of a group client takes into account
+ * the specified group name, as well as the name of the hub specified when instantiating the
+ * {@link SignalRAsyncClient} via the {@link SignalRClientBuilder}. This is demonstrated in the code below:</p>
+ *
+ * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.instance}
  *
  * @see SignalRAsyncClient
+ * @see SignalRClientBuilder
  */
 @ServiceClient(
     builder = SignalRClientBuilder.class,
@@ -52,31 +59,55 @@ public final class SignalRGroupAsyncClient {
     }
 
     /**
-     * Send a text message to every connection in this group.
+     * Broadcast a text message to all connections in this group, excluding any connection IDs provided in the
+     * {@code excludedConnectionIds} var-args (keeping in mind that it is valid to provide no excluded connection IDs).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>To send a message to all users within the same group, with no exclusions, do the following:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAll.String.String}
+     *
+     * <p>To send a message to all users within the same group, with one or more connection IDs excluded, simply add the
+     * excluded connection IDs to the end of the method call as var-args:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAll.String.String.2}
      *
      * @param message The message to send.
      * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
-     *     representing the response from the service.
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAll(final String message, final String... excludedConnectionIds) {
-        return sendToAll(message,
+        return withContext(context -> sendToAll(message,
             excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
-            Context.NONE);
+            context));
     }
 
     /**
-     * Send a text message to every connection in this group.
+     * Broadcast a text message to all connections in this group, excluding any connection IDs provided in the
+     * {@code excludedConnectionIds} list.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>To send a message to all users within the same hub, with no exclusions, do the following:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAll.String.List}
+     *
+     * <p>To send a message to all users within the same hub, with one or more connection IDs excluded, simply add the
+     * excluded connection IDs to a List and pass that in as the second argument:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAll.String.List.2}
      *
      * @param message The message to send.
      * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
      * @return A {@link Mono} containing a {@link Response} with a null value, but status code and response headers
-     *     representing the response from the service.
+     *      representing the response from the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAll(final String message, final List<String> excludedConnectionIds) {
-        return sendToAll(message, excludedConnectionIds, Context.NONE);
+        return withContext(context -> sendToAll(message, excludedConnectionIds, context));
     }
 
     // package-private
@@ -94,7 +125,19 @@ public final class SignalRGroupAsyncClient {
     }
 
     /**
-     * Send a binary message to every connection in this group.
+     * Broadcast a binary message to all connections in this group, excluding any connection IDs provided in the
+     * {@code excludedConnectionIds} var-args (keeping in mind that it is valid to provide no excluded connection IDs).
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAllBytes.byte.String}
+     *
+     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
+     * add the excluded connection IDs to the end of the method call as var-args:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAllBytes.byte.String.2}
      *
      * @param message The binary message to send.
      * @param excludedConnectionIds An optional var-args of connection IDs to not broadcast the message to.
@@ -103,13 +146,25 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAll(final byte[] message, final String... excludedConnectionIds) {
-        return sendToAll(message,
+        return withContext(context -> sendToAll(message,
             excludedConnectionIds == null ? Collections.emptyList() : Arrays.asList(excludedConnectionIds),
-            Context.NONE);
+            context));
     }
 
     /**
-     * Send a binary message to every connection in this group.
+     * Broadcast a binary message to all connections in this group, excluding any connection IDs provided in the
+     * {@code excludedConnectionIds} list.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>To send a binary message to all users within the same hub, with no exclusions, do the following:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAllBytes.byte.List}
+     *
+     * <p>To send a binary message to all users within the same hub, with one or more connection IDs excluded, simply
+     * add the excluded connection IDs to the end of the method call as var-args:</p>
+     *
+     * {@codesnippet com.azure.messaging.signalr.signalrgroupasyncclient.sendToAllBytes.byte.List.2}
      *
      * @param message The binary message to send.
      * @param excludedConnectionIds An optional list of connection IDs to not broadcast the message to.
@@ -118,7 +173,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAll(final byte[] message, final List<String> excludedConnectionIds) {
-        return sendToAll(message, excludedConnectionIds, Context.NONE);
+        return withContext(context -> sendToAll(message, excludedConnectionIds, context));
     }
 
     // package-private
@@ -146,7 +201,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addUser(final String userId) {
-        return addUserWithResponse(userId, null, Context.NONE);
+        return withContext(context -> addUserWithResponse(userId, null, context));
     }
 
     /**
@@ -161,7 +216,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addUser(final String userId, final Duration timeToLive) {
-        return addUserWithResponse(userId, timeToLive, Context.NONE);
+        return withContext(context -> addUserWithResponse(userId, timeToLive, context));
     }
 
     // package-private
@@ -200,7 +255,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeUser(final String userId) {
-        return removeUserWithResponse(userId, Context.NONE);
+        return withContext(context -> removeUserWithResponse(userId, context));
     }
 
     // package-private
@@ -215,7 +270,7 @@ public final class SignalRGroupAsyncClient {
     }
 
     /**
-     * Check if a user is in this group
+     * Check if a user is in this group.
      *
      * @param userId The user name to check for.
      * @return A {@link Mono} containing a Boolean value representing whether the user exists in this group.
@@ -226,7 +281,7 @@ public final class SignalRGroupAsyncClient {
     }
 
     /**
-     * Check if a user is in this group
+     * Check if a user is in this group.
      *
      * @param userId The user name to check for.
      * @return A {@link Mono} containing a {@link Response} with a Boolean value representing whether the user exists in
@@ -234,7 +289,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> userExistsWithResponse(final String userId) {
-        return userExistsWithResponse(userId, Context.NONE);
+        return withContext(context -> userExistsWithResponse(userId, context));
     }
 
     // package-private
@@ -258,7 +313,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addConnection(final String connectionId) {
-        return addConnectionWithResponse(connectionId, Context.NONE);
+        return withContext(context -> addConnectionWithResponse(connectionId, context));
     }
 
     // package-private
@@ -282,7 +337,7 @@ public final class SignalRGroupAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeConnection(final String connectionId) {
-        return removeConnectionWithResponse(connectionId, Context.NONE);
+        return withContext(context -> removeConnectionWithResponse(connectionId, context));
     }
 
     // package-private

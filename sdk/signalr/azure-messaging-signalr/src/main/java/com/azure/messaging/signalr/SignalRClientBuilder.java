@@ -39,9 +39,17 @@ import java.util.Objects;
  * {@link #hub(String) hub} in the builder. If no hub is specified, a default hub will be used, which will be shared
  * across all SignalR client instances.</p>
  *
- * <p><strong>Instantiating an asynchronous SignalR Client</strong></p>
+ * <p><strong>Code Samples</strong></p>
  *
- * TODO (jogiles): fix me
+ * {@codesnippet com.azure.messaging.signalr.secretclientbuilder.connectionstring.async}
+ *
+ * <p>This demonstrates using the connection string provided by the Azure Portal. Another approach is to use the
+ * combination of credential and endpoint details, as shown below:</p>
+ *
+ * {@codesnippet com.azure.messaging.signalr.secretclientbuilder.credential.endpoint.async}
+ *
+ * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
+ * {@link #buildAsyncClient() buildAsyncClient}.</p>
  *
  * @see SignalRAsyncClient
  * @see SignalRClient
