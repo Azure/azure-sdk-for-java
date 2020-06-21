@@ -105,7 +105,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     @Test
     void multipleSessions() {
         // Arrange
-        final int entityIndex = 0;
+        final int entityIndex = TestUtils.USE_CASE_MULTIPLE_SESSION;
         final String messageId = "singleUnnamedSession";
         final String now = Instant.now().toString();
         final List<String> sessionIds = IntStream.range(0, 3)

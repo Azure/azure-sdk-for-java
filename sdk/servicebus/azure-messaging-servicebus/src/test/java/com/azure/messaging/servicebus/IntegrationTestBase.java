@@ -143,15 +143,7 @@ public abstract class IntegrationTestBase extends TestBase {
     public String getSessionQueueName(int index) {
         return getEntityName(getSessionQueueBaseName(), index);
     }
-
-    /**
-     * Gets the name of the topic.
-     *
-     * @return Name of the topic.
-     */
-    public String getTopicName() {
-        return TestUtils.getTopicName();
-    }
+    
     public String getTopicName(int index) {
         return getEntityName(TestUtils.getTopicBaseName(), index);
     }
