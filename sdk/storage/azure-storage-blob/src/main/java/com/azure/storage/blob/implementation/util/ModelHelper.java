@@ -5,6 +5,11 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
+import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -170,5 +175,97 @@ public class ModelHelper {
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
 
         return headers;
+    }
+
+    /**
+     * Transforms {@link BlobItemInternal} into a public {@link BlobItem}.
+     *
+     * @param blobItemInternal {@link BlobItemInternal}
+     * @return {@link BlobItem}
+     */
+    public static BlobItem populateBlobItem(BlobItemInternal blobItemInternal) {
+        BlobItem blobItem = new BlobItem();
+        blobItem.setName(blobItemInternal.getName());
+        blobItem.setDeleted(blobItemInternal.isDeleted());
+        blobItem.setSnapshot(blobItemInternal.getSnapshot());
+        blobItem.setProperties(populateBlobItemProperties(blobItemInternal.getProperties()));
+        blobItem.setMetadata(blobItemInternal.getMetadata());
+        blobItem.setVersionId(blobItemInternal.getVersionId());
+        blobItem.setCurrentVersion(blobItemInternal.isCurrentVersion());
+        blobItem.setIsPrefix(blobItemInternal.isPrefix());
+
+        Map<String, String> tags = new HashMap<>();
+        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
+            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
+                tags.put(tag.getKey(), tag.getValue());
+            }
+        }
+        blobItem.setTags(tags);
+
+        return blobItem;
+    }
+
+    /**
+     * Transforms {@link BlobItemPropertiesInternal} into a public {@link BlobItemProperties}.
+     *
+     * @param blobItemPropertiesInternal {@link BlobItemPropertiesInternal}
+     * @return {@link BlobItemProperties}
+     */
+    public static BlobItemProperties populateBlobItemProperties(BlobItemPropertiesInternal blobItemPropertiesInternal) {
+        BlobItemProperties blobItemProperties = new BlobItemProperties();
+        blobItemProperties.setCreationTime(blobItemPropertiesInternal.getCreationTime());
+        blobItemProperties.setLastModified(blobItemPropertiesInternal.getLastModified());
+        blobItemProperties.setETag(blobItemPropertiesInternal.getETag());
+        blobItemProperties.setContentLength(blobItemPropertiesInternal.getContentLength());
+        blobItemProperties.setContentType(blobItemPropertiesInternal.getContentType());
+        blobItemProperties.setContentEncoding(blobItemPropertiesInternal.getContentEncoding());
+        blobItemProperties.setContentLanguage(blobItemPropertiesInternal.getContentLanguage());
+        blobItemProperties.setContentMd5(blobItemPropertiesInternal.getContentMd5());
+        blobItemProperties.setContentDisposition(blobItemPropertiesInternal.getContentDisposition());
+        blobItemProperties.setCacheControl(blobItemPropertiesInternal.getCacheControl());
+        blobItemProperties.setBlobSequenceNumber(blobItemPropertiesInternal.getBlobSequenceNumber());
+        blobItemProperties.setBlobType(blobItemPropertiesInternal.getBlobType());
+        blobItemProperties.setLeaseStatus(blobItemPropertiesInternal.getLeaseStatus());
+        blobItemProperties.setLeaseState(blobItemPropertiesInternal.getLeaseState());
+        blobItemProperties.setLeaseDuration(blobItemPropertiesInternal.getLeaseDuration());
+        blobItemProperties.setCopyId(blobItemPropertiesInternal.getCopyId());
+        blobItemProperties.setCopyStatus(blobItemPropertiesInternal.getCopyStatus());
+        blobItemProperties.setCopySource(blobItemPropertiesInternal.getCopySource());
+        blobItemProperties.setCopyProgress(blobItemPropertiesInternal.getCopyProgress());
+        blobItemProperties.setCopyCompletionTime(blobItemPropertiesInternal.getCopyCompletionTime());
+        blobItemProperties.setCopyStatusDescription(blobItemPropertiesInternal.getCopyStatusDescription());
+        blobItemProperties.setServerEncrypted(blobItemPropertiesInternal.isServerEncrypted());
+        blobItemProperties.setIncrementalCopy(blobItemPropertiesInternal.isIncrementalCopy());
+        blobItemProperties.setDestinationSnapshot(blobItemPropertiesInternal.getDestinationSnapshot());
+        blobItemProperties.setDeletedTime(blobItemPropertiesInternal.getDeletedTime());
+        blobItemProperties.setRemainingRetentionDays(blobItemPropertiesInternal.getRemainingRetentionDays());
+        blobItemProperties.setAccessTier(blobItemPropertiesInternal.getAccessTier());
+        blobItemProperties.setAccessTierInferred(blobItemPropertiesInternal.isAccessTierInferred());
+        blobItemProperties.setArchiveStatus(blobItemPropertiesInternal.getArchiveStatus());
+        blobItemProperties.setCustomerProvidedKeySha256(blobItemPropertiesInternal.getCustomerProvidedKeySha256());
+        blobItemProperties.setEncryptionScope(blobItemPropertiesInternal.getEncryptionScope());
+        blobItemProperties.setAccessTierChangeTime(blobItemPropertiesInternal.getAccessTierChangeTime());
+        blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
+
+        // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
+        /*this.objectReplicationSourcePolicies = new HashMap<>();
+        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
+        if (objectReplicationDestinationPolicyId == null) {
+            for (String str : objectReplicationStatus.keySet()) {
+                String[] split = str.split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                if (objectReplicationSourcePolicies.containsKey(policyId)) {
+                    objectReplicationSourcePolicies.get(policyId)
+                        .putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
+                } else {
+                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                    policy.putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
+                    objectReplicationSourcePolicies.put(policyId, policy);
+                }
+            }
+        }*/
+
+        return blobItemProperties;
     }
 }
