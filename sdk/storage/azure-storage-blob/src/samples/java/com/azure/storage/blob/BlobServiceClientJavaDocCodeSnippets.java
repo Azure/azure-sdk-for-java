@@ -119,7 +119,8 @@ public class BlobServiceClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#String
 
         // BEGIN: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration
-        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10), timeout)
+        Context context = new Context("Key", "Value");
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10), timeout, context)
             .forEach(blob -> System.out.printf("Name: %s%n", blob.getName()));
         // END: com.azure.storage.blob.BlobServiceClient.findBlobsByTag#FindBlobsOptions-Duration
     }

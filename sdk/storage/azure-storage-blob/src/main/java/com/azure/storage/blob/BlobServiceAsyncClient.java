@@ -383,32 +383,40 @@ public final class BlobServiceAsyncClient {
 
     PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
-        StorageImplUtils.assertNotNull("options", options);
-
-        Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(options.getQuery(), marker, options.getMaxResultsPerPage(), timeout)
-                .map(response -> {
-                    List<FilterBlobItem> value = response.getValue().getBlobs() == null
-                        ? Collections.emptyList()
-                        : response.getValue().getBlobs();
-
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
-                });
-        return new PagedFlux<>(() -> func.apply(null), func);
+        return new PagedFlux<>(
+            () -> withContext(context -> this.findBlobsByTags(options, null, timeout, context)),
+            marker -> withContext(context -> this.findBlobsByTags(options, marker, timeout, context)));
     }
 
-    private Mono<ServicesFilterBlobsResponse> findBlobsByTags(String query, String marker, Integer maxResults,
-        Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         throwOnAnonymousAccess();
+        return new PagedFlux<>(
+            () -> this.findBlobsByTags(options, null, timeout, context),
+            marker -> this.findBlobsByTags(options, marker, timeout, context));
+    }
+
+    private Mono<PagedResponse<FilterBlobItem>> findBlobsByTags(
+        FindBlobsOptions options, String marker,
+        Duration timeout, Context context) {
+        throwOnAnonymousAccess();
+        StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null, query, marker, maxResults,
-                Context.NONE), timeout);
+            this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null,
+                options.getQuery(), marker, options.getMaxResultsPerPage(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
+            .map(response -> {
+                List<FilterBlobItem> value = response.getValue().getBlobs() == null
+                    ? Collections.emptyList()
+                    : response.getValue().getBlobs();
+
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
     }
 
     /**

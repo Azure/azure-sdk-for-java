@@ -290,13 +290,13 @@ class ServiceAPITest extends APISpec {
         }
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
-            .setMaxResultsPerPage(5), null)
+            .setMaxResultsPerPage(5), null, Context.NONE)
             .iterableByPage().iterator().next()
         def marker = firstPage.getContinuationToken()
         def firstBlobName = firstPage.getValue().first().getName()
 
         def secondPage = primaryBlobServiceClient.findBlobsByTags(
-            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5), null)
+            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5), null, Context.NONE)
             .iterableByPage(marker).iterator().next()
 
         expect:
@@ -322,7 +322,8 @@ class ServiceAPITest extends APISpec {
         expect:
         for (ContinuablePage page :
             primaryBlobServiceClient.findBlobsByTags(
-                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null).iterableByPage()) {
+                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 
@@ -361,7 +362,7 @@ class ServiceAPITest extends APISpec {
 
         when: "Consume results by page"
         primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
-            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10))
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
             .streamByPage().count()
 
         then: "Still have paging functionality"
