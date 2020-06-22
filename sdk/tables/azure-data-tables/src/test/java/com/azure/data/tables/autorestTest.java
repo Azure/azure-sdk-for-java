@@ -180,12 +180,30 @@ public class autorestTest {
     }
 
     @Test
+    void queryEntity(String tableName){
+        AzureTableImpl azureTable = auth();
+        String requestId = UUID.randomUUID().toString();
+        QueryOptions queryOptions = new QueryOptions();
+        queryOptions.setSelect("name");
+
+        StepVerifier.create(azureTable.getTables().queryEntitiesWithResponseAsync(tableName, null,
+            requestId, null, null, queryOptions, Context.NONE))
+            .assertNext(response -> {
+                System.out.println(response);
+                Assertions.assertEquals(204, response.getStatusCode());
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     void allTests() {
-        String tableName = "testTable2";
+        String tableName = "table3";
         //deleteTable(tableName);
         //createTable(tableName);
         //insertEntity(tableName);
-        queryTable(tableName);
+        queryEntity(tableName);
+        //queryTable(tableName);
         //deleteTable(tableName);
 
     }

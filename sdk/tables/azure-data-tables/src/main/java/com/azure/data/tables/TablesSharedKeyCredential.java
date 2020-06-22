@@ -64,12 +64,22 @@ public class TablesSharedKeyCredential {
         String contentLength = (String)headers.get("Content-Length");
         contentLength = contentLength.equals("0") ? "" : contentLength;
         String dateHeader = headers.containsKey("x-ms-date") ? "" : this.getStandardHeaderValue(headers, "Date");
+        String a = String.join("\n",
+            httpMethod,
+            this.getStandardHeaderValue(headers, "Content-MD5"), //content-md5
+            this.getStandardHeaderValue(headers, "Content-Type"), //content-type
+            dateHeader,
+            "/telboytrial/table3()&$select=name"
+            );
+
         String s = String.join("\n",
             httpMethod, //verb
             this.getStandardHeaderValue(headers, "Content-MD5"), //content-md5
             this.getStandardHeaderValue(headers, "Content-Type"), //content-type
             dateHeader,  //date
             this.getCanonicalizedResource(requestURL)); //canonicalized resoucre
+        System.out.println("EB-t  vvv");
+        System.out.println(s);
         return s;
     }
 
