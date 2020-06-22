@@ -30,7 +30,7 @@ import java.util.function.Function;
  * </p>
  */
 final class ReliableDownload {
-    private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
+    //private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final BlobsDownloadResponse rawResponse;
     private final DownloadRetryOptions options;
@@ -134,9 +134,9 @@ final class ReliableDownload {
                  of the stream.
                  */
                 if (this.info.getCount() != null && this.info.getCount() == 0) {
-                    logger.warning("Exception encountered in ReliableDownload after all data read from the network but "
-                        + "but before stream signaled completion. Returning success as all data was downloaded. "
-                        + "Exception message: " + t2.getMessage());
+//                    logger.warning("Exception encountered in ReliableDownload after all data read from the network but "
+//                        + "but before stream signaled completion. Returning success as all data was downloaded. "
+//                        + "Exception message: " + t2.getMessage());
                     return Flux.empty();
                 }
                 // Increment the retry count and try again with the new exception.
