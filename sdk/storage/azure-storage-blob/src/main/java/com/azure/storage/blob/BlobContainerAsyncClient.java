@@ -22,6 +22,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmen
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -788,7 +789,7 @@ public final class BlobContainerAsyncClient {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
                         : response.getValue().getSegment().getBlobItems().stream()
-                        .map(BlobItem::new)
+                        .map(ModelHelper::populateBlobItem)
                         .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
@@ -929,7 +930,7 @@ public final class BlobContainerAsyncClient {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
                         : Stream.concat(
-                        response.getValue().getSegment().getBlobItems().stream().map(BlobItem::new),
+                        response.getValue().getSegment().getBlobItems().stream().map(ModelHelper::populateBlobItem),
                         response.getValue().getSegment().getBlobPrefixes().stream()
                             .map(blobPrefix -> new BlobItem().setName(blobPrefix.getName()).setIsPrefix(true))
                     ).collect(Collectors.toList());

@@ -212,7 +212,7 @@ public final class BlobServiceClient {
      * @return The list of blobs.
      */
     public PagedIterable<FilterBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(new FindBlobsOptions(query), null);
+        return this.findBlobsByTags(new FindBlobsOptions(query), null, Context.NONE);
     }
 
     /**
@@ -226,10 +226,11 @@ public final class BlobServiceClient {
      *
      * @param options {@link FindBlobsOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The list of blobs.
      */
-    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
-        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options, timeout));
+    public PagedIterable<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
+        return new PagedIterable<>(blobServiceAsyncClient.findBlobsByTags(options, timeout, context));
     }
 
     /**
