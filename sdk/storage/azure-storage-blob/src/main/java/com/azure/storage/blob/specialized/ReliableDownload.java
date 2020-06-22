@@ -30,7 +30,7 @@ import java.util.function.Function;
  * </p>
  */
 final class ReliableDownload {
-    private static final ClientLogger logger = new ClientLogger(ReliableDownload.class);
+    private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final BlobsDownloadResponse rawResponse;
     private final DownloadRetryOptions options;
