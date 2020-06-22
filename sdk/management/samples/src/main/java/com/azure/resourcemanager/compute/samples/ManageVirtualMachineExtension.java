@@ -111,7 +111,7 @@ public final class ManageVirtualMachineExtension {
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(pipDnsLabelLinuxVM)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                     .withRootUsername(firstLinuxUserName)
                     .withRootPassword(firstLinuxUserPassword)
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
