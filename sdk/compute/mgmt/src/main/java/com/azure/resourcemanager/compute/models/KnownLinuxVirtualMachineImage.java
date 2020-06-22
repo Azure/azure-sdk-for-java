@@ -16,8 +16,8 @@ public enum KnownLinuxVirtualMachineImage {
     CENTOS_8_1("OpenLogic", "CentOS", "8_1"),
     /** OpenSUSE-Leap 15.1. */
     OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap", "15-1"),
-    /** SLES 12-SP4-gen2. */
-    SLES_12_SP4_GEN2("SUSE", "SLES", "12-sp4-gen2"),
+    /** SLES 15-SP1-gen1. */
+    SLES_15_SP1("SUSE", "sles-15-sp1", "gen1"),
     /** RedHat RHEL 8.2. */
     REDHAT_RHEL_8_2("RedHat", "RHEL", "8.2"),
     /** Oracle Linux 8.1. */
