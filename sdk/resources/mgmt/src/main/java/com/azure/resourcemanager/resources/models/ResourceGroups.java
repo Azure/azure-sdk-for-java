@@ -4,7 +4,9 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByName;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingByName;
@@ -23,7 +25,8 @@ public interface ResourceGroups extends
         SupportsCreating<ResourceGroup.DefinitionStages.Blank>,
         SupportsDeletingByName,
         //SupportsBeginDeletingByName,
-        SupportsBatchCreation<ResourceGroup> {
+        SupportsBatchCreation<ResourceGroup>,
+        HasManager<ResourceManager> {
 
     /**
      * Checks whether resource group exists.

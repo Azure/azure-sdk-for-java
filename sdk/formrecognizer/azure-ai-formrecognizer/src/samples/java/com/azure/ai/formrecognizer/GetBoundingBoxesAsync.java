@@ -7,8 +7,8 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -37,7 +37,8 @@ public class GetBoundingBoxesAsync {
         String modelId = "{model_Id}";
         String filePath = "{file_source_url}";
         PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(filePath, modelId, true, null);
+            client.beginRecognizeCustomFormsFromUrl(new RecognizeCustomFormsOptions(filePath, modelId)
+                .setIncludeTextContent(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
@@ -85,8 +86,8 @@ public class GetBoundingBoxesAsync {
                             // call to beginRecognizeCustomFormsFromUrl
                             // It is also a list of FormWords and FormLines, but in this example, we only deal with
                             // FormWords
-                            formTableCell.getElements().forEach(formContent -> {
-                                if (formContent.getTextContentType().equals(TextContentType.WORD)) {
+                            formTableCell.getTextContent().forEach(formContent -> {
+                                if (formContent instanceof FormWord) {
                                     FormWord formWordElement = (FormWord) (formContent);
                                     final StringBuilder boundingBoxStr = new StringBuilder();
                                     if (formWordElement.getBoundingBox() != null) {

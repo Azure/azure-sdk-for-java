@@ -4,34 +4,24 @@ package com.azure.resourcemanager.compute.models;
 
 /** The popular Azure Linux images. */
 public enum KnownLinuxVirtualMachineImage {
-    /** UbuntuServer 14.04LTS. */
-    UBUNTU_SERVER_14_04_LTS("Canonical", "UbuntuServer", "14.04.4-LTS"),
     /** UbuntuServer 16.04LTS. */
     UBUNTU_SERVER_16_04_LTS("Canonical", "UbuntuServer", "16.04.0-LTS"),
-    /** Debian 8. */
-    DEBIAN_8("credativ", "Debian", "8"),
-    /** CentOS 7.2. */
-    CENTOS_7_2("OpenLogic", "CentOS", "7.2"),
-    /**
-     * OpenSUSE-Leap 42.1.
-     *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String,
-     *     String)}(String publisher, String offer, String sku)} and for virtual machine scale set use {@link
-     *     VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher,
-     *     String offer, String sku)} with publisher as "SUSE", offer as "openSUSE-Leap" and sku as "42.3")}.
-     */
-    @Deprecated
-    OPENSUSE_LEAP_42_1("SUSE", "openSUSE-Leap", "42.1"),
-    /**
-     * SLES 12-SP1.
-     *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String,
-     *     String)}(String publisher, String offer, String sku)} and for virtual machine scale set use {@link
-     *     VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher,
-     *     String offer, String sku)} with publisher as "SUSE", offer as "SLES" and sku as "12-SP3")}.
-     */
-    @Deprecated
-    SLES_12_SP1("SUSE", "SLES", "12-SP1");
+    /** UbuntuServer 18.04LTS. */
+    UBUNTU_SERVER_18_04_LTS("Canonical", "UbuntuServer", "18.04-LTS"),
+    /** Debian 9. */
+    DEBIAN_9("credativ", "Debian", "9"),
+    /** Debian 10. */
+    DEBIAN_10("Debian", "debian-10", "10"),
+    /** CentOS 8.1. */
+    CENTOS_8_1("OpenLogic", "CentOS", "8_1"),
+    /** OpenSUSE-Leap 15.1. */
+    OPENSUSE_LEAP_15_1("SUSE", "openSUSE-Leap", "15-1"),
+    /** SLES 15-SP1-gen1. */
+    SLES_15_SP1("SUSE", "sles-15-sp1", "gen1"),
+    /** RedHat RHEL 8.2. */
+    REDHAT_RHEL_8_2("RedHat", "RHEL", "8.2"),
+    /** Oracle Linux 8.1. */
+    ORACLE_LINUX_8_1("Oracle", "Oracle-Linux", "81");
 
     private final String publisher;
     private final String offer;

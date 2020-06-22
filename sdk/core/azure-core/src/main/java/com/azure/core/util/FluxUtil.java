@@ -187,12 +187,18 @@ public final class FluxUtil {
         Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
             .map(context -> {
-                Map<Object, Object> keyValues = context.stream()
-                    .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+                final Context[] azureContext = new Context[] { Context.NONE };
+
                 if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
-                    contextAttributes.forEach(keyValues::putIfAbsent);
+                    contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
                 }
-                return CoreUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
+
+                if (!context.isEmpty()) {
+                    context.stream().forEach(entry ->
+                        azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+                }
+
+                return azureContext[0];
             })
             .flatMap(serviceCall);
     }
@@ -273,9 +279,14 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(reactor.util.context.Context context) {
-        Map<Object, Object> keyValues = context.stream().collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        final Context[] azureContext = new Context[] { Context.NONE };
 
-        return CoreUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
+        if (!context.isEmpty()) {
+            context.stream().forEach(entry ->
+                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+        }
+
+        return azureContext[0];
     }
 
     /**

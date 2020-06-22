@@ -15,7 +15,9 @@ import java.util.Map;
 public final class RecognizedForm {
 
     /*
-     * Dictionary of named field values.
+     * A map of the fields recognized from the input document.
+     * For models trained with labels, this is the training-time label of the field. For models trained with forms
+     * only, a unique name is generated for each field.
      */
     private final Map<String, FormField> fields;
 
@@ -51,9 +53,11 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the dictionary of named field values.
+     * A map of the fields recognized from the input document.
+     * For models trained with labels, this is the training-time label of the field. For models trained with forms
+     * only, a unique name is generated for each field.
      *
-     * @return the fields value.
+     * @return the {@code fields} value
      */
     public Map<String, FormField> getFields() {
         return this.fields;
