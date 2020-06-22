@@ -91,22 +91,24 @@ public class SimpleTokenCache {
                     fallback = Mono.just(cache);
                 }
                 return tokenRefresh
-                    .doOnNext(accessToken -> {
-                        logger.info(refreshLog(cache, now, "Acquired a new access token"));
-                        sink.next(accessToken);
-                        cache = accessToken;
-                        nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
+                    .materialize()
+                    .flatMap(signal -> {
+                        if (signal.isOnNext() && signal.get() != null) {
+                            logger.info(refreshLog(cache, now, "Acquired a new access token"));
+                            sink.next(signal.get());
+                            cache = signal.get();
+                            nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
+                            return Mono.just(signal.get());
+                        } else if (signal.isOnError() && signal.getThrowable() != null) {
+                            logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
+                            nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
+                            return fallback.switchIfEmpty(Mono.error(signal.getThrowable()));
+                        } else {
+                            return fallback;
+                        }
                     })
-                    .onErrorResume(err -> {
-                        logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
-                        nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
-                        return fallback.switchIfEmpty(Mono.error(err));
-                    })
-                    .switchIfEmpty(fallback)
                     .doOnError(sink::error)
-                    .doOnTerminate(() -> {
-                        wip.set(false);
-                    });
+                    .doOnTerminate(() -> wip.set(false));
             } else {
                 return emitterProcessor.next().filter(t -> !t.isExpired());
             }
