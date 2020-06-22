@@ -30,7 +30,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
-import com.azure.storage.blob.options.BlobUploadOptions
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -152,7 +152,7 @@ class BlobAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        bc.uploadWithResponse(new BlobUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
             .getValue().getETag() != null
     }
 

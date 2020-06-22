@@ -20,7 +20,7 @@ import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.options.BlobUploadOptions
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
@@ -1464,7 +1464,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
         def uploadOperation = blobAsyncClient.uploadWithResponse(
-            new BlobUploadOptions(Flux.just(getRandomData(10)))
+            new BlobParallelUploadOptions(Flux.just(getRandomData(10)))
                 .setParallelTransferOptions(parallelTransferOptions).setTags(tags))
 
         then:
