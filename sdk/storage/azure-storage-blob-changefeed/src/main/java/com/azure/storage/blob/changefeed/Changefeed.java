@@ -138,7 +138,12 @@ class Changefeed {
      */
     private Flux<BlobChangefeedEventWrapper> getEventsForSegment(String segment) {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
-        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
+        /* Only pass the user cursor in to the segment of interest. */
+        if (userCursor != null && segmentTime.isEqual(OffsetDateTime.parse(userCursor.getSegmentTime()))) {
+            return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
+                .getEvents();
+        }
+        return segmentFactory.getSegment(segment, cfCursor.toSegmentCursor(segmentTime), null)
             .getEvents();
     }
 

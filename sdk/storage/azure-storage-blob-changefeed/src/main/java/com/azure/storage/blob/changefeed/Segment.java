@@ -111,7 +111,12 @@ class Segment {
             }
 
             if (validShard) {
-                shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), userCursor));
+                /* Only pass the user cursor in to the shard of interest. */
+                if (userCursor != null && shardPath.equals(userCursor.getShardPath())) {
+                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), userCursor));
+                } else {
+                    shards.add(shardFactory.getShard(shardPath, cfCursor.toShardCursor(shardPath), null));
+                }
             }
         }
         return Flux.fromIterable(shards);
