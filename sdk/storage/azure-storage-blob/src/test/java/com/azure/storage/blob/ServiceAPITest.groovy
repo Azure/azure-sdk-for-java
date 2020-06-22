@@ -11,7 +11,7 @@ import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.options.BlobUploadOptions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CustomerProvidedKey
@@ -262,10 +262,10 @@ class ServiceAPITest extends APISpec {
         setup:
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blobClient.uploadWithResponse(new BlobUploadOptions(defaultInputStream.get(), defaultDataSize)
             .setTags(Collections.singletonMap("key", "value")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+        blobClient.uploadWithResponse(new BlobUploadOptions(defaultInputStream.get(), defaultDataSize)
             .setTags(Collections.singletonMap("bar", "foo")), null, null)
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
@@ -286,7 +286,7 @@ class ServiceAPITest extends APISpec {
         def tags = Collections.singletonMap("tag", "value")
         for (int i = 0; i < 10; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
@@ -316,7 +316,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
 
         expect:
@@ -357,7 +357,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
 
         when: "Consume results by page"

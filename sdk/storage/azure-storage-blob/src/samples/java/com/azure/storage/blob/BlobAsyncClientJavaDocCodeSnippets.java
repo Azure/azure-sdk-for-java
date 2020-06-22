@@ -6,7 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobUploadOptions;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
@@ -474,10 +474,10 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(BlobParallelUploadOptions)}
+     * Code snippet for {@link BlobAsyncClient#uploadWithResponse(BlobUploadOptions)}
      */
     public void upload6() {
-        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions
+        // BEGIN: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobUploadOptions
         BlobHttpHeaders headers = new BlobHttpHeaders()
             .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
@@ -493,12 +493,12 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setMaxConcurrency(maxConcurrency).setProgressReceiver(bytesTransferred ->
                 System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
-        client.uploadWithResponse(new BlobParallelUploadOptions(data)
+        client.uploadWithResponse(new BlobUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTags(tags)
             .setTier(AccessTier.HOT).setRequestConditions(requestConditions))
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions
+        // END: com.azure.storage.blob.BlobAsyncClient.uploadWithResponse#BlobUploadOptions
     }
 
     /**

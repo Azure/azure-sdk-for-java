@@ -19,7 +19,7 @@ import java.util.Map;
  * Extended options that may be passed when uploading a Block Blob in parallel.
  */
 @Fluent
-public class BlobParallelUploadOptions {
+public class BlobUploadOptions {
     private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final long length;
@@ -31,13 +31,13 @@ public class BlobParallelUploadOptions {
     private BlobRequestConditions requestConditions;
 
     /**
-     * Constructs a new {@code BlobParallelUploadOptions}.
+     * Constructs a new {@code BlobUploadOptions}.
      *
      * @param dataFlux The data to write to the blob. Unlike other upload methods, this method does not require that
      * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
      * expected to produce the same values across subscriptions.
      */
-    public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
+    public BlobUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
         this.dataFlux = dataFlux;
         this.dataStream = null;
@@ -52,7 +52,7 @@ public class BlobParallelUploadOptions {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
-    public BlobParallelUploadOptions(InputStream dataStream, long length) {
+    public BlobUploadOptions(InputStream dataStream, long length) {
         StorageImplUtils.assertNotNull("dataStream", length);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
@@ -103,7 +103,7 @@ public class BlobParallelUploadOptions {
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
-    public BlobParallelUploadOptions setParallelTransferOptions(ParallelTransferOptions parallelTransferOptions) {
+    public BlobUploadOptions setParallelTransferOptions(ParallelTransferOptions parallelTransferOptions) {
         this.parallelTransferOptions = parallelTransferOptions;
         return this;
     }
@@ -123,7 +123,7 @@ public class BlobParallelUploadOptions {
      * @param headers {@link BlobHttpHeaders}
      * @return The updated options
      */
-    public BlobParallelUploadOptions setHeaders(BlobHttpHeaders headers) {
+    public BlobUploadOptions setHeaders(BlobHttpHeaders headers) {
         this.headers = headers;
         return this;
     }
@@ -143,7 +143,7 @@ public class BlobParallelUploadOptions {
      * @param metadata The metadata to associate with the blob.
      * @return The updated options.
      */
-    public BlobParallelUploadOptions setMetadata(Map<String, String> metadata) {
+    public BlobUploadOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -163,7 +163,7 @@ public class BlobParallelUploadOptions {
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
-    public BlobParallelUploadOptions setTags(Map<String, String> tags) {
+    public BlobUploadOptions setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -183,7 +183,7 @@ public class BlobParallelUploadOptions {
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
-    public BlobParallelUploadOptions setTier(AccessTier tier) {
+    public BlobUploadOptions setTier(AccessTier tier) {
         this.tier = tier;
         return this;
     }
@@ -203,7 +203,7 @@ public class BlobParallelUploadOptions {
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
-    public BlobParallelUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
+    public BlobUploadOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }

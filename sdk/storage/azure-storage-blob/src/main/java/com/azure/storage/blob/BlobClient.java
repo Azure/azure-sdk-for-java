@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
@@ -182,7 +182,7 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
+        this.uploadWithResponse(new BlobUploadOptions(data, length)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
             .setRequestConditions(requestConditions), timeout, context);
     }
@@ -191,13 +191,13 @@ public class BlobClient extends BlobClientBase {
      * Creates a new blob, or updates the content of an existing blob.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     * @param options {@link BlobParallelUploadOptions}
+     * @param options {@link BlobUploadOptions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
      */
-    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Duration timeout,
-        Context context) {
+    public Response<BlockBlobItem> uploadWithResponse(BlobUploadOptions options, Duration timeout,
+                                                      Context context) {
         Objects.requireNonNull(options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
             .subscriberContext(FluxUtil.toReactorContext(context));
