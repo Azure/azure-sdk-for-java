@@ -441,7 +441,6 @@
               <baseDir>.</baseDir>
               <reportFile>target/dependency-whitelist.json</reportFile>
               <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
                 <param>com.azure:azure-core-test</param>
                 <param>com.azure:azure-e2e</param>

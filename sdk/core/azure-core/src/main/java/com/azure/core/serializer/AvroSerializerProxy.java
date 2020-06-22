@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.serializer;
 
 import java.util.Iterator;
@@ -33,6 +36,12 @@ public final class AvroSerializerProxy {
         }
     }
 
+    /**
+     * Creates an Avro serializer instance based using the first {@link AvroSerializerProvider} found on the classpath.
+     *
+     * @param schema Schema tied to the Avro serializer for its lifetime.
+     * @return A new Avro serializer instance tied to the passed schema.
+     */
     public static ObjectSerializer createInstance(String schema) {
         if (defaultProvider == null) {
             load();

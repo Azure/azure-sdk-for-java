@@ -15,7 +15,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.IndexingMode;
@@ -324,19 +324,19 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
             CosmosAsyncContainer collection = createCollection(db, collectionDefinition, new CosmosContainerRequestOptions());
 
-            CosmosItemProperties document = new CosmosItemProperties();
+            InternalObjectNode document = new InternalObjectNode();
             document.setId("doc");
             BridgeInternal.setProperty(document, "name", "New Document");
             BridgeInternal.setProperty(document, "mypk", "mypkValue");
             createDocument(collection, document);
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-            CosmosItemResponse<CosmosItemProperties> readDocumentResponse =
-                collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
+            CosmosItemResponse<InternalObjectNode> readDocumentResponse =
+                collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, InternalObjectNode.class).block();
             logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
-            CosmosItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
+            CosmosItemResponse<InternalObjectNode> upsertDocumentResponse = collection.upsertItem(document).block();
             logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
 
@@ -345,7 +345,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             //  Recreate the collection with the same name but with different client
             CosmosAsyncContainer collection2 = createCollection(client2, dbId, collectionDefinition);
 
-            CosmosItemProperties newDocument = new CosmosItemProperties();
+            InternalObjectNode newDocument = new InternalObjectNode();
             newDocument.setId("doc");
             BridgeInternal.setProperty(newDocument, "name", "New Created Document");
             BridgeInternal.setProperty(newDocument, "mypk", "mypk");
@@ -355,12 +355,12 @@ public class CollectionCrudTest extends TestSuiteBase {
                                        .getContainer(collectionId)
                                        .readItem(newDocument.getId(),
                                                  new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
-                                                 CosmosItemProperties.class)
+                                                 InternalObjectNode.class)
                                        .block();
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
-            CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
+            InternalObjectNode readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
             assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")

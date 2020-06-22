@@ -38,6 +38,10 @@
     "source": "specification/authorization/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "avs/resource-manager": {
+    "source": "specification/vmware/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },  
   "azure-kusto/resource-manager": {
     "source": "specification/azure-kusto/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -108,6 +112,10 @@
   },
   "devtestlabs/resource-manager" : {
     "source": "specification/devtestlabs/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "digitaltwins/resource-manager" : {
+    "source": "specification/digitaltwins/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "dns/resource-manager": {
