@@ -1439,6 +1439,21 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate withLowPriority(VirtualMachineEvictionPolicyTypes policy);
+
+            /**
+             * Specify that virtual machine should be spot priority.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriority();
+
+            /**
+             * Specify that virtual machines should be spot priority VMs with the provided eviction policy.
+             *
+             * @param policy eviction policy for the virtual machine
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriority(VirtualMachineEvictionPolicyTypes policy);
         }
 
         /**

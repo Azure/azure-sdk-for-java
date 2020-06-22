@@ -2383,6 +2383,19 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetImpl withSpotPriorityVirtualMachine() {
+        this.withVirtualMachinePriority(VirtualMachinePriorityTypes.SPOT);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy) {
+        this.withSpotPriorityVirtualMachine();
+        this.inner().virtualMachineProfile().withEvictionPolicy(policy);
+        return this;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withVirtualMachinePublicIp() {
         VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         if (nicIpConfig.publicIpAddressConfiguration() != null) {

@@ -1256,6 +1256,19 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withSpotPriority() {
+        this.withPriority(VirtualMachinePriorityTypes.SPOT);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSpotPriority(VirtualMachineEvictionPolicyTypes policy) {
+        this.withSpotPriority();
+        this.inner().withEvictionPolicy(policy);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withMaxPrice(Double maxPrice) {
         this.inner().withBillingProfile(new BillingProfile().withMaxPrice(maxPrice));
         return this;

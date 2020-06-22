@@ -1534,6 +1534,21 @@ public interface VirtualMachineScaleSet
              * @return the next stage of the definition
              */
             WithCreate withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
+
+            /**
+             * Specify that virtual machines in the scale set should be spot priority VMs.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriorityVirtualMachine();
+
+            /**
+             * Specify that virtual machines in the scale set should be spot priority VMs with provided eviction policy.
+             *
+             * @param policy eviction policy for the virtual machines in the scale set.
+             * @return the next stage of the definition
+             */
+            WithCreate withSpotPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes policy);
         }
 
         /** The stage of the virtual machine scale set definition allowing to enable public ip for vm instances. */
