@@ -55,16 +55,21 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
+import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
+import static com.azure.ai.formrecognizer.TestUtils.INVOICE_1_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
+    private static final String RECEIPT_CONTOSO_PNG = "contoso-receipt.png";
     private static final String INVOICE_PDF = "Invoice_6.pdf";
     private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
@@ -77,6 +82,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static final String EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE =
         "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
             + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
+    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
+    static final String EXPECTED_INVALID_ENDPOINT_EXCEPTION_MESSAGE =
+        "Max retries 3 times exceeded. Error Details: Connection refused: no further information:";
+    static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
+        "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
+    static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
+    static final String EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE = "'modelId' is required and cannot be null.";
 
     FormRecognizerClientBuilder getFormRecognizerClientBuilder(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
@@ -274,12 +286,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(expectedPageInfo, actualPageInfo.getLastPageNumber());
     }
 
-    @Test
-    abstract void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeReceiptSourceUrlTextDetails(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
+    // Receipt recognition
 
     @Test
     abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -298,6 +305,29 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeReceiptDataWithPngFile(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeReceiptDataWithBlankPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Receipt recognition - URL
+
+    @Test
+    abstract void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeReceiptSourceUrlTextDetails(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeReceiptSourceUrlWithPngFile(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Content recognition
+
+    @Test
     abstract void recognizeContent(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -309,19 +339,57 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeContentResultWithBlankPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeBadContentTypeArgument(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeContentFromUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeContentFromUrlWithBlankPdf(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeContentFromUrlWithPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeContentFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    // Custom form
+
+    @Test
     abstract void recognizeCustomFormLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataWithNullValues(HttpClient httpClient,
+    abstract void recognizeCustomFormUnlabeledDataIncludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithNullFormData(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithNullModelId(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithEmptyModelId(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -333,21 +401,65 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
-    @Test
     abstract void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithJpgContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormLabeledDataWithBlankPdfContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Custom form - URL
+
+    @Test
+    abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlUnlabeledDataIncludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlLabeledDataIncludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormFromUrlLabeledDataWithNullModelId(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormFromUrlLabeledDataWithEmptyModelId(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Receipt
+
+    @Test
     abstract void recognizeReceiptFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeContentFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -413,6 +525,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
+    void validateBlankPdfResultData(List<RecognizedReceipt> actualReceiptList) {
+        assertEquals(1, actualReceiptList.size());
+        final RecognizedReceipt actualReceipt = actualReceiptList.get(0);
+        assertTrue(actualReceipt.getRecognizedForm().getFields().isEmpty());
+    }
+
     void validateRecognizedResult(List<RecognizedForm> actualFormList, boolean includeTextDetails,
         boolean isLabeled) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
@@ -438,6 +556,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG), true);
     }
 
+    void receiptPngSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG), true);
+    }
+
     void receiptDataRunner(Consumer<InputStream> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
             testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()));
@@ -451,6 +573,14 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), true);
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_JPG)), true);
+        }
+    }
+
+    void receiptPngDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream("isPlaybackMode".getBytes()), true);
+        } else {
+            testRunner.accept(getFileData(getStorageTestingFileUrl(RECEIPT_CONTOSO_PNG)), true);
         }
     }
 
@@ -482,11 +612,39 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(getStorageTestingFileUrl(FORM_JPG));
     }
 
+    void pdfContentFromUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(getStorageTestingFileUrl(INVOICE_1_PDF));
+    }
+
+    void contentFromUrlWithBlankPdfRunner(Consumer<String> testRunner) {
+        testRunner.accept("https://fakeuri.com/blank%20");
+    }
+
     void customFormDataRunner(Consumer<InputStream> testRunner) {
         if (interceptorManager.isPlaybackMode()) {
             testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
         } else {
             testRunner.accept(getFileData(getStorageTestingFileUrl(INVOICE_PDF)));
+        }
+    }
+
+    void customFormJpgDataRunner(Consumer<InputStream> testRunner) {
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
+        } else {
+            testRunner.accept(getFileData(getStorageTestingFileUrl(FORM_JPG)));
+        }
+    }
+
+    void urlDataRunner(Consumer<String> testRunner, String formData) {
+        testRunner.accept(getStorageTestingFileUrl(formData));
+    }
+
+    void blankPdfDataRunner(Consumer<InputStream> testRunner) {
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream("testData.png".getBytes()));
+        } else {
+            testRunner.accept(getFileData(getStorageTestingFileUrl(BLANK_PDF)));
         }
     }
 

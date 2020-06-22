@@ -45,19 +45,28 @@ final class TestUtils {
     static final String NULL_SOURCE_URL_ERROR = "'trainingFilesUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
+    static final String VALID_HTTP_LOCALHOST = "http://localhost:8080";
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample_files/Test/contoso-allinone.jpg";
+    static final String RECEIPT_LOCAL_PNG_URL = "src/test/resources/sample_files/Test/contoso-receipt.png";
     static final String LAYOUT_LOCAL_URL = "src/test/resources/sample_files/Test/layout1.jpg";
     static final String FORM_LOCAL_URL = "src/test/resources/sample_files/Test/Invoice_6.pdf";
+    static final String FORM_1_JPG_LOCAL_URL = "src/test/resources/sample_files/Test/Form_1.jpg";
+    static final String BLANK_FORM_LOCAL_URL = "src/test/resources/sample_files/Test/blank.pdf";
     static final String MULTIPAGE_INVOICE_LOCAL_URL = "src/test/resources/sample_files/Test/multipage_invoice1.pdf";
     static final long RECEIPT_FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
+    static final long RECEIPT_PNG_FILE_LENGTH = new File(RECEIPT_LOCAL_PNG_URL).length();
     static final long LAYOUT_FILE_LENGTH = new File(LAYOUT_LOCAL_URL).length();
     static final long CUSTOM_FORM_FILE_LENGTH = new File(FORM_LOCAL_URL).length();
+    static final long FORM_1_JPG_FILE_LENGTH = new File(FORM_1_JPG_LOCAL_URL).length();
+    static final long BLANK_FORM_FILE_LENGTH = new File(BLANK_FORM_LOCAL_URL).length();
     static final long MULTIPAGE_INVOICE_FILE_LENGTH = new File(MULTIPAGE_INVOICE_LOCAL_URL).length();
     static final String VALID_URL = "https://resources/contoso-allinone.jpg";
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS =
         "AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS";
+    static final String INVOICE_1_PDF = "Invoice_1.pdf";
     static final String FORM_JPG = "Form_1.jpg";
+    static final String BLANK_PDF = "blank.pdf";
 
     private TestUtils() {
     }
