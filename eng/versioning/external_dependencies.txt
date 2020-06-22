@@ -22,10 +22,6 @@ com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:azure-media;0.9.8
 com.microsoft.azure:azure-servicebus-jms;0.0.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.3
-<<<<<<< HEAD
-=======
-com.microsoft.azure:spotbugs-maven-plugin;1.2.1
->>>>>>> 78f672c3bd... update underlying library versions
 com.microsoft.rest:client-runtime;1.7.4
 com.microsoft.rest.v2:client-runtime;2.1.1
 com.microsoft.spring.data.gremlin:spring-data-gremlin;2.2.3

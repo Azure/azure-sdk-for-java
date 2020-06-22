@@ -55,9 +55,6 @@ extends:
       - name: azure-servicebus-jms-spring-boot-starter
         groupId: com.microsoft.azure
         safeName: azurespringbootstarterservicebusjms
-      - name: spring-data-cosmosdb
-        groupId: com.microsoft.azure
-        safeName: springdatacosmosdb
     AdditionalModules:
       - name: azure-spring-boot-samples
         groupId: com.microsoft.azure
