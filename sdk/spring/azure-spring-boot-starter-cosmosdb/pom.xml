@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-data-cosmosdb</artifactId>
-      <version>2.3.1-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;current} -->
+      <version>2.3.0</version> <!-- {x-version-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -53,7 +53,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure-spring-boot:[2.3.3-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:azure-spring-boot;current} -->
-                <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.1-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;current} -->
+                <include>com.microsoft.azure:spring-data-cosmosdb:[2.3.0]</include> <!-- {x-include-update;com.microsoft.azure:spring-data-cosmosdb;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.3.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
               </includes>
