@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -245,35 +245,36 @@ public class FormRecognizerClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link FormRecognizerClient#beginRecognizeReceiptsFromUrl(String)}
      */
+    @SuppressWarnings("unchecked")
     public void beginRecognizeReceiptsFromUrl() {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceiptsFromUrl#string
         String receiptUrl = "{file_source_url}";
         formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl).getFinalResult()
             .forEach(recognizedReceipt -> {
-                Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-                FormField merchantNameField = recognizedFields.get("MerchantName");
-                if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                if (merchantNameField.getFieldValue() instanceof String) {
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantNameField.getFieldValue().asString(),
+                        merchantNameField.getFieldValue(),
                         merchantNameField.getConfidence());
                 }
-                FormField transactionDateField = recognizedFields.get("TransactionDate");
-                if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                if (transactionDateField.getFieldValue() instanceof LocalDate) {
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDateField.getFieldValue().asDate(),
+                        transactionDateField.getFieldValue(),
                         transactionDateField.getConfidence());
                 }
-                FormField receiptItemsField = recognizedFields.get("Items");
+                FormField<?> receiptItemsField = recognizedFields.get("Items");
                 System.out.printf("Receipt Items: %n");
-                if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-                    List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                if (receiptItemsField.getFieldValue() instanceof List) {
+                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
                     receiptItems.forEach(receiptItem -> {
-                        if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                            receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                                if (key.equals("Quantity")) {
-                                    if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                        if (receiptItem.getFieldValue() instanceof Map) {
+                            ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                                if ("Quantity".equals(key)) {
+                                    if (formField.getFieldValue() instanceof Integer) {
                                         System.out.printf("Quantity: %s, confidence: %.2f%n",
-                                            formField.getFieldValue().asInteger(), formField.getConfidence());
+                                            formField.getFieldValue(), formField.getConfidence());
                                     }
                                 }
                             });
@@ -331,6 +332,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
+    @SuppressWarnings("unchecked")
     public void beginRecognizeReceipts() throws IOException {
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long
         File receipt = new File("{file_source_url}");
@@ -339,30 +341,30 @@ public class FormRecognizerClientJavaDocCodeSnippets {
 
         formRecognizerClient.beginRecognizeReceipts(targetStream, receipt.length())
             .getFinalResult().forEach(recognizedReceipt -> {
-                Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-                FormField merchantNameField = recognizedFields.get("MerchantName");
-                if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                if (merchantNameField.getFieldValue() instanceof String) {
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantNameField.getFieldValue().asString(),
+                        merchantNameField.getFieldValue(),
                         merchantNameField.getConfidence());
                 }
-                FormField transactionDateField = recognizedFields.get("TransactionDate");
-                if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                if (transactionDateField.getFieldValue() instanceof LocalDate) {
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDateField.getFieldValue().asDate(),
+                        transactionDateField.getFieldValue(),
                         transactionDateField.getConfidence());
                 }
-                FormField receiptItemsField = recognizedFields.get("Items");
+                FormField<?> receiptItemsField = recognizedFields.get("Items");
                 System.out.printf("Receipt Items: %n");
-                if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-                    List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                if (receiptItemsField.getFieldValue() instanceof List) {
+                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
                     receiptItems.forEach(receiptItem -> {
-                        if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                            receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                                if (key.equals("Quantity")) {
-                                    if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                        if (receiptItem.getFieldValue() instanceof Map) {
+                            ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                                if ("Quantity".equals(key)) {
+                                    if (formField.getFieldValue() instanceof Integer) {
                                         System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                            formField.getFieldValue().asInteger(), formField.getConfidence());
+                                            formField.getFieldValue(), formField.getConfidence());
                                     }
                                 }
                             });
@@ -379,6 +381,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
+    @SuppressWarnings("unchecked")
     public void beginRecognizeReceiptsWithOptions() throws IOException {
 
         // BEGIN: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeReceipts#InputStream-long-recognizeOptions
@@ -396,26 +399,26 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 FormField merchantNameField = recognizedFields.get("MerchantName");
                 if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantNameField.getFieldValue().asString(),
+                        merchantNameField.getFieldValue(),
                         merchantNameField.getConfidence());
                 }
-                FormField transactionDateField = recognizedFields.get("TransactionDate");
-                if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+                FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+                if (transactionDateField.getFieldValue() instanceof LocalDate) {
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDateField.getFieldValue().asDate(),
+                        transactionDateField.getFieldValue(),
                         transactionDateField.getConfidence());
                 }
-                FormField receiptItemsField = recognizedFields.get("Items");
+                FormField<?> receiptItemsField = recognizedFields.get("Items");
                 System.out.printf("Receipt Items: %n");
-                if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-                    List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+                if (receiptItemsField.getFieldValue() instanceof List) {
+                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
                     receiptItems.forEach(receiptItem -> {
-                        if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                            receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                                if (key.equals("Quantity")) {
-                                    if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                        if (receiptItem.getFieldValue() instanceof Map) {
+                            ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                                if ("Quantity".equals(key)) {
+                                    if (formField.getFieldValue() instanceof Integer) {
                                         System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                            formField.getFieldValue().asInteger(), formField.getConfidence());
+                                            formField.getFieldValue(), formField.getConfidence());
                                     }
                                 }
                             });

@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -257,7 +256,7 @@ public final class FormRecognizerClient {
      * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
@@ -306,7 +305,7 @@ public final class FormRecognizerClient {
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed,
-     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * has failed, or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is {@code null}.
@@ -333,7 +332,7 @@ public final class FormRecognizerClient {
      * analyzing a receipt.
      *
      * @return A {@link SyncPoller} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code recognizeOptions} is {@code null}.

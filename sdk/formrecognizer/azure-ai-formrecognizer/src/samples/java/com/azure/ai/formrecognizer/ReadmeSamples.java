@@ -6,12 +6,11 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
-import com.azure.ai.formrecognizer.models.FieldValueType;
+import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -26,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -97,7 +97,7 @@ public class ReadmeSamples {
             RecognizedForm form = recognizedForms.get(i);
             System.out.printf("----------- Recognized Form %d-----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
-            form.getFields().forEach((label, formField) -> {
+            form.getFields().forEach((label, formField) ->
                 System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
                     formField.getValueData().getText(),
                     formField.getConfidence());
@@ -132,55 +132,54 @@ public class ReadmeSamples {
             formPage.getTables().forEach(formTable -> {
                 System.out.printf("Table has %d rows and %d columns.%n", formTable.getRowCount(),
                     formTable.getColumnCount());
-                formTable.getCells().forEach(formTableCell -> {
-                    System.out.printf("Cell has text %s.%n", formTableCell.getText());
-                });
-                System.out.println();
+                formTable.getCells().forEach(formTableCell ->
+                    System.out.printf("Cell has text %s.%n", formTableCell.getText()));
             });
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void recognizeReceipt() {
         String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
+        SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
-        List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+        List<RecognizedForm> receiptPageResults = syncPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
-            RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-            Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+            RecognizedForm recognizedReceipt = receiptPageResults.get(i);
+            Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-            FormField merchantNameField = recognizedFields.get("MerchantName");
-            if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+            FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+            if (merchantNameField.getFieldValue() instanceof String) {
                 System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                    merchantNameField.getFieldValue().asString(),
+                    merchantNameField.getFieldValue(),
                     merchantNameField.getConfidence());
             }
-            FormField transactionDateField = recognizedFields.get("TransactionDate");
-            if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+            FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+            if (transactionDateField.getFieldValue() instanceof LocalDate) {
                 System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                    transactionDateField.getFieldValue().asDate(),
+                    transactionDateField.getFieldValue(),
                     transactionDateField.getConfidence());
             }
-            FormField receiptItemsField = recognizedFields.get("Items");
+            FormField<?> receiptItemsField = recognizedFields.get("Items");
             System.out.printf("Receipt Items: %n");
-            if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
-                List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+            if (receiptItemsField.getFieldValue() instanceof List) {
+                List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
                 receiptItems.forEach(receiptItem -> {
-                    if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
-                        receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
-                            if (key.equals("Name")) {
-                                if (formField.getFieldValue().getType() == FieldValueType.STRING) {
+                    if (receiptItem.getFieldValue() instanceof Map) {
+                        ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                            if ("Name".equals(key)) {
+                                if (formField.getFieldValue() instanceof String) {
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        formField.getFieldValue().asString(),
+                                        formField.getFieldValue(),
                                         formField.getConfidence());
                                 }
                             }
-                            if (key.equals("Quantity")) {
-                                if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                            if ("Quantity".equals(key)) {
+                                if (formField.getFieldValue() instanceof Integer) {
                                     System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                        formField.getFieldValue().asInteger(), formField.getConfidence());
+                                        formField.getFieldValue(), formField.getConfidence());
                                 }
                             }
                         });

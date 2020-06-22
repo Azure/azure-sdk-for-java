@@ -16,7 +16,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -38,7 +37,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
 import static com.azure.ai.formrecognizer.implementation.Utility.detectContentType;
@@ -339,13 +337,13 @@ public final class FormRecognizerAsyncClient {
      * @param receiptUrl The URL of the receipt to analyze.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<OperationResult, List<RecognizedReceipt>>
+    public PollerFlux<OperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null);
     }
@@ -403,7 +401,7 @@ public final class FormRecognizerAsyncClient {
      * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is {@code null}.
@@ -433,7 +431,7 @@ public final class FormRecognizerAsyncClient {
      * analyzing a receipt.
      *
      * @return A {@link PollerFlux} that polls the recognize receipt operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a List of {@link RecognizedReceipt}.
+     * or has been cancelled. The completed operation returns a List of {@link RecognizedForm}.
      * @throws FormRecognizerException If recognize operation fails and the {@link AnalyzeOperationResult} returned with
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code recognizeOptions} is {@code null}.
@@ -514,7 +512,7 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<List<RecognizedReceipt>>>
+    private Function<PollingContext<OperationResult>, Mono<List<RecognizedForm>>>
         fetchExtractReceiptResult(boolean includeFieldElements) {
         return (pollingContext) -> {
             try {
@@ -522,7 +520,7 @@ public final class FormRecognizerAsyncClient {
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
                     .map(modelSimpleResponse -> {
                         throwIfAnalyzeStatusInvalid(modelSimpleResponse.getValue());
-                        return toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(), includeFieldElements);
+                        return toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeFieldElements);
                     })
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } catch (RuntimeException ex) {

@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -31,8 +32,10 @@ public class RecognizeReceiptsAsync {
      * Main method to invoke this demo.
      *
      * @param args Unused. Arguments to the program.
+     *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
+    @SuppressWarnings("unchecked")
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
@@ -45,11 +48,11 @@ public class RecognizeReceiptsAsync {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        PollerFlux<OperationResult, List<RecognizedReceipt>> analyzeReceiptPoller =
+        PollerFlux<OperationResult, List<RecognizedForm>> analyzeReceiptPoller =
             client.beginRecognizeReceipts(toFluxByteBuffer(targetStream),
                 sourceFile.length());
 
-        Mono<List<RecognizedReceipt>> receiptPageResultsMono = analyzeReceiptPoller
+        Mono<List<RecognizedForm>> receiptPageResultsMono = analyzeReceiptPoller
             .last()
             .flatMap(recognizeReceiptPollOperation -> {
                 if (recognizeReceiptPollOperation.getStatus().isComplete()) {
@@ -64,8 +67,8 @@ public class RecognizeReceiptsAsync {
 
         receiptPageResultsMono.subscribe(receiptPageResults -> {
             for (int i = 0; i < receiptPageResults.size(); i++) {
-                RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-                Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+                RecognizedForm recognizedReceipt = receiptPageResults.get(i);
+                Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
                 System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                 FormField merchantNameField = recognizedFields.get("MerchantName");
                 if (merchantNameField != null) {

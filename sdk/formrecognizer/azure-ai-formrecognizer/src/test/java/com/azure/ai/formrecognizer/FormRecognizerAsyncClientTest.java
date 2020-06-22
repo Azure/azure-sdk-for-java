@@ -11,7 +11,6 @@ import com.azure.ai.formrecognizer.models.FormRecognizerException;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizeOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -36,7 +35,6 @@ import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_LOCAL_URL;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_LOCAL_URL;
-import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_PNG_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.getReplayableBufferData;
 import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -99,12 +97,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             .getSyncPoller());
     }
 
-    /**
-     * Verifies content type will be auto detected when using custom form API with input stream data overload.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
+    @Override
+    void recognizeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
 
@@ -112,8 +106,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             getReplayableBufferData(RECEIPT_LOCAL_URL), RECEIPT_FILE_LENGTH, new RecognizeOptions()
                 .setPollInterval(durationTestMode)).getSyncPoller();
 
-        syncPoller.waitForCompletion();
-        validateReceiptResultData(syncPoller.getFinalResult(), false);
     }
 
     /**
@@ -180,7 +172,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 .getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
-        });
     }
 
     // Receipt - URL
@@ -192,9 +183,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        receiptSourceUrlRunner(sourceUrl -> {
-            SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceiptsFromUrl(sourceUrl).getSyncPoller();
+        receiptDataRunnerTextDetails((data, includeTextContent) -> {
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeReceipts(new RecognizeOptions(toFluxByteBuffer(data), RECEIPT_FILE_LENGTH)
+                    .setFormContentType(FormContentType.IMAGE_JPEG).setIncludeTextContent(includeTextContent))
+                    .getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResultData(syncPoller.getFinalResult(), false);
         });
@@ -859,6 +852,11 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             StepVerifier.create(client.beginRecognizeCustomFormsFromUrl(INVALID_URL, createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable -> assertEquals(throwable.getMessage(), INVALID_SOURCE_URL_ERROR));
         });
+    }
+
+    @Override
+    void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+
     }
 
     /**

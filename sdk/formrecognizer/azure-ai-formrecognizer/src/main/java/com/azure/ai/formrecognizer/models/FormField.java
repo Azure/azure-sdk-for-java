@@ -9,13 +9,13 @@ import com.azure.core.annotation.Immutable;
  * The FormField model.
  */
 @Immutable
-public final class FormField {
+public final class FormField<T> {
 
     private final float confidence;
     private final FieldData labelData;
     private final String name;
-    private final FieldValue fieldValue;
     private final FieldData valueData;
+    private final T fieldValue;
 
     /**
      * Constructs a FormField object.
@@ -26,7 +26,7 @@ public final class FormField {
      * @param fieldValue The value of the recognized field.
      * @param valueData The text, bounding box, and field elements for the field value.
      */
-    public FormField(final float confidence, final FieldData labelData, final String name, final FieldValue fieldValue,
+    public FormField(final float confidence, final FieldData labelData, final String name, final T fieldValue,
         final FieldData valueData) {
         this.confidence = confidence;
         this.labelData = labelData;
@@ -67,7 +67,7 @@ public final class FormField {
      *
      * @return Value of the recognized field.
      */
-    public FieldValue getFieldValue() {
+    public T getFieldValue() {
         return this.fieldValue;
     }
 
