@@ -5,6 +5,10 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
+import com.azure.storage.blob.implementation.models.BlobItemInternal;
+import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.models.BlobItem;
+import com.azure.storage.blob.models.BlobItemProperties;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -170,5 +174,33 @@ public class ModelHelper {
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
 
         return headers;
+    }
+
+    /**
+     * Transforms {@link BlobItemInternal} into a public {@link BlobItem}.
+     *
+     * @param blobItemInternal {@link BlobItemInternal}
+     * @return {@link BlobItem}
+     */
+    public static BlobItem populateBlobItem(BlobItemInternal blobItemInternal) {
+        BlobItem blobItem = new BlobItem();
+        blobItem.setName(blobItemInternal.getName());
+        blobItem.setDeleted(blobItemInternal.isDeleted());
+        blobItem.setSnapshot(blobItemInternal.getSnapshot());
+        blobItem.setProperties(new BlobItemProperties(blobItemInternal.getProperties()));
+        blobItem.setMetadata(blobItemInternal.getMetadata());
+        blobItem.setVersionId(blobItemInternal.getVersionId());
+        blobItem.setCurrentVersion(blobItemInternal.isCurrentVersion());
+        blobItem.setIsPrefix(blobItemInternal.isPrefix());
+
+        Map<String, String> tags = new HashMap<>();
+        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
+            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
+                tags.put(tag.getKey(), tag.getValue());
+            }
+        }
+        blobItem.setTags(tags);
+
+        return blobItem;
     }
 }
