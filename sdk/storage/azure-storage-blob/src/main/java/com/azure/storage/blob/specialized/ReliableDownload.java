@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.HttpGetterInfo;
 import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
@@ -29,6 +30,7 @@ import java.util.function.Function;
  * </p>
  */
 final class ReliableDownload {
+    private static final ClientLogger logger = new ClientLogger(ReliableDownload.class);
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final BlobsDownloadResponse rawResponse;
     private final DownloadRetryOptions options;
@@ -129,9 +131,12 @@ final class ReliableDownload {
                  It is possible that the network stream will throw an error after emitting all data but before
                  completing. Issuing a retry at this stage would leave the download in a bad state with incorrect count
                  and offset values. Because we have read the intended amount of data, we can ignore the error at the end
-                 of the stream. If count is null and we
+                 of the stream.
                  */
                 if (this.info.getCount() != null && this.info.getCount() == 0) {
+                    logger.warning("Exception encountered in ReliableDownload after all data read from the network but "
+                        + "but before stream signaled completion. Returning success as all data was downloaded. "
+                        + "Exception message: " + t2.getMessage());
                     return Flux.empty();
                 }
                 // Increment the retry count and try again with the new exception.
