@@ -15,14 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StorageAccountRegenerateKeyParameters {
     /**
-     * The name of storage keys that want to be regenerated, possible vaules
+     * The name of storage keys that want to be regenerated, possible values
      * are key1, key2.
      */
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
     /**
-     * Get the name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * Get the name of storage keys that want to be regenerated, possible values are key1, key2.
      *
      * @return the keyName value
      */
@@ -31,7 +31,7 @@ public class StorageAccountRegenerateKeyParameters {
     }
 
     /**
-     * Set the name of storage keys that want to be regenerated, possible vaules are key1, key2.
+     * Set the name of storage keys that want to be regenerated, possible values are key1, key2.
      *
      * @param keyName the keyName value to set
      * @return the StorageAccountRegenerateKeyParameters object itself.
