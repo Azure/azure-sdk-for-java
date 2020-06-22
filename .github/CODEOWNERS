@@ -28,7 +28,6 @@
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
 /sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
 /sdk/spring/                                        @saragluna @yiliuTo @chenrujun @jialindai
-/sdk/spring/azure-spring-data-cosmosdb              @kushagraThapar
 
 # end to end tests
 /sdk/e2e/                                           @jianghaolu @g2vinay
