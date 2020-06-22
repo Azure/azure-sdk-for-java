@@ -161,6 +161,8 @@ class VirtualMachineImpl
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
+    // To manage OS profile
+    private boolean removeOsProfile;
     private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
     private final ObjectMapper mapper;
     private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR = new JacksonAnnotationIntrospector() {
@@ -622,7 +624,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWindowsCustomImage(String customImageId) {
+    public VirtualMachineImpl withGeneralizedWindowsCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
         imageReferenceInner.withId(customImageId);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
@@ -635,12 +637,24 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withWindowsGalleryImageVersion(String galleryImageVersionId) {
-        return this.withWindowsCustomImage(galleryImageVersionId);
+    public VirtualMachineImpl withSpecializedWindowsCustomImage(String customImageId) {
+        this.withGeneralizedWindowsCustomImage(customImageId);
+        this.removeOsProfile = true;
+        return this;
     }
 
     @Override
-    public VirtualMachineImpl withLinuxCustomImage(String customImageId) {
+    public VirtualMachineImpl withGeneralizedWindowsGalleryImageVersion(String galleryImageVersionId) {
+        return this.withGeneralizedWindowsCustomImage(galleryImageVersionId);
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecializedWindowsGalleryImageVersion(String galleryImageVersionId) {
+        return this.withSpecializedWindowsCustomImage(galleryImageVersionId);
+    }
+
+    @Override
+    public VirtualMachineImpl withGeneralizedLinuxCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
         imageReferenceInner.withId(customImageId);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
@@ -651,8 +665,20 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withLinuxGalleryImageVersion(String galleryImageVersionId) {
-        return this.withLinuxCustomImage(galleryImageVersionId);
+    public VirtualMachineImpl withSpecializedLinuxCustomImage(String customImageId) {
+        this.withGeneralizedLinuxCustomImage(customImageId);
+        this.removeOsProfile = true;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withGeneralizedLinuxGalleryImageVersion(String galleryImageVersionId) {
+        return this.withGeneralizedLinuxCustomImage(galleryImageVersionId);
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecializedLinuxGalleryImageVersion(String galleryImageVersionId) {
+        return this.withSpecializedLinuxCustomImage(galleryImageVersionId);
     }
 
     @Override
@@ -1893,7 +1919,7 @@ class VirtualMachineImpl
         }
         StorageProfile storageProfile = this.inner().storageProfile();
         OSDisk osDisk = storageProfile.osDisk();
-        if (isOSDiskFromImage(osDisk)) {
+        if (!removeOsProfile && isOSDiskFromImage(osDisk)) {
             // ODDisk CreateOption: FROM_IMAGE
             if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
                 // linux image: PlatformImage | CustomImage | StoredImage

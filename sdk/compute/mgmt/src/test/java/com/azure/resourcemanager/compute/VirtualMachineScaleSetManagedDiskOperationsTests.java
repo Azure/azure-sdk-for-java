@@ -264,7 +264,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
-                .withLinuxCustomImage(virtualMachineCustomImage.id())
+                .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                 .withRootUsername(userName)
                 .withRootPassword(password)
                 .create();
