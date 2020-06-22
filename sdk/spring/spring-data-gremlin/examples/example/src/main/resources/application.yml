@@ -1,0 +1,8 @@
+gremlin:
+  endpoint: localhost
+  port: 8889
+  username: your-username
+  password: your-password
+  sslEnabled: false
+  telemetryAllowed: true
+  maxContentLength: 1000

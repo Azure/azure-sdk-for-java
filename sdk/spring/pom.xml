@@ -20,6 +20,7 @@
     <module>azure-spring-boot-starter-servicebus-jms</module>
     <module>azure-spring-boot-samples</module>
     <module>azure-spring-boot-tests</module>
+    <module>spring-data-gremlin</module>
   </modules>
 
 </project>
