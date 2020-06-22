@@ -335,7 +335,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
                 "storageAccounts",
                 vhdUrl.split("\\.")[0].replace("https://", ""),
                 "");
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
             throw logger.logExceptionAsError(
                 new InvalidParameterException(String.format("%s is not valid URI of a blob to import.", vhdUrl)));
         }
