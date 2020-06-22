@@ -143,7 +143,7 @@ public abstract class IntegrationTestBase extends TestBase {
     public String getSessionQueueName(int index) {
         return getEntityName(getSessionQueueBaseName(), index);
     }
-    
+
     public String getTopicName(int index) {
         return getEntityName(TestUtils.getTopicBaseName(), index);
     }

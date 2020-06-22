@@ -154,6 +154,24 @@
         "maxDeliveryCount": 5,
         "lockDuration": "PT15S"
       },
+      "resources": [{
+        "apiVersion": "2017-04-01",
+        "name": "[concat('filterrule', '-', copyIndex(), '/', variables('subscriptionName'), '-0')]",
+        "type": "Rules",
+        "dependsOn": [
+          "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'), '-0')]"
+        ],
+        "properties": {
+          "filterType": "SqlFilter",
+          "sqlFilter": {
+            "sqlExpression": "sys.sessionid IS NULL",
+            "requiresPreprocessing": "false"
+          },
+          "action": {
+            "sqlExpression": "set FilterTag = 'true'"
+          }
+        }
+      }],
       "copy": {
         "name": "subscriptionCopy",
         "count": "[variables('numberOfInstances')]"
