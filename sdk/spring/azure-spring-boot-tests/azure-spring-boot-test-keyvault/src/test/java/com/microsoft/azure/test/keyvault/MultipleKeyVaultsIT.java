@@ -19,8 +19,8 @@ public class MultipleKeyVaultsIT {
     private static final String KEY_VAULT_COMMON_SECRET_NAME = System.getenv("KEY_VAULT_COMMON_SECRET_NAME");
     private static final String KEY_VAULT1_COMMON_SECRET_VALUE = System.getenv("KEY_VAULT1_COMMON_SECRET_VALUE");
     private static final String KEY_VAULT2_COMMON_SECRET_VALUE = System.getenv("KEY_VAULT2_COMMON_SECRET_VALUE");
-    private static final String AZURE_KEYVAULT1_ENDPOINT = System.getenv("AZURE_KEYVAULT_ENDPOINT");
-    private static final String AZURE_KEYVAULT2_ENDPOINT = System.getenv("AZURE_KEYVAULT2_ENDPOINT");
+    private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
+    private static final String AZURE_KEYVAULT2_URI = System.getenv("AZURE_KEYVAULT2_URI");
     private static final ClientSecretAccess CLIENT_SECRET_ACCESS = ClientSecretAccess.load();
 
     /**
@@ -30,7 +30,7 @@ public class MultipleKeyVaultsIT {
     public void testGetValueFromKeyVault1() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
             app.property("azure.keyvault.order", "keyvault1");
-            app.property("azure.keyvault.keyvault1.uri", AZURE_KEYVAULT1_ENDPOINT);
+            app.property("azure.keyvault.keyvault1.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.keyvault1.enabled", "true");
             app.property("azure.keyvault.keyvault1.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.keyvault1.client-key", CLIENT_SECRET_ACCESS.clientSecret());
@@ -47,7 +47,7 @@ public class MultipleKeyVaultsIT {
     public void testGetValueFromKeyVault2() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
             app.property("azure.keyvault.order", "keyvault2");
-            app.property("azure.keyvault.keyvault2.uri", AZURE_KEYVAULT2_ENDPOINT);
+            app.property("azure.keyvault.keyvault2.uri", AZURE_KEYVAULT2_URI);
             app.property("azure.keyvault.keyvault2.enabled", "true");
             app.property("azure.keyvault.keyvault2.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.keyvault2.client-key", CLIENT_SECRET_ACCESS.clientSecret());
@@ -65,12 +65,12 @@ public class MultipleKeyVaultsIT {
     public void testGetValueForDuplicateKey() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
             app.property("azure.keyvault.order", "keyvault1, keyvault2");
-            app.property("azure.keyvault.keyvault1.uri", AZURE_KEYVAULT1_ENDPOINT);
+            app.property("azure.keyvault.keyvault1.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.keyvault1.enabled", "true");
             app.property("azure.keyvault.keyvault1.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.keyvault1.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.keyvault1.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
-            app.property("azure.keyvault.keyvault2.uri", AZURE_KEYVAULT2_ENDPOINT);
+            app.property("azure.keyvault.keyvault2.uri", AZURE_KEYVAULT2_URI);
             app.property("azure.keyvault.keyvault2.enabled", "true");
             app.property("azure.keyvault.keyvault2.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.keyvault2.client-key", CLIENT_SECRET_ACCESS.clientSecret());
@@ -88,13 +88,13 @@ public class MultipleKeyVaultsIT {
     public void testGetValueFromSingleVault() {
         try (AppRunner app = new AppRunner(TestApp.class)) {
             app.property("azure.keyvault.enabled", "true");
-            app.property("azure.keyvault.uri", AZURE_KEYVAULT1_ENDPOINT);
+            app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
             app.property("azure.keyvault.order", "keyvault2");
             app.property("azure.keyvault.keyvault2.enabled", "true");
-            app.property("azure.keyvault.keyvault2.uri", AZURE_KEYVAULT2_ENDPOINT);
+            app.property("azure.keyvault.keyvault2.uri", AZURE_KEYVAULT2_URI);
             app.property("azure.keyvault.keyvault2.client-id", CLIENT_SECRET_ACCESS.clientId());
             app.property("azure.keyvault.keyvault2.client-key", CLIENT_SECRET_ACCESS.clientSecret());
             app.property("azure.keyvault.keyvault2.tenant-id", CLIENT_SECRET_ACCESS.tenantId());

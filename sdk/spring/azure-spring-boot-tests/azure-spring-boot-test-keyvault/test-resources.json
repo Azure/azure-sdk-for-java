@@ -18,13 +18,13 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
-    "azureKeyVaultUrl": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
+    "azureKeyVaultUri": "[format('https://{0}.{1}/', parameters('baseName'), parameters('endpointSuffix'))]",
     "secretName": "spring-cosmos-db-key",
     "secretValue": "rock",
     "duplicateSecretName": "duplicateKey",
     "duplicateSecretValue1": "duplicate1",
     "keyVaultName": "[parameters('baseName')]",
-    "azureKeyVault2Url": "[format('https://{0}.{1}/', variables('keyVaultName2'), parameters('endpointSuffix'))]",
+    "azureKeyVault2Uri": "[format('https://{0}.{1}/', variables('keyVaultName2'), parameters('endpointSuffix'))]",
     "secretName2": "spring-cosmos-db-key-2",
     "secretValue2": "rock-2",
     "duplicateSecretValue2": "duplicate2",
@@ -81,7 +81,7 @@
           "appSettings": [
             {
               "name": "AZURE_KEYVAULT_URI",
-              "value": "[variables('azureKeyVaultUrl')]"
+              "value": "[variables('azureKeyVaultUri')]"
             }
           ],
           "linuxFxVersion": "JAVA|8-jre8",
@@ -389,9 +389,9 @@
     }
   ],
   "outputs": {
-    "AZURE_KEYVAULT_ENDPOINT": {
+    "AZURE_KEYVAULT_URI": {
       "type": "string",
-      "value": "[variables('azureKeyVaultUrl')]"
+      "value": "[variables('azureKeyVaultUri')]"
     },
     "KEY_VAULT_SECRET_NAME": {
       "type": "string",
@@ -401,9 +401,9 @@
       "type": "string",
       "value": "[variables('secretValue')]"
     },
-    "AZURE_KEYVAULT2_ENDPOINT": {
+    "AZURE_KEYVAULT2_URI": {
       "type": "string",
-      "value": "[variables('azureKeyVault2Url')]"
+      "value": "[variables('azureKeyVault2Uri')]"
     },
     "KEY_VAULT2_SECRET_NAME": {
       "type": "string",
