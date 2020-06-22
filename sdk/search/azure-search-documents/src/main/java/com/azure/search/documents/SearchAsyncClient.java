@@ -22,6 +22,7 @@ import com.azure.search.documents.implementation.converters.RequestOptionsConver
 import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
+import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
@@ -404,28 +405,44 @@ public final class SearchAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all fucntional calls below. 
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
-            search(request, requestOptions, continuationToken, context));
+            search(request, requestOptions, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all fucntional calls below. 
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
-            search(request, requestOptions, continuationToken, context);
+            search(request, requestOptions, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
-        String continuationToken, Context context) {
+        String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+
+        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
+            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
+        }
         SearchRequest requestToUse = (continuationToken == null) ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
+            .map(searchDocumentResponse -> {
+                SearchPagedResponse response = new SearchPagedResponse(searchDocumentResponse, serviceVersion);
+                if (continuationToken == null) {
+                    firstPageResponseWrapper.setFirstPageResponse(response);
+                }
+                return response;
+            });
     }
 
     /**

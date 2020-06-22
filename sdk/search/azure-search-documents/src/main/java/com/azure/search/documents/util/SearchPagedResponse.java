@@ -81,7 +81,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @return The percentage of the index covered in the search request if {@code minimumCoverage} was set in the
      * request, otherwise {@code null}.
      */
-    public Double getCoverage() {
+    Double getCoverage() {
         return coverage;
     }
 
@@ -92,7 +92,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      *
      * @return The facet query results if {@code facets} were supplied in the request, otherwise {@code null}.
      */
-    public Map<String, List<FacetResult>> getFacets() {
+    Map<String, List<FacetResult>> getFacets() {
         return facets;
     }
 
@@ -104,7 +104,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @return The approximate number of documents that match the request if {@code count} is {@code true}, otherwise
      * {@code null}.
      */
-    public Long getCount() {
+    Long getCount() {
         return count;
     }
 

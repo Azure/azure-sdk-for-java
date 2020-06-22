@@ -99,8 +99,10 @@ def set_dev_zero_version(build_type, build_qualifier):
                 set_both = module.current == module.dependency
 
                 if '-' in module.current:
-                    module.current += "." + zero_qualifier
+                    # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                    module.current = module.current[:module.current.rfind('-') + 1] + zero_qualifier
                 else:
+                    # if the module is a GA version 1.2.3, add '-' and the qualifier
                     module.current += '-' + zero_qualifier
                 # The resulting version must be a valid SemVer
                 match = version_regex_named.match(module.current)
@@ -153,7 +155,8 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         if module.current == module.dependency:
                             set_both = True
                         if '-' in module.current:
-                            module.current += "." + build_qualifier
+                            # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                            module.current = module.current[:module.current.rfind('-') + 1] + build_qualifier
                         else:
                             module.current += '-' + build_qualifier
                         match = version_regex_named.match(module.current)
@@ -176,11 +179,11 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                     unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
 
                     if '-' in module.dependency:
-                        module_current_version = f'{module.dependency}.{unreleased_build_qualifier}'
+                        # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                        module.dependency = module.dependency[:module.dependency.rfind('-') + 1] + unreleased_build_qualifier
                     else:
-                        module_current_version = f'{module.dependency}-{unreleased_build_qualifier}'
+                        module.dependency += '-' + unreleased_build_qualifier
 
-                    module.dependency = f'[{module_current_version},]'
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
                 version_map[module.name] = module
@@ -219,7 +222,7 @@ def prep_version_file_for_source_testing(build_type):
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
             f.write(line)
-    
+
     return file_changed
 
 # given a build type, artifact id and group id, set the dependency version to the
@@ -270,7 +273,7 @@ def increment_library_version(build_type, artifact_id, group_id):
                         minor = int(vmatch.group('minor'))
                         minor += 1
                         new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
-                    # The dependency version only needs to be updated it if is different from the current version. 
+                    # The dependency version only needs to be updated it if is different from the current version.
                     # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
                     if (module.dependency != module.current):
                         print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
@@ -343,7 +346,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                         raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
 
                     print('The version {} for {} looks good!'.format(module.current, module.name))
-                    
+
 
     if not artifact_found:
        raise ValueError('library ({}) was not found in version file {}'.format(library_to_update, version_file))

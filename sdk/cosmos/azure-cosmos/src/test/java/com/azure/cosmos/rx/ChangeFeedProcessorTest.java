@@ -18,7 +18,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -82,7 +82,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
-            List<CosmosItemProperties> createdDocuments = new ArrayList<>();
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
@@ -119,7 +119,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            for (CosmosItemProperties item : createdDocuments) {
+            for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
             }
 
@@ -140,7 +140,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
-            List<CosmosItemProperties> createdDocuments = new ArrayList<>();
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -184,7 +184,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            for (CosmosItemProperties item : createdDocuments) {
+            for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
             }
 
@@ -206,7 +206,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
-            List<CosmosItemProperties> createdDocuments = new ArrayList<>();
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
             ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -349,7 +349,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
                         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
-                        createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, CosmosItemProperties.class).byPage()
+                        createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
                                               .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                                               .flatMap(doc -> {
                                 ServiceItemLease leaseDocument = ServiceItemLease.fromDocument(doc);
@@ -366,7 +366,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                                               .last()
                                               .flatMap(leaseDocument -> {
                                 ChangeFeedProcessorTest.log.info("Start creating documents");
-                                List<CosmosItemProperties> docDefList = new ArrayList<>();
+                                List<InternalObjectNode> docDefList = new ArrayList<>();
 
                                 for (int i = 0; i < FEED_COUNT; i++) {
                                     docDefList.add(getDocumentDefinition());
@@ -420,7 +420,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
-            List<CosmosItemProperties> createdDocuments = new ArrayList<>();
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             // generate a first batch of documents
@@ -509,7 +509,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
-            for (CosmosItemProperties item : createdDocuments) {
+            for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
             }
 
@@ -594,8 +594,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private void setupReadFeedDocuments(List<CosmosItemProperties> createdDocuments, Map<String, JsonNode> receivedDocuments, CosmosAsyncContainer feedCollection, long count) {
-        List<CosmosItemProperties> docDefList = new ArrayList<>();
+    private void setupReadFeedDocuments(List<InternalObjectNode> createdDocuments, Map<String, JsonNode> receivedDocuments, CosmosAsyncContainer feedCollection, long count) {
+        List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
@@ -605,8 +605,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    private void createReadFeedDocuments(List<CosmosItemProperties> createdDocuments, CosmosAsyncContainer feedCollection, long count) {
-        List<CosmosItemProperties> docDefList = new ArrayList<>();
+    private void createReadFeedDocuments(List<InternalObjectNode> createdDocuments, CosmosAsyncContainer feedCollection, long count) {
+        List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
@@ -616,9 +616,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
-    private CosmosItemProperties getDocumentDefinition() {
+    private InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
