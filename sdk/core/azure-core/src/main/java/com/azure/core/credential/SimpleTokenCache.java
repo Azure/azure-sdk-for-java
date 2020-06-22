@@ -93,16 +93,18 @@ public class SimpleTokenCache {
                 return tokenRefresh
                     .materialize()
                     .flatMap(signal -> {
-                        if (signal.isOnNext() && signal.get() != null) {
+                        AccessToken accessToken = signal.get();
+                        Throwable error = signal.getThrowable();
+                        if (signal.isOnNext() && accessToken != null) {
                             logger.info(refreshLog(cache, now, "Acquired a new access token"));
-                            sink.next(signal.get());
-                            cache = signal.get();
+                            sink.next(accessToken);
+                            cache = accessToken;
                             nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
-                            return Mono.just(signal.get());
-                        } else if (signal.isOnError() && signal.getThrowable() != null) {
+                            return Mono.just(accessToken);
+                        } else if (signal.isOnError() && error != null) {
                             logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
                             nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
-                            return fallback.switchIfEmpty(Mono.error(signal.getThrowable()));
+                            return fallback.switchIfEmpty(Mono.error(error));
                         } else {
                             return fallback;
                         }
