@@ -354,19 +354,19 @@ public class IndexingSyncTests extends SearchTestBase {
             ZoneOffset.ofHours(-8)
         );
 
-        List<Map<String, Object>> books = new ArrayList<>();
+        List<SearchDocument> books = new ArrayList<>();
 
         Map<String, Object> book1 = new HashMap<>();
         book1.put("ISBN", "1");
         book1.put("PublishDate", utcTime);
-        books.add(book1);
+        books.add(new SearchDocument(book1));
 
         Map<String, Object> book2 = new HashMap<>();
         book2.put("ISBN", "2");
         book2.put("PublishDate", utcTimeMinusEight);
-        books.add(book2);
+        books.add(new SearchDocument(book2));
 
-        client.uploadDocuments(convertToListSearchDocument(books));
+        client.uploadDocuments(books);
         waitForIndexing();
 
         SearchDocument actualBook1 = client.getDocument("1");

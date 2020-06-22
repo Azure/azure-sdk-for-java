@@ -387,7 +387,7 @@ public class LookupSyncTests extends SearchTestBase {
         expectedDoc.put("Points", Collections.singletonList(geoPoint));
         expectedDoc.put("Dates", Collections.singletonList(dateTime));
 
-        uploadDocument(client, indexedDoc);
+        client.uploadDocuments(Collections.singletonList(indexedDoc));
 
         SearchDocument actualDoc = client.getDocument(docKey);
 

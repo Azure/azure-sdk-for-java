@@ -13,6 +13,7 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -114,7 +115,7 @@ public class SearchAsyncClientImplTest extends SearchTestBase {
         expectedDoc.put("Rooms", rooms);
         expectedDoc.put("Location", GeoPoint.create(40.760586, -73.975403));
 
-        uploadDocument(asyncClient, expectedDoc);
+        asyncClient.uploadDocuments(Collections.singletonList(new SearchDocument(expectedDoc))).block();
 
         Mono<SearchDocument> futureDoc = asyncClient.getDocument("1");
 

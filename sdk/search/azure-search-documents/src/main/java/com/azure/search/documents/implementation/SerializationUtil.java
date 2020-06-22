@@ -4,6 +4,7 @@ package com.azure.search.documents.implementation;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,6 +20,7 @@ public class SerializationUtil {
      */
     public static void configureMapper(ObjectMapper mapper) {
         mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
         UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
         GeoPointDeserializer geoPointDeserializer = new GeoPointDeserializer(defaultDeserializer);
