@@ -457,8 +457,8 @@ public final class ConnectionPolicy {
             ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
             ", preferredRegions=" + preferredRegions +
             ", multipleWriteRegionsEnabled=" + multipleWriteRegionsEnabled +
-            ", proxyType=" + proxy.getType() +
-            ", inetSocketProxyAddress=" + proxy.getAddress() +
+            ", proxyType=" + (proxy != null ? proxy.getType() : null) +
+            ", inetSocketProxyAddress=" + (proxy != null ? proxy.getAddress() : null) +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectTimeout=" + connectTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -50,28 +50,28 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @DataProvider(name = "responseContinuationTokenLimitParamProvider")
     public static Object[][] responseContinuationTokenLimitParamProvider() {
 
-        QueryRequestOptions options1 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options1, 1);
         options1.getResponseContinuationTokenLimitInKb(5);
         options1.setPartitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
-        QueryRequestOptions options2 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 1);
         options2.getResponseContinuationTokenLimitInKb(5);
         options2.setPartitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
-        QueryRequestOptions options3 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 1);
         options3.getResponseContinuationTokenLimitInKb(5);
         options3.setPartitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";
         boolean multiPartitionCollection3 = false;
 
-        QueryRequestOptions options4 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options4 = new CosmosQueryRequestOptions();
         options4.setPartitionKey(new PartitionKey("99"));
         String query4 = "Select * from r order by r.prop";
         boolean multiPartitionCollection4 = false;
@@ -85,7 +85,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     }
 
     @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryWithContinuationTokenLimit(QueryRequestOptions options, String query, boolean isMultiParitionCollection) throws Exception {
+    public void queryWithContinuationTokenLimit(CosmosQueryRequestOptions options, String query, boolean isMultiParitionCollection) throws Exception {
         String collectionLink;
         if (isMultiParitionCollection) {
             collectionLink = getMultiPartitionCollectionLink();
@@ -160,7 +160,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         // wait for catch up
         TimeUnit.SECONDS.sleep(1);
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)

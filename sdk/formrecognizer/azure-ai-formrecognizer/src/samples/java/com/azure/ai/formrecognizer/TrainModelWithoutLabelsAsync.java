@@ -61,7 +61,7 @@ public class TrainModelWithoutLabelsAsync {
             // Since the given training documents are unlabeled, we still group them but they do not have a label.
             customFormModel.getSubmodels().forEach(customFormSubmodel -> {
                 // Since the training data is unlabeled, we are unable to return the accuracy of this model
-                customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
+                customFormSubmodel.getFields().forEach((field, customFormModelField) ->
                     System.out.printf("Field: %s Field Label: %s%n",
                         field, customFormModelField.getLabel()));
             });
@@ -71,7 +71,7 @@ public class TrainModelWithoutLabelsAsync {
             customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
                 System.out.printf("Document name: %s%n", trainingDocumentInfo.getName());
                 System.out.printf("Document status: %s%n", trainingDocumentInfo.getName());
-                System.out.printf("Document page count: %s%n", trainingDocumentInfo.getPageCount());
+                System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
                 if (!trainingDocumentInfo.getDocumentErrors().isEmpty()) {
                     System.out.println("Document Errors:");
                     trainingDocumentInfo.getDocumentErrors().forEach(formRecognizerError ->

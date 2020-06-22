@@ -73,4 +73,31 @@ public class InteractiveBrowserCredentialTest {
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
     }
+
+    @Test
+    public void testValidAuthenticate() throws Exception {
+        Random random = new Random();
+
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        int port = random.nextInt(10000) + 10000;
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port)))
+                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        InteractiveBrowserCredential credential =
+                new InteractiveBrowserCredentialBuilder().port(port).clientId(clientId).build();
+        StepVerifier.create(credential.authenticate(request1))
+                .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
+                                                               .equals("http://login.microsoftonline.com")
+                                                               && authenticationRecord.getUsername().equals("testuser")
+                                                               && authenticationRecord.getHomeAccountId() != null)
+                .verifyComplete();
+    }
 }

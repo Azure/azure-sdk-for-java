@@ -5,13 +5,13 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -38,7 +38,7 @@ public class DistinctQueryTests extends TestSuiteBase {
     private final int TIMEOUT_120 = 120000;
     private final String FIELD = "name";
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
+    private ArrayList<InternalObjectNode> docs = new ArrayList<>();
 
     private CosmosAsyncClient client;
 
@@ -79,22 +79,22 @@ public class DistinctQueryTests extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.name from c";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
-        CosmosPagedFlux<CosmosItemProperties> queryObservable =
+        CosmosPagedFlux<InternalObjectNode> queryObservable =
             createdCollection.queryItems(query,
                                          options,
-                                         CosmosItemProperties.class);
+                                         InternalObjectNode.class);
         List<Object> nameList = docs.stream()
                                     .map(d -> ModelBridgeInternal.getObjectFromJsonSerializable(d, FIELD))
                                     .collect(Collectors.toList());
         List<Object> distinctNameList = nameList.stream().distinct().collect(Collectors.toList());
 
-        FeedResponseListValidator<CosmosItemProperties> validator =
-            new FeedResponseListValidator.Builder<CosmosItemProperties>()
+        FeedResponseListValidator<InternalObjectNode> validator =
+            new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(distinctNameList.size())
-                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
+                .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>()
                                      .requestChargeGreaterThanOrEqualTo(1.0)
                                      .build())
                 .hasValidQueryMetrics(qmEnabled)
@@ -194,7 +194,7 @@ public class DistinctQueryTests extends TestSuiteBase {
 
         for (String query : queries) {
             logger.info("Current distinct query: " + query);
-            QueryRequestOptions options = new QueryRequestOptions();
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
 
             List<JsonNode> documentsFromWithDistinct = new ArrayList<>();
@@ -248,26 +248,26 @@ public class DistinctQueryTests extends TestSuiteBase {
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsForDistinctIntValues(boolean qmEnabled) {
         String query = "SELECT DISTINCT c.intprop from c";
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options,
-                                                                                             CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options,
+                                                                                             InternalObjectNode.class);
 
-        Iterator<FeedResponse<CosmosItemProperties>> iterator = queryObservable.byPage(5).collectList().single().block()
-                                                                    .iterator();
-        List<CosmosItemProperties> itemPropertiesList = new ArrayList<>();
+        Iterator<FeedResponse<InternalObjectNode>> iterator = queryObservable.byPage(5).collectList().single().block()
+                                                                             .iterator();
+        List<InternalObjectNode> itemPropertiesList = new ArrayList<>();
         while (iterator.hasNext()) {
-            FeedResponse<CosmosItemProperties> next = iterator.next();
+            FeedResponse<InternalObjectNode> next = iterator.next();
             itemPropertiesList.addAll(next.getResults());
         }
 
         assertThat(itemPropertiesList.size()).isEqualTo(2);
         List<Object> intpropList = itemPropertiesList
                                        .stream()
-                                       .map(cosmosItemProperties ->
+                                       .map(internalObjectNode ->
                                                 ModelBridgeInternal.getObjectFromJsonSerializable(
-                                                    cosmosItemProperties, "intprop"))
+                                                    internalObjectNode, "intprop"))
                                    .collect(Collectors.toList());
         // We insert two documents witn intprop as 5.0 and 5. Distinct should consider them as one
         assertThat(intpropList).containsExactlyInAnyOrder(null, 5);
@@ -286,7 +286,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         for (int i = 0; i < 40; i++) {
             Person person = getRandomPerson(rand);
             try {
-                docs.add(new CosmosItemProperties(mapper.writeValueAsString(person)));
+                docs.add(new InternalObjectNode(mapper.writeValueAsString(person)));
             } catch (JsonProcessingException e) {
                 logger.error(e.getMessage());
             }
@@ -296,8 +296,8 @@ public class DistinctQueryTests extends TestSuiteBase {
         String resourceJson2 = String.format("{ " + "\"id\": \"%s\", \"intprop\": %f }", UUID.randomUUID().toString(),
                                              5.0f);
 
-        docs.add(new CosmosItemProperties(resourceJson));
-        docs.add(new CosmosItemProperties(resourceJson2));
+        docs.add(new InternalObjectNode(resourceJson));
+        docs.add(new InternalObjectNode(resourceJson2));
 
     }
 

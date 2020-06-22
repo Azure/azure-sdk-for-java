@@ -100,6 +100,16 @@ public final class AzureFileSystem extends FileSystem {
     /**
      * Expected type: Integer
      */
+    public static final String AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST = "AzureStorageMaxConcurrencyPerRequest";
+
+    /**
+     * Expected type: Long
+     */
+    public static final String AZURE_STORAGE_PUT_BLOB_THRESHOLD = "AzureStoragePutBlobThreshold";
+
+    /**
+     * Expected type: Integer
+     */
     public static final String AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES = "AzureStorageDownloadResumeRetries";
 
     /**
@@ -127,6 +137,8 @@ public final class AzureFileSystem extends FileSystem {
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
     private final Long blockSize;
+    private final Long putBlobThreshold;
+    private final Integer maxConccurencyPerRequest;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;
@@ -144,12 +156,9 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-            Object blockSize = config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
-            if (blockSize instanceof Integer) {
-                this.blockSize = Long.valueOf((Integer) blockSize);
-            } else {
-                this.blockSize = (Long) blockSize;
-            }
+            this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            this.putBlobThreshold = (Long) config.get(AZURE_STORAGE_PUT_BLOB_THRESHOLD);
+            this.maxConccurencyPerRequest = (Integer) config.get(AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST);
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
 
             // Initialize and ensure access to FileStores.
@@ -409,5 +418,17 @@ public final class AzureFileSystem extends FileSystem {
             throw LoggingUtility.logError(logger, new IOException("Invalid file store: " + name));
         }
         return store;
+    }
+
+    Long getBlockSize() {
+        return this.blockSize;
+    }
+
+    Long getPutBlobThreshold() {
+        return this.putBlobThreshold;
+    }
+
+    Integer getMaxConcurrencyPerRequest() {
+        return this.maxConccurencyPerRequest;
     }
 }

@@ -14,7 +14,7 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos</artifactId>
-  <version>4.0.1-beta.4</version>
+  <version>4.0.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -178,8 +178,6 @@ container.createItem(new Passenger("carla.davis@outlook.com", "Carla Davis", "SE
     .block(); // Blocking for demo purposes (avoid doing this in production unless you must)
 // ...
 ```
-
-See the complete code in [`HelloWorldDemo.java`](../azure-cosmos-examples/src/main/java/com/azure/cosmos/examples/HelloWorldDemo.java)
 
 We have a get started sample app available [here][getting_started].
 

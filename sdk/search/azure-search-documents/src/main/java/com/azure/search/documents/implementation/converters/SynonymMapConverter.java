@@ -10,7 +10,7 @@ import com.azure.search.documents.indexes.models.SynonymMap;
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} and {@link SynonymMap}.
  */
 public final class SynonymMapConverter {
-    private static final String FORMAT = "solr";
+
     /**
      * Maps from {@link com.azure.search.documents.indexes.implementation.models.SynonymMap} to {@link SynonymMap}.
      */
@@ -52,8 +52,6 @@ public final class SynonymMapConverter {
 
         String name = obj.getName();
         synonymMap.setName(name);
-
-        synonymMap.setFormat(FORMAT);
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);

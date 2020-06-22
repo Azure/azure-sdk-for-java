@@ -19,7 +19,7 @@ Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
-    <version>2.2.5-beta.1</version>
+    <version>2.3.3-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

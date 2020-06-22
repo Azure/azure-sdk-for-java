@@ -9,7 +9,7 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosPermissionRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -101,7 +101,7 @@ public class CosmosAsyncUser {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionProperties);
+        Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         return database.getDocClientWrapper()
                    .createPermission(getLink(), permission, ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosPermissionResponse(response))
@@ -122,7 +122,7 @@ public class CosmosAsyncUser {
     public Mono<CosmosPermissionResponse> upsertPermission(
         CosmosPermissionProperties permissionProperties,
         CosmosPermissionRequestOptions options) {
-        Permission permission = ModelBridgeInternal.getV2Permissions(permissionProperties);
+        Permission permission = ModelBridgeInternal.getPermission(permissionProperties, database.getId());
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
@@ -144,7 +144,7 @@ public class CosmosAsyncUser {
      * error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions() {
-        return readAllPermissions(new QueryRequestOptions());
+        return readAllPermissions(new CosmosQueryRequestOptions());
     }
 
     /**
@@ -158,13 +158,13 @@ public class CosmosAsyncUser {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
      * error.
      */
-    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(QueryRequestOptions options) {
+    CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
     }
@@ -181,7 +181,7 @@ public class CosmosAsyncUser {
      * an error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query) {
-        return queryPermissions(query, new QueryRequestOptions());
+        return queryPermissions(query, new CosmosQueryRequestOptions());
     }
 
     /**
@@ -196,13 +196,13 @@ public class CosmosAsyncUser {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained permissions or
      * an error.
      */
-    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, QueryRequestOptions options) {
+    public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, CosmosQueryRequestOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, options)
                        .map(response -> BridgeInternal.createFeedResponse(
-                           ModelBridgeInternal.getCosmosPermissionPropertiesFromV2Results(response.getResults()),
+                           ModelBridgeInternal.getCosmosPermissionPropertiesFromResults(response.getResults()),
                            response.getResponseHeaders()));
         });
     }

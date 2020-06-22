@@ -1,8 +1,34 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20200618.4
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+      ref: refs/tags/azure-sdk-tools_20200618.1
+
 parameters:
-  Artifacts: []
-  ServiceDirectory: not-specified
-  TargetDocRepoOwner: 'Azure'
-  TargetDocRepoName: 'azure-docs-sdk-java'
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: SDKType
+  type: string
+  default: not-specified
+- name: TargetDocRepoOwner
+  type: string
+  default: Azure
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
 
 stages:
   - stage: Build
@@ -16,37 +42,37 @@ stages:
         TestMatrix:
           Linux - Java 8:
             OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
           macOS - Java 8:
             OSVmImage: 'macOS-10.15'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
           Windows - Java 8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
           Linux - Java 11:
             OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.11'
+            JavaTestVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
           macOS - Java 11:
             OSVmImage: 'macOS-10.15'
-            JavaVersion: '1.11'
+            JavaTestVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
           Windows - Java 11:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.11'
+            JavaTestVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
           Windows From Source - Java 8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'From Source: Windows on Java 1.8'
             TestFromSource: true
             ProfileFlag: '-Punit'
@@ -63,35 +89,26 @@ stages:
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
           Https_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          Examples_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pexamples'
-            DisplayName: 'Examples Integration Tests'
-            PROTOCOLS: '["Https", "Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
         TestStepMavenInputs:
           goals: 'verify'
           options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
           mavenAuthenticateFeed: true
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
 
         PreRunSteps:
-        - template: ../steps/update-version-fix.yml
-
         - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"
             Invoke-WebRequest "$(EmulatorMsiUrl)" -OutFile "$env:temp\azure-cosmosdb-emulator.msi"
@@ -153,4 +170,4 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
         TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}}

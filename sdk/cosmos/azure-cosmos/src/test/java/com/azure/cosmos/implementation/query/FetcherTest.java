@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -28,23 +28,23 @@ public class FetcherTest {
     @DataProvider(name = "queryParams")
     public static Object[][] queryParamProvider() {
 
-        QueryRequestOptions options1 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
         // initial continuation token
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options1,"cp-init",100);
         int top1 = -1; // no top
 
         // no continuation token
-        QueryRequestOptions options2 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 100);
         int top2 = -1; // no top
 
         // top more than max item count
-        QueryRequestOptions options3 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 100);
         int top3 = 200;
 
         // top less than max item count
-        QueryRequestOptions options4 = new QueryRequestOptions();
+        CosmosQueryRequestOptions options4 = new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options4, 100);
         int top4 = 20;
 
@@ -56,7 +56,7 @@ public class FetcherTest {
     }
 
     @Test(groups = { "unit" }, dataProvider = "queryParams")
-    public void query(QueryRequestOptions options, int top) {
+    public void query(CosmosQueryRequestOptions options, int top) {
 
         FeedResponse<Document> fp1 = FeedResponseBuilder.queryFeedResponseBuilder(Document.class)
                 .withContinuationToken("cp1")
@@ -101,7 +101,7 @@ public class FetcherTest {
     }
 
     private void validateFetcher(Fetcher<Document> fetcher,
-                                 QueryRequestOptions options,
+                                 CosmosQueryRequestOptions options,
                                  int top,
                                  List<FeedResponse<Document>> feedResponseList) {
 
@@ -197,7 +197,7 @@ public class FetcherTest {
         return feedResponseList.get(requestIndex - 1).getContinuationToken();
     }
 
-    private int getExpectedMaxItemCountInRequest(QueryRequestOptions options,
+    private int getExpectedMaxItemCountInRequest(CosmosQueryRequestOptions options,
                                                  int top,
                                                  List<FeedResponse<Document>> feedResponseList,
                                                  int requestIndex) {

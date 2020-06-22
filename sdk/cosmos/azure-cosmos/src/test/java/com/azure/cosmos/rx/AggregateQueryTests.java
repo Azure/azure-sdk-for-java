@@ -8,8 +8,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
@@ -50,7 +50,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<CosmosItemProperties> docs = new ArrayList<CosmosItemProperties>();
+    private ArrayList<InternalObjectNode> docs = new ArrayList<InternalObjectNode>();
     private ArrayList<QueryConfig> queryConfigs = new ArrayList<QueryConfig>();
 
     private String partitionKey = "mypk";
@@ -71,7 +71,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
@@ -100,14 +100,14 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         Object[] values = new Object[]{null, false, true, "abc", "cdfg", "opqrs", "ttttttt", "xyz", "oo", "ppp"};
         for (int i = 0; i < values.length; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             d.setId(UUID.randomUUID().toString());
             BridgeInternal.setProperty(d, partitionKey, values[i]);
             docs.add(d);
         }
 
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             BridgeInternal.setProperty(d, partitionKey, uniquePartitionKey);
             BridgeInternal.setProperty(d, "getResourceId", Integer.toString(i));
             BridgeInternal.setProperty(d, field, i + 1);
@@ -117,7 +117,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         numberOfDocumentsWithNumericId = numberOfDocuments - values.length - numberOfDocsWithSamePartitionKey;
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             BridgeInternal.setProperty(d, partitionKey, i + 1);
             d.setId(UUID.randomUUID().toString());
             docs.add(d);

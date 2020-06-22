@@ -60,7 +60,7 @@ az cognitiveservices account create \
 ### Authenticate the client
 In order to interact with the Form Recognizer service, you will need to create an instance of the Form Recognizer client.
 Both the asynchronous and synchronous clients can be created by using `FormRecognizerClientBuilder`. Invoking `buildClient()`
-will create the synchronous client, while invoking `buildAsyncClient` will create its asynchronous counterpart. 
+will create the synchronous client, while invoking `buildAsyncClient` will create its asynchronous counterpart.
 
 You will need an **endpoint** and a **key** to instantiate a client object.
 
@@ -73,7 +73,7 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 ```
 
 #### Create a Form Recognizer client using AzureKeyCredential
-To use `AzureKeyCredential` authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. 
+To use `AzureKeyCredential` authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential].
 This key can be found in the [Azure Portal][azure_portal] under the "Keys and Endpoint" section in your created Form Recognizer
 resource, or by running the following Azure CLI command to get the key from the Form Recognizer resource:
 
@@ -81,7 +81,7 @@ resource, or by running the following Azure CLI command to get the key from the 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L41-L44 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L43-L46 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -90,7 +90,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L62-L68 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L64-L70 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -103,7 +103,7 @@ credential.update("{new_key}");
 
 #### Create a Form Recognizer client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
-platform. 
+platform.
 
 Authentication with AAD requires some initial setup:
 * Add the Azure Identity package
@@ -120,16 +120,16 @@ Authentication with AAD requires some initial setup:
 * [Register a new Azure Active Directory application][register_AAD_application]
 * [Grant access][grant_access] to Form Recognizer by assigning the `"Cognitive Services User"` role to your service principal.
 
-After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use. 
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
 As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
-AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET. 
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L51-L55 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L53-L57 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -187,7 +187,7 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L72-L89 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L74-L91 -->
 ```java
 String formUrl = "{file_url}";
 String modelId = "{custom_trained_model_id}";
@@ -198,11 +198,11 @@ List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
 for (int i = 0; i < recognizedForms.size(); i++) {
     RecognizedForm form = recognizedForms.get(i);
-    System.out.printf("----------- Recognized Form %s%n-----------", i);
+    System.out.printf("----------- Recognized Form %d-----------%n", i);
     System.out.printf("Form type: %s%n", form.getFormType());
     form.getFields().forEach((label, formField) -> {
-        System.out.printf("Field %s has value %s with confidence score of %d.%n", label,
-            formField.getFieldValue(),
+        System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
+            formField.getValueText().getText(),
             formField.getConfidence());
     });
     System.out.print("-----------------------------------");
@@ -211,7 +211,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L93-L114 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L95-L116 -->
 ```java
 String contentFileUrl = "{file_url}";
 SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
@@ -221,9 +221,9 @@ List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
 for (int i = 0; i < contentPageResults.size(); i++) {
     FormPage formPage = contentPageResults.get(i);
-    System.out.printf("----Recognizing content for page %s%n----", i);
+    System.out.printf("----Recognizing content for page %d----%n", i);
     // Table information
-    System.out.printf("Has width: %d and height: %d, measured with unit: %s.%n", formPage.getWidth(),
+    System.out.printf("Has width: %f and height: %f, measured with unit: %s.%n", formPage.getWidth(),
         formPage.getHeight(),
         formPage.getUnit());
     formPage.getTables().forEach(formTable -> {
@@ -238,8 +238,9 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 ```
 
 ### Recognize receipts
-Recognize data from a USA sales receipts using a prebuilt model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L118-L136 -->
+Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the
+service returns for a recognized receipt.
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L120-L166-->
 ```java
 String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
@@ -248,17 +249,45 @@ SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
 List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
 for (int i = 0; i < receiptPageResults.size(); i++) {
-    System.out.printf("----Recognizing receipt for page %s%n----", i);
     RecognizedReceipt recognizedReceipt = receiptPageResults.get(i);
-    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-    System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-    System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-    System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-    System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-    System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
-    System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
-    System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-    System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+    Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
+    System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
+    FormField merchantNameField = recognizedFields.get("MerchantName");
+    if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+        System.out.printf("Merchant Name: %s, confidence: %.2f%n",
+            merchantNameField.getFieldValue().asString(),
+            merchantNameField.getConfidence());
+    }
+    FormField transactionDateField = recognizedFields.get("TransactionDate");
+    if (transactionDateField.getFieldValue().getType() == FieldValueType.DATE) {
+        System.out.printf("Transaction Date: %s, confidence: %.2f%n",
+            transactionDateField.getFieldValue().asDate(),
+            transactionDateField.getConfidence());
+    }
+    FormField receiptItemsField = recognizedFields.get("Items");
+    System.out.printf("Receipt Items: %n");
+    if (receiptItemsField.getFieldValue().getType() == FieldValueType.LIST) {
+        List<FormField> receiptItems = receiptItemsField.getFieldValue().asList();
+        receiptItems.forEach(receiptItem -> {
+            if (receiptItem.getFieldValue().getType() == FieldValueType.MAP) {
+                receiptItem.getFieldValue().asMap().forEach((key, formField) -> {
+                    if (key.equals("Name")) {
+                        if (formField.getFieldValue().getType() == FieldValueType.STRING) {
+                            System.out.printf("Name: %s, confidence: %.2fs%n",
+                                formField.getFieldValue().asString(),
+                                formField.getConfidence());
+                        }
+                    }
+                    if (key.equals("Quantity")) {
+                        if (formField.getFieldValue().getType() == FieldValueType.INTEGER) {
+                            System.out.printf("Quantity: %d, confidence: %.2f%n",
+                                formField.getFieldValue().asInteger(), formField.getConfidence());
+                        }
+                    }
+                });
+            }
+        });
+    }
 }
 ```
 
@@ -266,7 +295,7 @@ for (int i = 0; i < receiptPageResults.size(); i++) {
 Train a machine-learned model on your own form type. The resulting model will be able to recognize values from the types of forms it was trained on.
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L140-L160 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L170-L190 -->
 ```java
 String trainingFilesUrl = "{training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
@@ -285,7 +314,7 @@ System.out.println("Recognized Fields:");
 // Since the given training documents are unlabeled, we still group them but they do not have a label.
 customFormModel.getSubmodels().forEach(customFormSubmodel -> {
     // Since the training data is unlabeled, we are unable to return the accuracy of this model
-    customFormSubmodel.getFieldMap().forEach((field, customFormModelField) ->
+    customFormSubmodel.getFields().forEach((field, customFormModelField) ->
         System.out.printf("Field: %s Field Label: %s%n",
             field, customFormModelField.getLabel()));
 });
@@ -293,12 +322,12 @@ customFormModel.getSubmodels().forEach(customFormSubmodel -> {
 
 ### Manage your models
 Manage the custom models attached to your account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L164-L193 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L194-L223 -->
 ```java
 AtomicReference<String> modelId = new AtomicReference<>();
 // First, we see how many custom models we have, and what our limit is
 AccountProperties accountProperties = formTrainingClient.getAccountProperties();
-System.out.printf("The account has %s custom models, and we can have at most %s custom models",
+System.out.printf("The account has %d custom models, and we can have at most %d custom models",
     accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
 // Next, we get a paged list of all of our custom models
@@ -314,11 +343,11 @@ customModels.forEach(customFormModelInfo -> {
     System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
     customModel.getSubmodels().forEach(customFormSubmodel -> {
         System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
-        System.out.printf("Custom Model Accuracy: %d%n", customFormSubmodel.getAccuracy());
-        if (customFormSubmodel.getFieldMap() != null) {
-            customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+        System.out.printf("Custom Model Accuracy: %f%n", customFormSubmodel.getAccuracy());
+        if (customFormSubmodel.getFields() != null) {
+            customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
                 System.out.printf("Field Text: %s%n", fieldText);
-                System.out.printf("Field Accuracy: %d%n", customFormModelField.getAccuracy());
+                System.out.printf("Field Accuracy: %f%n", customFormModelField.getAccuracy());
             });
         }
     });
@@ -335,7 +364,7 @@ to provide an invalid file source URL an `ErrorResponseException` would be raise
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L200-L204 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L230-L234 -->
 ```java
 try {
     formRecognizerClient.beginRecognizeContentFromUrl("invalidSourceUrl");
@@ -401,43 +430,44 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
-[differentiate_custom_forms_with_labeled_and_unlabeled_models]: src/samples/java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledData.java
+[differentiate_custom_forms_with_labeled_and_unlabeled_models]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/AdvancedDiffLabeledUnlabeledData.java
 [form_recognizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
-[form_recognizer_async_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerAsyncClient.java
-[form_recognizer_sync_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerClient.java
-[form_training_async_client]: src/main/java/com/azure/ai/formrecognizer/training/FormTrainingAsyncClient.java
-[form_training_sync_client]: src/main/java/com/azure/ai/formrecognizer/training/FormTrainingClient.java
+[form_recognizer_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/FormRecognizerAsyncClient.java
+[form_recognizer_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/FormRecognizerClient.java
+[form_training_async_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/training/FormTrainingAsyncClient.java
+[form_training_sync_client]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/training/FormTrainingClient.java
 [grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
 [fr_labeling_tool]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/label-tool
 [fr_train_without_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [fr_train_with_labels]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
-[error_response_exception]: src/main/java/com/azure/ai/formrecognizer/models/ErrorResponseException.java
+[error_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/main/java/com/azure/ai/formrecognizer/models/ErrorResponseException.java
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
-[sample_readme]: src/samples/README.md
-[manage_custom_models]: src/samples/java/com/azure/ai/formrecognizer/ManageCustomModels.java
-[manage_custom_models_async]: src/samples/java/com/azure/ai/formrecognizer/ManageCustomModelsAsync.java
-[recognize_content]: src/samples/java/com/azure/ai/formrecognizer/RecognizeContent.java
-[recognize_content_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeContentAsync.java
-[recognize_receipts]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceipts.java
-[recognize_receipts_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsAsync.java
-[recognize_receipts_from_url]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrl.java
-[recognize_receipts_from_url_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
-[recognize_custom_forms]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
-[recognize_custom_forms_async]: src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
+[sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/README.md
+[manage_custom_models]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/ManageCustomModels.java
+[manage_custom_models_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/ManageCustomModelsAsync.java
+[recognize_content]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContent.java
+[recognize_content_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeContentAsync.java
+[recognize_receipts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceipts.java
+[recognize_receipts_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsAsync.java
+[recognize_receipts_from_url]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrl.java
+[recognize_receipts_from_url_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeReceiptsFromUrlAsync.java
+[recognize_custom_forms]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomForms.java
+[recognize_custom_forms_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/RecognizeCustomFormsAsync.java
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[train_unlabeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java
-[train_unlabeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabelsAsync.java
-[train_labeled_model]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
-[train_labeled_model_async]: src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
-[copy_model]: src/samples/java/com/azure/ai/formrecognizer/CopyModel.java
-[copy_model_async]: src/samples/java/com/azure/ai/formrecognizer/CopyModelAsync.java
+[train_unlabeled_model]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabels.java
+[train_unlabeled_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/TrainModelWithoutLabelsAsync.java
+[train_labeled_model]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabels.java
+[train_labeled_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/TrainModelWithLabelsAsync.java
+[copy_model]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CopyModel.java
+[copy_model_async]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/CopyModelAsync.java
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_doc_train_unlabeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [service_doc_train_labeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
+[service_recognize_receipt]: https://westus2.dev.cognitive.microsoft.com/docs/services/form-recognizer-api-v2-preview/operations/GetAnalyzeReceiptResult
 [source_code]: src
 [quickstart_training]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract#train-a-form-recognizer-model
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

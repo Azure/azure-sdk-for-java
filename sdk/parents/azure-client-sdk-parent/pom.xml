@@ -441,7 +441,6 @@
               <baseDir>.</baseDir>
               <reportFile>target/dependency-whitelist.json</reportFile>
               <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
                 <param>com.azure:azure-core-test</param>
                 <param>com.azure:azure-e2e</param>
@@ -538,7 +537,9 @@
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
-              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <groups>
@@ -722,7 +723,17 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-test-watcher</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-test-watcher;dependency} -->
+            </dependency>
+          </dependencies>
           <configuration>
+            <additionalClasspathElements>
+              <additionalClasspathElement>../../../common/azure-test-watcher/target/azure-test-watcher-1.0.0-beta.1.jar</additionalClasspathElement>
+            </additionalClasspathElements>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">
@@ -824,6 +835,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java

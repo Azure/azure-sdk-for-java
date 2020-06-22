@@ -49,8 +49,8 @@ public class ManageCustomModelsAsync {
                 customModel.getSubmodels().forEach(customFormSubmodel -> {
                     System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
                     System.out.printf("Custom Model Accuracy: %.2f%n", customFormSubmodel.getAccuracy());
-                    if (customFormSubmodel.getFieldMap() != null) {
-                        customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+                    if (customFormSubmodel.getFields() != null) {
+                        customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
                             System.out.printf("Field Text: %s%n", fieldText);
                             System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                         });

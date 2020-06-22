@@ -1,7 +1,12 @@
 # Release History
 
-## 4.2.0-beta.4 (Unreleased)
+## 4.2.0-beta.5 (Unreleased)
 
+
+## 4.2.0-beta.4 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+- `404` responses from `listPropertiesOfKeyVersions` in `KeyAsyncClient` and `KeyClient` now throw a `ResourceNotFoundException`.
+- `buildAsyncKeyEncryptionKey` in `LocalKeyEncryptionKeyClientBuilder` now throws an exception when no ID is present in a given `JsonWebKey`.
 
 ## 4.2.0-beta.3 (2020-04-09)
 - Added `LocalCryptographyClient`, `LocalCryptographyAsyncClient`, `LocalKeyEncryptionKeyClient` and `LocalKeyEncryptionKeyAsyncClient` to perform cryptography operations locally.

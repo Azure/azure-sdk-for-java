@@ -4,9 +4,7 @@
 package com.azure.data.schemaregistry.client;
 
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
-import com.azure.data.schemaregistry.client.implementation.models.GetSchemaByIdHeaders;
-import com.azure.data.schemaregistry.client.implementation.models.GetSchemaByIdResponse;
-import com.azure.data.schemaregistry.client.implementation.models.SchemaId;
+import com.azure.data.schemaregistry.client.implementation.models.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,13 +12,11 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CachedSchemaRegistryClientTest {
     private static final String MOCK_SERIALIZATION = "mock_serialization_type";
@@ -60,8 +56,15 @@ public class CachedSchemaRegistryClientTest {
     @Test
     public void testRegisterThenSchemaCacheHit() throws Exception {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
-        when(restService.createSchema(anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(MOCK_SCHEMA_ID);
+        when(restService.createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(
+                Mono.just(
+                    new CreateSchemaResponse(
+                        null,
+                        200,
+                        null,
+                        MOCK_SCHEMA_ID,
+                        null)));
 
         assertEquals(
             MOCK_ID,
@@ -71,25 +74,32 @@ public class CachedSchemaRegistryClientTest {
             client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         verify(restService, times(1))
-            .createSchema(anyString(), anyString(), anyString(), anyString());
+            .createSchemaWithResponseAsync(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
     }
 
     @Test
     public void testGetGuidThenSchemaCacheHit() throws Exception {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
-        when(restService.getIdBySchemaContent(anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(MOCK_SCHEMA_ID);
+        when(restService.getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(
+                Mono.just(
+                    new GetIdBySchemaContentResponse(
+                        null,
+                        200,
+                        null,
+                        MOCK_SCHEMA_ID,
+                        null)));
 
         assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
         assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
 
         verify(restService, times(1))
-            .getIdBySchemaContent(anyString(), anyString(), anyString(), anyString());
+            .getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
     public void testGetSchemaThenGuidCacheHit() throws Exception {
-        UUID mockId = UUID.randomUUID();
+        String mockId = "mock-id---";
         GetSchemaByIdHeaders mockHeaders = new GetSchemaByIdHeaders();
         mockHeaders.setXSchemaType(MOCK_SERIALIZATION);
         when(restService.getSchemaByIdWithResponseAsync(mockId))
@@ -113,8 +123,15 @@ public class CachedSchemaRegistryClientTest {
     @Test
     public void testClientReset() throws Exception {
         MOCK_SCHEMA_ID.setId(MOCK_ID);
-        when(restService.createSchema(anyString(), anyString(), anyString(), anyString()))
-            .thenReturn(MOCK_SCHEMA_ID);
+        when(restService.createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(
+                Mono.just(
+                    new CreateSchemaResponse(
+                        null,
+                        200,
+                        null,
+                        MOCK_SCHEMA_ID,
+                        null)));
 
         assertEquals(
             MOCK_ID,
@@ -133,6 +150,84 @@ public class CachedSchemaRegistryClientTest {
             client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         verify(restService, times(2))
-            .createSchema(anyString(), anyString(), anyString(), anyString());
+            .createSchemaWithResponseAsync(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_SERIALIZATION, MOCK_AVRO_SCHEMA);
+    }
+
+    @Test
+    public void testBadRegisterRequestThenThrows() {
+        MOCK_SCHEMA_ID.setId(MOCK_ID);
+        when(restService.createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(
+                Mono.just(
+                    new CreateSchemaResponse(
+                        null,
+                        400,
+                        null,
+                        null,
+                        null)));
+        try {
+            client.register(
+                "doesn't matter",
+                "doesn't matter",
+                "doesn't matter",
+                "doesn't matter");
+            fail("Should throw on 400 status code");
+        } catch (SchemaRegistryClientException e) {
+            assert true;
+        }
+
+        verify(restService, times(1))
+            .createSchemaWithResponseAsync(anyString(), anyString(), anyString(), anyString());
+    }
+
+    @Test
+    public void testGetIdBySchemaContentNotFoundThenThrows() {
+        MOCK_SCHEMA_ID.setId(MOCK_ID);
+        when(restService.getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(
+                Mono.just(
+                    new GetIdBySchemaContentResponse(
+                        null,
+                        404,
+                        null,
+                        null,
+                        null)));
+
+        try {
+            client.getSchemaId(
+                "doesn't matter",
+                "doesn't matter",
+                "doesn't matter",
+                "doesn't matter");
+            fail("Should throw on 404 status code");
+        } catch (SchemaRegistryClientException e) {
+            assert true;
+        }
+
+        verify(restService, times(1))
+            .getIdBySchemaContentWithResponseAsync(anyString(), anyString(), anyString(), anyString());
+    }
+
+    @Test
+    public void testGetSchemaByIdNotFoundThenThrows() {
+        String mockId = "mock-id---";
+        when(restService.getSchemaByIdWithResponseAsync(mockId))
+            .thenReturn(
+                Mono.just(new GetSchemaByIdResponse(
+                    null,
+                    404,
+                    null,
+                    null,
+                    null)));
+
+        try {
+            client.getSchemaByGuid(mockId);
+            fail("Should have thrown on 404 status code");
+        } catch (SchemaRegistryClientException e) {
+            assert true;
+        }
+
+        verify(restService, times(1))
+            .getSchemaByIdWithResponseAsync(mockId);
     }
 }
