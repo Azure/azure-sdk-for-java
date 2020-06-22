@@ -96,12 +96,10 @@ public class SimpleTokenCache {
                         sink.next(accessToken);
                         cache = accessToken;
                         nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
-                        System.out.println("Getting a token. Next refresh after " + refreshRetryTimeout.toSeconds());
                     })
                     .onErrorResume(err -> {
                         logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
                         nextTokenRefresh = OffsetDateTime.now().plus(refreshRetryTimeout);
-                        System.out.println("Failing to get a token. Next refresh after " + refreshRetryTimeout.toSeconds());
                         return fallback.switchIfEmpty(Mono.error(err));
                     })
                     .switchIfEmpty(fallback)

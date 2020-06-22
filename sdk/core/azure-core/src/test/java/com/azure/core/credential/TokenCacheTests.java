@@ -116,7 +116,7 @@ public class TokenCacheTests {
         AtomicLong maxMillis = new AtomicLong(0);
 
         Flux.interval(Duration.ofSeconds(1))
-            .take(5)
+            .take(4)
             .flatMap(i -> {
                 OffsetDateTime start = OffsetDateTime.now();
                 return cache.getToken()
@@ -130,7 +130,8 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await();
-        Assertions.assertTrue(maxMillis.get() >= 4000);
+        System.out.println("MaxMillis:" + maxMillis.get());
+        Assertions.assertTrue(maxMillis.get() >= 5000);
     }
 
     @Test
