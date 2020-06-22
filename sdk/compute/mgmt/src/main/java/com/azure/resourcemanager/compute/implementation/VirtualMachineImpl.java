@@ -290,6 +290,16 @@ class VirtualMachineImpl
     }
 
     @Override
+    public void simulateEviction() {
+        this.simulateEvictionAsync().block();
+    }
+
+    @Override
+    public Mono<Void> simulateEvictionAsync() {
+        return this.manager().inner().getVirtualMachines().simulateEvictionAsync(this.resourceGroupName(), this.name());
+    }
+
+    @Override
     public void convertToManaged() {
         this.manager().inner().getVirtualMachines().convertToManagedDisks(this.resourceGroupName(), this.name());
         this.refresh();

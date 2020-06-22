@@ -8,6 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.Disk;
+import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -27,6 +29,7 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -743,6 +746,40 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNotNull(runResult);
         Assertions.assertNotNull(runResult.value());
         Assertions.assertTrue(runResult.value().size() > 0);
+    }
+
+    @Test
+    public void canPerformSimulateEvictionOnSpotVirtualMachine() {
+        VirtualMachine virtualMachine = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("firstuser")
+            .withRootPassword("afh123RVS!")
+            .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+            .create();
+
+        Assertions.assertNotNull(virtualMachine.osDiskStorageAccountType());
+        Assertions.assertTrue(virtualMachine.osDiskSize() > 0);
+        Disk disk = computeManager.disks().getById(virtualMachine.osDiskId());
+        Assertions.assertNotNull(disk);
+        Assertions.assertEquals(DiskState.ATTACHED, disk.inner().diskState());
+
+        // call simulate eviction
+        virtualMachine.simulateEviction();
+        SdkContext.sleep(30 * 60 * 1000);
+
+        virtualMachine = computeManager.virtualMachines().getById(virtualMachine.id());
+        Assertions.assertNotNull(virtualMachine);
+        Assertions.assertNull(virtualMachine.osDiskStorageAccountType());
+        Assertions.assertTrue(virtualMachine.osDiskSize() == 0);
+        disk = computeManager.disks().getById(virtualMachine.osDiskId());
+        Assertions.assertEquals(DiskState.RESERVED, disk.inner().diskState());
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

@@ -94,6 +94,20 @@ public interface VirtualMachine
      */
     Mono<Void> redeployAsync();
 
+    /**
+     * Simulates the eviction of spot virtual machine.
+     * The eviction will occur with 30 minutes after calling this API.
+     */
+    void simulateEviction();
+
+    /**
+     * Simulates the eviction of spot virtual machine asynchronously.
+     * The eviction will occur with 30 minutes after calling this API.
+     *
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> simulateEvictionAsync();
+
     /** @return entry point to enabling, disabling and querying disk encryption */
     VirtualMachineEncryption diskEncryption();
 
