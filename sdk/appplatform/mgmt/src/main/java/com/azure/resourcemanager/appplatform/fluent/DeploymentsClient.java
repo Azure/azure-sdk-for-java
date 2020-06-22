@@ -40,10 +40,12 @@ import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceColl
 import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
 import com.azure.resourcemanager.appplatform.fluent.inner.LogFileUrlResponseInner;
 import com.azure.resourcemanager.appplatform.models.DeploymentResourceProperties;
-import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 /** An instance of this class provides access to all the operations defined in Deployments. */
 public final class DeploymentsClient {
@@ -1527,6 +1529,7 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentResourceInner> listAsync(String resourceGroupName, String serviceName, String appName) {
         final Context context = null;
+        final List<String> version = new ArrayList<>();
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, serviceName, appName, version),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -1586,6 +1589,7 @@ public final class DeploymentsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName) {
         final Context context = null;
+        final List<String> version = new ArrayList<>();
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, appName, version));
     }
 
@@ -1762,6 +1766,7 @@ public final class DeploymentsClient {
     public PagedFlux<DeploymentResourceInner> listClusterAllDeploymentsAsync(
         String resourceGroupName, String serviceName) {
         final Context context = null;
+        final List<String> version = new ArrayList<>();
         return new PagedFlux<>(
             () -> listClusterAllDeploymentsSinglePageAsync(resourceGroupName, serviceName, version),
             nextLink -> listClusterAllDeploymentsNextSinglePageAsync(nextLink));
@@ -1819,6 +1824,7 @@ public final class DeploymentsClient {
     public PagedIterable<DeploymentResourceInner> listClusterAllDeployments(
         String resourceGroupName, String serviceName) {
         final Context context = null;
+        final List<String> version = new ArrayList<>();
         return new PagedIterable<>(listClusterAllDeploymentsAsync(resourceGroupName, serviceName, version));
     }
 
