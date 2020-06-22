@@ -10,7 +10,8 @@ import java.time.Duration;
 
 /**
  * Defines options available to configure the behavior of a call to
- * {@link com.azure.storage.blob.BlobServiceClient#findBlobsByTags(FindBlobsOptions, Duration)} or
+ * {@link com.azure.storage.blob.BlobServiceClient#findBlobsByTags(FindBlobsOptions, Duration,
+ * com.azure.core.util.Context)} or
  * {@link com.azure.storage.blob.BlobServiceAsyncClient#findBlobsByTags(FindBlobsOptions)}. See the constructor
  * for details on each of the options.
  */
