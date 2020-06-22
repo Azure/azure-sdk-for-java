@@ -645,7 +645,8 @@ public interface VirtualMachine
             WithWindowsCreateManaged withSpecializedWindowsCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a generalized Windows gallery image version to be used as the virtual machine's OS.
+             * Specifies the resource ID of a generalized Windows gallery image version
+             * to be used as the virtual machine's OS.
              *
              * @param galleryImageVersionId the resource ID of the gallery image version
              * @return the next stage of the definition
@@ -653,7 +654,8 @@ public interface VirtualMachine
             WithWindowsAdminUsernameManaged withGeneralizedWindowsGalleryImageVersion(String galleryImageVersionId);
 
             /**
-             * Specifies the resource ID of a specialized Windows gallery image version to be used as the virtual machine's OS.
+             * Specifies the resource ID of a specialized Windows gallery image version
+             * to be used as the virtual machine's OS.
              *
              * @param galleryImageVersionId the resource ID of the gallery image version
              * @return the next stage of the definition
@@ -677,7 +679,8 @@ public interface VirtualMachine
             WithLinuxRootUsernameManagedOrUnmanaged withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
-             * Specifies that the latest version of a marketplace Linux image is to be used as the virtual machine's OS.
+             * Specifies that the latest version of a marketplace Linux image is
+             * to be used as the virtual machine's OS.
              *
              * @param publisher specifies the publisher of an image
              * @param offer specifies an offer of the image
@@ -703,7 +706,8 @@ public interface VirtualMachine
             WithLinuxRootUsernameManaged withGeneralizedLinuxCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a specialized Linux custom image to be used as the virtual machines' OS.
+             * Specifies the resource ID of a specialized Linux custom image
+             * to be used as the virtual machines' OS.
              *
              * @param customImageId the resource ID of a custom image
              * @return the next stage of the definition
@@ -711,7 +715,8 @@ public interface VirtualMachine
             WithLinuxCreateManaged withSpecializedLinuxCustomImage(String customImageId);
 
             /**
-             * Specifies the resource ID of a generalized Linux gallery image version to be used as the virtual machines' OS.
+             * Specifies the resource ID of a generalized Linux gallery image version
+             * to be used as the virtual machines' OS.
              *
              * @param galleryImageVersionId the resource ID of a gallery image version
              * @return the next stage of the definition
@@ -719,7 +724,8 @@ public interface VirtualMachine
             WithLinuxRootUsernameManaged withGeneralizedLinuxGalleryImageVersion(String galleryImageVersionId);
 
             /**
-             * Specifies the resource ID of a specialized Linux gallery image version to be used as the virtual machines' OS.
+             * Specifies the resource ID of a specialized Linux gallery image version
+             * to be used as the virtual machines' OS.
              *
              * @param galleryImageVersionId the resource ID of a gallery image version
              * @return the next stage of the definition
