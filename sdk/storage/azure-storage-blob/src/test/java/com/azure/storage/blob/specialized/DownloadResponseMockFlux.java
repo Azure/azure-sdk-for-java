@@ -51,15 +51,13 @@ class DownloadResponseMockFlux extends Flux<ByteBuffer> {
             case DR_TEST_SCENARIO_SUCCESSFUL_STREAM_FAILURES:
             case DR_TEST_SCENARIO_NO_MULTIPLE_SUBSCRIPTION:
             case DR_TEST_SCENARIO_ERROR_AFTER_ALL_DATA:
-                this.scenarioData = apiSpec.getRandomData(1024);
-                break;
+                // Even when testing error cases, the service attempts to return some data.
             case DR_TEST_SCENARIO_MAX_RETRIES_EXCEEDED:
             case DR_TEST_SCENARIO_NON_RETRYABLE_ERROR:
             case DR_TEST_SCENARIO_ERROR_GETTER_MIDDLE:
             case DR_TEST_SCENARIO_INFO_TEST:
             case DR_TEST_SCENARIO_TIMEOUT:
-                // Even when testing error cases, the service attempts to return some data.
-                this.scenarioData = apiSpec.getRandomData(1);
+                this.scenarioData = apiSpec.getRandomData(1024);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid download resource test scenario.");
