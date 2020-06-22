@@ -10,12 +10,6 @@ import static com.microsoft.azure.utils.Constants.DEFAULT_REFRESH_INTERVAL_MS;
 import static com.microsoft.azure.utils.Constants.SPRINGBOOT_KEY_VAULT_APPLICATION_ID;
 import static org.springframework.core.env.StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.identity.ClientCertificateCredentialBuilder;
@@ -25,6 +19,11 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.microsoft.azure.keyvault.spring.KeyVaultProperties.Property;
 import com.microsoft.azure.telemetry.TelemetrySender;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -36,8 +35,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * A helper class to initialize the key vault secret client depending on which authentication method users choose.
- * Then add key vault as a property source to the environment.
+ * A helper class to initialize the key vault secret client depending on which authentication method users choose. Then
+ * add key vault as a property source to the environment.
  */
 class KeyVaultEnvironmentPostProcessorHelper {
 
@@ -56,10 +55,9 @@ class KeyVaultEnvironmentPostProcessorHelper {
      * Add a key vault property source.
      *
      * <p>
-     * The normalizedName is used to target a specific key vault (note if the
-     * name is the empty string it works as before with only one key vault
-     * present). The normalized name is the name of the specific key vault plus
-     * a trailing "." at the end.
+     * The normalizedName is used to target a specific key vault (note if the name is the empty string it works as
+     * before with only one key vault present). The normalized name is the name of the specific key vault plus a
+     * trailing "." at the end.
      * </p>
      *
      * @param normalizedName the normalized name.
@@ -67,42 +65,42 @@ class KeyVaultEnvironmentPostProcessorHelper {
     public void addKeyVaultPropertySource(String normalizedName) {
         final String vaultUri = getPropertyValue(normalizedName, Property.URI);
         Assert.notNull(vaultUri, "vaultUri must not be null!");
-        final Long refreshInterval = Optional.of(getPropertyValue(normalizedName, Property.REFRESH_INTERVAL))
-            .map(Long::valueOf)
-            .orElse(DEFAULT_REFRESH_INTERVAL_MS);
+        final Long refreshInterval = Optional.ofNullable(getPropertyValue(normalizedName, Property.REFRESH_INTERVAL))
+                .map(Long::valueOf)
+                .orElse(DEFAULT_REFRESH_INTERVAL_MS);
         final List<String> secretKeys = Binder.get(this.environment)
-            .bind(
-                KeyVaultProperties.getPropertyName(normalizedName, Property.SECRET_KEYS),
-                Bindable.listOf(String.class)
-            )
-            .orElse(Collections.emptyList());
+                .bind(
+                        KeyVaultProperties.getPropertyName(normalizedName, Property.SECRET_KEYS),
+                        Bindable.listOf(String.class)
+                )
+                .orElse(Collections.emptyList());
 
         final TokenCredential tokenCredential = getCredentials(normalizedName);
         final SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(vaultUri)
-            .credential(tokenCredential)
-            .httpLogOptions(new HttpLogOptions().setApplicationId(SPRINGBOOT_KEY_VAULT_APPLICATION_ID))
-            .buildClient();
+                .vaultUrl(vaultUri)
+                .credential(tokenCredential)
+                .httpLogOptions(new HttpLogOptions().setApplicationId(SPRINGBOOT_KEY_VAULT_APPLICATION_ID))
+                .buildClient();
         try {
             final MutablePropertySources sources = this.environment.getPropertySources();
-            final boolean caseSensitive = Boolean.parseBoolean(
-                getPropertyValue(normalizedName, Property.CASE_SENSITIVE_KEYS));
-            final KeyVaultOperation kvOperation = new KeyVaultOperation(
-                secretClient,
-                vaultUri,
-                refreshInterval,
-                secretKeys,
-                caseSensitive);
+            final boolean caseSensitive = Boolean
+                    .parseBoolean(getPropertyValue(normalizedName, Property.CASE_SENSITIVE_KEYS));
+            final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(
+                    secretClient,
+                    refreshInterval,
+                    secretKeys,
+                    caseSensitive);
 
             String propertySourceName = Optional.of(normalizedName)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .orElse(AZURE_KEYVAULT_PROPERTYSOURCE_NAME);
-            KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(propertySourceName, kvOperation);
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .orElse(AZURE_KEYVAULT_PROPERTYSOURCE_NAME);
+            KeyVaultPropertySource keyVaultPropertySource =
+                    new KeyVaultPropertySource(propertySourceName, keyVaultOperation);
             if (sources.contains(SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME)) {
                 sources.addAfter(
-                    SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
-                    keyVaultPropertySource
+                        SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
+                        keyVaultPropertySource
                 );
             } else {
                 sources.addFirst(keyVaultPropertySource);
@@ -136,34 +134,34 @@ class KeyVaultEnvironmentPostProcessorHelper {
         final String certificatePath = getPropertyValue(normalizedName, Property.CERTIFICATE_PATH);
         final String certificatePassword = getPropertyValue(normalizedName, Property.CERTIFICATE_PASSWORD);
         if (clientId != null
-            && tenantId != null
-            && clientKey != null
+                && tenantId != null
+                && clientKey != null
         ) {
             LOGGER.debug("Will use custom credentials");
             return new ClientSecretCredentialBuilder()
-                .clientId(clientId)
-                .clientSecret(clientKey)
-                .tenantId(tenantId)
-                .build();
+                    .clientId(clientId)
+                    .clientSecret(clientKey)
+                    .tenantId(tenantId)
+                    .build();
         }
         // Use certificate to authenticate
         // Password can be empty
         if (clientId != null
-            && tenantId != null
-            && certificatePath != null
+                && tenantId != null
+                && certificatePath != null
         ) {
             if (StringUtils.isEmpty(certificatePassword)) {
                 return new ClientCertificateCredentialBuilder()
-                    .tenantId(tenantId)
-                    .clientId(clientId)
-                    .pemCertificate(certificatePath)
-                    .build();
+                        .tenantId(tenantId)
+                        .clientId(clientId)
+                        .pemCertificate(certificatePath)
+                        .build();
             } else {
                 return new ClientCertificateCredentialBuilder()
-                    .tenantId(tenantId)
-                    .clientId(clientId)
-                    .pfxCertificate(certificatePath, certificatePassword)
-                    .build();
+                        .tenantId(tenantId)
+                        .clientId(clientId)
+                        .pfxCertificate(certificatePath, certificatePassword)
+                        .build();
             }
         }
         //use MSI to authenticate
@@ -177,18 +175,18 @@ class KeyVaultEnvironmentPostProcessorHelper {
 
     private String getPropertyValue(final Property property) {
         return Optional.of(property)
-            .map(KeyVaultProperties::getPropertyName)
-            .map(environment::getProperty)
-            .orElse(null);
+                .map(KeyVaultProperties::getPropertyName)
+                .map(environment::getProperty)
+                .orElse(null);
     }
 
     private String getPropertyValue(
-        final String normalizedName,
-        final Property property
+            final String normalizedName,
+            final Property property
     ) {
         return Optional.of(KeyVaultProperties.getPropertyName(normalizedName, property))
-            .map(environment::getProperty)
-            .orElse(null);
+                .map(environment::getProperty)
+                .orElse(null);
     }
 
     private boolean allowTelemetry() {
