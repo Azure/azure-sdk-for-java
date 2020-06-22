@@ -156,12 +156,6 @@ class BlobAPITest extends APISpec {
             .getValue().getETag() != null
     }
 
-    def "Upload return value"() {
-        expect:
-        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null)
-            .getValue().getETag() != null
-    }
-
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
         setup:
