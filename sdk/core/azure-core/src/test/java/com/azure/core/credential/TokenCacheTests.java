@@ -49,14 +49,14 @@ public class TokenCacheTests {
     }
 
     @Test
-    public void testLongRunningWontOverflow() throws Exception {
+    public void testMultipleThreadsWaitForTimeout() throws Exception {
         AtomicLong refreshes = new AtomicLong(0);
 
         // token expires on creation. Run this 100 times to simulate running the application a long time
         SimpleTokenCache cache = new SimpleTokenCache(() -> {
             refreshes.incrementAndGet();
             return remoteGetTokenThatExpiresSoonAsync(1000, 0);
-        });
+        }, new TokenRefreshOptions().setTokenRefreshRetryTimeout(Duration.ZERO));
 
         CountDownLatch latch = new CountDownLatch(1);
 
@@ -68,15 +68,135 @@ public class TokenCacheTests {
                 .flatMap(start -> cache.getToken()
                     .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
                     .doOnNext(millis -> {
-//                        System.out.format("Thread: %s\tDuration: %smillis%n",
-//                            Thread.currentThread().getName(), Duration.between(start, OffsetDateTime.now()).toMillis());
                     })))
             .doOnComplete(latch::countDown)
             .subscribe();
 
         latch.await();
-        // At most 10 requests should do actual token acquisition, use 11 for safe
         Assertions.assertTrue(refreshes.get() <= 11);
+    }
+
+    @Test
+    public void testProactiveRefreshBeforeExpiry() throws Exception {
+        AtomicInteger latency = new AtomicInteger(1);
+        SimpleTokenCache cache = new SimpleTokenCache(
+            () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 60 * 1000),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(58)).setTokenRefreshRetryTimeout(Duration.ofSeconds(1)));
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicLong maxMillis = new AtomicLong(0);
+
+        Flux.interval(Duration.ofSeconds(1))
+            .take(5)
+            .flatMap(i -> {
+                OffsetDateTime start = OffsetDateTime.now();
+                return cache.getToken()
+                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
+                    .doOnNext(millis -> {
+                        if (millis > maxMillis.get()) {
+                            maxMillis.set(millis);
+                        }
+                    });
+            }).doOnComplete(latch::countDown)
+            .subscribe();
+
+        latch.await();
+        Assertions.assertTrue(maxMillis.get() >= 2000);
+        Assertions.assertTrue(maxMillis.get() < 3000); // Big enough for any latency, small enough to make sure no get token is called twice
+    }
+
+    @Test
+    public void testRefreshAfterExpiry() throws Exception {
+        AtomicInteger latency = new AtomicInteger(1);
+        SimpleTokenCache cache = new SimpleTokenCache(
+            () -> remoteGetTokenThatExpiresSoonAsync(1000 * latency.getAndIncrement(), 1000),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(1)).setTokenRefreshRetryTimeout(Duration.ofSeconds(5)));
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicLong maxMillis = new AtomicLong(0);
+
+        Flux.interval(Duration.ofSeconds(1))
+            .take(4)
+            .flatMap(i -> {
+                OffsetDateTime start = OffsetDateTime.now();
+                return cache.getToken()
+                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
+                    .doOnNext(millis -> {
+                        if (millis > maxMillis.get()) {
+                            maxMillis.set(millis);
+                        }
+                    });
+            }).doOnComplete(latch::countDown)
+            .subscribe();
+
+        latch.await();
+        System.out.println("MaxMillis:" + maxMillis.get());
+        Assertions.assertTrue(maxMillis.get() >= 5000);
+    }
+
+    @Test
+    public void testProactiveRefreshError() throws Exception {
+        AtomicInteger latency = new AtomicInteger(1);
+        AtomicInteger tryCount = new AtomicInteger(0);
+        SimpleTokenCache cache = new SimpleTokenCache(
+            () -> remoteGetTokenWithPersistentError(1000 * latency.getAndIncrement(), 3 * 1000, 2, tryCount),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshRetryTimeout(Duration.ofSeconds(1)));
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicLong maxMillis = new AtomicLong(0);
+        AtomicInteger errorCount = new AtomicInteger(0);
+
+        Flux.interval(Duration.ofSeconds(1))
+            .take(6)
+            .flatMap(i -> {
+                OffsetDateTime start = OffsetDateTime.now();
+                return cache.getToken()
+                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
+                    .doOnNext(millis -> {
+                        if (millis > maxMillis.get()) {
+                            maxMillis.set(millis);
+                        }
+                    })
+                    .doOnError(t -> errorCount.incrementAndGet());
+            }).doOnTerminate(latch::countDown)
+            .subscribe();
+
+        latch.await();
+        Assertions.assertTrue(maxMillis.get() >= 1000);
+        Assertions.assertTrue(maxMillis.get() < 2000); // Big enough for any latency, small enough to make sure no get token is called twice
+        Assertions.assertEquals(1, errorCount.get()); // Only the error after expiresAt will be propagated
+    }
+
+    @Test
+    public void testProactiveRefreshErrorTimeout() throws Exception {
+        AtomicInteger latency = new AtomicInteger(1);
+        AtomicInteger tryCount = new AtomicInteger(0);
+        SimpleTokenCache cache = new SimpleTokenCache(
+            () -> remoteGetTokenWithTemporaryError(1000 * latency.getAndIncrement(), 4 * 1000, 2, tryCount),
+            new TokenRefreshOptions().setTokenRefreshOffset(Duration.ofSeconds(2)).setTokenRefreshRetryTimeout(Duration.ofSeconds(1)));
+
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicLong maxMillis = new AtomicLong(0);
+        AtomicInteger errorCount = new AtomicInteger(0);
+
+        Flux.interval(Duration.ofSeconds(1))
+            .take(8)
+            .flatMap(i -> {
+                OffsetDateTime start = OffsetDateTime.now();
+                return cache.getToken()
+                    .map(t -> Duration.between(start, OffsetDateTime.now()).toMillis())
+                    .doOnNext(millis -> {
+                        if (millis > maxMillis.get()) {
+                            maxMillis.set(millis);
+                        }
+                    })
+                    .doOnError(t -> errorCount.incrementAndGet());
+            }).doOnTerminate(latch::countDown)
+            .subscribe();
+
+        latch.await();
+        Assertions.assertTrue(maxMillis.get() >= 3000);
+        Assertions.assertEquals(0, errorCount.get()); // Only the error after expiresAt will be propagated
     }
 
     private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {
@@ -93,6 +213,24 @@ public class TokenCacheTests {
     private Mono<AccessToken> incrementalRemoteGetTokenAsync(AtomicInteger latency) {
         return Mono.delay(Duration.ofSeconds(latency.getAndIncrement()))
             .map(l -> new Token(Integer.toString(RANDOM.nextInt(100))));
+    }
+
+    private Mono<AccessToken> remoteGetTokenWithTemporaryError(long delayInMillis, long validityInMillis, int errorAt, AtomicInteger tryCount) {
+        if (tryCount.incrementAndGet() == errorAt) {
+            return Mono.error(new RuntimeException("Expected error"));
+        } else {
+            return Mono.delay(Duration.ofMillis(delayInMillis))
+                .map(l -> new Token(Integer.toString(RANDOM.nextInt(100)), validityInMillis));
+        }
+    }
+
+    private Mono<AccessToken> remoteGetTokenWithPersistentError(long delayInMillis, long validityInMillis, int errorAfter, AtomicInteger tryCount) {
+        if (tryCount.incrementAndGet() >= errorAfter) {
+            return Mono.error(new RuntimeException("Expected error"));
+        } else {
+            return Mono.delay(Duration.ofMillis(delayInMillis))
+                .map(l -> new Token(Integer.toString(RANDOM.nextInt(100)), validityInMillis));
+        }
     }
 
     private static class Token extends AccessToken {

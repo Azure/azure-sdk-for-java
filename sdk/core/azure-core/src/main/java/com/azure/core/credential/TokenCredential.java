@@ -16,4 +16,13 @@ public interface TokenCredential {
      * @return a Publisher that emits a single access token
      */
     Mono<AccessToken> getToken(TokenRequestContext request);
+
+    /**
+     * The options to configure the token refresh behavior.
+     *
+     * @return the current offset for token refresh
+     */
+    default TokenRefreshOptions getTokenRefreshOptions() {
+        return new TokenRefreshOptions();
+    }
 }
