@@ -24,7 +24,7 @@ public final class FieldText extends FormContent {
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
-     * @param textContent The list of text element references when includeTextDetails is set to true.
+     * @param textContent The list of text element references when includeTextContent is set to true.
      */
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
                      final List<FormContent> textContent) {

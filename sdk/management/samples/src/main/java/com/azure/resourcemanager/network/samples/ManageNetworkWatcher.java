@@ -135,7 +135,7 @@ public final class ManageNetworkWatcher {
                     .withNewPrimaryNetwork(virtualNetworkDefinition)
                     .withPrimaryPrivateIPAddressDynamic()
                     .withNewPrimaryPublicIPAddress(dnsLabel)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
                     .withSize(VirtualMachineSizeTypes.STANDARD_A1)

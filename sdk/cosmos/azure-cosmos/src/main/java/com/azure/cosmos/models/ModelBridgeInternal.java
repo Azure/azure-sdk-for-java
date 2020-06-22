@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -148,7 +148,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getCosmosItemProperties(CosmosItemResponse<T> cosmosItemResponse) {
+    public static <T> InternalObjectNode getInternalObjectNode(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 
@@ -432,7 +432,7 @@ public final class ModelBridgeInternal {
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
-            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
+            if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(InternalObjectNode.class)
                 || klassType.equals(PartitionKeyRange.class) || klassType.equals(Range.class)
                 || klassType.equals(QueryInfo.class) || klassType.equals(PartitionedQueryExecutionInfoInternal.class)
                 || klassType.equals(QueryItem.class)

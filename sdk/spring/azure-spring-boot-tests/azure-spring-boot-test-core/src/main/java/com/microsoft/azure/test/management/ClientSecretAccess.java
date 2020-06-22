@@ -16,10 +16,10 @@ public class ClientSecretAccess implements Access {
     private static final String SPRING_CLIENT_ID = "SPRING_CLIENT_ID";
     private static final String SPRING_CLIENT_SECRET = "SPRING_CLIENT_SECRET";
 
-    private String tenant;
-    private String subscription;
-    private String clientId;
-    private String clientSecret;
+    private final String tenant;
+    private final String subscription;
+    private final String clientId;
+    private final String clientSecret;
 
     public static ClientSecretAccess load() {
         return load(System.getenv());

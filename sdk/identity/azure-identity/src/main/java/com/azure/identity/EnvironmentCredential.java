@@ -78,7 +78,8 @@ public class EnvironmentCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (tokenCredential == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
-                    "Cannot create any credentials with the current environment variables")));
+                    "EnvironmentCredential authentication unavailable."
+                            + " Environment variables are not fully configured.")));
         } else {
             return tokenCredential.getToken(request);
         }

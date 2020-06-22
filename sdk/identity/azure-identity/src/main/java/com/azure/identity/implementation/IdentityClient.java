@@ -346,7 +346,8 @@ public class IdentityClient {
                 }
                 if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) || line.matches(LINUX_MAC_PROCESS_ERROR_MESSAGE)) {
                     throw logger.logExceptionAsError(
-                        new CredentialUnavailableException("Azure CLI not installed"));
+                            new CredentialUnavailableException(
+                                    "AzureCliCredential authentication unavailable. Azure CLI not installed"));
                 }
                 output.append(line);
             }
@@ -359,7 +360,9 @@ public class IdentityClient {
                     String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
                     if (redactedOutput.contains("az login") || redactedOutput.contains("az account set")) {
                         throw logger.logExceptionAsError(
-                            new CredentialUnavailableException("Please run 'az login' to set up account"));
+                                new CredentialUnavailableException(
+                                        "AzureCliCredential authentication unavailable."
+                                                + " Please run 'az login' to set up account"));
                     }
                     throw logger.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
@@ -806,8 +809,10 @@ public class IdentityClient {
                 connection.connect();
             } catch (Exception e) {
                 throw logger.logExceptionAsError(
-                    new CredentialUnavailableException("Connection to IMDS endpoint cannot be established. "
-                                                             + e.getMessage(), e));
+                    new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                 + "Connection to IMDS endpoint cannot be established, "
+                                 + e.getMessage() + ".", e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();
