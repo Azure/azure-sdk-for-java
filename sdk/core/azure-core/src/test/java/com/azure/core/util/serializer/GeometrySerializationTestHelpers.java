@@ -27,7 +27,27 @@ import java.util.stream.Collectors;
 public class GeometrySerializationTestHelpers {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    static String pointToJson(PointGeometry point) {
+    static String geometryToJson(Geometry geometry) {
+        if (geometry instanceof PointGeometry) {
+            return pointToJson((PointGeometry) geometry);
+        } else if (geometry instanceof LineGeometry) {
+            return lineToJson((LineGeometry) geometry);
+        } else if (geometry instanceof PolygonGeometry) {
+            return polygonToJson((PolygonGeometry) geometry);
+        } else if (geometry instanceof MultiPointGeometry) {
+            return multiPointToJson((MultiPointGeometry) geometry);
+        } else if (geometry instanceof MultiLineGeometry) {
+            return multiLineToJson((MultiLineGeometry) geometry);
+        } else if (geometry instanceof MultiPolygonGeometry) {
+            return multiPolygonToJson((MultiPolygonGeometry) geometry);
+        } else if (geometry instanceof CollectionGeometry) {
+            return collectionToJson((CollectionGeometry) geometry);
+        } else {
+            throw new IllegalStateException("Unknown geometry type.");
+        }
+    }
+
+    private static String pointToJson(PointGeometry point) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.POINT_TYPE, builder);
 
@@ -41,7 +61,7 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    static String lineToJson(LineGeometry line) {
+    private static String lineToJson(LineGeometry line) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.LINE_STRING_TYPE, builder);
 
@@ -55,7 +75,7 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    static String polygonToJson(PolygonGeometry polygon) {
+    private static String polygonToJson(PolygonGeometry polygon) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.POLYGON_TYPE, builder);
 
@@ -69,7 +89,7 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    static String multiPointToJson(MultiPointGeometry multiPoint) {
+    private static String multiPointToJson(MultiPointGeometry multiPoint) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.MULTI_POINT_TYPE, builder);
 
@@ -84,7 +104,7 @@ public class GeometrySerializationTestHelpers {
 
     }
 
-    static String multiLineToJson(MultiLineGeometry multiLine) {
+    private static String multiLineToJson(MultiLineGeometry multiLine) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.MULTI_LINE_STRING_TYPE, builder);
 
@@ -98,7 +118,7 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    static String multiPolygonToJson(MultiPolygonGeometry multiPolygon) {
+    private static String multiPolygonToJson(MultiPolygonGeometry multiPolygon) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.MULTI_POLYGON_TYPE, builder);
 
@@ -121,7 +141,7 @@ public class GeometrySerializationTestHelpers {
         return builder.toString();
     }
 
-    static String collectionToJson(CollectionGeometry collection) {
+    private static String collectionToJson(CollectionGeometry collection) {
         StringBuilder builder = new StringBuilder("{");
         addType(GeometryDeserializer.GEOMETRY_COLLECTION_TYPE, builder);
 
@@ -132,24 +152,7 @@ public class GeometrySerializationTestHelpers {
                 builder.append(",");
             }
 
-            Geometry geometry = collection.getGeometries().get(i);
-            if (geometry instanceof PointGeometry) {
-                builder.append(pointToJson((PointGeometry) geometry));
-            } else if (geometry instanceof LineGeometry) {
-                builder.append(lineToJson((LineGeometry) geometry));
-            } else if (geometry instanceof PolygonGeometry) {
-                builder.append(polygonToJson((PolygonGeometry) geometry));
-            } else if (geometry instanceof MultiPointGeometry) {
-                builder.append(multiPointToJson((MultiPointGeometry) geometry));
-            } else if (geometry instanceof MultiLineGeometry) {
-                builder.append(multiLineToJson((MultiLineGeometry) geometry));
-            } else if (geometry instanceof MultiPolygonGeometry) {
-                builder.append(multiPolygonToJson((MultiPolygonGeometry) geometry));
-            } else if (geometry instanceof CollectionGeometry) {
-                builder.append(collectionToJson((CollectionGeometry) geometry));
-            } else {
-                throw new IllegalStateException("Unknown geometry type.");
-            }
+            builder.append(geometryToJson(collection.getGeometries().get(i)));
         }
 
         builder.append("]");
