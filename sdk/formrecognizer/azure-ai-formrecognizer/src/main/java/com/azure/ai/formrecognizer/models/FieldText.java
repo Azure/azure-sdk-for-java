@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

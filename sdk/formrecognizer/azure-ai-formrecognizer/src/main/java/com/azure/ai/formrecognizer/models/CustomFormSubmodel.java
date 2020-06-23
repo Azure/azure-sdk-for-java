@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

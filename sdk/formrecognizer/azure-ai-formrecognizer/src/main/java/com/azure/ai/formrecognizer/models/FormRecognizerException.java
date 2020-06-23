@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.CoreUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
