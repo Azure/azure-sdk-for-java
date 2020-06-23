@@ -90,7 +90,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      */
     public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
         // TODO: ServiceVersion is not used in user agent string. This method should be deprecated.
-        this.userAgent = UserAgentUtil.toUserAgentString(sdkName, sdkVersion, configuration);
+        this.userAgent = UserAgentUtil.toUserAgentString(null, sdkName, sdkVersion, configuration);
     }
 
     /**

@@ -58,7 +58,7 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
 
-        String userAgent = UserAgentUtil.toUserAgentString(product, clientVersion);
+        String userAgent = UserAgentUtil.toUserAgentString(null, product, clientVersion, null);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 

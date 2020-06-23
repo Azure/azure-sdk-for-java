@@ -25,13 +25,13 @@ public class UserAgentUtilTest {
 
         // with platform info
         assertEquals("azsdk-java-azure-storage-blob/12.0.0 " + plaform,
-            UserAgentUtil.toUserAgentString("azure-storage-blob", "12.0.0"));
+            UserAgentUtil.toUserAgentString(null, "azure-storage-blob", "12.0.0", null));
         assertEquals("myapp azsdk-java-azure-storage-blob/12.0.0 " + plaform,
-            UserAgentUtil.toUserAgentString("myapp", "azure-storage-blob", "12.0.0"));
+            UserAgentUtil.toUserAgentString("myapp", "azure-storage-blob", "12.0.0", null));
 
         // without platform info
         assertEquals("azsdk-java-azure-storage-blob/12.0.0",
-            UserAgentUtil.toUserAgentString("azure-storage-blob", "12.0.0",
+            UserAgentUtil.toUserAgentString(null, "azure-storage-blob", "12.0.0",
                 Configuration.getGlobalConfiguration().clone().put("AZURE_TELEMETRY_DISABLED", "true")));
         assertEquals("myapp azsdk-java-azure-storage-blob/12.0.0",
             UserAgentUtil.toUserAgentString("myapp", "azure-storage-blob", "12.0.0",
@@ -39,7 +39,11 @@ public class UserAgentUtilTest {
 
         // long app id should be truncated
         assertEquals("ReallyLongApplicationIde azsdk-java-azure-storage-blob/12.0.0 " + plaform,
-            UserAgentUtil.toUserAgentString("ReallyLongApplicationIdentity", "azure-storage-blob", "12.0.0"));
+            UserAgentUtil.toUserAgentString("ReallyLongApplicationIdentity", "azure-storage-blob", "12.0.0", null));
+
+        // null sdk name and version
+        assertEquals("myapp azsdk-java-null/null " + plaform,
+            UserAgentUtil.toUserAgentString("myapp", null, null, null));
 
     }
 }

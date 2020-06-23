@@ -8,14 +8,6 @@ public final class ClientConstants {
     public static final String PLATFORM_INFO = getOSInformation();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
 
-    /*
-     * Gets the USER AGENT string as defined in:
-     * $/core/azure-core/src/main/java/com/azure/core/http/policy/UserAgentPolicy.java
-     */
-    @Deprecated
-    public static final String USER_AGENT_TEMPLATE =
-        "%s/%s " + System.getProperty("java.version") + ";" + PLATFORM_INFO;
-
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */

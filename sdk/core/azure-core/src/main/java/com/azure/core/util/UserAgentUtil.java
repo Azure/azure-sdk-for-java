@@ -19,45 +19,11 @@ public final class UserAgentUtil {
     // <language runtime>; <os name> <os version>
     private static final String PLATFORM_INFO_FORMAT = "%s; %s; %s";
 
+    // Maximum length of application id defined in the design guidelines.
+    private static final int MAX_APP_ID_LENGTH = 24;
+
     private UserAgentUtil() {
         // don't instantiate
-    }
-
-    /**
-     * Return user agent string for the given sdk name and version.
-     *
-     * @param sdkName name of the SDK.
-     * @param sdkVersion Version of the SDK.
-     * @return User agent string as specified in design guidelines.
-     */
-    public static String toUserAgentString(String sdkName, String sdkVersion) {
-        return toUserAgentString(null, sdkName, sdkVersion);
-    }
-
-    /**
-     * Return user agent string for the given sdk name and version.
-     *
-     * @param sdkName Name of the SDK.
-     * @param sdkVersion Version of the SDK.
-     * @param configuration The configuration to use to determine if platform info should be included in the user agent
-     * string.
-     * @return User agent string as specified in design guidelines.
-     */
-    public static String toUserAgentString(String sdkName, String sdkVersion,
-        Configuration configuration) {
-        return toUserAgentString(null, sdkName, sdkVersion, configuration);
-    }
-
-    /**
-     * Return user agent string for the given sdk name and version.
-     *
-     * @param applicationId Name of the application.
-     * @param sdkName Name of the SDK.
-     * @param sdkVersion Version of the SDK.
-     * @return User agent string as specified in design guidelines.
-     */
-    public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion) {
-        return toUserAgentString(applicationId, sdkName, sdkVersion, null);
     }
 
     /**
@@ -76,12 +42,17 @@ public final class UserAgentUtil {
 
         // Only add the application ID if it is present as it is optional.
         if (applicationId != null) {
-            applicationId = applicationId.length() > 24 ? applicationId.substring(0, 24) : applicationId;
+            applicationId = applicationId.length() > MAX_APP_ID_LENGTH ? applicationId.substring(0, MAX_APP_ID_LENGTH)
+                : applicationId;
             userAgentBuilder.append(applicationId).append(" ");
         }
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append(String.format(DEFAULT_USER_AGENT_FORMAT, sdkName, sdkVersion));
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
+            .append("-")
+            .append(sdkName)
+            .append("/")
+            .append(sdkVersion);
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
