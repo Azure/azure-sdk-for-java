@@ -245,3 +245,21 @@ jobs:
         options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
+
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+        TestName: Integration_Test_Spring_Data_Cosmosdb
+        ServiceDirectory: cosmos
+        Artifacts:
+            - name: spring-data-cosmosdb
+              groupId: com.microsoft.azure
+              safeName: springdatacosmosdb
+        TimeoutInMinutes: 120
+        EnvVars:
+            AZURE_TEST_MODE: LIVE
+
+        TestStepMavenInputs:
+            goals: verify
+            options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dskip.integration.tests=false -pl $(ProjectList)'
+
+        TestResultsFiles: '**/junitreports/TEST-*.xml'
