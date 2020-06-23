@@ -4,9 +4,8 @@
 package com.azure.storage.blob.nio;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.attribute.FileTime;
 
 /**
@@ -14,7 +13,13 @@ import java.nio.file.attribute.FileTime;
  *
  * {@inheritDoc}
  */
-public class AzureStorageFileAttributeView implements BasicFileAttributeView {
+public class AzureBasicFileAttributeView implements BasicFileAttributeView {
+
+    private final Path path;
+
+    AzureBasicFileAttributeView(Path path) {
+        this.path = path;
+    }
 
     /**
      * Returns {@code "azureStorage"}
@@ -22,16 +27,16 @@ public class AzureStorageFileAttributeView implements BasicFileAttributeView {
      */
     @Override
     public String name() {
-        return "azureStorage";
+        return "azureBasic";
     }
 
     @Override
-    public BasicFileAttributes readAttributes() throws IOException {
-        return null;
+    public AzureBasicFileAttributes readAttributes() throws IOException {
+        return new AzureBasicFileAttributes(path);
     }
 
     @Override
     public void setTimes(FileTime lastModifiedTime, FileTime lastAccessTime, FileTime createTime) throws IOException {
-
+        throw new UnsupportedOperationException();
     }
 }
