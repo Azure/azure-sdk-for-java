@@ -45,6 +45,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         return TestBase.getHttpClients().map(Arguments::of);
     }
 
+    @ParameterizedTest
     @MethodSource("createHttpClients")
     void getQueue(HttpClient httpClient) {
         // Arrange
@@ -53,7 +54,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             ? "queue-5"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
-
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(queueDescription -> {
@@ -91,8 +91,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             })
             .verify();
     }
-
-
 
     private ServiceBusManagementAsyncClient createClient(HttpClient httpClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
