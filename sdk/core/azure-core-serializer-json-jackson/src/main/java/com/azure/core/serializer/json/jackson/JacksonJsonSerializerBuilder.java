@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Fluent builder class that configures and instantiates instances of {@link JacksonJsonSerializer}.
  */
-public class JacksonJsonSerializerBuilder {
+public final class JacksonJsonSerializerBuilder {
     private ObjectMapper objectMapper;
 
     /**
