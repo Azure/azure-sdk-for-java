@@ -276,6 +276,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.java" />
 
+  <!-- The variables are assigned by json creator annotation injection framework, cannot be made final. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.formrecognizer.models.CopyAuthorization.java" />
+
   <!-- Throws a non-runtime exception -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.http.netty.implementation.HttpProxyHandler.java"/>
