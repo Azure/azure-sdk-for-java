@@ -64,10 +64,14 @@ class StorageInsightsImpl extends WrapperImpl<StorageInsightsInner> implements S
     public Observable<StorageInsight> getAsync(String resourceGroupName, String workspaceName, String storageInsightName) {
         StorageInsightsInner client = this.inner();
         return client.getAsync(resourceGroupName, workspaceName, storageInsightName)
-        .map(new Func1<StorageInsightInner, StorageInsight>() {
+        .flatMap(new Func1<StorageInsightInner, Observable<StorageInsight>>() {
             @Override
-            public StorageInsight call(StorageInsightInner inner) {
-                return wrapModel(inner);
+            public Observable<StorageInsight> call(StorageInsightInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((StorageInsight)wrapModel(inner));
+                }
             }
        });
     }

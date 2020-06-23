@@ -71,10 +71,6 @@ public class SavedSearchesInner {
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches")
         Observable<Response<ResponseBody>> listByWorkspace(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.loganalytics.v2015_03_20.SavedSearches getResults" })
-        @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}/results")
-        Observable<Response<ResponseBody>> getResults(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("savedSearchId") String savedSearchId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
     }
 
     /**
@@ -445,99 +441,6 @@ public class SavedSearchesInner {
     private ServiceResponse<SavedSearchesListResultInner> listByWorkspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SavedSearchesListResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SavedSearchesListResultInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the results from a saved search for a given workspace.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SearchResultsResponseInner object if successful.
-     */
-    public SearchResultsResponseInner getResults(String resourceGroupName, String workspaceName, String savedSearchId) {
-        return getResultsWithServiceResponseAsync(resourceGroupName, workspaceName, savedSearchId).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the results from a saved search for a given workspace.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param savedSearchId The id of the saved search.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<SearchResultsResponseInner> getResultsAsync(String resourceGroupName, String workspaceName, String savedSearchId, final ServiceCallback<SearchResultsResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getResultsWithServiceResponseAsync(resourceGroupName, workspaceName, savedSearchId), serviceCallback);
-    }
-
-    /**
-     * Gets the results from a saved search for a given workspace.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchResultsResponseInner object
-     */
-    public Observable<SearchResultsResponseInner> getResultsAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
-        return getResultsWithServiceResponseAsync(resourceGroupName, workspaceName, savedSearchId).map(new Func1<ServiceResponse<SearchResultsResponseInner>, SearchResultsResponseInner>() {
-            @Override
-            public SearchResultsResponseInner call(ServiceResponse<SearchResultsResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the results from a saved search for a given workspace.
-     *
-     * @param resourceGroupName The Resource Group name.
-     * @param workspaceName The Log Analytics Workspace name.
-     * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SearchResultsResponseInner object
-     */
-    public Observable<ServiceResponse<SearchResultsResponseInner>> getResultsWithServiceResponseAsync(String resourceGroupName, String workspaceName, String savedSearchId) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (workspaceName == null) {
-            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
-        }
-        if (savedSearchId == null) {
-            throw new IllegalArgumentException("Parameter savedSearchId is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getResults(resourceGroupName, workspaceName, savedSearchId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResultsResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<SearchResultsResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<SearchResultsResponseInner> clientResponse = getResultsDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<SearchResultsResponseInner> getResultsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<SearchResultsResponseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<SearchResultsResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
