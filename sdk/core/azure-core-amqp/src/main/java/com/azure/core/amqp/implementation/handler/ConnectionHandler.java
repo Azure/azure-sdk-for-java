@@ -6,6 +6,7 @@ package com.azure.core.amqp.implementation.handler;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -56,12 +57,8 @@ public class ConnectionHandler extends Handler {
         this.connectionProperties.put(VERSION.toString(), clientVersion);
         this.connectionProperties.put(PLATFORM.toString(), ClientConstants.PLATFORM_INFO);
         this.connectionProperties.put(FRAMEWORK.toString(), ClientConstants.FRAMEWORK_INFO);
-        String userAgent = String.format(ClientConstants.USER_AGENT_TEMPLATE, product, clientVersion);
 
-        userAgent = userAgent.length() <= MAX_USER_AGENT_LENGTH
-            ? userAgent
-            : userAgent.substring(0, MAX_USER_AGENT_LENGTH);
-
+        String userAgent = UserAgentUtil.toUserAgentString(product, clientVersion);
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
     }
 
