@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 
 import javax.crypto.Mac;

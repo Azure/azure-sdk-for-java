@@ -11,6 +11,7 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -20,13 +21,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.RestClient;
 import com.azure.management.appservice.implementation.AppServiceManager;
 import com.azure.management.keyvault.implementation.KeyVaultManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +35,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
@@ -60,14 +63,14 @@ public class AppServiceTest extends TestBase {
     }
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 20);
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
 
-        appServiceManager = AppServiceManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
+        appServiceManager = AppServiceManager.authenticate(httpPipeline, profile, sdkContext);
 
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();
@@ -220,7 +223,7 @@ public class AppServiceTest extends TestBase {
                 new HttpPipelineBuilder()
                     .policies(
                         new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
-                        new RetryPolicy())
+                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")

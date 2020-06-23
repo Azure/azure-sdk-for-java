@@ -3,12 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
@@ -43,17 +44,17 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for updating the existing API key.
      */
-    public void rotateApiKey() {
-        // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+    public void rotateAzureKeyCredential() {
+        // BEGIN: com.azure.ai.textanalytics.models.AzureKeyCredential
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
 
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         credential.update("{new_api_key}");
-        // END: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
+        // END: com.azure.ai.textanalytics.models.AzureKeyCredential
     }
 
     // Languages
@@ -65,8 +66,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
         String document = "Bonjour tout le monde";
         textAnalyticsAsyncClient.detectLanguage(document).subscribe(detectedLanguage ->
-            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string
     }
 
@@ -78,8 +79,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         String document = "This text is in English";
         String countryHint = "US";
         textAnalyticsAsyncClient.detectLanguage(document, countryHint).subscribe(detectedLanguage ->
-            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore()));
+            System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
+                detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguage#string-string
     }
 
@@ -98,8 +99,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             // Batch result of languages
             for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
                 DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
+                    detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                    detectedLanguage.getConfidenceScore());
             }
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable
@@ -123,8 +125,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 // Batch result of languages
                 for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
+                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getConfidenceScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String
@@ -148,8 +151,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 // Batch result of languages
                 for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
+                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getConfidenceScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String-TextAnalyticsRequestOptions
@@ -177,8 +181,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 // Batch result of languages
                 for (DetectLanguageResult detectLanguageResult : response.getElements()) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, score: %f.%n",
-                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+                    System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
+                        detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
+                        detectedLanguage.getConfidenceScore());
                 }
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions
@@ -193,10 +198,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(document)
-            .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %f.%n",
+            .subscribe(entityCollection -> entityCollection.forEach(entity ->
+                System.out.printf("Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                 entity.getText(),
                 entity.getCategory(),
-                entity.getConfidenceScore()));
+                entity.getConfidenceScore())));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
     }
 
@@ -207,10 +213,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(document, "en")
-            .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %f.%n",
+            .subscribe(entityCollection -> entityCollection.forEach(entity ->
+                System.out.printf("Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                 entity.getText(),
                 entity.getCategory(),
-                entity.getConfidenceScore()));
+                entity.getConfidenceScore())));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
     }
 
@@ -232,8 +239,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             // Batch result of categorized entities
             batchResult.getElements().forEach(recognizeEntitiesResult ->
                 recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
-                    "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore())));
+                    "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable
     }
@@ -255,7 +262,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 // Batch Result of entities
                 batchResult.getElements().forEach(recognizeEntitiesResult ->
                     recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
-                        "Recognized categorized entity: %s, category: %s, score: %f.%n",
+                        "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                         entity.getText(), entity.getCategory(), entity.getConfidenceScore())));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String
@@ -278,7 +285,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 // Batch Result of entities
                 batchResult.getElements().forEach(recognizeEntitiesResult ->
                     recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
-                        "Recognized categorized entity: %s, category: %s, score: %f.%n",
+                        "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                             entity.getText(), entity.getCategory(), entity.getConfidenceScore())));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
@@ -291,8 +298,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void recognizeBatchEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
+            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
@@ -306,7 +313,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
                 response.getElements().forEach(recognizeEntitiesResult ->
                     recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
-                        "Recognized categorized entity: %s, category: %s, score: %f.%n",
+                        "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                         entity.getText(),
                         entity.getCategory(),
                         entity.getConfidenceScore())));
@@ -323,14 +330,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
         String document = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntities(document).subscribe(linkedEntity -> {
-            System.out.println("Linked Entities:");
-            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
-                linkedEntity.getDataSource());
-            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
-        });
+        textAnalyticsAsyncClient.recognizeLinkedEntities(document).subscribe(
+            linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                    "Matched entity: %s, confidence score: %f.%n",
+                    entityMatch.getText(), entityMatch.getConfidenceScore()));
+            }));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
     }
 
@@ -341,15 +350,16 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
         String document = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntities(document, "en")
-            .subscribe(linkedEntity -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntities(document, "en").subscribe(
+            linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
-                linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                    "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
-            });
+                linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                    "Matched entity: %s, confidence score: %f.%n",
+                    entityMatch.getText(), entityMatch.getConfidenceScore()));
+            }));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
     }
 
@@ -376,8 +386,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                         linkedEntity.getDataSource());
-                    linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                        "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                    linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                        "Matched entity: %s, confidence score: %f.%n",
+                        entityMatch.getText(), entityMatch.getConfidenceScore()));
                 }));
         });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable
@@ -408,8 +419,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                            "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                            "Matched entity: %s, confidence score: %f.%n",
+                            entityMatch.getText(), entityMatch.getConfidenceScore()));
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String
@@ -439,8 +451,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                            "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                            "Matched entity: %s, confidence score: %f.%n",
+                            entityMatch.getText(), entityMatch.getConfidenceScore()));
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions
@@ -453,8 +466,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void recognizeBatchLinkedEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park."),
-            new TextDocumentInput("1", "Mount Shasta has lenticular clouds."));
+            new TextDocumentInput("0", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("1", "Mount Shasta has lenticular clouds.").setLanguage("en"));
 
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
@@ -472,8 +485,9 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                             linkedEntity.getDataSource());
-                        linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                            "Matched entity: %s, score: %.2f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                        linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                            "Matched entity: %s, confidence score: %.2f.%n",
+                            entityMatch.getText(), entityMatch.getConfidenceScore()));
                     }));
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
@@ -581,8 +595,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void extractBatchKeyPhrasesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft."));
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
+            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en"));
 
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
@@ -752,8 +766,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public void analyzeBatchSentimentMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions
         List<TextDocumentInput> textDocumentInputs1 = Arrays.asList(
-            new TextDocumentInput("0", "The hotel was dark and unclean."),
-            new TextDocumentInput("1", "The restaurant had amazing gnocchi."));
+            new TextDocumentInput("0", "The hotel was dark and unclean.").setLanguage("en"),
+            new TextDocumentInput("1", "The restaurant had amazing gnocchi.").setLanguage("en"));
 
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
@@ -784,8 +798,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Text Analytics Paged flux
     public void textAnalyticsPagedFluxSample() {
-        TextAnalyticsPagedFlux<CategorizedEntity> pagedFlux =
-            textAnalyticsAsyncClient.recognizeEntities("");
+        TextAnalyticsPagedFlux<RecognizeEntitiesResult> pagedFlux =
+            textAnalyticsAsyncClient.recognizeEntitiesBatch(Collections.singletonList(""));
         // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribe
         pagedFlux
             .log()

@@ -179,4 +179,15 @@ public class CosmosAsyncItemResponse<T> {
     public Duration getRequestLatency() {
         return resourceResponse.getRequestLatency();
     }
+
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    public String getETag() {
+        return resourceResponse.getETag();
+    }
 }

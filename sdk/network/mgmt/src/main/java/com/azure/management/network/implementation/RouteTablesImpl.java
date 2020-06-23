@@ -34,6 +34,6 @@ class RouteTablesImpl
 
     @Override
     protected RouteTableImpl wrapModel(RouteTableInner inner) {
-        return new RouteTableImpl(inner.getName(), inner, this.manager());
+        return new RouteTableImpl(inner.name(), inner, this.manager());
     }
 }

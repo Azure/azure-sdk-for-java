@@ -3,8 +3,8 @@
 
 package com.azure.management.compute;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.RoleAssignment;
@@ -18,6 +18,7 @@ import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import java.io.IOException;
 import java.util.Iterator;
@@ -37,12 +38,12 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
     private NetworkManager networkManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain)
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile)
         throws IOException {
-        this.msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
-        this.resourceManager = msiManager.getResourceManager();
-        this.computeManager = ComputeManager.authenticate(restClient, defaultSubscription, sdkContext);
-        this.networkManager = NetworkManager.authenticate(restClient, defaultSubscription, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+        this.resourceManager = msiManager.resourceManager();
+        this.computeManager = ComputeManager.authenticate(httpPipeline, profile, sdkContext);
+        this.networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override
@@ -257,7 +258,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -270,7 +271,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
         //
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
@@ -286,7 +287,7 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends TestBase {
             .assertTrue(
                 virtualMachineScaleSet
                     .managedServiceIdentityType()
-                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED));
+                    .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED));
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(virtualMachineScaleSet.systemAssignedManagedServiceIdentityTenantId());
         // Remove identities one by one (second one)

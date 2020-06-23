@@ -27,7 +27,7 @@ class ExpressRouteCrossConnectionsImpl
         if (inner == null) {
             return null;
         }
-        return new ExpressRouteCrossConnectionImpl(inner.getName(), inner, this.manager());
+        return new ExpressRouteCrossConnectionImpl(inner.name(), inner, this.manager());
     }
 
     @Override

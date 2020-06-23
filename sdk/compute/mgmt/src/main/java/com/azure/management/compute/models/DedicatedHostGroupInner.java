@@ -7,7 +7,9 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.SubResourceReadOnly;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DedicatedHostGroupInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupInner.class);
+
     /*
      * Availability Zone to use for this host group. Only single zone is
      * supported. The zone can be assigned only during creation. If not
@@ -87,5 +91,16 @@ public class DedicatedHostGroupInner extends Resource {
      */
     public List<SubResourceReadOnly> hosts() {
         return this.hosts;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (hosts() != null) {
+            hosts().forEach(e -> e.validate());
+        }
     }
 }

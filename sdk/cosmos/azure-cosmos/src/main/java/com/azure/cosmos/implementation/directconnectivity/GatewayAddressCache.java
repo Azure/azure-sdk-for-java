@@ -34,7 +34,7 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

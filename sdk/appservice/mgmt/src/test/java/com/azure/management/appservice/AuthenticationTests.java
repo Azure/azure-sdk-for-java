@@ -3,8 +3,9 @@
 
 package com.azure.management.appservice;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -14,11 +15,11 @@ public class AuthenticationTests extends AppServiceTest {
     private String webappName1 = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -49,7 +50,7 @@ public class AuthenticationTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
-        String response = curl("http://" + webApp1.defaultHostName()).getValue();
+        String response = curl("http://" + webApp1.defaultHostname()).getValue();
         Assertions.assertTrue(response.contains("do not have permission"));
 
         // Update
@@ -61,7 +62,7 @@ public class AuthenticationTests extends AppServiceTest {
             .attach()
             .apply();
 
-        response = curl("http://" + webApp1.defaultHostName()).getValue();
+        response = curl("http://" + webApp1.defaultHostname()).getValue();
         Assertions.assertFalse(response.contains("do not have permission"));
     }
 }

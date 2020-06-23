@@ -1,4 +1,4 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under 
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under
 the MIT License. See License.txt in the project root for license information. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -16,7 +16,13 @@ the MIT License. See License.txt in the project root for license information. --
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Key Vault</name>
-  <description>This package contains Microsoft Azure Key Vault SDK.</description>
+  <description>
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure KeyVault service are:${line.separator}
+    1. https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys${line.separator}
+    2. https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets${line.separator}
+    3. https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates${line.separator}
+    It is recommended that you move to the new package.
+  </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>
@@ -63,7 +69,7 @@ the MIT License. See License.txt in the project root for license information. --
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.rest:client-runtime;external_dependency} -->
+      <version>1.7.4</version> <!-- {x-version-update;com.microsoft.rest:client-runtime;external_dependency} -->
     </dependency>
 
     <!-- TEST DEPENDENCIES -->

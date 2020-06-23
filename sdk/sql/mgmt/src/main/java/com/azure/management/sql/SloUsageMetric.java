@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The SloUsageMetric model. */
 @Immutable
 public final class SloUsageMetric {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SloUsageMetric.class);
+
     /*
      * The serviceLevelObjective for SLO usage metric.
      */
@@ -54,5 +58,13 @@ public final class SloUsageMetric {
      */
     public Double inRangeTimeRatio() {
         return this.inRangeTimeRatio;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

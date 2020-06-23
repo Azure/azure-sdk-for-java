@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/sentiment",
+    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//sentiment",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "77d36e4e-e07c-4699-8156-0b2ce6873a5f",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3a1c8bc7-9278-4a60-8baa-c5c304b349f3",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "66",
+      "x-envoy-upstream-service-time" : "116",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "2b0778b3-eac0-4109-a7d1-5637122262e1",
-      "x-aml-ta-request-id" : "bbd07093-e174-4f8f-9fb6-9ec33cd48812",
+      "apim-request-id" : "75039135-fa22-4c6c-825d-6452b99e24ca",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"documentScores\":{\"positive\":0.49978500604629522,\"neutral\":0.0001903650991153,\"negative\":0.500024676322937},\"sentences\":[{\"sentiment\":\"negative\",\"sentenceScores\":{\"positive\":4.08881751355E-05,\"neutral\":4.88695768581E-05,\"negative\":0.99991023540496826},\"offset\":0,\"length\":31},{\"sentiment\":\"positive\",\"sentenceScores\":{\"positive\":0.99952912330627441,\"neutral\":0.0003318606177345,\"negative\":0.0001390725374222},\"offset\":32,\"length\":35}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Wed, 08 Jan 2020 02:16:05 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"sentiment\":\"mixed\",\"confidenceScores\":{\"positive\":0.5,\"neutral\":0.0,\"negative\":0.5},\"sentences\":[{\"sentiment\":\"negative\",\"confidenceScores\":{\"positive\":0.0,\"neutral\":0.0,\"negative\":1.0},\"offset\":0,\"length\":31,\"text\":\"The hotel was dark and unclean.\"},{\"sentiment\":\"positive\",\"confidenceScores\":{\"positive\":1.0,\"neutral\":0.0,\"negative\":0.0},\"offset\":32,\"length\":35,\"text\":\"The restaurant had amazing gnocchi.\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Wed, 29 Apr 2020 17:12:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

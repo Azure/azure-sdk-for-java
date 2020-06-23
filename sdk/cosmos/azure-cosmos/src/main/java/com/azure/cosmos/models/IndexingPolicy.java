@@ -4,8 +4,10 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +16,7 @@ import java.util.List;
 /**
  * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
  */
-public final class IndexingPolicy extends JsonSerializable {
-
+public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
 
     private List<IncludedPath> includedPaths;
@@ -23,10 +24,14 @@ public final class IndexingPolicy extends JsonSerializable {
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
 
+    private JsonSerializable jsonSerializable;
+
     /**
      * Constructor.
      */
     public IndexingPolicy() {
+        this.jsonSerializable = new JsonSerializable();
+
         this.setAutomatic(true);
         this.setIndexingMode(IndexingMode.CONSISTENT);
     }
@@ -69,7 +74,16 @@ public final class IndexingPolicy extends JsonSerializable {
      * @param jsonString the json string that represents the indexing policy.
      */
     IndexingPolicy(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the indexing policy.
+     */
+    IndexingPolicy(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -81,7 +95,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @return the automatic
      */
     public Boolean isAutomatic() {
-        return super.getBoolean(Constants.Properties.AUTOMATIC);
+        return this.jsonSerializable.getBoolean(Constants.Properties.AUTOMATIC);
     }
 
     /**
@@ -94,7 +108,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @return the Indexing Policy.
      */
     public IndexingPolicy setAutomatic(boolean automatic) {
-        super.set(Constants.Properties.AUTOMATIC, automatic);
+        this.jsonSerializable.set(Constants.Properties.AUTOMATIC, automatic);
         return this;
     }
 
@@ -106,10 +120,10 @@ public final class IndexingPolicy extends JsonSerializable {
     public IndexingMode getIndexingMode() {
         IndexingMode result = IndexingMode.LAZY;
         try {
-            result = IndexingMode.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEXING_MODE)));
+            result = IndexingMode.valueOf(StringUtils.upperCase(this.jsonSerializable.getString(Constants.Properties.INDEXING_MODE)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warn("INVALID indexingMode value {}.",
-                super.getString(Constants.Properties.INDEXING_MODE));
+            this.jsonSerializable.getLogger().warn("INVALID indexingMode value {}.",
+                this.jsonSerializable.getString(Constants.Properties.INDEXING_MODE));
         }
         return result;
     }
@@ -121,7 +135,7 @@ public final class IndexingPolicy extends JsonSerializable {
      * @return the Indexing Policy.
      */
     public IndexingPolicy setIndexingMode(IndexingMode indexingMode) {
-        super.set(Constants.Properties.INDEXING_MODE, indexingMode.toString());
+        this.jsonSerializable.set(Constants.Properties.INDEXING_MODE, indexingMode.toString());
         return this;
     }
 
@@ -132,7 +146,7 @@ public final class IndexingPolicy extends JsonSerializable {
      */
     public List<IncludedPath> getIncludedPaths() {
         if (this.includedPaths == null) {
-            this.includedPaths = super.getList(Constants.Properties.INCLUDED_PATHS, IncludedPath.class);
+            this.includedPaths = this.jsonSerializable.getList(Constants.Properties.INCLUDED_PATHS, IncludedPath.class);
 
             if (this.includedPaths == null) {
                 this.includedPaths = new ArrayList<IncludedPath>();
@@ -160,7 +174,7 @@ public final class IndexingPolicy extends JsonSerializable {
      */
     public List<ExcludedPath> getExcludedPaths() {
         if (this.excludedPaths == null) {
-            this.excludedPaths = super.getList(Constants.Properties.EXCLUDED_PATHS, ExcludedPath.class);
+            this.excludedPaths = this.jsonSerializable.getList(Constants.Properties.EXCLUDED_PATHS, ExcludedPath.class);
 
             if (this.excludedPaths == null) {
                 this.excludedPaths = new ArrayList<ExcludedPath>();
@@ -189,7 +203,7 @@ public final class IndexingPolicy extends JsonSerializable {
     public List<List<CompositePath>> getCompositeIndexes() {
         if (this.compositeIndexes == null) {
             this.compositeIndexes = new ArrayList<>();
-            ArrayNode compositeIndexes = (ArrayNode) super.get(Constants.Properties.COMPOSITE_INDEXES);
+            ArrayNode compositeIndexes = (ArrayNode) this.jsonSerializable.get(Constants.Properties.COMPOSITE_INDEXES);
             for (int i = 0; i < compositeIndexes.size(); i++) {
                 ArrayNode compositeIndex = (ArrayNode) compositeIndexes.get(i);
                 ArrayList<CompositePath> compositePaths = new ArrayList<CompositePath>();
@@ -212,7 +226,7 @@ public final class IndexingPolicy extends JsonSerializable {
      */
     public IndexingPolicy setCompositeIndexes(List<List<CompositePath>> compositeIndexes) {
         this.compositeIndexes = compositeIndexes;
-        super.set(Constants.Properties.COMPOSITE_INDEXES, this.compositeIndexes);
+        this.jsonSerializable.set(Constants.Properties.COMPOSITE_INDEXES, this.compositeIndexes);
         return this;
     }
 
@@ -223,7 +237,7 @@ public final class IndexingPolicy extends JsonSerializable {
      */
     public List<SpatialSpec> getSpatialIndexes() {
         if (this.spatialIndexes == null) {
-            this.spatialIndexes = super.getList(Constants.Properties.SPATIAL_INDEXES, SpatialSpec.class);
+            this.spatialIndexes = this.jsonSerializable.getList(Constants.Properties.SPATIAL_INDEXES, SpatialSpec.class);
 
             if (this.spatialIndexes == null) {
                 this.spatialIndexes = new ArrayList<SpatialSpec>();
@@ -241,13 +255,12 @@ public final class IndexingPolicy extends JsonSerializable {
      */
     public IndexingPolicy setSpatialIndexes(List<SpatialSpec> spatialIndexes) {
         this.spatialIndexes = spatialIndexes;
-        super.set(Constants.Properties.SPATIAL_INDEXES, this.spatialIndexes);
+        this.jsonSerializable.set(Constants.Properties.SPATIAL_INDEXES, this.spatialIndexes);
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
-        super.populatePropertyBag();
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
                 && this.getExcludedPaths().size() == 0) {
@@ -260,14 +273,16 @@ public final class IndexingPolicy extends JsonSerializable {
             for (IncludedPath includedPath : this.includedPaths) {
                 includedPath.populatePropertyBag();
             }
-            super.set(Constants.Properties.INCLUDED_PATHS, this.includedPaths);
+            this.jsonSerializable.set(Constants.Properties.INCLUDED_PATHS, this.includedPaths);
         }
 
         if (this.excludedPaths != null) {
             for (ExcludedPath excludedPath : this.excludedPaths) {
                 excludedPath.populatePropertyBag();
             }
-            super.set(Constants.Properties.EXCLUDED_PATHS, this.excludedPaths);
+            this.jsonSerializable.set(Constants.Properties.EXCLUDED_PATHS, this.excludedPaths);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

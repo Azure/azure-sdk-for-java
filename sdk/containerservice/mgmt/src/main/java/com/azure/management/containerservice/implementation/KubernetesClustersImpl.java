@@ -38,7 +38,7 @@ public class KubernetesClustersImpl
 
     @Override
     public PagedFlux<KubernetesCluster> listAsync() {
-        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.getName(), inner, manager()));
+        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class KubernetesClustersImpl
             return null;
         }
 
-        return new KubernetesClusterImpl(inner.getName(), inner, this.manager());
+        return new KubernetesClusterImpl(inner.name(), inner, this.manager());
     }
 
     @Override

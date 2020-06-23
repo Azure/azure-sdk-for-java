@@ -6,11 +6,15 @@ package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CredentialResult model. */
 @Immutable
 public final class CredentialResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResult.class);
+
     /*
      * The name of the credential.
      */
@@ -39,5 +43,13 @@ public final class CredentialResult {
      */
     public byte[] value() {
         return CoreUtils.clone(this.value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

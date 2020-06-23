@@ -12,22 +12,28 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -60,13 +66,8 @@ class DetectLanguageAsyncClient {
      */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<DetectLanguageInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getDetectedLanguageResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
@@ -86,14 +87,13 @@ class DetectLanguageAsyncClient {
      */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<DetectLanguageInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getDetectedLanguageResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getDetectedLanguageResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -106,37 +106,42 @@ class DetectLanguageAsyncClient {
      */
     private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
         SimpleResponse<LanguageResult> response) {
-
         final LanguageResult languageResult = response.getValue();
-
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
-            DetectedLanguage primaryLanguage = null;
-            List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages =
-                documentLanguage.getDetectedLanguages();
-            if (detectedLanguages.size() >= 1) {
-                detectedLanguages.sort(
-                    Comparator.comparing(com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getScore));
-                com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
-                    detectedLanguages.get(0);
-                primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
-                    detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
-            }
+            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
+                documentLanguage.getDetectedLanguage();
 
-            detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
+            // warnings
+            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream().map(warning ->
+                new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
+                    warning.getMessage())).collect(Collectors.toList());
+
+
+            detectLanguageResults.add(new DetectLanguageResult(
+                documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
-                primaryLanguage));
+                new DetectedLanguage(detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
+                    new IterableStream<>(warnings))));
         }
-
+        // Document errors
         for (DocumentError documentError : languageResult.getErrors()) {
-            com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                Transforms.toTextAnalyticsError(documentError.getError());
-            final String documentId = documentError.getId();
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(
+                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
+                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
+            }
 
-            detectLanguageResults.add(
-                new DetectLanguageResult(documentId, null, error, null));
+            detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -161,15 +166,17 @@ class DetectLanguageAsyncClient {
      */
     private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.languagesWithRestResponseAsync(
-            new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
-            .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
-                response.getValue()))
-            .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+        return service.languagesWithResponseAsync(
+                new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
+                options == null ? null : options.getModelVersion(),
+                options == null ? null : options.isIncludeStatistics())
+                .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
+                .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
+                    response.getValue()))
+                .doOnError(error -> logger.warning("Failed to detect language - {}", error))
+                .map(this::toTextAnalyticsPagedResponse)
+                .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+
     }
 }

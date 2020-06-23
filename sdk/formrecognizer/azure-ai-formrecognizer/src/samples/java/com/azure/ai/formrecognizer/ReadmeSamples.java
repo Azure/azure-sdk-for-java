@@ -12,6 +12,7 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.IterableStream;
@@ -31,26 +32,26 @@ public class ReadmeSamples {
     private FormTrainingClient formTrainingClient = formRecognizerClient.getFormTrainingClient();
 
     /**
-     * Code snippet for getting sync client using the API key authentication.
+     * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
-    public void useApiKeySyncClient() {
+    public void useAzureKeyCredentialSyncClient() {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
 
     /**
-     * Code snippet for rotating API key of the client
+     * Code snippet for rotating AzureKeyCredential of the client
      */
-    public void rotatingApiKey() {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+    public void rotatingAzureKeyCredential() {
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.update("{new_api_key}");
+        credential.update("{new_key}");
     }
 
     public void recognizeCustomForm() {
@@ -119,9 +120,9 @@ public class ReadmeSamples {
     }
 
     public void trainModel() {
-        String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
+        String trainingFilesUrl = "{training_set_SAS_URL}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-            formTrainingClient.beginTraining(trainingSetSource, false);
+            formTrainingClient.beginTraining(trainingFilesUrl, false);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 
@@ -147,7 +148,7 @@ public class ReadmeSamples {
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = formTrainingClient.getAccountProperties();
         System.out.printf("The account has %s custom models, and we can have at most %s custom models",
-            accountProperties.getCount(), accountProperties.getLimit());
+            accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
         // Next, we get a paged list of all of our custom models
         PagedIterable<CustomFormModelInfo> customModels = formTrainingClient.getModelInfos();

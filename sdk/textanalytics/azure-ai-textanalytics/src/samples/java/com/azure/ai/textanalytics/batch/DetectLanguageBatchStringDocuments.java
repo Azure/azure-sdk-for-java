@@ -24,7 +24,7 @@ public class DetectLanguageBatchStringDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -45,8 +45,8 @@ public class DetectLanguageBatchStringDocuments {
             } else {
                 // Valid document
                 DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
-                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-                    language.getName(), language.getIso6391Name(), language.getScore());
+                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, confidence score: %f.%n",
+                    language.getName(), language.getIso6391Name(), language.getConfidenceScore());
             }
         });
     }

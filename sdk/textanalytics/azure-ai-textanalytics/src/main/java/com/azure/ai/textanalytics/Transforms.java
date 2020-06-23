@@ -8,13 +8,12 @@ import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,6 @@ import java.util.function.BiFunction;
  * Helper class to convert service level models to SDK exposes models.
  */
 final class Transforms {
-    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
-
     private Transforms() {
     }
 
@@ -80,16 +77,16 @@ final class Transforms {
      */
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
-        if (textAnalyticsError.getInnerError() == null) {
+        if (textAnalyticsError.getInnererror() == null) {
             return new com.azure.ai.textanalytics.models.TextAnalyticsError(
                 TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnerError().getCode().toString()),
-            textAnalyticsError.getInnerError().getMessage(),
-            textAnalyticsError.getInnerError().getTarget());
+            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnererror().getCode().toString()),
+            textAnalyticsError.getInnererror().getMessage(),
+            textAnalyticsError.getInnererror().getTarget());
     }
 
     /**
@@ -116,7 +113,7 @@ final class Transforms {
      */
     static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
+        return new TextAnalyticsException(error.getMessage(), error.getErrorCode().toString(), error.getTarget());
     }
 
     /**

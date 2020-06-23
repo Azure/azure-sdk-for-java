@@ -48,7 +48,7 @@ public class ResourceGroupTaggingPolicy implements HttpPipelinePolicy {
                         return Mono.error(new RuntimeException("Failed to deserialize " + bodyStr));
                     }
 
-                    Map<String, String> tags = resourceGroupInner.getTags();
+                    Map<String, String> tags = resourceGroupInner.tags();
                     if (tags == null) {
                         tags = new HashMap<>();
                     }
@@ -58,7 +58,7 @@ public class ResourceGroupTaggingPolicy implements HttpPipelinePolicy {
                     if (System.getenv("ENV_JOB_NAME") != null) {
                         tags.put("job", System.getenv("ENV_JOB_NAME"));
                     }
-                    resourceGroupInner.setTags(tags);
+                    resourceGroupInner.withTags(tags);
                     String newBody;
                     try {
                         newBody = adapter.serialize(resourceGroupInner, SerializerEncoding.JSON);

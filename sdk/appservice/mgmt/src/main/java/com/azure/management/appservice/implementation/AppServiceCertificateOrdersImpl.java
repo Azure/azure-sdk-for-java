@@ -34,7 +34,7 @@ class AppServiceCertificateOrdersImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceCertificateOrderImpl(inner.getName(), inner, this.manager());
+        return new AppServiceCertificateOrderImpl(inner.name(), inner, this.manager());
     }
 
     @Override

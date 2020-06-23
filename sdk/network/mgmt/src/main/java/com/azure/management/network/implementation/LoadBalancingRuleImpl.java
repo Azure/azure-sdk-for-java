@@ -10,7 +10,7 @@ import com.azure.management.network.LoadBalancerProbe;
 import com.azure.management.network.LoadBalancingRule;
 import com.azure.management.network.LoadDistribution;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.network.models.HasNetworkInterfaces;
@@ -47,7 +47,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public boolean floatingIPEnabled() {
-        return this.inner().enableFloatingIP();
+        return this.inner().enableFloatingIp();
     }
 
     @Override
@@ -72,11 +72,11 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancerFrontend frontend() {
-        SubResource frontendRef = this.inner().frontendIPConfiguration();
+        SubResource frontendRef = this.inner().frontendIpConfiguration();
         if (frontendRef == null) {
             return null;
         } else {
-            String frontendName = ResourceUtils.nameFromResourceId(frontendRef.getId());
+            String frontendName = ResourceUtils.nameFromResourceId(frontendRef.id());
             return this.parent().frontends().get(frontendName);
         }
     }
@@ -87,7 +87,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
         if (backendRef == null) {
             return null;
         } else {
-            String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
             return this.parent().backends().get(backendName);
         }
     }
@@ -98,7 +98,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
         if (probeRef == null) {
             return null;
         } else {
-            String probeName = ResourceUtils.nameFromResourceId(probeRef.getId());
+            String probeName = ResourceUtils.nameFromResourceId(probeRef.id());
             if (this.parent().httpProbes().containsKey(probeName)) {
                 return this.parent().httpProbes().get(probeName);
             } else if (this.parent().tcpProbes().containsKey(probeName)) {
@@ -112,7 +112,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     // Fluent withers
 
     @Override
-    public LoadBalancingRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public LoadBalancingRuleImpl fromExistingPublicIPAddress(PublicIpAddress publicIPAddress) {
         return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
@@ -131,7 +131,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     }
 
     @Override
-    public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
+    public LoadBalancingRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
         String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         return fromFrontend(frontendName);
@@ -168,7 +168,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
 
     @Override
     public LoadBalancingRuleImpl withFloatingIP(boolean enable) {
-        this.inner().withEnableFloatingIP(enable);
+        this.inner().withEnableFloatingIp(enable);
         return this;
     }
 
@@ -230,7 +230,7 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     public LoadBalancingRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
-            this.inner().withFrontendIPConfiguration(frontendRef);
+            this.inner().withFrontendIpConfiguration(frontendRef);
         }
         return this;
     }
@@ -241,14 +241,14 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
         this.parent().defineBackend(backendName).attach();
 
         SubResource backendRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
+            new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
         this.inner().withBackendAddressPool(backendRef);
         return this;
     }
 
     @Override
     public LoadBalancingRuleImpl withProbe(String name) {
-        SubResource probeRef = new SubResource().setId(this.parent().futureResourceId() + "/probes/" + name);
+        SubResource probeRef = new SubResource().withId(this.parent().futureResourceId() + "/probes/" + name);
         this.inner().withProbe(probeRef);
         return this;
     }

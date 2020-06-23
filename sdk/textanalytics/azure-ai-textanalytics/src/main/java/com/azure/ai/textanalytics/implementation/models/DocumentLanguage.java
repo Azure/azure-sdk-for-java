@@ -20,10 +20,16 @@ public final class DocumentLanguage {
     private String id;
 
     /*
-     * A list of extracted languages.
+     * Detected Language.
      */
-    @JsonProperty(value = "detectedLanguages", required = true)
-    private List<DetectedLanguage> detectedLanguages;
+    @JsonProperty(value = "detectedLanguage", required = true)
+    private DetectedLanguage detectedLanguage;
+
+    /*
+     * Warnings encountered while processing document.
+     */
+    @JsonProperty(value = "warnings", required = true)
+    private List<TextAnalyticsWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -53,22 +59,44 @@ public final class DocumentLanguage {
     }
 
     /**
-     * Get the detectedLanguages property: A list of extracted languages.
+     * Get the detectedLanguage property: Detected Language.
      *
-     * @return the detectedLanguages value.
+     * @return the detectedLanguage value.
      */
-    public List<DetectedLanguage> getDetectedLanguages() {
-        return this.detectedLanguages;
+    public DetectedLanguage getDetectedLanguage() {
+        return this.detectedLanguage;
     }
 
     /**
-     * Set the detectedLanguages property: A list of extracted languages.
+     * Set the detectedLanguage property: Detected Language.
      *
-     * @param detectedLanguages the detectedLanguages value to set.
+     * @param detectedLanguage the detectedLanguage value to set.
      * @return the DocumentLanguage object itself.
      */
-    public DocumentLanguage setDetectedLanguages(List<DetectedLanguage> detectedLanguages) {
-        this.detectedLanguages = detectedLanguages;
+    public DocumentLanguage setDetectedLanguage(DetectedLanguage detectedLanguage) {
+        this.detectedLanguage = detectedLanguage;
+        return this;
+    }
+
+    /**
+     * Get the warnings property: Warnings encountered while processing
+     * document.
+     *
+     * @return the warnings value.
+     */
+    public List<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: Warnings encountered while processing
+     * document.
+     *
+     * @param warnings the warnings value to set.
+     * @return the DocumentLanguage object itself.
+     */
+    public DocumentLanguage setWarnings(List<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
         return this;
     }
 

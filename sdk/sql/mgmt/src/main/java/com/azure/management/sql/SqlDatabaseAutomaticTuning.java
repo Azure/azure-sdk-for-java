@@ -58,7 +58,8 @@ public interface SqlDatabaseAutomaticTuning
             /**
              * Sets the various SQL database automatic tuning options desired state.
              *
-             * @param tuningOptionName tuning option name (
+             * @param tuningOptionName the tuning option name
+             * @param desiredState the desired state of tuning option
              * @return Next stage of the update.
              */
             Update withAutomaticTuningOption(String tuningOptionName, AutomaticTuningOptionModeDesired desiredState);
@@ -66,6 +67,7 @@ public interface SqlDatabaseAutomaticTuning
             /**
              * Sets the various SQL database automatic tuning options desired state.
              *
+             * @param tuningOptions the tuning option names and desired states
              * @return Next stage of the update.
              */
             Update withAutomaticTuningOptions(Map<String, AutomaticTuningOptionModeDesired> tuningOptions);

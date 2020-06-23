@@ -18,16 +18,16 @@ public final class GraphRbacManagementClientBuilder {
     /*
      * The tenant ID.
      */
-    private String tenantID;
+    private String tenantId;
 
     /**
      * Sets The tenant ID.
      *
-     * @param tenantID the tenantID value.
+     * @param tenantId the tenantId value.
      * @return the GraphRbacManagementClientBuilder.
      */
-    public GraphRbacManagementClientBuilder tenantID(String tenantID) {
-        this.tenantID = tenantID;
+    public GraphRbacManagementClientBuilder tenantId(String tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 
@@ -117,7 +117,7 @@ public final class GraphRbacManagementClientBuilder {
                     .build();
         }
         GraphRbacManagementClientImpl client = new GraphRbacManagementClientImpl(pipeline, environment);
-        client.setTenantID(this.tenantID);
+        client.setTenantId(this.tenantId);
         client.setHost(this.host);
         client.setApiVersion(this.apiVersion);
         return client;

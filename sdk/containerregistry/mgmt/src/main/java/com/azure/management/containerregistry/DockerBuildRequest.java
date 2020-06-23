@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonTypeName("DockerBuildRequest")
 @Fluent
 public final class DockerBuildRequest extends RunRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DockerBuildRequest.class);
+
     /*
      * The fully qualified image names including the repository and tag.
      */
@@ -313,5 +317,37 @@ public final class DockerBuildRequest extends RunRequest {
     public DockerBuildRequest withCredentials(Credentials credentials) {
         this.credentials = credentials;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (dockerFilePath() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dockerFilePath in model DockerBuildRequest"));
+        }
+        if (arguments() != null) {
+            arguments().forEach(e -> e.validate());
+        }
+        if (platform() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property platform in model DockerBuildRequest"));
+        } else {
+            platform().validate();
+        }
+        if (agentConfiguration() != null) {
+            agentConfiguration().validate();
+        }
+        if (credentials() != null) {
+            credentials().validate();
+        }
     }
 }

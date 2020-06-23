@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response when adding a batch of labeled examples.
+ * Response when adding a batch of labeled example utterances.
  */
 public class BatchLabelExample {
     /**

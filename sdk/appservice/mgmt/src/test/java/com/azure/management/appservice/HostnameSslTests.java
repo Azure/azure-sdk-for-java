@@ -3,9 +3,10 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import org.junit.jupiter.api.Assertions;
@@ -18,8 +19,8 @@ public class HostnameSslTests extends AppServiceTest {
     private String domainName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        super.initializeClients(restClient, defaultSubscription, domain);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        super.initializeClients(httpPipeline, profile);
 
         webappName = generateRandomResourceName("java-webapp-", 20);
         appServicePlanName = generateRandomResourceName("java-asp-", 20);
@@ -40,7 +41,7 @@ public class HostnameSslTests extends AppServiceTest {
             .defineHostnameBinding()
             .withAzureManagedDomain(domain)
             .withSubDomain(webappName)
-            .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+            .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
             .attach()
             .create();
 

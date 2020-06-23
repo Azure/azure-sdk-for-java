@@ -3,9 +3,10 @@
 
 package com.azure.management.graphrbac;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,10 +18,10 @@ public abstract class GraphRbacManagementTest extends TestBase {
     protected ResourceManager resourceManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        graphRbacManager = GraphRbacManager.authenticate(restClient, domain, sdkContext);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        graphRbacManager = GraphRbacManager.authenticate(httpPipeline, profile, sdkContext);
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
     }
 
     @Override

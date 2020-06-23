@@ -58,6 +58,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String PARTITION_KEY_NAME = "x-opt-partition-key";
     private static final String VIA_PARTITION_KEY_NAME = "x-opt-via-partition-key";
     private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
+    private static final String DEAD_LETTER_DESCRIPTION = "DeadLetterErrorDescription";
+    private static final String DEAD_LETTER_REASON = "DeadLetterReason";
+
+    // This one appears to always be 0, but is always returned with each message.
+    private static final String ENQUEUED_SEQUENCE_NUMBER = "x-opt-enqueue-sequence-number";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -311,7 +316,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Application properties
         ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
         if (applicationProperties != null) {
-            brokeredMessage.getProperties().putAll(applicationProperties.getValue());
+            final Map<String, Object> propertiesValue = applicationProperties.getValue();
+            brokeredMessage.getProperties().putAll(propertiesValue);
+
+            if (propertiesValue.containsKey(DEAD_LETTER_REASON)) {
+                brokeredMessage.setDeadLetterReason(String.valueOf(propertiesValue.get(DEAD_LETTER_REASON)));
+            }
+            if (propertiesValue.containsKey(DEAD_LETTER_DESCRIPTION)) {
+                brokeredMessage.setDeadLetterDescription(String.valueOf(propertiesValue.get(DEAD_LETTER_DESCRIPTION)));
+            }
         }
 
         // Header
@@ -370,6 +383,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                             break;
                         case DEAD_LETTER_SOURCE_NAME:
                             brokeredMessage.setDeadLetterSource((String) value);
+                            break;
+                        case ENQUEUED_SEQUENCE_NUMBER:
                             break;
                         default:
                             logger.info("Unrecognised key: {}, value: {}", key, value);

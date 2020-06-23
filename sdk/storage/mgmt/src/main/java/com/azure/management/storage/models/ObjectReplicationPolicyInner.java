@@ -7,7 +7,9 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.ObjectReplicationPolicyRule;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ObjectReplicationPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyInner.class);
+
     /*
      * A unique id for object replication policy.
      */
@@ -122,5 +126,16 @@ public class ObjectReplicationPolicyInner extends ProxyResource {
     public ObjectReplicationPolicyInner withRules(List<ObjectReplicationPolicyRule> rules) {
         this.rules = rules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (rules() != null) {
+            rules().forEach(e -> e.validate());
+        }
     }
 }

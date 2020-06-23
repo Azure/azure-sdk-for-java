@@ -4,7 +4,7 @@
 package com.azure.management.sql;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
@@ -283,7 +283,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(sqlPrimaryServerName, failoverGroup.sqlServerName());
         Assertions.assertEquals(FailoverGroupReplicationRole.PRIMARY, failoverGroup.replicationRole());
         Assertions.assertEquals(1, failoverGroup.partnerServers().size());
-        Assertions.assertEquals(sqlSecondaryServer.id(), failoverGroup.partnerServers().get(0).getId());
+        Assertions.assertEquals(sqlSecondaryServer.id(), failoverGroup.partnerServers().get(0).id());
         Assertions
             .assertEquals(
                 FailoverGroupReplicationRole.SECONDARY, failoverGroup.partnerServers().get(0).replicationRole());
@@ -298,7 +298,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(sqlSecondaryServerName, failoverGroupOnPartner.sqlServerName());
         Assertions.assertEquals(FailoverGroupReplicationRole.SECONDARY, failoverGroupOnPartner.replicationRole());
         Assertions.assertEquals(1, failoverGroupOnPartner.partnerServers().size());
-        Assertions.assertEquals(sqlPrimaryServer.id(), failoverGroupOnPartner.partnerServers().get(0).getId());
+        Assertions.assertEquals(sqlPrimaryServer.id(), failoverGroupOnPartner.partnerServers().get(0).id());
         Assertions
             .assertEquals(
                 FailoverGroupReplicationRole.PRIMARY, failoverGroupOnPartner.partnerServers().get(0).replicationRole());
@@ -323,7 +323,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(sqlPrimaryServerName, failoverGroup2.sqlServerName());
         Assertions.assertEquals(FailoverGroupReplicationRole.PRIMARY, failoverGroup2.replicationRole());
         Assertions.assertEquals(1, failoverGroup2.partnerServers().size());
-        Assertions.assertEquals(sqlOtherServer.id(), failoverGroup2.partnerServers().get(0).getId());
+        Assertions.assertEquals(sqlOtherServer.id(), failoverGroup2.partnerServers().get(0).id());
         Assertions
             .assertEquals(
                 FailoverGroupReplicationRole.SECONDARY, failoverGroup2.partnerServers().get(0).replicationRole());
@@ -616,7 +616,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         try {
             storageAccount =
                 storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             Assertions.assertEquals(404, e.getResponse().getStatusCode());
         }
         if (storageAccount == null) {
@@ -1494,7 +1494,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         try {
             Object result = fetchResource.get();
             Assertions.assertNull(result);
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             Assertions.assertEquals(404, e.getResponse().getStatusCode());
         }
     }

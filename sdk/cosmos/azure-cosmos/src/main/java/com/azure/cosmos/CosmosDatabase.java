@@ -15,6 +15,8 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -152,6 +154,24 @@ public class CosmosDatabase {
         CosmosContainerRequestOptions options) throws CosmosClientException {
         return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
                                                                                  throughput,
+                                                                                 options));
+    }
+
+    /**
+     * Creates a cosmos container.
+     *
+     * @param containerProperties the container properties
+     * @param throughputProperties the throughput properties
+     * @param options the options
+     * @return the cosmos container response
+     * @throws CosmosClientException the cosmos client exception
+     */
+    public CosmosContainerResponse createContainer(
+        CosmosContainerProperties containerProperties,
+        ThroughputProperties throughputProperties,
+        CosmosContainerRequestOptions options) throws CosmosClientException {
+        return this.mapContainerResponseAndBlock(databaseWrapper.createContainer(containerProperties,
+                                                                                 throughputProperties,
                                                                                  options));
     }
 
@@ -479,7 +499,26 @@ public class CosmosDatabase {
         return throughputResponseToBlock(databaseWrapper.replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
-    Integer throughputResponseToBlock(Mono<Integer> throughputResponse) throws CosmosClientException {
+    /**
+     * Sets the throughput.
+     *
+     * @param throughputProperties the throughput properties
+     * @return the throughput response
+     */
+    public ThroughputResponse replaceThroughput(ThroughputProperties throughputProperties) {
+        return throughputResponseToBlock(databaseWrapper.replaceThroughput(throughputProperties));
+    }
+
+    /**
+     * Gets the throughput of the database
+     *
+     * @return the throughput response
+     */
+    public ThroughputResponse readThroughput() {
+        return throughputResponseToBlock(databaseWrapper.readThroughput());
+    }
+
+    <T> T throughputResponseToBlock(Mono<T> throughputResponse) throws CosmosClientException {
         try {
             return throughputResponse.block();
         } catch (Exception ex) {

@@ -3,7 +3,7 @@
 
 package com.azure.management.cosmosdb;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.cosmosdb.implementation.CosmosDBManager;
 import com.azure.management.network.Network;
 import com.azure.management.network.PrivateLinkServiceConnection;
@@ -13,6 +13,7 @@ import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.network.models.PrivateEndpointInner;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import java.io.IOException;
 import java.util.Arrays;
@@ -33,14 +34,14 @@ public class CosmosDBTests extends TestBase {
     }
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain)
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile)
         throws IOException {
         rgName = generateRandomResourceName("rgcosmosdb", 20);
-        resourceManager = ResourceManager.authenticate(restClient).withSubscription(defaultSubscription);
+        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 
-        cosmosDBManager = CosmosDBManager.authenticate(restClient, defaultSubscription);
+        cosmosDBManager = CosmosDBManager.authenticate(httpPipeline, profile);
 
-        networkManager = NetworkManager.authenticate(restClient, defaultSubscription);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class CosmosDBTests extends TestBase {
         final String pedName = sdkContext.randomResourceName("ped", 22);
         final Region region = Region.US_WEST;
 
-        cosmosDBManager.getResourceManager().resourceGroups().define(rgName).withRegion(region).create();
+        cosmosDBManager.resourceManager().resourceGroups().define(rgName).withRegion(region).create();
 
         Network network =
             networkManager
@@ -130,7 +131,7 @@ public class CosmosDBTests extends TestBase {
                 .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
                 .withSubnet(network.subnets().get(subnetName).inner());
 
-        privateEndpoint.setLocation(region.toString());
+        privateEndpoint.withLocation(region.toString());
         privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount

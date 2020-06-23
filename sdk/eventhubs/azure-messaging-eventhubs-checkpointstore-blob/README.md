@@ -20,19 +20,20 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - Azure Storage account
     - Step-by-step guide for [creating a Storage account using the Azure Portal][storage_account]
 
-### Adding the package to your product
+### Including the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authenticate the storage container client
+
 In order to create an instance of `BlobCheckpointStore`, a `ContainerAsyncClient` should first be created with
 appropriate SAS token with write access and connection string. To make this possible you'll need the Account SAS
 (shared access signature) string of Storage account. Learn more at [SAS Token][sas_token].
@@ -53,12 +54,13 @@ It is possible to return to older data by specifying a lower offset from this ch
 mechanism, checkpointing enables both failover resiliency and event stream replay.
 
 ### Offsets & sequence numbers
+
 Both offset & sequence number refer to the position of an event within a partition. You can think of them as a
 client-side cursor. The offset is a byte numbering of the event. The offset/sequence number enables an event consumer
 (reader) to specify a point in the event stream from which they want to begin reading events. You can specify the a
 timestamp such that you receive events that were enqueued only after the given timestamp. Consumers are responsible for
 storing their own offset values outside of the Event Hubs service. Within a partition, each event includes an offset,
-sequence number and the timestamp of when it was enqueued.
+sequence number, and the timestamp of when it was enqueued.
 
 ## Examples
 - [Create an instance of Storage Container client][sample_container_client]
@@ -79,9 +81,9 @@ BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuild
 
 ### Consume events using an Event Processor Client
 
-To consume events for all partitions of an Event Hub, you'll create an [`EventProcessorClient`][source_eventprocessorclient] for a
-specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to get
-started.
+To consume events for all partitions of an Event Hub, you'll create an 
+[`EventProcessorClient`][source_eventprocessorclient] for a specific consumer group. When an Event Hub is created, it 
+provides a default consumer group that can be used to get started.
 
 The [`EventProcessorClient`][source_eventprocessorclient] will delegate processing of events to a callback function that you
 provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for
@@ -126,17 +128,19 @@ eventProcessorClient.stop();
 
 ### Enable client logging
 
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default SSL library
+
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
 operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
 better performance compared to the default SSL implementation within the JDK. For more information, including how to
 reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
+
 Get started by exploring the samples [here][samples_readme].
 
 ## Contributing

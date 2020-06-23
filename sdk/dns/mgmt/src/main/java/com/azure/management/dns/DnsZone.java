@@ -25,7 +25,7 @@ public interface DnsZone
     long numberOfRecordSets();
 
     /** @return the etag associated with this zone. */
-    String eTag();
+    String etag();
 
     /** @return the access type of this zone (Private or Public). */
     ZoneType accessType();
@@ -422,10 +422,10 @@ public interface DnsZone
              * Removes a A record set in the DNS zone.
              *
              * @param name name of the A record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutARecordSet(String name, String eTagValue);
+            Update withoutARecordSet(String name, String etagValue);
 
             /**
              * Removes a AAAA record set in the DNS zone.
@@ -439,10 +439,10 @@ public interface DnsZone
              * Removes a AAAA record set in the DNS zone.
              *
              * @param name name of the AAAA record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutAaaaRecordSet(String name, String eTagValue);
+            Update withoutAaaaRecordSet(String name, String etagValue);
 
             /**
              * Removes a Caa record set in the DNS zone.
@@ -456,10 +456,10 @@ public interface DnsZone
              * Removes a Caa record set in the DNS zone.
              *
              * @param name name of the Caa record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutCaaRecordSet(String name, String eTagValue);
+            Update withoutCaaRecordSet(String name, String etagValue);
 
             /**
              * Removes a CNAME record set in the DNS zone.
@@ -473,10 +473,10 @@ public interface DnsZone
              * Removes a CNAME record set in the DNS zone.
              *
              * @param name name of the CNAME record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutCNameRecordSet(String name, String eTagValue);
+            Update withoutCNameRecordSet(String name, String etagValue);
 
             /**
              * Removes a MX record set in the DNS zone.
@@ -490,10 +490,10 @@ public interface DnsZone
              * Removes a MX record set in the DNS zone.
              *
              * @param name name of the MX record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutMXRecordSet(String name, String eTagValue);
+            Update withoutMXRecordSet(String name, String etagValue);
 
             /**
              * Removes a NS record set in the DNS zone.
@@ -507,10 +507,10 @@ public interface DnsZone
              * Removes a NS record set in the DNS zone.
              *
              * @param name name of the NS record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutNSRecordSet(String name, String eTagValue);
+            Update withoutNSRecordSet(String name, String etagValue);
 
             /**
              * Removes a PTR record set in the DNS zone.
@@ -524,10 +524,10 @@ public interface DnsZone
              * Removes a PTR record set in the DNS zone.
              *
              * @param name name of the PTR record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutPtrRecordSet(String name, String eTagValue);
+            Update withoutPtrRecordSet(String name, String etagValue);
 
             /**
              * Removes a SRV record set in the DNS zone.
@@ -541,10 +541,10 @@ public interface DnsZone
              * Removes a SRV record set in the DNS zone.
              *
              * @param name name of the SRV record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutSrvRecordSet(String name, String eTagValue);
+            Update withoutSrvRecordSet(String name, String etagValue);
 
             /**
              * Removes a TXT record set in the DNS zone.
@@ -558,28 +558,28 @@ public interface DnsZone
              * Removes a TXT record set in the DNS zone.
              *
              * @param name name of the TXT record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutTxtRecordSet(String name, String eTagValue);
+            Update withoutTxtRecordSet(String name, String etagValue);
         }
 
         /** The stage of the DNS zone update allowing to enable ETag validation. */
         interface WithETagCheck {
             /**
-             * Specifies that If-Match header needs to set to the current eTag value associated with the DNS Zone.
+             * Specifies that If-Match header needs to set to the current etag value associated with the DNS Zone.
              *
              * @return the next stage of the update
              */
             Update withETagCheck();
 
             /**
-             * Specifies that if-Match header needs to set to the given eTag value.
+             * Specifies that if-Match header needs to set to the given etag value.
              *
-             * @param eTagValue the eTag value
+             * @param etagValue the etag value
              * @return the next stage of the update
              */
-            Update withETagCheck(String eTagValue);
+            Update withETagCheck(String etagValue);
         }
 
         /** The stage of the DNS zone update allowing to specify Zone access type. */

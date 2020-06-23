@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -22,7 +23,7 @@ public class ManageCustomModelsAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormTrainingAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient().getFormTrainingAsyncClient();
 
@@ -31,7 +32,7 @@ public class ManageCustomModelsAsync {
         // First, we see how many custom models we have, and what our limit is
         client.getAccountProperties().subscribe(accountProperties ->
             System.out.printf("The account has %s custom models, and we can have at most %s custom models.%n",
-                accountProperties.getCount(), accountProperties.getLimit()));
+                accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit()));
         // Next, we get a paged list of all of our custom models
         System.out.println("We have following models in the account:");
         client.getModelInfos().subscribe(customFormModelInfo -> {

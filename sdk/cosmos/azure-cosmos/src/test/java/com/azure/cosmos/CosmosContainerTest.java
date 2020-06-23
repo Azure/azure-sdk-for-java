@@ -12,6 +12,7 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -92,7 +93,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionName, "/id");
 
-        containerProperties.setAnalyticalStorageTimeToLiveInSeconds(analyticalTTL);
+        containerProperties.setAnalyticalStoreTimeToLiveInSeconds(analyticalTTL);
         if (analyticalTTL != null && analyticalTTL > 0) {
             containerProperties.setDefaultTimeToLiveInSeconds(analyticalTTL - 1);
         }
@@ -101,7 +102,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
 
-        assertThat(containerResponse.getProperties().getAnalyticalStorageTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
+        assertThat(containerResponse.getProperties().getAnalyticalStoreTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

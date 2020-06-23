@@ -320,7 +320,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         String id =
             ResourceUtils
                 .constructResourceId(
-                    this.myManager.getSubscriptionId(),
+                    this.myManager.subscriptionId(),
                     this.resourceGroupName(),
                     "Microsoft.Storage",
                     "storageAccounts",

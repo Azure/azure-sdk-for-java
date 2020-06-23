@@ -79,7 +79,7 @@ public class ExpressRouteCrossConnectionImpl
             .manager()
             .inner()
             .expressRouteCrossConnections()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -101,8 +101,8 @@ public class ExpressRouteCrossConnectionImpl
     }
 
     @Override
-    public Integer sTag() {
-        return inner().sTag();
+    public Integer stag() {
+        return inner().stag();
     }
 
     @Override

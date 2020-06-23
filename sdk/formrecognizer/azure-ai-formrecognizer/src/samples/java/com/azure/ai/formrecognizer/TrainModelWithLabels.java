@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -22,7 +23,7 @@ public class TrainModelWithLabels {
         // Instantiate a client that will be used to call the service.
 
         FormTrainingClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient().getFormTrainingClient();
 

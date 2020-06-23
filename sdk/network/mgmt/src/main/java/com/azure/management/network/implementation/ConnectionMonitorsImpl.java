@@ -46,7 +46,7 @@ class ConnectionMonitorsImpl
     }
 
     protected ConnectionMonitorImpl wrapModel(ConnectionMonitorResultInner inner) {
-        return (inner == null) ? null : new ConnectionMonitorImpl(inner.getName(), parent, inner, inner());
+        return (inner == null) ? null : new ConnectionMonitorImpl(inner.name(), parent, inner, inner());
     }
 
     @Override

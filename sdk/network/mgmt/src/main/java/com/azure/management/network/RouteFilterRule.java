@@ -75,6 +75,7 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, ChildRe
             /**
              * Remove the bgp community value to filter on. e.g. '12076:5010'
              *
+             * @param community the bgp community value
              * @return the next stage of the update
              */
             Update withoutBgpCommunity(String community);
@@ -149,6 +150,7 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, ChildRe
             /**
              * Remove the bgp community value to filter on. e.g. '12076:5010'
              *
+             * @param community the bgp community value
              * @return the next stage of the update
              */
             Update withoutBgpCommunity(String community);
@@ -204,6 +206,7 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, ChildRe
             /**
              * The bgp community values to filter on. e.g. '12076:5010'. This method has additive effect.
              *
+             * @param community the bgp community value
              * @return the next stage of the update
              */
             Update withBgpCommunity(String community);
@@ -211,6 +214,7 @@ public interface RouteFilterRule extends HasInner<RouteFilterRuleInner>, ChildRe
             /**
              * Remove the bgp community value to filter on. e.g. '12076:5010'
              *
+             * @param community the bgp community value
              * @return the next stage of the update
              */
             Update withoutBgpCommunity(String community);

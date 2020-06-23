@@ -22,12 +22,12 @@ class VirtualMachineExtensionImageImpl extends WrapperImpl<VirtualMachineExtensi
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override

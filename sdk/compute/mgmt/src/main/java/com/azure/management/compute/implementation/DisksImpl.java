@@ -56,7 +56,7 @@ class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, DiskInne
         if (inner == null) {
             return null;
         }
-        return new DiskImpl(inner.getName(), inner, this.manager());
+        return new DiskImpl(inner.name(), inner, this.manager());
     }
 
     @Override

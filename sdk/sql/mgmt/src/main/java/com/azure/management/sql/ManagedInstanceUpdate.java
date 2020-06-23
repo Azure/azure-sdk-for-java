@@ -6,6 +6,8 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class ManagedInstanceUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceUpdate.class);
+
     /*
      * Managed instance sku
      */
@@ -584,5 +588,16 @@ public class ManagedInstanceUpdate {
     public ManagedInstanceUpdate withMinimalTlsVersion(String minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 }

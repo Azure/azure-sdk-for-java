@@ -286,6 +286,10 @@ public class ReactorConnection implements AmqpConnection {
             removeSession(key);
         }
 
+        if (connection != null) {
+            connection.close();
+        }
+
         if (executor != null) {
             executor.close();
         }

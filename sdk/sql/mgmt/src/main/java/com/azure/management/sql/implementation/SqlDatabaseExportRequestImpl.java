@@ -93,6 +93,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                             new BlobServiceClientBuilder()
                                 .endpoint(storageAccount.endPoints().primary().blob())
                                 .sasToken(storageAccountKey.value())
+                                .httpClient(sqlServerManager.httpPipeline().getHttpClient())
                                 .buildClient();
                         blobServiceClient.createBlobContainer(containerName);
                     } catch (IndexOutOfBoundsException indexOutOfBoundsException) {

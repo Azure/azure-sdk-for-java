@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The P2SVpnProfileParameters model. */
 @Fluent
 public final class P2SVpnProfileParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnProfileParameters.class);
+
     /*
      * VPN client authentication method.
      */
@@ -34,5 +38,13 @@ public final class P2SVpnProfileParameters {
     public P2SVpnProfileParameters withAuthenticationMethod(AuthenticationMethod authenticationMethod) {
         this.authenticationMethod = authenticationMethod;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

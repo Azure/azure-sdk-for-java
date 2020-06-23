@@ -540,31 +540,6 @@
       </build>
     </profile>
 
-    <profile>
-      <id>non-shipping-modules</id>
-      <activation>
-        <property>
-          <name>include-non-shipping-modules</name>
-        </property>
-      </activation>
-      <modules>
-        <module>./eng/spotbugs-aggregate-report</module>
-        <module>./eng/code-quality-reports</module>
-      </modules>
-    </profile>
-
-    <profile>
-      <id>template-module</id>
-      <activation>
-        <property>
-          <name>include-template</name>
-        </property>
-      </activation>
-      <modules>
-        <module>./sdk/template/azure-sdk-template</module>
-      </modules>
-    </profile>
-
     <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
          This is specifically done to prevent requiring python as a pre-requisite since
          this is only needed by the build system. -->
@@ -615,19 +590,4 @@
       </build>
     </profile>
   </profiles>
-  <modules>
-    <!-- <module>../../batch/microsoft-azure-batch</module>
-    <module>../../eventhubs/microsoft-azure-eventhubs/pom.xml</module>
-    <module>../../eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
-    <module>../../eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault-complete/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault-core/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault-cryptography/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault-extensions/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault-test/pom.xml</module>
-    <module>../../keyvault/microsoft-azure-keyvault-webkey/pom.xml</module>
-    <module>../../servicebus/microsoft-azure-servicebus</module>
-    <module>../../storage/microsoft-azure-storage-blob</module> -->
-  </modules>
 </project>

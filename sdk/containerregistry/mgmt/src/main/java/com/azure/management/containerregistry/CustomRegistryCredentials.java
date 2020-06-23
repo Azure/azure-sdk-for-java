@@ -5,16 +5,20 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CustomRegistryCredentials model. */
 @Fluent
 public final class CustomRegistryCredentials {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomRegistryCredentials.class);
+
     /*
      * The username for logging into the custom registry.
      */
     @JsonProperty(value = "userName")
-    private SecretObject userName;
+    private SecretObject username;
 
     /*
      * The password for logging into the custom registry. The password is a
@@ -25,22 +29,22 @@ public final class CustomRegistryCredentials {
     private SecretObject password;
 
     /**
-     * Get the userName property: The username for logging into the custom registry.
+     * Get the username property: The username for logging into the custom registry.
      *
-     * @return the userName value.
+     * @return the username value.
      */
-    public SecretObject userName() {
-        return this.userName;
+    public SecretObject username() {
+        return this.username;
     }
 
     /**
-     * Set the userName property: The username for logging into the custom registry.
+     * Set the username property: The username for logging into the custom registry.
      *
-     * @param userName the userName value to set.
+     * @param username the username value to set.
      * @return the CustomRegistryCredentials object itself.
      */
-    public CustomRegistryCredentials withUserName(SecretObject userName) {
-        this.userName = userName;
+    public CustomRegistryCredentials withUsername(SecretObject username) {
+        this.username = username;
         return this;
     }
 
@@ -64,5 +68,19 @@ public final class CustomRegistryCredentials {
     public CustomRegistryCredentials withPassword(SecretObject password) {
         this.password = password;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (username() != null) {
+            username().validate();
+        }
+        if (password() != null) {
+            password().validate();
+        }
     }
 }

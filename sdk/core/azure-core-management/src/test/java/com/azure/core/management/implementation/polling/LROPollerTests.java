@@ -227,15 +227,15 @@ public class LROPollerTests {
                 Assertions.assertNotNull(pollResult);
                 Assertions.assertNotNull(pollResult.value());
                 Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
-                Assertions.assertNotNull(pollResult.value().getId());
+                Assertions.assertNotNull(pollResult.value().id());
             }).blockLast();
             Assertions.assertNotNull(asyncPollResponse);
 
             Resource result = asyncPollResponse.getFinalResult().block();
             Assertions.assertNotNull(result);
-            Assertions.assertNotNull(result.getId());
-            Assertions.assertEquals("v1weidxu", result.getName());
-            Assertions.assertEquals("Microsoft.KeyVault/vaults", result.getType());
+            Assertions.assertNotNull(result.id());
+            Assertions.assertEquals("v1weidxu", result.name());
+            Assertions.assertEquals("Microsoft.KeyVault/vaults", result.type());
         } finally {
             if (lroServer.isRunning()) {
                 lroServer.shutdown();

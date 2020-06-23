@@ -6,8 +6,11 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Strings;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 /**
@@ -59,7 +62,9 @@ import com.azure.cosmos.implementation.Strings;
  * }
  * </pre>
  */
-public final class ConflictResolutionPolicy extends JsonSerializable {
+public final class ConflictResolutionPolicy {
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.
@@ -139,6 +144,7 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      * Initializes a new instance of the {@link ConflictResolutionPolicy} class for the Azure Cosmos DB service.
      */
     ConflictResolutionPolicy() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -147,7 +153,16 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      * @param jsonString the json string
      */
     public ConflictResolutionPolicy(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Instantiates a new Conflict resolution policy.
+     *
+     * @param objectNode the object node.
+     */
+    ConflictResolutionPolicy(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -158,15 +173,15 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      */
     public ConflictResolutionMode getMode() {
 
-        String strValue = super.getString(Constants.Properties.MODE);
+        String strValue = this.jsonSerializable.getString(Constants.Properties.MODE);
 
         if (!Strings.isNullOrEmpty(strValue)) {
             try {
                 return ConflictResolutionMode
-                           .valueOf(Strings.fromCamelCaseToUpperCase(super.getString(Constants.Properties.MODE)));
+                           .valueOf(Strings.fromCamelCaseToUpperCase(this.jsonSerializable.getString(Constants.Properties.MODE)));
             } catch (IllegalArgumentException e) {
-                this.getLogger().warn("INVALID ConflictResolutionMode getValue {}.",
-                    super.getString(Constants.Properties.MODE));
+                this.jsonSerializable.getLogger().warn("INVALID ConflictResolutionMode getValue {}.",
+                    this.jsonSerializable.getString(Constants.Properties.MODE));
                 return ConflictResolutionMode.INVALID;
             }
         }
@@ -181,7 +196,7 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      * @param mode One of the values of the {@link ConflictResolutionMode} enum.
      */
     ConflictResolutionPolicy setMode(ConflictResolutionMode mode) {
-        super.set(Constants.Properties.MODE, mode.toString());
+        this.jsonSerializable.set(Constants.Properties.MODE, mode.toString());
         return this;
     }
 
@@ -199,7 +214,7 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      * That path is a rooted path of the property in the document, such as "/name/first".
      */
     public String getConflictResolutionPath() {
-        return super.getString(Constants.Properties.CONFLICT_RESOLUTION_PATH);
+        return this.jsonSerializable.getString(Constants.Properties.CONFLICT_RESOLUTION_PATH);
     }
 
     /**
@@ -216,7 +231,7 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      * That path is a rooted path of the property in the document, such as "/name/first".
      */
     ConflictResolutionPolicy setConflictResolutionPath(String value) {
-        super.set(Constants.Properties.CONFLICT_RESOLUTION_PATH, value);
+        this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PATH, value);
         return this;
     }
 
@@ -236,11 +251,17 @@ public final class ConflictResolutionPolicy extends JsonSerializable {
      * @return the stored procedure to perform conflict resolution.]
      */
     public String getConflictResolutionProcedure() {
-        return super.getString(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE);
+        return this.jsonSerializable.getString(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE);
     }
 
     ConflictResolutionPolicy setConflictResolutionProcedure(String value) {
-        super.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
+        this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

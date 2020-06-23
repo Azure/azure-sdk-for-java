@@ -34,9 +34,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -62,11 +63,10 @@ final class Transforms {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
-        List<RecognizedForm> extractedFormList = null;
+        List<RecognizedForm> extractedFormList;
 
         List<FormPage> formPages = toRecognizedLayout(analyzeResult, includeTextDetails);
 
-        // unlabeled
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
             extractedFormList = new ArrayList<>();
             for (DocumentResult documentResultItem : documentResults) {
@@ -87,8 +87,7 @@ final class Transforms {
                     new IterableStream<>(formPages.subList(pageRange.getStartPageNumber() - 1,
                         pageRange.getEndPageNumber()))));
             }
-        } else if (!CoreUtils.isNullOrEmpty(pageResults)) {
-            // labeled
+        } else {
             extractedFormList = new ArrayList<>();
             for (PageResult pageResultItem : pageResults) {
                 StringBuffer formType = new StringBuffer("form-");
@@ -162,18 +161,6 @@ final class Transforms {
     }
 
     /**
-     * Given an iterable will apply the indexing function to it and return the index and each item of the iterable.
-     *
-     * @param iterable the list to apply the mapping function to.
-     * @param biConsumer the function which accepts the index and the each value of the iterable.
-     * @param <T> the type of items being returned.
-     */
-    static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
-        int[] index = new int[]{0};
-        iterable.forEach(element -> biConsumer.accept(index[0]++, element));
-    }
-
-    /**
      * Helper method to get per-page table information.
      *
      * @param pageResultItem The extracted page level information returned by the service.
@@ -230,15 +217,22 @@ final class Transforms {
         Map<String, FormField<?>> extractedFieldMap = new TreeMap<>();
         // add receipt fields
         documentResultItem.getFields().forEach((key, fieldValue) -> {
-            FieldText labelText = new FieldText(key, null, fieldValue.getPage(), null);
-            Integer pageNumber = fieldValue.getPage();
-            IterableStream<FormContent> formContentList = null;
-            if (includeTextDetails) {
-                formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+            if (fieldValue != null) {
+                Integer pageNumber = fieldValue.getPage();
+                FieldText labelText = new FieldText(key, null, pageNumber, null);
+                IterableStream<FormContent> formContentList = null;
+                if (includeTextDetails) {
+                    formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+                }
+                FieldText valueText = new FieldText(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                    pageNumber, formContentList);
+                extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
+                    readResults));
+            } else {
+                FieldText labelText = new FieldText(key, null, null, null);
+                extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
+                    key, null, null, null));
             }
-            FieldText valueText = new FieldText(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                pageNumber, formContentList);
-            extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber, readResults));
         });
         return extractedFieldMap;
     }

@@ -13,6 +13,8 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -140,6 +142,24 @@ public class CosmosContainer {
                                                       .replaceProvisionedThroughput(requestUnitsPerSecond));
     }
 
+    /**
+     * Sets the throughput.
+     *
+     * @param throughputProperties the throughput properties
+     * @return the throughput response
+     */
+    public ThroughputResponse replaceThroughput(ThroughputProperties throughputProperties) {
+        return database.throughputResponseToBlock(this.asyncContainer.replaceThroughput(throughputProperties));
+    }
+
+    /**
+     * Gets the throughput.
+     *
+     * @return the throughput response
+     */
+    public ThroughputResponse readThroughput() {
+        return database.throughputResponseToBlock(this.asyncContainer.readThroughput());
+    }
 
     /* CosmosAsyncItem operations */
 

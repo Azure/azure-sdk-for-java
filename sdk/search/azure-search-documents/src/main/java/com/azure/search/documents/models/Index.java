@@ -94,6 +94,15 @@ public final class Index {
     private EncryptionKey encryptionKey;
 
     /*
+     * The type of similarity algorithm to be used when scoring and ranking the
+     * documents matching a search query. The similarity algorithm can only be
+     * defined at index creation time and cannot be modified on existing
+     * indexes. If null, the ClassicSimilarity algorithm is used.
+     */
+    @JsonProperty(value = "similarity")
+    private Similarity similarity;
+
+    /*
      * The ETag of the index.
      */
     @JsonProperty(value = "@odata.etag")
@@ -344,6 +353,34 @@ public final class Index {
      */
     public Index setEncryptionKey(EncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
+        return this;
+    }
+
+    /**
+     * Get the similarity property: The type of similarity algorithm to be used
+     * when scoring and ranking the documents matching a search query. The
+     * similarity algorithm can only be defined at index creation time and
+     * cannot be modified on existing indexes. If null, the ClassicSimilarity
+     * algorithm is used.
+     *
+     * @return the similarity value.
+     */
+    public Similarity getSimilarity() {
+        return this.similarity;
+    }
+
+    /**
+     * Set the similarity property: The type of similarity algorithm to be used
+     * when scoring and ranking the documents matching a search query. The
+     * similarity algorithm can only be defined at index creation time and
+     * cannot be modified on existing indexes. If null, the ClassicSimilarity
+     * algorithm is used.
+     *
+     * @param similarity the similarity value to set.
+     * @return the Index object itself.
+     */
+    public Index setSimilarity(Similarity similarity) {
+        this.similarity = similarity;
         return this;
     }
 

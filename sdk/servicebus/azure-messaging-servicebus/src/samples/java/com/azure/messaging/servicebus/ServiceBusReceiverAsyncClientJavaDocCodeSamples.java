@@ -17,13 +17,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Code snippets demonstrating various {@link ServiceBusReceiverAsyncClient} scenarios.
  */
 public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
-
-    private final ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
-        .connectionString("fake-string")
-        .receiver()
-        .queueName("<< QUEUE NAME >>")
-        .buildAsyncClient();
-
     public void initialization() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
@@ -68,12 +61,11 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
         Disposable subscription = receiver.receive()
-            .subscribe(receivedMessage -> {
-                String messageId = receivedMessage.getMessageId();
-
-                System.out.printf("Received message messageId %s%n", messageId);
-                System.out.printf("Contents of message as string: %s%n", new String(receivedMessage.getBody(), UTF_8));
-            }, error -> System.err.print(error.toString()));
+            .subscribe(context -> {
+                ServiceBusReceivedMessage message = context.getMessage();
+                System.out.printf("Received message id: %s%n", message.getMessageId());
+                System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+            }, error -> System.err.print(error));
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 
         // When program ends, or you're done receiving all messages.
@@ -93,7 +85,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
-        receiver.receive().subscribe(new BaseSubscriber<ServiceBusReceivedMessage>() {
+        receiver.receive().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
             private static final int NUMBER_OF_MESSAGES = 5;
             private final AtomicInteger currentNumberOfMessages = new AtomicInteger();
 
@@ -104,8 +96,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             }
 
             @Override
-            protected void hookOnNext(ServiceBusReceivedMessage value) {
+            protected void hookOnNext(ServiceBusReceivedMessageContext value) {
                 // Process the ServiceBusReceivedMessage
+                ServiceBusReceivedMessage message = value.getMessage();
 
                 // If the number of messages we have currently received is a multiple of 5, that means we have reached
                 // the last message the Subscriber will provide to us. Invoking request(long) here, tells the Publisher
@@ -130,11 +123,10 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receive().subscribe(receivedMessage -> {
-            String messageId = receivedMessage.getMessageId();
-
-            System.out.printf("Received message messageId %s%n", messageId);
-            System.out.printf("Contents of message as string: %s%n", new String(receivedMessage.getBody(), UTF_8));
+        Disposable subscription = receiver.receive().subscribe(context -> {
+            ServiceBusReceivedMessage message = context.getMessage();
+            System.out.printf("Received message id: %s%n", message.getMessageId());
+            System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
         });
 
         // When program ends, or you're done receiving all messages.

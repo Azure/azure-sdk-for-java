@@ -4,17 +4,20 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents an excluded path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public final class ExcludedPath extends JsonSerializable {
+public final class ExcludedPath {
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
      */
     public ExcludedPath() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -23,7 +26,16 @@ public final class ExcludedPath extends JsonSerializable {
      * @param jsonString the json string that represents the excluded path.
      */
     ExcludedPath(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the excluded path.
+     */
+    ExcludedPath(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -32,7 +44,7 @@ public final class ExcludedPath extends JsonSerializable {
      * @return the path.
      */
     public String getPath() {
-        return super.getString(Constants.Properties.PATH);
+        return this.jsonSerializable.getString(Constants.Properties.PATH);
     }
 
     /**
@@ -42,12 +54,13 @@ public final class ExcludedPath extends JsonSerializable {
      * @return the Exculded path.
      */
     public ExcludedPath setPath(String path) {
-        super.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
-        super.populatePropertyBag();
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

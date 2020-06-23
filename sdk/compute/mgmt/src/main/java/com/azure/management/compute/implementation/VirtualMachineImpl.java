@@ -6,8 +6,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
 import com.azure.management.compute.AvailabilitySet;
 import com.azure.management.compute.AvailabilitySetSkuTypes;
 import com.azure.management.compute.BillingProfile;
@@ -66,7 +64,7 @@ import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -77,8 +75,11 @@ import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.Annotated;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -89,7 +90,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -154,7 +154,7 @@ class VirtualMachineImpl
     // Utility to setup MSI for the virtual machine
     private VirtualMachineMsiHandler virtualMachineMsiHandler;
     // Reference to the PublicIp creatable that is implicitly created
-    private PublicIPAddress.DefinitionStages.WithCreate implicitPipCreatable;
+    private PublicIpAddress.DefinitionStages.WithCreate implicitPipCreatable;
     // Name of the new proximity placement group
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
@@ -325,6 +325,16 @@ class VirtualMachineImpl
                 captureResultInner -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
+                        mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+                            @Override
+                            public JsonProperty.Access findPropertyAccess(Annotated annotated) {
+                                JsonProperty.Access access = super.findPropertyAccess(annotated);
+                                if (access == JsonProperty.Access.WRITE_ONLY) {
+                                    return JsonProperty.Access.AUTO;
+                                }
+                                return access;
+                            }
+                        });
                         return mapper.writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
                         throw logger.logExceptionAsError(Exceptions.propagate(ex));
@@ -449,7 +459,7 @@ class VirtualMachineImpl
 
     // Fluent methods for defining public IP association for the new primary network interface
     @Override
-    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+    public VirtualMachineImpl withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withNewPrimaryPublicIPAddress(creatable);
         this.creatablePrimaryNetworkInterfaceKey = this.addDependency(nicCreatable);
@@ -458,13 +468,13 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
-        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup =
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
             this
                 .networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(this.namer.randomName("pip", 15))
                 .withRegion(this.regionName());
-        PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
+        PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.creatableGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
@@ -479,7 +489,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public VirtualMachineImpl withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress) {
         Creatable<NetworkInterface> nicCreatable =
             this.nicDefinitionWithCreate.withExistingPrimaryPublicIPAddress(publicIPAddress);
         this.creatablePrimaryNetworkInterfaceKey = this.addDependency(nicCreatable);
@@ -596,7 +606,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withWindowsCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
-        imageReferenceInner.setId(customImageId);
+        imageReferenceInner.withId(customImageId);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().withImageReference(imageReferenceInner);
         this.inner().osProfile().withWindowsConfiguration(new WindowsConfiguration());
@@ -614,7 +624,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withLinuxCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
-        imageReferenceInner.setId(customImageId);
+        imageReferenceInner.withId(customImageId);
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
         this.inner().storageProfile().withImageReference(imageReferenceInner);
         this.inner().osProfile().withLinuxConfiguration(new LinuxConfiguration());
@@ -641,7 +651,7 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withSpecializedOSDisk(Disk disk, OperatingSystemTypes osType) {
         ManagedDiskParameters diskParametersInner = new ManagedDiskParameters();
-        diskParametersInner.setId(disk.id());
+        diskParametersInner.withId(disk.id());
         this.inner().storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.ATTACH);
         this.inner().storageProfile().osDisk().withManagedDisk(diskParametersInner);
         this.inner().storageProfile().osDisk().withOsType(osType);
@@ -957,7 +967,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl withExistingDataDisk(Disk disk) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParameters managedDiskParameters = new ManagedDiskParameters();
-        managedDiskParameters.setId(disk.id());
+        managedDiskParameters.withId(disk.id());
         this
             .managedDataDisks
             .existingDisksToAttach
@@ -969,7 +979,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl withExistingDataDisk(Disk disk, int lun, CachingTypes cachingType) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParameters managedDiskParameters = new ManagedDiskParameters();
-        managedDiskParameters.setId(disk.id());
+        managedDiskParameters.withId(disk.id());
         this
             .managedDataDisks
             .existingDisksToAttach
@@ -981,7 +991,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl withExistingDataDisk(Disk disk, int newSizeInGB, int lun, CachingTypes cachingType) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
         ManagedDiskParameters managedDiskParameters = new ManagedDiskParameters();
-        managedDiskParameters.setId(disk.id());
+        managedDiskParameters.withId(disk.id());
         this
             .managedDataDisks
             .existingDisksToAttach
@@ -1076,7 +1086,7 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().setId(proximityPlacementGroupId));
+        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         // clear the new setting
         newProximityPlacementGroupName = null;
         return this;
@@ -1148,7 +1158,7 @@ class VirtualMachineImpl
             for (NetworkInterfaceReference nicReference : this.inner().networkProfile().networkInterfaces()) {
                 idx++;
                 if (!nicReference.primary()
-                    && name.equalsIgnoreCase(ResourceUtils.nameFromResourceId(nicReference.getId()))) {
+                    && name.equalsIgnoreCase(ResourceUtils.nameFromResourceId(nicReference.id()))) {
                     this.inner().networkProfile().networkInterfaces().remove(idx);
                     break;
                 }
@@ -1391,7 +1401,7 @@ class VirtualMachineImpl
         if (!isManagedDiskEnabled()) {
             return null;
         }
-        return this.storageProfile().osDisk().managedDisk().getId();
+        return this.storageProfile().osDisk().managedDisk().id();
     }
 
     @Override
@@ -1425,20 +1435,20 @@ class VirtualMachineImpl
     }
 
     @Override
-    public PublicIPAddress getPrimaryPublicIPAddress() {
-        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIPAddress();
+    public PublicIpAddress getPrimaryPublicIPAddress() {
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().getPublicIpAddress();
     }
 
     @Override
     public String getPrimaryPublicIPAddressId() {
-        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIPAddressId();
+        return this.getPrimaryNetworkInterface().primaryIPConfiguration().publicIpAddressId();
     }
 
     @Override
     public List<String> networkInterfaceIds() {
         List<String> nicIds = new ArrayList<>();
         for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
-            nicIds.add(nicRef.getId());
+            nicIds.add(nicRef.id());
         }
         return nicIds;
     }
@@ -1449,7 +1459,7 @@ class VirtualMachineImpl
         String primaryNicRefId = null;
         if (nicRefs.size() == 1) {
             // One NIC so assume it to be primary
-            primaryNicRefId = nicRefs.get(0).getId();
+            primaryNicRefId = nicRefs.get(0).id();
         } else if (nicRefs.size() == 0) {
             // No NICs so null
             primaryNicRefId = null;
@@ -1457,13 +1467,13 @@ class VirtualMachineImpl
             // Find primary interface as flagged by Azure
             for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
                 if (nicRef.primary() != null && nicRef.primary()) {
-                    primaryNicRefId = nicRef.getId();
+                    primaryNicRefId = nicRef.id();
                     break;
                 }
             }
             // If Azure didn't flag any NIC as primary then assume the first one
             if (primaryNicRefId == null) {
-                primaryNicRefId = nicRefs.get(0).getId();
+                primaryNicRefId = nicRefs.get(0).id();
             }
         }
         return primaryNicRefId;
@@ -1472,7 +1482,7 @@ class VirtualMachineImpl
     @Override
     public String availabilitySetId() {
         if (inner().availabilitySet() != null) {
-            return inner().availabilitySet().getId();
+            return inner().availabilitySet().id();
         }
         return null;
     }
@@ -1489,7 +1499,7 @@ class VirtualMachineImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().getId());
+        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
         ProximityPlacementGroupInner plgInner =
             manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
@@ -1713,7 +1723,7 @@ class VirtualMachineImpl
         updateParameter.withAvailabilitySet(this.inner().availabilitySet());
         updateParameter.withLicenseType(this.inner().licenseType());
         updateParameter.withZones(this.inner().zones());
-        updateParameter.withTags(this.inner().getTags());
+        updateParameter.withTags(this.inner().tags());
         updateParameter.withProximityPlacementGroup(this.inner().proximityPlacementGroup());
         updateParameter.withPriority(this.inner().priority());
         this.virtualMachineMsiHandler.handleExternalIdentities(updateParameter);
@@ -1783,22 +1793,7 @@ class VirtualMachineImpl
     }
 
     AzureEnvironment environment() {
-        RestClient restClient = this.manager().getRestClient();
-        AzureEnvironment environment = null;
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            environment = ((AzureTokenCredential) restClient.getCredential()).getEnvironment();
-        }
-        String baseUrl = restClient.getBaseUrl().toString();
-        for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-            if (env.getResourceManagerEndpoint().toLowerCase(Locale.ROOT).contains(baseUrl.toLowerCase(Locale.ROOT))) {
-                environment = env;
-                break;
-            }
-        }
-        if (environment != null) {
-            return environment;
-        }
-        return AzureEnvironment.AZURE;
+        return manager().environment();
     }
 
     private void setOSDiskDefaults() {
@@ -1950,7 +1945,7 @@ class VirtualMachineImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.setLocation(this.inner().getLocation());
+                plgInner.withLocation(this.inner().location());
                 return this
                     .manager()
                     .inner()
@@ -1958,7 +1953,7 @@ class VirtualMachineImpl
                     .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
                     .map(
                         createdPlgInner -> {
-                            this.inner().withProximityPlacementGroup(new SubResource().setId(createdPlgInner.getId()));
+                            this.inner().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }
@@ -1970,7 +1965,7 @@ class VirtualMachineImpl
         if (isInCreateMode()) {
             NetworkInterface primaryNetworkInterface = null;
             if (this.creatablePrimaryNetworkInterfaceKey != null) {
-                primaryNetworkInterface = this.<NetworkInterface>taskResult(this.creatablePrimaryNetworkInterfaceKey);
+                primaryNetworkInterface = this.taskResult(this.creatablePrimaryNetworkInterfaceKey);
             } else if (this.existingPrimaryNetworkInterfaceToAssociate != null) {
                 primaryNetworkInterface = this.existingPrimaryNetworkInterfaceToAssociate;
             }
@@ -1978,7 +1973,7 @@ class VirtualMachineImpl
             if (primaryNetworkInterface != null) {
                 NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
                 nicReference.withPrimary(true);
-                nicReference.setId(primaryNetworkInterface.id());
+                nicReference.withId(primaryNetworkInterface.id());
                 this.inner().networkProfile().networkInterfaces().add(nicReference);
             }
         }
@@ -1987,17 +1982,17 @@ class VirtualMachineImpl
         //
         for (String creatableSecondaryNetworkInterfaceKey : this.creatableSecondaryNetworkInterfaceKeys) {
             NetworkInterface secondaryNetworkInterface =
-                this.<NetworkInterface>taskResult(creatableSecondaryNetworkInterfaceKey);
+                this.taskResult(creatableSecondaryNetworkInterfaceKey);
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);
-            nicReference.setId(secondaryNetworkInterface.id());
+            nicReference.withId(secondaryNetworkInterface.id());
             this.inner().networkProfile().networkInterfaces().add(nicReference);
         }
 
         for (NetworkInterface secondaryNetworkInterface : this.existingSecondaryNetworkInterfacesToAssociate) {
             NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
             nicReference.withPrimary(false);
-            nicReference.setId(secondaryNetworkInterface.id());
+            nicReference.withId(secondaryNetworkInterface.id());
             this.inner().networkProfile().networkInterfaces().add(nicReference);
         }
     }
@@ -2019,7 +2014,7 @@ class VirtualMachineImpl
                 this.inner().withAvailabilitySet(new SubResource());
             }
 
-            this.inner().availabilitySet().setId(availabilitySet.id());
+            this.inner().availabilitySet().withId(availabilitySet.id());
         }
     }
 
@@ -2091,7 +2086,7 @@ class VirtualMachineImpl
     private boolean isOSDiskAttachedManaged(OSDisk osDisk) {
         return osDisk.createOption() == DiskCreateOptionTypes.ATTACH
             && osDisk.managedDisk() != null
-            && osDisk.managedDisk().getId() != null;
+            && osDisk.managedDisk().id() != null;
     }
 
     /**
@@ -2130,7 +2125,7 @@ class VirtualMachineImpl
      */
     private boolean isOsDiskFromCustomImage(StorageProfile storageProfile) {
         ImageReference imageReference = storageProfile.imageReference();
-        return isOSDiskFromImage(storageProfile.osDisk()) && imageReference != null && imageReference.getId() != null;
+        return isOSDiskFromImage(storageProfile.osDisk()) && imageReference != null && imageReference.id() != null;
     }
 
     /**
@@ -2164,7 +2159,7 @@ class VirtualMachineImpl
 
     private void initializeDataDisks() {
         if (this.inner().storageProfile().dataDisks() == null) {
-            this.inner().storageProfile().withDataDisks(new ArrayList<DataDisk>());
+            this.inner().storageProfile().withDataDisks(new ArrayList<>());
         }
 
         this.isUnmanagedDiskSelected = false;
@@ -2223,7 +2218,7 @@ class VirtualMachineImpl
             @Override
             public String resourceId() {
                 if (inner() != null) {
-                    return inner().getId();
+                    return inner().id();
                 } else {
                     return null;
                 }
@@ -2338,14 +2333,14 @@ class VirtualMachineImpl
         private void setAttachableNewDataDisks(Callable<Integer> nextLun) throws Exception {
             List<DataDisk> dataDisks = vm.inner().storageProfile().dataDisks();
             for (Map.Entry<String, DataDisk> entry : this.newDisksToAttach.entrySet()) {
-                Disk managedDisk = vm.<Disk>taskResult(entry.getKey());
+                Disk managedDisk = vm.taskResult(entry.getKey());
                 DataDisk dataDisk = entry.getValue();
                 dataDisk.withCreateOption(DiskCreateOptionTypes.ATTACH);
                 if (dataDisk.lun() == -1) {
                     dataDisk.withLun(nextLun.call());
                 }
                 dataDisk.withManagedDisk(new ManagedDiskParameters());
-                dataDisk.managedDisk().setId(managedDisk.id());
+                dataDisk.managedDisk().withId(managedDisk.id());
                 if (dataDisk.caching() == null) {
                     dataDisk.withCaching(getDefaultCachingType());
                 }

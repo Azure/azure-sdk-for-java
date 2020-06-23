@@ -29,7 +29,7 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> applyTagsToInnerAsync() {
-        return this.manager().inner().routeTables().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this.manager().inner().routeTables().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override

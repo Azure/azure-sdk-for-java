@@ -18,83 +18,72 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 </dependency>
 ```
 
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
+<!-- SDK dependencies   -->
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.0.6</version>
+</dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
     <version>4.2.0-beta.1</version>
 </dependency>
-```
-[//]: # ({x-version-update-end})
-[//]: # ({x-version-update-start;com.azure:azure-core-tracing-opentelemetry;current})
-```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
     <version>1.0.0-beta.4</version>
 </dependency>
 ```
-[//]: # ({x-version-update-end})
 
 #### Sample demonstrates tracing when creating and listing secrets from a Key Vault using [azure-security-keyvault-secrets][azure_keyvault_secrets] client library.
 ```java
-import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.context.Scope;
+import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
+import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 
-import java.util.logging.Logger;
-
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static java.util.logging.Logger.getLogger;
-
 public class Sample {
-    final static String VAULT_URL = "<YOUR_VAULT_URL>";
-    private static final Logger LOGGER = getLogger("Sample");
-    private static  final Tracer TRACER;
-    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
+  private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
+  private static final String VAULT_URL = "<YOUR_VAULT_URL>";
+  
+  public static void main(String[] args) {
+    doClientWork();
+  }
+  
+  private static Tracer configureOpenTelemetryAndLoggingExporter() {
+    LoggingSpanExporter exporter = new LoggingSpanExporter();
+    TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerProvider();
+    tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+    return tracerSdkProvider.get("Sample");
+  }
+    
+  private static void doClientWork() {
+    SecretClient secretClient = new SecretClientBuilder()
+        .vaultUrl(VAULT_URL)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 
-    static {
-        TRACER_SDK_PROVIDER = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_PROVIDER.get("Sample");
+    Span span = TRACER.spanBuilder("user-parent-span").startSpan();
+    try (final Scope scope = TRACER.withSpan(span)) {
+        secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
+        secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
+          // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
+          KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
+          System.out.printf("Retrieved Secret with name: ", secret.getName());
+        });
+    } finally {
+        span.end();
     }
-
-    public static void main(String[] args) {
-        doClientWork();
-        TRACER_SDK_PROVIDER.shutdown();
-    }
-
-    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
-        LoggingExporter exporter = new LoggingExporter();
-        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
-        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
-
-        return tracerSdkProvider;
-    }
-
-    private static void doClientWork() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl("VAULT_URL")
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
-        Span span = tracer.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = TRACER.withSpan(span)) {
-            secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
-            secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {
-                KeyVaultSecret secret = secretClient.getSecret(secretProperties.getName());
-                LOGGER.info("Retrieved Secret with name: ", secret.getName());
-            });
-        } finally {
-            span.end();
-        }
-    }
+  }
 }
 ```
 

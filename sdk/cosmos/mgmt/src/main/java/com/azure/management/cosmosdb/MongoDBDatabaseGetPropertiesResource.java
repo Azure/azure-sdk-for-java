@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MongoDBDatabaseGetPropertiesResource model. */
 @Immutable
 public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBDatabaseGetPropertiesResource.class);
+
     /*
      * A system generated property. A unique identifier.
      */
@@ -56,5 +60,15 @@ public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseR
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

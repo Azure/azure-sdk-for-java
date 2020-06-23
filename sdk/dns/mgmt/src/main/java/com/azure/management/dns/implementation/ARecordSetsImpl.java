@@ -64,6 +64,6 @@ class ARecordSetsImpl extends DnsRecordSetsBaseImpl<ARecordSet, ARecordSetImpl> 
 
     @Override
     protected ARecordSetImpl wrapModel(RecordSetInner inner) {
-        return new ARecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new ARecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

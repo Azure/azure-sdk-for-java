@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import org.assertj.core.api.Assertions;
 import org.mockito.stubbing.Answer;
@@ -37,7 +37,7 @@ public class RetryThrottleTest extends TestSuiteBase {
 
     @Test(groups = { "long" }, timeOut = LARGE_TIMEOUT, enabled = false)
     public void retryCreateDocumentsOnSpike() throws Exception {
-        ConnectionPolicy policy = new ConnectionPolicy();
+        ConnectionPolicy policy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
         throttlingRetryOptions.setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
         throttlingRetryOptions.setMaxRetryWaitTime(Duration.ofSeconds(LARGE_TIMEOUT));
@@ -47,7 +47,8 @@ public class RetryThrottleTest extends TestSuiteBase {
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(policy)
-                .withConsistencyLevel(ConsistencyLevel.EVENTUAL);
+                .withConsistencyLevel(ConsistencyLevel.EVENTUAL)
+                .withContentResponseOnWriteEnabled(true);
 
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
 

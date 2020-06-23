@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InstancePoolVcoresCapability model. */
 @Fluent
 public final class InstancePoolVcoresCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolVcoresCapability.class);
+
     /*
      * The virtual cores identifier.
      */
@@ -94,5 +98,16 @@ public final class InstancePoolVcoresCapability {
     public InstancePoolVcoresCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (storageLimit() != null) {
+            storageLimit().validate();
+        }
     }
 }

@@ -9,10 +9,15 @@ import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -21,7 +26,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,8 +34,13 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -43,7 +52,7 @@ class ExtractKeyPhraseAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
+     * Create an {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
      * keyphrase endpoint.
      *
      * @param service The proxy service used to perform REST calls.
@@ -53,38 +62,29 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains extracted key phrases.
+     * Helper function for calling service with max overloaded parameters that a returns {@link KeyPhrasesCollection}.
      *
      * @param document A document.
      * @param language The language code.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of extracted key phrases strings.
+     * @return The {@link Mono} of {@link KeyPhrasesCollection} extracted key phrases strings.
      */
-    TextAnalyticsPagedFlux<String> extractKeyPhrasesSingleText(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedFlux<>(() ->
-            (continuationToken, pageSize) -> extractKeyPhrases(
-                Collections.singletonList(new TextDocumentInput("0", document, language)), null).byPage()
-                .map(resOfResult -> {
-                    Iterator<ExtractKeyPhraseResult> iterator = resOfResult.getValue().iterator();
-                    // Collection will never empty
-                    if (!iterator.hasNext()) {
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "An empty collection returned which is an unexpected error."));
-                    }
-
-                    final ExtractKeyPhraseResult keyPhraseResult = iterator.next();
-                    if (keyPhraseResult.isError()) {
-                        throw logger.logExceptionAsError(
-                            Transforms.toTextAnalyticsException(keyPhraseResult.getError()));
-                    }
-
-                    return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                        keyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()),
-                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
-                }));
+    Mono<KeyPhrasesCollection> extractKeyPhrasesSingleText(String document, String language) {
+        try {
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
+            textDocumentInput.setLanguage(language);
+            return extractKeyPhrases(Collections.singletonList(textDocumentInput), null)
+                    .map(keyPhraseResult -> {
+                        if (keyPhraseResult.isError()) {
+                            throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
+                        }
+                        return new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
+                            keyPhraseResult.getKeyPhrases().getWarnings());
+                    }).last();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -98,18 +98,12 @@ class ExtractKeyPhraseAsyncClient {
      */
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrases(Iterable<TextDocumentInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
-        }
-
         try {
+            inputDocumentsValidation(documents);
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getExtractedKeyPhrasesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
@@ -125,14 +119,13 @@ class ExtractKeyPhraseAsyncClient {
      */
     TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        final Iterator<TextDocumentInput> iterator = documents.iterator();
-        if (!iterator.hasNext()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        try {
+            inputDocumentsValidation(documents);
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
+                getExtractedKeyPhrasesResponseInPage(documents, options, context).flux());
+        } catch (RuntimeException ex) {
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
-
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getExtractedKeyPhrasesResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -155,15 +148,28 @@ class ExtractKeyPhraseAsyncClient {
                 documentId,
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                new IterableStream<>(documentKeyPhrases.getKeyPhrases())));
+                new KeyPhrasesCollection(
+                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
+                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
+                            warning.getMessage()))
+                        .collect(Collectors.toList())))));
         }
-
+        // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            final com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                toTextAnalyticsError(documentError.getError());
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(
+                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
+                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
+            }
 
+            final TextAnalyticsError error = toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
-
             keyPhraseResultList.add(new ExtractKeyPhraseResult(
                 documentId, null, error, null));
         }
@@ -190,14 +196,15 @@ class ExtractKeyPhraseAsyncClient {
      */
     private Mono<TextAnalyticsPagedResponse<ExtractKeyPhraseResult>> getExtractedKeyPhrasesResponseInPage(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.keyPhrasesWithRestResponseAsync(
+        return service.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            options == null ? null : options.isIncludeStatistics())
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+            .map(this::toTextAnalyticsPagedResponse)
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

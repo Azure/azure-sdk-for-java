@@ -1,31 +1,50 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjava6986112b51fc6c68a4f95aca5575a.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "bd7c4fc3-d880-4b28-b377-6cea790bde49",
+      "x-ms-client-request-id" : "fc8e62dd-bed8-461e-b172-5ee6d135f6b7",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bd7c4fc3-d880-4b28-b377-6cea790bde49",
+      "request-id" : "fc8e62dd-bed8-461e-b172-5ee6d135f6b7",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:11:21 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:04 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "bd7c4fc3-d880-4b28-b377-6cea790bde49",
-      "ETag" : "W/\"0x8D7E627C73F29C9\"",
-      "elapsed-time" : "120",
+      "client-request-id" : "fc8e62dd-bed8-461e-b172-5ee6d135f6b7",
+      "ETag" : "W/\"0x8D7F5D688494995\"",
+      "elapsed-time" : "64",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "782",
-      "Body" : "{\"@odata.context\":\"https://azsjava6986112b51fc6c68a4f95aca5575a.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627C73F29C9\\\"\",\"name\":\"merge-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":null,\"insertPostTag\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Content-Length" : "780",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D688494995\\\"\",\"name\":\"merge-skillset17376b5d1c953164543\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":null,\"insertPostTag\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjava6986112b51fc6c68a4f95aca5575a.search.windows.net/skillsets('merge-skillset')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('merge-skillset17376b5d1c953164543')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('merge-skillset17376b5d1c953164543')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "ba1b9cda-db51-40d4-9ee5-8220eb8780be"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ba1b9cda-db51-40d4-9ee5-8220eb8780be",
+      "elapsed-time" : "44",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ba1b9cda-db51-40d4-9ee5-8220eb8780be",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:04 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjava6986112b51fc6c68a4f95aca5575a" ]
+  "variables" : [ "merge-skillset17376b5d1c953164543" ]
 }

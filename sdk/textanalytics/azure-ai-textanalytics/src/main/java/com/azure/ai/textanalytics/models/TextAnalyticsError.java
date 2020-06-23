@@ -47,7 +47,7 @@ public final class TextAnalyticsError {
      *
      * @return The code value.
      */
-    public TextAnalyticsErrorCode getCode() {
+    public TextAnalyticsErrorCode getErrorCode() {
         return this.code;
     }
 

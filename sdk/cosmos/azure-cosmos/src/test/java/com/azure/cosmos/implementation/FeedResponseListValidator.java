@@ -4,9 +4,16 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CosmosConflictProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.time.Duration;
@@ -18,12 +25,12 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public interface FeedResponseListValidator<T extends Resource> {
+public interface FeedResponseListValidator<T> {
 
     void validate(List<FeedResponse<T>> feedList);
 
-    class Builder<T extends Resource> {
-        private List<FeedResponseListValidator<? extends Resource>> validators = new ArrayList<>();
+    class Builder<T> {
+        private List<FeedResponseListValidator<?>> validators = new ArrayList<>();
 
         public FeedResponseListValidator<T> build() {
             return new FeedResponseListValidator<T>() {
@@ -57,7 +64,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                     List<String> actualIds = feedList
                             .stream()
                             .flatMap(f -> f.getResults().stream())
-                            .map(r -> r.getResourceId())
+                            .map(r -> getResource(r).getResourceId())
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")
@@ -74,7 +81,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                     List<String> actualIds = feedList
                             .stream()
                             .flatMap(f -> f.getResults().stream())
-                            .map(r -> r.getId())
+                            .map(r -> getResource(r).getId())
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("IDs of results")
@@ -94,7 +101,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                             .collect(Collectors.toList());
 
                     for(T r: resources) {
-                        ResourceValidator<T> validator = resourceIDToValidator.get(r.getResourceId());
+                        ResourceValidator<T> validator = resourceIDToValidator.get(getResource(r).getResourceId());
                         assertThat(validator).isNotNull();
                         validator.validate(r);
                     }
@@ -110,7 +117,7 @@ public interface FeedResponseListValidator<T extends Resource> {
                     List<String> actualIds = feedList
                             .stream()
                             .flatMap(f -> f.getResults().stream())
-                            .map(Resource::getResourceId)
+                            .map(r -> getResource(r).getResourceId())
                             .collect(Collectors.toList());
                     assertThat(actualIds)
                     .describedAs("Resource IDs of results")
@@ -298,6 +305,21 @@ public interface FeedResponseListValidator<T extends Resource> {
                 }
             });
             return this;
+        }
+
+        private <T> Resource getResource(T response) {
+            if (response instanceof Resource
+                || response instanceof CosmosConflictProperties
+                || response instanceof CosmosContainerProperties
+                || response instanceof CosmosDatabaseProperties
+                || response instanceof CosmosPermissionProperties
+                || response instanceof CosmosStoredProcedureProperties
+                || response instanceof CosmosTriggerProperties
+                || response instanceof CosmosUserDefinedFunctionProperties
+                || response instanceof CosmosUserProperties) {
+                return ModelBridgeInternal.getResource(response);
+            }
+            return null;
         }
     }
 }

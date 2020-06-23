@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PerformanceLevelCapability model. */
 @Immutable
 public final class PerformanceLevelCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PerformanceLevelCapability.class);
+
     /*
      * Performance level value.
      */
@@ -38,5 +42,13 @@ public final class PerformanceLevelCapability {
      */
     public PerformanceLevelUnit unit() {
         return this.unit;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

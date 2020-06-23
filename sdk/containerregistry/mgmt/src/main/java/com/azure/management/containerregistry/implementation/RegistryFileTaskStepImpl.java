@@ -143,7 +143,7 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
     }
 
     private boolean isInCreateMode() {
-        if (this.taskImpl.inner().getId() == null) {
+        if (this.taskImpl.inner().id() == null) {
             return true;
         }
         return false;

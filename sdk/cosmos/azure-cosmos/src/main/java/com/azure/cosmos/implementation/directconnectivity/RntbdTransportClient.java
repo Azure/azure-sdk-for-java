@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -70,8 +72,8 @@ public final class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final Duration requestTimeout, final UserAgentContainer userAgent) {
-        this(new Options.Builder(requestTimeout).userAgent(userAgent).build(), configs.getSslContext());
+    RntbdTransportClient(final Configs configs, final ConnectionPolicy connectionPolicy, final UserAgentContainer userAgent) {
+        this(new Options.Builder(connectionPolicy).userAgent(userAgent).build(), configs.getSslContext());
     }
 
     // endregion
@@ -109,8 +111,6 @@ public final class RntbdTransportClient extends TransportClient {
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
 
-        logger.debug("RntbdTransportClient.invokeStoreAsync({}, {})", addressUri, request);
-
         checkNotNull(addressUri, "expected non-null address");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();
@@ -118,9 +118,6 @@ public final class RntbdTransportClient extends TransportClient {
         URI address = addressUri.getURI();
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, address);
-
-        requestArgs.traceOperation(logger, null, "invokeStoreAsync");
-
         final RntbdEndpoint endpoint = this.endpointProvider.get(address);
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
@@ -134,8 +131,9 @@ public final class RntbdTransportClient extends TransportClient {
                 request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }
 
-            if(response != null) {
-                response.setRequestTimeline(record.takeTimelineSnapshot());
+            if (response != null) {
+                RequestTimeline timeline = record.takeTimelineSnapshot();
+                response.setRequestTimeline(timeline);
             }
         })).doOnCancel(() -> {
             logger.debug("REQUEST CANCELLED: {}", record);
@@ -175,6 +173,9 @@ public final class RntbdTransportClient extends TransportClient {
         private final int bufferPageSize;
 
         @JsonProperty()
+        private final Duration connectionAcquisitionTimeout;
+
+        @JsonProperty()
         private final Duration connectionTimeout;
 
         @JsonProperty()
@@ -199,6 +200,7 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration requestExpiryInterval;
 
         @JsonProperty()
+        //  TODO: (DANOBLE) - should we expose it through com.azure.cosmos.DirectConnectionConfig ?
         private final Duration requestTimeout;
 
         @JsonProperty()
@@ -210,6 +212,9 @@ public final class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration shutdownTimeout;
 
+        @JsonProperty()
+        private final int threadCount;
+
         @JsonIgnore()
         private final UserAgentContainer userAgent;
 
@@ -219,6 +224,7 @@ public final class RntbdTransportClient extends TransportClient {
 
         private Options() {
             this.bufferPageSize = 8192;
+            this.connectionAcquisitionTimeout = Duration.ZERO;
             this.connectionTimeout = null;
             this.idleChannelTimeout = Duration.ZERO;
             this.idleEndpointTimeout = Duration.ofSeconds(70L);
@@ -228,15 +234,17 @@ public final class RntbdTransportClient extends TransportClient {
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
             this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = null;
-            this.requestTimerResolution = Duration.ofMillis(5L);
+            this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
             this.shutdownTimeout = Duration.ofSeconds(15L);
+            this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
         }
 
         private Options(Builder builder) {
 
             this.bufferPageSize = builder.bufferPageSize;
+            this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
@@ -248,6 +256,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
+            this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
 
             this.connectionTimeout = builder.connectionTimeout == null
@@ -261,6 +270,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         public int bufferPageSize() {
             return this.bufferPageSize;
+        }
+
+        public Duration connectionAcquisitionTimeout() {
+            return this.connectionAcquisitionTimeout;
         }
 
         public Duration connectionTimeout() {
@@ -309,6 +322,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         public Duration shutdownTimeout() {
             return this.shutdownTimeout;
+        }
+
+        public int threadCount() {
+            return this.threadCount;
         }
 
         public UserAgentContainer userAgent() {
@@ -436,6 +453,7 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             private int bufferPageSize;
+            private Duration connectionAcquisitionTimeout;
             private Duration connectionTimeout;
             private Duration idleChannelTimeout;
             private Duration idleEndpointTimeout;
@@ -448,17 +466,22 @@ public final class RntbdTransportClient extends TransportClient {
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
             private Duration shutdownTimeout;
+            private int threadCount;
             private UserAgentContainer userAgent;
 
             // endregion
 
             // region Constructors
 
-            public Builder(Duration requestTimeout) {
+            public Builder(ConnectionPolicy connectionPolicy) {
 
-                this.requestTimeout(requestTimeout);
+                this.requestTimeout(connectionPolicy.getRequestTimeout());
+
+                //  TODO: (DANOBLE) - Figure out how to get values from connection policy
+                //  At the same time respect the DEFAULT_OPTIONS values - in case user passes some of them.
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
+                this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
                 this.connectionTimeout = DEFAULT_OPTIONS.connectionTimeout;
                 this.idleChannelTimeout = DEFAULT_OPTIONS.idleChannelTimeout;
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
@@ -470,11 +493,8 @@ public final class RntbdTransportClient extends TransportClient {
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
+                this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
-            }
-
-            public Builder(int requestTimeoutInSeconds) {
-                this(Duration.ofSeconds(requestTimeoutInSeconds));
             }
 
             // endregion
@@ -495,6 +515,12 @@ public final class RntbdTransportClient extends TransportClient {
                     this.bufferPageSize,
                     this.maxBufferCapacity);
                 return new Options(this);
+            }
+
+            public Builder connectionAcquisitionTimeout(final Duration value) {
+                checkNotNull(value, "expected non-null value");
+                this.connectionTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
+                return this;
             }
 
             public Builder connectionTimeout(final Duration value) {
@@ -584,6 +610,12 @@ public final class RntbdTransportClient extends TransportClient {
                     "expected positive value, not %s",
                     value);
                 this.shutdownTimeout = value;
+                return this;
+            }
+
+            public Builder threadCount(final int value) {
+                checkArgument(value > 0, "expected positive value, not %s", value);
+                this.threadCount = value;
                 return this;
             }
 

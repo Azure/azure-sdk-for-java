@@ -6,6 +6,8 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DedicatedHostUpdate extends UpdateResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostUpdate.class);
+
     /*
      * Fault domain of the dedicated host within a dedicated host group.
      */
@@ -179,5 +183,21 @@ public class DedicatedHostUpdate extends UpdateResource {
      */
     public DedicatedHostInstanceView instanceView() {
         return this.instanceView;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (virtualMachines() != null) {
+            virtualMachines().forEach(e -> e.validate());
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
     }
 }

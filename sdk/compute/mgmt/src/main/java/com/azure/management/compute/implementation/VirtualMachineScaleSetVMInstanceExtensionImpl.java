@@ -28,7 +28,7 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -38,7 +38,7 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public String typeName() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
@@ -73,10 +73,10 @@ class VirtualMachineScaleSetVMInstanceExtensionImpl
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().getTags() == null) {
+        if (this.inner().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
         }
-        return Collections.unmodifiableMap(this.inner().getTags());
+        return Collections.unmodifiableMap(this.inner().tags());
     }
 
     private void initializeSettings() {

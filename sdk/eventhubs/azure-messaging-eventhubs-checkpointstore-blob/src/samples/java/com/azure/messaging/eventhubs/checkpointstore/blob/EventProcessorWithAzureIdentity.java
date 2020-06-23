@@ -59,8 +59,9 @@ public class EventProcessorWithAzureIdentity {
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
             .credential(credential)
+            .endpoint("<< STORAGE ENDPOINT >>")
             .containerName("<< CONTAINER NAME >>")
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS))
             .buildAsyncClient();
 
         EventProcessorClientBuilder eventProcessorClientBuilder = new EventProcessorClientBuilder()

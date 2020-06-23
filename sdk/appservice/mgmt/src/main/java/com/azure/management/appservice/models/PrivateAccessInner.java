@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.PrivateAccessVirtualNetwork;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class PrivateAccessInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateAccessInner.class);
+
     /*
      * Whether private access is enabled or not.
      */
@@ -65,5 +69,18 @@ public class PrivateAccessInner extends ProxyOnlyResource {
     public PrivateAccessInner withVirtualNetworks(List<PrivateAccessVirtualNetwork> virtualNetworks) {
         this.virtualNetworks = virtualNetworks;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (virtualNetworks() != null) {
+            virtualNetworks().forEach(e -> e.validate());
+        }
     }
 }

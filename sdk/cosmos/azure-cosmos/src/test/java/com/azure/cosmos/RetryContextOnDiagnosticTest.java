@@ -129,8 +129,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY);
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        CosmosClient cosmosClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
+        CosmosClient cosmosClient = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
         CosmosAsyncContainer cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl)cosmosClient.asyncClient().getContextClient();
         RxStoreModel mockStoreModel = Mockito.mock(RxStoreModel.class);

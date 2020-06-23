@@ -5,7 +5,6 @@ package com.azure.management.network;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.keyvault.Secret;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.msi.Identity;
@@ -29,9 +28,9 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
     public void canCRUDApplicationGatewayWithWAF() throws Exception {
         String appGatewayName = sdkContext.randomResourceName("agwaf", 15);
         String appPublicIp = sdkContext.randomResourceName("pip", 15);
-        PublicIPAddress pip =
+        PublicIpAddress pip =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(appPublicIp)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
@@ -56,7 +55,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .toBackendIPAddress("11.1.1.1")
                 .toBackendIPAddress("11.1.1.2")
                 .attach()
-                .withExistingPublicIPAddress(pip)
+                .withExistingPublicIpAddress(pip)
                 .withTier(ApplicationGatewayTier.WAF_V2)
                 .withSize(ApplicationGatewaySkuName.WAF_V2)
                 .withAutoScale(2, 5)
@@ -125,18 +124,15 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         String appPublicIp = sdkContext.randomResourceName("pip", 15);
         String identityName = sdkContext.randomResourceName("id", 10);
 
-        PublicIPAddress pip =
+        PublicIpAddress pip =
             networkManager
-                .publicIPAddresses()
+                .publicIpAddresses()
                 .define(appPublicIp)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
                 .create();
-
-        ApplicationTokenCredential credentials =
-            ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
 
         Identity identity =
             msiManager
@@ -149,8 +145,8 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertNotNull(identity.name());
         Assertions.assertNotNull(identity.principalId());
 
-        Secret secret1 = createKeyVaultSecret(credentials.getClientId(), identity.principalId());
-        Secret secret2 = createKeyVaultSecret(credentials.getClientId(), identity.principalId());
+        Secret secret1 = createKeyVaultSecret(clientIdFromFile(), identity.principalId());
+        Secret secret2 = createKeyVaultSecret(clientIdFromFile(), identity.principalId());
 
         ManagedServiceIdentity serviceIdentity = createManagedServiceIdentityFromIdentity(identity);
 
@@ -173,7 +169,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .defineSslCertificate("ssl1")
                 .withKeyVaultSecretId(secret1.id())
                 .attach()
-                .withExistingPublicIPAddress(pip)
+                .withExistingPublicIpAddress(pip)
                 .withTier(ApplicationGatewayTier.WAF_V2)
                 .withSize(ApplicationGatewaySkuName.WAF_V2)
                 .withAutoScale(2, 5)

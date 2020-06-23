@@ -31,10 +31,10 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -220,14 +220,6 @@ public final class BridgeInternal {
         return account.getEnableMultipleWriteLocations();
     }
 
-    public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
-        return policy.isUsingMultipleWriteLocations();
-    }
-
-    public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {
-        policy.setUsingMultipleWriteLocations(value);
-    }
-
     public static <E extends CosmosClientException> Uri getRequestUri(CosmosClientException cosmosClientException) {
         return cosmosClientException.requestUri;
     }
@@ -317,7 +309,8 @@ public final class BridgeInternal {
     public static CosmosClientException createCosmosClientException(int statusCode, String errorMessage) {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode, errorMessage, null, null);
         cosmosClientException.setError(new CosmosError());
-        ModelBridgeInternal.setProperty(cosmosClientException.getError(), Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(
+            ModelBridgeInternal.getJsonSerializable(cosmosClientException.getError()), Constants.Properties.MESSAGE, errorMessage);
         return cosmosClientException;
     }
 

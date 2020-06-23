@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.management;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.network.ApplicationGateway;
@@ -14,7 +15,7 @@ import com.azure.management.network.ApplicationGatewayOperationalState;
 import com.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -23,6 +24,8 @@ import com.azure.management.resources.fluentcore.model.CreatedResources;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,10 +33,10 @@ public class ApplicationGatewayTests extends TestBase {
     private Azure azure;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         Azure.Authenticated azureAuthed =
-            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
     }
 
     @Override
@@ -171,7 +174,7 @@ public class ApplicationGatewayTests extends TestBase {
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
                     for (ApplicationGatewayBackendServerHealth serverHealth
                         : backendConfigHealth.serverHealths().values()) {
-                        NicIPConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
+                        NicIpConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
                         if (ipConfig != null) {
                             info
                                 .append("\n\t\t\t\tServer NIC ID: ")
@@ -220,7 +223,7 @@ public class ApplicationGatewayTests extends TestBase {
             Assertions.assertEquals(1, httpConfigHealth2.serverHealths().size());
             ApplicationGatewayBackendServerHealth serverHealth =
                 httpConfigHealth2.serverHealths().values().iterator().next();
-            NicIPConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
+            NicIpConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
             Assertions.assertEquals(nic.primaryIPConfiguration().name(), ipConfig2.name());
         } catch (Exception e) {
             throw e;
@@ -337,7 +340,7 @@ public class ApplicationGatewayTests extends TestBase {
             try {
                 ApplicationGateway ag = azure.applicationGateways().getById(id);
                 Assertions.assertNull(ag);
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
                 Assertions.assertEquals(404, e.getResponse().getStatusCode());
             }
         }

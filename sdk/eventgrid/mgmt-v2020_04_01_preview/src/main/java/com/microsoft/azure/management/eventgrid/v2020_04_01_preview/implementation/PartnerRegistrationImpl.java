@@ -73,8 +73,28 @@ class PartnerRegistrationImpl extends GroupableResourceCoreImpl<PartnerRegistrat
     }
 
     @Override
+    public String customerServiceUri() {
+        return this.inner().customerServiceUri();
+    }
+
+    @Override
     public String logoUri() {
         return this.inner().logoUri();
+    }
+
+    @Override
+    public String longDescription() {
+        return this.inner().longDescription();
+    }
+
+    @Override
+    public String partnerCustomerServiceExtension() {
+        return this.inner().partnerCustomerServiceExtension();
+    }
+
+    @Override
+    public String partnerCustomerServiceNumber() {
+        return this.inner().partnerCustomerServiceNumber();
     }
 
     @Override
@@ -110,6 +130,30 @@ class PartnerRegistrationImpl extends GroupableResourceCoreImpl<PartnerRegistrat
     @Override
     public PartnerRegistrationVisibilityState visibilityState() {
         return this.inner().visibilityState();
+    }
+
+    @Override
+    public PartnerRegistrationImpl withCustomerServiceUri(String customerServiceUri) {
+        this.inner().withCustomerServiceUri(customerServiceUri);
+        return this;
+    }
+
+    @Override
+    public PartnerRegistrationImpl withLongDescription(String longDescription) {
+        this.inner().withLongDescription(longDescription);
+        return this;
+    }
+
+    @Override
+    public PartnerRegistrationImpl withPartnerCustomerServiceExtension(String partnerCustomerServiceExtension) {
+        this.inner().withPartnerCustomerServiceExtension(partnerCustomerServiceExtension);
+        return this;
+    }
+
+    @Override
+    public PartnerRegistrationImpl withPartnerCustomerServiceNumber(String partnerCustomerServiceNumber) {
+        this.inner().withPartnerCustomerServiceNumber(partnerCustomerServiceNumber);
+        return this;
     }
 
     @Override

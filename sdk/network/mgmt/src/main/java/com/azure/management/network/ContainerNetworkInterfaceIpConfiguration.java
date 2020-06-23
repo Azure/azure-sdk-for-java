@@ -6,12 +6,16 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerNetworkInterfaceIpConfiguration model. */
 @JsonFlatten
 @Fluent
 public class ContainerNetworkInterfaceIpConfiguration {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceIpConfiguration.class);
+
     /*
      * The name of the resource. This name can be used to access the resource.
      */
@@ -92,5 +96,13 @@ public class ContainerNetworkInterfaceIpConfiguration {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

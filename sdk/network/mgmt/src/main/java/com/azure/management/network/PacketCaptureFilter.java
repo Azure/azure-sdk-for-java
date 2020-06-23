@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PacketCaptureFilter model. */
 @Fluent
 public final class PacketCaptureFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureFilter.class);
+
     /*
      * Protocol to be filtered on.
      */
@@ -23,7 +27,7 @@ public final class PacketCaptureFilter {
      * ranges with multiple entries not currently supported. Default = null.
      */
     @JsonProperty(value = "localIPAddress")
-    private String localIPAddress;
+    private String localIpAddress;
 
     /*
      * Local IP Address to be filtered on. Notation: "127.0.0.1" for single
@@ -32,7 +36,7 @@ public final class PacketCaptureFilter {
      * ranges with multiple entries not currently supported. Default = null.
      */
     @JsonProperty(value = "remoteIPAddress")
-    private String remoteIPAddress;
+    private String remoteIpAddress;
 
     /*
      * Local port to be filtered on. Notation: "80" for single port
@@ -73,50 +77,50 @@ public final class PacketCaptureFilter {
     }
 
     /**
-     * Get the localIPAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
+     * Get the localIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
-     * @return the localIPAddress value.
+     * @return the localIpAddress value.
      */
-    public String localIPAddress() {
-        return this.localIPAddress;
+    public String localIpAddress() {
+        return this.localIpAddress;
     }
 
     /**
-     * Set the localIPAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
+     * Set the localIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
-     * @param localIPAddress the localIPAddress value to set.
+     * @param localIpAddress the localIpAddress value to set.
      * @return the PacketCaptureFilter object itself.
      */
-    public PacketCaptureFilter withLocalIPAddress(String localIPAddress) {
-        this.localIPAddress = localIPAddress;
+    public PacketCaptureFilter withLocalIpAddress(String localIpAddress) {
+        this.localIpAddress = localIpAddress;
         return this;
     }
 
     /**
-     * Get the remoteIPAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
+     * Get the remoteIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
-     * @return the remoteIPAddress value.
+     * @return the remoteIpAddress value.
      */
-    public String remoteIPAddress() {
-        return this.remoteIPAddress;
+    public String remoteIpAddress() {
+        return this.remoteIpAddress;
     }
 
     /**
-     * Set the remoteIPAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
+     * Set the remoteIpAddress property: Local IP Address to be filtered on. Notation: "127.0.0.1" for single address
      * entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not
      * currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
-     * @param remoteIPAddress the remoteIPAddress value to set.
+     * @param remoteIpAddress the remoteIpAddress value to set.
      * @return the PacketCaptureFilter object itself.
      */
-    public PacketCaptureFilter withRemoteIPAddress(String remoteIPAddress) {
-        this.remoteIPAddress = remoteIPAddress;
+    public PacketCaptureFilter withRemoteIpAddress(String remoteIpAddress) {
+        this.remoteIpAddress = remoteIpAddress;
         return this;
     }
 
@@ -166,5 +170,13 @@ public final class PacketCaptureFilter {
     public PacketCaptureFilter withRemotePort(String remotePort) {
         this.remotePort = remotePort;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -22,13 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class SqlSampleTests extends SamplesTestBase {
-//    @Override
-//    protected RestClient buildRestClient(RestClient.Builder builder, boolean isMocked) {
-//        if (!isMocked) {
-//            return super.buildRestClient(builder, isMocked);
-//        }
-//        return super.buildRestClient(builder.withReadTimeout(200, TimeUnit.SECONDS), isMocked);
-//    }
 
     @Test
     public void testManageSqlDatabase() {

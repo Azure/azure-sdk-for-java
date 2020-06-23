@@ -3,11 +3,12 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
-import com.azure.management.RestClient;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.StorageAccountSkuType;
@@ -35,7 +36,7 @@ public class FunctionAppsTests extends AppServiceTest {
     protected StorageManager storageManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-func-", 20);
         webappName2 = generateRandomResourceName("java-func-", 20);
         webappName3 = generateRandomResourceName("java-func-", 20);
@@ -45,9 +46,9 @@ public class FunctionAppsTests extends AppServiceTest {
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         rgName2 = generateRandomResourceName("javacsmrg", 20);
 
-        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class FunctionAppsTests extends AppServiceTest {
         if (rgName2 != null) {
             try {
                 resourceManager.resourceGroups().beginDeleteByName(rgName2);
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
                 // fine, RG_NAME_2 is not created
             }
         }
@@ -189,7 +190,7 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     private static final String FUNCTION_APP_PACKAGE_URL =
-        "https://raw.github.com/Azure/azure-libraries-for-java/master/azure-mgmt-appservice/src/test/resources/java-functions.zip";
+        "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip";
 
     @Test
     public void canCRUDLinuxFunctionApp() throws Exception {

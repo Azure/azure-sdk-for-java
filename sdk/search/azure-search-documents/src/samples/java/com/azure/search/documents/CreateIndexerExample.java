@@ -4,7 +4,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.FieldMapping;
@@ -69,9 +68,7 @@ public class CreateIndexerExample {
 
         System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
         Response<Indexer> response = searchServiceClient.createOrUpdateIndexerWithResponse(
-            indexer,
-            new MatchConditions(),
-            new RequestOptions()
+            indexer, false, new RequestOptions()
         ).block();
 
         if (response != null) {

@@ -91,9 +91,9 @@ public class SqlFailoverGroupImpl
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
-        if (innerObject != null && innerObject.getId() != null) {
+        if (innerObject != null && innerObject.id() != null) {
             try {
-                ResourceId resourceId = ResourceId.fromString(innerObject.getId());
+                ResourceId resourceId = ResourceId.fromString(innerObject.id());
                 this.resourceGroupName = resourceId.resourceGroupName();
                 this.sqlServerName = resourceId.parent().name();
                 this.sqlServerLocation = innerObject.location();
@@ -113,7 +113,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -123,7 +123,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().getId());
+        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
     }
 
     @Override
@@ -241,7 +241,7 @@ public class SqlFailoverGroupImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override

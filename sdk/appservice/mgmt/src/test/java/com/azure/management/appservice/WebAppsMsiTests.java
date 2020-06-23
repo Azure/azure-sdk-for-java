@@ -3,14 +3,15 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.msi.Identity;
 import com.azure.management.msi.implementation.MSIManager;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
@@ -23,13 +24,13 @@ public class WebAppsMsiTests extends AppServiceTest {
     private String vaultName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         webappName1 = generateRandomResourceName("java-webapp-", 20);
         rgName1 = generateRandomResourceName("javacsmrg", 20);
         vaultName = generateRandomResourceName("java-vault-", 20);
-        this.msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override

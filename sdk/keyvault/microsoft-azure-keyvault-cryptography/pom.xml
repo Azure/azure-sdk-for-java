@@ -1,4 +1,4 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under 
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under
 	the MIT License. See License.txt in the project root for license information. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -17,7 +17,13 @@
 	<packaging>jar</packaging>
 
 	<name>Microsoft Azure SDK for Key Vault Cryptography</name>
-	<description>This package contains Microsoft Azure SDK for Key Vault Cryptography.</description>
+  <description>
+    This library has been replaced by new Azure SDKs, you can read about them at https://aka.ms/azsdkvalueprop. The latest libraries to interact with the Azure KeyVault service are:${line.separator}
+    1. https://search.maven.org/artifact/com.azure/azure-security-keyvault-keys${line.separator}
+    2. https://search.maven.org/artifact/com.azure/azure-security-keyvault-secrets${line.separator}
+    3. https://search.maven.org/artifact/com.azure/azure-security-keyvault-certificates${line.separator}
+    It is recommended that you move to the new package.
+  </description>
 	<url>https://github.com/Azure/azure-sdk-for-java</url>
 
     <distributionManagement>
@@ -48,14 +54,14 @@
         <artifactId>azure-keyvault-core</artifactId>
         <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-core;current} -->
       </dependency>
-      
+
       <!-- Jackson dependencies -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
         <version>2.10.1</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       </dependency>
-    
+
       <!-- Other Dependencies -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -72,8 +78,8 @@
         <artifactId>guava</artifactId>
         <version>24.1.1-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
       </dependency>
-    
-    
+
+
       <!-- TEST DEPENDENCIES -->
       <dependency>
         <groupId>junit</groupId>

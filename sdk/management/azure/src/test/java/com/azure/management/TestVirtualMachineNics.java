@@ -9,7 +9,7 @@ import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.VirtualMachines;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -30,7 +30,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         final String rgName = virtualMachines.manager().getSdkContext().randomResourceName("rg", 10);
 
         Creatable<ResourceGroup> resourceGroupCreatable =
-            virtualMachines.manager().getResourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
+            virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
         final String vnetName = virtualMachines.manager().getSdkContext().randomResourceName("vnet", 10);
@@ -74,7 +74,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
 
         // Create Virtual Machine
         final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
-        
+
         final String primaryPipName = "pip" + vmName;
         VirtualMachine virtualMachine =
             virtualMachines
@@ -96,8 +96,8 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         NetworkInterface primaryNetworkInterface = virtualMachine.getPrimaryNetworkInterface();
         Assertions.assertEquals(primaryNetworkInterface.primaryPrivateIP(), "10.0.0.4");
 
-        PublicIPAddress primaryPublicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIPAddress();
-        Assertions.assertTrue(primaryPublicIPAddress.fqdn().startsWith(primaryPipName));
+        PublicIpAddress primaryPublicIpAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIpAddress();
+        Assertions.assertTrue(primaryPublicIpAddress.fqdn().startsWith(primaryPipName));
         return virtualMachine;
     }
 

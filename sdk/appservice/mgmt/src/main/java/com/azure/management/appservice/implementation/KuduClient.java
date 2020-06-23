@@ -12,12 +12,15 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.RestClient;
 import com.azure.management.appservice.KuduAuthenticationPolicy;
 import com.azure.management.appservice.WebAppBase;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -47,29 +50,27 @@ class KuduClient {
     private KuduService service;
 
     KuduClient(WebAppBase webAppBase) {
-        if (webAppBase.defaultHostName() == null) {
+        if (webAppBase.defaultHostname() == null) {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("Cannot initialize kudu client before web app is created"));
         }
-        String host = webAppBase.defaultHostName().toLowerCase(Locale.ROOT)
+        String host = webAppBase.defaultHostname().toLowerCase(Locale.ROOT)
             .replace("http://", "")
             .replace("https://", "");
         String[] parts = host.split("\\.", 2);
         host = parts[0] + ".scm." + parts[1];
         this.host = "https://" + host;
-        RestClient client =
-            webAppBase
-                .manager()
-                .restClient()
-                .newBuilder()
-                .withBaseUrl(this.host)
-                .withPolicy(new KuduAuthenticationPolicy(webAppBase))
-                // TODO (weidxu) support timeout
-                //.withConnectionTimeout(3, TimeUnit.MINUTES)
-                //.withReadTimeout(3, TimeUnit.MINUTES)
-                .buildClient();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        for (int i = 0, count = webAppBase.manager().httpPipeline().getPolicyCount(); i < count; ++i) {
+            policies.add(webAppBase.manager().httpPipeline().getPolicy(i));
+        }
+        policies.add(new KuduAuthenticationPolicy(webAppBase));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
+            .build();
 
-        service = RestProxy.create(KuduService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        service = RestProxy.create(KuduService.class, httpPipeline, new AzureJacksonAdapter());
     }
 
     @Host("{$host}")
@@ -296,8 +297,8 @@ class KuduClient {
                         .zipWith(
                             Flux.range(1, 30),
                             (Throwable throwable, Integer integer) -> {
-                                if (throwable instanceof CloudException
-                                        && ((CloudException) throwable).getResponse().getStatusCode() == 502
+                                if (throwable instanceof ManagementException
+                                        && ((ManagementException) throwable).getResponse().getStatusCode() == 502
                                     || throwable instanceof JsonParseException) {
                                     return integer;
                                 } else {

@@ -23,11 +23,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.appservice.DefaultErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.appservice.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CertificateRegistrationProviders. */
 public final class CertificateRegistrationProvidersInner {
+    private final ClientLogger logger = new ClientLogger(CertificateRegistrationProvidersInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final CertificateRegistrationProvidersService service;
 
@@ -59,14 +62,14 @@ public final class CertificateRegistrationProvidersInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.CertificateRegistration/operations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<CsmOperationCollectionInner>> listOperations(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<CsmOperationCollectionInner>> listOperationsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -75,12 +78,16 @@ public final class CertificateRegistrationProvidersInner {
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listOperations(this.client.getHost(), this.client.getApiVersion(), context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(
@@ -99,7 +106,36 @@ public final class CertificateRegistrationProvidersInner {
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Azure resource manager operation metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        return service
+            .listOperations(this.client.getHost(), this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * provider.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata.
      */
@@ -113,7 +149,23 @@ public final class CertificateRegistrationProvidersInner {
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Azure resource manager operation metadata.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CsmOperationDescriptionInner> listOperationsAsync(Context context) {
+        return new PagedFlux<>(
+            () -> listOperationsSinglePageAsync(context), nextLink -> listOperationsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
+     * provider.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata.
      */
@@ -127,12 +179,15 @@ public final class CertificateRegistrationProvidersInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listOperationsNext(nextLink, context))
             .<PagedResponse<CsmOperationDescriptionInner>>map(
@@ -145,5 +200,34 @@ public final class CertificateRegistrationProvidersInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Azure resource manager operation metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<CsmOperationDescriptionInner>> listOperationsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listOperationsNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

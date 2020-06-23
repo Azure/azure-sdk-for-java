@@ -7,21 +7,13 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
-import com.microsoft.aad.msal4j.IAccount;
-import com.microsoft.aad.msal4j.IAuthenticationResult;
-import com.microsoft.aad.msal4j.PublicClientApplication;
-import com.microsoft.aad.msal4j.SilentParameters;
+import com.azure.identity.implementation.MsalToken;
 import reactor.core.publisher.Mono;
 
-import java.net.MalformedURLException;
-import java.time.ZoneOffset;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A credential provider that provides token credentials from the MSAL shared token cache.
@@ -32,9 +24,9 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
     private final String tenantId;
-    private final IdentityClientOptions options;
+    private final AtomicReference<MsalToken> cachedToken;
 
-    private PublicClientApplication pubClient = null;
+    private final IdentityClient identityClient;
 
     /**
      * Creates an instance of the Shared Token Cache Credential Provider.
@@ -63,7 +55,12 @@ public class SharedTokenCacheCredential implements TokenCredential {
         } else {
             this.tenantId = tenantId;
         }
-        this.options = identityClientOptions;
+        this.identityClient = new IdentityClientBuilder()
+                .tenantId(this.tenantId)
+                .clientId(this.clientId)
+                .identityClientOptions(identityClientOptions)
+                .build();
+        this.cachedToken = new AtomicReference<>();
     }
 
     /**
@@ -71,84 +68,18 @@ public class SharedTokenCacheCredential implements TokenCredential {
      * */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
-        // Initialize here so that the constructor doesn't throw
-        if (pubClient == null) {
-            try {
-                PersistentTokenCacheAccessAspect accessAspect = new PersistentTokenCacheAccessAspect();
-                PublicClientApplication.Builder applicationBuilder =  PublicClientApplication.builder(this.clientId);
-                if (options.getExecutorService() != null) {
-                    applicationBuilder.executorService(options.getExecutorService());
-                }
-
-                pubClient = applicationBuilder
-                    .authority(authorityUrl)
-                    .setTokenCacheAccessAspect(accessAspect)
-                    .build();
-            } catch (Exception e) {
-                return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
-                                                                         + "unavailable." +  e.getMessage(), e));
+        return Mono.defer(() -> {
+            if (cachedToken.get() != null) {
+                return identityClient.authenticateWithMsalAccount(request, cachedToken.get().getAccount())
+                    .onErrorResume(t -> Mono.empty());
+            } else {
+                return Mono.empty();
             }
-        }
-
-        // find if the Public Client app with the requested username exists
-        return Mono.fromFuture(pubClient.getAccounts())
-            .flatMap(set -> {
-                IAccount requestedAccount;
-                Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
-
-                for (IAccount cached : set) {
-                    if (username == null || username.equals(cached.username())) {
-                        if (!accounts.containsKey(cached.homeAccountId())) { // only put the first one
-                            accounts.put(cached.homeAccountId(), cached);
-                        }
-                    }
-                }
-
-                if (set.size() == 0) {
-                    return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
-                             + "unavailable. No accounts were found in the cache."));
-                }
-
-                if (CoreUtils.isNullOrEmpty(username)) {
-                    return Mono.error(new CredentialUnavailableException("SharedTokenCacheCredential authentication "
-                             + "unavailable. Multiple accounts were found in the cache. Use username and tenant id "
-                             + "to disambiguate."));
-                }
-
-                if (accounts.size() != 1) {
-                    if (accounts.size() == 0) {
-                        return Mono.error(new CredentialUnavailableException(
-                            String.format("SharedTokenCacheCredential authentication "
-                             + "unavailable. No account matching the specified username %s was found in "
-                             + "the cache.", username)));
-                    } else {
-                        return Mono.error(new CredentialUnavailableException(String.format("SharedTokenCacheCredential"
-                             + " authentication unavailable. Multiple accounts matching the specified username %s were "
-                             + "found in the cache.", username)));
-                    }
-                }
-
-                requestedAccount = accounts.values().iterator().next();
-
-
-                // if it does, then request the token
-                SilentParameters params = SilentParameters.builder(
-                        new HashSet<>(request.getScopes()), requestedAccount)
-                    .authorityUrl(authorityUrl)
-                    .build();
-
-                CompletableFuture<IAuthenticationResult> future;
-                try {
-                    future = pubClient.acquireTokenSilently(params);
-                    return Mono.fromFuture(() -> future).map(result ->
-                        new AccessToken(result.accessToken(),
-                            result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC)));
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    return Mono.error(new RuntimeException("Token was not found"));
-                }
+        }).switchIfEmpty(
+            Mono.defer(() -> identityClient.authenticateWithSharedTokenCache(request, username)))
+            .map(msalToken -> {
+                cachedToken.set(msalToken);
+                return msalToken;
             });
     }
 }

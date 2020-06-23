@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MetricAvailability model. */
 @Immutable
 public final class MetricAvailability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAvailability.class);
+
     /*
      * The length of retention for the database metric.
      */
@@ -38,5 +42,13 @@ public final class MetricAvailability {
      */
     public String timeGrain() {
         return this.timeGrain;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

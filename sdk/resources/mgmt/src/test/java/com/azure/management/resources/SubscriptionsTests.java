@@ -3,10 +3,11 @@
 
 package com.azure.management.resources;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,9 +16,9 @@ public class SubscriptionsTests extends TestBase {
     protected ResourceManager.Authenticated resourceManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         resourceManager = ResourceManager
-                .authenticate(restClient)
+                .authenticate(httpPipeline, profile)
                 .withSdkContext(sdkContext);
     }
 

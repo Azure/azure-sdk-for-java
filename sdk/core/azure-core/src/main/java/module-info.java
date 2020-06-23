@@ -41,7 +41,11 @@ module com.azure.core {
     // Exports HttpProviders#getAllHttpClients API to azure-core-test module
     exports com.azure.core.implementation.http to com.azure.core.test;
 
-  // service provider interfaces
+    // Exports JsonSerializer to azure-core-serializer-json-gson and azure-core-serializer-json-jackson
+    exports com.azure.core.implementation.serializer to com.azure.core.serializer.json.gson,
+        com.azure.core.serializer.json.jackson;
+
+    // Service Provider Interfaces
     uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;

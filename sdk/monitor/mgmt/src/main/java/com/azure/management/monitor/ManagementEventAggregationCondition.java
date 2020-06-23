@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** The ManagementEventAggregationCondition model. */
 @Fluent
 public final class ManagementEventAggregationCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementEventAggregationCondition.class);
+
     /*
      * the condition operator.
      */
@@ -91,5 +95,13 @@ public final class ManagementEventAggregationCondition {
     public ManagementEventAggregationCondition withWindowSize(Duration windowSize) {
         this.windowSize = windowSize;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

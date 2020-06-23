@@ -3,19 +3,18 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public interface ResourceValidator<T extends Resource> {
-    
+public interface ResourceValidator<T> {
+
     void validate(T v);
 
     class Builder<T extends Resource> {
-        private List<ResourceValidator<? extends Resource>> validators = new ArrayList<>();
+        private List<ResourceValidator<?>> validators = new ArrayList<>();
 
         public ResourceValidator<T> build() {
             return new ResourceValidator<T>() {
@@ -29,12 +28,12 @@ public interface ResourceValidator<T extends Resource> {
                 }
             };
         }
-        
+
         public Builder<T> areEqual(T expectedValue) {
             validators.add(new ResourceValidator<T>() {
                 @Override
                 public void validate(T v) {
-                    
+
                     assertThat(ModelBridgeInternal.getMapFromJsonSerializable(v).keySet())
                         .describedAs("number of fields")
                         .hasSize(ModelBridgeInternal.getMapFromJsonSerializable(expectedValue).keySet().size());
@@ -48,6 +47,6 @@ public interface ResourceValidator<T extends Resource> {
             });
             return this;
         }
-        
+
     }
 }

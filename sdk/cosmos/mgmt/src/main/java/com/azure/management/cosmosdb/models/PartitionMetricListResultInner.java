@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PartitionMetricListResult model. */
 @Immutable
 public final class PartitionMetricListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartitionMetricListResultInner.class);
+
     /*
      * The list of partition-level metrics for the account.
      */
@@ -24,5 +28,16 @@ public final class PartitionMetricListResultInner {
      */
     public List<PartitionMetricInner> value() {
         return this.value;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -3,7 +3,10 @@
 package com.azure.management.network.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.network.ExpressRouteCircuit;
 import com.azure.management.network.ExpressRouteCircuitSkuType;
@@ -11,8 +14,7 @@ import com.azure.management.network.Network;
 import com.azure.management.network.VirtualNetworkGateway;
 import com.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.azure.management.resources.fluentcore.arm.Region;
-
-import java.io.File;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 /**
  * Azure Network sample for managing express route circuits.
@@ -60,7 +62,7 @@ public final class ManageExpressRoute {
                     .withPrimaryPeerAddressPrefix("123.0.0.0/30")
                     .withSecondaryPeerAddressPrefix("123.0.0.4/30")
                     .withVlanId(200)
-                    .withPeerASN(100)
+                    .withPeerAsn(100)
                     .create();
             System.out.println("Created express route circuit peering");
 
@@ -129,12 +131,16 @@ public final class ManageExpressRoute {
         try {
             //=============================================================
             // Authenticate
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

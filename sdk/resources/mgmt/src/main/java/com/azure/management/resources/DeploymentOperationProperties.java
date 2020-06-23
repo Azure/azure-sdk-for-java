@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The DeploymentOperationProperties model. */
 @Immutable
 public final class DeploymentOperationProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationProperties.class);
+
     /*
      * The state of the provisioning.
      */
@@ -144,5 +148,22 @@ public final class DeploymentOperationProperties {
      */
     public HttpMessage response() {
         return this.response;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResource() != null) {
+            targetResource().validate();
+        }
+        if (request() != null) {
+            request().validate();
+        }
+        if (response() != null) {
+            response().validate();
+        }
     }
 }

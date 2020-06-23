@@ -1,5 +1,24 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+FormTraining Client updates:
+- Adopt the `training` namespace for Form Recognizer Training Clients
+- Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
+- Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
+- Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model 
+- Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
+
+## 1.0.0-beta.2 (2020-05-06)
+- Fixed Receipt type bug to select the valueString field via fieldValue.
+- Rename `apiKey()` to `credential()` on FormRecognizerClientBuilder.
+
+This package's 
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/README.md) 
+and 
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-ai-formrecognizer_1.0.0-beta.2/sdk/formrecognizer/azure-ai-formrecognizer/src/samples) 
+demonstrate the new API.
+
 ## 1.0.0-beta.1 (2020-04-23)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Form Recognizer client library that is developer-friendly
 and idiomatic to the Java ecosystem. The principles that guide

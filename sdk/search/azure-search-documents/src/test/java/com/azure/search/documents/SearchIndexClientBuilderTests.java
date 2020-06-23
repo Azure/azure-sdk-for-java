@@ -210,9 +210,7 @@ public class SearchIndexClientBuilderTests {
 
         StepVerifier.create(searchIndexAsyncClient.getHttpPipeline().send(
             request(searchIndexAsyncClient.getEndpoint())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 }

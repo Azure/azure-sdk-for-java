@@ -10,6 +10,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -118,8 +119,8 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
-                    assertThat(ModelBridgeInternal.toJsonFromJsonSerializable(((CosmosClientException) t).getError()))
-                        .isEqualTo(ModelBridgeInternal.toJsonFromJsonSerializable(cosmosError));
+                    assertThat(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getJsonSerializable(((CosmosClientException) t).getError())))
+                        .isEqualTo(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getJsonSerializable(cosmosError)));
                 }
             });
             return this;
@@ -297,6 +298,20 @@ public interface FailureValidator {
                     assertThat(t).isInstanceOf(CosmosClientException.class);
                     CosmosClientException ex = (CosmosClientException) t;
                     assertThat(BridgeInternal.getRequestHeaders(ex)).containsEntry(key, value);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder documentClientExceptionToStringExcludesHeader(String header) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(CosmosClientException.class);
+                    CosmosClientException ex = (CosmosClientException) t;
+                    String exceptionToString = ex.toString();
+                    assertThat(exceptionToString).doesNotContain(header);
                 }
             });
             return this;

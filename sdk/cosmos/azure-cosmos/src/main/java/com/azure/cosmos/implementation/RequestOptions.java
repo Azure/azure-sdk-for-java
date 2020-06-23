@@ -7,6 +7,7 @@ import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ public class RequestOptions {
     private boolean scriptLoggingEnabled;
     private boolean populateQuotaInfo;
     private Map<String, Object> properties;
+    private ThroughputProperties throughputProperties;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -192,6 +194,14 @@ public class RequestOptions {
      */
     public void setOfferThroughput(Integer offerThroughput) {
         this.offerThroughput = offerThroughput;
+    }
+
+    public void setThroughputProperties(ThroughputProperties throughputProperties) {
+        this.throughputProperties = throughputProperties;
+    }
+
+    public ThroughputProperties getThroughputProperties() {
+        return this.throughputProperties;
     }
 
     /**

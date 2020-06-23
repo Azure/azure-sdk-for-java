@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -34,7 +33,7 @@ import java.util.Objects;
  * @see ServiceBusMessageBatch
  */
 public class ServiceBusMessage {
-    private final Map<String, Object> properties;
+    private final Map<String, Object> properties = new HashMap<>();
     private final byte[] body;
     private Context context;
     private String contentType;
@@ -60,18 +59,31 @@ public class ServiceBusMessage {
     public ServiceBusMessage(byte[] body) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
-        this.properties = new HashMap<>();
     }
 
     /**
-     * Creates a {@link ServiceBusMessage} containing the {@code body}.
+     * Creates a {@link ServiceBusMessage} using properties from {@code receivedMessage}.
+     * This is normally used when a {@link ServiceBusReceivedMessage} needs to be sent to another entity.
      *
-     * @param body The data to set for this {@link ServiceBusMessage}.
+     * @param receivedMessage The received message to create new message from.
      *
-     * @throws NullPointerException if {@code body} is {@code null}.
+     * @throws NullPointerException if {@code receivedMessage} is {@code null}.
      */
-    public ServiceBusMessage(ByteBuffer body) {
-        this(body.array());
+    public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
+        this.body = receivedMessage.getBody();
+        this.context = Context.NONE;
+        setMessageId(receivedMessage.getMessageId());
+        setScheduledEnqueueTime(receivedMessage.getScheduledEnqueueTime());
+        setContentType(receivedMessage.getContentType());
+        setCorrelationId(receivedMessage.getCorrelationId());
+        setLabel(receivedMessage.getLabel());
+        setPartitionKey(receivedMessage.getPartitionKey());
+        setReplyTo(receivedMessage.getReplyTo());
+        setReplyToSessionId(receivedMessage.getReplyToSessionId());
+        setTimeToLive(receivedMessage.getTimeToLive());
+        setTo(receivedMessage.getTo());
+        setSessionId(receivedMessage.getSessionId());
+        setViaPartitionKey(receivedMessage.getViaPartitionKey());
     }
 
     /**

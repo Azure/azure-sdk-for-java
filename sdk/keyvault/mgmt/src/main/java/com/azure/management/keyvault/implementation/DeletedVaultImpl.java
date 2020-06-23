@@ -23,7 +23,7 @@ public class DeletedVaultImpl extends WrapperImpl<DeletedVaultInner> implements 
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

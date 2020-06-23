@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
@@ -93,7 +94,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
         container.getScripts().createTrigger(trigger);
 
         FeedOptions feedOptions = new FeedOptions();
-        
+
         CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator3 =
                 container.getScripts().readAllTriggers(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();

@@ -5,16 +5,20 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.cosmosdb.MetricAvailability;
 import com.azure.management.cosmosdb.MetricName;
 import com.azure.management.cosmosdb.PrimaryAggregationType;
 import com.azure.management.cosmosdb.UnitType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricDefinition model. */
 @Immutable
 public final class MetricDefinitionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionInner.class);
+
     /*
      * The list of metric availabilities for the account.
      */
@@ -88,5 +92,19 @@ public final class MetricDefinitionInner {
      */
     public MetricName name() {
         return this.name;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metricAvailabilities() != null) {
+            metricAvailabilities().forEach(e -> e.validate());
+        }
+        if (name() != null) {
+            name().validate();
+        }
     }
 }

@@ -8,11 +8,11 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -192,6 +192,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         );
 
         for (String query : queries) {
+            logger.info("Current distinct query: " + query);
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(2);
 

@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DhcpOptions model. */
 @Fluent
 public final class DhcpOptions {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DhcpOptions.class);
+
     /*
      * The list of DNS servers IP addresses.
      */
@@ -35,5 +39,13 @@ public final class DhcpOptions {
     public DhcpOptions withDnsServers(List<String> dnsServers) {
         this.dnsServers = dnsServers;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

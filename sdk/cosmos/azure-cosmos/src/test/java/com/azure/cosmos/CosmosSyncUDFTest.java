@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -107,7 +108,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         container.getScripts().createUserDefinedFunction(udf);
 
         FeedOptions feedOptions = new FeedOptions();
-        
+
         CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator3 =
                 container.getScripts().readAllUserDefinedFunctions(feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
@@ -120,7 +121,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         container.getScripts().createUserDefinedFunction(properties);
         String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
         FeedOptions feedOptions = new FeedOptions();
-        
+
 
         CosmosPagedIterable<CosmosUserDefinedFunctionProperties> feedResponseIterator1 =
                 container.getScripts().queryUserDefinedFunctions(query, feedOptions);

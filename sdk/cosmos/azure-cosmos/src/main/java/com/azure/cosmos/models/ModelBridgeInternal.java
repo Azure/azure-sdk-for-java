@@ -14,16 +14,21 @@ import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.RequestVerb;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
@@ -224,6 +229,22 @@ public final class ModelBridgeInternal {
         return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
     }
 
+    public static CosmosDatabaseRequestOptions setOfferProperties(
+        CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
+        ThroughputProperties throughputProperties) {
+        return cosmosDatabaseRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    public static CosmosContainerRequestOptions setOfferProperties(
+        CosmosContainerRequestOptions containerRequestOptions,
+        ThroughputProperties throughputProperties) {
+        return containerRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    public static Offer updateOfferFromProperties(Offer offer, ThroughputProperties properties) {
+        return properties.updateOfferFromProperties(offer);
+    }
+
     public static CosmosItemRequestOptions setPartitionKey(CosmosItemRequestOptions cosmosItemRequestOptions,
                                                            PartitionKey partitionKey) {
         return cosmosItemRequestOptions.setPartitionKey(partitionKey);
@@ -365,10 +386,6 @@ public final class ModelBridgeInternal {
         resource.setTimestamp(date);
     }
 
-    public static void validateResource(Resource resource) {
-        Resource.validateResource(resource);
-    }
-
     public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
         jsonSerializable.set(propertyName, value);
     }
@@ -393,9 +410,6 @@ public final class ModelBridgeInternal {
         return new CosmosError(jsonString);
     }
 
-    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) {
-        jsonSerializable.populatePropertyBag();
-    }
 
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
@@ -481,4 +495,124 @@ public final class ModelBridgeInternal {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
+    public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
+        sqlQuerySpec.populatePropertyBag();
+        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer();
+    }
+
+    public static <T> T instantiateByObjectNode(ObjectNode objectNode, Class<T> c) {
+        try {
+            return c.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static <T> void populatePropertyBag(T t) {
+        if (t instanceof JsonSerializable) {
+            ((JsonSerializable) t).populatePropertyBag();
+        } else if (t instanceof CompositePath) {
+            ((CompositePath) t).populatePropertyBag();
+        } else if (t instanceof ConflictResolutionPolicy) {
+            ((ConflictResolutionPolicy) t).populatePropertyBag();
+        } else if (t instanceof ConsistencyPolicy) {
+            ((ConsistencyPolicy) t).populatePropertyBag();
+        } else if (t instanceof DatabaseAccountLocation) {
+            ((DatabaseAccountLocation) t).populatePropertyBag();
+        } else if (t instanceof ExcludedPath) {
+            ((ExcludedPath) t).populatePropertyBag();
+        } else if (t instanceof IncludedPath) {
+            ((IncludedPath) t).populatePropertyBag();
+        } else if (t instanceof IndexingPolicy) {
+            ((IndexingPolicy) t).populatePropertyBag();
+        } else if (t instanceof PartitionKeyDefinition) {
+            ((PartitionKeyDefinition) t).populatePropertyBag();
+        } else if (t instanceof SpatialSpec) {
+            ((SpatialSpec) t).populatePropertyBag();
+        } else if (t instanceof SqlParameter) {
+            ((SqlParameter) t).populatePropertyBag();
+        } else if (t instanceof SqlQuerySpec) {
+            ((SqlQuerySpec) t).populatePropertyBag();
+        } else if (t instanceof UniqueKey) {
+            ((UniqueKey) t).populatePropertyBag();
+        } else if (t instanceof UniqueKeyPolicy) {
+            ((UniqueKeyPolicy) t).populatePropertyBag();
+        } else if (t instanceof Index) {
+            ((Index) t).populatePropertyBag();
+        } else if (t instanceof CosmosError) {
+            ((CosmosError) t).populatePropertyBag();
+        } else {
+            throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
+        }
+    }
+
+    public static <T> JsonSerializable getJsonSerializable(T t) {
+        if (t instanceof CompositePath) {
+            return ((CompositePath) t).getJsonSerializable();
+        } else if (t instanceof ConflictResolutionPolicy) {
+            return ((ConflictResolutionPolicy) t).getJsonSerializable();
+        } else if (t instanceof ConsistencyPolicy) {
+            return ((ConsistencyPolicy) t).getJsonSerializable();
+        } else if (t instanceof DatabaseAccountLocation) {
+            return ((DatabaseAccountLocation) t).getJsonSerializable();
+        } else if (t instanceof ExcludedPath) {
+            return ((ExcludedPath) t).getJsonSerializable();
+        } else if (t instanceof IncludedPath) {
+            return ((IncludedPath) t).getJsonSerializable();
+        } else if (t instanceof IndexingPolicy) {
+            return ((IndexingPolicy) t).getJsonSerializable();
+        } else if (t instanceof PartitionKeyDefinition) {
+            return ((PartitionKeyDefinition) t).getJsonSerializable();
+        } else if (t instanceof SpatialSpec) {
+            return ((SpatialSpec) t).getJsonSerializable();
+        } else if (t instanceof SqlParameter) {
+            return ((SqlParameter) t).getJsonSerializable();
+        } else if (t instanceof SqlQuerySpec) {
+            return ((SqlQuerySpec) t).getJsonSerializable();
+        } else if (t instanceof UniqueKey) {
+            return ((UniqueKey) t).getJsonSerializable();
+        } else if (t instanceof UniqueKeyPolicy) {
+            return ((UniqueKeyPolicy) t).getJsonSerializable();
+        } else if (t instanceof Index) {
+            return ((Index) t).getJsonSerializable();
+        } else if (t instanceof CosmosError) {
+            return ((CosmosError) t).getJsonSerializable();
+        } else {
+            throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
+        }
+    }
+
+    public static <T> Resource getResource(T t) {
+        if (t == null) {
+            return null;
+        } else if (t instanceof Resource) {
+            return (Resource) t;
+        } else if (t instanceof CosmosConflictProperties) {
+            return ((CosmosConflictProperties) t).getResource();
+        } else if (t instanceof CosmosContainerProperties) {
+            return ((CosmosContainerProperties) t).getResource();
+        } else if (t instanceof CosmosDatabaseProperties) {
+            return ((CosmosDatabaseProperties) t).getResource();
+        } else if (t instanceof CosmosPermissionProperties) {
+            return ((CosmosPermissionProperties) t).getResource();
+        } else if (t instanceof CosmosStoredProcedureProperties) {
+            return ((CosmosStoredProcedureProperties) t).getResource();
+        } else if (t instanceof CosmosTriggerProperties) {
+            return ((CosmosTriggerProperties) t).getResource();
+        } else if (t instanceof CosmosUserDefinedFunctionProperties) {
+            return ((CosmosUserDefinedFunctionProperties) t).getResource();
+        } else if (t instanceof CosmosUserProperties) {
+            return ((CosmosUserProperties) t).getResource();
+        } else {
+            throw new IllegalArgumentException("getResource method does not exists in class " + t.getClass());
+        }
+    }
+
+    public static Offer getOfferFromThroughputProperties(ThroughputProperties properties) {
+        return properties.getOffer();
+    }
+
+    public static ThroughputResponse createThroughputRespose(ResourceResponse<Offer> offerResourceResponse) {
+        return new ThroughputResponse(offerResourceResponse);
+    }
 }

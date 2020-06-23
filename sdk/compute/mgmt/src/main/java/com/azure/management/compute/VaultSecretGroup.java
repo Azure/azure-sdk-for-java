@@ -6,12 +6,16 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VaultSecretGroup model. */
 @Fluent
 public final class VaultSecretGroup {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultSecretGroup.class);
+
     /*
      * The relative URL of the Key Vault containing all of the certificates in
      * VaultCertificates.
@@ -66,5 +70,16 @@ public final class VaultSecretGroup {
     public VaultSecretGroup withVaultCertificates(List<VaultCertificate> vaultCertificates) {
         this.vaultCertificates = vaultCertificates;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vaultCertificates() != null) {
+            vaultCertificates().forEach(e -> e.validate());
+        }
     }
 }

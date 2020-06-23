@@ -29,7 +29,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     String state();
 
     /** @return hostnames associated with web app */
-    Set<String> hostNames();
+    Set<String> hostnames();
 
     /** @return name of repository site */
     String repositorySiteName();
@@ -47,7 +47,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     SiteAvailabilityState availabilityState();
 
     /** @return list of SSL states used to manage the SSL bindings for site's hostnames */
-    Map<String, HostNameSslState> hostNameSslStates();
+    Map<String, HostnameSslState> hostnameSslStates();
 
     /** @return The resource ID of the app service plan */
     String appServicePlanId();
@@ -94,7 +94,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     boolean isDefaultContainer();
 
     /** @return default hostname of the web app */
-    String defaultHostName();
+    String defaultHostname();
 
     /** @return the default documents */
     List<String> defaultDocuments();
@@ -208,10 +208,10 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     WebAppDiagnosticLogs diagnosticLogsConfig();
 
     /** @return the mapping from host names and the host name bindings */
-    Map<String, HostNameBinding> getHostNameBindings();
+    Map<String, HostnameBinding> getHostnameBindings();
 
     /** @return the mapping from host names and the host name bindings */
-    Mono<Map<String, HostNameBinding>> getHostNameBindingsAsync();
+    Mono<Map<String, HostnameBinding>> getHostnameBindingsAsync();
 
     /** @return the URL and credentials for publishing through FTP or Git */
     PublishingProfile getPublishingProfile();
@@ -424,7 +424,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              *
              * @return the first stage of a hostname binding definition
              */
-            HostNameBinding.DefinitionStages.Blank<WithCreate<FluentT>> defineHostnameBinding();
+            HostnameBinding.DefinitionStages.Blank<WithCreate<FluentT>> defineHostnameBinding();
 
             /**
              * Defines a list of host names of an Azure managed domain. The DNS record type is defaulted to be CNAME
@@ -458,7 +458,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              *
              * @return the first stage of an SSL binding definition
              */
-            HostNameSslBinding.DefinitionStages.Blank<WithCreate<FluentT>> defineSslBinding();
+            HostnameSslBinding.DefinitionStages.Blank<WithCreate<FluentT>> defineSslBinding();
         }
 
         /**
@@ -995,7 +995,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              *
              * @return the first stage of a hostname binding update
              */
-            HostNameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineHostnameBinding();
+            HostnameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineHostnameBinding();
 
             /**
              * Defines a list of host names of an Azure managed domain. The DNS record type is defaulted to be CNAME
@@ -1037,7 +1037,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              *
              * @return the first stage of an SSL binding definition
              */
-            HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBinding();
+            HostnameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBinding();
 
             /**
              * Removes an SSL binding for a specific hostname.

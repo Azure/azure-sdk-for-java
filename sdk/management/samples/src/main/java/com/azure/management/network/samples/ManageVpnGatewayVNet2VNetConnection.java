@@ -3,7 +3,10 @@
 
 package com.azure.management.network.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -17,6 +20,7 @@ import com.azure.management.network.VirtualNetworkGatewaySkuName;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
@@ -24,7 +28,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,7 +139,10 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             // Create storage container to store troubleshooting results
             String accountKey = storageAccount.getKeys().get(0).value();
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s", storageAccount.name(), accountKey);
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                .connectionString(connectionString)
+                .httpClient(storageAccount.manager().httpPipeline().getHttpClient())
+                .buildClient();
             BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(storageContainerName);
             containerClient.create();
 
@@ -244,12 +250,16 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

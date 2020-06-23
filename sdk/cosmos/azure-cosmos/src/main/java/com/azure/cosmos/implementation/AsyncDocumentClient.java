@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -11,7 +10,6 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -37,8 +35,7 @@ import java.util.List;
  * To instantiate you can use the {@link Builder}
  * <pre>
  * {@code
- * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
- * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+ * ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
  * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
  *         .withServiceEndpoint(serviceEndpoint)
  *         .withMasterKeyOrResourceToken(masterKey)
@@ -56,8 +53,7 @@ public interface AsyncDocumentClient {
      *
      * <pre>
      * {@code
-     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-     * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+     * ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
      * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
      *         .withServiceEndpoint(serviceEndpoint)
      *         .withMasterKeyOrResourceToken(masterKey)
@@ -80,6 +76,7 @@ public interface AsyncDocumentClient {
         TokenCredential tokenCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
+        boolean contentResponseOnWriteEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -161,6 +158,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+            this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+            return this;
+        }
+
         /**
          * This method will accept functional interface TokenResolver which helps in generation authorization
          * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
@@ -194,24 +196,25 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null
+                        && this.cosmosKeyCredential == null
                         && this.tokenCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed, tokenResolver and cosmos key credential");
+                        "resource token, permissionFeed and cosmos key credential");
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
-                                                                   masterKeyOrResourceToken,
-                                                                   permissionFeed,
-                                                                   connectionPolicy,
-                                                                   desiredConsistencyLevel,
-                                                                   configs,
-                                                                   cosmosAuthorizationTokenResolver,
-                                                                   cosmosKeyCredential,
-                                                                   tokenCredential,
-                                                                   sessionCapturingOverride,
-                                                                   transportClientSharing);
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                desiredConsistencyLevel,
+                configs,
+                cosmosAuthorizationTokenResolver,
+                cosmosKeyCredential,
+                tokenCredential,
+                sessionCapturingOverride,
+                transportClientSharing,
+                contentResponseOnWriteEnabled);
             client.init();
             return client;
         }
