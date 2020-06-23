@@ -3,19 +3,18 @@
 
 package com.azure.core.serializer.json.jackson;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.implementation.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonNode;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
 public final class JacksonJsonSerializer implements JsonSerializer {
-    private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
-
     private final ObjectMapper mapper;
 
     /**
@@ -28,24 +27,42 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserialize(byte[] input, Class<T> clazz) {
-        if (input == null) {
-            return null;
-        }
+    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
+        return Mono.fromCallable(() -> {
+            if (stream == null) {
+                return null;
+            }
 
-        try {
-            return mapper.readValue(input, clazz);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
+            return mapper.readValue(stream, clazz);
+        });
     }
 
     @Override
-    public byte[] serialize(Object value) {
-        try {
-            return mapper.writeValueAsBytes(value);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
-        }
+    public <T> Mono<T> deserializeTree(JsonNode jsonNode, Class<T> clazz) {
+        return Mono.fromCallable(() -> mapper.treeToValue(JsonNodeUtils.toJacksonNode(jsonNode), clazz));
+    }
+
+    @Override
+    public Mono<OutputStream> serialize(OutputStream stream, Object value) {
+        return Mono.fromCallable(() -> {
+            mapper.writeValue(stream, value);
+
+            return stream;
+        });
+    }
+
+    @Override
+    public Mono<OutputStream> serializeTree(OutputStream stream, JsonNode jsonNode) {
+        return serialize(stream, JsonNodeUtils.toJacksonNode(jsonNode));
+    }
+
+    @Override
+    public Mono<JsonNode> toTree(InputStream stream) {
+        return Mono.fromCallable(() -> JsonNodeUtils.fromJacksonNode(mapper.readTree(stream)));
+    }
+
+    @Override
+    public Mono<JsonNode> toTree(Object value) {
+        return Mono.fromCallable(() -> JsonNodeUtils.fromJacksonNode(mapper.valueToTree(value)));
     }
 }

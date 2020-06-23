@@ -23,17 +23,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.collectionToJson;
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.lineToJson;
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.multiLineToJson;
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.multiPointToJson;
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.multiPolygonToJson;
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.pointToJson;
-import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.polygonToJson;
+import static com.azure.core.util.serializer.GeometrySerializationTestHelpers.geometryToJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -97,96 +93,94 @@ public class GeometryDeserializerTests {
 
     private static Stream<Arguments> deserializeSupplier() {
         GeometryBoundingBox boundingBox = new GeometryBoundingBox(0, 0, 1, 1, 0D, 1D);
-        Map<String, Object> properties = Collections.singletonMap("key", "value");
+        Map<String, Object> simpleProperties = Collections.singletonMap("key", "value");
+        Map<String, Object> arrayProperties = Collections.singletonMap("text", Arrays.asList("hello", "world"));
 
-        PointGeometry point = new PointGeometry(new GeometryPosition(0, 0));
-        PointGeometry pointWithProperties = new PointGeometry(new GeometryPosition(0, 0, 0D), boundingBox, properties);
+        Map<String, Object> crs = new HashMap<>();
+        crs.put("type", "name");
+        crs.put("properties", Collections.singletonMap("name", "EPSG:432"));
+        Map<String, Object> objectProperties = Collections.singletonMap("crs", crs);
 
-        List<GeometryPosition> positions = Arrays.asList(new GeometryPosition(0, 0), new GeometryPosition(1, 1));
-        LineGeometry line = new LineGeometry(positions);
+        BiFunction<GeometryBoundingBox, Map<String, Object>, PointGeometry> pointSupplier =
+            (box, properties) -> new PointGeometry(new GeometryPosition(0, 0, 0D), box, properties);
 
-        List<GeometryPosition> positions1 = Arrays.asList(new GeometryPosition(0, 0, 1D),
+        List<GeometryPosition> positions = Arrays.asList(new GeometryPosition(0, 0, 1D),
             new GeometryPosition(1, 1, 1D));
-        LineGeometry lineWithProperties = new LineGeometry(positions1, boundingBox, properties);
+        BiFunction<GeometryBoundingBox, Map<String, Object>, LineGeometry> lineSupplier =
+            (box, properties) -> new LineGeometry(positions, box, properties);
 
         List<LineGeometry> rings = Collections.singletonList(new LineGeometry(Arrays.asList(
-            new GeometryPosition(0, 0), new GeometryPosition(0, 1),
-            new GeometryPosition(1, 1), new GeometryPosition(0, 0)
-        )));
-        PolygonGeometry polygon = new PolygonGeometry(rings);
-
-        List<LineGeometry> rings1 = Collections.singletonList(new LineGeometry(Arrays.asList(
             new GeometryPosition(0, 0, 1D), new GeometryPosition(0, 1, 1D),
             new GeometryPosition(1, 1, 1D), new GeometryPosition(0, 0, 1D)
         )));
-        PolygonGeometry polygonWithProperties = new PolygonGeometry(rings1, boundingBox, properties);
+        BiFunction<GeometryBoundingBox, Map<String, Object>, PolygonGeometry> polygonSupplier =
+            (box, properties) -> new PolygonGeometry(rings, box, properties);
 
-        MultiPointGeometry multiPoint = new MultiPointGeometry(Arrays.asList(point,
-            new PointGeometry(new GeometryPosition(0, 0, 0D))));
+        BiFunction<GeometryBoundingBox, Map<String, Object>, MultiPointGeometry> multiPointSupplier =
+            (box, properties) -> new MultiPointGeometry(Arrays.asList(pointSupplier.apply(null, null),
+                pointSupplier.apply(null, null)), box, properties);
 
-        MultiPointGeometry multiPointWithProperties = new MultiPointGeometry(Arrays.asList(point,
-            new PointGeometry(new GeometryPosition(0, 0, 0D))), boundingBox, properties);
+        BiFunction<GeometryBoundingBox, Map<String, Object>, MultiLineGeometry> multiLineSupplier =
+            (box, properties) -> new MultiLineGeometry(Arrays.asList(lineSupplier.apply(null, null),
+                lineSupplier.apply(null, null)), box, properties);
 
-        MultiLineGeometry multiLine = new MultiLineGeometry(Arrays.asList(line, new LineGeometry(positions1)));
+        BiFunction<GeometryBoundingBox, Map<String, Object>, MultiPolygonGeometry> multiPolygonSuppluer =
+            (box, properties) -> new MultiPolygonGeometry(Arrays.asList(polygonSupplier.apply(null, null),
+                polygonSupplier.apply(null, null)), box, properties);
 
-        MultiLineGeometry multiLineWithProperties = new MultiLineGeometry(Arrays.asList(line,
-            new LineGeometry(positions1)), boundingBox, properties);
-
-        MultiPolygonGeometry multiPolygon = new MultiPolygonGeometry(Arrays.asList(polygon,
-            new PolygonGeometry(rings1)));
-
-        MultiPolygonGeometry multiPolygonWithProperties  = new MultiPolygonGeometry(Arrays.asList(polygon,
-            new PolygonGeometry(rings1)), boundingBox, properties);
-
-        CollectionGeometry collection = new CollectionGeometry(Arrays.asList(point, multiPointWithProperties));
-
-        CollectionGeometry collectionWithProperties = new CollectionGeometry(Arrays.asList(point,
-            multiPointWithProperties), boundingBox, properties);
+        BiFunction<GeometryBoundingBox, Map<String, Object>, CollectionGeometry> collectionSupplier =
+            (box, properties) -> new CollectionGeometry(Arrays.asList(pointSupplier.apply(null, null),
+                multiLineSupplier.apply(box, properties), polygonSupplier.apply(box, properties)), box, properties);
 
         return Stream.of(
             // Point geometry.
-            Arguments.of(pointToJson(point), PointGeometry.class, point),
-
-            // Point geometry with properties.
-            Arguments.of(pointToJson(pointWithProperties), PointGeometry.class, pointWithProperties),
+            Arguments.of(deserializerArgumentSupplier(null, null, pointSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, pointSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, pointSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, pointSupplier)),
 
             // Line geometry.
-            Arguments.of(lineToJson(line), LineGeometry.class, line),
-
-            // Line geometry with properties.
-            Arguments.of(lineToJson(lineWithProperties), LineGeometry.class, lineWithProperties),
+            Arguments.of(deserializerArgumentSupplier(null, null, lineSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, lineSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, lineSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, lineSupplier)),
 
             // Polygon geometry.
-            Arguments.of(polygonToJson(polygon), PolygonGeometry.class, polygon),
-
-            // Polygon geometry with properties.
-            Arguments.of(polygonToJson(polygonWithProperties), PolygonGeometry.class, polygonWithProperties),
+            Arguments.of(deserializerArgumentSupplier(null, null, polygonSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, polygonSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, polygonSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, polygonSupplier)),
 
             // Multi point geometry.
-            Arguments.of(multiPointToJson(multiPoint), MultiPointGeometry.class, multiPoint),
-
-            // Multi point geometry with properties.
-            Arguments.of(multiPointToJson(multiPointWithProperties), MultiPointGeometry.class,
-                multiPointWithProperties),
+            Arguments.of(deserializerArgumentSupplier(null, null, multiPointSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, multiPointSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, multiPointSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, multiPointSupplier)),
 
             // Multi line geometry.
-            Arguments.of(multiLineToJson(multiLine), MultiLineGeometry.class, multiLine),
-
-            // Multi line geometry with properties.
-            Arguments.of(multiLineToJson(multiLineWithProperties), MultiLineGeometry.class, multiLineWithProperties),
+            Arguments.of(deserializerArgumentSupplier(null, null, multiLineSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, multiLineSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, multiLineSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, multiLineSupplier)),
 
             // Multi polygon geometry.
-            Arguments.of(multiPolygonToJson(multiPolygon), MultiPolygonGeometry.class, multiPolygon),
-
-            // Multi polygon geometry with properties.
-            Arguments.of(multiPolygonToJson(multiPolygonWithProperties), MultiPolygonGeometry.class,
-                multiPolygonWithProperties),
+            Arguments.of(deserializerArgumentSupplier(null, null, multiPolygonSuppluer)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, multiPolygonSuppluer)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, multiPolygonSuppluer)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, multiPolygonSuppluer)),
 
             // Collection geometry.
-            Arguments.of(collectionToJson(collection), CollectionGeometry.class, collection),
-
-            // Collection geometry with properties.
-            Arguments.of(collectionToJson(collectionWithProperties), CollectionGeometry.class, collectionWithProperties)
+            Arguments.of(deserializerArgumentSupplier(null, null, collectionSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, simpleProperties, collectionSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, arrayProperties, collectionSupplier)),
+            Arguments.of(deserializerArgumentSupplier(boundingBox, objectProperties, collectionSupplier))
         );
+    }
+
+    private static Object[] deserializerArgumentSupplier(GeometryBoundingBox boundingBox,
+        Map<String, Object> properties,
+        BiFunction<GeometryBoundingBox, Map<String, Object>, ? extends Geometry> geometrySupplier) {
+        Geometry geometry = geometrySupplier.apply(boundingBox, properties);
+        return new Object[]{geometryToJson(geometry), geometry.getClass(), geometry};
     }
 }

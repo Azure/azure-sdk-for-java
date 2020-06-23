@@ -43,16 +43,13 @@ module com.azure.core {
     // Exports HttpProviders#getAllHttpClients API to azure-core-test module
     exports com.azure.core.implementation.http to com.azure.core.test;
 
-    // Exports JsonSerializer to azure-core-serializer-json-gson and azure-core-serializer-json-jackson
-    exports com.azure.core.implementation.serializer to com.azure.core.serializer.json.gson,
-        com.azure.core.serializer.json.jackson;
-
     // Service Provider Interfaces
-    uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
-    uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.http.policy.AfterRetryPolicyProvider;
+    uses com.azure.core.http.policy.BeforeRetryPolicyProvider;
     uses com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin;
+    uses com.azure.core.util.serializer.JsonSerializerProvider;
+    uses com.azure.core.util.tracing.Tracer;
 
     // indicate JacksonPlugin provides a service implementation for JsonPlugin
     provides com.azure.core.implementation.serializer.jsonwrapper.spi.JsonPlugin
