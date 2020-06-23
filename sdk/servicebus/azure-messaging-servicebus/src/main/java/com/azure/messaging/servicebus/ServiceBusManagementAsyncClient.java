@@ -33,6 +33,7 @@ import com.azure.messaging.servicebus.implementation.models.ServiceBusManagement
 import com.azure.messaging.servicebus.models.QueueDescription;
 import com.azure.messaging.servicebus.models.QueueHelper;
 import com.azure.messaging.servicebus.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.models.SubscriptionDescription;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -88,7 +89,7 @@ public final class ServiceBusManagementAsyncClient {
     }
 
     /**
-     * Creates a queue the {@link QueueDescription}.
+     * Creates a queue with the {@link QueueDescription}.
      *
      * @param queue Information about the queue to create.
      *
@@ -128,6 +129,50 @@ public final class ServiceBusManagementAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueDescription>> createQueueWithResponse(QueueDescription queue) {
+        return withContext(context -> createQueueWithResponse(queue, context));
+    }
+
+    /**
+     * Creates a subscription the {@link SubscriptionDescription}.
+     *
+     * @param queue Information about the queue to create.
+     *
+     * @return A Mono that completes with information about the created queue.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SubscriptionDescription> createSubscription(SubscriptionDescription subscription) {
+        return createQueueWithResponse(queue).map(Response::getValue);
+    }
+
+    /**
+     * Creates a queue and returns the created queue in addition to the HTTP response.
+     *
+     * @param queue The queue to create.
+     *
+     * @return A Mono that returns the created queue in addition to the HTTP response.
+     * @throws ClientAuthenticationException if the client's credentials do not have access to modify the
+     *     namespace.
+     * @throws HttpResponseException If the request body was invalid, the queue quota is exceeded, or an error
+     *     occurred processing the request.
+     * @throws IllegalArgumentException if {@link QueueDescription#getName() queue.getName()} is null or an empty
+     *     string.
+     * @throws NullPointerException if {@code queue} is null.
+     * @throws ResourceExistsException if a queue exists with the same {@link QueueDescription#getName()
+     *     queueName}.
+     * @see <a href="https://docs.microsoft.com/rest/api/servicebus/update-entity">Create or Update Entity</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription) {
         return withContext(context -> createQueueWithResponse(queue, context));
     }
 
@@ -374,6 +419,42 @@ public final class ServiceBusManagementAsyncClient {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Creates a subscription with its context.
+     *
+     * @param subscription Subscription to create.
+     * @param context Context to pass into request.
+     *
+     * @return A Mono that completes with the created {@link SubscriptionDescription}.
+     */
+    Mono<Response<SubscriptionDescription>> createSubscriptionWithResponse(SubscriptionDescription subscription,
+        Context context) {
+        if (subscription == null) {
+            return monoError(logger, new NullPointerException("'queue' cannot be null"));
+        } else if (subscription.get() == null || subscription.getName().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'queue.getName' cannot be null or empty."));
+        } else if (context == null) {
+            return monoError(logger, new NullPointerException("'context' cannot be null."));
+        }
+
+        final CreateQueueBodyContent content = new CreateQueueBodyContent()
+            .setType(CONTENT_TYPE)
+            .setQueueDescription(subscription);
+        final CreateQueueBody createEntity = new CreateQueueBody()
+            .setContent(content);
+
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return queuesClient.putWithResponseAsync(subscription.getName(), createEntity, null, withTracing)
+                .onErrorMap(ServiceBusManagementAsyncClient::mapException)
+                .map(this::deserializeQueue);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
 
     /**
      * Deletes a queue with its context.
