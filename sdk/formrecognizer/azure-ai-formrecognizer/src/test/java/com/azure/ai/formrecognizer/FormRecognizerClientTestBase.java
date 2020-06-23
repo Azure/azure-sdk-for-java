@@ -56,6 +56,7 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
+import static com.azure.ai.formrecognizer.TestUtils.ENCODED_BLANK_SPACE_URL;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVOICE_1_PDF;
@@ -64,7 +65,6 @@ import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
@@ -83,8 +83,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         "Analyze operation failed, " + "errorCode: [" + EXPECTED_INVALID_URL_ERROR_CODE + "], "
             + "message: " + OCR_EXTRACTION_INVALID_URL_ERROR;
     static final String INVALID_ENDPOINT = "https://notreal.azure.com";
-    static final String EXPECTED_INVALID_ENDPOINT_EXCEPTION_MESSAGE =
-        "Max retries 3 times exceeded. Error Details: Connection refused: no further information:";
     static final String EXPECTED_HTTPS_EXCEPTION_MESSAGE =
         "Max retries 3 times exceeded. Error Details: Key credentials require HTTPS to prevent leaking the key.";
     static final String EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE = "Invalid UUID string: ";
@@ -291,11 +289,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
-    // Turn off the tests as there is service regression on the media type.
-    // Issue link: https://github.com/Azure/azure-sdk-for-java/issues/11036
-    // @Test
-    // abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
     @Test
     abstract void recognizeReceiptDataTextDetailsWithNullData(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
@@ -303,6 +296,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
+
+    // Turn off the tests as there is service regression on the media type.
+    // Issue link: https://github.com/Azure/azure-sdk-for-java/issues/11036
+    // @Test
+    // abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeReceiptDataWithPngFile(HttpClient httpClient,
@@ -312,10 +310,16 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeReceiptDataWithBlankPdf(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
-    // Receipt recognition - URL
+    @Test
+    abstract void recognizeReceiptFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    // Receipt - URL
 
     @Test
     abstract void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeReceiptInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeReceiptSourceUrlTextDetails(HttpClient httpClient,
@@ -325,7 +329,12 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeReceiptSourceUrlWithPngFile(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizeReceiptFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     // Content recognition
+
+    // Content - non-URL
 
     @Test
     abstract void recognizeContent(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -343,41 +352,46 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeBadContentTypeArgument(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeBadContentTypeArgument(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeContentFromDataMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    // Content - URL
 
     @Test
     abstract void recognizeContentFromUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeContentFromUrlWithPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeContentFromUrlWithBlankPdf(HttpClient httpClient,
+    abstract void recognizeContentFromUrlWithEncodedBlankSpace(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeContentFromUrlWithPdf(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeContentFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
-    // Custom form
+    // Custom form recognition
+
+    // Custom form - non-URL - labeled data
 
     @Test
     abstract void recognizeCustomFormLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormLabeledDataWithJpgContentType(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeCustomFormLabeledDataWithBlankPdfContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUnlabeledDataIncludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -393,19 +407,26 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient,
+    abstract void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Custom form - non-URL - unlabeled data
+    @Test
+    abstract void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUnlabeledDataIncludeTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -416,15 +437,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizeCustomFormLabeledDataWithJpgContentType(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeCustomFormLabeledDataWithBlankPdfContentType(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
-    // Custom form - URL
+    // Custom form - URL - unlabeled data
 
     @Test
     abstract void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
@@ -434,10 +447,13 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUrlLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    // Custom form - URL - labeled data
 
     @Test
-    abstract void recognizeCustomFormUrlLabeledDataIncludeTextContent(HttpClient httpClient,
+    abstract void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -449,21 +465,17 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
+    abstract void recognizeCustomFormUrlLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeCustomFormUrlLabeledDataIncludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
+    @Test
     abstract void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
     // Receipt
-
-    @Test
-    abstract void recognizeReceiptFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
     void validateReceiptDataFields(Map<String, FormField> actualRecognizedReceiptFields, boolean includeTextDetails) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = analyzeResult.getReadResults();
@@ -617,7 +629,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void contentFromUrlWithBlankPdfRunner(Consumer<String> testRunner) {
-        testRunner.accept("https://fakeuri.com/blank%20");
+        testRunner.accept(ENCODED_BLANK_SPACE_URL);
     }
 
     void customFormDataRunner(Consumer<InputStream> testRunner) {

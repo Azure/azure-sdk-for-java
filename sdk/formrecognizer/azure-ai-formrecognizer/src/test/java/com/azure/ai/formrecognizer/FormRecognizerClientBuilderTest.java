@@ -19,7 +19,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_HTTPS_EXCEPTION_MESSAGE;
-import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.EXPECTED_INVALID_ENDPOINT_EXCEPTION_MESSAGE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.INVALID_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
@@ -88,30 +87,29 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     }
 
     /**
-     * Test for invalid endpoint.
+     * Test for invalid endpoint, which throws connection refused exception message.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void badEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithInvalidEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            Exception exception = assertThrows(RuntimeException.class,
+            assertThrows(RuntimeException.class,
                 () -> clientBuilder.endpoint(INVALID_ENDPOINT).buildClient()
                         .beginRecognizeContentFromUrl(input).getFinalResult());
-            assertTrue(exception.getMessage().startsWith(EXPECTED_INVALID_ENDPOINT_EXCEPTION_MESSAGE));
         });
     }
 
     /**
-     * Test for http endpoint, which throws HTTPS requirement exception message.
+     * Test for an valid http endpoint, which throws HTTPS requirement exception message.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void httpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
             Exception exception = assertThrows(RuntimeException.class,
                 () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST).buildClient()
                         .beginRecognizeContentFromUrl(input).getFinalResult());
-            assertEquals(exception.getMessage(), EXPECTED_HTTPS_EXCEPTION_MESSAGE);
+            assertEquals(EXPECTED_HTTPS_EXCEPTION_MESSAGE, exception.getMessage());
         });
     }
 

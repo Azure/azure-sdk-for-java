@@ -67,6 +67,7 @@ final class TestUtils {
     static final String INVOICE_1_PDF = "Invoice_1.pdf";
     static final String FORM_JPG = "Form_1.jpg";
     static final String BLANK_PDF = "blank.pdf";
+    static final String ENCODED_BLANK_SPACE_URL = "https://fakeuri.com/blank%20space";
 
     private TestUtils() {
     }

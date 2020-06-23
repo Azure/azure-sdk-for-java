@@ -347,7 +347,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         });
     }
 
-    // Content = URL
+    // Content - URL
 
     /**
      * Verifies layout data for a document using source as input stream data.
@@ -395,16 +395,16 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeContentFromUrlWithBlankPdf(HttpClient httpClient,
+    public void recognizeContentFromUrlWithEncodedBlankSpace(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         // TODO: check the given url "https://fakeuri.com/blank%20" is not a valid link
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        contentFromUrlWithBlankPdfRunner(sourceUrl -> {
-            SyncPoller<OperationResult, List<FormPage>> syncPoller =
-                client.beginRecognizeContentFromUrl(sourceUrl).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateContentResultData(syncPoller.getFinalResult(), false);
-        });
+//        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+//        contentFromUrlWithBlankPdfRunner(sourceUrl -> {
+//            SyncPoller<OperationResult, List<FormPage>> syncPoller =
+//                client.beginRecognizeContentFromUrl(sourceUrl).getSyncPoller();
+//            syncPoller.waitForCompletion();
+//            validateContentResultData(syncPoller.getFinalResult(), false);
+//        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -420,262 +420,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     }
 
     // Custom form recognition
-
-    // Custom form - non-URL - labeled data
-
-    /**
-     * Verifies custom form data for a document using source as input stream data and valid labeled model Id,
-     * excluding text content.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, true);
-        }));
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null data value.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithNullFormData(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            syncPoller.waitForCompletion();
-
-            assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(null,
-                syncPoller.getFinalResult().getModelId(), CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF,
-                true, null).getSyncPoller());
-        }));
-    }
-
-    /**
-     * Verifies an exception thrown for a document using null model id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithNullModelId(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            syncPoller.waitForCompletion();
-
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(toFluxByteBuffer(data), null,
-                CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null).getSyncPoller());
-            assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
-        }));
-    }
-
-    /**
-     * Verifies an exception thrown for an empty model id when recognizing custom form from URL.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithEmptyModelId(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            syncPoller.waitForCompletion();
-
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(toFluxByteBuffer(data), "",
-                CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null).getSyncPoller());
-            assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
-        }));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        invalidSourceUrlRunner((invalidSourceUrl) -> beginTrainingLabeledRunner((training, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels).getSyncPoller();
-            syncPoller.waitForCompletion();
-            CustomFormModel createdModel = syncPoller.getFinalResult();
-            FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
-                () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId()).getSyncPoller().getFinalResult());
-            ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
-            // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
-            // assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
-            // assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
-            // assertEquals(EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
-        }));
-    }
-
-    /**
-     * Verifies content type will be auto detected when using custom form API with input stream data overload.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithContentTypeAutoDetection(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(getReplayableBufferData(FORM_LOCAL_URL),
-                    trainingPoller.getFinalResult().getModelId(), CUSTOM_FORM_FILE_LENGTH, null, true, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
-        }));
-    }
-
-    /**
-     * Verify custom form for a data stream of multi-page labeled data
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateMultiPageDataLabeled(syncPoller.getFinalResult());
-        }));
-    }
-
-    // Custom form - non-URL - unlabeled data
-
-    /**
-     * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }));
-    }
-
-    /**
-     * Verifies custom form data for a document using source as input stream data and valid include text content
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUnlabeledDataIncludeTextContent(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), true, false);
-        }));
-    }
-
-    /**
-     * Verify custom form for a data stream of multi-page unlabeled data
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
-        }));
-    }
-
-    /**
-     * Verifies custom form data for a JPG content type with unlabeled data
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        customFormJpgDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    FORM_1_JPG_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }));
-    }
-
-    /**
-     * Verifies custom form data for a blank PDF content type with unlabeled data
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        blankPdfDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
-                    useTrainingLabels).getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
-                    BLANK_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
-        }));
-    }
 
     // Custom form - non-URL - labeled data
 
@@ -744,6 +488,269 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }));
     }
 
+    /**
+     * Verifies custom form data for a document using source as input stream data and valid labeled model Id,
+     * excluding text content.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormLabeledDataExcludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), false, true);
+        }));
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null data value.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormLabeledDataWithNullFormData(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+
+            assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomForms(null,
+                syncPoller.getFinalResult().getModelId(), CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF,
+                true, null).getSyncPoller());
+        }));
+    }
+
+    /**
+     * Verifies an exception thrown for a document using null model id.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormLabeledDataWithNullModelId(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+
+            Exception ex = assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), null,
+                CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null)
+                    .getSyncPoller());
+            assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
+        }));
+    }
+
+    /**
+     * Verifies an exception thrown for an empty model id when recognizing custom form from URL.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormLabeledDataWithEmptyModelId(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            syncPoller.waitForCompletion();
+
+            Exception ex = assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), "",
+                CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null).getSyncPoller());
+            assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        invalidSourceUrlRunner((invalidSourceUrl) -> beginTrainingLabeledRunner((training, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> syncPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(training, useTrainingLabels)
+                    .getSyncPoller();
+            syncPoller.waitForCompletion();
+            CustomFormModel createdModel = syncPoller.getFinalResult();
+            FormRecognizerException formRecognizerException = assertThrows(FormRecognizerException.class,
+                () -> client.beginRecognizeCustomFormsFromUrl(invalidSourceUrl, createdModel.getModelId())
+                    .getSyncPoller().getFinalResult());
+            ErrorInformation errorInformation = formRecognizerException.getErrorInformation().get(0);
+            // TODO: Service bug https://github.com/Azure/azure-sdk-for-java/issues/12046
+            // assertEquals(EXPECTED_INVALID_URL_ERROR_CODE, errorInformation.getCode());
+            // assertEquals(OCR_EXTRACTION_INVALID_URL_ERROR, errorInformation.getMessage());
+            // assertEquals(EXPECTED_INVALID_ANALYZE_EXCEPTION_MESSAGE, formRecognizerException.getMessage());
+        }));
+    }
+
+    /**
+     * Verifies content type will be auto detected when using custom form API with input stream data overload.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormLabeledDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(getReplayableBufferData(FORM_LOCAL_URL),
+                    trainingPoller.getFinalResult().getModelId(), CUSTOM_FORM_FILE_LENGTH, null,
+                    true, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), true, true);
+        }));
+    }
+
+    /**
+     * Verify custom form for a data stream of multi-page labeled data
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, true).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateMultiPageDataLabeled(syncPoller.getFinalResult());
+        }));
+    }
+
+    // Custom form - non-URL - unlabeled data
+
+    /**
+     * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+        }));
+    }
+
+    /**
+     * Verifies custom form data for a document using source as input stream data and valid include text content
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUnlabeledDataIncludeTextContent(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    CUSTOM_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, true, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), true, false);
+        }));
+    }
+
+    /**
+     * Verify custom form for a data stream of multi-page unlabeled data
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, false).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    MULTIPAGE_INVOICE_FILE_LENGTH, FormContentType.APPLICATION_PDF).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
+        }));
+    }
+
+    /**
+     * Verifies custom form data for a JPG content type with unlabeled data
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        customFormJpgDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    FORM_1_JPG_FILE_LENGTH, FormContentType.IMAGE_JPEG, false, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+        }));
+    }
+
+    /**
+     * Verifies custom form data for a blank PDF content type with unlabeled data
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+        blankPdfDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<OperationResult, CustomFormModel> trainingPoller =
+                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
+                    useTrainingLabels).getSyncPoller();
+            trainingPoller.waitForCompletion();
+
+            SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
+                client.beginRecognizeCustomForms(toFluxByteBuffer(data), trainingPoller.getFinalResult().getModelId(),
+                    BLANK_FORM_FILE_LENGTH, FormContentType.APPLICATION_PDF, false, null).getSyncPoller();
+            syncPoller.waitForCompletion();
+            validateRecognizedResult(syncPoller.getFinalResult(), false, false);
+        }));
+    }
+
     // Custom form - URL - unlabeled data
 
     /**
@@ -755,14 +762,14 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
 
-        urlDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+        urlDataRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                     useTrainingLabels).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(data, trainingPoller.getFinalResult().getModelId(),
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId(),
                     false, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, false);
@@ -777,14 +784,14 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeCustomFormUrlUnlabeledDataIncludeTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlDataRunner(data -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+        urlDataRunner(fileUrl -> beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                     useTrainingLabels).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(data, trainingPoller.getFinalResult().getModelId(),
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId(),
                     true, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, false);
@@ -801,11 +808,13 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false).getSyncPoller();
+                getFormTrainingAsyncClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, false).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId()).getSyncPoller();
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId())
+                    .getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultiPageDataUnlabeled(syncPoller.getFinalResult());
         }));
@@ -842,10 +851,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true).getSyncPoller();
+                getFormTrainingAsyncClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, true).getSyncPoller();
             trainingPoller.waitForCompletion();
 
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(fileUrl, null).getSyncPoller());
+            Exception ex = assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, null).getSyncPoller());
             assertEquals(EXPECTED_MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
         }));
     }
@@ -860,10 +871,12 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true).getSyncPoller();
+                getFormTrainingAsyncClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, true).getSyncPoller();
             trainingPoller.waitForCompletion();
 
-            Exception ex = assertThrows(RuntimeException.class, () -> client.beginRecognizeCustomFormsFromUrl(fileUrl, "").getSyncPoller());
+            Exception ex = assertThrows(RuntimeException.class, () ->
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, "").getSyncPoller());
             assertEquals(EXPECTED_INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
         }));
     }
@@ -875,14 +888,14 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+        urlDataRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                     useTrainingLabels).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(data, trainingPoller.getFinalResult().getModelId(),
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId(),
                     false, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), false, true);
@@ -897,14 +910,14 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     public void recognizeCustomFormUrlLabeledDataIncludeTextContent(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlDataRunner(data -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+        urlDataRunner(fileUrl -> beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
                 getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl,
                     useTrainingLabels).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(data, trainingPoller.getFinalResult().getModelId(),
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId(),
                     true, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateRecognizedResult(syncPoller.getFinalResult(), true, true);
@@ -921,11 +934,13 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                getFormTrainingAsyncClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true).getSyncPoller();
+                getFormTrainingAsyncClient(httpClient, serviceVersion)
+                    .beginTraining(trainingFilesUrl, true).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId()).getSyncPoller();
+                client.beginRecognizeCustomFormsFromUrl(fileUrl, trainingPoller.getFinalResult().getModelId())
+                    .getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultiPageDataLabeled(syncPoller.getFinalResult());
         }));
