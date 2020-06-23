@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
-- Fix `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
+- Change `CopyAuthorization.getExpiresOn()` to return a `OffsetDateTime` instead of a `long` value
 - Add `RecognizeOptions` and `RecognizeCustomFormOptions` to pass configurable options when using recognize APIs on FormRecognizerClient.
 - Change `submodels` property on `CustomFormModel` to return a `List` instead of `IterableStream`
 - Rename `fieldMap` property to `fields` on `CustomFormSubmodel` model

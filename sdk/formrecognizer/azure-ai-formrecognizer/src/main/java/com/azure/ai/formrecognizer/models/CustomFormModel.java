@@ -136,7 +136,7 @@ public final class CustomFormModel {
     /**
      * Get the list of the documents used to train the model and any errors reported in each document.
      *
-     * @return the unmodifiable of the documents used to train the model.
+     * @return the unmodifiable list of documents used to train the model.
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;

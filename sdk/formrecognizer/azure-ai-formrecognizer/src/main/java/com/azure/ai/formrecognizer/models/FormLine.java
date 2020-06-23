@@ -36,7 +36,7 @@ public final class FormLine extends FormContent {
     }
 
     /**
-     * Get the List of words in the text line.
+     * Get the list of words in the text line.
      *
      * @return the unmodifiable list of words in the {@code FormLine}.
      */

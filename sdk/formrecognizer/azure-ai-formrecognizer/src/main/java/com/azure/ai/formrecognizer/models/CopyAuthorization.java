@@ -47,8 +47,7 @@ public final class CopyAuthorization {
     private String resourceRegion;
 
     /*
-     * The time when the access token expires. The date is represented as the
-     * number of seconds from 1970-01-01T0:0:0Z UTC until the expiration time.
+     * The date-time when the access token expires.
      */
     @JsonProperty("expirationDateTimeTicks")
     private long expirationDateTimeTicks;
@@ -94,8 +93,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the date-time when the access token expires. The date is represented as the
-     * number of seconds from 1970-01-01T0:0:0Z UTC until the expiration time.
+     * Get the date-time when the access token expires.
      *
      * @return the date-time value when the access token expires.
      */
