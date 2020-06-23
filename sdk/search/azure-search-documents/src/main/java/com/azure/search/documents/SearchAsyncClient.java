@@ -47,6 +47,7 @@ import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
@@ -98,13 +99,6 @@ public final class SearchAsyncClient {
      * The pipeline that powers this client.
      */
     private final HttpPipeline httpPipeline;
-
-    private static final ObjectMapper MAPPER;
-
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-    }
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
@@ -497,12 +491,14 @@ public final class SearchAsyncClient {
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
+                    SearchObjectMapper.getInstance().setSerializationInclusion(JsonInclude.Include.ALWAYS);
                     if (SearchDocument.class.getTypeName().equals(modelClass.getTypeName())) {
                         TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
-                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
+                        SearchDocument doc = new SearchDocument(SearchObjectMapper.getInstance()
+                            .convertValue(res.getValue(), typeReference));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
-                    T document = MAPPER.convertValue(res.getValue(), modelClass);
+                    T document = SearchObjectMapper.getInstance().convertValue(res.getValue(), modelClass);
                     return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());
@@ -782,5 +778,19 @@ public final class SearchAsyncClient {
             .setActionType(actionType)
             .setDocument(d)));
         return batch;
+    }
+
+    private static class SearchObjectMapper {
+        private static ObjectMapper MAPPER = null;
+        private SearchObjectMapper() {
+        }
+
+        static ObjectMapper getInstance() {
+            if (MAPPER == null) {
+                MAPPER = new JacksonAdapter().serializer();
+                SerializationUtil.configureMapper(MAPPER);
+            }
+            return MAPPER;
+        }
     }
 }

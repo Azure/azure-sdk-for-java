@@ -338,8 +338,8 @@ public class SearchSyncTests extends SearchTestBase {
         Map<String, Object> hotel1 = extractAndTransformSingleResult(result.getValue().get(0));
         Map<String, Object> hotel2 = extractAndTransformSingleResult(result.getValue().get(1));
 
-        assertEquals(expectedHotel1, hotel1);
-        assertEquals(expectedHotel2, hotel2);
+        assertMapEquals(expectedHotel1, hotel1, true);
+        assertMapEquals(expectedHotel2, hotel2, true);
     }
 
     @Test

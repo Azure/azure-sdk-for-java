@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
@@ -19,7 +18,6 @@ public class SerializationUtil {
     public static void configureMapper(ObjectMapper mapper) {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
-        mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         UntypedObjectDeserializer defaultDeserializer = new UntypedObjectDeserializer(null, null);
         GeoPointDeserializer geoPointDeserializer = new GeoPointDeserializer(defaultDeserializer);
         Iso8601DateDeserializer iso8601DateDeserializer = new Iso8601DateDeserializer(geoPointDeserializer);
