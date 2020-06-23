@@ -58,25 +58,27 @@ public class RecognizeReceiptsFromUrlAsync {
                 System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
                 if (merchantNameField != null) {
-                    Object merchantNameFieldValue = recognizedFields.get("MerchantName").getFieldValue();
+                    Object merchantNameFieldValue = merchantNameField.getValue();
                     if (merchantNameFieldValue instanceof String) {
+                        String merchantName = (String) merchantNameFieldValue;
                         System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                            merchantNameFieldValue, merchantNameField.getConfidence());
+                            merchantName, merchantNameField.getConfidence());
                     }
                 }
 
                 FormField<?> merchantAddressField = recognizedFields.get("MerchantAddress");
                 if (merchantAddressField != null) {
-                    Object merchantAddressFieldValue = recognizedFields.get("MerchantAddress").getFieldValue();
+                    Object merchantAddressFieldValue = merchantAddressField.getValue();
                     if (merchantAddressFieldValue instanceof String) {
+                        String merchantAddress = (String) merchantAddressFieldValue;
                         System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                            merchantAddressFieldValue, merchantAddressField.getConfidence());
+                            merchantAddress, merchantAddressField.getConfidence());
                     }
                 }
 
                 FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
                 if (transactionDateField != null) {
-                    Object transactionDateFieldValue = recognizedFields.get("TransactionDate").getFieldValue();
+                    Object transactionDateFieldValue = transactionDateField.getValue();
                     if (transactionDateFieldValue instanceof LocalDate) {
                         LocalDate transactionDate = (LocalDate) transactionDateFieldValue;
                         System.out.printf("Transaction Date: %s, confidence: %.2f%n",
@@ -87,43 +89,43 @@ public class RecognizeReceiptsFromUrlAsync {
                 FormField<?> receiptItemsField = recognizedFields.get("Items");
                 if (receiptItemsField != null) {
                     System.out.printf("Receipt Items: %n");
-                    if (receiptItemsField.getFieldValue() instanceof List) {
-                        List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
+                    if (receiptItemsField.getValue() instanceof List) {
+                        List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
                         receiptItems.forEach(receiptItem -> {
-                            if (receiptItem.getFieldValue() instanceof Map) {
-                                ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                            if (receiptItem.getValue() instanceof Map) {
+                                ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
                                     if ("Name".equals(key)) {
-                                        if (formField.getFieldValue() instanceof String) {
+                                        if (formField.getValue() instanceof String) {
+                                            String name = (String) formField.getValue();
                                             System.out.printf("Name: %s, confidence: %.2fs%n",
-                                                formField.getFieldValue(),
-                                                formField.getConfidence());
+                                                name, formField.getConfidence());
                                         }
                                     }
                                     if ("Quantity".equals(key)) {
-                                        if (formField.getFieldValue() instanceof Integer) {
+                                        if (formField.getValue() instanceof Integer) {
+                                            Integer quantity = (Integer) formField.getValue();
                                             System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                                formField.getFieldValue(), formField.getConfidence());
+                                                quantity, formField.getConfidence());
                                         }
                                     }
                                     if ("Price".equals(key)) {
-                                        if (formField.getFieldValue() instanceof Float) {
+                                        if (formField.getValue() instanceof Float) {
+                                            Float price = (Float) formField.getValue();
                                             System.out.printf("Price: %f, confidence: %.2f%n",
-                                                formField.getFieldValue(),
-                                                formField.getConfidence());
+                                                price, formField.getConfidence());
                                         }
                                     }
                                     if ("TotalPrice".equals(key)) {
-                                        if (formField.getFieldValue() instanceof Float) {
+                                        if (formField.getValue() instanceof Float) {
+                                            Float totalPrice = (Float) formField.getValue();
                                             System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                                formField.getFieldValue(),
-                                                formField.getConfidence());
+                                                totalPrice, formField.getConfidence());
                                         }
                                     }
                                 });
                             }
                         });
                     }
-                    System.out.print("-----------------------------------");
                 }
             }
         });

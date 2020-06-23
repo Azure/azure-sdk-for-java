@@ -15,7 +15,7 @@ public final class FormField<T> {
     private final FieldData labelData;
     private final String name;
     private final FieldData valueData;
-    private final T fieldValue;
+    private final T value;
 
     /**
      * Constructs a FormField object.
@@ -23,15 +23,15 @@ public final class FormField<T> {
      * @param confidence The confidence of the recognized field.
      * @param labelData The text, bounding box, and field elements for the field label.
      * @param name The name the field or label.
-     * @param fieldValue The value of the recognized field.
+     * @param value The value of the recognized field.
      * @param valueData The text, bounding box, and field elements for the field value.
      */
-    public FormField(final float confidence, final FieldData labelData, final String name, final T fieldValue,
+    public FormField(final float confidence, final FieldData labelData, final String name, final T value,
         final FieldData valueData) {
         this.confidence = confidence;
         this.labelData = labelData;
         this.name = name;
-        this.fieldValue = fieldValue;
+        this.value = value;
         this.valueData = valueData;
     }
 
@@ -63,12 +63,13 @@ public final class FormField<T> {
     }
 
     /**
-     * Get the value of the recognized field.
+     * Get the value of the recognized field. Possible types include: 'String',
+     * 'LocalDate', 'LocalTime', 'Integer', 'Float', 'Map', or 'List'.
      *
-     * @return Value of the recognized field.
+     * @return the value of the recognized field.
      */
-    public T getFieldValue() {
-        return this.fieldValue;
+    public T getValue() {
+        return this.value;
     }
 
     /**

@@ -70,7 +70,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .forEach(recognizedForm -> {
                 recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                     System.out.printf("Field text: %s%n", fieldText);
-                    System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                    System.out.printf("Field value: %s%n", fieldValue.getValue());
                     System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
                 });
             });
@@ -116,7 +116,7 @@ public class FormRecognizerClientJavaDocCodeSnippets {
         formRecognizerClient.beginRecognizeCustomForms(targetStream, form.length(), modelId).getFinalResult()
             .forEach(recognizedForm -> recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
                 System.out.printf("Field text: %s%n", fieldText);
-                System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
+                System.out.printf("Field value: %s%n", fieldValue.getValue());
                 System.out.printf("Confidence score: %.2f%n", fieldValue.getConfidence());
             }));
         // END: com.azure.ai.formrecognizer.FormRecognizerClient.beginRecognizeCustomForms#InputStream-long-string
@@ -253,28 +253,29 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .forEach(recognizedReceipt -> {
                 Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-                if (merchantNameField.getFieldValue() instanceof String) {
+                if (merchantNameField.getValue() instanceof String) {
+                    String merchantName = (String) merchantNameField.getValue();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantNameField.getFieldValue(),
-                        merchantNameField.getConfidence());
+                        merchantName, merchantNameField.getConfidence());
                 }
                 FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                if (transactionDateField.getFieldValue() instanceof LocalDate) {
+                if (transactionDateField.getValue() instanceof LocalDate) {
+                    LocalDate transactionDate = (LocalDate) transactionDateField.getValue();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDateField.getFieldValue(),
-                        transactionDateField.getConfidence());
+                        transactionDate, transactionDateField.getConfidence());
                 }
                 FormField<?> receiptItemsField = recognizedFields.get("Items");
                 System.out.printf("Receipt Items: %n");
-                if (receiptItemsField.getFieldValue() instanceof List) {
-                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
+                if (receiptItemsField.getValue() instanceof List) {
+                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
                     receiptItems.forEach(receiptItem -> {
-                        if (receiptItem.getFieldValue() instanceof Map) {
-                            ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                        if (receiptItem.getValue() instanceof Map) {
+                            ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
                                 if ("Quantity".equals(key)) {
-                                    if (formField.getFieldValue() instanceof Integer) {
+                                    if (formField.getValue() instanceof Integer) {
+                                        Integer quantity = (Integer) formField.getValue();
                                         System.out.printf("Quantity: %s, confidence: %.2f%n",
-                                            formField.getFieldValue(), formField.getConfidence());
+                                            quantity, formField.getConfidence());
                                     }
                                 }
                             });
@@ -343,28 +344,29 @@ public class FormRecognizerClientJavaDocCodeSnippets {
             .getFinalResult().forEach(recognizedReceipt -> {
                 Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
                 FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-                if (merchantNameField.getFieldValue() instanceof String) {
+                if (merchantNameField.getValue() instanceof String) {
+                    String merchantName = (String) merchantNameField.getValue();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantNameField.getFieldValue(),
-                        merchantNameField.getConfidence());
+                        merchantName, merchantNameField.getConfidence());
                 }
                 FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                if (transactionDateField.getFieldValue() instanceof LocalDate) {
+                if (transactionDateField.getValue() instanceof LocalDate) {
+                    LocalDate transactionDate = (LocalDate) transactionDateField.getValue();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDateField.getFieldValue(),
-                        transactionDateField.getConfidence());
+                        transactionDate, transactionDateField.getConfidence());
                 }
                 FormField<?> receiptItemsField = recognizedFields.get("Items");
                 System.out.printf("Receipt Items: %n");
-                if (receiptItemsField.getFieldValue() instanceof List) {
-                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
+                if (receiptItemsField.getValue() instanceof List) {
+                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
                     receiptItems.forEach(receiptItem -> {
-                        if (receiptItem.getFieldValue() instanceof Map) {
-                            ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                        if (receiptItem.getValue() instanceof Map) {
+                            ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
                                 if ("Quantity".equals(key)) {
-                                    if (formField.getFieldValue() instanceof Integer) {
+                                    if (formField.getValue() instanceof Integer) {
+                                        Integer quantity = (Integer) formField.getValue();
                                         System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                            formField.getFieldValue(), formField.getConfidence());
+                                            quantity, formField.getConfidence());
                                     }
                                 }
                             });
@@ -395,30 +397,31 @@ public class FormRecognizerClientJavaDocCodeSnippets {
                 .setIncludeFieldElements(includeFieldElements)
                 .setPollInterval(Duration.ofSeconds(5)))
             .getFinalResult().forEach(recognizedReceipt -> {
-                Map<String, FormField> recognizedFields = recognizedReceipt.getRecognizedForm().getFields();
-                FormField merchantNameField = recognizedFields.get("MerchantName");
-                if (merchantNameField.getFieldValue().getType() == FieldValueType.STRING) {
+                Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
+                FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+                if (merchantNameField.getValue() instanceof String) {
+                    String merchantName = (String) merchantNameField.getValue();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                        merchantNameField.getFieldValue(),
-                        merchantNameField.getConfidence());
+                        merchantName, merchantNameField.getConfidence());
                 }
                 FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-                if (transactionDateField.getFieldValue() instanceof LocalDate) {
+                if (transactionDateField.getValue() instanceof LocalDate) {
+                    LocalDate transactionDate = (LocalDate) transactionDateField.getValue();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                        transactionDateField.getFieldValue(),
-                        transactionDateField.getConfidence());
+                        transactionDate, transactionDateField.getConfidence());
                 }
                 FormField<?> receiptItemsField = recognizedFields.get("Items");
                 System.out.printf("Receipt Items: %n");
-                if (receiptItemsField.getFieldValue() instanceof List) {
-                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
+                if (receiptItemsField.getValue() instanceof List) {
+                    List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
                     receiptItems.forEach(receiptItem -> {
-                        if (receiptItem.getFieldValue() instanceof Map) {
-                            ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                        if (receiptItem.getValue() instanceof Map) {
+                            ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
                                 if ("Quantity".equals(key)) {
-                                    if (formField.getFieldValue() instanceof Integer) {
+                                    if (formField.getValue() instanceof Integer) {
+                                        Integer quantity = (Integer) formField.getValue();
                                         System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                            formField.getFieldValue(), formField.getConfidence());
+                                            quantity, formField.getConfidence());
                                     }
                                 }
                             });

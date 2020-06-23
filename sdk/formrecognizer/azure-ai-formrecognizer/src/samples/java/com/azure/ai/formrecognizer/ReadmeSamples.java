@@ -100,8 +100,8 @@ public class ReadmeSamples {
             form.getFields().forEach((label, formField) ->
                 System.out.printf("Field %s has value %s with confidence score of %f.%n", label,
                     formField.getValueData().getText(),
-                    formField.getConfidence());
-            });
+                    formField.getConfidence())
+            );
             System.out.print("-----------------------------------");
         }
     }
@@ -151,35 +151,36 @@ public class ReadmeSamples {
             Map<String, FormField<?>> recognizedFields = recognizedReceipt.getFields();
             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
             FormField<?> merchantNameField = recognizedFields.get("MerchantName");
-            if (merchantNameField.getFieldValue() instanceof String) {
+            if (merchantNameField.getValue() instanceof String) {
+                String merchantName = (String) merchantNameField.getValue();
                 System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                    merchantNameField.getFieldValue(),
-                    merchantNameField.getConfidence());
+                    merchantName, merchantNameField.getConfidence());
             }
             FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
-            if (transactionDateField.getFieldValue() instanceof LocalDate) {
+            if (transactionDateField.getValue() instanceof LocalDate) {
+                LocalDate transactionDate = (LocalDate) transactionDateField.getValue();
                 System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                    transactionDateField.getFieldValue(),
-                    transactionDateField.getConfidence());
+                    transactionDate, transactionDateField.getConfidence());
             }
             FormField<?> receiptItemsField = recognizedFields.get("Items");
             System.out.printf("Receipt Items: %n");
-            if (receiptItemsField.getFieldValue() instanceof List) {
-                List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getFieldValue();
+            if (receiptItemsField.getValue() instanceof List) {
+                List<FormField<?>> receiptItems = (List<FormField<?>>) receiptItemsField.getValue();
                 receiptItems.forEach(receiptItem -> {
-                    if (receiptItem.getFieldValue() instanceof Map) {
-                        ((Map<String, FormField<?>>) receiptItem.getFieldValue()).forEach((key, formField) -> {
+                    if (receiptItem.getValue() instanceof Map) {
+                        ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
                             if ("Name".equals(key)) {
-                                if (formField.getFieldValue() instanceof String) {
+                                if (formField.getValue() instanceof String) {
+                                    String name = (String) formField.getValue();
                                     System.out.printf("Name: %s, confidence: %.2fs%n",
-                                        formField.getFieldValue(),
-                                        formField.getConfidence());
+                                        name, formField.getConfidence());
                                 }
                             }
                             if ("Quantity".equals(key)) {
-                                if (formField.getFieldValue() instanceof Integer) {
+                                if (formField.getValue() instanceof Integer) {
+                                    Integer quantity = (Integer) formField.getValue();
                                     System.out.printf("Quantity: %d, confidence: %.2f%n",
-                                        formField.getFieldValue(), formField.getConfidence());
+                                        quantity, formField.getConfidence());
                                 }
                             }
                         });
