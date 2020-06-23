@@ -3,8 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
-import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
