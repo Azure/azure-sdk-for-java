@@ -10,6 +10,7 @@ resources:
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
+      ref: refs/tags/azure-sdk-tools_20200514.1
 
 variables:
   DefaultOptions: '--batch-mode --fail-at-end -Dmaven.wagon.http.pool=false --settings eng/settings.xml'
@@ -19,7 +20,7 @@ jobs:
   - job: 'Build'
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     strategy:
       matrix:
@@ -54,7 +55,7 @@ jobs:
   - job: 'Analyze'
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     steps:
       - task: UsePythonVersion@0
@@ -164,27 +165,21 @@ jobs:
     strategy:
       matrix:
         Linux - Java 8:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
+          OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.8'
         macOS - Java 8:
-          OSName: 'macOS'
           OSVmImage: 'macOS-10.15'
           JavaVersion: '1.8'
         Windows - Java 8:
-          OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
         Linux - Java 11:
-          OSName: 'Linux'
-          OSVmImage: 'ubuntu-16.04'
+          OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.11'
         macOS - Java 11:
-          OSName: 'macOS'
           OSVmImage: 'macOS-10.15'
           JavaVersion: '1.11'
         Windows - Java 11:
-          OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
 
@@ -192,9 +187,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: eng/pipelines/templates/scripts/verify-agent-os.yml@azure-sdk-tools
-        parameters:
-          OSName: $(OSVmImage)
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - task: Maven@3
         displayName: 'Compile all code and run tests'

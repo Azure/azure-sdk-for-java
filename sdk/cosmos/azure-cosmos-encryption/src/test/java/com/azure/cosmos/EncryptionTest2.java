@@ -14,7 +14,8 @@ import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -154,10 +155,10 @@ public class EncryptionTest2 extends TestSuiteBase {
         Pojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
 
-        FeedOptions feedOptions = new FeedOptions();
+        CosmosQueryRequestOptions CosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<Pojo> feedResponseIterator3 =
-            container.readAllItems(feedOptions, Pojo.class);
+            container.readAllItems(CosmosQueryRequestOptions, Pojo.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -168,16 +169,16 @@ public class EncryptionTest2 extends TestSuiteBase {
         CosmosItemResponse<Pojo> itemResponse = container.createItem(properties);
 
         String query = String.format("SELECT * from c where c.id = '%s'", properties.id);
-        FeedOptions feedOptions = new FeedOptions();
+        CosmosQueryRequestOptions CosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<Pojo> feedResponseIterator1 =
-            container.queryItems(query, feedOptions, Pojo.class);
+            container.queryItems(query, CosmosQueryRequestOptions, Pojo.class);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
         CosmosPagedIterable<Pojo> feedResponseIterator3 =
-            container.queryItems(querySpec, feedOptions, Pojo.class);
+            container.queryItems(querySpec, CosmosQueryRequestOptions, Pojo.class);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 
@@ -196,7 +197,7 @@ public class EncryptionTest2 extends TestSuiteBase {
 
 
         String query = String.format("SELECT * from c where c.id in ('%s', '%s', '%s')", actualIds.get(0), actualIds.get(1), actualIds.get(2));
-        FeedOptions feedOptions = new FeedOptions();
+        CosmosQueryRequestOptions CosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         String continuationToken = null;
         int pageSize = 1;
 
@@ -204,7 +205,7 @@ public class EncryptionTest2 extends TestSuiteBase {
         int finalDocumentCount = 0;
 
         CosmosPagedIterable<Pojo> feedResponseIterator1 =
-            container.queryItems(query, feedOptions, Pojo.class);
+            container.queryItems(query, CosmosQueryRequestOptions, Pojo.class);
 
         do {
             Iterable<FeedResponse<Pojo>> feedResponseIterable =

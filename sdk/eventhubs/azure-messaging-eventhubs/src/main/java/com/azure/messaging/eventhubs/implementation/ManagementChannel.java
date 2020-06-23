@@ -4,9 +4,12 @@
 package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -17,6 +20,7 @@ import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -104,7 +108,6 @@ public class ManagementChannel implements EventHubManagementNode {
                     endpointStateSink.complete();
                     close();
                 });
-
         //@formatter:on
     }
 
@@ -155,8 +158,19 @@ public class ManagementChannel implements EventHubManagementNode {
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(x -> x.sendWithAck(request))
-                .map(message -> messageSerializer.deserialize(message, responseType));
+            return channelMono.flatMap(channel -> channel.sendWithAck(request)
+                .map(message -> {
+                    if (RequestResponseUtils.isSuccessful(message)) {
+                        return messageSerializer.deserialize(message, responseType);
+                    }
+
+                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                        statusDescription, channel.getErrorContext());
+
+                    throw logger.logExceptionAsWarning(Exceptions.propagate(error));
+                }));
         });
     }
 

@@ -7,10 +7,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
@@ -25,10 +24,10 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         this.DekProvider = dekProvider;
     }
 
-    public Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> createDataEncryptionKeyAsync(String id,
-                                                                                                   String encryptionAlgorithm,
-                                                                                                   EncryptionKeyWrapMetadata encryptionKeyWrapMetadata,
-                                                                                                   CosmosItemRequestOptions requestOptions) {
+    public Mono<CosmosItemResponse<DataEncryptionKeyProperties>> createDataEncryptionKeyAsync(String id,
+                                                                                                           String encryptionAlgorithm,
+                                                                                                           EncryptionKeyWrapMetadata encryptionKeyWrapMetadata,
+                                                                                                           CosmosItemRequestOptions requestOptions) {
 
         Preconditions.checkArgument(StringUtils.isNotEmpty(id), "id is missing");
         Preconditions.checkArgument(StringUtils.equals(encryptionAlgorithm,
@@ -50,7 +49,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
 
         DataEncryptionKeyProperties dekProperties = new DataEncryptionKeyProperties(id, encryptionAlgorithm, wrappedDek, updatedMetadata, Instant.now());
 
-        Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> dekResponseMono =
+        Mono<CosmosItemResponse<DataEncryptionKeyProperties>> dekResponseMono =
             this.DekProvider.getContainer().createItem(dekProperties, new PartitionKey(dekProperties.id), requestOptions);
 
         return dekResponseMono.flatMap(
@@ -64,10 +63,10 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
     }
 
     @Override
-    public Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKeyAsync(
+    public Mono<CosmosItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKeyAsync(
         String id,
         CosmosItemRequestOptions requestOptions) {
-        Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> responseMono = this.ReadInternalAsync(
+        Mono<CosmosItemResponse<DataEncryptionKeyProperties>> responseMono = this.ReadInternalAsync(
             id,
             requestOptions);
 
@@ -81,7 +80,7 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
     }
 
     @Override
-    public Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> rewrapDataEncryptionKeyAsync(
+    public Mono<CosmosItemResponse<DataEncryptionKeyProperties>> rewrapDataEncryptionKeyAsync(
         String id,
         EncryptionKeyWrapMetadata newWrapMetadata,
         final CosmosItemRequestOptions requestOptions) {
@@ -108,16 +107,13 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
 
                 CosmosItemRequestOptions effectiveRequestOptions = requestOptions != null ? requestOptions : new CosmosItemRequestOptions();
 
-                effectiveRequestOptions.setAccessCondition(new AccessCondition()
-                    .setType(AccessConditionType.IF_MATCH)
-                    .setCondition(dekProperties.eTag));
-
+                effectiveRequestOptions.setIfMatchETag(dekProperties.eTag);
 
                 DataEncryptionKeyProperties newDekProperties = new DataEncryptionKeyProperties(dekProperties);
                 newDekProperties.wrappedDataEncryptionKey = wrappedDek;
                 newDekProperties.encryptionKeyWrapMetadata = updatedMetadata;
 
-                Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> responseMono = this.DekProvider.getContainer().replaceItem(
+                Mono<CosmosItemResponse<DataEncryptionKeyProperties>> responseMono = this.DekProvider.getContainer().replaceItem(
                     newDekProperties,
                     newDekProperties.id,
                     new PartitionKey(newDekProperties.id),
@@ -210,10 +206,10 @@ class DataEncryptionKeyContainerCore implements DataEncryptionKeyContainer {
         String id) {
         return this.ReadInternalAsync(
             id,
-            null).map(CosmosAsyncItemResponse::getItem);
+            null).map(CosmosItemResponse::getItem);
     }
 
-    private Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> ReadInternalAsync(
+    private Mono<CosmosItemResponse<DataEncryptionKeyProperties>> ReadInternalAsync(
         String id,
         CosmosItemRequestOptions requestOptions) {
         return this.DekProvider.getContainer()

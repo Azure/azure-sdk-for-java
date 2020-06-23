@@ -9,7 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Azure Search supported by this client library.
  */
 public enum SearchServiceVersion implements ServiceVersion {
-    V2019_05_06("2019-05-06");
+    V2019_05_06_Preview("2019-05-06-Preview");
 
     private final String version;
 
@@ -31,6 +31,6 @@ public enum SearchServiceVersion implements ServiceVersion {
      * @return the latest {@link SearchServiceVersion}
      */
     public static SearchServiceVersion getLatest() {
-        return V2019_05_06;
+        return V2019_05_06_Preview;
     }
 }

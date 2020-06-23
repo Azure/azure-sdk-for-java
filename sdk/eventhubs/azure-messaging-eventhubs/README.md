@@ -24,7 +24,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Table of contents](#table-of-contents)
 - [Getting started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Adding the package to your product](#adding-the-package-to-your-product)
+  - [Including the package](#including-the-package)
   - [Authenticate the client](#authenticate-the-client)
     - [Create an Event Hub producer using a connection string](#create-an-event-hub-producer-using-a-connection-string)
     - [Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)](#create-an-event-hub-client-using-microsoft-identity-platform-formerly-azure-active-directory)
@@ -52,14 +52,14 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - Azure Event Hubs instance
   - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
 
-### Adding the package to your product
+### Including the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-eventhubs;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.3</version>
+    <version>5.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -76,13 +76,12 @@ namespace. If you aren't familiar with shared access policies in Azure, you may 
 [get an Event Hubs connection string][event_hubs_connection_string].
 
 Both the asynchronous and synchronous Event Hub producer and consumer clients can be created using
-`EventHubClientBuilder`. Invoking `buildAsyncProducerClient()` or `buildProducerClient()` will build the asynchronous or
-synchronous producers. Similarly, `buildAsyncConsumerClient()` or `buildConsumerClient()` will build the appropriate
-consumers.
+`EventHubClientBuilder`. Invoking `build*Client()` creates a synchronous producer or consumer while 
+`build*AsyncClient()` creates its asynchronous counterpart.
 
 The snippet below creates a synchronous Event Hub producer.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L30-L34 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L31-L35 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
 String eventHubName = "<< NAME OF THE EVENT HUB >>";
@@ -93,7 +92,7 @@ EventHubProducerClient producer = new EventHubClientBuilder()
 
 #### Create an Event Hub client using Microsoft identity platform (formerly Azure Active Directory)
 
-Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
+Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. First, add the package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;current})
@@ -110,18 +109,15 @@ All the implemented ways to request a credential can be found under the `com.azu
 sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Event
 Hubs.
 
-#### Authorizing with AAD application client secret
+#### Authorizing with DefaultAzureCredential
 
-Follow the instructions in [Creating a service principal using Azure Portal][application_client_secret] to create a
-service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
-obtained from the [App registration page][app_registration_page].
+Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
+running environment. For more information about using Azure Active Directory authorization with Event Hubs, please refer
+to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L41-L53 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L42-L51 -->
 ```java
-ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-    .clientId("<< APPLICATION (CLIENT) ID >>")
-    .clientSecret("<< APPLICATION SECRET >>")
-    .tenantId("<< DIRECTORY (TENANT) ID >>")
+TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
 
 // The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
@@ -133,15 +129,11 @@ EventHubProducerClient client = new EventHubClientBuilder()
     .buildProducerClient();
 ```
 
-When using Azure Active Directory, your principal must be assigned a role which allows access to Event Hubs, such
-as the `Azure Event Hubs Data Owner` role. For more information about using Azure Active Directory authorization
-with Event Hubs, please refer to [the associated documentation][aad_authorization].
-
 ## Key concepts
 
 - An **Event Hub producer** is a source of telemetry data, diagnostics information, usage logs, or other log data, as
   part of an embedded device solution, a mobile device application, a game title running on a console or other device,
-  some client or server based business solution, or a web site.
+  some client or server based business solution, or a website.
 
 - An **Event Hub consumer** picks up such information from the Event Hub and processes it. Processing may involve
   aggregation, complex computation, and filtering. Processing may also involve distribution or storage of the
@@ -175,18 +167,15 @@ distributed evenly among the partitions.
 
 #### Create an Event Hub producer and publish events
 
-Developers can create a producer by calling `buildAsyncProducerClient()` or `buildProducerClient()`. If
-`buildProducerClient()` is invoked, a synchronous `EventHubProducerClient` is created. If `buildAsyncProducerClient()`
-is used, an asynchronous `EventHubProducerAsyncClient` is returned.
-
-Specifying `CreateBatchOptions.setPartitionId(String)` will send events to a specific partition. If not specified, will
-allow for automatic partition routing. In addition, specifying `CreateBatchOptions.setPartitionKey(String)` will tell
-Event Hubs service to hash the events and send them to the same partition.
+Developers can create a producer using `EventHubClientBuilder` and calling `buildProducer*Client()`. Specifying 
+`CreateBatchOptions.setPartitionId(String)` will send events to a specific partition. If `partitionId` is not specified,
+events are automatically routed to a partition. Specifying `CreateBatchOptions.setPartitionKey(String)` will tell Event
+Hubs service to hash the events and send them to the same partition.
 
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L61-L83 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L59-L81 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -213,18 +202,13 @@ if (eventDataBatch.getCount() > 0) {
 }
 ```
 
-To send events to a particular partition, set the optional parameter `setPartitionId(String)` on
-[`CreateBatchOptions`][CreateBatchOptions].
-
 #### Publish events using partition identifier
 
-Many Event Hub operations take place within the scope of a specific partition. Because partitions are owned by the Event
-Hub, their names are assigned at the time of creation. To understand what partitions are available, you can use the
-`getPartitionIds()` function to get the ids of all available partitions in your Event Hub instance. All clients created
-using `EventHubsClientBuilder` can query for metadata about the Event Hub using `getPartitionIds()` or
-`getEventHubProperties()`.
+Many Event Hub operations take place within the scope of a specific partition. Any client can call 
+`getPartitionIds()` or `getEventHubProperties()` to get the partition ids and metadata about in their Event Hub
+instance.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L90-L98 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L88-L96 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -239,11 +223,11 @@ producer.send(batch);
 
 #### Publish events using partition key
 
-When an Event Hub producer is not associated with any specific partition, it may be desirable to request that the Event
+When a set of events are not associated with any specific partition, it may be desirable to request that the Event
 Hubs service keep different events or batches of events together on the same partition. This can be accomplished by
 setting a `partition key` when publishing the events.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L105-L113 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L103-L111 -->
 ```java
 EventHubProducerClient producer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -258,19 +242,18 @@ producer.send(eventDataBatch);
 
 ### Consume events from an Event Hub partition
 
-In order to consume events, you'll need to create an [`EventHubConsumerAsyncClient`][EventHubConsumerAsyncClient] or
-[`EventHubConsumerClient`][EventHubConsumerClient] for a specific consumer group. When an Event Hub is created, it
-starts with a default consumer group that can be used to get started. A consumer also needs to specify where in the
-event stream to begin receiving events.
+To consume events, create an [`EventHubConsumerAsyncClient`][EventHubConsumerAsyncClient] or
+[`EventHubConsumerClient`][EventHubConsumerClient] for a specific consumer group. In addition, a consumer needs to
+specify where in the event stream to begin receiving events.
 
 #### Consume events with EventHubConsumerAsyncClient
 
-In the snippet below, we are creating an asynchronous consumer that receives events from `partitionId` and only listens
-to newest events that get pushed to the partition by invoking `receiveFromPartition(String, EventPosition)`. Developers
-can begin receiving events from multiple partitions using the same EventHubConsumerAsyncClient by calling
-`receiveFromPartition(String, EventPosition)` with another partition id, and subscribing to that Flux.
+In the snippet below, we create an asynchronous consumer that receives events from `partitionId` and only listens
+to newest events that get pushed to the partition. Developers can begin receiving events from multiple partitions using
+the same `EventHubConsumerAsyncClient` by calling `receiveFromPartition(String, EventPosition)` with another partition
+id.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L120-L130 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L118-L128 -->
 ```java
 EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -290,7 +273,7 @@ consumer.receiveFromPartition("0", EventPosition.latest()).subscribe(event -> {
 Developers can create a synchronous consumer that returns events in batches using an `EventHubConsumerClient`. In the
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L137-L149 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L135-L147 -->
 ```java
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
@@ -309,21 +292,20 @@ for (PartitionEvent event : events) {
 
 ### Consume events using an EventProcessorClient
 
-To consume events for all partitions of an Event Hub, you'll create an [`EventProcessorClient`][EventProcessorClient]
-for a specific consumer group. When an Event Hub is created, it provides a default consumer group that can be used to
-get started.
+To consume events for all partitions of an Event Hub, you can create an [`EventProcessorClient`][EventProcessorClient]
+for a specific consumer group.
 
 The [`EventProcessorClient`][EventProcessorClient] will delegate processing of events to a callback function that you
 provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for
 managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessorClient`][EventProcessorClient], use the
-[`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
+[`SampleCheckpointStore`][SampleCheckpointStore] available in samples, and a callback function that processes events
 received from the Event Hub and writes to console. For production applications, it's recommended to use a durable
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L157-L178 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L155-L176 -->
 ```java
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
@@ -353,7 +335,7 @@ eventProcessorClient.stop();
 
 ### Enable client logging
 
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
@@ -402,29 +384,11 @@ this exception occurred at and whether it was an issue in one of the producers o
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
 
-#### Message size exceeded
-
-Event data, both individual and in batches, have a maximum size allowed. This includes the data of the event, as well as
-any associated metadata and system overhead. The best approach for resolving this error is to reduce the number of
-events being sent in a batch or the size of data included in the message. Because size limits are subject to change,
-please refer to [Azure Event Hubs quotas and limits][event_hubs_quotas] for specifics.
-
-#### Other exceptions
-
-For detailed information about these and other exceptions that may occur, please refer to [Event Hubs Messaging
-Exceptions][event_hubs_messaging_exceptions].
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
-better performance compared to the default SSL implementation within the JDK. For more information, including how to
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
-
 ## Next steps
 
-Beyond those discussed, the Azure Event Hubs client library offers support for many additional scenarios to help take
-advantage of the full feature set of the Azure Event Hubs service. In order to help explore some of the these scenarios,
-the following set of sample is available [here][samples_readme].
+Beyond those discussed, the Azure Event Hubs client library offers support for many other scenarios to take
+advantage of the full feature set of the Azure Event Hubs service. To explore some of these scenarios, check out the 
+[samples README][samples_readme].
 
 ## Contributing
 
@@ -446,7 +410,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [event_hubs_connection_string]: https://docs.microsoft.com/azure/event-hubs/event-hubs-get-connection-string
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [event_hubs_features]: https://docs.microsoft.com/azure/event-hubs/event-hubs-features
-[event_hubs_messaging_exceptions]: https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions
+[event_hubs_messaging_exceptions]: https://docs.microsoft.com/azure/event-hubs/event-hubs-messaging-exceptions 
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
 [event_hubs_quotas]: https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas
 [EventHubConsumerAsyncClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubConsumerAsyncClient.java
@@ -454,7 +418,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [EventHubProducerAsyncClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.java
 [EventHubProducerClient]: ./src/main/java/com/azure/messaging/eventhubs/EventHubProducerClient.java
 [EventProcessorClient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
-[InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
+[SampleCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/SampleCheckpointStore.java
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
@@ -465,5 +429,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample_examples]: ./src/samples/java/com/azure/messaging/eventhubs/
 [samples_readme]: ./src/samples/README.md
 [source_code]: ./
+[wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)

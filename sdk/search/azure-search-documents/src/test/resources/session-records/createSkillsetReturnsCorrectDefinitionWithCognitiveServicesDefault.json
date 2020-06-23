@@ -1,29 +1,50 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk630440e63d7.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "a9fba231-cc69-4a15-8ff3-537dae62237c",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "680739f0-218d-48fc-a927-2da9e9905cbf",
+      "request-id" : "a9fba231-cc69-4a15-8ff3-537dae62237c",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:55:46 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:00 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B9638AB1BF68\"",
-      "elapsed-time" : "63",
+      "client-request-id" : "a9fba231-cc69-4a15-8ff3-537dae62237c",
+      "ETag" : "W/\"0x8D7F5D6859608A2\"",
+      "elapsed-time" : "76",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "778",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk630440e63d7.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B9638AB1BF68\\\"\",\"name\":\"cognitive-services-key-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null}}",
+      "Content-Length" : "808",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D6859608A2\\\"\",\"name\":\"cognitive-services-key-skillset51974488e23\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]}],\"cognitiveServices\":{\"@odata.type\":\"#Microsoft.Azure.Search.DefaultCognitiveServices\",\"description\":null},\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk630440e63d7.search.windows.net/skillsets('cognitive-services-key-skillset')?api-version=2019-05-06"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('cognitive-services-key-skillset51974488e23')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('cognitive-services-key-skillset51974488e23')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "8a4c289b-4762-416f-bffc-485f5ce36ed3"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "8a4c289b-4762-416f-bffc-485f5ce36ed3",
+      "elapsed-time" : "40",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8a4c289b-4762-416f-bffc-485f5ce36ed3",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:00 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk630440e63d7" ]
+  "variables" : [ "cognitive-services-key-skillset51974488e23" ]
 }

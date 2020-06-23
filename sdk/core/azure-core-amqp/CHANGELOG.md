@@ -1,7 +1,28 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
+
+## 1.2.0 (2020-06-08)
+- Fixes bug where receiver would not recover after network connection loss.
+- Fixes bug where multiple retries (the session would retry in addition to the link) were occurring when creating a new AMQP channel.
+- Fixes bug where credits were not added to new AMQP receive links upon recreation.
+- Adds AMQP framing error condition.
+- Add support for AMQP transactions.
+
+## 1.1.2 (2020-05-07)
+
+- Fixes dependency version of `azure-core`.
+
+## 1.1.1 (2020-05-07)
+- Bug fix to get link size from service the first time before sending message from `ReactorSender`.
+
+## 1.1.0 (2020-05-04)
+
+- Update proton-j dependencies to support larger web socket frame and module name.
+- Fixes authorization problems with ClaimsBasedSecurityNode not verifying response.
+- Adds proper support for backpressure to downstream subscribers.
+- Updates connection string parsing to no longer validate URL scheme.
 
 ## 1.0.2 (2020-04-03)
 

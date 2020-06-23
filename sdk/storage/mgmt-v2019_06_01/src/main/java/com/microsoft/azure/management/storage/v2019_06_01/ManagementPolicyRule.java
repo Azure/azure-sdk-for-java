@@ -42,8 +42,6 @@ public class ManagementPolicyRule {
 
     /**
      * Creates an instance of ManagementPolicyRule class.
-     * @param name a rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be unique within a policy.
-     * @param definition an object that defines the Lifecycle rule.
      */
     public ManagementPolicyRule() {
         type = "Lifecycle";

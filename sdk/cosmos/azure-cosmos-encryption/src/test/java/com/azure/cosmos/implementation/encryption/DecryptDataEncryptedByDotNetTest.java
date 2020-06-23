@@ -15,8 +15,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.guava25.collect.Streams;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -76,9 +77,12 @@ public class DecryptDataEncryptedByDotNetTest extends TestSuiteBase {
         keyWrapProvider = new TestKeyWrapProvider();
         dekProvider = new CosmosDataEncryptionKeyProvider(keyWrapProvider);
         client = CosmosBridgeInternal.setDateKeyProvider(getClientBuilder(), dekProvider).buildAsyncClient();
-        databaseCore = client.createDatabaseIfNotExists(databaseForTestId).block().getDatabase();
-        keyContainer = databaseCore.createContainerIfNotExists(keyContainerId, "/id", 400).block().getContainer();
-        itemContainer = databaseCore.createContainerIfNotExists(itemContainerId, "/PK", 400).block().getContainer();
+        client.createDatabaseIfNotExists(databaseForTestId).block();
+        databaseCore = client.getDatabase(databaseForTestId);
+        databaseCore.createContainerIfNotExists(keyContainerId, "/id", ThroughputProperties.createManualThroughput(400)).block();
+        keyContainer = databaseCore.getContainer(keyContainerId);
+        databaseCore.createContainerIfNotExists(itemContainerId, "/PK", ThroughputProperties.createManualThroughput(400)).block();
+        itemContainer = databaseCore.getContainer(itemContainerId);
 
         truncateCollection(itemContainer);
         truncateCollection(keyContainer);

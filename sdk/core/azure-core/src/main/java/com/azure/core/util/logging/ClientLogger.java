@@ -205,7 +205,7 @@ public class ClientLogger {
      * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
      * <p>
      * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
-     * being logged use {@link #logThowableAsWarning(Throwable)} instead.
+     * being logged use {@link #logThrowableAsWarning(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@link RuntimeException}.
@@ -214,7 +214,30 @@ public class ClientLogger {
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        return logThowableAsWarning(runtimeException);
+        return logThrowableAsWarning(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
+     * @deprecated Use {@link #logThrowableAsWarning(Throwable)} instead.
+     */
+    @Deprecated
+    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
+        if (!logger.isWarnEnabled()) {
+            return throwable;
+        }
+
+        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /**
@@ -228,7 +251,7 @@ public class ClientLogger {
      * @return The passed {@link Throwable}.
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
-    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (!logger.isWarnEnabled()) {
             return throwable;

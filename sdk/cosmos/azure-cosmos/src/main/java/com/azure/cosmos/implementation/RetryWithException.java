@@ -4,11 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
 import java.net.URI;
 import java.util.Map;
@@ -16,7 +14,7 @@ import java.util.Map;
 /**
  * The type Retry with exception.
  */
-public class RetryWithException extends CosmosClientException {
+public class RetryWithException extends CosmosException {
 
     /**
      * Instantiates a new Retry with exception.

@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKey;
 import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
-import com.azure.cosmos.models.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
@@ -60,7 +60,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
             throw new IllegalStateException("CosmosDataEncryptionKeyProvider has already been initialized.");
         }
 
-        CosmosAsyncContainerResponse containerResponse = database.createContainerIfNotExists(containerId, CosmosDataEncryptionKeyProvider.ContainerPartitionKeyPath).block();
+        CosmosContainerResponse containerResponse = database.createContainerIfNotExists(containerId, CosmosDataEncryptionKeyProvider.ContainerPartitionKeyPath).block();
         List<String> partitionKeyPath = containerResponse.getProperties().getPartitionKeyDefinition().getPaths();
 
         if (partitionKeyPath.size() != 1 || !StringUtils.equals(partitionKeyPath.get(0), CosmosDataEncryptionKeyProvider.ContainerPartitionKeyPath)) {
@@ -69,7 +69,7 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
                 containerId, ContainerPartitionKeyPath));
         }
 
-        this.container = containerResponse.getContainer();
+        this.container = database.getContainer(containerId);
     }
 
     @Override

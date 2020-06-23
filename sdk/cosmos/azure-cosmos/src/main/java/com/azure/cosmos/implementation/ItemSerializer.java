@@ -37,7 +37,7 @@ public interface ItemSerializer {
                 || encryptionOptions.getPathsToEncrypt() == null
                 || encryptionOptions.getPathsToEncrypt().isEmpty()
                 || item instanceof Document
-                || item instanceof CosmosItemProperties) {
+                || item instanceof InternalObjectNode) {
                 return jsonSerializer.serializeTo(item);
             } else {
                 return new EncryptionSerializer(dataEncryptionKeyProvider, jsonSerializer, encryptionOptions).serializeTo(item);

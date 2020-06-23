@@ -106,6 +106,7 @@
     <build.context>azure-client-sdk-parent</build.context>
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
+    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
   </properties>
 
   <build>
@@ -316,12 +317,17 @@
         </executions>
       </plugin>
 
-      <!-- Performs test coverage analysis -->
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
           <execution>
             <id>default-instrument</id>
             <goals>
@@ -335,14 +341,11 @@
             </goals>
           </execution>
           <execution>
-            <!-- This generates the unit test reports for individual modules.
-              jacoco-test-coverage generates aggregate reports for all modules -->
             <id>post-unit-test</id>
             <goals>
               <goal>report</goal>
             </goals>
             <configuration>
-              <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
               <excludes>
                 <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
@@ -357,6 +360,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
+              <skip>${jacoco.skip.coverage.check}</skip>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
@@ -374,11 +378,6 @@
                   </limits>
                 </rule>
               </rules>
-              <excludes>
-                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
-                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
-                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
-              </excludes>
             </configuration>
           </execution>
         </executions>
@@ -442,7 +441,6 @@
               <baseDir>.</baseDir>
               <reportFile>target/dependency-whitelist.json</reportFile>
               <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
                 <param>com.azure:azure-core-test</param>
                 <param>com.azure:azure-e2e</param>
@@ -538,7 +536,9 @@
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
-              <sourceFileExclude>com.azure.cosmos.*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <groups>
@@ -567,6 +567,14 @@
               <group>
                 <title>Azure Core - Management</title>
                 <packages>com.azure.core.management*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - JSON - Gson</title>
+                <packages>com.azure.core.serializer.json.gson*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - JSON - Jackson</title>
+                <packages>com.azure.core.serializer.json.jackson*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
@@ -709,12 +717,25 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-test-watcher</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-test-watcher;dependency} -->
+            </dependency>
+          </dependencies>
           <configuration>
+            <additionalClasspathElements>
+              <additionalClasspathElement>../../../common/azure-test-watcher/target/azure-test-watcher-1.0.0-beta.1.jar</additionalClasspathElement>
+            </additionalClasspathElements>
+            <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
-            <statelessTestsetReporter implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
-              <usePhrasedTestCaseMethodName>true</usePhrasedTestCaseMethodName>
-            </statelessTestsetReporter>
+            <systemPropertyVariables combine.children="append">
+              <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+            </systemPropertyVariables>
+            <forkCount>1</forkCount>
+            <testFailureIgnore>false</testFailureIgnore>
           </configuration>
         </plugin>
       </plugins>
@@ -807,6 +828,9 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
@@ -1047,7 +1071,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M4</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 <!-- KeyVault tests fail without these exports. -->
@@ -1075,6 +1099,7 @@
                 --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
+                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics.implementation.models=com.azure.core
                 --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
@@ -1105,9 +1130,6 @@
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
                 --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
               </argLine>
-              <useSystemClassLoader>false</useSystemClassLoader>
-              <forkCount>1</forkCount>
-              <testFailureIgnore>false</testFailureIgnore>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
@@ -1115,33 +1137,6 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
-
-    <profile>
-      <id>non-shipping-modules</id>
-      <activation>
-        <property>
-          <name>include-non-shipping-modules</name>
-        </property>
-      </activation>
-      <modules>
-        <module>../../../eng/spotbugs-aggregate-report</module>
-        <module>../../../eng/code-quality-reports</module>
-        <module>../../../eng/jacoco-test-coverage</module>
-      </modules>
-    </profile>
-
-    <profile>
-      <id>template-module</id>
-      <activation>
-        <property>
-          <name>env.ENABLETEMPLATEDOCS</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <modules>
-        <module>../../template/azure-sdk-template</module>
-      </modules>
     </profile>
 
     <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.
@@ -1265,6 +1260,41 @@
                       ${packageOutputDirectory}/${project.build.finalName}-changelog.md
                     </echo>
                     <copy file="${project.basedir}/CHANGELOG.md" tofile="${packageOutputDirectory}/${project.build.finalName}-changelog.md"/>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>readme</id>
+      <activation>
+        <file>
+          <exists>${basedir}/README.md</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>copy-readme</id>
+                <phase>package</phase>
+                <configuration>
+                  <target>
+                    <echo>Copying ${project.basedir}/README.md to
+                      ${packageOutputDirectory}/${project.build.finalName}-readme.md
+                    </echo>
+                    <copy file="${project.basedir}/README.md" tofile="${packageOutputDirectory}/${project.build.finalName}-readme.md"/>
                   </target>
                 </configuration>
                 <goals>
@@ -1454,42 +1484,30 @@
         </plugins>
       </build>
     </profile>
-  </profiles>
 
-  <modules>
-    <module>../../../common/perf-test-core</module>
-    <module>../../appconfiguration/azure-data-appconfiguration</module>
-    <module>../../core/azure-core</module>
-    <module>../../core/azure-core-amqp</module>
-    <module>../../core/azure-core-management</module>
-    <module>../../core/azure-core-http-netty</module>
-    <module>../../core/azure-core-http-okhttp</module>
-    <module>../../core/azure-core-http-jdk-httpclient</module>
-    <module>../../core/azure-core-test</module>
-    <module>../../core/azure-core-tracing-opentelemetry</module>
-    <module>../../cosmos/azure-cosmos</module>
-    <module>../../cosmos/azure-cosmos-encryption</module>
-    <module>../../cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
-    <module>../../cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
-    <module>../../e2e</module>
-    <module>../../eventhubs/azure-messaging-eventhubs</module>
-    <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
-    <module>../../formrecognizer/azure-ai-formrecognizer</module>
-    <module>../../identity/azure-identity</module>
-    <module>../../keyvault/azure-security-keyvault-certificates</module>
-    <module>../../keyvault/azure-security-keyvault-keys</module>
-    <module>../../keyvault/azure-security-keyvault-secrets</module>
-    <module>../../search/azure-search-documents</module>
-    <module>../../servicebus/azure-messaging-servicebus</module>
-    <module>../../storage/azure-storage-blob</module>
-    <module>../../storage/azure-storage-blob-batch</module>
-    <module>../../storage/azure-storage-blob-cryptography</module>
-    <module>../../storage/azure-storage-blob-nio</module>
-    <module>../../storage/azure-storage-common</module>
-    <module>../../storage/azure-storage-file-share</module>
-    <module>../../storage/azure-storage-file-datalake</module>
-    <module>../../storage/azure-storage-perf</module>
-    <module>../../storage/azure-storage-queue</module>
-    <module>../../textanalytics/azure-ai-textanalytics</module>
-  </modules>
+    <profile>
+      <id>parallel-test-playback</id>
+      <activation>
+        <property>
+          <name>parallel-test-playback</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+                <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

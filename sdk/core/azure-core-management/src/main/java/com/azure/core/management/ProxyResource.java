@@ -32,7 +32,7 @@ public class ProxyResource {
      *
      * @return the id value
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -41,7 +41,7 @@ public class ProxyResource {
      *
      * @return the name value
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -50,7 +50,7 @@ public class ProxyResource {
      *
      * @return the type value
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 }

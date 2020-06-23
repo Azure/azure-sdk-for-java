@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -48,21 +49,34 @@ public class FormRecognizerClientBuilderUnitTest {
     }
 
     /**
-     * Test for null API key
+     * Test for null AzureKeyCredential
      */
     @Test
-    public void nullApiKey() {
+    public void nullAzureKeyCredential() {
+        AzureKeyCredential azureKeyCredential = null;
         assertThrows(NullPointerException.class, () -> {
             final FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).apiKey(null);
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(azureKeyCredential);
         });
     }
 
     /**
-     * Test for empty Api Key without any other authentication
+     * Test for null AAD credential
      */
     @Test
-    public void emptyApiKey() {
+    public void nullAADCredential() {
+        TokenCredential tokenCredential = null;
+        assertThrows(NullPointerException.class, () -> {
+            final FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder();
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(tokenCredential);
+        });
+    }
+
+    /**
+     * Test for empty Key without any other authentication
+     */
+    @Test
+    public void emptyKeyCredential() {
         assertThrows(IllegalArgumentException.class, () -> new AzureKeyCredential(""));
     }
 }

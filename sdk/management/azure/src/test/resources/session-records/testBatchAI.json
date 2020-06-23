@@ -232,7 +232,7 @@
       "content-type" : "application/json",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "fe7fda9b-d96b-41e4-aa9d-1cf24d8ed2eb",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"G0VN2HsuvUsbiwDOdkTjzyQPTPufASXd6JvrEz47kVTqjVhfQuZeTFoKCDjnz68YEkY60Wql6e1FSdUXDjhfNA==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"s9fWchun2nT1d+RYoTSvX8+iL1soAsjdS6VZ7BxjrR90ghnTlO64vs/d7Hmj/KptlN72OPc4v3KvUzwVf9MYBg==\",\"permissions\":\"FULL\"}]}"
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}"
     }
   }, {
     "Method" : "PUT",

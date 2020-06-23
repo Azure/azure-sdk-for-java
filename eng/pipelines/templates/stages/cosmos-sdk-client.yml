@@ -1,7 +1,35 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+      ref: refs/tags/azure-sdk-build-tools_20200514.1
+    - repository: azure-sdk-tools
+      type: github
+      name: Azure/azure-sdk-tools
+      endpoint: azure
+      ref: refs/tags/azure-sdk-tools_20200514.1
+
 parameters:
-  Artifacts: []
-  ServiceDirectory: not-specified
-  
+- name: Artifacts
+  type: object
+  default: []
+- name: AdditionalModules
+  type: object
+  default: []
+- name: ServiceDirectory
+  type: string
+  default: not-specified
+- name: SDKType
+  type: string
+  default: not-specified
+- name: TargetDocRepoOwner
+  type: string
+  default: Azure
+- name: TargetDocRepoName
+  type: string
+  default: azure-docs-sdk-java
+
 stages:
   - stage: Build
     jobs:
@@ -13,43 +41,36 @@ stages:
         SDKType: ${{parameters.SDKType}}
         TestMatrix:
           Linux - Java 8:
-            OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
           macOS - Java 8:
-            OSName: 'macOS'
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
           Windows - Java 8:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
           Linux - Java 11:
-            OSName: 'Linux'
-            OSVmImage: 'ubuntu-16.04'
+            OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
           macOS - Java 11:
-            OSName: 'macOS'
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
           Windows - Java 11:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
           Windows From Source - Java 8:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             RunTitle: 'From Source: Windows on Java 1.8'
@@ -79,13 +100,6 @@ stages:
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          Examples_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
-            ProfileFlag: '-Pexamples'
-            DisplayName: 'Examples Integration Tests'
-            PROTOCOLS: '["Https", "Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
         TestStepMavenInputs:
@@ -148,12 +162,12 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: pipelines/stages/archetype-java-release.yml@azure-sdk-build-tools
+    - template: archetype-java-release.yml
       parameters:
         DependsOn: Build
         ServiceDirectory: ${{parameters.ServiceDirectory}}
         SDKType: ${{parameters.SDKType}}
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
-
-        
+        TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 

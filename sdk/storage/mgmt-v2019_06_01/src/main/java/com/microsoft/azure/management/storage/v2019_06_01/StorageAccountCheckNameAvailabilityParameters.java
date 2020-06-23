@@ -28,7 +28,6 @@ public class StorageAccountCheckNameAvailabilityParameters {
 
     /**
      * Creates an instance of StorageAccountCheckNameAvailabilityParameters class.
-     * @param name the storage account name.
      */
     public StorageAccountCheckNameAvailabilityParameters() {
         type = "Microsoft.Storage/storageAccounts";

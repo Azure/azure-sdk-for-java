@@ -6,32 +6,26 @@ parameters:
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
+      OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
-      OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       RunTitle: 'macOS on Java 1.8'
     Windows - Java 8:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
       RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
+      OSVmImage: 'ubuntu-18.04'
       JavaVersion: '1.11'
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
-      OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.11'
       RunTitle: 'macOS on Java 1.11'
     Windows - Java 11:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
@@ -43,7 +37,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     strategy:
       matrix:
@@ -83,7 +77,7 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
-      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
         parameters:
           TargetFolder: $(Build.SourcesDirectory)
           RootFolder: $(Build.SourcesDirectory)
@@ -123,7 +117,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-16.04'
+      vmImage: 'ubuntu-18.04'
 
     steps:
       - pwsh: |
@@ -185,9 +179,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: ../steps/verify-agent-os.yml
-        parameters:
-          OSName: $(OSName)
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - template: ../steps/cache-maven-repository.yml
 

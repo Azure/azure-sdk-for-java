@@ -8,15 +8,17 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.encryption.api.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.testng.annotations.AfterClass;
@@ -38,6 +40,10 @@ public class EncryptionTests extends TestSuiteBase {
     private static EncryptionKeyWrapMetadata metadata2 = new EncryptionKeyWrapMetadata("metadata2");
     private final static String metadataUpdateSuffix = "updated";
     private static Duration cacheTTL = Duration.ofDays(1);
+
+    private final String databaseForTestId = DatabaseForTest.generateId();
+    private final String itemContainerId = UUID.randomUUID().toString();
+    private final String keyContainerId = UUID.randomUUID().toString();
 
     private final String dekId = "mydek";
 
@@ -67,14 +73,14 @@ public class EncryptionTests extends TestSuiteBase {
 //        EncryptionTests.encryptor = new TestEncryptor(EncryptionTests.dekProvider);
 
 //        EncryptionTests.client = EncryptionTests.GetClient(EncryptionTests.encryptor);
-        databaseCore = client.createDatabase(UUID.randomUUID().toString()).block().getDatabase();
 
-        keyContainer = EncryptionTests.databaseCore.createContainer(UUID.randomUUID().toString(), "/id", 400).block().getContainer();
-        EncryptionTests.dekProvider.initialize(EncryptionTests.databaseCore, EncryptionTests.keyContainer.getId());
+        client.createDatabaseIfNotExists(databaseForTestId).block();
+        databaseCore = client.getDatabase(databaseForTestId);
+        databaseCore.createContainerIfNotExists(keyContainerId, "/id", ThroughputProperties.createManualThroughput(400)).block();
+        keyContainer = databaseCore.getContainer(keyContainerId);
+        databaseCore.createContainerIfNotExists(itemContainerId, "/PK", ThroughputProperties.createManualThroughput(400)).block();
+        itemContainer = databaseCore.getContainer(itemContainerId);
 
-
-        EncryptionTests.itemContainer = EncryptionTests.databaseCore.createContainer(UUID.randomUUID().toString(), "/PK", 400).block().getContainer();
-//        EncryptionTests.itemContainerCore = (ContainerInlineCore)EncryptionTests.itemContainer;
 
         EncryptionTests.dekProperties = EncryptionTests.createDek(EncryptionTests.dekProvider, dekId);
     }
@@ -173,7 +179,7 @@ public class EncryptionTests extends TestSuiteBase {
         ModelBridgeInternal.setEncryptionOptions(requestOptions, encryptionOptions);
 
         TestDoc properties = getItem(UUID.randomUUID().toString());
-        CosmosAsyncItemResponse<TestDoc> itemResponse = itemContainer.createItem(properties, requestOptions).block();
+        CosmosItemResponse<TestDoc> itemResponse = itemContainer.createItem(properties, requestOptions).block();
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
 
         TestDoc responseItem = itemResponse.getItem();
@@ -217,14 +223,13 @@ public class EncryptionTests extends TestSuiteBase {
     }
 
     private static DataEncryptionKeyProperties createDek(CosmosDataEncryptionKeyProvider dekProvider, String dekId) {
-        CosmosAsyncItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
+        CosmosItemResponse<DataEncryptionKeyProperties> dekResponse = dekProvider.getDataEncryptionKeyContainer().createDataEncryptionKeyAsync(
             dekId,
             CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized,
             EncryptionTests.metadata1, null).block();
 
         assertThat(dekResponse.getRequestCharge()).isGreaterThan(0);
         assertThat(dekResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG)).isNotNull();
-
 
         DataEncryptionKeyProperties dekProperties = dekResponse.getItem();
         assertThat(dekResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG)).isEqualTo(dekProperties.eTag);

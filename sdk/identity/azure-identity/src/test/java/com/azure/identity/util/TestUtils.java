@@ -60,7 +60,7 @@ public final class TestUtils {
 
             @Override
             public String environment() {
-                return null;
+                return "http://login.microsoftonline.com";
             }
 
             @Override
@@ -85,6 +85,17 @@ public final class TestUtils {
     public static Mono<MsalToken> getMockMsalToken(String accessToken, OffsetDateTime expiresOn) {
         return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
             .map(ar -> new MsalToken(ar, new IdentityClientOptions()));
+    }
+
+    /**
+     * Creates a mock {@link IAccount} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @return a Mono publisher of the result
+     */
+    public static Mono<IAccount> getMockMsalAccount(String accessToken, OffsetDateTime expiresOn) {
+        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
+            .map(IAuthenticationResult::account);
     }
 
     /**

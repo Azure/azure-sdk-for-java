@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ModelsSummary model.
- */
+/** The ModelsSummary model. */
 @Fluent
 public final class ModelsSummary {
     /*
@@ -33,7 +31,7 @@ public final class ModelsSummary {
 
     /**
      * Get the count property: Current count of trained custom models.
-     * 
+     *
      * @return the count value.
      */
     public int getCount() {
@@ -42,7 +40,7 @@ public final class ModelsSummary {
 
     /**
      * Set the count property: Current count of trained custom models.
-     * 
+     *
      * @param count the count value to set.
      * @return the ModelsSummary object itself.
      */
@@ -52,9 +50,8 @@ public final class ModelsSummary {
     }
 
     /**
-     * Get the limit property: Max number of models that can be trained for
-     * this account.
-     * 
+     * Get the limit property: Max number of models that can be trained for this account.
+     *
      * @return the limit value.
      */
     public int getLimit() {
@@ -62,9 +59,8 @@ public final class ModelsSummary {
     }
 
     /**
-     * Set the limit property: Max number of models that can be trained for
-     * this account.
-     * 
+     * Set the limit property: Max number of models that can be trained for this account.
+     *
      * @param limit the limit value to set.
      * @return the ModelsSummary object itself.
      */
@@ -74,9 +70,8 @@ public final class ModelsSummary {
     }
 
     /**
-     * Get the lastUpdatedDateTime property: Date and time (UTC) when the
-     * summary was last updated.
-     * 
+     * Get the lastUpdatedDateTime property: Date and time (UTC) when the summary was last updated.
+     *
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime getLastUpdatedDateTime() {
@@ -84,9 +79,8 @@ public final class ModelsSummary {
     }
 
     /**
-     * Set the lastUpdatedDateTime property: Date and time (UTC) when the
-     * summary was last updated.
-     * 
+     * Set the lastUpdatedDateTime property: Date and time (UTC) when the summary was last updated.
+     *
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @return the ModelsSummary object itself.
      */

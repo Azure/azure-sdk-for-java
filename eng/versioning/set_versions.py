@@ -42,6 +42,7 @@ from utils import BuildType
 from utils import CodeModule
 from utils import UpdateType
 from utils import version_regex_str_with_names_anchored
+from utils import prerelease_data_version_regex
 from utils import prerelease_version_regex_with_name
 
 # some things that should not be updated for devops builds, in the case where everything is being updated in one call
@@ -50,6 +51,7 @@ items_we_should_not_update = ['com.azure:azure-sdk-all', 'com.azure:azure-sdk-pa
 # The regex string we want should be the anchored one since the entire string is what's being matched
 version_regex_named = re.compile(version_regex_str_with_names_anchored)
 prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
+prerelease_data_regex = re.compile(prerelease_data_version_regex)
 
 # Update packages (excluding unreleased dependencies and packages which already
 # have a dev version set) to use a "zero dev version" (e.g. dev.20201225.0).
@@ -97,8 +99,10 @@ def set_dev_zero_version(build_type, build_qualifier):
                 set_both = module.current == module.dependency
 
                 if '-' in module.current:
-                    module.current += "." + zero_qualifier
+                    # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                    module.current = module.current[:module.current.rfind('-') + 1] + zero_qualifier
                 else:
+                    # if the module is a GA version 1.2.3, add '-' and the qualifier
                     module.current += '-' + zero_qualifier
                 # The resulting version must be a valid SemVer
                 match = version_regex_named.match(module.current)
@@ -151,7 +155,8 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         if module.current == module.dependency:
                             set_both = True
                         if '-' in module.current:
-                            module.current += "." + build_qualifier
+                            # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                            module.current = module.current[:module.current.rfind('-') + 1] + build_qualifier
                         else:
                             module.current += '-' + build_qualifier
                         match = version_regex_named.match(module.current)
@@ -174,11 +179,11 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                     unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
 
                     if '-' in module.dependency:
-                        module_current_version = f'{module.dependency}.{unreleased_build_qualifier}'
+                        # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                        module.dependency = module.dependency[:module.dependency.rfind('-') + 1] + unreleased_build_qualifier
                     else:
-                        module_current_version = f'{module.dependency}-{unreleased_build_qualifier}'
+                        module.dependency += '-' + unreleased_build_qualifier
 
-                    module.dependency = f'[{module_current_version},]'
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
                 version_map[module.name] = module
@@ -217,7 +222,7 @@ def prep_version_file_for_source_testing(build_type):
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
             f.write(line)
-    
+
     return file_changed
 
 # given a build type, artifact id and group id, set the dependency version to the
@@ -249,15 +254,26 @@ def increment_library_version(build_type, artifact_id, group_id):
                         # This is the case where, somehow, the versioning verification has failed and
                         # the prerelease verification doesn't match "beta.X"
                         if prever is None:
-                            raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format beta.X'.format(library_to_update, module.current, vmatch.group('prerelease')))
-                        rev = int(prever.group('revision'))
-                        rev += 1
-                        new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
+                            # if the build_type isn't data then error
+                            if build_type.name.lower() != 'data':
+                                raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format beta.X'.format(library_to_update, module.current, vmatch.group('prerelease')))
+                            else:
+                                # verify that prerelease is "beta"
+                                if prerelease_data_regex.match(vmatch.group('prerelease')) is None:
+                                    raise ValueError('library_to_update ({}:{}) has an invalid prerelease version ({}) which should be of the format (beta) or (beta.X)'.format(library_to_update, module.current, vmatch.group('prerelease')))
+                                # in the case there the prerelease version is just "beta", increment the minor and set the patch to 0
+                                minor = int(vmatch.group('minor'))
+                                minor += 1
+                                new_version = '{}.{}.{}-beta'.format(vmatch.group('major'), minor, 0)
+                        else:
+                            rev = int(prever.group('revision'))
+                            rev += 1
+                            new_version = '{}.{}.{}-beta.{}'.format(vmatch.group('major'), vmatch.group('minor'), vmatch.group('patch'), str(rev))
                     else:
                         minor = int(vmatch.group('minor'))
                         minor += 1
                         new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
-                    # The dependency version only needs to be updated it if is different from the current version. 
+                    # The dependency version only needs to be updated it if is different from the current version.
                     # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
                     if (module.dependency != module.current):
                         print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
@@ -308,12 +324,21 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                     if vmatch.group('prerelease') is not None:
                         prerel = vmatch.group('prerelease')
 
+                        # this regex is looking for beta.X
                         if prerelease_regex_named.match(prerel) is None:
-                            raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tag is (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
-
-                        prever = prerelease_regex_named.match(prerel)
-                        rev = int(prever.group('revision'))
-                        temp_ver = '{}-beta.{}'.format(temp_ver, str(rev))
+                            # if the build_type isn't data then error
+                            if build_type.name.lower() != 'data':
+                                raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tag is (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
+                            else:
+                                # verify that the prerelease tag is "beta" which is the only allowable thing for data track aside from beta.X
+                                if prerelease_data_regex.match(prerel) is None:
+                                    raise ValueError('library ({}) version ({}) in version file ({}) is not a correct version to release. The accepted prerelease tags for data track are (beta) or (beta.X) and the current prerelease tag is ({})'.format(library_to_update, module.current, version_file, prerel))
+                                # at this point the version is <major>.<minor>.<patch>-beta
+                                temp_ver = '{}-{}'.format(temp_ver, str(prerel))
+                        else:
+                            prever = prerelease_regex_named.match(prerel)
+                            rev = int(prever.group('revision'))
+                            temp_ver = '{}-beta.{}'.format(temp_ver, str(rev))
 
                     # last but not least, for sanity verify that the version constructed from the
                     # semver pieces matches module's current version
@@ -321,7 +346,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                         raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
 
                     print('The version {} for {} looks good!'.format(module.current, module.name))
-                    
+
 
     if not artifact_found:
        raise ValueError('library ({}) was not found in version file {}'.format(library_to_update, version_file))

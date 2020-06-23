@@ -10,7 +10,7 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.MsalAuthenticationAccount;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -25,7 +25,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
     private final String authCode;
     private final URI redirectUri;
     private final IdentityClient identityClient;
-    private final AtomicReference<MsalToken> cachedToken;
+    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
 
     /**
      * Creates an AuthorizationCodeCredential with the given identity client options.
@@ -38,9 +38,6 @@ public class AuthorizationCodeCredential implements TokenCredential {
      */
     AuthorizationCodeCredential(String clientId, String tenantId, String authCode, URI redirectUri,
                                 IdentityClientOptions identityClientOptions) {
-        if (tenantId == null) {
-            tenantId = "common";
-        }
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
@@ -55,16 +52,18 @@ public class AuthorizationCodeCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
         }).switchIfEmpty(
             Mono.defer(() -> identityClient.authenticateWithAuthorizationCode(request, authCode, redirectUri)))
-            .map(msalToken -> {
-                cachedToken.set(msalToken);
-                return msalToken;
-            });
+               .map(msalToken -> {
+                   cachedToken.set(new MsalAuthenticationAccount(
+                                new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                        identityClient.getTenantId())));
+                   return  msalToken;
+               });
     }
 }

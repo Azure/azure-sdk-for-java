@@ -1,29 +1,50 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azs-sdk86929ea3d25.search.windows.net/skillsets?api-version=2019-05-06",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "32341936-7ad4-4ab5-a27c-651bc2f09bbc",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "bc26dc6f-f611-4e0e-9b50-8a4ec0a92d1f",
+      "request-id" : "32341936-7ad4-4ab5-a27c-651bc2f09bbc",
       "StatusCode" : "201",
-      "Date" : "Mon, 24 Feb 2020 19:55:57 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:00 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "ETag" : "W/\"0x8D7B96390896BA5\"",
-      "elapsed-time" : "110",
+      "client-request-id" : "32341936-7ad4-4ab5-a27c-651bc2f09bbc",
+      "ETag" : "W/\"0x8D7F5D685D91130\"",
+      "elapsed-time" : "87",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "601",
-      "Body" : "{\"@odata.context\":\"https://azs-sdk86929ea3d25.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B96390896BA5\\\"\",\"name\":\"split-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null}",
+      "Content-Length" : "639",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D685D91130\\\"\",\"name\":\"split-skillset29794d8066e20408b49\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.SplitSkill\",\"name\":\"mysplit\",\"description\":\"Tested Split skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"textSplitMode\":\"pages\",\"maximumPageLength\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"textItems\",\"targetName\":\"myTextItems\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azs-sdk86929ea3d25.search.windows.net/skillsets('split-skillset')?api-version=2019-05-06"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('split-skillset29794d8066e20408b49')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('split-skillset29794d8066e20408b49')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "a01b59f2-8891-4f6f-8f65-747c5601bdfa"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "a01b59f2-8891-4f6f-8f65-747c5601bdfa",
+      "elapsed-time" : "36",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "a01b59f2-8891-4f6f-8f65-747c5601bdfa",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:00 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk86929ea3d25" ]
+  "variables" : [ "split-skillset29794d8066e20408b49" ]
 }

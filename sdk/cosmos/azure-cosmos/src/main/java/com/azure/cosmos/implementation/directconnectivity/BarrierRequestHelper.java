@@ -15,13 +15,11 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.RequestVerb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-
-import java.util.Map;
 
 public class BarrierRequestHelper {
     private final static Logger logger = LoggerFactory.getLogger(BarrierRequestHelper.class);

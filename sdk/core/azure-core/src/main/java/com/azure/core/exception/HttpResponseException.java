@@ -22,10 +22,21 @@ public class HttpResponseException extends AzureException {
     private final HttpResponse response;
 
     /**
-     * Initializes a new instance of the {@link HttpResponseException} class.
+     * Initializes a new instance of the HttpResponseException class.
      *
-     * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response associated with this exception.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
+     */
+    public HttpResponseException(final HttpResponse response) {
+        super();
+        this.value = null;
+        this.response = response;
+    }
+
+    /**
+     * Initializes a new instance of the HttpResponseException class.
+     *
+     * @param message The exception message.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
      */
     public HttpResponseException(final String message, final HttpResponse response) {
         super(message);
@@ -34,10 +45,22 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
-     * Initializes a new instance of the {@link HttpResponseException} class.
+     * Initializes a new instance of the HttpResponseException class.
      *
-     * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response associated with this exception.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param cause The {@link Throwable} which caused the creation of this exception.
+     */
+    public HttpResponseException(final HttpResponse response, final Throwable cause) {
+        super(cause);
+        this.value = null;
+        this.response = response;
+    }
+
+    /**
+     * Initializes a new instance of the HttpResponseException class.
+     *
+     * @param message The exception message.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final HttpResponse response, final Object value) {
@@ -47,10 +70,10 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
-     * Initializes a new instance of the {@link HttpResponseException} class.
+     * Initializes a new instance of the HttpResponseException class.
      *
-     * @param message The exception message or the response content if a message is not available.
-     * @param response The HTTP response associated with this exception.
+     * @param message The exception message.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final HttpResponse response, final Throwable cause) {
@@ -60,17 +83,29 @@ public class HttpResponseException extends AzureException {
     }
 
     /**
-     * Gets the associated HTTP response that caused the exception.
+     * Initializes a new instance of the HttpResponseException class.
      *
-     * @return Gets the associated HTTP response.
+     * @param message The exception message.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param cause The {@link Throwable} which caused the creation of this exception.
+     * @param enableSuppression Whether suppression is enabled or disabled.
+     * @param writableStackTrace Whether the exception stack trace will be filled in.
+     */
+    public HttpResponseException(final String message, final HttpResponse response, final Throwable cause,
+        final boolean enableSuppression, final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.value = null;
+        this.response = response;
+    }
+
+    /**
+     * @return The {@link HttpResponse} received that is associated to the exception.
      */
     public HttpResponse getResponse() {
         return response;
     }
 
     /**
-     * Gets the deserialized HTTP response value.
-     *
      * @return The deserialized HTTP response value.
      */
     public Object getValue() {

@@ -1,20 +1,21 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjavacanuseallregexflagsemptynametokenizer562995381cb4.search.windows.net/indexes?api-version=2019-05-06",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2019-05-06-Preview",
     "Headers" : {
+      "x-ms-client-request-id" : "18fd0b03-8853-4df7-81c6-3e2b02b33100",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "7a538112-8e39-47dc-bfa3-3fcc9b7ce0d5",
+      "request-id" : "18fd0b03-8853-4df7-81c6-3e2b02b33100",
       "StatusCode" : "400",
-      "Date" : "Wed, 25 Mar 2020 19:23:12 GMT",
+      "Date" : "Mon, 11 May 2020 17:55:25 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "7a538112-8e39-47dc-bfa3-3fcc9b7ce0d5",
-      "elapsed-time" : "32",
+      "client-request-id" : "18fd0b03-8853-4df7-81c6-3e2b02b33100",
+      "elapsed-time" : "8",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "125",
@@ -25,5 +26,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavacanuseallregexflagsemptynametokenizer562995381cb4" ]
+  "variables" : [ "hotelscanuseallregexflagsemptynametokenizer92568554413d23" ]
 }

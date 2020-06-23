@@ -198,11 +198,16 @@ foreach ($packageDetail in $packageDetails) {
   $localRepositoryDirectoryUri = $([Uri]$localRepositoryDirectory.FullName).AbsoluteUri
   Write-Information "Local Repository Directory URI is: $localRepositoryDirectoryUri"
 
-  $pomAssociatedArtifact = $packageDetails.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
+  $pomAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and ($_.Type -eq "pom") }
   $pomOption = "-DpomFile=$($pomAssociatedArtifact.File.FullName)"
   Write-Information "POM Option is: $pomOption"
 
-  $fileAssociatedArtifact = $packageDetails.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+  if ($packageDetail.AssociatedArtifacts.Length -ne 1) {
+    $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts | Where-Object { ($_.Classifier -eq $null) -and (($_.Type -eq "jar") -or ($_.Type -eq "aar")) }
+  } else {
+    $fileAssociatedArtifact = $packageDetail.AssociatedArtifacts[0]
+  }
+
   $fileOption = "-Dfile=$($fileAssociatedArtifact.File.FullName)"
   Write-Information "File Option is: $fileOption"
 
@@ -259,8 +264,8 @@ foreach ($packageDetail in $packageDetails) {
   $stagingDescriptionOption = "-DstagingDescription=$($packageDetail.FullyQualifiedName)"
   Write-Information "Staging Description Option is: $stagingDescriptionOption"
 
-  if ($RepositoryUrl -like "https://pkgs.dev.azure.com/azure-sdk/public/*") {
-    Write-Information "GPG Signing and deploying package in one step to: $RepositoryUrl"
+  if ($RepositoryUrl -match "https://pkgs.dev.azure.com/azure-sdk/\b(internal|public)\b/*") {
+    Write-Information "GPG Signing and deploying package in one step to devops feed: $RepositoryUrl"
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "-Durl=$RepositoryUrl" "$gpgexeOption" "-DrepositoryId=target-repo" "-Drepo.password=$RepositoryPassword" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
   }
   elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {

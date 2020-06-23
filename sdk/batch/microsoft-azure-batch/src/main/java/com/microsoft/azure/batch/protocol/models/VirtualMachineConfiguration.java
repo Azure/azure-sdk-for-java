@@ -88,6 +88,14 @@ public class VirtualMachineConfiguration {
     private ContainerConfiguration containerConfiguration;
 
     /**
+     * The disk encryption configuration for the pool.
+     * If specified, encryption is performed on each node in the pool during
+     * node provisioning.
+     */
+    @JsonProperty(value = "diskEncryptionConfiguration")
+    private DiskEncryptionConfiguration diskEncryptionConfiguration;
+
+    /**
      * Get the imageReference value.
      *
      * @return the imageReference value
@@ -208,6 +216,26 @@ public class VirtualMachineConfiguration {
      */
     public VirtualMachineConfiguration withContainerConfiguration(ContainerConfiguration containerConfiguration) {
         this.containerConfiguration = containerConfiguration;
+        return this;
+    }
+
+    /**
+     * Get if specified, encryption is performed on each node in the pool during node provisioning.
+     *
+     * @return the diskEncryptionConfiguration value
+     */
+    public DiskEncryptionConfiguration diskEncryptionConfiguration() {
+        return this.diskEncryptionConfiguration;
+    }
+
+    /**
+     * Set if specified, encryption is performed on each node in the pool during node provisioning.
+     *
+     * @param diskEncryptionConfiguration the diskEncryptionConfiguration value to set
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    public VirtualMachineConfiguration withDiskEncryptionConfiguration(DiskEncryptionConfiguration diskEncryptionConfiguration) {
+        this.diskEncryptionConfiguration = diskEncryptionConfiguration;
         return this;
     }
 

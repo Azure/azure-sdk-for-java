@@ -4,7 +4,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The FormLine model.
@@ -15,7 +16,7 @@ public final class FormLine extends FormContent {
     /*
      * List of words in the text line.
      */
-    private final IterableStream<FormWord> formWords;
+    private final List<FormWord> formWords;
 
     /**
      * Creates raw OCR item.
@@ -27,8 +28,8 @@ public final class FormLine extends FormContent {
      * @param formWords The list of word element references.
      */
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
-        final IterableStream<FormWord> formWords) {
-        super(text, boundingBox, pageNumber, TextContentType.LINE);
+        final List<FormWord> formWords) {
+        super(text, boundingBox, pageNumber);
         this.formWords = formWords;
     }
 
@@ -37,16 +38,8 @@ public final class FormLine extends FormContent {
      *
      * @return the words value.
      */
-    public IterableStream<FormWord> getFormWords() {
+    public List<FormWord> getFormWords() {
         return this.formWords;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TextContentType getTextContentType() {
-        return super.getTextContentType();
     }
 
     /**

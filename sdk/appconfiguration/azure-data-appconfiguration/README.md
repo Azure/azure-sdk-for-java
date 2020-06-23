@@ -23,7 +23,7 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,13 +34,13 @@ To create a Configuration Store you can use the Azure Portal or [Azure CLI][azur
 
 You need to install the Azure App Configuration CLI extension first by executing the following command:
 
-```Powershell
+```bash
 az extension add -n appconfig
 ```
 
 After that, create the Configuration Store:
 
-```Powershell
+```bash
 az appconfig create --name <config-store-name> --resource-group <resource-group-name> --location eastus
 ```
 
@@ -56,7 +56,7 @@ to connect to the service.
 
 Use the [Azure CLI][azure_cli] snippet below to get the connection string from the Configuration Store.
 
-```Powershell
+```bash
 az appconfig credential list --name <config-store-name>
 ```
 

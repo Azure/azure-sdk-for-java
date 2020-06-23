@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.encryption;
 
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import reactor.core.publisher.Mono;
@@ -26,13 +26,13 @@ public interface DataEncryptionKeyContainer {
      * @param requestOptions            (Optional) The options for the request.
      * @return A Mono response which wraps a {@link DataEncryptionKeyProperties} containing the read resource record.
      * <p>
-     * on Failure: {@link com.azure.cosmos.CosmosClientException} indicating the failure reason.
+     * on Failure: {@link com.azure.cosmos.CosmosException} indicating the failure reason.
      * <ui>
      * <li>BadRequest - This means something was wrong with the request supplied. It is likely that an id was not supplied for the new encryption key.</li>
      * <li>Conflict - This means an {@link DataEncryptionKeyProperties} with an id matching the id you supplied already existed.</li>
      * </ui>
      */
-    Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> createDataEncryptionKeyAsync(
+    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> createDataEncryptionKeyAsync(
         String id,
         String encryptionAlgorithm,
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata,
@@ -89,7 +89,7 @@ public interface DataEncryptionKeyContainer {
      * @param requestOptions
      * @return
      */
-    Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> rewrapDataEncryptionKeyAsync(
+    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> rewrapDataEncryptionKeyAsync(
         String id,
         EncryptionKeyWrapMetadata newWrapMetadata,
         CosmosItemRequestOptions requestOptions);
@@ -101,7 +101,7 @@ public interface DataEncryptionKeyContainer {
      * @param requestOptions (Optional) The options for the request.
      * @return An Mono response which wraps a {@link DataEncryptionKeyProperties} containing details of the data encryption key that was read.
      * <p>
-     * on Failure: {@link com.azure.cosmos.CosmosClientException} indicating the failure reason.
+     * on Failure: {@link com.azure.cosmos.CosmosException} indicating the failure reason.
      * This exception can encapsulate many different types of errors.
      * To determine the specific error always look at the StatusCode property.
      * Some common codes you may get when reading a data encryption key are:
@@ -117,7 +117,7 @@ public interface DataEncryptionKeyContainer {
      *   </li>
      * </ul>
      */
-    Mono<CosmosAsyncItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKeyAsync(
+    Mono<CosmosItemResponse<DataEncryptionKeyProperties>> readDataEncryptionKeyAsync(
         String id,
         CosmosItemRequestOptions requestOptions);
 }

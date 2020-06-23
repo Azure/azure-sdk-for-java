@@ -45,12 +45,13 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
+* [Java Development Kit (JDK)][jdk] with version 8 or above
 * An [Azure subscription][azure_sub].
 * An existing Azure Active Directory service principal. If you need to create a service principal, you can use the Azure Portal or [Azure CLI][azure_cli].
 
@@ -75,7 +76,7 @@ Use the [Azure CLI][azure_cli] snippet below to create/get client secret credent
     }
     ```
 
-* Use the returned credentials above to set  **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) [environment variables](#environment-variables).
+* Use the returned credentials above to set  **AZURE\_CLIENT\_ID**(appId), **AZURE\_CLIENT\_SECRET**(password) and **AZURE\_TENANT\_ID**(tenant) [environment variables](#environment-variables).
 
 #### Enable applications for device code flow
 In order to authenticate a user through device code flow, you need to go to Azure Active Directory on Azure Portal and find you app registration and enable the following 2 configurations:
