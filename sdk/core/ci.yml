@@ -49,6 +49,9 @@ extends:
       - name: azure-core-http-okhttp
         groupId: com.azure
         safeName: azurecorehttpokhttp
+      - name: azure-core-management
+        groupId: com.azure
+        safeName: azurecoremanagement
       - name: azure-core-serializer-json-gson
         groupId: com.azure
         safeName: azurecoreserializerjsongson
