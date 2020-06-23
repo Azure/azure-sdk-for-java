@@ -11,6 +11,10 @@ import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
 public interface GremlinSourceWriter<T> {
     /**
      * Write the domain class information to GremlinSource
+     *
+     * @param domain The domain object needed to be written into the gremlin source.
+     * @param converter The entity converter.
+     * @param source The gremlin source to write the information from domain object.
      */
     void write(Object domain, MappingGremlinConverter converter, GremlinSource<T> source);
 }

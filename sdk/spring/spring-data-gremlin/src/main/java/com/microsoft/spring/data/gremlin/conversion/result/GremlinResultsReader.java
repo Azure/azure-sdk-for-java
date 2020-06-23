@@ -11,6 +11,10 @@ import java.util.List;
 public interface GremlinResultsReader {
     /**
      * Read the Gremlin returned Results to GremlinSource.
+     *
+     * @param <T> The type of the source domain.
+     * @param results Results retrieved from the Gremlin server.
+     * @param source The GremlinSource of the results.
      */
     <T> void read(List<Result> results, GremlinSource<T> source);
 }

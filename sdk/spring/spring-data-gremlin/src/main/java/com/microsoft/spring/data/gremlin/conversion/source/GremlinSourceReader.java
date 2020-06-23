@@ -11,6 +11,12 @@ import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
 public interface GremlinSourceReader<T> {
     /**
      * Read data from GremlinSource to domain
+     *
+     * @param domainClass The class type for the domain object.
+     * @param converter The entity converter.
+     * @param source The gremlin source object.
+     *
+     * @return The domain object read from gremlin source.
      */
     T read(Class<T> domainClass, MappingGremlinConverter converter, GremlinSource<T> source);
 }

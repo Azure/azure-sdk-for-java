@@ -8,7 +8,12 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.repository.config.DefaultRepositoryBaseClass;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 import static com.microsoft.spring.data.gremlin.common.Constants.DEFAULT_REPOSITORY_IMPLEMENT_POSTFIX;
 
@@ -20,52 +25,53 @@ import static com.microsoft.spring.data.gremlin.common.Constants.DEFAULT_REPOSIT
 public @interface EnableGremlinRepositories {
 
     /**
-     * Alias for basePackages.
+     * @return Alias for basePackages().
      */
     String[] value() default {};
 
     /**
-     * Base packages to scan for components with annotations.
+     * @return Base packages to scan for components with annotations.
      */
     String[] basePackages() default {};
 
     /**
-     * Type-safe version of basePackages.
+     * @return Type-safe alternative to basePackages() for specifying the packages to scan. The package of each class
+     * specified will be scanned.
      */
     Class<?>[] basePackageClasses() default {};
 
     /**
-     * Specifies types for component scan.
+     * @return Types are eligible for component scanning.
      */
     Filter[] includeFilters() default {};
 
     /**
-     * Specifies types for skipping component scan.
+     * @return Types are not eligible for component scanning.
      */
     Filter[] excludeFilters() default {};
 
     /**
-     * Specifics the postfix to be used for custom repository implementation class name.
+     * @return Specifics the postfix to be used for custom repository implementation class name.
      */
     String repositoryImplementationPostfix() default DEFAULT_REPOSITORY_IMPLEMENT_POSTFIX;
 
     /**
-     * Configures the repository base class to be used to create repository.
+     * @return Configures the repository base class to be used to create repository.
      */
     Class<?> repositoryBaseClass() default DefaultRepositoryBaseClass.class;
 
     /**
-     * Configures whether nested repository interface.
+     * @return Configures whether nested repository interface.
      */
     boolean considerNestedRepositories() default false;
 
     /**
-     * Configure the class of repository factory bean.
+     * @return Configure the class of repository factory bean.
      */
     Class<?> repositoryFactoryBeanClass() default GremlinRepositoryFactoryBean.class;
 
     /**
-     * Specific the namedQuery location.
+     * @return Specific the namedQuery location.
      */
     String namedQueriesLocation() default "";
 }

@@ -28,9 +28,8 @@ public class MappingGremlinConverter
     protected GenericConversionService conversionService;
     private ApplicationContext applicationContext;
 
-    public MappingGremlinConverter(
-            MappingContext<? extends GremlinPersistentEntity<?>, GremlinPersistentProperty> context) {
-
+    public MappingGremlinConverter(MappingContext<? extends GremlinPersistentEntity<?>, GremlinPersistentProperty>
+                                       context) {
         this.mappingContext = context;
         this.conversionService = new GenericConversionService();
     }
