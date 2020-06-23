@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.util;
 
 /**
@@ -7,13 +10,6 @@ package com.azure.core.util;
 public final class UserAgentUtil {
 
     public static final String DEFAULT_USER_AGENT_HEADER = "azsdk-java";
-
-    /*
-     * The base User-Agent header format is azsdk-java-<client_lib>/<sdk_version>. Additional information such as the
-     * application ID will be prepended and platform telemetry will be appended, a fully configured User-Agent header
-     * format is <application_id> azsdk-java-<client_lib>/<sdk_version> <platform_info>.
-     */
-    private static final String DEFAULT_USER_AGENT_FORMAT = DEFAULT_USER_AGENT_HEADER + "-%s/%s";
 
     // From the design guidelines, the platform info format is:
     // <language runtime>; <os name> <os version>
