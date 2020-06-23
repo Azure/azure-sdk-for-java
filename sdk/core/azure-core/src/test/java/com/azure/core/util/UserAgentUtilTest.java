@@ -33,7 +33,7 @@ public class UserAgentUtilTest {
         assertEquals("azsdk-java-azure-storage-blob/12.0.0",
             UserAgentUtil.toUserAgentString("azure-storage-blob", "12.0.0",
                 Configuration.getGlobalConfiguration().clone().put("AZURE_TELEMETRY_DISABLED", "true")));
-        assertEquals("myap azsdk-java-azure-storage-blob/12.0.0",
+        assertEquals("myapp azsdk-java-azure-storage-blob/12.0.0",
             UserAgentUtil.toUserAgentString("myapp", "azure-storage-blob", "12.0.0",
                 Configuration.getGlobalConfiguration().clone().put("AZURE_TELEMETRY_DISABLED", "true")));
 
