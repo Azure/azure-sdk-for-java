@@ -68,23 +68,21 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 #### Create Access Control client
 
 ## Key concepts
-### Role definition
-
-### Role assignment
-
-### Access Control client
+To be added.
 
 ## Examples
 ### Sync API
-The following sections provide several code snippets covering some of the most common Azure Key Vault Key service tasks, including:
+To be added.
 
 ### Async API
-The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Key service tasks, including:
+To be added.
 
 ## Key concepts
+To be added.
 
 ## Troubleshooting
 ### General
+To be added.
 
 ### Default HTTP client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
