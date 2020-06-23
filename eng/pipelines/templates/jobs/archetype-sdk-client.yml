@@ -4,43 +4,36 @@ parameters:
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true'
+  TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
   TestMatrix:
     Linux - Java 8:
-      OSName: 'Linux'
       OSVmImage: 'ubuntu-18.04'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'Linux on Java 1.8'
     macOS - Java 8:
-      OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'macOS on Java 1.8'
     Windows - Java 8:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'Windows on Java 1.8'
     Linux - Java 11:
-      OSName: 'Linux'
       OSVmImage: 'ubuntu-18.04'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       RunTitle: 'Linux on Java 1.11'
     macOS - Java 11:
-      OSName: 'macOS'
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       RunTitle: 'macOS on Java 1.11'
     Windows - Java 11:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       RunTitle: 'Windows on Java 1.11'
     Windows From Source - Java 8:
-      OSName: 'Windows'
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       RunTitle: 'From Source: Windows on Java 1.8'
       PLSkipOptions: '!com.azure:jacoco-test-coverage'
       AdditionalOptions: '-amd'
@@ -59,7 +52,6 @@ jobs:
       matrix:
         Client Libraries:
           ArtifactName: 'packages'
-          JavaVersion: '1.11'
 
     steps:
       - script: |
@@ -99,27 +91,27 @@ jobs:
 
       - template: ../steps/cache-maven-repository.yml
 
-      - template: eng/pipelines/templates/scripts/replace-relative-links.yml@azure-sdk-tools
+      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
         parameters:
           TargetFolder: $(Build.SourcesDirectory)
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-        
+
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Package'
+        displayName: 'Build and Package , JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
           options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -137,9 +129,11 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      - name: OSVmImage
+        value: 'windows-2019'
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: $(OSVmImage)
 
     steps:
       - pwsh: |
@@ -178,7 +172,7 @@ jobs:
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -195,7 +189,7 @@ jobs:
           options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
@@ -213,9 +207,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: ../steps/verify-agent-os.yml
-        parameters:
-          OSName: $(OSName)
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - template: ../steps/cache-maven-repository.yml
 
@@ -267,7 +259,7 @@ jobs:
           options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: ${{ parameters.TestGoals }}

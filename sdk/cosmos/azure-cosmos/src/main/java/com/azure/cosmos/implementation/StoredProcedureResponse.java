@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +73,10 @@ public final class StoredProcedureResponse {
     }
 
     /**
-     * Gets the number of normalized requests charged.
+     * Gets the request charge as request units (RU) consumed by the operation.
+     * <p>
+     * For more information about the RU and factors that can impact the effective charges please visit
+     * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/request-units">Request Units in Azure Cosmos DB</a>
      *
      * @return the request charge.
      */
@@ -124,11 +127,11 @@ public final class StoredProcedureResponse {
     }
 
     /**
-     * Gets the request diagnostic statics for execution of stored procedure.
+     * Gets the diagnostic statics for execution of stored procedure.
      *
-     * @return request diagnostic statistics for execution of stored procedure.
+     * @return diagnostic statistics for execution of stored procedure.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return this.response.getCosmosResponseRequestDiagnosticStatistics();
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return this.response.getCosmosDiagnostics();
     }
 }

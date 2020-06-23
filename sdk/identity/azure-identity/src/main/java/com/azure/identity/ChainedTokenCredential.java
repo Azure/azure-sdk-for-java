@@ -7,13 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
+    private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
+
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -38,27 +41,26 @@ public class ChainedTokenCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
-                   .flatMap(p -> p.getToken(request).onErrorResume(CredentialUnavailableException.class, t -> {
-                       exceptions.add(t);
+                   .flatMap(p -> p.getToken(request).onErrorResume(Exception.class, t -> {
+                       if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                           return Mono.error(new ClientAuthenticationException(
+                            unavailableError + p.getClass().getSimpleName()
+                            + " authentication failed. Error Details: " + t.getMessage(),
+                            null, t));
+                       }
+                       exceptions.add((CredentialUnavailableException) t);
                        return Mono.empty();
                    }), 1)
                    .next()
                    .switchIfEmpty(Mono.defer(() -> {
-
-                       StringBuilder message = new StringBuilder("Tried "
-                             + credentials.stream().map(c -> c.getClass().getSimpleName())
-                                   .collect(Collectors.joining(", "))
-                             + " but failed to acquire a token for any of them. Please verify the"
-                             + " environment for the credentials"
-                             + " and see more details in the causes below.");
-
                        // Chain Exceptions.
                        CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
                        for (int z = exceptions.size() - 2; z >= 0; z--) {
                            CredentialUnavailableException current = exceptions.get(z);
-                           last = new CredentialUnavailableException(current.getMessage(), last);
+                           last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
+                                last.getCause());
                        }
-                       return Mono.error(new CredentialUnavailableException(message.toString(), last));
+                       return Mono.error(last);
                    }));
     }
 }

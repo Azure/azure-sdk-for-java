@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +14,11 @@ import java.util.List;
 /**
  * The type Spatial spec.
  */
-public final class SpatialSpec extends JsonSerializableWrapper{
+public final class SpatialSpec {
 
     private List<SpatialType> spatialTypes;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -33,6 +36,14 @@ public final class SpatialSpec extends JsonSerializableWrapper{
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    SpatialSpec(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
+    }
 
     /**
      * Gets path.
@@ -55,9 +66,9 @@ public final class SpatialSpec extends JsonSerializableWrapper{
     }
 
     /**
-     * Gets the collection of spatial types.
+     * Gets the container of spatial types.
      *
-     * @return the collection of spatial types.
+     * @return the container of spatial types.
      */
     public List<SpatialType> getSpatialTypes() {
         if (this.spatialTypes == null) {
@@ -72,9 +83,9 @@ public final class SpatialSpec extends JsonSerializableWrapper{
     }
 
     /**
-     * Sets the collection of spatial types.
+     * Sets the container of spatial types.
      *
-     * @param spatialTypes the collection of spatial types.
+     * @param spatialTypes the container of spatial types.
      * @return the SpatialSpec.
      */
     public SpatialSpec setSpatialTypes(List<SpatialType> spatialTypes) {
@@ -86,4 +97,10 @@ public final class SpatialSpec extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.TYPES, spatialTypeNames);
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

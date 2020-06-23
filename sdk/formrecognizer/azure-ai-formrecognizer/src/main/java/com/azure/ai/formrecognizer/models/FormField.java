@@ -7,11 +7,9 @@ import com.azure.core.annotation.Immutable;
 
 /**
  * The FormField model.
- *
- * @param <T> The type of FormField.
  */
 @Immutable
-public final class FormField<T> {
+public final class FormField {
 
     /*
      * The confidence value of the field.
@@ -31,17 +29,12 @@ public final class FormField<T> {
     /*
      * The value of the field.
      */
-    private final T fieldValue;
+    private final FieldValue fieldValue;
 
     /*
      * The text value field..
      */
     private final FieldText valueText;
-
-    /*
-     * The 1 based page number.
-     */
-    private final Integer pageNumber;
 
     /**
      * Constructs a FormField object.
@@ -51,16 +44,14 @@ public final class FormField<T> {
      * @param name The name the field.
      * @param fieldValue The value of the field.
      * @param valueText The label value text for the field.
-     * @param pageNumber The label text value for the field.
      */
-    public FormField(final float confidence, final FieldText labelText, final String name, final T fieldValue,
-        final FieldText valueText, final Integer pageNumber) {
+    public FormField(final float confidence, final FieldText labelText, final String name, final FieldValue fieldValue,
+        final FieldText valueText) {
         this.confidence = confidence;
         this.labelText = labelText;
         this.name = name;
         this.fieldValue = fieldValue;
         this.valueText = valueText;
-        this.pageNumber = pageNumber;
     }
 
     /**
@@ -95,7 +86,7 @@ public final class FormField<T> {
      *
      * @return Value of the field.
      */
-    public T getFieldValue() {
+    public FieldValue getFieldValue() {
         return this.fieldValue;
     }
 
@@ -106,14 +97,5 @@ public final class FormField<T> {
      */
     public FieldText getValueText() {
         return this.valueText;
-    }
-
-    /**
-     * Get the 1-based page number in the input document.
-     *
-     * @return the page number value.
-     */
-    public Integer getPageNumber() {
-        return this.pageNumber;
     }
 }

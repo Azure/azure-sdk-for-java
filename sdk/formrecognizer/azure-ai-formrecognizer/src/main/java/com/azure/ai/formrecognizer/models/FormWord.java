@@ -10,6 +10,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class FormWord extends FormContent {
+
     /*
      * The confidence value of the recognized word.
      */
@@ -17,13 +18,14 @@ public final class FormWord extends FormContent {
 
     /**
      * Creates raw OCR item.
-     *  @param text The text content of ExtractedField.
+     *
+     * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber The 1 based page number.
      * @param confidence the confidence.
      */
     public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final float confidence) {
-        super(text, boundingBox, pageNumber, TextContentType.WORD);
+        super(text, boundingBox, pageNumber);
         this.confidence = confidence;
     }
 
@@ -34,14 +36,6 @@ public final class FormWord extends FormContent {
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TextContentType getTextContentType() {
-        return super.getTextContentType();
     }
 
     /**

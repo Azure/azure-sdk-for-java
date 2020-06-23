@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.UserDefinedFunction;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
@@ -53,9 +53,9 @@ public class CosmosAsyncUserDefinedFunction {
      *
      * @return an {@link Mono} containing the single resource response for the read user defined function or an error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> read() {
+    public Mono<CosmosUserDefinedFunctionResponse> read() {
         return container.getDatabase().getDocClientWrapper().readUserDefinedFunction(getLink(), null)
-                        .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container)).single();
+                        .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response)).single();
     }
 
     /**
@@ -70,12 +70,12 @@ public class CosmosAsyncUserDefinedFunction {
      * @return an {@link Mono} containing the single resource response with the replaced cosmos user defined function
      * or an error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
+    public Mono<CosmosUserDefinedFunctionResponse> replace(CosmosUserDefinedFunctionProperties udfSettings) {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(
-                       ModelBridgeInternal.getResourceFromResourceWrapper(udfSettings))), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
+                       ModelBridgeInternal.getResource(udfSettings))), null)
+                   .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response))
                    .single();
     }
 
@@ -90,11 +90,11 @@ public class CosmosAsyncUserDefinedFunction {
      * @return an {@link Mono} containing the single resource response for the deleted cosmos user defined function or
      * an error.
      */
-    public Mono<CosmosAsyncUserDefinedFunctionResponse> delete() {
+    public Mono<CosmosUserDefinedFunctionResponse> delete() {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .deleteUserDefinedFunction(this.getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosUserDefinedFunctionResponse(response))
                    .single();
     }
 

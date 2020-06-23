@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Trigger;
-import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
@@ -43,7 +43,7 @@ public class CosmosAsyncTrigger {
     }
 
     /**
-     * Reads a cosmos trigger by the trigger link.
+     * Reads a cosmos trigger
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the read trigger.
@@ -51,11 +51,11 @@ public class CosmosAsyncTrigger {
      *
      * @return an {@link Mono} containing the single resource response for the read cosmos trigger or an error.
      */
-    public Mono<CosmosAsyncTriggerResponse> read() {
+    public Mono<CosmosTriggerResponse> read() {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .readTrigger(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
                    .single();
     }
 
@@ -67,15 +67,15 @@ public class CosmosAsyncTrigger {
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced trigger.
      * In case of failure the {@link Mono} will error.
      *
-     * @param triggerSettings the cosmos trigger properties.
+     * @param triggerProperties the cosmos trigger properties.
      * @return an {@link Mono} containing the single resource response with the replaced cosmos trigger or an error.
      */
-    public Mono<CosmosAsyncTriggerResponse> replace(CosmosTriggerProperties triggerSettings) {
+    public Mono<CosmosTriggerResponse> replace(CosmosTriggerProperties triggerProperties) {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
-                       ModelBridgeInternal.getResourceFromResourceWrapper(triggerSettings))), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
+                       ModelBridgeInternal.getResource(triggerProperties))), null)
+                   .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
                    .single();
     }
 
@@ -88,11 +88,11 @@ public class CosmosAsyncTrigger {
      *
      * @return an {@link Mono} containing the single resource response for the deleted cosmos trigger or an error.
      */
-    public Mono<CosmosAsyncTriggerResponse> delete() {
+    public Mono<CosmosTriggerResponse> delete() {
         return container.getDatabase()
                    .getDocClientWrapper()
                    .deleteTrigger(getLink(), null)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
+                   .map(response -> ModelBridgeInternal.createCosmosTriggerResponse(response))
                    .single();
     }
 

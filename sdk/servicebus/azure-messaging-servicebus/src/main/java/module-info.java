@@ -9,6 +9,8 @@ module com.azure.messaging.servicebus {
 
     opens com.azure.messaging.servicebus;
     opens com.azure.messaging.servicebus.implementation;
+    opens com.azure.messaging.servicebus.implementation.models;
+    opens com.azure.messaging.servicebus.models;
 
     uses com.azure.core.util.tracing.Tracer;
 }

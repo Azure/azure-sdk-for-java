@@ -95,7 +95,7 @@ Tooling has been introduced to centralize versioning and help ease the pain of u
 
 The dependency-version should be set to the most recent released version and the current-version is set to the next version to be released. For example:
 
-`com.azure:azure-identity;1.0.0-preview.4;1.0.0-preview.5`
+`com.azure:azure-identity;1.0.0-beta.4;1.0.0-beta.5`
 
 Note: In the case of a new artifact both versions will be the same. In the case of a released artifact, the dependecny version should be the latest released version.
 
@@ -131,7 +131,7 @@ In POM files this is done by inserting a specifically formatted comment on the s
 ```xml
   <groupId>MyGroup</groupId>
   <artifactId>MyArtifact</artifactId>
-  <version>1.0.0-preview.1</version> <!-- {x-version-update;MyGroup:MyArtifact;[current|dependency]} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;MyGroup:MyArtifact;[current|dependency]} -->
 ```
 
 The last element of the tag would be current or dependency depending on the criteria previously explained.
@@ -142,7 +142,7 @@ In README files this ends up being slightly different. Because the version tag i
     ```xml
       <groupId>MyGroup</groupId>
       <artifactId>MyArtifact</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-beta.1</version>
     ```
     [//]: # ({x-version-update-end})
 

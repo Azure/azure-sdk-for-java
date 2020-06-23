@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
@@ -59,6 +60,7 @@ import reactor.util.function.Tuple3;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -139,6 +141,13 @@ public class BlobAsyncClientBase {
     protected BlobAsyncClientBase(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope) {
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(url);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -897,7 +906,7 @@ public class BlobAsyncClientBase {
                             .flatMap(response ->
                                 writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions, progressLock,
                                     totalProgress));
-                    })
+                    }, finalParallelTransferOptions.getMaxConcurrency())
                     // Only the first download call returns a value.
                     .then(Mono.just(buildBlobPropertiesResponse(initialResponse)));
             });
@@ -1010,9 +1019,7 @@ public class BlobAsyncClientBase {
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        long blobSize = response.getDeserializedHeaders().getContentRange() == null
-            ? response.getDeserializedHeaders().getContentLength()
-            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
+        long blobSize = getBlobLength(response.getDeserializedHeaders());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
             response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
             null, response.getDeserializedHeaders().getContentEncoding(),
@@ -1030,6 +1037,11 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().getMetadata(),
             response.getDeserializedHeaders().getBlobCommittedBlockCount());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+    }
+
+    static long getBlobLength(BlobDownloadHeaders headers) {
+        return headers.getContentRange() == null ? headers.getContentLength()
+            : extractTotalBlobLength(headers.getContentRange());
     }
 
     private static long extractTotalBlobLength(String contentRange) {

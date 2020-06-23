@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.HashMap;
  */
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
     private int port;
+    private boolean automaticAuthentication = true;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
@@ -52,6 +54,35 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return this;
     }
 
+
+    /**
+     * Sets the {@link AuthenticationRecord} captured from a previous authentication.
+     *
+     * @param authenticationRecord The Authentication record to be configured.
+     *
+     * @return An updated instance of this builder with the configured authentication record.
+     */
+    public InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+        this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
+        return this;
+    }
+
+    /**
+     * Disables the automatic authentication and prevents the {@link InteractiveBrowserCredential} from automatically
+     * prompting the user. If automatic authentication is disabled a {@link AuthenticationRequiredException}
+     * will be thrown from {@link InteractiveBrowserCredential#getToken(TokenRequestContext)} in the case that
+     * user interaction is necessary. The application is responsible for handling this exception, and
+     * calling {@link InteractiveBrowserCredential#authenticate()} or
+     * {@link InteractiveBrowserCredential#authenticate(TokenRequestContext)} to authenticate the user interactively.
+     *
+     * @return An updated instance of this builder with automatic authentication disabled.
+     */
+    public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
+        this.automaticAuthentication = false;
+        return this;
+    }
+
+
     /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
      *
@@ -62,6 +93,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
                 put("clientId", clientId);
                 put("port", port);
             }});
-        return new InteractiveBrowserCredential(clientId, tenantId, port, identityClientOptions);
+        return new InteractiveBrowserCredential(clientId, tenantId, port, automaticAuthentication,
+                identityClientOptions);
     }
 }

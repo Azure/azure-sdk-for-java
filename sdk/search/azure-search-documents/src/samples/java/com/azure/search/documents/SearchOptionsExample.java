@@ -10,7 +10,6 @@ import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedIterable;
-import com.azure.search.documents.util.SearchPagedResponse;
 
 import java.util.stream.Stream;
 
@@ -33,7 +32,7 @@ public class SearchOptionsExample {
     private static final String INDEX_NAME = "hotels-sample-index";
 
     public static void main(String[] args) {
-        SearchIndexClient searchClient = new SearchIndexClientBuilder()
+        SearchClient searchClient = new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
@@ -41,103 +40,47 @@ public class SearchOptionsExample {
 
         searchResultsAsPagedIterable(searchClient);
         searchResultAsStream(searchClient);
-        searchResultsCountFromStream(searchClient);
         searchResultsCountFromPage(searchClient);
-        searchResultsCoverage(searchClient);
-        searchResultsCoverageFromStream(searchClient);
-        searchResultsFacetsFromStream(searchClient);
+        searchResultsCoverageFromPage(searchClient);
         searchResultsFacets(searchClient);
     }
 
-    private static void searchResultsFacets(SearchIndexClient searchClient) {
+    private static void searchResultsFacets(SearchClient searchClient) {
         // Each page in the response of the search query holds the facets value
         // Get Facets property from the first page in the response
         SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
-
-        results.iterableByPage().forEach(page ->
-            page.getFacets().forEach((k, v) -> {
-                v.forEach(result -> {
-                    System.out.println(k + " :");
-                    System.out.println("    count: " + result.getCount());
-                    result.getAdditionalProperties().forEach((f, d) ->
-                        System.out.println("    " + f + " : " + d)
-                    );
-                });
-            })
-        );
+        results.getFacets().forEach((k, v) -> {
+            v.forEach(result -> {
+                System.out.println(k + " :");
+                System.out.println("    count: " + result.getCount());
+                result.getAdditionalProperties().forEach((f, d) ->
+                    System.out.println("    " + f + " : " + d)
+                );
+            });
+        });
     }
 
-    private static void searchResultsFacetsFromStream(SearchIndexClient searchClient) {
-        // Each page in the response of the search query holds the facets value
-        // Accessing Facets property with stream
-        SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"), new RequestOptions(), Context.NONE);
-
-        Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
-        searchPagedResponseStream.forEach(page ->
-            page.getFacets().forEach((k, v) -> {
-                v.forEach(result -> {
-                    System.out.println(k + " :");
-                    System.out.println("    count: " + result.getCount());
-                    result.getAdditionalProperties().forEach((f, d) ->
-                        System.out.println("    " + f + " : " + d)
-                    );
-                });
-            })
-        );
-    }
-
-    private static void searchResultsCoverageFromStream(SearchIndexClient searchClient) {
-        // Each page in the response of the search query holds the coverage value
-        // Get Coverage property from the first page in the response
-        SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
-
-        results.streamByPage().forEach(searchPagedResponse ->
-            System.out.println("Coverage = " + searchPagedResponse.getCoverage())
-        );
-    }
-
-    private static void searchResultsCoverage(SearchIndexClient searchClient) {
+    private static void searchResultsCoverageFromPage(SearchClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Accessing Coverage property when iterating by page
         SearchPagedIterable results = searchClient.search("*",
             new SearchOptions().setMinimumCoverage(80.0), new RequestOptions(), Context.NONE);
 
-        results.iterableByPage().forEach(page ->
-            System.out.println("Coverage = " + page.getCoverage())
-        );
+        System.out.println("Coverage = " + results.getCoverage());
     }
 
-    private static void searchResultsCountFromPage(SearchIndexClient searchClient) {
+    private static void searchResultsCountFromPage(SearchClient searchClient) {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
         SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
+            new SearchOptions().setIncludeTotalCount(true), new RequestOptions(), Context.NONE);
 
-        Iterable<SearchPagedResponse> searchPagedResponses = results.iterableByPage();
-        searchPagedResponses.forEach(page ->
-            System.out.println("Count = " + page.getCount())
-        );
+        System.out.println("Count = " + results.getTotalCount());
     }
 
-    private static void searchResultsCountFromStream(SearchIndexClient searchClient) {
-        // Each page in the response of the search query holds the count value
-        // Get total search results count by accessing the SearchPagedResponse
-        // Access Count property when iterating by page
-        SearchPagedIterable results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalResultCount(true), new RequestOptions(), Context.NONE);
-
-        Stream<SearchPagedResponse> searchPagedResponseStream = results.streamByPage();
-        searchPagedResponseStream.forEach(page ->
-            System.out.println("Count = " + page.getCount())
-        );
-
-    }
-
-    private static void searchResultAsStream(SearchIndexClient searchClient) {
+    private static void searchResultAsStream(SearchClient searchClient) {
         // Converting search results to stream
         SearchPagedIterable results = searchClient.search("*");
         Stream<SearchResult> resultStream = results.stream();
@@ -146,7 +89,7 @@ public class SearchOptionsExample {
         );
     }
 
-    private static void searchResultsAsPagedIterable(SearchIndexClient searchClient) {
+    private static void searchResultsAsPagedIterable(SearchClient searchClient) {
         searchClient.search("*").forEach(result ->
             result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
         );

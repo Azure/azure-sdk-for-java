@@ -6,25 +6,22 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.User;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The Cosmos user properties.
  */
-public final class CosmosUserProperties extends ResourceWrapper{
+public final class CosmosUserProperties {
 
     private User user;
+
     /**
      * Initialize a user object.
      */
     public CosmosUserProperties() {
         this.user = new User();
-    }
-
-    @Override
-    Resource getResource() {
-        return this.user;
     }
 
     /**
@@ -47,7 +44,7 @@ public final class CosmosUserProperties extends ResourceWrapper{
         this.user = new User(jsonString);
     }
 
-    // Converting document collection to CosmosContainerProperties
+    // Converting container to CosmosContainerProperties
     CosmosUserProperties(User user) {
         this.user = user;
     }
@@ -63,6 +60,49 @@ public final class CosmosUserProperties extends ResourceWrapper{
 
     User getV2User() {
         return new User(this.user.toJson());
+    }
+
+
+    Resource getResource() {
+        return this.user;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.user.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    String getResourceId() {
+        return this.user.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the timestamp.
+     */
+    public Instant getTimestamp() {
+        return this.user.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     * This is only relevant when getting response from the server.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.user.getETag();
     }
 
     static List<CosmosUserProperties> getFromV2Results(List<User> results) {

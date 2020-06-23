@@ -104,7 +104,7 @@ public class VersionsImpl implements Versions {
 
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -119,7 +119,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -133,7 +133,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -151,7 +151,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -175,7 +175,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -193,11 +193,8 @@ public class VersionsImpl implements Versions {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        TaskUpdateObject versionCloneObject = null;
-        if (version != null) {
-            versionCloneObject = new TaskUpdateObject();
-            versionCloneObject.withVersion(version);
-        }
+        TaskUpdateObject versionCloneObject = new TaskUpdateObject();
+        versionCloneObject.withVersion(version);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.clone(appId, versionId, this.client.acceptLanguage(), versionCloneObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
@@ -278,7 +275,7 @@ public class VersionsImpl implements Versions {
 
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -292,7 +289,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -305,7 +302,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -322,7 +319,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -343,7 +340,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param skip The number of entries to skip. Default value is 0.
@@ -437,7 +434,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -451,7 +448,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -464,7 +461,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -481,7 +478,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1031,7 +1028,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1046,7 +1043,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1060,7 +1057,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1078,7 +1075,7 @@ public class VersionsImpl implements Versions {
     }
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.

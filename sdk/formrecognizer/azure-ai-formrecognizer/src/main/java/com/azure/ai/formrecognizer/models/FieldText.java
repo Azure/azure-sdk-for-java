@@ -4,7 +4,9 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The FieldText model.
@@ -15,7 +17,7 @@ public final class FieldText extends FormContent {
     /**
      * The list of text element references for the field value.
      */
-    private final IterableStream<FormContent> textContent;
+    private final List<FormContent> textContent;
 
     /**
      * Creates raw OCR FieldText item.
@@ -23,12 +25,12 @@ public final class FieldText extends FormContent {
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
-     * @param textContent The list of text element references when includeTextDetails is set to true.
+     * @param textContent The list of text element references when includeTextContent is set to true.
      */
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
-                     final IterableStream<FormContent> textContent) {
-        super(text, boundingBox, pageNumber, null);
-        this.textContent = textContent;
+                     final List<FormContent> textContent) {
+        super(text, boundingBox, pageNumber);
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
     }
 
     /**
@@ -56,11 +58,11 @@ public final class FieldText extends FormContent {
     }
 
     /**
-     * Gets the list of reference text elements.
+     * Gets the list of reference text elements constituting this {@code FieldText}.
      *
-     * @return The list of reference elements.
+     * @return The unmodifiable list of reference elements constituting this {@code FieldText}.
      */
-    public IterableStream<FormContent> getTextContent() {
+    public List<FormContent> getTextContent() {
         return this.textContent;
     }
 }

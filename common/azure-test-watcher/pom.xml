@@ -37,12 +37,31 @@
                 <include>com.azure:*</include>
 
                 <!-- special allowance for azure-test-watcher as it is not a shipping library: -->
-                <include>org.junit.jupiter:junit-jupiter:[5.4.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
-                <include>org.junit.jupiter:junit-jupiter-api:[5.4.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter:[5.6.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.6.2]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
         </configuration>
+      </plugin>
+
+      <!-- Run the JAR goal for azure-test-watcher during the test phase to guarantee its existence when tests are running -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <outputDirectory>${packageOutputDirectory}</outputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>test</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -51,12 +70,12 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
     </dependency>
   </dependencies>
 </project>

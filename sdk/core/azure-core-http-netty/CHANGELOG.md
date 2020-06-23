@@ -3,6 +3,11 @@
 ## 1.6.0-beta.1 (Unreleased)
 
 
+## 1.5.2 (2020-06-08)
+
+- Fix bug where environment proxy wasn't inferred properly when it didn't use authentication.
+- Updated Azure Core dependency.
+
 ## 1.5.1 (2020-05-04)
 
 - Updated default retrieval of response body as a `String` to use `CoreUtils.bomAwareToString`.

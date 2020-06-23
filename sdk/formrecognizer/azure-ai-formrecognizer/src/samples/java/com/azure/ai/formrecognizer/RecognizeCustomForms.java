@@ -6,8 +6,9 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
+
+import java.util.List;
 
 /**
  * Sample to analyze a form from a document with a custom trained model. To learn how to train your own models,
@@ -30,20 +31,21 @@ public class RecognizeCustomForms {
 
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
+        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             client.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
 
-        IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
-        recognizedForms.forEach(form -> {
-            System.out.println("----------- Recognized Form -----------");
+        for (int i = 0; i < recognizedForms.size(); i++) {
+            final RecognizedForm form = recognizedForms.get(i);
+            System.out.printf("----------- Recognized Form page %d -----------%n", i);
             System.out.printf("Form type: %s%n", form.getFormType());
             form.getFields().forEach((label, formField) -> {
                 System.out.printf("Field %s has value %s with confidence score of %.2f.%n", label,
-                    formField.getFieldValue(),
+                    formField.getValueText().getText(),
                     formField.getConfidence());
             });
             System.out.print("-----------------------------------");
-        });
+        }
     }
 }

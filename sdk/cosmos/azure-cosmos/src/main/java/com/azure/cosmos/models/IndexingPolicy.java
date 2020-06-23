@@ -4,24 +4,28 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
+ * Represents the indexing policy configuration for a container in the Azure Cosmos DB database service.
  */
-public final class IndexingPolicy extends JsonSerializableWrapper {
+public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
 
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -52,15 +56,14 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
      * root path.
      * @throws IllegalArgumentException throws when defaultIndexOverrides is null
      */
-    public IndexingPolicy(Index[] defaultIndexOverrides) {
+    IndexingPolicy(Index[] defaultIndexOverrides) {
         this();
 
         if (defaultIndexOverrides == null) {
             throw new IllegalArgumentException("defaultIndexOverrides is null.");
         }
 
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+        IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
         includedPath.setIndexes(new ArrayList<Index>(Arrays.asList(defaultIndexOverrides)));
         this.getIncludedPaths().add(includedPath);
     }
@@ -75,10 +78,19 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
     }
 
     /**
-     * Gets whether automatic indexing is enabled for a collection.
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the indexing policy.
+     */
+    IndexingPolicy(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
+    }
+
+    /**
+     * Gets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @return the automatic
      */
@@ -87,10 +99,10 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
     }
 
     /**
-     * Sets whether automatic indexing is enabled for a collection.
+     * Sets whether automatic indexing is enabled for a container.
      * <p>
-     * In automatic indexing, documents can be explicitly excluded from indexing using RequestOptions. In manual
-     * indexing, documents can be explicitly included.
+     * In automatic indexing, items can be explicitly excluded from indexing using RequestOptions. In manual
+     * indexing, items can be explicitly included.
      *
      * @param automatic the automatic
      * @return the Indexing Policy.
@@ -247,14 +259,12 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
+    void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
                 && this.getExcludedPaths().size() == 0) {
-            IncludedPath includedPath = new IncludedPath();
-            includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+            IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
             this.getIncludedPaths().add(includedPath);
         }
 
@@ -272,4 +282,6 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
             this.jsonSerializable.set(Constants.Properties.EXCLUDED_PATHS, this.excludedPaths);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

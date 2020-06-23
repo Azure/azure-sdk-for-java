@@ -3,33 +3,41 @@
 
 package com.azure.cosmos;
 
+import io.netty.channel.ChannelOption;
+
 import java.time.Duration;
 
 /**
  * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
+ * For performance tips on how to optimize Direct connection configuration,
+ * refer to performance tips guide:
+ * <a href="https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async">Performance tips guide</a>
  */
 public final class DirectConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_IDLE_CHANNEL_TIMEOUT = Duration.ZERO;
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(70L);
-    private static final int DEFAULT_MAX_CHANNELS_PER_ENDPOINT = 30;
-    private static final int DEFAULT_MAX_REQUESTS_PER_ENDPOINT = 10;
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60L);
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
+    private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 30;
+    private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 10;
 
-    private Duration connectionTimeout;
-    private Duration idleChannelTimeout;
+    private Duration connectTimeout;
+    private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
-    private int maxChannelsPerEndpoint;
-    private int maxRequestsPerChannel;
+    private Duration requestTimeout;
+    private int maxConnectionsPerEndpoint;
+    private int maxRequestsPerConnection;
 
     /**
      * Constructor.
      */
     public DirectConnectionConfig() {
-        this.connectionTimeout = null;
-        this.idleChannelTimeout = DEFAULT_IDLE_CHANNEL_TIMEOUT;
+        this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+        this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
-        this.maxChannelsPerEndpoint = DEFAULT_MAX_CHANNELS_PER_ENDPOINT;
-        this.maxRequestsPerChannel = DEFAULT_MAX_REQUESTS_PER_ENDPOINT;
+        this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
+        this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
+        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     }
 
     /**
@@ -41,46 +49,74 @@ public final class DirectConnectionConfig {
         return new DirectConnectionConfig();
     }
 
-    //  TODO: (DANOBLE) - To update these docs.
-
     /**
-     * Gets the direct connection timeout
-     * @return direct connection timeout
+     * Gets the connect timeout for direct client,
+     * represents timeout for establishing connections with an endpoint.
+     *
+     * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
+     *
+     * By default, the connect timeout is 60 seconds.
+     *
+     * @return direct connect timeout
      */
-    public Duration getConnectionTimeout() {
-        return connectionTimeout;
+    public Duration getConnectTimeout() {
+        return connectTimeout;
     }
 
     /**
-     *  Sets the direct connection timeout
-     * @param connectionTimeout the connection timeout
+     * Sets the connect timeout for direct client,
+     * represents timeout for establishing connections with an endpoint.
+     *
+     * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
+     *
+     * By default, the connect timeout is 60 seconds.
+     *
+     * @param connectTimeout the connection timeout
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setConnectionTimeout(Duration connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+    public DirectConnectionConfig setConnectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
         return this;
     }
 
     /**
-     * Gets the idle channel timeout
-     * @return idle channel timeout
+     * Gets the idle connection timeout for direct client
+     *
+     * Default value is {@link Duration#ZERO}
+     *
+     * Direct client doesn't close a single connection to an endpoint
+     * by default unless specified.
+     *
+     * @return idle connection timeout
      */
-    public Duration getIdleChannelTimeout() {
-        return idleChannelTimeout;
+    public Duration getIdleConnectionTimeout() {
+        return idleConnectionTimeout;
     }
 
     /**
-     * Sets the idle channel timeout
-     * @param idleChannelTimeout idle channel timeout
+     * Sets the idle connection timeout
+     *
+     * Default value is {@link Duration#ZERO}
+     *
+     * Direct client doesn't close a single connection to an endpoint
+     * by default unless specified.
+     *
+     * @param idleConnectionTimeout idle connection timeout
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setIdleChannelTimeout(Duration idleChannelTimeout) {
-        this.idleChannelTimeout = idleChannelTimeout;
+    public DirectConnectionConfig setIdleConnectionTimeout(Duration idleConnectionTimeout) {
+        this.idleConnectionTimeout = idleConnectionTimeout;
         return this;
     }
 
     /**
      * Gets the idle endpoint timeout
+     *
+     * Default value is 70 seconds.
+     *
+     * If there are no requests to a specific endpoint for idle endpoint timeout duration,
+     * direct client closes all connections to that endpoint to save resources and I/O cost.
+     *
      * @return the idle endpoint timeout
      */
     public Duration getIdleEndpointTimeout() {
@@ -89,6 +125,12 @@ public final class DirectConnectionConfig {
 
     /**
      * Sets the idle endpoint timeout
+     *
+     * Default value is 70 seconds.
+     *
+     * If there are no requests to a specific endpoint for idle endpoint timeout duration,
+     * direct client closes all connections to that endpoint to save resources and I/O cost.
+     *
      * @param idleEndpointTimeout the idle endpoint timeout
      * @return the {@link DirectConnectionConfig}
      */
@@ -98,49 +140,93 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets the max channels per endpoint
-     * @return the max channels per endpoint
+     * Gets the max connections per endpoint
+     * This represents the size of connection pool for a specific endpoint
+     *
+     * Default value is 30
+     *
+     * @return the max connections per endpoint
      */
-    public int getMaxChannelsPerEndpoint() {
-        return maxChannelsPerEndpoint;
+    public int getMaxConnectionsPerEndpoint() {
+        return maxConnectionsPerEndpoint;
     }
 
     /**
-     * Sets the max channels per endpoint
-     * @param maxChannelsPerEndpoint the max channels per endpoint
+     * Sets the max connections per endpoint
+     * This represents the size of connection pool for a specific endpoint
+     *
+     * Default value is 30
+     *
+     * @param maxConnectionsPerEndpoint the max connections per endpoint
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setMaxChannelsPerEndpoint(int maxChannelsPerEndpoint) {
-        this.maxChannelsPerEndpoint = maxChannelsPerEndpoint;
+    public DirectConnectionConfig setMaxConnectionsPerEndpoint(int maxConnectionsPerEndpoint) {
+        this.maxConnectionsPerEndpoint = maxConnectionsPerEndpoint;
         return this;
     }
 
     /**
-     * Gets the max requests per endpoint
+     * Gets the max requests per connection
+     * This represents the number of requests that will be queued
+     * on a single connection for a specific endpoint
+     *
+     * Default value is 10
+     *
      * @return the max requests per endpoint
      */
-    public int getMaxRequestsPerChannel() {
-        return maxRequestsPerChannel;
+    public int getMaxRequestsPerConnection() {
+        return maxRequestsPerConnection;
     }
 
     /**
-     * Sets the max requests per endpoint
-     * @param maxRequestsPerChannel the max requests per endpoint
+     * Sets the max requests per connection
+     * This represents the number of requests that will be queued
+     * on a single connection for a specific endpoint
+     *
+     * Default value is 10
+     *
+     * @param maxRequestsPerConnection the max requests per endpoint
      * @return the {@link DirectConnectionConfig}
      */
-    public DirectConnectionConfig setMaxRequestsPerChannel(int maxRequestsPerChannel) {
-        this.maxRequestsPerChannel = maxRequestsPerChannel;
+    public DirectConnectionConfig setMaxRequestsPerConnection(int maxRequestsPerConnection) {
+        this.maxRequestsPerConnection = maxRequestsPerConnection;
+        return this;
+    }
+
+    /**
+     * Gets the request timeout interval
+     * This represents the timeout interval for requests
+     *
+     * Default value is 60 seconds
+     *
+     * @return the request timeout interval
+     */
+    Duration getRequestTimeout() {
+        return requestTimeout;
+    }
+
+    /**
+     * Sets the request timeout interval
+     * This represents the timeout interval for requests
+     *
+     * Default value is 5 seconds
+     *
+     * @param requestTimeout the request timeout interval
+     * @return the {@link DirectConnectionConfig}
+     */
+    DirectConnectionConfig setRequestTimeout(Duration requestTimeout) {
+        this.requestTimeout = requestTimeout;
         return this;
     }
 
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
-            "connectionTimeout=" + connectionTimeout +
-            ", idleChannelTimeout=" + idleChannelTimeout +
+            "connectTimeout=" + connectTimeout +
+            ", idleConnectionTimeout=" + idleConnectionTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +
-            ", maxChannelsPerEndpoint=" + maxChannelsPerEndpoint +
-            ", maxRequestsPerChannel=" + maxRequestsPerChannel +
+            ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
+            ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             '}';
     }
 }

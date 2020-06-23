@@ -26,9 +26,11 @@
     <module>sdk/keyvault</module>
     <module>sdk/loganalytics</module>
     <module>sdk/mediaservices</module>
+    <module>sdk/schemaregistry</module>
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
     <module>sdk/storage</module>
+    <module>sdk/tables</module>
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>
     <module>sdk/spring</module>

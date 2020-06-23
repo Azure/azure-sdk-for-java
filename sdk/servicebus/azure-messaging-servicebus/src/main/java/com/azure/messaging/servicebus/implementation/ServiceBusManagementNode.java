@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -93,12 +94,13 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @param message The message to be sent to the entity.
      * @param scheduledEnqueueTime The {@link Instant} at which the message should be enqueued in the entity.
+     * @param transactionContext to be set on message before sending to Service Bus.
      *
      * @return The sequence number representing the pending send, which returns the sequence number of the scheduled
      *     message. This sequence number can be used to cancel the scheduling of the message.
      */
     Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize,
-        String associatedLinkName);
+        String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     /**
      * Updates the session state.
@@ -117,7 +119,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      */
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-        String associatedLinkName);
+        String associatedLinkName, ServiceBusTransactionContext transactionContext);
 
     @Override
     void close();
