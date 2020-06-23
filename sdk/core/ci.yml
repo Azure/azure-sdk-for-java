@@ -28,7 +28,6 @@ pr:
       - sdk/parents/azure-client-sdk-parent/
       - eng/
 
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
@@ -49,6 +48,12 @@ extends:
       - name: azure-core-http-okhttp
         groupId: com.azure
         safeName: azurecorehttpokhttp
+      - name: azure-core-serializer-avro-apache
+        groupId: com.azure
+        safeName: azurecoreserializeravroapache
+      - name: azure-core-serializer-avro-jackson
+        groupId: com.azure
+        safeName: azurecoreserializeravrojackson
       - name: azure-core-serializer-json-gson
         groupId: com.azure
         safeName: azurecoreserializerjsongson

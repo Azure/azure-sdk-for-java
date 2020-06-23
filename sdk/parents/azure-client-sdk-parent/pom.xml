@@ -569,6 +569,14 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - Serializer - Avro - Apache</title>
+                <packages>com.azure.core.serializer.avro.apache*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - Avro - Jackson</title>
+                <packages>com.azure.core.serializer.avro.jackson*</packages>
+              </group>
+              <group>
                 <title>Azure Core - Serializer - JSON - Gson</title>
                 <packages>com.azure.core.serializer.json.gson*</packages>
               </group>
@@ -828,6 +836,8 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
