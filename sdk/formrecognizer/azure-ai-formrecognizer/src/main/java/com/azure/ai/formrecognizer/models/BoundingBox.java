@@ -29,7 +29,7 @@ public final class BoundingBox {
         if (points == null) {
             this.points = null;
         } else {
-            this.points = Collections.unmodifiableList(new ArrayList<>(points));
+            this.points = Collections.unmodifiableList(points);
         }
     }
 

@@ -72,10 +72,10 @@ public final class CustomFormModel {
         this.modelStatus = modelStatus;
         this.requestedOn = requestedOn;
         this.completedOn = completedOn;
-        this.submodels = submodels == null ? null : Collections.unmodifiableList(new ArrayList<>(submodels));
-        this.modelError = modelError == null ? null : Collections.unmodifiableList(new ArrayList<>(modelError));
+        this.submodels = submodels == null ? null : Collections.unmodifiableList(submodels);
+        this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
         this.trainingDocuments = trainingDocuments == null ? null
-            : Collections.unmodifiableList(new ArrayList<>(trainingDocuments));
+            : Collections.unmodifiableList(trainingDocuments);
     }
 
     /**

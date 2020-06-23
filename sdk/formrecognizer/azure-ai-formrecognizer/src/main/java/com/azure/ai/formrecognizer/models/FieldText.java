@@ -31,7 +31,7 @@ public final class FieldText extends FormContent {
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
                      final List<FormContent> textContent) {
         super(text, boundingBox, pageNumber);
-        this.textContent = textContent == null ? null : Collections.unmodifiableList(new ArrayList<>(textContent));
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
     }
 
     /**

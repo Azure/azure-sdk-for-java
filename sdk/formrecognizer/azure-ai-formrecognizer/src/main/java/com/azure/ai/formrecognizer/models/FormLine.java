@@ -32,7 +32,7 @@ public final class FormLine extends FormContent {
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final List<FormWord> formWords) {
         super(text, boundingBox, pageNumber);
-        this.formWords = formWords == null ? null : Collections.unmodifiableList(new ArrayList<>(formWords));
+        this.formWords = formWords == null ? null : Collections.unmodifiableList(formWords);
     }
 
     /**

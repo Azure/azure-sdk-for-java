@@ -83,7 +83,7 @@ public final class FormTableCell extends FormContent {
         this.confidence = confidence;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.textContent = textContent == null ? null : Collections.unmodifiableList(new ArrayList<>(textContent));
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
     }
 
     /**

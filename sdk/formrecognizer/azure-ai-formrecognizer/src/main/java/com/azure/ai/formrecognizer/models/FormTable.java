@@ -47,7 +47,7 @@ public final class FormTable {
         final Integer pageNumber) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
-        this.cells = cells == null ? null : Collections.unmodifiableList(new ArrayList<>(cells));
+        this.cells = cells == null ? null : Collections.unmodifiableList(cells);
         this.pageNumber = pageNumber;
     }
 

@@ -45,7 +45,7 @@ public final class FieldValue {
      * @return the FieldValue object itself.
      */
     public FieldValue setFormFieldMap(final Map<String, FormField> formFieldMap) {
-        this.formFieldMap = formFieldMap == null ? null : Collections.unmodifiableMap(new HashMap<>(formFieldMap));
+        this.formFieldMap = formFieldMap == null ? null : Collections.unmodifiableMap(formFieldMap);
         return this;
     }
 
@@ -58,7 +58,7 @@ public final class FieldValue {
      */
     public FieldValue setFormFieldList(final List<FormField> formFieldList) {
         this.formFieldList = formFieldList == null ? null
-            : Collections.unmodifiableList(new ArrayList<>(formFieldList));
+            : Collections.unmodifiableList(formFieldList);
         return this;
     }
 

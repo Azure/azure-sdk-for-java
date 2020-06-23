@@ -34,7 +34,7 @@ public class FormRecognizerException extends AzureException {
                     .append(errorInformation.getCode()).append("], ").append("message")
                     .append(": ").append(errorInformation.getMessage());
             }
-            this.errorInformationList = Collections.unmodifiableList(new ArrayList<>(errorInformationList));
+            this.errorInformationList = Collections.unmodifiableList(errorInformationList);
         } else {
             this.errorInformationList = null;
         }

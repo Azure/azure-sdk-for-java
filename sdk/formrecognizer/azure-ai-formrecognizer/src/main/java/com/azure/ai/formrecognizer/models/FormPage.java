@@ -69,8 +69,8 @@ public final class FormPage {
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
-        this.lines = lines == null ? null : Collections.unmodifiableList(new ArrayList<>(lines));
-        this.tables = tables;
+        this.lines = lines == null ? null : Collections.unmodifiableList(lines);
+        this.tables = tables == null ? null : Collections.unmodifiableList(tables);
         this.pageNumber = pageNumber;
     }
 
@@ -97,7 +97,7 @@ public final class FormPage {
     /**
      * Get the tables property: List of data tables extracted from the page.
      *
-     * @return the tables value.
+     * @return the unmodifiable list of recognized tables.
      */
     public List<FormTable> getTables() {
         return this.tables;

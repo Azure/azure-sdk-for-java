@@ -49,7 +49,7 @@ public final class TrainingDocumentInfo {
         this.trainingStatus = trainingStatus;
         this.pageCount = pageCount;
         this.documentErrors = documentErrors == null ? null
-            : Collections.unmodifiableList(new ArrayList<>(documentErrors));
+            : Collections.unmodifiableList(documentErrors);
     }
 
     /**

@@ -49,10 +49,10 @@ public final class RecognizedForm {
      */
     public RecognizedForm(final Map<String, FormField> fields, final String formType,
         final FormPageRange formPageRange, final List<FormPage> pages) {
-        this.fields = fields == null ? null : Collections.unmodifiableMap(new HashMap<>(fields));
+        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
         this.formPageRange = formPageRange;
-        this.pages = pages == null ? null : Collections.unmodifiableList(new ArrayList<>(pages));
+        this.pages = pages == null ? null : Collections.unmodifiableList(pages);
     }
 
     /**

@@ -42,7 +42,7 @@ public final class CustomFormSubmodel {
     public CustomFormSubmodel(final Float accuracy, final Map<String, CustomFormModelField> fields,
         final String formType) {
         this.accuracy = accuracy;
-        this.fields = fields == null ? null : Collections.unmodifiableMap(new HashMap<>(fields));
+        this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
     }
 
