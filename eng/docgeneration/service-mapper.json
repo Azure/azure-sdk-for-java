@@ -118,6 +118,7 @@
   "streamanalytics": "Stream Analytics",
   "subscription": "Subscription",
   "synapse": "Synapse",
+  "tables": "Tables",
   "template": "Template",
   "test-utils": "Test Utils",
   "textanalytics": "Text Analytics",
