@@ -71,11 +71,6 @@ public final class TestHelpers {
                 }}));
     }
 
-    public static Map<String, Object> serializePointGeometry(PointGeometry pointGeometry)  {
-        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
-        return MAPPER.convertValue(pointGeometry, typeReference);
-    }
-
     /**
      * Assert whether two objects are equal.
      *
