@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.models.GeoPoint;
+import com.azure.core.models.spatial.PointGeometry;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -44,7 +44,7 @@ public class LoudHotel {
 
     @JsonProperty(value = "Location")
     @JsonInclude(JsonInclude.Include.ALWAYS)
-    private GeoPoint LOCATION;
+    private PointGeometry LOCATION;
 
     @JsonProperty(value = "Address")
     private HotelAddress ADDRESS;
@@ -148,11 +148,11 @@ public class LoudHotel {
         return this;
     }
 
-    public GeoPoint LOCATION() {
+    public PointGeometry LOCATION() {
         return this.LOCATION;
     }
 
-    public LoudHotel LOCATION(GeoPoint location) {
+    public LoudHotel LOCATION(PointGeometry location) {
         this.LOCATION = location;
         return this;
     }

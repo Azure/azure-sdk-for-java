@@ -165,7 +165,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .iterator();
         SearchResult searchResult = iterator.next();
 
-        Assertions.assertEquals("1", searchResult.getDocument().get("id"));
+        Assertions.assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id"));
         assertFalse(iterator.hasNext());
     }
 

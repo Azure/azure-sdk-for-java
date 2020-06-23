@@ -8,7 +8,6 @@ import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,6 +17,11 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
+    private static final ObjectMapper MAPPER;
+    static {
+        MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+    }
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
      */
@@ -64,7 +68,6 @@ public final class IndexActionConverter {
         if (obj.getParamMap() != null) {
             Map<String, Object> properties = obj.getParamMap();
 
-            mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
             additionalProperties = mapper.convertValue(properties, typeRef);
         } else {
             T properties = obj.getDocument();

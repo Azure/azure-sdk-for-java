@@ -62,7 +62,9 @@ com.microsoft.azure:azure-spring-boot-test-core;2.3.2;2.3.3-beta.1
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-
+unreleased_com.azure:azure-core;dependency
+unreleased_com.azure:azure-core-test;dependency
+unreleased_com.azure:azure-core-http-netty;dependency
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
