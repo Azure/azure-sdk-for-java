@@ -73,6 +73,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-management</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-gson</artifactId>
       <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
     </dependency>
