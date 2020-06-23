@@ -106,7 +106,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
                 .create();
@@ -315,7 +315,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withSystemAssignedManagedServiceIdentity()
                 .withSystemAssignedIdentityBasedAccessTo(network.id(), BuiltInRole.CONTRIBUTOR)
                 .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
@@ -418,7 +418,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends TestBase {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the

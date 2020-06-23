@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -78,12 +78,12 @@ public class ProxyHostTest extends TestSuiteBase {
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
-                    .createItem(docDefinition, new CosmosItemRequestOptions());
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
+                                                                                                .createItem(docDefinition, new CosmosItemRequestOptions());
 
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             this.validateItemSuccess(createObservable, validator);
@@ -114,11 +114,11 @@ public class ProxyHostTest extends TestSuiteBase {
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
-                    .createItem(docDefinition, new CosmosItemRequestOptions());
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
+                                                                                                .createItem(docDefinition, new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             this.validateItemSuccess(createObservable, validator);
@@ -146,9 +146,9 @@ public class ProxyHostTest extends TestSuiteBase {
         LogLevelTest.resetLoggingConfiguration();
     }
 
-    private CosmosItemProperties getDocumentDefinition() {
+    private InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
                 + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"

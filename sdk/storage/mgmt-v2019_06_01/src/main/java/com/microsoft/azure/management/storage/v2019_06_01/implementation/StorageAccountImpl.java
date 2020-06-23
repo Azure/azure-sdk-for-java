@@ -23,6 +23,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.GeoReplicationStats;
 import com.microsoft.azure.management.storage.v2019_06_01.Identity;
 import com.microsoft.azure.management.storage.v2019_06_01.Kind;
 import com.microsoft.azure.management.storage.v2019_06_01.LargeFileSharesState;
+import com.microsoft.azure.management.storage.v2019_06_01.MinimumTlsVersion;
 import com.microsoft.azure.management.storage.v2019_06_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2019_06_01.Endpoints;
 import java.util.ArrayList;
@@ -94,6 +95,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public Boolean allowBlobPublicAccess() {
+        return this.inner().allowBlobPublicAccess();
+    }
+
+    @Override
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
         return this.inner().azureFilesIdentityBasedAuthentication();
     }
@@ -161,6 +167,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public DateTime lastGeoFailoverTime() {
         return this.inner().lastGeoFailoverTime();
+    }
+
+    @Override
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.inner().minimumTlsVersion();
     }
 
     @Override
@@ -261,6 +272,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public StorageAccountImpl withAllowBlobPublicAccess(Boolean allowBlobPublicAccess) {
+        if (isInCreateMode()) {
+            this.createParameter.withAllowBlobPublicAccess(allowBlobPublicAccess);
+        } else {
+            this.updateParameter.withAllowBlobPublicAccess(allowBlobPublicAccess);
+        }
+        return this;
+    }
+
+    @Override
     public StorageAccountImpl withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         if (isInCreateMode()) {
             this.createParameter.withAzureFilesIdentityBasedAuthentication(azureFilesIdentityBasedAuthentication);
@@ -316,6 +337,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
             this.createParameter.withLargeFileSharesState(largeFileSharesState);
         } else {
             this.updateParameter.withLargeFileSharesState(largeFileSharesState);
+        }
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (isInCreateMode()) {
+            this.createParameter.withMinimumTlsVersion(minimumTlsVersion);
+        } else {
+            this.updateParameter.withMinimumTlsVersion(minimumTlsVersion);
         }
         return this;
     }

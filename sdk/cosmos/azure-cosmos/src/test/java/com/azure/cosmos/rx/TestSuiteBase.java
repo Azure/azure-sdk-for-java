@@ -23,9 +23,9 @@ import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -40,6 +40,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
@@ -50,11 +51,9 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -234,7 +233,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
-        cosmosContainer.queryItems("SELECT * FROM root", options, CosmosItemProperties.class)
+        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
             .byPage(maxItemCount)
             .publishOn(Schedulers.parallel())
             .flatMap(page -> Flux.fromIterable(page.getResults()))
@@ -469,7 +468,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         client.getDatabase(dbId).getContainer(collectionId).delete().block();
     }
 
-    public static CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, CosmosItemProperties item) {
+    public static InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, InternalObjectNode item) {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
@@ -493,8 +492,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .block();
     }
 
-    public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                       List<T> documentDefinitionList) {
+    public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer, List<T> documentDefinitionList) {
         bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .then()
@@ -577,8 +575,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         options.setPartitionKey(new PartitionKey(docId));
         CosmosAsyncContainer cosmosContainer = client.getDatabase(databaseId).getContainer(collectionId);
 
-        List<CosmosItemProperties> res = cosmosContainer
-            .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, CosmosItemProperties.class)
+        List<InternalObjectNode> res = cosmosContainer
+            .queryItems(String.format("SELECT * FROM root r where r.id = '%s'", docId), options, InternalObjectNode.class)
             .byPage()
             .flatMap(page -> Flux.fromIterable(page.getResults()))
             .collectList().block();
