@@ -5,8 +5,8 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GroupByQueryTests extends TestSuiteBase {
     List<Person> personList;
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
+    private ArrayList<InternalObjectNode> docs = new ArrayList<>();
     private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -122,7 +122,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         for (int i = 0; i < 40; i++) {
             Person person = getRandomPerson(rand);
             try {
-                docs.add(new CosmosItemProperties(mapper.writeValueAsString(person)));
+                docs.add(new InternalObjectNode(mapper.writeValueAsString(person)));
                 personList.add(person);
             } catch (JsonProcessingException e) {
                 logger.error(e.getMessage());
