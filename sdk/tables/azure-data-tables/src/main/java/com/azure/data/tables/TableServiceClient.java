@@ -18,7 +18,8 @@ public class TableServiceClient {
      *
      * @param name the name of the table to create
      */
-    public void createTable(String name) {
+    public AzureTable createTable(String name) {
+        return null;
     }
 
     /**

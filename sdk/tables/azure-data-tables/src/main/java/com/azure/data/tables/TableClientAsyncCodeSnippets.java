@@ -64,7 +64,7 @@ public class TableClientAsyncCodeSnippets {
 
     }
 
-    public void DeleteEntity() {
+    public void deleteEntity() {
 
         // Build service client
         TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()

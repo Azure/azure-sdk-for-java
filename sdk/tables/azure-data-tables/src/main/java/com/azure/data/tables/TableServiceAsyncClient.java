@@ -20,7 +20,7 @@ public class TableServiceAsyncClient {
      * @param name the name of the table to create
      * @return a table client connected to the given table
      */
-    public Mono<TableAsyncClient> createTable(String name) {
+    public Mono<AzureTable> createTable(String name) {
         return null;
     }
 

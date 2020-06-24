@@ -26,7 +26,7 @@ public class TableAsyncClient {
      * @param filterString odata filter string
      * @return a paged flux of all the entity which fit this criteria
      */
-    public PagedFlux<TableEntity> queryEntity(String selectString, String filterString) {
+    public PagedFlux<TableEntity> queryEntity(Integer top, String selectString, String filterString) {
         return null;
     }
 

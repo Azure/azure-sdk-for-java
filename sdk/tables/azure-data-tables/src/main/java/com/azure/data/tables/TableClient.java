@@ -19,11 +19,12 @@ public class TableClient {
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *
+     * @param top          odata top integer
      * @param selectString odata select string
      * @param filterString odata filter string
      * @return a list of the tables that fit the query
      */
-    public List<TableEntity> queryEntity(String selectString, String filterString) {
+    public List<TableEntity> queryEntity(Integer top, String selectString, String filterString) {
         return null;
     }
 
