@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -197,6 +198,36 @@ public class TokenCacheTests {
         latch.await();
         Assertions.assertTrue(maxMillis.get() >= 3000);
         Assertions.assertEquals(0, errorCount.get()); // Only the error after expiresAt will be propagated
+    }
+
+    @Test
+    public void testMultipleThreadsAfterExpiry() throws Exception {
+        AtomicLong refreshes = new AtomicLong(0);
+
+        // token expires on creation. Run this 100 times to simulate running the application a long time
+        SimpleTokenCache cache = new SimpleTokenCache(() -> {
+            refreshes.incrementAndGet();
+            return remoteGetTokenThatExpiresSoonAsync(1000, 3 * 1000);
+        }, new TokenRefreshOptions().setTokenRefreshOffset(Duration.ZERO).setTokenRefreshRetryTimeout(Duration.ZERO));
+
+        CountDownLatch latch = new CountDownLatch(100);
+
+        cache.getToken().then(Mono.delay(Duration.ofSeconds(5))).block();
+
+        Flux.range(1, 100)
+            .flatMap(i -> Mono.just(OffsetDateTime.now())
+                .subscribeOn(Schedulers.newParallel("pool", 100))
+                .flatMap(start -> cache.getToken()
+                    .doOnNext(t -> {
+                        if (!t.isExpired()) {
+                            latch.countDown();
+                        }
+                    }))) // expect all getToken() calls to return a token
+            .subscribe();
+
+        latch.await(20, TimeUnit.SECONDS);
+        Assertions.assertEquals(2 , refreshes.get());
+        Assertions.assertEquals(0, latch.getCount());
     }
 
     private Mono<AccessToken> remoteGetTokenAsync(long delayInMillis) {
