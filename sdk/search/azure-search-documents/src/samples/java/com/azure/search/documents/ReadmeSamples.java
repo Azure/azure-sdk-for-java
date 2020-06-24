@@ -142,7 +142,7 @@ public class ReadmeSamples {
             new SearchOptions(), new RequestOptions(), Context.NONE)) {
 
             // Each result is a dynamic Map
-            SearchDocument doc = result.getDocument();
+            SearchDocument doc = result.getDocument(SearchDocument.class);
             String hotelName = (String) doc.get("HotelName");
             Double rating = (Double) doc.get("Rating");
 

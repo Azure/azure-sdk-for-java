@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -66,7 +67,7 @@ public final class ScoringParameter {
      * @param name Name of the scoring parameter.
      * @param value Value of the scoring parameter.
      */
-    public ScoringParameter(String name, GeoPoint value) {
+    public ScoringParameter(String name, PointGeometry value) {
         this(name, toLonLatStrings(value));
     }
 
@@ -88,9 +89,10 @@ public final class ScoringParameter {
         return new ArrayList<>(values);
     }
 
-    private static List<String> toLonLatStrings(GeoPoint point) {
+    private static List<String> toLonLatStrings(PointGeometry point) {
         Objects.requireNonNull(point);
-        return Arrays.asList(String.valueOf(point.getLongitude()), String.valueOf(point.getLatitude()));
+        return Arrays.asList(String.valueOf(point.getPosition().getLongitude()),
+            String.valueOf(point.getPosition().getLatitude()));
     }
 
     /**
