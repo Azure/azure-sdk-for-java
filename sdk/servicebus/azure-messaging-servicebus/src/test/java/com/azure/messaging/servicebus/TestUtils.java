@@ -47,6 +47,7 @@ public class TestUtils {
     static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
     static final int USE_CASE_SEND_READ_BACK_MESSAGES = 7;
     static final int USE_CASE_MULTIPLE_SESSION = 8;
+    static final int USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE = 9;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
