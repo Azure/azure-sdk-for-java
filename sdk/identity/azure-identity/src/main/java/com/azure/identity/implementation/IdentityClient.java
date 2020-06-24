@@ -380,7 +380,7 @@ public class IdentityClient {
             OffsetDateTime expiresOn = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                                            .atZone(ZoneId.systemDefault())
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-            token = new IdentityToken(accessToken, expiresOn, options);
+            token = new AccessToken(accessToken, expiresOn);
         } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
@@ -692,8 +692,7 @@ public class IdentityClient {
                         .useDelimiter("\\A");
                 String result = s.hasNext() ? s.next() : "";
 
-                MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
-                return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -745,9 +744,7 @@ public class IdentityClient {
                             .useDelimiter("\\A");
                     String result = s.hasNext() ? s.next() : "";
 
-                    MSIToken msiToken = SERIALIZER_ADAPTER.deserialize(result,
-                            MSIToken.class, SerializerEncoding.JSON);
-                    return new IdentityToken(msiToken.getToken(), msiToken.getExpiresAt(), options);
+                    return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw logger.logExceptionAsError(new RuntimeException(
