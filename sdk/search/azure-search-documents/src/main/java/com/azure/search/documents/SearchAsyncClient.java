@@ -100,10 +100,12 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-//    private static final ObjectMapper MAPPER;
-//    static {
-//        //MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-//    }
+    private static final ObjectMapper MAPPER;
+    static {
+        MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+    }
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
@@ -491,15 +493,10 @@ public final class SearchAsyncClient {
     <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
         List<String> selectedFields, RequestOptions requestOptions, Context context) {
         try {
-
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-
-                    ObjectMapper MAPPER = new JacksonAdapter().serializer();
-                    SerializationUtil.configureMapper(MAPPER);
-                    MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
                     if (SearchDocument.class == modelClass) {
                         TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
                         SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));

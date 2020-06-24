@@ -68,7 +68,6 @@ public final class IndexActionConverter {
             additionalProperties = mapper.convertValue(properties, typeRef);
         } else {
             T properties = obj.getDocument();
-            //mapper.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS);
             additionalProperties = mapper.convertValue(properties, typeRef);
         }
 
