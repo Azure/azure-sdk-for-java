@@ -9,12 +9,7 @@ import com.microsoft.azure.spring.data.cosmosdb.exception.CosmosDBAccessExceptio
 import com.microsoft.azure.spring.data.cosmosdb.repository.TestRepositoryConfig;
 import com.microsoft.azure.spring.data.cosmosdb.repository.repository.IntegerIdDomainRepository;
 import com.microsoft.azure.spring.data.cosmosdb.repository.support.CosmosEntityInformation;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -214,6 +209,9 @@ public class IntegerIdDomainRepositoryIT {
         private int count;
 
         private String location;
+
+        public InvalidDomain() {
+        }
 
         InvalidDomain(int count, String location) {
             this.count = count;

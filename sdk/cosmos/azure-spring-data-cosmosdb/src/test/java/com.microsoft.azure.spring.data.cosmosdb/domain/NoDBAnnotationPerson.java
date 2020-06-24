@@ -14,6 +14,9 @@ public class NoDBAnnotationPerson {
     private List<String> hobbies;
     private List<Address> shippingAddresses;
 
+    public NoDBAnnotationPerson() {
+    }
+
     public NoDBAnnotationPerson(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;

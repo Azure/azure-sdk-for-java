@@ -3,15 +3,14 @@
 
 package com.microsoft.azure.spring.data.cosmosdb.domain;
 
-import java.util.List;
-import java.util.Objects;
-
 import com.microsoft.azure.spring.data.cosmosdb.common.TestConstants;
 import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
 import com.microsoft.azure.spring.data.cosmosdb.core.mapping.DocumentIndexingPolicy;
 import com.microsoft.azure.spring.data.cosmosdb.core.mapping.PartitionKey;
-
 import org.springframework.data.annotation.Version;
+
+import java.util.List;
+import java.util.Objects;
 
 @Document()
 @DocumentIndexingPolicy(includePaths = TestConstants.ORDER_BY_STRING_PATH)

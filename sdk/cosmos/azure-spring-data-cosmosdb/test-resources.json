@@ -55,13 +55,17 @@
     }
   ],
   "outputs": {
-    "cosmosdbPrimarykey": {
+    "DOCUMENTDB_KEY": {
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).primaryMasterKey]"
     },
-    "cosmosdbSecondarykey": {
+    "COSMOSDB_SECONDARY_KEY": {
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
+    },
+    "DOCUMENTDB_URI": {
+      "type": "string",
+      "value": "[reference(variables('resourceId'), variables('apiVersion')).documentEndpoint]"
     }
   }
 }

@@ -17,6 +17,9 @@ public class PageableMemo {
     private Date date;
     private Importance importance;
 
+    public PageableMemo() {
+    }
+
     public PageableMemo(String id, String message, Date date, Importance importance) {
         this.id = id;
         this.message = message;

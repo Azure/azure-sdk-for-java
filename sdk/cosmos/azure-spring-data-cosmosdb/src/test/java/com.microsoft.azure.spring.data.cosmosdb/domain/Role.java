@@ -34,6 +34,9 @@ public class Role {
 
     String level;
 
+    public Role() {
+    }
+
     public Role(String id, String name, String level) {
         this.id = id;
         this.name = name;

@@ -14,6 +14,9 @@ public class Contact {
 
     private String title;
 
+    public Contact() {
+    }
+
     public Contact(String logicId, String title) {
         this.logicId = logicId;
         this.title = title;

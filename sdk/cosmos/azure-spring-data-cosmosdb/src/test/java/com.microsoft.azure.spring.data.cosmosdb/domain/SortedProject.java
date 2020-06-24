@@ -28,6 +28,9 @@ public class SortedProject {
 
     private Long forkCount;
 
+    public SortedProject() {
+    }
+
     public SortedProject(String id, String name, String creator, Boolean hasReleased, Long starCount, Long forkCount) {
         this.id = id;
         this.name = name;

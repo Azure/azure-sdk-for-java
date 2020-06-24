@@ -22,6 +22,9 @@ public class PartitionPerson {
 
     private List<Address> shippingAddresses;
 
+    public PartitionPerson() {
+    }
+
     public PartitionPerson(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;

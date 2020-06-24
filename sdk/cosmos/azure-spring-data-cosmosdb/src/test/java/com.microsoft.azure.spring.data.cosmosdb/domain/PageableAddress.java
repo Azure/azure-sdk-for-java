@@ -35,6 +35,9 @@ public class PageableAddress {
         return Objects.hash(postalCode, street, city);
     }
 
+    public PageableAddress() {
+    }
+
     public PageableAddress(String postalCode, String street, String city) {
         this.postalCode = postalCode;
         this.street = street;

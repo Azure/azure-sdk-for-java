@@ -28,6 +28,9 @@ public class Project {
 
     private Long forkCount;
 
+    public Project() {
+    }
+
     public Project(String id, String name, String creator, Boolean hasReleased, Long starCount, Long forkCount) {
         this.id = id;
         this.name = name;

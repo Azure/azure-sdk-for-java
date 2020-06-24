@@ -9,6 +9,9 @@ import com.microsoft.azure.spring.data.cosmosdb.core.mapping.Document;
 public class TimeToLiveSample {
     private String id;
 
+    public TimeToLiveSample() {
+    }
+
     public TimeToLiveSample(String id) {
         this.id = id;
     }

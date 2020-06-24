@@ -4,6 +4,7 @@ package com.microsoft.azure.spring.data.cosmosdb.domain;
 
 import org.springframework.data.annotation.Id;
 
+import java.beans.ConstructorProperties;
 import java.util.Objects;
 
 public class Customer {
@@ -14,6 +15,9 @@ public class Customer {
     private Long level;
 
     private User user;
+
+    public Customer() {
+    }
 
     public Customer(String id, Long level, User user) {
         this.id = id;
@@ -82,6 +86,9 @@ public class Customer {
         private String name;
 
         private Long age;
+
+        public User() {
+        }
 
         public User(String name, Long age) {
             this.name = name;
