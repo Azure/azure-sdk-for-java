@@ -120,8 +120,9 @@ A credential is a class which contains or can obtain the data needed for a servi
 
 The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
 
-<html>
-<head>
+
+</head>
+        
 <table style="border-collapse: collapse;">
 <thead>
 <tr>
