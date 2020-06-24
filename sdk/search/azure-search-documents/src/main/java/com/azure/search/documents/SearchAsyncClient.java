@@ -100,6 +100,11 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
+//    private static final ObjectMapper MAPPER;
+//    static {
+//        //MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+//    }
+
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
@@ -491,14 +496,16 @@ public final class SearchAsyncClient {
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    SearchObjectMapper.getInstance().setSerializationInclusion(JsonInclude.Include.ALWAYS);
-                    if (SearchDocument.class.getTypeName().equals(modelClass.getTypeName())) {
+
+                    ObjectMapper MAPPER = new JacksonAdapter().serializer();
+                    SerializationUtil.configureMapper(MAPPER);
+                    MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+                    if (SearchDocument.class == modelClass) {
                         TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
-                        SearchDocument doc = new SearchDocument(SearchObjectMapper.getInstance()
-                            .convertValue(res.getValue(), typeReference));
+                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
-                    T document = SearchObjectMapper.getInstance().convertValue(res.getValue(), modelClass);
+                    T document = MAPPER.convertValue(res.getValue(), modelClass);
                     return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());
@@ -778,19 +785,5 @@ public final class SearchAsyncClient {
             .setActionType(actionType)
             .setDocument(d)));
         return batch;
-    }
-
-    private static class SearchObjectMapper {
-        private static ObjectMapper MAPPER = null;
-        private SearchObjectMapper() {
-        }
-
-        static ObjectMapper getInstance() {
-            if (MAPPER == null) {
-                MAPPER = new JacksonAdapter().serializer();
-                SerializationUtil.configureMapper(MAPPER);
-            }
-            return MAPPER;
-        }
     }
 }

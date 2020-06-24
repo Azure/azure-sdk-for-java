@@ -6,6 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.SerializationUtil;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,6 +20,7 @@ public final class SuggestResult {
     static {
         MAPPER = new JacksonAdapter().serializer();
         SerializationUtil.configureMapper(MAPPER);
+        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
     }
 
     /*

@@ -18,11 +18,7 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
-    private static final ObjectMapper MAPPER;
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-    }
+
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
      */
@@ -63,14 +59,17 @@ public final class IndexActionConverter {
 
         Map<String, Object> additionalProperties;
         TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
+
+        ObjectMapper mapper = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(mapper);
         if (obj.getParamMap() != null) {
             Map<String, Object> properties = obj.getParamMap();
-            MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-            additionalProperties = MAPPER.convertValue(properties, typeRef);
+            mapper.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS);
+            additionalProperties = mapper.convertValue(properties, typeRef);
         } else {
             T properties = obj.getDocument();
-            MAPPER.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-            additionalProperties = MAPPER.convertValue(properties, typeRef);
+            //mapper.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS);
+            additionalProperties = mapper.convertValue(properties, typeRef);
         }
 
         indexAction.setAdditionalProperties(additionalProperties);
