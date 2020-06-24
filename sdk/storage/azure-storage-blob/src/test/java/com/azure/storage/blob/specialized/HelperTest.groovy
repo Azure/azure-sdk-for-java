@@ -12,6 +12,7 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
