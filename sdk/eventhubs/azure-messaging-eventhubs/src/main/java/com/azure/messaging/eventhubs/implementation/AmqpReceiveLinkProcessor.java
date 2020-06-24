@@ -34,7 +34,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
-    private final AtomicBoolean hasFirstLink = new AtomicBoolean();
     private final AtomicBoolean linkCreditsAdded = new AtomicBoolean();
 
     private final AtomicReference<CoreSubscriber<? super Message>> downstream = new AtomicReference<>();
@@ -152,19 +151,17 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
 
             currentLink = next;
 
-            // The first time, add the prefetch to the link as credits.
-            if (!hasFirstLink.getAndSet(true)) {
-                linkCreditsAdded.set(true);
-                next.addCredits(prefetch);
-            }
-
-            next.setEmptyCreditListener(() -> getCreditsToAdd());
+            // For a new link, add the prefetch as credits.
+            linkCreditsAdded.set(true);
+            next.addCredits(prefetch);
+            next.setEmptyCreditListener(this::getCreditsToAdd);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.getEndpointStates().subscribe(
                     state -> {
                         // Connection was successfully opened, we can reset the retry interval.
                         if (state == AmqpEndpointState.ACTIVE) {
+                            logger.info("Link {} is now active with {} credits.", linkName, next.getCredits());
                             retryAttempts.set(0);
                         }
                     },

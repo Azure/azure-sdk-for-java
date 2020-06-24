@@ -10,11 +10,13 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
@@ -54,16 +56,19 @@ import java.util.concurrent.ConcurrentMap;
  * Particular care should be taken when working with a remote storage service. This implementation makes no guarantees
  * on behavior or state should other processes operate on the same data concurrently; file systems from this provider
  * will assume they have exclusive access to their data and will behave without regard for potential of interfering
- * applications. Moreover, remote file stores introduce higher latencies. Therefore, particular care must be taken when
- * managing concurrency: race conditions are more likely to manifest and network failures occur more frequently than
- * disk failures. These and other such distributed application scenarios must be considered when working with this file
- * system. While the {@code AzureFileSystem} will ensure it takes appropriate steps towards robustness and reliability,
- * the application developer must design around these failure scenarios and have fallback and retry options available.
+ * applications. Moreover, remote file stores introduce higher latencies. Therefore, additional consideration should be
+ * given to managing concurrency: race conditions are more likely to manifest and network failures occur more frequently
+ * than disk failures. These and other such distributed application scenarios must be considered when working with this
+ * file system. While the {@code AzureFileSystem} will ensure it takes appropriate steps towards robustness and
+ * reliability, the application developer must design around these failure scenarios and have fallback and retry options
+ * available.
  * <p>
  * The Azure Blob Storage service backing these APIs is not a true FileSystem, nor is it the goal of this implementation
  * to force Azure Blob Storage to act like a full-fledged file system. Some APIs and scenarios will remain unsupported
  * indefinitely until they may be sensibly implemented. Other APIs may experience lower performance than is expected
- * because of the number of network requests needed to ensure correctness.
+ * because of the number of network requests needed to ensure correctness. The javadocs for each type and method should
+ * also be read carefully to understand what guarantees are made and how they may differ from the contract defined by
+ * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
  * {@code "azb://?account=&lt;accountName&gt;"}. The name of the Storage account is used to uniquely identify the file
@@ -91,7 +96,9 @@ import java.util.concurrent.ConcurrentMap;
  *     <li>{@code AzureStorageRetryPolicyType:}{@link com.azure.storage.common.policy.RetryPolicyType}</li>
  *     <li>{@code AzureStorageSecondaryHost:}{@link String}</li>
  *     <li>{@code AzureStorageSecondaryHost:}{@link Integer}</li>
- *     <li>{@code AzureStorageBlockSize:}{@link Integer}</li>
+ *     <li>{@code AzureStorageBlockSize:}{@link Long}</li>
+ *     <li>{@code AzureStoragePutBlobThreshold:}{@link Long}</li>
+ *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
  *     <li>{@code AzureStorageFileStores:}{@link Iterable}&lt;String&gt;}</li>
@@ -196,7 +203,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Opens an input stream to the given path.
+     * Opens an {@link InputStream} to the given path.
      * <p>
      * The stream will not attempt to read or buffer the entire file. However, when fetching data, it will always
      * request the same size chunk of several MB to prevent network thrashing on small reads. Mark and reset are
@@ -221,8 +228,109 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 + "Path must point to a file. Path: " + path.toString()));
         }
 
-        // Note that methods on BlobInputSTream are already synchronized.
+        // Note that methods on BlobInputStream are already synchronized.
         return new NioBlobInputStream(resource.getBlobClient().openInputStream());
+    }
+
+    /**
+     * Opens an {@link OutputStream} to the given path. The resulting file will be stored as a block blob.
+     * <p>
+     * The only supported options are {@link StandardOpenOption#CREATE}, {@link StandardOpenOption#CREATE_NEW},
+     * {@link StandardOpenOption#WRITE}, {@link StandardOpenOption#TRUNCATE_EXISTING}. Any other options will throw an
+     * {@link UnsupportedOperationException}. {@code WRITE} and {@code TRUNCATE_EXISTING} must be specified or an
+     * {@link IllegalArgumentException} will be thrown. Hence, files cannot be updated, only overwritten completely.
+     * <p>
+     * This stream will not attempt to buffer the entire file, however some buffering will be done for potential
+     * optimizations and to avoid network thrashing. Specifically, up to
+     * {@link AzureFileSystem#AZURE_STORAGE_PUT_BLOB_THRESHOLD} bytes will be buffered initially. If that threshold is
+     * exceeded, the data will be broken into chunks and sent in blocks, and writes will be buffered into sizes of
+     * {@link AzureFileSystem#AZURE_STORAGE_UPLOAD_BLOCK_SIZE}. The maximum number of buffers of this size to be
+     * allocated is defined by {@link AzureFileSystem#AZURE_STORAGE_MAX_CONCURRENCY_PER_REQUEST}, which also configures
+     * the level of parallelism with which we may write and thus may affect write speeds as well.
+     * <p>
+     * The data is only committed when the steam is closed. Hence data cannot be read from the destination until the
+     * stream is closed. When the close method returns, it is guaranteed that, barring any errors, the data is finalized
+     * and available for reading.
+     * <p>
+     * Writing happens asynchronously. Bytes passed for writing are stored until either the threshold or block size are
+     * met at which time they are sent to the service. When the write method returns, there is no guarantee about which
+     * phase of this process the data is in other than it has been accepted and will be written. Again, closing will
+     * guarantee that the data is written and available.
+     * <p>
+     * Flush is a no-op as regards data transfers, but it can be used to check the state of the stream for errors.
+     * This can be a useful tool because writing happens asynchronously, and therefore an error from a previous write
+     * may not otherwise be thrown unless the stream is flushed, closed, or written to again.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException {
+        // If options are empty, add Create, Write, TruncateExisting as defaults per nio docs.
+        if (options == null || options.length == 0) {
+            options = new OpenOption[] {
+                StandardOpenOption.CREATE,
+                StandardOpenOption.WRITE,
+                StandardOpenOption.TRUNCATE_EXISTING };
+        }
+        List<OpenOption> optionsList = Arrays.asList(options);
+
+        // Check for unsupported options.
+        List<OpenOption> supportedOptions = Arrays.asList(
+            StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            // Though we don't actually truncate, the same result is achieved by overwriting the destination.
+            StandardOpenOption.TRUNCATE_EXISTING);
+        for (OpenOption option : optionsList) {
+            if (!supportedOptions.contains(option)) {
+                throw new UnsupportedOperationException("Unsupported option: " + option.toString());
+            }
+        }
+
+        // Write and truncate must be specified
+        if (!optionsList.contains(StandardOpenOption.WRITE)
+            || !optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
+            throw new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream");
+        }
+
+        AzureResource resource = new AzureResource(path);
+        DirectoryStatus status = resource.checkDirStatus();
+
+        // Cannot write to a directory.
+        if (DirectoryStatus.isDirectory(status)) {
+            throw LoggingUtility.logError(logger, new IOException("Cannot open an OutputStream to a directory. Path: "
+                + path.toString()));
+        }
+
+        // Writing to an empty location requires a create option.
+        if (status.equals(DirectoryStatus.DOES_NOT_EXIST)
+            && !(optionsList.contains(StandardOpenOption.CREATE)
+            || optionsList.contains(StandardOpenOption.CREATE_NEW))) {
+            throw LoggingUtility.logError(logger, new IOException("Writing to an empty location requires a create "
+                + "option. Path: " + path.toString()));
+        }
+
+        // Cannot write to an existing file if create new was specified.
+        if (status.equals(DirectoryStatus.NOT_A_DIRECTORY) && optionsList.contains(StandardOpenOption.CREATE_NEW)) {
+            throw LoggingUtility.logError(logger, new IOException("A file already exists at this location and "
+                + "CREATE_NEW was specified. Path: " + path.toString()));
+        }
+
+        // Create options based on file system config
+        AzureFileSystem fs = (AzureFileSystem) (path.getFileSystem());
+        Integer blockSize = fs.getBlockSize() == null ? null : fs.getBlockSize().intValue();
+        Integer putBlobThreshold = fs.getPutBlobThreshold() == null ? null : fs.getPutBlobThreshold().intValue();
+        ParallelTransferOptions pto = new ParallelTransferOptions(blockSize, fs.getMaxConcurrencyPerRequest(), null,
+            putBlobThreshold);
+
+        // Add an extra etag check for create new
+        BlobRequestConditions rq = null;
+        if (optionsList.contains(StandardOpenOption.CREATE_NEW)) {
+            rq = new BlobRequestConditions().setIfNoneMatch("*");
+        }
+
+        return new NioBlobOutputStream(resource.getBlobClient().getBlockBlobClient().getBlobOutputStream(pto, null,
+            null, null, rq));
     }
 
     /**
@@ -279,13 +387,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * in the Storage service API.
      * <p>
      * There may be some unintuitive behavior when working with directories in this file system, particularly virtual
-     * directories(usually those not created by this file system). A virtual directory will disappear as soon as all its
-     * children have been deleted. Furthermore, if a directory with the given path weakly exists at the time of calling
-     * this method, this method will still return success and create a concrete directory at the target location.
-     * In other words, it is possible to "double create" a directory if it first weakly exists and then is strongly
-     * created. This is both because it is impossible to atomically check if a virtual directory exists while creating a
-     * concrete directory and because such behavior will have minimal side effects--no files will be overwritten and the
-     * directory will still be available for writing as intended, though it may not be empty.
+     * directories (usually those not created by this file system). A virtual directory will disappear as soon as all
+     * its children have been deleted. Furthermore, if a directory with the given path weakly exists at the time of
+     * calling this method, this method will still return success and create a concrete directory at the target
+     * location. In other words, it is possible to "double create" a directory if it first weakly exists and then is
+     * strongly created. This is both because it is impossible to atomically check if a virtual directory exists while
+     * creating a concrete directory and because such behavior will have minimal side effects--no files will be
+     * overwritten and the directory will still be available for writing as intended, though it may not be empty.
      * <p>
      * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
@@ -339,9 +447,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Deletes the specified resource.
      * <p>
-     * This method is not atomic. It is possible to delete a file in use by another process,
-     * and doing so will not immediately invalidate any channels open to that file--they will simply start to fail.
-     * Root directories cannot be deleted even when empty.
+     * This method is not atomic. It is possible to delete a file in use by another process, and doing so will not
+     * immediately invalidate any channels open to that file--they will simply start to fail. Root directories cannot be
+     * deleted even when empty.
      * {@inheritDoc}
      *
      * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
@@ -377,7 +485,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * This method is not atomic. More specifically, the checks necessary to validate the
      * inputs and state of the file system are not atomic with the actual copying of data. If the copy is triggered,
      * the copy itself is atomic and only a complete copy will ever be left at the destination.
-     *
+     * <p>
      * In addition to those in the nio javadocs, this method has the following requirements for successful completion.
      * {@link StandardCopyOption#COPY_ATTRIBUTES} must be passed as it is impossible not to copy blob properties;
      * if this option is not passed, an {@link UnsupportedOperationException} will be thrown. Neither the source nor the

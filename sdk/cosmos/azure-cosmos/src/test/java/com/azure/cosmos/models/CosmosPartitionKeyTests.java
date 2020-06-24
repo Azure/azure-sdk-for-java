@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -138,73 +138,73 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         createContainerWithoutPk();
         CosmosAsyncContainer createdContainer = createdDatabase.getContainer(NON_PARTITIONED_CONTAINER_ID);
 
-        Mono<CosmosItemResponse<CosmosItemProperties>> readMono = createdContainer.readItem(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID,
-                                                                                                 PartitionKey.NONE, CosmosItemProperties.class);
+        Mono<CosmosItemResponse<InternalObjectNode>> readMono = createdContainer.readItem(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID,
+                                                                                                 PartitionKey.NONE, InternalObjectNode.class);
 
         CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID)
                 .build();
         this.validateItemSuccess(readMono, validator);
 
         String createdItemId = UUID.randomUUID().toString();
-        Mono<CosmosItemResponse<CosmosItemProperties>> createMono =
-            createdContainer.createItem(new CosmosItemProperties("{'id':'" + createdItemId + "'}"));
+        Mono<CosmosItemResponse<InternalObjectNode>> createMono =
+            createdContainer.createItem(new InternalObjectNode("{'id':'" + createdItemId + "'}"));
         validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(createdItemId)
                 .build();
         this.validateItemSuccess(createMono, validator);
 
-        readMono = createdContainer.readItem(createdItemId, PartitionKey.NONE, CosmosItemProperties.class);
+        readMono = createdContainer.readItem(createdItemId, PartitionKey.NONE, InternalObjectNode.class);
         validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(createdItemId)
                 .build();
         this.validateItemSuccess(readMono, validator);
 
-        CosmosItemResponse<CosmosItemProperties> response = createdContainer.readItem(createdItemId, PartitionKey.NONE,
-                                                                               CosmosItemProperties.class)
-                                                                                              .block();
-        CosmosItemProperties itemSettingsToReplace = ModelBridgeInternal.getCosmosItemProperties(response);
+        CosmosItemResponse<InternalObjectNode> response = createdContainer.readItem(createdItemId, PartitionKey.NONE,
+                                                                               InternalObjectNode.class)
+                                                                          .block();
+        InternalObjectNode itemSettingsToReplace = ModelBridgeInternal.getInternalObjectNode(response);
         String replacedItemId = UUID.randomUUID().toString();
         itemSettingsToReplace.setId(replacedItemId);
-        Mono<CosmosItemResponse<CosmosItemProperties>> replaceMono = createdContainer.replaceItem(itemSettingsToReplace,
+        Mono<CosmosItemResponse<InternalObjectNode>> replaceMono = createdContainer.replaceItem(itemSettingsToReplace,
                                                                                  createdItemId,
                                                                                  PartitionKey.NONE);
         validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(replacedItemId)
                 .build();
         this.validateItemSuccess(replaceMono, validator);
 
         String upsertedItemId = UUID.randomUUID().toString();
 
-        Mono<CosmosItemResponse<CosmosItemProperties>> upsertMono = createdContainer.upsertItem(new CosmosItemProperties("{'id':'" + upsertedItemId + "'}"));
+        Mono<CosmosItemResponse<InternalObjectNode>> upsertMono = createdContainer.upsertItem(new InternalObjectNode("{'id':'" + upsertedItemId + "'}"));
 
         validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(upsertedItemId)
                 .build();
         this.validateItemSuccess(upsertMono, validator);
 
         // one document was created during setup, one with create (which was replaced) and one with upsert
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
-        queryRequestOptions.setPartitionKey(PartitionKey.NONE);
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setPartitionKey(PartitionKey.NONE);
         ArrayList<String> expectedIds = new ArrayList<String>();
         expectedIds.add(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID);
         expectedIds.add(replacedItemId);
         expectedIds.add(upsertedItemId);
-        CosmosPagedFlux<CosmosItemProperties> queryFlux = createdContainer.queryItems("SELECT * from c", queryRequestOptions, CosmosItemProperties.class);
-        FeedResponseListValidator<CosmosItemProperties> queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+        CosmosPagedFlux<InternalObjectNode> queryFlux = createdContainer.queryItems("SELECT * from c", cosmosQueryRequestOptions, InternalObjectNode.class);
+        FeedResponseListValidator<InternalObjectNode> queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(3)
                 .numberOfPages(1)
                 .containsExactlyIds(expectedIds)
                 .build();
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
 
-        queryFlux = createdContainer.queryItems("SELECT * FROM r", queryRequestOptions, CosmosItemProperties.class);
-        queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", cosmosQueryRequestOptions, InternalObjectNode.class);
+        queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(3)
                 .numberOfPages(1)
                 .containsExactlyIds(expectedIds)
@@ -240,8 +240,8 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         // 3 previous items + 1 created from the sproc
         expectedIds.add(documentCreatedBySprocId);
-        queryFlux = createdContainer.queryItems("SELECT * FROM r", queryRequestOptions, CosmosItemProperties.class);
-        queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", cosmosQueryRequestOptions, InternalObjectNode.class);
+        queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(4)
                 .numberOfPages(1)
                 .containsExactlyIds(expectedIds)
@@ -251,7 +251,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         Mono<CosmosItemResponse<Object>> deleteMono =
             createdContainer.deleteItem(upsertedItemId, PartitionKey.NONE);
         deleteResponseValidator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .nullResource()
                 .build();
         this.validateItemSuccess(deleteMono, deleteResponseValidator);
@@ -259,27 +259,27 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
 
         deleteMono = createdContainer.deleteItem(replacedItemId, PartitionKey.NONE);
         deleteResponseValidator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .nullResource()
                 .build();
         this.validateItemSuccess(deleteMono, deleteResponseValidator);
 
         deleteMono = createdContainer.deleteItem(NON_PARTITIONED_CONTAINER_DOCUEMNT_ID, PartitionKey.NONE);
         deleteResponseValidator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .nullResource()
                 .build();
         this.validateItemSuccess(deleteMono, deleteResponseValidator);
 
         deleteMono = createdContainer.deleteItem(documentCreatedBySprocId, PartitionKey.NONE);
         deleteResponseValidator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .nullResource()
                 .build();
         this.validateItemSuccess(deleteMono, deleteResponseValidator);
 
-        queryFlux = createdContainer.queryItems("SELECT * FROM r", queryRequestOptions, CosmosItemProperties.class);
-        queryValidator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+        queryFlux = createdContainer.queryItems("SELECT * FROM r", cosmosQueryRequestOptions, InternalObjectNode.class);
+        queryValidator = new FeedResponseListValidator.Builder<InternalObjectNode>()
                 .totalSize(0)
                 .numberOfPages(1)
                 .build();
@@ -293,17 +293,17 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         CosmosContainerProperties containerSettings = new CosmosContainerProperties(partitionedCollectionId, "/mypk");
         createdDatabase.createContainer(containerSettings).block();
         CosmosAsyncContainer createdContainer = createdDatabase.getContainer(containerSettings.getId());
-        CosmosItemProperties cosmosItemProperties = new CosmosItemProperties();
-        cosmosItemProperties.setId(IdOfDocumentWithNoPk);
-        createdContainer.createItem(cosmosItemProperties).block();
+        InternalObjectNode internalObjectNode = new InternalObjectNode();
+        internalObjectNode.setId(IdOfDocumentWithNoPk);
+        createdContainer.createItem(internalObjectNode).block();
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, PartitionKey.NONE);
-        Mono<CosmosItemResponse<CosmosItemProperties>> readMono = createdContainer.readItem(cosmosItemProperties.getId(),
+        Mono<CosmosItemResponse<InternalObjectNode>> readMono = createdContainer.readItem(internalObjectNode.getId(),
                                                                            PartitionKey.NONE, options,
-                                                                           CosmosItemProperties.class);
+                                                                           InternalObjectNode.class);
 
         CosmosItemResponseValidator validator =
-            new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+            new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                 .withId(IdOfDocumentWithNoPk)
                 .build();
         this.validateItemSuccess(readMono, validator);

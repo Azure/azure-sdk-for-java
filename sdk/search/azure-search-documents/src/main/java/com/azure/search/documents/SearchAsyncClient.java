@@ -11,8 +11,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -24,6 +22,7 @@ import com.azure.search.documents.implementation.converters.RequestOptionsConver
 import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
+import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
@@ -68,11 +67,6 @@ public final class SearchAsyncClient {
     private static final int MULTI_STATUS_CODE = 207;
 
     /**
-     * The lazily-created serializer for search index client.
-     */
-    private static final SerializerAdapter SERIALIZER = initializeSerializerAdapter();
-
-    /**
      * Search REST API Version
      */
     private final SearchServiceVersion serviceVersion;
@@ -102,6 +96,13 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new ObjectMapper();
+        SerializationUtil.configureMapper(MAPPER);
+    }
+
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
@@ -118,7 +119,6 @@ public final class SearchAsyncClient {
             .indexName(indexName)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .serializer(SERIALIZER)
             .build();
     }
 
@@ -405,28 +405,44 @@ public final class SearchAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all fucntional calls below. 
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
-            search(request, requestOptions, continuationToken, context));
+            search(request, requestOptions, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all fucntional calls below. 
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
-            search(request, requestOptions, continuationToken, context);
+            search(request, requestOptions, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
-        String continuationToken, Context context) {
+        String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+
+        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
+            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
+        }
         SearchRequest requestToUse = (continuationToken == null) ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
+            .map(searchDocumentResponse -> {
+                SearchPagedResponse response = new SearchPagedResponse(searchDocumentResponse, serviceVersion);
+                if (continuationToken == null) {
+                    firstPageResponseWrapper.setFirstPageResponse(response);
+                }
+                return response;
+            });
     }
 
     /**
@@ -467,12 +483,13 @@ public final class SearchAsyncClient {
     Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
+
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    SearchDocument doc = new SearchDocument(res.getValue());
-                    return new SimpleResponse<>(res, doc);
+                    SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
+                    return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -743,19 +760,6 @@ public final class SearchAsyncClient {
 
         return autoCompleteRequest;
     }
-
-    /**
-     * initialize singleton instance of the default serializer adapter.
-     */
-    private static synchronized SerializerAdapter initializeSerializerAdapter() {
-        JacksonAdapter adapter = new JacksonAdapter();
-
-        ObjectMapper mapper = adapter.serializer();
-        SerializationUtil.configureMapper(mapper);
-
-        return adapter;
-    }
-
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();

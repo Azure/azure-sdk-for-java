@@ -30,13 +30,13 @@ import com.azure.search.documents.indexes.implementation.models.ListSkillsetsRes
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
-import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 
@@ -164,7 +164,7 @@ public class MappingUtils {
             synonymMapNames, null, null);
     }
 
-    public static Response<ServiceStatistics> mappingExternalServiceStatistics(
+    public static Response<SearchServiceStatistics> mappingExternalServiceStatistics(
         Response<com.azure.search.documents.indexes.implementation.models.ServiceStatistics> statisticsResponse) {
         return new SimpleResponse<>(statisticsResponse,
             ServiceStatisticsConverter.map(statisticsResponse.getValue()));
@@ -189,7 +189,7 @@ public class MappingUtils {
             indexerStatusResponse.getValue()));
     }
 
-    public static Response<GetIndexStatisticsResult> mappingGetIndexStatistics(
+    public static Response<SearchIndexStatistics> mappingGetIndexStatistics(
         Response<com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult>
             indexStatisticsResponse) {
         return new SimpleResponse<>(indexStatisticsResponse.getRequest(), indexStatisticsResponse.getStatusCode(),

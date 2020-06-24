@@ -1,0 +1,32 @@
+trigger: none
+
+jobs:
+    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+      parameters:
+        TimeoutInMinutes: 240
+        ServiceDirectory: spring
+        TestStepMavenInputs:
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          goals: "verify"
+
+        Artifacts:
+          - name: azure-spring-boot-tests
+            groupId: com.microsoft.azure
+            safeName: azurespringboot-tests
+          - name: azure-spring-boot-test-core
+            groupId: com.microsoft.azure
+            safeName: azurespringboottestcore
+          - name: azure-spring-boot-test-cosmosdb
+            groupId: com.microsoft.azure
+            safeName: azurespringboottestcosmosdb
+          - name: azure-spring-boot-test-aad
+            groupId: com.microsoft.azure
+            safeName: azurespringboottestaad
+          - name: azure-spring-boot-test-keyvault
+            groupId: com.microsoft.azure
+            safeName: azurespringboottestkeyvault
+          - name: azure-spring-boot-test-application
+            groupId: com.microsoft.azure
+            safeName: azurespringboottestapplication
+        EnvVars:
+          AZURE_TEST_MODE: LIVE

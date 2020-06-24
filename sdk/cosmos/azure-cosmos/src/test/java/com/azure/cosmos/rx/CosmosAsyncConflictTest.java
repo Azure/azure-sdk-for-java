@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
@@ -35,7 +35,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
     public void readConflicts_toBlocking_toIterator() {
 
         int requestPageSize = 3;
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedFlux<CosmosConflictProperties> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
 

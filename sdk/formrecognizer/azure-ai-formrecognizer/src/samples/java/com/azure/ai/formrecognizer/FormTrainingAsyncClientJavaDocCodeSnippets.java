@@ -61,7 +61,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                        customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
+                        customFormSubmodel.getFields().forEach((key, customFormModelField) ->
                             System.out.printf("Form type: %s Field Text: %s Field Accuracy: %s%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
                 });
@@ -85,7 +85,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                     System.out.printf("Model Id: %s%n", customFormModel.getModelId());
                     System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
                     customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                        customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
+                        customFormSubmodel.getFields().forEach((key, customFormModelField) ->
                             System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                                 key, customFormModelField.getName(), customFormModelField.getAccuracy())));
                 });
@@ -103,7 +103,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
             customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
+                customFormSubmodel.getFields().forEach((key, customFormModelField) ->
                     System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
 
@@ -123,8 +123,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Model Id: %s%n", customFormModel.getModelId());
             System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
             customFormModel.getSubmodels().forEach(customFormSubmodel ->
-                customFormSubmodel.getFieldMap().forEach((key, customFormModelField) ->
-                    System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
+                customFormSubmodel.getFields().forEach((key, customFormModelField) ->
+                    System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %f%n",
                         key, customFormModelField.getName(), customFormModelField.getAccuracy())));
         });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string
@@ -177,7 +177,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         String modelId = "{model_id}";
         formTrainingAsyncClient.deleteModelWithResponse(modelId).subscribe(response -> {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
-            System.out.printf("Model Id: %s is deleted%n", modelId);
+            System.out.printf("Model Id: %s is deleted.%n", modelId);
         });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string
     }

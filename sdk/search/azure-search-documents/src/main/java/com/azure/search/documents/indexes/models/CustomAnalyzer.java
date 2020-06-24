@@ -29,7 +29,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'
      */
     @JsonProperty(value = "tokenizer", required = true)
-    private LexicalTokenizerName tokenizer;
+    private LexicalTokenizerName tokenizerName;
 
     /*
      * A list of token filters used to filter out or modify the tokens
@@ -60,7 +60,7 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * @return the tokenizer value.
      */
     public LexicalTokenizerName getTokenizer() {
-        return this.tokenizer;
+        return this.tokenizerName;
     }
 
     /**
@@ -71,11 +71,11 @@ public final class CustomAnalyzer extends LexicalAnalyzer {
      * 'MicrosoftLanguageStemmingTokenizer', 'NGram', 'PathHierarchy',
      * 'Pattern', 'Standard', 'UaxUrlEmail', 'Whitespace'.
      *
-     * @param tokenizer the tokenizer value to set.
+     * @param tokenizerName the tokenizer value to set.
      * @return the CustomAnalyzer object itself.
      */
-    public CustomAnalyzer setTokenizer(LexicalTokenizerName tokenizer) {
-        this.tokenizer = tokenizer;
+    public CustomAnalyzer setTokenizer(LexicalTokenizerName tokenizerName) {
+        this.tokenizerName = tokenizerName;
         return this;
     }
 

@@ -99,7 +99,7 @@ class FileShareItemImpl extends WrapperImpl<FileShareItemInner> implements FileS
     }
 
     @Override
-    public Integer shareUsageBytes() {
+    public Long shareUsageBytes() {
         return this.inner().shareUsageBytes();
     }
 

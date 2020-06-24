@@ -19,7 +19,7 @@ public final class FormPage {
     private final float height;
 
     /*
-     * When includeTextDetails is set to true, a list of recognized text lines.
+     * When includeTextContent is set to true, a list of recognized text lines.
      */
     private final List<FormLine> lines;
 
@@ -38,7 +38,7 @@ public final class FormPage {
      * The unit used by the width, height and boundingBox properties. For
      * images, the unit is "pixel". For PDF, the unit is "inch".
      */
-    private final DimensionUnit unit;
+    private final LengthUnit unit;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
@@ -57,11 +57,11 @@ public final class FormPage {
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
      * @param width The width of the image/PDF in pixels/inches, respectively.
-     * @param lines When includeTextDetails is set to true, a list of recognized text lines.
+     * @param lines When includeTextContent is set to true, a list of recognized text lines.
      * @param tables List of data tables extracted from the page.
      * @param pageNumber the 1-based page number in the input document.
      */
-    public FormPage(final float height, final float textAngle, final DimensionUnit unit,
+    public FormPage(final float height, final float textAngle, final LengthUnit unit,
         final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
         this.height = height;
         this.textAngle = textAngle;
@@ -83,7 +83,7 @@ public final class FormPage {
     }
 
     /**
-     * Get the lines property: When includeTextDetails is set to true, a list
+     * Get the lines property: When includeTextContent is set to true, a list
      * of recognized text lines.
      *
      * @return the lines value.
@@ -117,7 +117,7 @@ public final class FormPage {
      *
      * @return the unit value.
      */
-    public DimensionUnit getUnit() {
+    public LengthUnit getUnit() {
         return this.unit;
     }
 

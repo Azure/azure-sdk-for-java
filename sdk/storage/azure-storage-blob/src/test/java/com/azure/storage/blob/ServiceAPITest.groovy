@@ -263,10 +263,10 @@ class ServiceAPITest extends APISpec {
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
-            .setTags(Collections.singletonMap("key", "value")), null, null)
+            .setTags(Collections.singletonMap("key", "value")), null)
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
-            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+            .setTags(Collections.singletonMap("bar", "foo")), null)
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -286,7 +286,7 @@ class ServiceAPITest extends APISpec {
         def tags = Collections.singletonMap("tag", "value")
         for (int i = 0; i < 10; i++) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
         }
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
@@ -316,7 +316,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
         }
 
         expect:
@@ -357,7 +357,7 @@ class ServiceAPITest extends APISpec {
 
         for (i in (1..NUM_BLOBS)) {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
         }
 
         when: "Consume results by page"

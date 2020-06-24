@@ -7,7 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -150,10 +150,10 @@ public final class CosmosClient implements Closeable {
     /**
      * Reads all Cosmos databases.
      *
-     * @param options {@link QueryRequestOptions}the feed options.
+     * @param options {@link CosmosQueryRequestOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
-    CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(QueryRequestOptions options) {
+    CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(CosmosQueryRequestOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.readAllDatabases(options));
     }
 
@@ -170,10 +170,10 @@ public final class CosmosClient implements Closeable {
      * Query a Cosmos database.
      *
      * @param query the query.
-     * @param options {@link QueryRequestOptions}the feed options.
+     * @param options {@link CosmosQueryRequestOptions}the feed options.
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
-    public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(String query, QueryRequestOptions options) {
+    public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(String query, CosmosQueryRequestOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.queryDatabases(query, options));
     }
 
@@ -185,7 +185,7 @@ public final class CosmosClient implements Closeable {
      * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
     public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec,
-                                                                        QueryRequestOptions options) {
+                                                                        CosmosQueryRequestOptions options) {
         return getCosmosPagedIterable(asyncClientWrapper.queryDatabases(querySpec, options));
     }
 

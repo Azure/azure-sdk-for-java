@@ -241,6 +241,8 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.http.ProxyOptions.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.SerializerEncoding.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometryDeserializer.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.core.util.serializer.GeometrySerializer.java"/>
 
   <!-- Azure Core Test -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files=".*[/\\]core[/\\]test[/\\].*\.java"/>
@@ -268,7 +270,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
 
-    <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
+  <!-- Common vocabulary error for LRO methods starting with begin* https://github.com/Azure/azure-sdk-for-java/issues/10147 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingClient.java" />
@@ -344,6 +346,7 @@
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]generated-test-sources[/\\]"/>
 
   <!-- Allows the HttpPipelinePolicy derived class in Implementation folder -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy.java"/>
@@ -397,6 +400,7 @@
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl"/>
+  <suppress checks="." files="com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
@@ -458,4 +462,11 @@
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroType.java"/>
+
+  <!-- Checkstyle suppressions for azure-test-watch package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files="com.azure.testing.AzureTestWatcher.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.testing.AzureTestWatcher.java"/>
+
+  <!-- Checkstyle suppressions for resource manager package -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 </suppressions>

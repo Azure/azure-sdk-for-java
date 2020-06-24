@@ -64,7 +64,7 @@ public final class SearchClientBuilder {
     private final String clientName;
     private final String clientVersion;
 
-    private AzureKeyCredential keyCredential;
+    private AzureKeyCredential credential;
     private SearchServiceVersion serviceVersion;
     private String endpoint;
     private HttpClient httpClient;
@@ -122,7 +122,7 @@ public final class SearchClientBuilder {
             return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline);
         }
 
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration()
             : configuration;
@@ -139,7 +139,7 @@ public final class SearchClientBuilder {
 
         httpPipelinePolicies.add(new AddDatePolicy());
 
-        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
+        this.policies.add(new AzureKeyCredentialPolicy(API_KEY, credential));
 
         httpPipelinePolicies.addAll(this.policies);
 
@@ -175,14 +175,14 @@ public final class SearchClientBuilder {
     /**
      * Sets the {@link AzureKeyCredential} used to authenticate HTTP requests.
      *
-     * @param keyCredential The {@link AzureKeyCredential} used to authenticate HTTP requests.
+     * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code keyCredential} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
      */
-    public SearchClientBuilder credential(AzureKeyCredential keyCredential) {
-        Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
-        this.keyCredential = keyCredential;
+    public SearchClientBuilder credential(AzureKeyCredential credential) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.credential = credential;
         return this;
     }
 

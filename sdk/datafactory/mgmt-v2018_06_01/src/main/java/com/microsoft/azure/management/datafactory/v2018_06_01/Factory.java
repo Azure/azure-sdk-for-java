@@ -42,6 +42,11 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
     String eTag();
 
     /**
+     * @return the globalParameters value.
+     */
+    Map<String, GlobalParameterSpecification> globalParameters();
+
+    /**
      * @return the identity value.
      */
     FactoryIdentity identity();
@@ -108,6 +113,18 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
         }
 
         /**
+         * The stage of the factory definition allowing to specify GlobalParameters.
+         */
+        interface WithGlobalParameters {
+            /**
+             * Specifies globalParameters.
+             * @param globalParameters List of parameters for factory
+             * @return the next definition stage
+             */
+            WithCreate withGlobalParameters(Map<String, GlobalParameterSpecification> globalParameters);
+        }
+
+        /**
          * The stage of the factory definition allowing to specify Identity.
          */
         interface WithIdentity {
@@ -136,7 +153,7 @@ public interface Factory extends HasInner<FactoryInner>, Resource, GroupableReso
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Factory>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithIdentity, DefinitionStages.WithRepoConfiguration {
+        interface WithCreate extends Creatable<Factory>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdditionalProperties, DefinitionStages.WithGlobalParameters, DefinitionStages.WithIdentity, DefinitionStages.WithRepoConfiguration {
         }
     }
     /**

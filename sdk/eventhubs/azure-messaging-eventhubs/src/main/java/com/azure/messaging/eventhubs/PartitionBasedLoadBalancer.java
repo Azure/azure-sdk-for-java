@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,6 +55,7 @@ final class PartitionBasedLoadBalancer {
     private final String fullyQualifiedNamespace;
     private final Consumer<ErrorContext> processError;
     private final PartitionContext partitionAgnosticContext;
+    private final AtomicBoolean isLoadBalancerRunning = new AtomicBoolean();
 
     /**
      * Creates an instance of PartitionBasedLoadBalancer for the given Event Hub name and consumer group.
@@ -100,6 +102,13 @@ final class PartitionBasedLoadBalancer {
      * {@link EventHubConsumerAsyncClient} for processing events from that partition.
      */
     void loadBalance() {
+
+        if (!isLoadBalancerRunning.compareAndSet(false, true)) {
+            logger.info("Load balancer already running");
+            return;
+        }
+
+        logger.info("Starting load balancer for {}", this.ownerId);
         /*
          * Retrieve current partition ownership details from the datastore.
          */
@@ -130,6 +139,7 @@ final class PartitionBasedLoadBalancer {
                     logger.warning(Messages.LOAD_BALANCING_FAILED, ex.getMessage(), ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
+                    isLoadBalancerRunning.set(false);
                 }, () -> logger.info("Load balancing completed successfully"));
     }
 
@@ -139,7 +149,7 @@ final class PartitionBasedLoadBalancer {
      */
     private Mono<Void> loadBalance(final Tuple2<Map<String, PartitionOwnership>, List<String>> tuple) {
         return Mono.fromRunnable(() -> {
-            logger.info("Starting load balancer for {}", this.ownerId);
+
             Map<String, PartitionOwnership> partitionOwnershipMap = tuple.getT1();
 
             List<String> partitionIds = tuple.getT2();
@@ -221,7 +231,12 @@ final class PartitionBasedLoadBalancer {
                     .stream()
                     .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
                     .collect(Collectors.toList()))
-                    .subscribe();
+                    .subscribe(ignored -> { },
+                        ex -> {
+                            logger.error("Error renewing partition ownership", ex);
+                            isLoadBalancerRunning.set(false);
+                        },
+                        () -> isLoadBalancerRunning.set(false));
                 return;
             }
 
@@ -234,7 +249,12 @@ final class PartitionBasedLoadBalancer {
                     .stream()
                     .map(partitionId -> createPartitionOwnershipRequest(partitionOwnershipMap, partitionId))
                     .collect(Collectors.toList()))
-                    .subscribe();
+                    .subscribe(ignored -> { },
+                        ex -> {
+                            logger.error("Error renewing partition ownership", ex);
+                            isLoadBalancerRunning.set(false);
+                        },
+                        () -> isLoadBalancerRunning.set(false));
                 return;
             }
 
@@ -406,8 +426,10 @@ final class PartitionBasedLoadBalancer {
                     logger.warning("Error while listing checkpoints", ex);
                     ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
                     processError.accept(errorContext);
+                    isLoadBalancerRunning.set(false);
                     throw logger.logExceptionAsError(new IllegalStateException("Error while listing checkpoints", ex));
-                });
+                },
+                () -> isLoadBalancerRunning.set(false));
     }
 
     private PartitionOwnership createPartitionOwnershipRequest(

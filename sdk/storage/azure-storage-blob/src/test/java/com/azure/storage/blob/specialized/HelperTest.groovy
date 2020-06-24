@@ -5,14 +5,15 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.sas.BlobContainerSasPermission
-import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.UserDelegationKey
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasQueryParameters
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.sas.BlobSasServiceVersion
+import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.implementation.StorageImplUtils
 import com.azure.storage.common.sas.AccountSasPermission
@@ -20,8 +21,10 @@ import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import com.azure.storage.common.sas.SasIpRange
 import com.azure.storage.common.sas.SasProtocol
+import reactor.test.StepVerifier
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -621,5 +624,22 @@ class HelperTest extends APISpec {
 
         then:
         new BlobUrlParts().parse(bup.toUrl()).getBlobContainerName() == BlobContainerAsyncClient.ROOT_CONTAINER_NAME
+    }
+
+    def "Utility convertStreamToBuffer replayable"() {
+        setup:
+        def data = getRandomByteArray(1024)
+
+        when:
+        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024)
+
+        then:
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
+        // subscribe multiple times and ensure data is same each time
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
     }
 }

@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -223,12 +223,12 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return collectionObs.flatMap(coll -> {
 
-            QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             if (properties != null) {
-                ModelBridgeInternal.setQueryRequestOptionsProperties(queryRequestOptions, properties);
+                ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
             Instant addressCallStartTime = Instant.now();
-            return client.readPartitionKeyRanges(coll.getSelfLink(), queryRequestOptions)
+            return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
                     .flatMap(p -> {
                         if(metaDataDiagnosticsContext != null) {

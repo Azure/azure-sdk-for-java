@@ -3,7 +3,7 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -69,8 +69,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void gatewayDiagnostics() {
-        CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosItemResponse<InternalObjectNode> createResponse = this.container.createItem(internalObjectNode);
         String diagnostics = createResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
@@ -84,8 +84,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void gatewayDiagnosticsOnException() {
-        CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse<CosmosItemProperties> createResponse = null;
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosItemResponse<InternalObjectNode> createResponse = null;
         CosmosClient client = null;
         try {
             client = new CosmosClientBuilder()
@@ -95,13 +95,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .gatewayMode()
                 .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
-            createResponse = container.createItem(cosmosItemProperties);
+            createResponse = container.createItem(internalObjectNode);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
-            CosmosItemResponse<CosmosItemProperties> readResponse =
+            CosmosItemResponse<InternalObjectNode> readResponse =
                 container.readItem(BridgeInternal.getProperties(createResponse).getId(),
                     new PartitionKey("wrongPartitionKey"),
-                    CosmosItemProperties.class);
+                    InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
             String diagnostics = exception.getDiagnostics().toString();
@@ -122,8 +122,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void systemDiagnosticsForSystemStateInformation() {
-        CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosItemResponse<InternalObjectNode> createResponse = this.container.createItem(internalObjectNode);
         String diagnostics = createResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("systemInformation");
         assertThat(diagnostics).contains("usedMemory");
@@ -137,8 +137,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void directDiagnostics() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
-        CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse<CosmosItemProperties> createResponse = cosmosContainer.createItem(cosmosItemProperties);
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
         String diagnostics = createResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
@@ -157,8 +157,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"simple"}, priority = 1, enabled = false)
     public void directDiagnosticsOnException() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
-        CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
-        CosmosItemResponse<CosmosItemProperties> createResponse = null;
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosItemResponse<InternalObjectNode> createResponse = null;
         CosmosClient client = null;
         try {
             client = new CosmosClientBuilder()
@@ -168,13 +168,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .directMode()
                 .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
-            createResponse = container.createItem(cosmosItemProperties);
+            createResponse = container.createItem(internalObjectNode);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
-            CosmosItemResponse<CosmosItemProperties> readResponse =
+            CosmosItemResponse<InternalObjectNode> readResponse =
                 cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
                     new PartitionKey("wrongPartitionKey"),
-                    CosmosItemProperties.class);
+                    InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
             String diagnostics = exception.getDiagnostics().toString();
@@ -253,18 +253,18 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         diagnostics = itemResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
 
-        CosmosItemResponse<CosmosItemProperties> readItemResponse = this.container.readItem(testItem.id, new PartitionKey(testItem.mypk), null, CosmosItemProperties.class);
-        CosmosItemProperties properties = readItemResponse.getItem();
+        CosmosItemResponse<InternalObjectNode> readItemResponse = this.container.readItem(testItem.id, new PartitionKey(testItem.mypk), null, InternalObjectNode.class);
+        InternalObjectNode properties = readItemResponse.getItem();
         diagnostics = readItemResponse.getDiagnostics().toString();
         assertThat(diagnostics).contains("\"serializationType\":\"ITEM_DESERIALIZATION\"");
         assertThat(diagnostics).contains("userAgent=" + Utils.getUserAgent());
     }
 
-    private CosmosItemProperties getCosmosItemProperties() {
-        CosmosItemProperties cosmosItemProperties = new CosmosItemProperties();
-        cosmosItemProperties.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(cosmosItemProperties, "mypk", "test");
-        return cosmosItemProperties;
+    private InternalObjectNode getInternalObjectNode() {
+        InternalObjectNode internalObjectNode = new InternalObjectNode();
+        internalObjectNode.setId(UUID.randomUUID().toString());
+        BridgeInternal.setProperty(internalObjectNode, "mypk", "test");
+        return internalObjectNode;
     }
 
     private List<ClientSideRequestStatistics.StoreResponseStatistics> getStoreResponseStatistics(ClientSideRequestStatistics requestStatistics) throws Exception {

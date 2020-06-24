@@ -9,7 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.QueryRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -160,7 +160,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readAllDatabases() throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosDatabaseProperties> readIterator = client.readAllDatabases(options);
         // Basic validation
@@ -173,9 +173,9 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryAllDatabases() throws Exception {
-        QueryRequestOptions options = new QueryRequestOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
-        QueryRequestOptions queryRequestOptions = new QueryRequestOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
         // Basic validation
