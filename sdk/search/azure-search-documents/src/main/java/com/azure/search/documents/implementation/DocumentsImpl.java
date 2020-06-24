@@ -40,9 +40,10 @@ import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestOptions;
 import com.azure.search.documents.implementation.models.SuggestRequest;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Documents. */
 public final class DocumentsImpl {
@@ -57,11 +58,7 @@ public final class DocumentsImpl {
      *
      * @param client the instance of the service client containing this operation class.
      */
-<<<<<<< HEAD
     DocumentsImpl(SearchIndexClientImpl client) {
-=======
-    public DocumentsImpl(SearchIndexRestClientImpl client) {
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
         this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline());
         this.client = client;
     }
@@ -127,7 +124,6 @@ public final class DocumentsImpl {
         @Get("/docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-<<<<<<< HEAD
         Mono<Response<Object>> get(
                 @HostParam("endpoint") String endpoint,
                 @HostParam("indexName") String indexName,
@@ -139,11 +135,6 @@ public final class DocumentsImpl {
                 Context context);
 
         @Get("/docs/search.suggest")
-=======
-        Mono<SimpleResponse<Object>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
-
-        @Get("docs/search.suggest")
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
         Mono<Response<SuggestDocumentsResult>> suggestGet(
@@ -432,36 +423,10 @@ public final class DocumentsImpl {
      * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-<<<<<<< HEAD
     public Mono<Response<Object>> getWithResponseAsync(
             String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
-=======
-    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        final UUID xMsClientRequestId = null;
-        String selectedFieldsConverted = null;
-        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), accept, selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
-    }
-
-    /**
-     * Retrieves a document from the index.
-     *
-     * @param key The key of the document to retrieve.
-     * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will be missing from the returned document.
-     * @param requestOptions Additional parameters for the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @return a Mono which performs the network request upon subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Object>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
-        UUID xMsClientRequestId = null;
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }

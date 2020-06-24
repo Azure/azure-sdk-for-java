@@ -11,14 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-<<<<<<< HEAD
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
-=======
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -106,17 +101,11 @@ public final class SearchAsyncClient {
     private final HttpPipeline httpPipeline;
 
     private static final ObjectMapper MAPPER;
-<<<<<<< HEAD
 
-    static {
-        MAPPER = new ObjectMapper();
-        SerializationUtil.configureMapper(MAPPER);
-=======
     static {
         MAPPER = new JacksonAdapter().serializer();
         SerializationUtil.configureMapper(MAPPER);
         MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
     }
 
     /**
@@ -133,13 +122,8 @@ public final class SearchAsyncClient {
         restClient = new SearchIndexClientImplBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
-         //   .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-<<<<<<< HEAD
             .buildClient();
-=======
-            .build();
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
     }
 
     /**
@@ -522,16 +506,12 @@ public final class SearchAsyncClient {
                 .getWithResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-<<<<<<< HEAD
-                    SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
-=======
                     if (SearchDocument.class == modelClass) {
                         TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
                         SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
                         return new SimpleResponse<T>(res, (T) doc);
                     }
                     T document = MAPPER.convertValue(res.getValue(), modelClass);
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
                     return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());

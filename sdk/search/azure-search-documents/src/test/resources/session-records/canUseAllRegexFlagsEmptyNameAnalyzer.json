@@ -3,28 +3,30 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "f13b42d7-2903-4021-b1fe-7b1880c83e2e",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-azure-search-documents/1.0.0-beta.5 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "bf8cb7a6-87b4-4286-b391-7874b97d4765",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "f13b42d7-2903-4021-b1fe-7b1880c83e2e",
+      "request-id" : "bf8cb7a6-87b4-4286-b391-7874b97d4765",
       "StatusCode" : "400",
-      "Date" : "Mon, 11 May 2020 17:56:11 GMT",
+      "Date" : "Wed, 24 Jun 2020 19:15:41 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "f13b42d7-2903-4021-b1fe-7b1880c83e2e",
+      "client-request-id" : "bf8cb7a6-87b4-4286-b391-7874b97d4765",
       "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "124",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.analyzers[0].name : The name field is required.\\r\\n\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "bf8cb7a6-87b4-4286-b391-7874b97d4765",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsemptynameanalyzeracf665348bf246d" ]
+  "variables" : [ "hotelscanuseallregexflagsemptynameanalyzer7d6398084a4a0c7" ]
 }

@@ -11,11 +11,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
-
->>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
 import java.util.Map;
 
 /** The IndexAction model. */

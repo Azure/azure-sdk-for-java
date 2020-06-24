@@ -39,7 +39,7 @@ import java.util.List;
 })
 @JsonFlatten
 @Fluent
-public abstract class SearchIndexerSkill {
+public class SearchIndexerSkill {
     /*
      * The name of the skill which uniquely identifies it within the skillset.
      * A skill with no name defined will be given a default name of its 1-based
