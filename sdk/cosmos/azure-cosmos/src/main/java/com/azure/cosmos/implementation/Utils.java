@@ -658,17 +658,20 @@ public class Utils {
         if (stacktrace == null) {
             return "null";
         } else {
-            StringWriter strWriter = new StringWriter();
-            PrintWriter writer = new PrintWriter(strWriter);
-            writer.print("[");
-            for (int i = 0; i < stacktrace.length && i < depth; i++) {
-                if (i > 0) {
-                    writer.print(";");
+            try (StringWriter strWriter = new StringWriter();
+                 PrintWriter writer = new PrintWriter(strWriter)) {
+                writer.print("[");
+                for (int i = 0; i < stacktrace.length && i < depth; i++) {
+                    if (i > 0) {
+                        writer.print(";");
+                    }
+                    writer.print(stacktrace[i].toString());
                 }
-                writer.print(stacktrace[i].toString());
+                writer.print("]");
+                return strWriter.toString();
+            } catch (Exception dummy) {
+                return "null";
             }
-            writer.print("]");
-            return strWriter.toString();
         }
     }
 }
