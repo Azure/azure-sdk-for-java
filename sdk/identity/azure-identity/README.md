@@ -123,57 +123,58 @@ The credential types in Azure Identity differ in the types of AAD identities the
 
 
         
-<table style="border-collapse: collapse;">
+<table border="1">
 <thead>
 <tr>
-<th style="height:40px; width:200px; border:1px solid #dddddd;">credential class</th>
-<th style="height:40px; width:200px; border:1px solid #dddddd;">identity</th>
-<th style="height:40px; width:200px; border:1px solid #dddddd;">configuration</th>
+<th>credential class</th>
+<th>identity</th>
+<th>configuration</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;"><code>DefaultAzureCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd; background-color: #dddddd;">service principal or managed identity</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd">none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
+<td><code>DefaultAzureCredential</code></td>
+<td>service principal or managed identity</td>
+<td>none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>ManagedIdentityCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;">managed identity</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>ManagedIdentityCredentialBuilder</code></td>
+<td><code>ManagedIdentityCredential</code></td>
+<td>managed identity</td>
+<td><code>ManagedIdentityCredentialBuilder</code></td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;"><code>EnvironmentCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd; background-color: #dddddd;">service principal</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd; background-color: #dddddd;"><a href="#environment-variables">environment variables</a></td>
+<td><code>EnvironmentCredential</code></td>
+<td>service principal</td>
+<td><a href="#environment-variables">environment variables</a></td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>ClientSecretCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;">service principal</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>ClientSecretCredentialBuilder</code></td>
+<td><code>ClientSecretCredential</code></td>
+<td>service principal</td>
+<td><code>ClientSecretCredentialBuilder</code></td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;"><code>ClientCertificateCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd; background-color: #dddddd;">service principal</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;"><code>ClientCertificateCredentialBuilder</code></td>
+<td><code>ClientCertificateCredential</code></td>
+<td>service principal</td>
+<td><code>ClientCertificateCredentialBuilder</code></td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>DeviceCodeCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;">user account</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>DeviceCodeCredentialBuilder</code></td>
+<td><code>DeviceCodeCredential</code></td>
+<td>user account</td>
+<td><code>DeviceCodeCredentialBuilder</code></td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;"><code>InteractiveBrowserCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;">user account</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;background-color: #dddddd;"><code>InteractiveBrowserCredentialBuilder</code></td>
+<td><code>InteractiveBrowserCredential</code></td>
+<td>user account</td>
+<td><code>InteractiveBrowserCredentialBuilder</code></td>
 </tr>
 <tr>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>UsernamePasswordCredential</code></td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;">user account</td>
-<td style="height:40px; width:200px; border:1px solid #dddddd;"><code>UsernamePasswordCredentialBuilder</code></td>
+<td><code>UsernamePasswordCredential</code></td>
+<td>user account</td>
+<td><code>UsernamePasswordCredentialBuilder</code></td>
 </tr>
 </tbody>
 </table>
+
 
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
