@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -30,13 +31,13 @@ public final class FormLine extends FormContent {
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final List<FormWord> formWords) {
         super(text, boundingBox, pageNumber);
-        this.formWords = formWords;
+        this.formWords = formWords == null ? null : Collections.unmodifiableList(formWords);
     }
 
     /**
-     * Get the words property: List of words in the text line.
+     * Get the list of words in the text line.
      *
-     * @return the words value.
+     * @return the unmodifiable list of words in the {@code FormLine}.
      */
     public List<FormWord> getFormWords() {
         return this.formWords;
