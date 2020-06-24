@@ -12,8 +12,8 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class TextAnalyticsError {
     /*
-     * Error code. Possible values include: 'invalidRequest',
-     * 'invalidArgument', 'internalServerError', 'serviceUnavailable'
+     * Error code. Possible values include: 'InvalidRequest',
+     * 'InvalidArgument', 'InternalServerError', 'ServiceUnavailable'
      */
     private final TextAnalyticsErrorCode errorCode;
 
@@ -41,8 +41,8 @@ public final class TextAnalyticsError {
 
     /**
      * Get the code property: Error code. Possible values include:
-     * 'invalidRequest', 'invalidArgument', 'internalServerError',
-     * 'serviceUnavailable'.
+     * 'InvalidRequest', 'InvalidArgument', 'InternalServerError',
+     * 'ServiceUnavailable'.
      *
      * @return The code value.
      */

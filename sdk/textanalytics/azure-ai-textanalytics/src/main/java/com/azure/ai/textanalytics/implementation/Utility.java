@@ -174,14 +174,16 @@ public final class Utility {
         if (innerError == null) {
             final ErrorCodeValue errorCodeValue = textAnalyticsError.getCode();
             return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                TextAnalyticsErrorCode.fromString(errorCodeValue == null ? null : errorCodeValue.toString()),
+                TextAnalyticsErrorCode.fromString(errorCodeValue == null ? null :
+                    capitalFirstLetter(errorCodeValue.toString())),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
 
         final InnerErrorCodeValue innerErrorCodeValue = innerError.getCode();
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            TextAnalyticsErrorCode.fromString(innerErrorCodeValue == null ? null : innerErrorCodeValue.toString()),
+            TextAnalyticsErrorCode.fromString(innerErrorCodeValue == null ? null :
+                capitalFirstLetter(innerErrorCodeValue.toString())),
             innerError.getMessage(),
             innerError.getTarget());
     }
@@ -227,5 +229,19 @@ public final class Utility {
             .setText(textDocumentInput.getText())
             .setCountryHint(textDocumentInput.getCountryHint())));
         return multiLanguageInputs;
+    }
+
+    /**
+     * A helper function for capitalizing the first letter of string
+     *
+     * @param str the given input string that need the first letter to be capitalized
+     * @return the new string with the first letter is capitalized.
+     */
+    private static String capitalFirstLetter(String str) {
+        if(str == null || str.isEmpty()) {
+            return str;
+        }
+
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }
