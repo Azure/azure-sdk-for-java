@@ -753,7 +753,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.abandon(receivedMessage))
             .verifyComplete();
-        
+
         messagesPending.decrementAndGet();
     }
 
