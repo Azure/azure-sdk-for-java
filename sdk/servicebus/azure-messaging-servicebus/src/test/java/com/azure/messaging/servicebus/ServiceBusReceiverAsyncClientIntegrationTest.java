@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLongArray;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -229,7 +228,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Arrange
         final MessagingEntityType entityType = MessagingEntityType.QUEUE;
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE, isSessionEnabled);
 
         final String messageId1 = "transactionSendReceiveAndCommit";//UUID.randomUUID().toString();
         final ServiceBusMessage message1 = getMessage(messageId1, isSessionEnabled);
@@ -281,6 +280,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver.commitTransaction(transaction.get()))
             .verifyComplete();
+
+        if (dispositionStatus == DispositionStatus.DEFERRED) {
+            completeDeferredMessages(receiver, receivedMessage);
+        }
     }
 
     /**
@@ -497,6 +500,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             receiver.complete(receivedMessage)
                 .block(Duration.ofSeconds(10));
+            messagesPending.decrementAndGet();
         }
     }
 
@@ -749,13 +753,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.abandon(receivedMessage))
             .verifyComplete();
+        
+        messagesPending.decrementAndGet();
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
     void receiveAndDefer(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_RECEIVE_AND_DEFER, isSessionEnabled);
 
         final String messageId = "receiveAndDefer";//UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -773,7 +779,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.defer(receivedMessage))
             .verifyComplete();
 
-        messagesDeferredPending.get().add(receivedMessage.getSequenceNumber());
+        messagesPending.decrementAndGet();
+        completeDeferredMessages(receiver,receivedMessage);
 
     }
 
@@ -826,10 +833,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectComplete()
             .verify();
 
-        messagesPending.decrementAndGet();
-        //if (dispositionStatus == DispositionStatus.COMPLETED) {
-
-        //}
+        if (dispositionStatus != DispositionStatus.COMPLETED) {
+            messagesPending.decrementAndGet();
+        }
     }
 
 
@@ -1017,4 +1023,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         return lockTokens.size();
     }
+
+    private void completeDeferredMessages(ServiceBusReceiverAsyncClient client, ServiceBusReceivedMessage receivedMessage) {
+        final ServiceBusReceivedMessage receivedDeferredMessage = client
+            .receiveDeferredMessage(receivedMessage.getSequenceNumber())
+            .block(TIMEOUT);
+        receiver.complete(receivedDeferredMessage) .block(TIMEOUT);
+    }
+
 }
