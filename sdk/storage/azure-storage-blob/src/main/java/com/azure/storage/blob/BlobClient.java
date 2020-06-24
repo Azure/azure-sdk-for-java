@@ -194,7 +194,7 @@ public class BlobClient extends BlobClientBase {
      * @param options {@link BlobParallelUploadOptions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
-     * 
+     *
      * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)}
      */
     @Deprecated

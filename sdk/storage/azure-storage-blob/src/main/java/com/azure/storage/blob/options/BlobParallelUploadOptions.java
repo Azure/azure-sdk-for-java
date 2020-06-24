@@ -213,6 +213,10 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the timeout.
+     *
+     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
      * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
      * specify timeout.
      */
@@ -222,6 +226,11 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the timeout.
+     * 
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The updated options
+     *
      * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
      * specify timeout.
      */
