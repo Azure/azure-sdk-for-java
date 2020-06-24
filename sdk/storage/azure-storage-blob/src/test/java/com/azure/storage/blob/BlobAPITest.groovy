@@ -152,7 +152,7 @@ class BlobAPITest extends APISpec {
 
     def "Upload return value"() {
         expect:
-        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null)
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null, null)
             .getValue().getETag() != null
     }
 

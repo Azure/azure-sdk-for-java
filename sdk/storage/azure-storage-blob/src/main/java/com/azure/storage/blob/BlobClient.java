@@ -184,7 +184,16 @@ public class BlobClient extends BlobClientBase {
         Duration timeout, Context context) {
         this.uploadWithResponse(new BlobParallelUploadOptions(data, length)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTier(tier)
-            .setRequestConditions(requestConditions).setTimeout(timeout), context);
+            .setRequestConditions(requestConditions), timeout, context);
+    }
+
+    /**
+     * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)}
+     */
+    @Deprecated
+    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context) {
+        Objects.requireNonNull(options);
+        return this.uploadWithResponse(options, options.getTimeout(), context);
     }
 
     /**
@@ -192,10 +201,12 @@ public class BlobClient extends BlobClientBase {
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      * @param options {@link BlobParallelUploadOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return Information about the uploaded block blob.
      */
-    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Context context) {
+    public Response<BlockBlobItem> uploadWithResponse(BlobParallelUploadOptions options, Duration timeout,
+        Context context) {
         Objects.requireNonNull(options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
             .subscriberContext(FluxUtil.toReactorContext(context));

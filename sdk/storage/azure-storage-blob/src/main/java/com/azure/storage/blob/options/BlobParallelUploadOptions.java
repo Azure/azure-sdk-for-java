@@ -4,6 +4,8 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -211,20 +213,19 @@ public class BlobParallelUploadOptions {
     }
 
     /**
-     * Gets the timeout.
-     *
-     * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
+     * specify timeout.
      */
+    @Deprecated
     public Duration getTimeout() {
         return this.timeout;
     }
 
     /**
-     * Sets the timeout.
-     *
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
+     * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
+     * specify timeout.
      */
+    @Deprecated
     public BlobParallelUploadOptions setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
