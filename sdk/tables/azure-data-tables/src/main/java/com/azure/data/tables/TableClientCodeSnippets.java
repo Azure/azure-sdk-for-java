@@ -5,7 +5,6 @@ package com.azure.data.tables;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.data.tables.implementation.models.TableServiceErrorException;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class TableClientCodeSnippets {
@@ -40,10 +39,10 @@ public class TableClientCodeSnippets {
         }
 
         //query tables
-        String selectString = "$selectString= TableName eq 'OfficeSupplies'";
+        String filterString = "$filter=TableName eq 'OfficeSupplies'";
 
         try {
-            List<AzureTable> responseTables = tableServiceClient.queryTables(selectString);
+            List<AzureTable> responseTables = tableServiceClient.queryTables(null, null, filterString);
         } catch (HttpResponseException e) {
             System.out.println("Table Query Unsuccessful. Error: " + e);
         }
@@ -52,10 +51,7 @@ public class TableClientCodeSnippets {
         //insert entity
         String row = "crayola markers";
         String partitionKey = "markers";
-        HashMap<String, Object> tableEntityProperties = new HashMap<>();
-        tableEntityProperties.put("RowKey", "crayolaMarkers");
-        tableEntityProperties.put("ParitionKey", "markers");
-        TableEntity tableEntity = new TableEntity(tableEntityProperties);
+        TableEntity tableEntity = new TableEntity(row, partitionKey, null);
         try {
             tableEntity = tableClient.insertEntity(tableEntity);
         } catch (HttpResponseException e) {
@@ -98,8 +94,8 @@ public class TableClientCodeSnippets {
 
 
         //query a table
-        String filterString2 = "$filter = Product eq 'markers'";
-        String selectString2 = "$select = Seller, Price";
+        String filterString2 = "$filter=Product eq 'markers'";
+        String selectString2 = "$select=Seller, Price";
         try {
             List<TableEntity> list = tableClient.queryEntity(null, filterString2, selectString2);
         } catch (HttpResponseException e) {

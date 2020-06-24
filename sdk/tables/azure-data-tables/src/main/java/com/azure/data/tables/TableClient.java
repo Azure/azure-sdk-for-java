@@ -18,10 +18,11 @@ public class TableClient {
 
     /**
      * returns the table associated with this TableClient
+     *
      * @param tableName name of the table
      * @return the AzureTable
      */
-    public AzureTable getTable(String tableName){
+    public AzureTable getTable(String tableName) {
         return null;
     }
 

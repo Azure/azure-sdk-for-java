@@ -14,11 +14,11 @@ public class TableEntity {
     /**
      * creates a new TableEntity
      *
-     * @param row        rowKey
-     * @param partition  partitionKey
-     * @param properties map of properties of the entity
+     * @param rowKey       rowKey
+     * @param partitionKey partitionKey
+     * @param properties   map of properties of the entity
      */
-    TableEntity(Map<String, Object> properties) {
+    TableEntity(String rowKey, String partitionKey, Map<String, Object> properties) {
         this.properties = properties;
     }
 

@@ -22,16 +22,18 @@ public class TableAsyncClient {
 
     /**
      * returns the table associated with this table client
+     *
      * @param tableName the name of the table
      * @return the table
      */
-    public Mono<AzureTable> getTable(String tableName){
+    public Mono<AzureTable> getTable(String tableName) {
         return null;
     }
 
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *
+     * @param top          odata top parameter
      * @param selectString odata select string
      * @param filterString odata filter string
      * @return a paged flux of all the entity which fit this criteria
