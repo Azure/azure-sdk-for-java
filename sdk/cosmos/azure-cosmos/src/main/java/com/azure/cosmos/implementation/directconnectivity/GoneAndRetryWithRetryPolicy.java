@@ -25,7 +25,6 @@ import java.time.Duration;
 
 public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
-    private final static int LIMITED_STACK_TRACE_FAILURE_DEPTH = 3;
     private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
     private final static int MAXIMUM_BACKOFF_TIME_IN_SECONDS = 15;
     private final static int INITIAL_BACKOFF_TIME = 1;
@@ -85,7 +84,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                         exceptionToThrow = this.lastRetryWithException;
                     } else {
                         logger.warn("Received gone exception after backoff/retry. Will fail the request. {}, short stackTrace = [{}]",
-                                exception.toString(), Utils.limitedStackTrace(exception, LIMITED_STACK_TRACE_FAILURE_DEPTH));
+                                exception.toString(), Utils.limitedStackTrace(exception));
                         exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
                 } else if (exception instanceof PartitionKeyRangeGoneException) {

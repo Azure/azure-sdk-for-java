@@ -31,6 +31,7 @@ public class Configs {
     private static final Protocol DEFAULT_PROTOCOL = Protocol.TCP;
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
+    private static final String LIMITED_STACK_TRACE_FAILURE_DEPTH = "COSMOS.LIMITED_STACK_TRACE_FAILURE_DEPTH";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -39,6 +40,8 @@ public class Configs {
     private static final String MAX_DIRECT_HTTPS_POOL_SIZE = "COSMOS.MAX_DIRECT_HTTP_CONNECTION_LIMIT";
 
     private static final int DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = 5 * 60;
+
+    private static final int DEFAULT_LIMITED_STACK_TRACE_DEPTH = 3;
 
     private static final int DEFAULT_MAX_HTTP_BODY_LENGTH_IN_BYTES = 6 * 1024 * 1024; //6MB
     private static final int DEFAULT_MAX_HTTP_INITIAL_LINE_LENGTH = 4096; //4KB
@@ -66,6 +69,10 @@ public class Configs {
 
     public Configs() {
         this.sslContext = sslContextInit();
+    }
+
+    public static int getLimitedStackTraceDepth() {
+        return getJVMConfigAsInt(LIMITED_STACK_TRACE_FAILURE_DEPTH, DEFAULT_LIMITED_STACK_TRACE_DEPTH);
     }
 
     public static int getCPUCnt() {

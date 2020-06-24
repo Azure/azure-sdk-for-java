@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,6 +47,7 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+    private static final int LIMITED_STACKTRACE_DEPTH = Configs.getLimitedStackTraceDepth();
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
@@ -649,7 +652,8 @@ public class Utils {
         }
     }
 
-    public static String limitedStackTrace(Exception e, int depth) {
+    public static String limitedStackTrace(Exception e) {
+        int depth = LIMITED_STACKTRACE_DEPTH;
         StackTraceElement[] stacktrace = e.getStackTrace();
         if (stacktrace == null) {
             return "null";
