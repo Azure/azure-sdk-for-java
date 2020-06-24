@@ -121,7 +121,7 @@
               <goal>schema</goal>
             </goals>
             <configuration>
-              <testSourceDirectory>${project.basedir}/src/test/avro/</testSourceDirectory>
+              <testSourceDirectory>src/test/resources/avro/</testSourceDirectory>
               <testOutputDirectory>${project.basedir}/src/test/java/</testOutputDirectory>
               <testIncludes>
                 <testInclude>**/*.avro</testInclude>
