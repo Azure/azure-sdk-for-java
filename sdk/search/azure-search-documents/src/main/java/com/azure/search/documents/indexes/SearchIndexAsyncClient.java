@@ -15,7 +15,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
-import com.azure.search.documents.implementation.converters.AnalyzeRequestConverter;
 import com.azure.search.documents.implementation.converters.RequestOptionsIndexesConverter;
 import com.azure.search.documents.implementation.converters.SearchIndexConverter;
 import com.azure.search.documents.implementation.converters.SynonymMapConverter;

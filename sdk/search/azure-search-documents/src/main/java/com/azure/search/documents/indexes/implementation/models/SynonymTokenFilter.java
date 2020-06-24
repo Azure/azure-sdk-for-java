@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -50,6 +51,15 @@ public class SynonymTokenFilter extends TokenFilter {
     @JsonProperty(value = "expand")
     private Boolean expand;
 
+    /** Creates an instance of SynonymTokenFilter class. */
+    @JsonCreator
+    public SynonymTokenFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "synonyms", required = true) List<String> synonyms) {
+        super(name);
+        this.synonyms = synonyms;
+    }
+
     /**
      * Get the synonyms property: A list of synonyms in following one of two formats: 1. incredible, unbelievable,
      * fabulous =&gt; amazing - all terms on the left side of =&gt; symbol will be replaced with all terms on its right
@@ -71,11 +81,6 @@ public class SynonymTokenFilter extends TokenFilter {
      * @param synonyms the synonyms value to set.
      * @return the SynonymTokenFilter object itself.
      */
-    public SynonymTokenFilter setSynonyms(List<String> synonyms) {
-        this.synonyms = synonyms;
-        return this;
-    }
-
     /**
      * Get the ignoreCase property: A value indicating whether to case-fold input for matching. Default is false.
      *
@@ -124,5 +129,18 @@ public class SynonymTokenFilter extends TokenFilter {
     public SynonymTokenFilter setExpand(Boolean expand) {
         this.expand = expand;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getSynonyms() == null) {
+            throw new IllegalArgumentException("Missing required property synonyms in model SynonymTokenFilter");
+        }
     }
 }

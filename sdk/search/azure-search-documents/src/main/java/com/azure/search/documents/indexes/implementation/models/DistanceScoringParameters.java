@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DistanceScoringParameters model. */
@@ -26,6 +27,15 @@ public final class DistanceScoringParameters {
     @JsonProperty(value = "boostingDistance", required = true)
     private double boostingDistance;
 
+    /** Creates an instance of DistanceScoringParameters class. */
+    @JsonCreator
+    public DistanceScoringParameters(
+            @JsonProperty(value = "referencePointParameter", required = true) String referencePointParameter,
+            @JsonProperty(value = "boostingDistance", required = true) double boostingDistance) {
+        this.referencePointParameter = referencePointParameter;
+        this.boostingDistance = boostingDistance;
+    }
+
     /**
      * Get the referencePointParameter property: The name of the parameter passed in search queries to specify the
      * reference location.
@@ -43,11 +53,6 @@ public final class DistanceScoringParameters {
      * @param referencePointParameter the referencePointParameter value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    public DistanceScoringParameters setReferencePointParameter(String referencePointParameter) {
-        this.referencePointParameter = referencePointParameter;
-        return this;
-    }
-
     /**
      * Get the boostingDistance property: The distance in kilometers from the reference location where the boosting
      * range ends.
@@ -65,8 +70,15 @@ public final class DistanceScoringParameters {
      * @param boostingDistance the boostingDistance value to set.
      * @return the DistanceScoringParameters object itself.
      */
-    public DistanceScoringParameters setBoostingDistance(double boostingDistance) {
-        this.boostingDistance = boostingDistance;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getReferencePointParameter() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property referencePointParameter in model DistanceScoringParameters");
+        }
     }
 }

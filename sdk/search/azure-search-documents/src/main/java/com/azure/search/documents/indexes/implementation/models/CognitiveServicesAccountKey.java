@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -25,6 +26,12 @@ public class CognitiveServicesAccountKey extends CognitiveServicesAccount {
     @JsonProperty(value = "key", required = true)
     private String key;
 
+    /** Creates an instance of CognitiveServicesAccountKey class. */
+    @JsonCreator
+    public CognitiveServicesAccountKey(@JsonProperty(value = "key", required = true) String key) {
+        this.key = key;
+    }
+
     /**
      * Get the key property: The key used to provision the cognitive service resource attached to a skillset.
      *
@@ -40,8 +47,16 @@ public class CognitiveServicesAccountKey extends CognitiveServicesAccount {
      * @param key the key value to set.
      * @return the CognitiveServicesAccountKey object itself.
      */
-    public CognitiveServicesAccountKey setKey(String key) {
-        this.key = key;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getKey() == null) {
+            throw new IllegalArgumentException("Missing required property key in model CognitiveServicesAccountKey");
+        }
     }
 }

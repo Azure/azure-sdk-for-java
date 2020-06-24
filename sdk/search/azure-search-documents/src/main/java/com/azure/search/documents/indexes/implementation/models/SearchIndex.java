@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -105,6 +106,15 @@ public final class SearchIndex {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
+    /** Creates an instance of SearchIndex class. */
+    @JsonCreator
+    public SearchIndex(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "fields", required = true) List<SearchField> fields) {
+        this.name = name;
+        this.fields = fields;
+    }
+
     /**
      * Get the name property: The name of the index.
      *
@@ -120,11 +130,6 @@ public final class SearchIndex {
      * @param name the name value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the fields property: The fields of the index.
      *
@@ -140,11 +145,6 @@ public final class SearchIndex {
      * @param fields the fields value to set.
      * @return the SearchIndex object itself.
      */
-    public SearchIndex setFields(List<SearchField> fields) {
-        this.fields = fields;
-        return this;
-    }
-
     /**
      * Get the scoringProfiles property: The scoring profiles for the index.
      *
@@ -383,5 +383,48 @@ public final class SearchIndex {
     public SearchIndex setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model SearchIndex");
+        }
+        if (getFields() == null) {
+            throw new IllegalArgumentException("Missing required property fields in model SearchIndex");
+        } else {
+            getFields().forEach(e -> e.validate());
+        }
+        if (getScoringProfiles() != null) {
+            getScoringProfiles().forEach(e -> e.validate());
+        }
+        if (getCorsOptions() != null) {
+            getCorsOptions().validate();
+        }
+        if (getSuggesters() != null) {
+            getSuggesters().forEach(e -> e.validate());
+        }
+        if (getAnalyzers() != null) {
+            getAnalyzers().forEach(e -> e.validate());
+        }
+        if (getTokenizers() != null) {
+            getTokenizers().forEach(e -> e.validate());
+        }
+        if (getTokenFilters() != null) {
+            getTokenFilters().forEach(e -> e.validate());
+        }
+        if (getCharFilters() != null) {
+            getCharFilters().forEach(e -> e.validate());
+        }
+        if (getEncryptionKey() != null) {
+            getEncryptionKey().validate();
+        }
+        if (getSimilarity() != null) {
+            getSimilarity().validate();
+        }
     }
 }

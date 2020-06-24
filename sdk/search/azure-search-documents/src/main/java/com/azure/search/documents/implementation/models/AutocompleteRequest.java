@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutocompleteRequest model. */
@@ -89,6 +90,15 @@ public final class AutocompleteRequest {
     @JsonProperty(value = "top")
     private Integer top;
 
+    /** Creates an instance of AutocompleteRequest class. */
+    @JsonCreator
+    public AutocompleteRequest(
+            @JsonProperty(value = "search", required = true) String searchText,
+            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
+        this.searchText = searchText;
+        this.suggesterName = suggesterName;
+    }
+
     /**
      * Get the searchText property: The search text on which to base autocomplete results.
      *
@@ -104,11 +114,6 @@ public final class AutocompleteRequest {
      * @param searchText the searchText value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest setSearchText(String searchText) {
-        this.searchText = searchText;
-        return this;
-    }
-
     /**
      * Get the autocompleteMode property: Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms'
      * to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms.
@@ -286,11 +291,6 @@ public final class AutocompleteRequest {
      * @param suggesterName the suggesterName value to set.
      * @return the AutocompleteRequest object itself.
      */
-    public AutocompleteRequest setSuggesterName(String suggesterName) {
-        this.suggesterName = suggesterName;
-        return this;
-    }
-
     /**
      * Get the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The
      * default is 5.
@@ -311,5 +311,19 @@ public final class AutocompleteRequest {
     public AutocompleteRequest setTop(Integer top) {
         this.top = top;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getSearchText() == null) {
+            throw new IllegalArgumentException("Missing required property searchText in model AutocompleteRequest");
+        }
+        if (getSuggesterName() == null) {
+            throw new IllegalArgumentException("Missing required property suggesterName in model AutocompleteRequest");
+        }
     }
 }

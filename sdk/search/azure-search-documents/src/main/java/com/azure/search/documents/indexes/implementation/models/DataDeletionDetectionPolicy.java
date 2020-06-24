@@ -26,4 +26,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-public class DataDeletionDetectionPolicy {}
+public class DataDeletionDetectionPolicy {
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
+}

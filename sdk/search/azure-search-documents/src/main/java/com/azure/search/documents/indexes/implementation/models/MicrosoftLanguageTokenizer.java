@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -41,6 +42,12 @@ public class MicrosoftLanguageTokenizer extends LexicalTokenizer {
      */
     @JsonProperty(value = "language")
     private MicrosoftTokenizerLanguage language;
+
+    /** Creates an instance of MicrosoftLanguageTokenizer class. */
+    @JsonCreator
+    public MicrosoftLanguageTokenizer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Tokens longer than the maximum length are split.
@@ -106,5 +113,15 @@ public class MicrosoftLanguageTokenizer extends LexicalTokenizer {
     public MicrosoftLanguageTokenizer setLanguage(MicrosoftTokenizerLanguage language) {
         this.language = language;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

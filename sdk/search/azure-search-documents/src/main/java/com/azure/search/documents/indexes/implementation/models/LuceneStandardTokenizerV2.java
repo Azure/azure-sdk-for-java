@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -25,6 +26,12 @@ public class LuceneStandardTokenizerV2 extends LexicalTokenizer {
      */
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
+
+    /** Creates an instance of LuceneStandardTokenizerV2 class. */
+    @JsonCreator
+    public LuceneStandardTokenizerV2(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
@@ -46,5 +53,15 @@ public class LuceneStandardTokenizerV2 extends LexicalTokenizer {
     public LuceneStandardTokenizerV2 setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

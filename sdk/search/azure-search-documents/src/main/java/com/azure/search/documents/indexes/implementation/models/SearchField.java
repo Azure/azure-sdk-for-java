@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -159,6 +160,15 @@ public final class SearchField {
     @JsonProperty(value = "fields")
     private List<SearchField> fields;
 
+    /** Creates an instance of SearchField class. */
+    @JsonCreator
+    public SearchField(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
+        this.name = name;
+        this.type = type;
+    }
+
     /**
      * Get the name property: The name of the field, which must be unique within the fields collection of the index or
      * parent field.
@@ -176,11 +186,6 @@ public final class SearchField {
      * @param name the name value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the type property: The data type of the field.
      *
@@ -196,11 +201,6 @@ public final class SearchField {
      * @param type the type value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setType(SearchFieldDataType type) {
-        this.type = type;
-        return this;
-    }
-
     /**
      * Get the key property: A value indicating whether the field uniquely identifies documents in the index. Exactly
      * one top-level field in each index must be chosen as the key field and it must be of type Edm.String. Key fields
@@ -509,5 +509,22 @@ public final class SearchField {
     public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model SearchField");
+        }
+        if (getType() == null) {
+            throw new IllegalArgumentException("Missing required property type in model SearchField");
+        }
+        if (getFields() != null) {
+            getFields().forEach(e -> e.validate());
+        }
     }
 }

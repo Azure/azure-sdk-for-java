@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -26,6 +27,15 @@ public class MappingCharFilter extends CharFilter {
     @JsonProperty(value = "mappings", required = true)
     private List<String> mappings;
 
+    /** Creates an instance of MappingCharFilter class. */
+    @JsonCreator
+    public MappingCharFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "mappings", required = true) List<String> mappings) {
+        super(name);
+        this.mappings = mappings;
+    }
+
     /**
      * Get the mappings property: A list of mappings of the following format: "a=&gt;b" (all occurrences of the
      * character "a" will be replaced with character "b").
@@ -43,8 +53,16 @@ public class MappingCharFilter extends CharFilter {
      * @param mappings the mappings value to set.
      * @return the MappingCharFilter object itself.
      */
-    public MappingCharFilter setMappings(List<String> mappings) {
-        this.mappings = mappings;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getMappings() == null) {
+            throw new IllegalArgumentException("Missing required property mappings in model MappingCharFilter");
+        }
     }
 }

@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -36,6 +37,14 @@ public class ImageAnalysisSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "details")
     private List<ImageDetail> details;
+
+    /** Creates an instance of ImageAnalysisSkill class. */
+    @JsonCreator
+    public ImageAnalysisSkill(
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs) {
+        super(outputs, inputs);
+    }
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
@@ -95,5 +104,15 @@ public class ImageAnalysisSkill extends SearchIndexerSkill {
     public ImageAnalysisSkill setDetails(List<ImageDetail> details) {
         this.details = details;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

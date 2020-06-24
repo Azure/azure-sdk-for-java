@@ -29,4 +29,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-public class DataChangeDetectionPolicy {}
+public class DataChangeDetectionPolicy {
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
+}

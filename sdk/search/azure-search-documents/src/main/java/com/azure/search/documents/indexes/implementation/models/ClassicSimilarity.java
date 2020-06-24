@@ -16,4 +16,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Azure.Search.ClassicSimilarity")
 @JsonFlatten
 @Immutable
-public class ClassicSimilarity extends Similarity {}
+public class ClassicSimilarity extends Similarity {
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+    }
+}

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +19,12 @@ public final class AnalyzeResult {
      */
     @JsonProperty(value = "tokens", required = true)
     private List<AnalyzedTokenInfo> tokens;
+
+    /** Creates an instance of AnalyzeResult class. */
+    @JsonCreator
+    public AnalyzeResult(@JsonProperty(value = "tokens", required = true) List<AnalyzedTokenInfo> tokens) {
+        this.tokens = tokens;
+    }
 
     /**
      * Get the tokens property: The list of tokens returned by the analyzer specified in the request.
@@ -34,8 +41,16 @@ public final class AnalyzeResult {
      * @param tokens the tokens value to set.
      * @return the AnalyzeResult object itself.
      */
-    public AnalyzeResult setTokens(List<AnalyzedTokenInfo> tokens) {
-        this.tokens = tokens;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getTokens() == null) {
+            throw new IllegalArgumentException("Missing required property tokens in model AnalyzeResult");
+        } else {
+            getTokens().forEach(e -> e.validate());
+        }
     }
 }

@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -37,6 +38,12 @@ public final class InputFieldMappingEntry {
     @JsonProperty(value = "inputs")
     private List<InputFieldMappingEntry> inputs;
 
+    /** Creates an instance of InputFieldMappingEntry class. */
+    @JsonCreator
+    public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
     /**
      * Get the name property: The name of the input.
      *
@@ -52,11 +59,6 @@ public final class InputFieldMappingEntry {
      * @param name the name value to set.
      * @return the InputFieldMappingEntry object itself.
      */
-    public InputFieldMappingEntry setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the source property: The source of the input.
      *
@@ -115,5 +117,19 @@ public final class InputFieldMappingEntry {
     public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model InputFieldMappingEntry");
+        }
+        if (getInputs() != null) {
+            getInputs().forEach(e -> e.validate());
+        }
     }
 }

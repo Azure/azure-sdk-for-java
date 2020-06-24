@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -37,6 +38,12 @@ public class EdgeNGramTokenFilterV2 extends TokenFilter {
      */
     @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
+
+    /** Creates an instance of EdgeNGramTokenFilterV2 class. */
+    @JsonCreator
+    public EdgeNGramTokenFilterV2(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the minGram property: The minimum n-gram length. Default is 1. Maximum is 300. Must be less than the value of
@@ -98,5 +105,15 @@ public class EdgeNGramTokenFilterV2 extends TokenFilter {
     public EdgeNGramTokenFilterV2 setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

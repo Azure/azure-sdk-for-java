@@ -8,9 +8,11 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** The MergeSkill model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
@@ -31,6 +33,14 @@ public class MergeSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "insertPostTag")
     private String insertPostTag;
+
+    /** Creates an instance of MergeSkill class. */
+    @JsonCreator
+    public MergeSkill(
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs) {
+        super(outputs, inputs);
+    }
 
     /**
      * Get the insertPreTag property: The tag indicates the start of the merged text. By default, the tag is an empty
@@ -74,5 +84,15 @@ public class MergeSkill extends SearchIndexerSkill {
     public MergeSkill setInsertPostTag(String insertPostTag) {
         this.insertPostTag = insertPostTag;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

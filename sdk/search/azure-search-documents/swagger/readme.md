@@ -107,6 +107,8 @@ sync-methods: none
 generate-client-interfaces: false
 context-client-method-parameter: true
 generate-client-as-impl: true
+required-fields-as-ctor-args: true
+client-side-validations: true
 license-header: |-
   Copyright (c) Microsoft Corporation. All rights reserved.
   Licensed under the MIT License.

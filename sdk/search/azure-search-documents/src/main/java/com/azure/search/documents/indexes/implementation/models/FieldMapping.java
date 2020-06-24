@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FieldMapping model. */
@@ -31,6 +32,12 @@ public final class FieldMapping {
     @JsonProperty(value = "mappingFunction")
     private FieldMappingFunction mappingFunction;
 
+    /** Creates an instance of FieldMapping class. */
+    @JsonCreator
+    public FieldMapping(@JsonProperty(value = "sourceFieldName", required = true) String sourceFieldName) {
+        this.sourceFieldName = sourceFieldName;
+    }
+
     /**
      * Get the sourceFieldName property: The name of the field in the data source.
      *
@@ -46,11 +53,6 @@ public final class FieldMapping {
      * @param sourceFieldName the sourceFieldName value to set.
      * @return the FieldMapping object itself.
      */
-    public FieldMapping setSourceFieldName(String sourceFieldName) {
-        this.sourceFieldName = sourceFieldName;
-        return this;
-    }
-
     /**
      * Get the targetFieldName property: The name of the target field in the index. Same as the source field name by
      * default.
@@ -91,5 +93,19 @@ public final class FieldMapping {
     public FieldMapping setMappingFunction(FieldMappingFunction mappingFunction) {
         this.mappingFunction = mappingFunction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getSourceFieldName() == null) {
+            throw new IllegalArgumentException("Missing required property sourceFieldName in model FieldMapping");
+        }
+        if (getMappingFunction() != null) {
+            getMappingFunction().validate();
+        }
     }
 }

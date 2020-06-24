@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,6 +31,17 @@ public class PatternReplaceCharFilter extends CharFilter {
     @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
+    /** Creates an instance of PatternReplaceCharFilter class. */
+    @JsonCreator
+    public PatternReplaceCharFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "pattern", required = true) String pattern,
+            @JsonProperty(value = "replacement", required = true) String replacement) {
+        super(name);
+        this.pattern = pattern;
+        this.replacement = replacement;
+    }
+
     /**
      * Get the pattern property: A regular expression pattern.
      *
@@ -45,11 +57,6 @@ public class PatternReplaceCharFilter extends CharFilter {
      * @param pattern the pattern value to set.
      * @return the PatternReplaceCharFilter object itself.
      */
-    public PatternReplaceCharFilter setPattern(String pattern) {
-        this.pattern = pattern;
-        return this;
-    }
-
     /**
      * Get the replacement property: The replacement text.
      *
@@ -65,8 +72,20 @@ public class PatternReplaceCharFilter extends CharFilter {
      * @param replacement the replacement value to set.
      * @return the PatternReplaceCharFilter object itself.
      */
-    public PatternReplaceCharFilter setReplacement(String replacement) {
-        this.replacement = replacement;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getPattern() == null) {
+            throw new IllegalArgumentException("Missing required property pattern in model PatternReplaceCharFilter");
+        }
+        if (getReplacement() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property replacement in model PatternReplaceCharFilter");
+        }
     }
 }

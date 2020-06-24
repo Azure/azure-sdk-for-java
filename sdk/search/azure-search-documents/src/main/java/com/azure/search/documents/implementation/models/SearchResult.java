@@ -9,6 +9,7 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -37,6 +38,14 @@ public final class SearchResult {
      * Contains a document found by a search query, plus associated metadata.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of SearchResult class. */
+    @JsonCreator
+    public SearchResult(
+            @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    double score) {
+        this.score = score;
+    }
 
     /**
      * Get the score property: The relevance score of the document compared to other documents returned by the query.
@@ -85,4 +94,11 @@ public final class SearchResult {
         }
         additionalProperties.put(key, value);
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

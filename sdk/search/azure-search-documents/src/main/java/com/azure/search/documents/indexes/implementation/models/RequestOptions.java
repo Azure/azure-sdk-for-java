@@ -38,4 +38,11 @@ public final class RequestOptions {
         this.xMsClientRequestId = xMsClientRequestId;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

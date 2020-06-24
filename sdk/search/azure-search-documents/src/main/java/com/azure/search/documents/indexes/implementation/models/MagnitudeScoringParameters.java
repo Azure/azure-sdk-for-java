@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MagnitudeScoringParameters model. */
@@ -31,6 +32,15 @@ public final class MagnitudeScoringParameters {
     @JsonProperty(value = "constantBoostBeyondRange")
     private Boolean shouldBoostBeyondRangeByConstant;
 
+    /** Creates an instance of MagnitudeScoringParameters class. */
+    @JsonCreator
+    public MagnitudeScoringParameters(
+            @JsonProperty(value = "boostingRangeStart", required = true) double boostingRangeStart,
+            @JsonProperty(value = "boostingRangeEnd", required = true) double boostingRangeEnd) {
+        this.boostingRangeStart = boostingRangeStart;
+        this.boostingRangeEnd = boostingRangeEnd;
+    }
+
     /**
      * Get the boostingRangeStart property: The field value at which boosting starts.
      *
@@ -46,11 +56,6 @@ public final class MagnitudeScoringParameters {
      * @param boostingRangeStart the boostingRangeStart value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
-    public MagnitudeScoringParameters setBoostingRangeStart(double boostingRangeStart) {
-        this.boostingRangeStart = boostingRangeStart;
-        return this;
-    }
-
     /**
      * Get the boostingRangeEnd property: The field value at which boosting ends.
      *
@@ -66,11 +71,6 @@ public final class MagnitudeScoringParameters {
      * @param boostingRangeEnd the boostingRangeEnd value to set.
      * @return the MagnitudeScoringParameters object itself.
      */
-    public MagnitudeScoringParameters setBoostingRangeEnd(double boostingRangeEnd) {
-        this.boostingRangeEnd = boostingRangeEnd;
-        return this;
-    }
-
     /**
      * Get the shouldBoostBeyondRangeByConstant property: A value indicating whether to apply a constant boost for field
      * values beyond the range end value; default is false.
@@ -92,4 +92,11 @@ public final class MagnitudeScoringParameters {
         this.shouldBoostBeyondRangeByConstant = shouldBoostBeyondRangeByConstant;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

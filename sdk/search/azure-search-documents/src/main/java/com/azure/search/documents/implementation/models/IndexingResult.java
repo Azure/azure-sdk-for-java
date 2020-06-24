@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IndexingResult model. */
@@ -41,6 +42,18 @@ public final class IndexingResult {
      */
     @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int statusCode;
+
+    /** Creates an instance of IndexingResult class. */
+    @JsonCreator
+    public IndexingResult(
+            @JsonProperty(value = "key", required = true, access = JsonProperty.Access.WRITE_ONLY) String key,
+            @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY) boolean succeeded,
+            @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    int statusCode) {
+        this.key = key;
+        this.succeeded = succeeded;
+        this.statusCode = statusCode;
+    }
 
     /**
      * Get the key property: The key of a document that was in the indexing request.
@@ -82,4 +95,11 @@ public final class IndexingResult {
     public int getStatusCode() {
         return this.statusCode;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

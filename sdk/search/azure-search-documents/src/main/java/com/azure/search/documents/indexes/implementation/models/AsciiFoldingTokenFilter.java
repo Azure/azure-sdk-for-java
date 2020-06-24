@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,12 @@ public class AsciiFoldingTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
+
+    /** Creates an instance of AsciiFoldingTokenFilter class. */
+    @JsonCreator
+    public AsciiFoldingTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the preserveOriginal property: A value indicating whether the original token will be kept. Default is false.
@@ -43,5 +50,15 @@ public class AsciiFoldingTokenFilter extends TokenFilter {
     public AsciiFoldingTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

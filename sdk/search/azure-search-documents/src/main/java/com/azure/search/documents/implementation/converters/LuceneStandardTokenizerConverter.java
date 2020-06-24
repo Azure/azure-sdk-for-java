@@ -23,11 +23,8 @@ public final class LuceneStandardTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer();
+        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer(obj.getName());
         PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-
-        String name = obj.getName();
-        luceneStandardTokenizer.setName(name);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardTokenizer.setMaxTokenLength(maxTokenLength);
@@ -42,11 +39,8 @@ public final class LuceneStandardTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer();
+        LuceneStandardTokenizer luceneStandardTokenizer = new LuceneStandardTokenizer(obj.getName());
         PrivateFieldAccessHelper.set(luceneStandardTokenizer, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        luceneStandardTokenizer.setName(name);
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         luceneStandardTokenizer.setMaxTokenLength(maxTokenLength);
@@ -64,13 +58,11 @@ public final class LuceneStandardTokenizerConverter {
         }
         String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         if (V1_ODATA_TYPE.equals(identifier)) {
-            return new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer()
-                .setMaxTokenLength(obj.getMaxTokenLength())
-                .setName(obj.getName());
+            return new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizer(obj.getName())
+                .setMaxTokenLength(obj.getMaxTokenLength());
         } else {
-            return new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2()
-                .setMaxTokenLength(obj.getMaxTokenLength())
-                .setName(obj.getName());
+            return new com.azure.search.documents.indexes.implementation.models.LuceneStandardTokenizerV2(obj.getName())
+                .setMaxTokenLength(obj.getMaxTokenLength());
         }
     }
 

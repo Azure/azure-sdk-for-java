@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -26,6 +27,12 @@ public final class FieldMappingFunction {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
+    /** Creates an instance of FieldMappingFunction class. */
+    @JsonCreator
+    public FieldMappingFunction(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
     /**
      * Get the name property: The name of the field mapping function.
      *
@@ -41,11 +48,6 @@ public final class FieldMappingFunction {
      * @param name the name value to set.
      * @return the FieldMappingFunction object itself.
      */
-    public FieldMappingFunction setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the parameters property: A dictionary of parameter name/value pairs to pass to the function. Each value must
      * be of a primitive type.
@@ -66,5 +68,16 @@ public final class FieldMappingFunction {
     public FieldMappingFunction setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model FieldMappingFunction");
+        }
     }
 }

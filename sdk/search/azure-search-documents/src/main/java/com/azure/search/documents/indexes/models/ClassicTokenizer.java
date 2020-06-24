@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,14 @@ public final class ClassicTokenizer extends LexicalTokenizer {
      */
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
+
+    /**
+     * {@inheritDoc}
+     */
+    @JsonCreator
+    public ClassicTokenizer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Default is

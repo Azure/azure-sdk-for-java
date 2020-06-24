@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -26,6 +27,12 @@ public final class IndexingSchedule {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
+    /** Creates an instance of IndexingSchedule class. */
+    @JsonCreator
+    public IndexingSchedule(@JsonProperty(value = "interval", required = true) Duration interval) {
+        this.interval = interval;
+    }
+
     /**
      * Get the interval property: The interval of time between indexer executions.
      *
@@ -41,11 +48,6 @@ public final class IndexingSchedule {
      * @param interval the interval value to set.
      * @return the IndexingSchedule object itself.
      */
-    public IndexingSchedule setInterval(Duration interval) {
-        this.interval = interval;
-        return this;
-    }
-
     /**
      * Get the startTime property: The time when an indexer should start running.
      *
@@ -64,5 +66,16 @@ public final class IndexingSchedule {
     public IndexingSchedule setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getInterval() == null) {
+            throw new IllegalArgumentException("Missing required property interval in model IndexingSchedule");
+        }
     }
 }

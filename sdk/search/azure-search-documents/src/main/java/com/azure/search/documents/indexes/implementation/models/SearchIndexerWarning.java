@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SearchIndexerWarning model. */
@@ -46,6 +47,13 @@ public final class SearchIndexerWarning {
      */
     @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
+
+    /** Creates an instance of SearchIndexerWarning class. */
+    @JsonCreator
+    public SearchIndexerWarning(
+            @JsonProperty(value = "message", required = true, access = JsonProperty.Access.WRITE_ONLY) String message) {
+        this.message = message;
+    }
 
     /**
      * Get the key property: The key of the item which generated a warning.
@@ -94,4 +102,11 @@ public final class SearchIndexerWarning {
     public String getDocumentationLink() {
         return this.documentationLink;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

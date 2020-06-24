@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServiceCounters model. */
@@ -54,6 +55,25 @@ public final class ServiceCounters {
     @JsonProperty(value = "skillsetCount", required = true)
     private ResourceCounter skillsetCounter;
 
+    /** Creates an instance of ServiceCounters class. */
+    @JsonCreator
+    public ServiceCounters(
+            @JsonProperty(value = "documentCount", required = true) ResourceCounter documentCounter,
+            @JsonProperty(value = "indexesCount", required = true) ResourceCounter indexCounter,
+            @JsonProperty(value = "indexersCount", required = true) ResourceCounter indexerCounter,
+            @JsonProperty(value = "dataSourcesCount", required = true) ResourceCounter dataSourceCounter,
+            @JsonProperty(value = "storageSize", required = true) ResourceCounter storageSizeCounter,
+            @JsonProperty(value = "synonymMaps", required = true) ResourceCounter synonymMapCounter,
+            @JsonProperty(value = "skillsetCount", required = true) ResourceCounter skillsetCounter) {
+        this.documentCounter = documentCounter;
+        this.indexCounter = indexCounter;
+        this.indexerCounter = indexerCounter;
+        this.dataSourceCounter = dataSourceCounter;
+        this.storageSizeCounter = storageSizeCounter;
+        this.synonymMapCounter = synonymMapCounter;
+        this.skillsetCounter = skillsetCounter;
+    }
+
     /**
      * Get the documentCounter property: Total number of documents across all indexes in the service.
      *
@@ -69,11 +89,6 @@ public final class ServiceCounters {
      * @param documentCounter the documentCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setDocumentCounter(ResourceCounter documentCounter) {
-        this.documentCounter = documentCounter;
-        return this;
-    }
-
     /**
      * Get the indexCounter property: Total number of indexes.
      *
@@ -89,11 +104,6 @@ public final class ServiceCounters {
      * @param indexCounter the indexCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setIndexCounter(ResourceCounter indexCounter) {
-        this.indexCounter = indexCounter;
-        return this;
-    }
-
     /**
      * Get the indexerCounter property: Total number of indexers.
      *
@@ -109,11 +119,6 @@ public final class ServiceCounters {
      * @param indexerCounter the indexerCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setIndexerCounter(ResourceCounter indexerCounter) {
-        this.indexerCounter = indexerCounter;
-        return this;
-    }
-
     /**
      * Get the dataSourceCounter property: Total number of data sources.
      *
@@ -129,11 +134,6 @@ public final class ServiceCounters {
      * @param dataSourceCounter the dataSourceCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setDataSourceCounter(ResourceCounter dataSourceCounter) {
-        this.dataSourceCounter = dataSourceCounter;
-        return this;
-    }
-
     /**
      * Get the storageSizeCounter property: Total size of used storage in bytes.
      *
@@ -149,11 +149,6 @@ public final class ServiceCounters {
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setStorageSizeCounter(ResourceCounter storageSizeCounter) {
-        this.storageSizeCounter = storageSizeCounter;
-        return this;
-    }
-
     /**
      * Get the synonymMapCounter property: Total number of synonym maps.
      *
@@ -169,11 +164,6 @@ public final class ServiceCounters {
      * @param synonymMapCounter the synonymMapCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
-        this.synonymMapCounter = synonymMapCounter;
-        return this;
-    }
-
     /**
      * Get the skillsetCounter property: Total number of skillsets.
      *
@@ -189,8 +179,46 @@ public final class ServiceCounters {
      * @param skillsetCounter the skillsetCounter value to set.
      * @return the ServiceCounters object itself.
      */
-    public ServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
-        this.skillsetCounter = skillsetCounter;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getDocumentCounter() == null) {
+            throw new IllegalArgumentException("Missing required property documentCounter in model ServiceCounters");
+        } else {
+            getDocumentCounter().validate();
+        }
+        if (getIndexCounter() == null) {
+            throw new IllegalArgumentException("Missing required property indexCounter in model ServiceCounters");
+        } else {
+            getIndexCounter().validate();
+        }
+        if (getIndexerCounter() == null) {
+            throw new IllegalArgumentException("Missing required property indexerCounter in model ServiceCounters");
+        } else {
+            getIndexerCounter().validate();
+        }
+        if (getDataSourceCounter() == null) {
+            throw new IllegalArgumentException("Missing required property dataSourceCounter in model ServiceCounters");
+        } else {
+            getDataSourceCounter().validate();
+        }
+        if (getStorageSizeCounter() == null) {
+            throw new IllegalArgumentException("Missing required property storageSizeCounter in model ServiceCounters");
+        } else {
+            getStorageSizeCounter().validate();
+        }
+        if (getSynonymMapCounter() == null) {
+            throw new IllegalArgumentException("Missing required property synonymMapCounter in model ServiceCounters");
+        } else {
+            getSynonymMapCounter().validate();
+        }
+        if (getSkillsetCounter() == null) {
+            throw new IllegalArgumentException("Missing required property skillsetCounter in model ServiceCounters");
+        } else {
+            getSkillsetCounter().validate();
+        }
     }
 }

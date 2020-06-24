@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,12 @@ public class UniqueTokenFilter extends TokenFilter {
      */
     @JsonProperty(value = "onlyOnSamePosition")
     private Boolean onlyOnSamePosition;
+
+    /** Creates an instance of UniqueTokenFilter class. */
+    @JsonCreator
+    public UniqueTokenFilter(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the onlyOnSamePosition property: A value indicating whether to remove duplicates only at the same position.
@@ -45,5 +52,15 @@ public class UniqueTokenFilter extends TokenFilter {
     public UniqueTokenFilter setOnlyOnSamePosition(Boolean onlyOnSamePosition) {
         this.onlyOnSamePosition = onlyOnSamePosition;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

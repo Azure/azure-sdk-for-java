@@ -8,6 +8,7 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,6 +25,13 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
     @JsonProperty(value = "highWaterMarkColumnName", required = true)
     private String highWaterMarkColumnName;
 
+    /** Creates an instance of HighWaterMarkChangeDetectionPolicy class. */
+    @JsonCreator
+    public HighWaterMarkChangeDetectionPolicy(
+            @JsonProperty(value = "highWaterMarkColumnName", required = true) String highWaterMarkColumnName) {
+        this.highWaterMarkColumnName = highWaterMarkColumnName;
+    }
+
     /**
      * Get the highWaterMarkColumnName property: The name of the high water mark column.
      *
@@ -39,8 +47,17 @@ public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolic
      * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
      * @return the HighWaterMarkChangeDetectionPolicy object itself.
      */
-    public HighWaterMarkChangeDetectionPolicy setHighWaterMarkColumnName(String highWaterMarkColumnName) {
-        this.highWaterMarkColumnName = highWaterMarkColumnName;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (getHighWaterMarkColumnName() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property highWaterMarkColumnName in model HighWaterMarkChangeDetectionPolicy");
+        }
     }
 }

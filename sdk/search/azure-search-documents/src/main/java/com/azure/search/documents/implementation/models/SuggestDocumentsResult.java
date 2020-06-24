@@ -7,6 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -26,6 +27,14 @@ public final class SuggestDocumentsResult {
     @JsonProperty(value = "@search.coverage", access = JsonProperty.Access.WRITE_ONLY)
     private Double coverage;
 
+    /** Creates an instance of SuggestDocumentsResult class. */
+    @JsonCreator
+    public SuggestDocumentsResult(
+            @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    List<SuggestResult> results) {
+        this.results = results;
+    }
+
     /**
      * Get the results property: The sequence of results returned by the query.
      *
@@ -43,5 +52,16 @@ public final class SuggestDocumentsResult {
      */
     public Double getCoverage() {
         return this.coverage;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getResults() != null) {
+            getResults().forEach(e -> e.validate());
+        }
     }
 }

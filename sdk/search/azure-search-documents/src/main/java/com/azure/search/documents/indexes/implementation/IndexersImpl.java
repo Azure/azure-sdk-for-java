@@ -166,6 +166,17 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexerName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -195,6 +206,17 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexerName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -234,6 +256,22 @@ public final class IndexersImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexerName is required and cannot be null."));
+        }
+        if (indexer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexer is required and cannot be null."));
+        } else {
+            indexer.validate();
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -272,6 +310,17 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String indexerName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexerName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -303,6 +352,17 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> getWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexerName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -333,6 +393,14 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListIndexersResult>> listWithResponseAsync(
             String select, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -357,6 +425,19 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createWithResponseAsync(
             SearchIndexer indexer, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexer == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexer is required and cannot be null."));
+        } else {
+            indexer.validate();
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -381,6 +462,17 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerStatus>> getStatusWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                    new IllegalArgumentException(
+                            "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (indexerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter indexerName is required and cannot be null."));
+        }
+        if (requestOptions != null) {
+            requestOptions.validate();
+        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

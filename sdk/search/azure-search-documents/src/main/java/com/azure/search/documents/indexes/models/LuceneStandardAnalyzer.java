@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -30,6 +31,14 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
      */
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
+
+    /**
+     * {@inheritDoc}
+     */
+    @JsonCreator
+    public LuceneStandardAnalyzer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
 
     /**
      * Get the maxTokenLength property: The maximum token length. Default is

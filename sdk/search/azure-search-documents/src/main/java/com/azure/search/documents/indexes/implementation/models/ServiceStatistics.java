@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ServiceStatistics model. */
@@ -24,6 +25,15 @@ public final class ServiceStatistics {
     @JsonProperty(value = "limits", required = true)
     private ServiceLimits limits;
 
+    /** Creates an instance of ServiceStatistics class. */
+    @JsonCreator
+    public ServiceStatistics(
+            @JsonProperty(value = "counters", required = true) ServiceCounters counters,
+            @JsonProperty(value = "limits", required = true) ServiceLimits limits) {
+        this.counters = counters;
+        this.limits = limits;
+    }
+
     /**
      * Get the counters property: Service level resource counters.
      *
@@ -39,11 +49,6 @@ public final class ServiceStatistics {
      * @param counters the counters value to set.
      * @return the ServiceStatistics object itself.
      */
-    public ServiceStatistics setCounters(ServiceCounters counters) {
-        this.counters = counters;
-        return this;
-    }
-
     /**
      * Get the limits property: Service level general limits.
      *
@@ -59,8 +64,21 @@ public final class ServiceStatistics {
      * @param limits the limits value to set.
      * @return the ServiceStatistics object itself.
      */
-    public ServiceStatistics setLimits(ServiceLimits limits) {
-        this.limits = limits;
-        return this;
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getCounters() == null) {
+            throw new IllegalArgumentException("Missing required property counters in model ServiceStatistics");
+        } else {
+            getCounters().validate();
+        }
+        if (getLimits() == null) {
+            throw new IllegalArgumentException("Missing required property limits in model ServiceStatistics");
+        } else {
+            getLimits().validate();
+        }
     }
 }
