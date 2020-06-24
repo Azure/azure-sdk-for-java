@@ -956,8 +956,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setLanguage(MicrosoftTokenizerLanguage.THAI)
                     .setName(generateName()),
                 new PathHierarchyTokenizer()
-                    .setDelimiter(":")
-                    .setReplacement("_")
+                    .setDelimiter(':')
+                    .setReplacement('_')
                     .setMaxTokenLength(300)
                     .setTokenOrderReversed(true)
                     .setNumberOfTokensToSkip(2)
@@ -1219,8 +1219,8 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                     .setLanguage(MicrosoftTokenizerLanguage.ENGLISH)
                     .setName(generateSimpleName(i++)),
                 new PathHierarchyTokenizer()
-                    .setDelimiter("/")
-                    .setReplacement("/")
+                    .setDelimiter('/')
+                    .setReplacement('/')
                     .setMaxTokenLength(300)
                     .setName(generateSimpleName(i++)),
                 new PatternTokenizer()

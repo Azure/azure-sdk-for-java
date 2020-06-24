@@ -6,7 +6,7 @@ package com.azure.search.documents.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.search.documents.implementation.converters.SuggestResultConverter;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.models.SuggestResult;
@@ -40,7 +40,7 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
+    public SuggestPagedResponse(Response<SuggestDocumentsResult> documentSearchResponse) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),

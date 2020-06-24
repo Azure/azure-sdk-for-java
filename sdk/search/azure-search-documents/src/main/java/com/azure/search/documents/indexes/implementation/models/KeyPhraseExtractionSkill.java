@@ -7,21 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A skill that uses text analytics for key phrase extraction.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The KeyPhraseExtractionSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Text.KeyPhraseExtractionSkill")
+@JsonFlatten
 @Fluent
-public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
+public class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which language code to use. Default is en. Possible
-     * values include: 'da', 'nl', 'en', 'fi', 'fr', 'de', 'it', 'ja', 'ko',
-     * 'no', 'pl', 'pt-PT', 'pt-BR', 'ru', 'es', 'sv'
+     * A value indicating which language code to use. Default is en.
      */
     @JsonProperty(value = "defaultLanguageCode")
     private KeyPhraseExtractionSkillLanguage defaultLanguageCode;
@@ -34,10 +32,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     private Integer maxKeyPhraseCount;
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'da', 'nl', 'en',
-     * 'fi', 'fr', 'de', 'it', 'ja', 'ko', 'no', 'pl', 'pt-PT', 'pt-BR', 'ru',
-     * 'es', 'sv'.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @return the defaultLanguageCode value.
      */
@@ -46,10 +41,7 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'da', 'nl', 'en',
-     * 'fi', 'fr', 'de', 'it', 'ja', 'ko', 'no', 'pl', 'pt-PT', 'pt-BR', 'ru',
-     * 'es', 'sv'.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the KeyPhraseExtractionSkill object itself.
@@ -60,9 +52,8 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the maxKeyPhraseCount property: A number indicating how many key
-     * phrases to return. If absent, all identified key phrases will be
-     * returned.
+     * Get the maxKeyPhraseCount property: A number indicating how many key phrases to return. If absent, all identified
+     * key phrases will be returned.
      *
      * @return the maxKeyPhraseCount value.
      */
@@ -71,9 +62,8 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the maxKeyPhraseCount property: A number indicating how many key
-     * phrases to return. If absent, all identified key phrases will be
-     * returned.
+     * Set the maxKeyPhraseCount property: A number indicating how many key phrases to return. If absent, all identified
+     * key phrases will be returned.
      *
      * @param maxKeyPhraseCount the maxKeyPhraseCount value to set.
      * @return the KeyPhraseExtractionSkill object itself.

@@ -6,13 +6,11 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents an item-level warning.
- */
-@Fluent
+/** The SearchIndexerWarning model. */
+@Immutable
 public final class SearchIndexerWarning {
     /*
      * The key of the item which generated a warning.
@@ -59,8 +57,7 @@ public final class SearchIndexerWarning {
     }
 
     /**
-     * Get the message property: The message describing the warning that
-     * occurred while processing the item.
+     * Get the message property: The message describing the warning that occurred while processing the item.
      *
      * @return the message value.
      */
@@ -69,9 +66,8 @@ public final class SearchIndexerWarning {
     }
 
     /**
-     * Get the name property: The name of the source at which the warning
-     * originated. For example, this could refer to a particular skill in the
-     * attached skillset. This may not be always available.
+     * Get the name property: The name of the source at which the warning originated. For example, this could refer to a
+     * particular skill in the attached skillset. This may not be always available.
      *
      * @return the name value.
      */
@@ -80,8 +76,8 @@ public final class SearchIndexerWarning {
     }
 
     /**
-     * Get the details property: Additional, verbose details about the warning
-     * to assist in debugging the indexer. This may not be always available.
+     * Get the details property: Additional, verbose details about the warning to assist in debugging the indexer. This
+     * may not be always available.
      *
      * @return the details value.
      */
@@ -90,8 +86,8 @@ public final class SearchIndexerWarning {
     }
 
     /**
-     * Get the documentationLink property: A link to a troubleshooting guide
-     * for these classes of warnings. This may not be always available.
+     * Get the documentationLink property: A link to a troubleshooting guide for these classes of warnings. This may not
+     * be always available.
      *
      * @return the documentationLink value.
      */

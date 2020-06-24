@@ -7,22 +7,20 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * A skill that analyzes image files. It extracts a rich set of visual features
- * based on the image content.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The ImageAnalysisSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Vision.ImageAnalysisSkill")
+@JsonFlatten
 @Fluent
-public final class ImageAnalysisSkill extends SearchIndexerSkill {
+public class ImageAnalysisSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which language code to use. Default is en. Possible
-     * values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * A value indicating which language code to use. Default is en.
      */
     @JsonProperty(value = "defaultLanguageCode")
     private ImageAnalysisSkillLanguage defaultLanguageCode;
@@ -40,9 +38,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     private List<ImageDetail> details;
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'en', 'es', 'ja',
-     * 'pt', 'zh'.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @return the defaultLanguageCode value.
      */
@@ -51,9 +47,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'en', 'es', 'ja',
-     * 'pt', 'zh'.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the ImageAnalysisSkill object itself.
@@ -84,8 +78,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the details property: A string indicating which domain-specific
-     * details to return.
+     * Get the details property: A string indicating which domain-specific details to return.
      *
      * @return the details value.
      */
@@ -94,8 +87,7 @@ public final class ImageAnalysisSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the details property: A string indicating which domain-specific
-     * details to return.
+     * Set the details property: A string indicating which domain-specific details to return.
      *
      * @param details the details value to set.
      * @return the ImageAnalysisSkill object itself.

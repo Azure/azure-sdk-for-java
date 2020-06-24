@@ -10,48 +10,30 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for RegexFlags.
- */
+/** Defines values for RegexFlags. */
 public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
-    /**
-     * Static value CANON_EQ for RegexFlags.
-     */
+    /** Static value CANON_EQ for RegexFlags. */
     public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
 
-    /**
-     * Static value CASE_INSENSITIVE for RegexFlags.
-     */
+    /** Static value CASE_INSENSITIVE for RegexFlags. */
     public static final RegexFlags CASE_INSENSITIVE = fromString("CASE_INSENSITIVE");
 
-    /**
-     * Static value COMMENTS for RegexFlags.
-     */
+    /** Static value COMMENTS for RegexFlags. */
     public static final RegexFlags COMMENTS = fromString("COMMENTS");
 
-    /**
-     * Static value DOTALL for RegexFlags.
-     */
-    public static final RegexFlags DOT_ALL = fromString("DOTALL");
+    /** Static value DOTALL for RegexFlags. */
+    public static final RegexFlags DOTALL = fromString("DOTALL");
 
-    /**
-     * Static value LITERAL for RegexFlags.
-     */
+    /** Static value LITERAL for RegexFlags. */
     public static final RegexFlags LITERAL = fromString("LITERAL");
 
-    /**
-     * Static value MULTILINE for RegexFlags.
-     */
+    /** Static value MULTILINE for RegexFlags. */
     public static final RegexFlags MULTILINE = fromString("MULTILINE");
 
-    /**
-     * Static value UNICODE_CASE for RegexFlags.
-     */
+    /** Static value UNICODE_CASE for RegexFlags. */
     public static final RegexFlags UNICODE_CASE = fromString("UNICODE_CASE");
 
-    /**
-     * Static value UNIX_LINES for RegexFlags.
-     */
+    /** Static value UNIX_LINES for RegexFlags. */
     public static final RegexFlags UNIX_LINES = fromString("UNIX_LINES");
 
     /**
@@ -65,9 +47,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
         return fromString(name, RegexFlags.class);
     }
 
-    /**
-     * @return known RegexFlags values.
-     */
+    /** @return known RegexFlags values. */
     public static Collection<RegexFlags> values() {
         return values(RegexFlags.class);
     }

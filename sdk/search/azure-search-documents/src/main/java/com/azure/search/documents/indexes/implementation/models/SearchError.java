@@ -6,14 +6,12 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes an error condition for the Azure Cognitive Search API.
- */
-@Fluent
+/** The SearchError model. */
+@Immutable
 public final class SearchError {
     /*
      * One of a server-defined set of error codes.
@@ -53,8 +51,7 @@ public final class SearchError {
     }
 
     /**
-     * Get the details property: An array of details about specific errors that
-     * led to this reported error.
+     * Get the details property: An array of details about specific errors that led to this reported error.
      *
      * @return the details value.
      */

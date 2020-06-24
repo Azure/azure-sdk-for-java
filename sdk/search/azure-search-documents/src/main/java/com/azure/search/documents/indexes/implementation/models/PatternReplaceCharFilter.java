@@ -7,22 +7,17 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A character filter that replaces characters in the input string. It uses a
- * regular expression to identify character sequences to preserve and a
- * replacement pattern to identify characters to replace. For example, given
- * the input text "aa bb aa bb", pattern "(aa)\s+(bb)", and replacement
- * "$1#$2", the result would be "aa#bb aa#bb". This character filter is
- * implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The PatternReplaceCharFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternReplaceCharFilter")
+@JsonFlatten
 @Fluent
-public final class PatternReplaceCharFilter extends CharFilter {
+public class PatternReplaceCharFilter extends CharFilter {
     /*
      * A regular expression pattern.
      */

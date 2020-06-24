@@ -9,10 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Response from a get service statistics request. If successful, it includes
- * service level counters and limits.
- */
+/** The ServiceStatistics model. */
 @Fluent
 public final class ServiceStatistics {
     /*

@@ -9,10 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents a datasource definition, which can be used to configure an
- * indexer.
- */
+/** The SearchIndexerDataSource model. */
 @Fluent
 public final class SearchIndexerDataSource {
     /*
@@ -28,8 +25,7 @@ public final class SearchIndexerDataSource {
     private String description;
 
     /*
-     * The type of the datasource. Possible values include: 'AzureSql',
-     * 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'
+     * The type of the datasource.
      */
     @JsonProperty(value = "type", required = true)
     private SearchIndexerDataSourceType type;
@@ -105,8 +101,7 @@ public final class SearchIndexerDataSource {
     }
 
     /**
-     * Get the type property: The type of the datasource. Possible values
-     * include: 'AzureSql', 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'.
+     * Get the type property: The type of the datasource.
      *
      * @return the type value.
      */
@@ -115,8 +110,7 @@ public final class SearchIndexerDataSource {
     }
 
     /**
-     * Set the type property: The type of the datasource. Possible values
-     * include: 'AzureSql', 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'.
+     * Set the type property: The type of the datasource.
      *
      * @param type the type value to set.
      * @return the SearchIndexerDataSource object itself.
@@ -167,8 +161,7 @@ public final class SearchIndexerDataSource {
     }
 
     /**
-     * Get the dataChangeDetectionPolicy property: The data change detection
-     * policy for the datasource.
+     * Get the dataChangeDetectionPolicy property: The data change detection policy for the datasource.
      *
      * @return the dataChangeDetectionPolicy value.
      */
@@ -177,11 +170,9 @@ public final class SearchIndexerDataSource {
     }
 
     /**
-     * Set the dataChangeDetectionPolicy property: The data change detection
-     * policy for the datasource.
+     * Set the dataChangeDetectionPolicy property: The data change detection policy for the datasource.
      *
-     * @param dataChangeDetectionPolicy the dataChangeDetectionPolicy value to
-     * set.
+     * @param dataChangeDetectionPolicy the dataChangeDetectionPolicy value to set.
      * @return the SearchIndexerDataSource object itself.
      */
     public SearchIndexerDataSource setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
@@ -190,8 +181,7 @@ public final class SearchIndexerDataSource {
     }
 
     /**
-     * Get the dataDeletionDetectionPolicy property: The data deletion
-     * detection policy for the datasource.
+     * Get the dataDeletionDetectionPolicy property: The data deletion detection policy for the datasource.
      *
      * @return the dataDeletionDetectionPolicy value.
      */
@@ -200,14 +190,13 @@ public final class SearchIndexerDataSource {
     }
 
     /**
-     * Set the dataDeletionDetectionPolicy property: The data deletion
-     * detection policy for the datasource.
+     * Set the dataDeletionDetectionPolicy property: The data deletion detection policy for the datasource.
      *
-     * @param dataDeletionDetectionPolicy the dataDeletionDetectionPolicy value
-     * to set.
+     * @param dataDeletionDetectionPolicy the dataDeletionDetectionPolicy value to set.
      * @return the SearchIndexerDataSource object itself.
      */
-    public SearchIndexerDataSource setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
+    public SearchIndexerDataSource setDataDeletionDetectionPolicy(
+            DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
         return this;
     }

@@ -7,34 +7,25 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * A filter that stems words using a Snowball-generated stemmer. This token
- * filter is implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The SnowballTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.SnowballTokenFilter")
+@JsonFlatten
 @Fluent
-public final class SnowballTokenFilter extends TokenFilter {
+public class SnowballTokenFilter extends TokenFilter {
     /*
-     * The language to use. Possible values include: 'Armenian', 'Basque',
-     * 'Catalan', 'Danish', 'Dutch', 'English', 'Finnish', 'French', 'German',
-     * 'German2', 'Hungarian', 'Italian', 'Kp', 'Lovins', 'Norwegian',
-     * 'Porter', 'Portuguese', 'Romanian', 'Russian', 'Spanish', 'Swedish',
-     * 'Turkish'
+     * The language to use.
      */
     @JsonProperty(value = "language", required = true)
     private SnowballTokenFilterLanguage language;
 
     /**
-     * Get the language property: The language to use. Possible values include:
-     * 'Armenian', 'Basque', 'Catalan', 'Danish', 'Dutch', 'English',
-     * 'Finnish', 'French', 'German', 'German2', 'Hungarian', 'Italian', 'Kp',
-     * 'Lovins', 'Norwegian', 'Porter', 'Portuguese', 'Romanian', 'Russian',
-     * 'Spanish', 'Swedish', 'Turkish'.
+     * Get the language property: The language to use.
      *
      * @return the language value.
      */
@@ -43,11 +34,7 @@ public final class SnowballTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the language property: The language to use. Possible values include:
-     * 'Armenian', 'Basque', 'Catalan', 'Danish', 'Dutch', 'English',
-     * 'Finnish', 'French', 'German', 'German2', 'Hungarian', 'Italian', 'Kp',
-     * 'Lovins', 'Norwegian', 'Porter', 'Portuguese', 'Romanian', 'Russian',
-     * 'Spanish', 'Swedish', 'Turkish'.
+     * Set the language property: The language to use.
      *
      * @param language the language value to set.
      * @return the SnowballTokenFilter object itself.

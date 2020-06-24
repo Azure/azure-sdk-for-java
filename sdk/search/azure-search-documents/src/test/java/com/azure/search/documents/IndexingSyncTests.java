@@ -802,14 +802,16 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotelsToUpload)
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
-        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
+        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload,
+            null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, indexResponse.getStatusCode());
         IndexDocumentsResult result = indexResponse.getValue();
         assertEquals(2, result.getResults().size());
 
-        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, Context.NONE);
+        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge,
+            null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, updateResponse.getStatusCode());
@@ -817,21 +819,23 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
-            hotelsToMergeOrUpload, Context.NONE);
+            hotelsToMergeOrUpload, null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, mergeOrUploadResponse.getStatusCode());
         result = mergeOrUploadResponse.getValue();
         assertEquals(2, result.getResults().size());
 
-        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, Context.NONE);
+        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete,
+            null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, deleteResponse.getStatusCode());
         result = deleteResponse.getValue();
         assertEquals(1, result.getResults().size());
 
-        Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch, Context.NONE);
+        Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch,
+            null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, batchResponse.getStatusCode());
@@ -844,7 +848,7 @@ public class IndexingSyncTests extends SearchTestBase {
         SearchDocument doc = documentResponse.getValue();
         assertEquals(4, doc.get("Rating"));
 
-        Response<Long> countResponse = client.getDocumentCountWithResponse(Context.NONE);
+        Response<Long> countResponse = client.getDocumentCountWithResponse(null, Context.NONE);
         assertEquals(200, countResponse.getStatusCode());
         Long count = countResponse.getValue();
         assertEquals(4L, count.longValue());

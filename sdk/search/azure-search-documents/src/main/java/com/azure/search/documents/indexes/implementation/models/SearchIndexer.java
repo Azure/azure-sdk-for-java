@@ -10,9 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents an indexer.
- */
+/** The SearchIndexer model. */
 @Fluent
 public final class SearchIndexer {
     /*
@@ -124,8 +122,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Get the dataSourceName property: The name of the datasource from which
-     * this indexer reads data.
+     * Get the dataSourceName property: The name of the datasource from which this indexer reads data.
      *
      * @return the dataSourceName value.
      */
@@ -134,8 +131,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the dataSourceName property: The name of the datasource from which
-     * this indexer reads data.
+     * Set the dataSourceName property: The name of the datasource from which this indexer reads data.
      *
      * @param dataSourceName the dataSourceName value to set.
      * @return the SearchIndexer object itself.
@@ -146,8 +142,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Get the skillsetName property: The name of the skillset executing with
-     * this indexer.
+     * Get the skillsetName property: The name of the skillset executing with this indexer.
      *
      * @return the skillsetName value.
      */
@@ -156,8 +151,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the skillsetName property: The name of the skillset executing with
-     * this indexer.
+     * Set the skillsetName property: The name of the skillset executing with this indexer.
      *
      * @param skillsetName the skillsetName value to set.
      * @return the SearchIndexer object itself.
@@ -168,8 +162,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Get the targetIndexName property: The name of the index to which this
-     * indexer writes data.
+     * Get the targetIndexName property: The name of the index to which this indexer writes data.
      *
      * @return the targetIndexName value.
      */
@@ -178,8 +171,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the targetIndexName property: The name of the index to which this
-     * indexer writes data.
+     * Set the targetIndexName property: The name of the index to which this indexer writes data.
      *
      * @param targetIndexName the targetIndexName value to set.
      * @return the SearchIndexer object itself.
@@ -230,8 +222,8 @@ public final class SearchIndexer {
     }
 
     /**
-     * Get the fieldMappings property: Defines mappings between fields in the
-     * data source and corresponding target fields in the index.
+     * Get the fieldMappings property: Defines mappings between fields in the data source and corresponding target
+     * fields in the index.
      *
      * @return the fieldMappings value.
      */
@@ -240,8 +232,8 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the fieldMappings property: Defines mappings between fields in the
-     * data source and corresponding target fields in the index.
+     * Set the fieldMappings property: Defines mappings between fields in the data source and corresponding target
+     * fields in the index.
      *
      * @param fieldMappings the fieldMappings value to set.
      * @return the SearchIndexer object itself.
@@ -252,8 +244,8 @@ public final class SearchIndexer {
     }
 
     /**
-     * Get the outputFieldMappings property: Output field mappings are applied
-     * after enrichment and immediately before indexing.
+     * Get the outputFieldMappings property: Output field mappings are applied after enrichment and immediately before
+     * indexing.
      *
      * @return the outputFieldMappings value.
      */
@@ -262,8 +254,8 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the outputFieldMappings property: Output field mappings are applied
-     * after enrichment and immediately before indexing.
+     * Set the outputFieldMappings property: Output field mappings are applied after enrichment and immediately before
+     * indexing.
      *
      * @param outputFieldMappings the outputFieldMappings value to set.
      * @return the SearchIndexer object itself.
@@ -274,8 +266,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Get the isDisabled property: A value indicating whether the indexer is
-     * disabled. Default is false.
+     * Get the isDisabled property: A value indicating whether the indexer is disabled. Default is false.
      *
      * @return the isDisabled value.
      */
@@ -284,8 +275,7 @@ public final class SearchIndexer {
     }
 
     /**
-     * Set the isDisabled property: A value indicating whether the indexer is
-     * disabled. Default is false.
+     * Set the isDisabled property: A value indicating whether the indexer is disabled. Default is false.
      *
      * @param isDisabled the isDisabled value to set.
      * @return the SearchIndexer object itself.

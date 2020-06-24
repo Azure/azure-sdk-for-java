@@ -9,23 +9,15 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for EdgeNGramTokenFilterSide.
- */
+/** Defines values for EdgeNGramTokenFilterSide. */
 public enum EdgeNGramTokenFilterSide {
-    /**
-     * Enum value front.
-     */
+    /** Enum value front. */
     FRONT("front"),
 
-    /**
-     * Enum value back.
-     */
+    /** Enum value back. */
     BACK("back");
 
-    /**
-     * The actual serialized value for a EdgeNGramTokenFilterSide instance.
-     */
+    /** The actual serialized value for a EdgeNGramTokenFilterSide instance. */
     private final String value;
 
     EdgeNGramTokenFilterSide(String value) {

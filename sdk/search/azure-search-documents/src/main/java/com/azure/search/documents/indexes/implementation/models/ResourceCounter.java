@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents a resource's usage and quota.
- */
+/** The ResourceCounter model. */
 @Fluent
 public final class ResourceCounter {
     /*

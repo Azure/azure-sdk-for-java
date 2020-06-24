@@ -6,15 +6,12 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response from a List Datasources request. If successful, it includes the
- * full definitions of all datasources.
- */
-@Fluent
+/** The ListDataSourcesResult model. */
+@Immutable
 public final class ListDataSourcesResult {
     /*
      * The datasources in the Search service.

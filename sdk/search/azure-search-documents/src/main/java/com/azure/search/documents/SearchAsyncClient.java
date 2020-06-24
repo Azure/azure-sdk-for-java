@@ -11,10 +11,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -68,11 +66,6 @@ public final class SearchAsyncClient {
     private static final int MULTI_STATUS_CODE = 207;
 
     /**
-     * The lazily-created serializer for search index client.
-     */
-    private static final SerializerAdapter SERIALIZER = initializeSerializerAdapter();
-
-    /**
      * Search REST API Version
      */
     private final SearchServiceVersion serviceVersion;
@@ -95,12 +88,19 @@ public final class SearchAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Azure Cognitive Search service
      */
-    private final SearchIndexRestClientImpl restClient;
+    private final SearchIndexClientImpl restClient;
 
     /**
      * The pipeline that powers this client.
      */
     private final HttpPipeline httpPipeline;
+
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new ObjectMapper();
+        SerializationUtil.configureMapper(MAPPER);
+    }
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
@@ -113,13 +113,12 @@ public final class SearchAsyncClient {
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
 
-        restClient = new SearchIndexRestClientBuilder()
+        restClient = new SearchIndexClientImplBuilder()
             .endpoint(endpoint)
             .indexName(indexName)
-            .apiVersion(serviceVersion.getVersion())
+         //   .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .serializer(SERIALIZER)
-            .build();
+            .buildClient();
     }
 
     /**
@@ -155,7 +154,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> uploadDocuments(Iterable<?> documents) {
-        return uploadDocumentsWithResponse(documents).map(Response::getValue);
+        return uploadDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -172,12 +171,14 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> uploadDocumentsWithResponse(documents, context));
+    public Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions) {
+        return withContext(context -> uploadDocumentsWithResponse(documents, requestOptions, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), context);
+    Mono<Response<IndexDocumentsResult>> uploadDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.UPLOAD), requestOptions, context);
     }
 
     /**
@@ -202,7 +203,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeDocuments(Iterable<?> documents) {
-        return mergeDocumentsWithResponse(documents).map(Response::getValue);
+        return mergeDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -226,12 +227,14 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> mergeDocumentsWithResponse(documents, context));
+    public Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions) {
+        return withContext(context -> mergeDocumentsWithResponse(documents, requestOptions, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), context);
+    Mono<Response<IndexDocumentsResult>> mergeDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE), requestOptions, context);
     }
 
     /**
@@ -257,7 +260,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> mergeOrUploadDocuments(Iterable<?> documents) {
-        return mergeOrUploadDocumentsWithResponse(documents).map(Response::getValue);
+        return mergeOrUploadDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -282,12 +285,15 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, context));
+    public Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions) {
+        return withContext(context -> mergeOrUploadDocumentsWithResponse(documents, requestOptions, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), context);
+    Mono<Response<IndexDocumentsResult>> mergeOrUploadDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.MERGE_OR_UPLOAD), requestOptions,
+            context);
     }
 
     /**
@@ -305,7 +311,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> deleteDocuments(Iterable<?> documents) {
-        return deleteDocumentsWithResponse(documents).map(Response::getValue);
+        return deleteDocumentsWithResponse(documents, null).map(Response::getValue);
     }
 
     /**
@@ -322,12 +328,14 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents) {
-        return withContext(context -> deleteDocumentsWithResponse(documents, context));
+    public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions) {
+        return withContext(context -> deleteDocumentsWithResponse(documents,requestOptions, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents, Context context) {
-        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), context);
+    Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
+        RequestOptions requestOptions, Context context) {
+        return indexDocumentsWithResponse(buildIndexBatch(documents, IndexActionType.DELETE), requestOptions, context);
     }
 
     /**
@@ -346,7 +354,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
-        return this.getDocumentCountWithResponse().map(Response::getValue);
+        return this.getDocumentCountWithResponse(null).map(Response::getValue);
     }
 
     /**
@@ -355,14 +363,14 @@ public final class SearchAsyncClient {
      * @return response containing the number of documents.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Long>> getDocumentCountWithResponse() {
-        return withContext(this::getDocumentCountWithResponse);
+    public Mono<Response<Long>> getDocumentCountWithResponse(RequestOptions requestOptions) {
+        return withContext(context -> getDocumentCountWithResponse(requestOptions, context));
     }
 
-    Mono<Response<Long>> getDocumentCountWithResponse(Context context) {
+    Mono<Response<Long>> getDocumentCountWithResponse(RequestOptions requestOptions, Context context) {
         try {
-            return restClient.documents()
-                .countWithRestResponseAsync(context)
+            return restClient.getDocuments()
+                .countWithResponseAsync(RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -423,7 +431,7 @@ public final class SearchAsyncClient {
         SearchRequest requestToUse = (continuationToken == null) ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.documents().searchPostWithRestResponseAsync(requestToUse,
+        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
@@ -467,12 +475,12 @@ public final class SearchAsyncClient {
     Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.documents()
-                .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
+            return restClient.getDocuments()
+                .getWithResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
-                    SearchDocument doc = new SearchDocument(res.getValue());
-                    return new SimpleResponse<>(res, doc);
+                    SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
+                    return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -525,7 +533,7 @@ public final class SearchAsyncClient {
 
     private Mono<SuggestPagedResponse> suggest(RequestOptions requestOptions, SuggestRequest suggestRequest,
         Context context) {
-        return restClient.documents().suggestPostWithRestResponseAsync(suggestRequest,
+        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(SuggestPagedResponse::new);
@@ -546,7 +554,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IndexDocumentsResult> indexDocuments(IndexDocumentsBatch<?> batch) {
-        return indexDocumentsWithResponse(batch).map(Response::getValue);
+        return indexDocumentsWithResponse(batch, null).map(Response::getValue);
     }
 
     /**
@@ -563,14 +571,17 @@ public final class SearchAsyncClient {
      * delete documents</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch) {
-        return withContext(context -> indexDocumentsWithResponse(batch, context));
+    public Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
+        RequestOptions requestOptions) {
+        return withContext(context -> indexDocumentsWithResponse(batch, requestOptions, context));
     }
 
-    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
+    Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
+        RequestOptions requestOptions, Context context) {
         try {
-            return restClient.documents()
-                .indexWithRestResponseAsync(IndexBatchBaseConverter.map(batch), context)
+            return restClient.getDocuments()
+                .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), RequestOptionsConverter.map(requestOptions),
+                    context)
                 .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE)
                     ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
@@ -618,7 +629,7 @@ public final class SearchAsyncClient {
 
     private Mono<AutocompletePagedResponse> autocomplete(RequestOptions requestOptions, AutocompleteRequest request,
         Context context) {
-        return restClient.documents().autocompletePostWithRestResponseAsync(request,
+        return restClient.getDocuments().autocompletePostWithResponseAsync(request,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(MappingUtils::mappingAutocompleteResponse);
@@ -743,19 +754,6 @@ public final class SearchAsyncClient {
 
         return autoCompleteRequest;
     }
-
-    /**
-     * initialize singleton instance of the default serializer adapter.
-     */
-    private static synchronized SerializerAdapter initializeSerializerAdapter() {
-        JacksonAdapter adapter = new JacksonAdapter();
-
-        ObjectMapper mapper = adapter.serializer();
-        SerializationUtil.configureMapper(mapper);
-
-        return adapter;
-    }
-
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();

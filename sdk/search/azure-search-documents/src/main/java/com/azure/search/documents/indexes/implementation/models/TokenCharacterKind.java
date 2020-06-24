@@ -9,38 +9,24 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for TokenCharacterKind.
- */
+/** Defines values for TokenCharacterKind. */
 public enum TokenCharacterKind {
-    /**
-     * Enum value letter.
-     */
+    /** Enum value letter. */
     LETTER("letter"),
 
-    /**
-     * Enum value digit.
-     */
+    /** Enum value digit. */
     DIGIT("digit"),
 
-    /**
-     * Enum value whitespace.
-     */
+    /** Enum value whitespace. */
     WHITESPACE("whitespace"),
 
-    /**
-     * Enum value punctuation.
-     */
+    /** Enum value punctuation. */
     PUNCTUATION("punctuation"),
 
-    /**
-     * Enum value symbol.
-     */
+    /** Enum value symbol. */
     SYMBOL("symbol");
 
-    /**
-     * The actual serialized value for a TokenCharacterKind instance.
-     */
+    /** The actual serialized value for a TokenCharacterKind instance. */
     private final String value;
 
     TokenCharacterKind(String value) {

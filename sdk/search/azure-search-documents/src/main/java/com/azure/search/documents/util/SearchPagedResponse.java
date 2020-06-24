@@ -6,7 +6,7 @@ package com.azure.search.documents.util;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.converters.FacetResultConverter;
 import com.azure.search.documents.implementation.converters.SearchResultConverter;
@@ -40,7 +40,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @param documentSearchResponse An http response with the results.
      * @param serviceVersion The api version to build into continuation token.
      */
-    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+    public SearchPagedResponse(Response<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
@@ -63,7 +63,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         this.coverage = documentsResult.getCoverage();
     }
 
-    private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+    private static String createContinuationToken(Response<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
         if (documentsResult == null) {
