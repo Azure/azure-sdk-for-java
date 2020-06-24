@@ -56,7 +56,7 @@ public class HttpResponseExceptionExample {
 
             for (SearchResult result : results) {
                 // normal results processing
-                System.out.printf("Found hotel: %s%n", result.getDocument().get("HotelName"));
+                System.out.printf("Found hotel: %s%n", result.getDocument(SearchDocument.class).get("HotelName"));
             }
         } catch (HttpResponseException ex) {
             // The exception contains the HTTP status code and the detailed message
@@ -85,7 +85,7 @@ public class HttpResponseExceptionExample {
             .subscribe(
                 foo -> {
                     // normal results processing
-                    System.out.printf("Found hotel: %s%n", foo.getDocument().get("HotelName"));
+                    System.out.printf("Found hotel: %s%n", foo.getDocument(SearchDocument.class).get("HotelName"));
                 },
                 err -> {
                     if (err instanceof HttpResponseException) {

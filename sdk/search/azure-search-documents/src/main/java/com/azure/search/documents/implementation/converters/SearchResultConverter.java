@@ -59,7 +59,7 @@ public final class SearchResultConverter {
             PrivateFieldAccessHelper.set(searchResult, "highlights", highlights);
         }
 
-        SearchDocument additionalProperties = obj.getDocument();
+        SearchDocument additionalProperties = obj.getDocument(SearchDocument.class);
         PrivateFieldAccessHelper.set(searchResult, "additionalProperties", additionalProperties);
         return searchResult;
     }
