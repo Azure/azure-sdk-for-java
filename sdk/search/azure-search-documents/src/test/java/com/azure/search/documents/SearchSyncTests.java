@@ -5,15 +5,14 @@ package com.azure.search.documents;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SynonymMap;
-import com.azure.search.documents.models.CoordinateSystem;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
@@ -52,7 +51,7 @@ import java.util.stream.Stream;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
-import static com.azure.search.documents.TestHelpers.convertToType;
+import static com.azure.search.documents.TestHelpers.createPointGeometry;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
@@ -126,21 +125,20 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedIterable searchResults = client.search("*");
         assertNotNull(searchResults);
-
+        assertNull(searchResults.getTotalCount());
+        assertNull(searchResults.getCoverage());
+        assertNull(searchResults.getFacets());
         Iterator<SearchPagedResponse> iterator = searchResults.iterableByPage().iterator();
 
         List<Map<String, Object>> actualResults = new ArrayList<>(hotels.size());
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            assertNull(result.getCount());
-            assertNull(result.getCoverage());
-            assertNull(result.getFacets());
             assertNotNull(result.getValue());
 
             result.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
                 assertNull(item.getHighlights());
-                actualResults.add(item.getDocument());
+                actualResults.add(item.getDocument(SearchDocument.class));
             });
         }
         assertEquals(hotels.size(), actualResults.size());
@@ -221,38 +219,32 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedIterable results = client.search("*", new SearchOptions(), generateRequestOptions(), Context.NONE);
         assertNotNull(results);
 
+        assertNull(results.getTotalCount());
+        assertNull(results.getCoverage());
+        assertNull(results.getFacets());
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
 
         List<Hotel> actualResults = new ArrayList<>(hotels.size());
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
-            assertNull(result.getCount());
-            assertNull(result.getCoverage());
-            assertNull(result.getFacets());
             assertNotNull(result.getValue());
 
             result.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
                 assertNull(item.getHighlights());
-                Hotel hotel = convertToType(item.getDocument(), Hotel.class);
+                Hotel hotel = item.getDocument(Hotel.class);
                 actualResults.add(hotel);
             });
         }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        SerializationUtil.configureMapper(objectMapper);
-        List<Hotel> hotelsList = hotels.stream().map(hotel -> {
-            Hotel h = objectMapper.convertValue(hotel, Hotel.class);
-            if (h.location() != null) {
-                h.location().setCoordinateSystem(CoordinateSystem.create());
-            }
-            return h;
-        }).collect(Collectors.toList());
+        ObjectMapper MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+        List<Hotel> hotelsList = hotels.stream().map(hotel -> MAPPER.convertValue(hotel, Hotel.class))
+            .collect(Collectors.toList());
 
         assertEquals(hotelsList.size(), actualResults.size());
         actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.hotelId())));
         for (int i = 0; i < hotelsList.size(); i++) {
-            assertObjectEquals(hotelsList.get(i), actualResults.get(i), true);
+            assertObjectEquals(hotelsList.get(i), actualResults.get(i), true, "properties");
         }
     }
 
@@ -285,8 +277,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedResponse result = iterator.next();
         assertEquals(2, result.getValue().size());
-        assertObjectEquals(doc1, convertToType(result.getValue().get(0).getDocument(), NonNullableModel.class), true);
-        assertObjectEquals(doc2, convertToType(result.getValue().get(1).getDocument(), NonNullableModel.class), true);
+        assertObjectEquals(doc1, result.getValue().get(0).getDocument(NonNullableModel.class), true);
+        assertObjectEquals(doc2, result.getValue().get(1).getDocument(NonNullableModel.class), true);
     }
 
     @Test
@@ -304,7 +296,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedResponse result = iterator.next();
         assertEquals(1, result.getValue().size());
-        Date actual = convertToType(result.getValue().get(0).getDocument(), Hotel.class).lastRenovationDate();
+        Date actual = result.getValue().get(0).getDocument(Hotel.class).lastRenovationDate();
         long epochMilli = expected.toInstant().toEpochMilli();
         assertEquals(new Date(epochMilli), actual);
     }
@@ -350,8 +342,8 @@ public class SearchSyncTests extends SearchTestBase {
         Map<String, Object> hotel1 = extractAndTransformSingleResult(result.getValue().get(0));
         Map<String, Object> hotel2 = extractAndTransformSingleResult(result.getValue().get(1));
 
-        assertEquals(expectedHotel1, hotel1);
-        assertEquals(expectedHotel2, hotel2);
+        assertMapEquals(expectedHotel1, hotel1, true);
+        assertMapEquals(expectedHotel2, hotel2, true);
     }
 
     @Test
@@ -425,13 +417,15 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedIterable results = client.search("*", getSearchOptionsForRangeFacets(),
             generateRequestOptions(), Context.NONE);
 
+        assertNotNull(results.getFacets());
+        List<RangeFacetResult<String>> baseRateFacets = getRangeFacetsForField(results.getFacets(),
+            "Rooms/BaseRate", 4);
+        List<RangeFacetResult<String>> lastRenovationDateFacets = getRangeFacetsForField(
+            results.getFacets(), "LastRenovationDate", 2);
+        assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
+
         for (SearchPagedResponse result : results.iterableByPage()) {
             assertContainHotelIds(hotels, result.getValue());
-            assertNotNull(result.getFacets());
-            List<RangeFacetResult<String>> baseRateFacets = getRangeFacetsForField(result.getFacets(), "Rooms/BaseRate", 4);
-            List<RangeFacetResult<String>> lastRenovationDateFacets = getRangeFacetsForField(
-                result.getFacets(), "LastRenovationDate", 2);
-            assertRangeFacets(baseRateFacets, lastRenovationDateFacets);
         }
     }
 
@@ -444,10 +438,10 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedIterable results = client.search("*", getSearchOptionsForValueFacets(),
             generateRequestOptions(), Context.NONE);
 
+        Map<String, List<FacetResult>> facets = results.getFacets();
+        assertNotNull(facets);
         for (SearchPagedResponse result : results.iterableByPage()) {
             assertContainHotelIds(hotels, result.getValue());
-            Map<String, List<FacetResult>> facets = result.getFacets();
-            assertNotNull(facets);
 
             assertValueFacetsEqual(
                 getValueFacetsForField(facets, "Rating", 2),
@@ -575,7 +569,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canGetResultCountInSearch() {
+    public void canGetResultCountInSearch() throws Exception {
         client = setupClient(this::createHotelIndex);
 
         List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
@@ -583,10 +577,12 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalCount(true),
             generateRequestOptions(), Context.NONE);
         assertNotNull(results);
+        assertEquals(hotels.size(), results.getTotalCount().intValue());
+        Thread.sleep(2000);
         Iterable<SearchPagedResponse> pagesIterable = results.iterableByPage();
         Iterator<SearchPagedResponse> iterator = pagesIterable.iterator();
 
-        assertEquals(hotels.size(), iterator.next().getCount().intValue());
+        assertNotNull(iterator.next());
         assertFalse(iterator.hasNext());
     }
 
@@ -636,7 +632,7 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
-            .setScoringParameters(new ScoringParameter("myloc", GeoPoint.create(49, -122)))
+            .setScoringParameters(new ScoringParameter("myloc", createPointGeometry(49.0, -122.0)))
             .setFilter("Rating eq 5 or Rating eq 1");
 
         List<Map<String, Object>> response = getSearchResults(client.search("hotel",
@@ -691,9 +687,7 @@ public class SearchSyncTests extends SearchTestBase {
             generateRequestOptions(), Context.NONE);
         assertNotNull(results);
 
-        Iterator<SearchPagedResponse> resultsIterator = results.iterableByPage().iterator();
-
-        assertEquals(100.0, resultsIterator.next().getCoverage(), 0);
+        assertEquals(100.0, results.getCoverage(), 0);
     }
 
     @Test
@@ -790,14 +784,14 @@ public class SearchSyncTests extends SearchTestBase {
         while (resultsIterator.hasNext()) {
             SearchPagedResponse result = resultsIterator.next();
             assertNotNull(result.getValue());
-            result.getElements().forEach(item -> searchResults.add(item.getDocument()));
+            result.getElements().forEach(item -> searchResults.add(item.getDocument(SearchDocument.class)));
         }
 
         return searchResults;
     }
 
     private Map<String, Object> extractAndTransformSingleResult(SearchResult result) {
-        return convertHashMapToMap((result.getDocument()));
+        return convertHashMapToMap((result.getDocument(SearchDocument.class)));
     }
 
     /**
@@ -856,8 +850,9 @@ public class SearchSyncTests extends SearchTestBase {
     private void assertKeySequenceEqual(SearchPagedIterable results, List<String> expectedKeys) {
         assertNotNull(results);
 
-        List<String> actualKeys = results.stream().filter(doc -> doc.getDocument().containsKey("HotelId"))
-            .map(doc -> (String) doc.getDocument().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = results.stream().filter(doc -> doc.getDocument(SearchDocument.class)
+            .containsKey("HotelId"))
+            .map(doc -> (String) doc.getDocument(SearchDocument.class).get("HotelId")).collect(Collectors.toList());
 
         assertEquals(expectedKeys, actualKeys);
     }
@@ -890,7 +885,7 @@ public class SearchSyncTests extends SearchTestBase {
             Map<String, Object> result = searchIterator.next();
             Map<String, Object> hotel = hotelsIterator.next();
 
-            assertMapEquals(hotel, result, "crs");
+            assertMapEquals(hotel, result, true, "properties");
         }
 
         return true;
@@ -943,8 +938,9 @@ public class SearchSyncTests extends SearchTestBase {
 
     void assertContainHotelIds(List<Map<String, Object>> expected, List<SearchResult> actual) {
         assertNotNull(actual);
-        Set<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
-            .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toSet());
+        Set<String> actualKeys = actual.stream().filter(item -> item.getDocument(SearchDocument.class)
+            .containsKey("HotelId")).map(item -> (String) item.getDocument(SearchDocument.class)
+            .get("HotelId")).collect(Collectors.toSet());
         Set<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
             .map(item -> (String) item.get("HotelId")).collect(Collectors.toSet());
         assertEquals(expectedKeys, actualKeys);
@@ -959,7 +955,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String getSearchResultId(SearchResult searchResult) {
-        return searchResult.getDocument().get("HotelId").toString();
+        return searchResult.getDocument(SearchDocument.class).get("HotelId").toString();
     }
 
     SearchOptions getSearchOptionsForRangeFacets() {
@@ -978,8 +974,9 @@ public class SearchSyncTests extends SearchTestBase {
 
     void assertListEqualHotelIds(List<String> expected, List<SearchResult> actual) {
         assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
-            .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
+        List<String> actualKeys = actual.stream().filter(item -> item.getDocument(SearchDocument.class)
+            .containsKey("HotelId")).map(item -> (String) item.getDocument(SearchDocument.class)
+            .get("HotelId")).collect(Collectors.toList());
         assertEquals(expected, actualKeys);
     }
 

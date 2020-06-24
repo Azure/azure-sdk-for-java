@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -66,7 +66,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     return Mono.just(cachedLease);
                 }
                 // Partition lease update conflict. Reading the current version of lease.
-                return this.client.readItem(itemId, partitionKey, requestOptions, CosmosItemProperties.class)
+                return this.client.readItem(itemId, partitionKey, requestOptions, InternalObjectNode.class)
                     .onErrorResume(throwable -> {
                         if (throwable instanceof CosmosException) {
                             CosmosException ex = (CosmosException) throwable;
@@ -78,7 +78,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         return Mono.error(throwable);
                     })
                     .map(cosmosItemResponse -> {
-                        CosmosItemProperties document =
+                        InternalObjectNode document =
                             BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
                         logger.info(
@@ -119,7 +119,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
             });
     }
 
-    private Mono<CosmosItemProperties> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
+    private Mono<InternalObjectNode> tryReplaceLease(Lease lease, String itemId, PartitionKey partitionKey)
                                                                                         throws LeaseLostException {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))

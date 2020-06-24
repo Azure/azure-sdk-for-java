@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class ChainedTokenCredential implements TokenCredential {
     private final Deque<TokenCredential> credentials;
     private final ClientLogger logger = new ClientLogger(getClass());
+    private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -40,31 +42,29 @@ public class ChainedTokenCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
-            .flatMap(p -> p.getToken(request)
-                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
-                    p.getClass().getSimpleName()))
-                .onErrorResume(CredentialUnavailableException.class, t -> {
-                    exceptions.add(t);
-                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
-                        p.getClass().getSimpleName());
-                    return Mono.empty();
-                }), 1)
-            .next()
-            .switchIfEmpty(Mono.defer(() -> {
-                StringBuilder message = new StringBuilder("Tried "
-                    + credentials.stream().map(c -> c.getClass().getSimpleName())
-                    .collect(Collectors.joining(", "))
-                    + " but failed to acquire a token for any of them. Please verify the"
-                    + " environment for the credentials"
-                    + " and see more details in the causes below.");
-
-                // Chain Exceptions.
-                CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
-                for (int z = exceptions.size() - 2; z >= 0; z--) {
-                    CredentialUnavailableException current = exceptions.get(z);
-                    last = new CredentialUnavailableException(current.getMessage(), last);
-                }
-                return Mono.error(new CredentialUnavailableException(message.toString(), last));
-            }));
+               .flatMap(p -> p.getToken(request).onErrorResume(Exception.class, t -> {
+                   if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                       return Mono.error(new ClientAuthenticationException(
+                            unavailableError + p.getClass().getSimpleName()
+                            + " authentication failed. Error Details: " + t.getMessage(),
+                            null, t));
+                   }
+                   exceptions.add((CredentialUnavailableException) t);
+                   logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                           p.getClass().getSimpleName());
+                   return Mono.empty();
+               }).doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                    p.getClass().getSimpleName())), 1)
+               .next()
+               .switchIfEmpty(Mono.defer(() -> {
+                   // Chain Exceptions.
+                   CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+                   for (int z = exceptions.size() - 2; z >= 0; z--) {
+                       CredentialUnavailableException current = exceptions.get(z);
+                       last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
+                            last.getCause());
+                   }
+                   return Mono.error(last);
+               }));
     }
 }

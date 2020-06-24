@@ -18,8 +18,8 @@ public final class DirectConnectionConfig {
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(70L);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60L);
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
-    private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 30;
-    private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 10;
+    private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
+    private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
     private Duration connectTimeout;
     private Duration idleConnectionTimeout;
@@ -29,7 +29,7 @@ public final class DirectConnectionConfig {
     private int maxRequestsPerConnection;
 
     /**
-     * Constructor.
+     * Constructor
      */
     public DirectConnectionConfig() {
         this.connectTimeout = DEFAULT_CONNECT_TIMEOUT;

@@ -49,5 +49,4 @@ module com.azure.cosmos {
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
-    uses com.azure.core.util.tracing.Tracer;
 }

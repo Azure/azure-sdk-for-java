@@ -1992,4 +1992,10 @@
       <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
       <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+
+  <!-- Use static final ObjectMapper property to save the cost of ObjectMapper initialization. -->
+  <Match>
+    <Class name="com.azure.search.documents.SearchAsyncClient" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
 </FindBugsFilter>
