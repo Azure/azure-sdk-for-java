@@ -30,8 +30,8 @@ public class Application implements CommandLineRunner {
     private ConfigurableEnvironment environment;
 
 
-    @Value("${spring.cosmos.db.key:local}")
-    private String cosmosDBkey;
+    @Value("${your-property-name:local}")
+    private String yourPropertyName;
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -51,7 +51,7 @@ public class Application implements CommandLineRunner {
 
     @GetMapping("get")
     public String get() {
-        return cosmosDBkey;
+        return yourPropertyName;
     }
 
     @GetMapping("env/{key}")
@@ -85,7 +85,7 @@ public class Application implements CommandLineRunner {
     }
 
     public void run(String... varl) throws Exception {
-        System.out.println("property your-property-name value is: " + cosmosDBkey);
+        System.out.println("property your-property-name value is: " + yourPropertyName);
     }
 
 }
