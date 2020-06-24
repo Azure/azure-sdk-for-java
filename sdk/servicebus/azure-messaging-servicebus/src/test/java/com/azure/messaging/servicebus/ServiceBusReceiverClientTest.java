@@ -272,10 +272,10 @@ class ServiceBusReceiverClientTest {
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.browse()).thenReturn(Mono.just(message));
+        when(asyncClient.peek()).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.browse();
+        final ServiceBusReceivedMessage actual = client.peek();
 
         // Assert
         assertEquals(message, actual);
