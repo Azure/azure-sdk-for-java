@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.module.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;

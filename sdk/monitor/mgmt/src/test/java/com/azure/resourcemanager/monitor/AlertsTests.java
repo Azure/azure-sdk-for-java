@@ -18,7 +18,7 @@ import com.azure.resourcemanager.monitor.models.MetricAlertRuleCondition;
 import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
 import com.azure.resourcemanager.monitor.models.MetricDimension;
 import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.module.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;

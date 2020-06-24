@@ -7,7 +7,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.authorization.samples.ManageServicePrincipalCredentials;
 import com.azure.resourcemanager.authorization.samples.ManageUsersGroupsAndRoles;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.module.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

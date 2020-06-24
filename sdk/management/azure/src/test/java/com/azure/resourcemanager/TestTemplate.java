@@ -5,7 +5,7 @@ package com.azure.resourcemanager;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.module.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.ManagerBase;

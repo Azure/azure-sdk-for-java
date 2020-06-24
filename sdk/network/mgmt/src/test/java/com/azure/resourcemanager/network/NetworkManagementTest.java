@@ -6,7 +6,7 @@ package com.azure.resourcemanager.network;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
 import com.azure.resourcemanager.msi.MSIManager;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.module.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 

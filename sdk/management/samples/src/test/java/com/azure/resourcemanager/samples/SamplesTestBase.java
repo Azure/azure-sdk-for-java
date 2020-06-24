@@ -5,7 +5,7 @@ package com.azure.resourcemanager.samples;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.module.core.TestBase;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
 
 public class SamplesTestBase extends TestBase {

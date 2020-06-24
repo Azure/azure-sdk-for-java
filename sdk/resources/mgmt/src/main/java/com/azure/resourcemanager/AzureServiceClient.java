@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+//import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
@@ -55,11 +55,11 @@ public abstract class AzureServiceClient {
         return String.format("Azure-SDK-For-Java/%s OS:%s MacAddressHash:%s Java:%s",
             getClass().getPackage().getImplementationVersion(),
             OS,
-            MAC_ADDRESS_HASH,
+            //MAC_ADDRESS_HASH,
             JAVA_VERSION);
     }
 
-    private static final String MAC_ADDRESS_HASH;
+    //private static final String MAC_ADDRESS_HASH;
     private static final String OS;
     private static final String OS_NAME;
     private static final String OS_VERSION;
@@ -70,22 +70,22 @@ public abstract class AzureServiceClient {
         OS_NAME = System.getProperty("os.name");
         OS_VERSION = System.getProperty("os.version");
         OS = OS_NAME + "/" + OS_VERSION;
-        String macAddress = "Unknown";
-        try {
-            Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
-            while (networks.hasMoreElements()) {
-                NetworkInterface network = networks.nextElement();
-                byte[] mac = network.getHardwareAddress();
-
-                if (mac != null) {
-                    macAddress = getSha256(mac);
-                    break;
-                }
-            }
-        } catch (Throwable t) {
-            // It's okay ignore mac address hash telemetry
-        }
-        MAC_ADDRESS_HASH = macAddress;
+//        String macAddress = "Unknown";
+//        try {
+//            Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
+//            while (networks.hasMoreElements()) {
+//                NetworkInterface network = networks.nextElement();
+//                byte[] mac = network.getHardwareAddress();
+//
+//                if (mac != null) {
+//                    macAddress = getSha256(mac);
+//                    break;
+//                }
+//            }
+//        } catch (Throwable t) {
+//            // It's okay ignore mac address hash telemetry
+//        }
+//        MAC_ADDRESS_HASH = macAddress;
         String version = System.getProperty("java.version");
         JAVA_VERSION = version != null ? version : "Unknown";
     }
@@ -157,16 +157,16 @@ public abstract class AzureServiceClient {
         return lroInit.flatMap(fluxSimpleResponse -> Mono.just(fluxSimpleResponse));
     }
 
-    private static String getSha256(byte[] bytes) {
-        MessageDigest messageDigest;
-        try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
-            return new HexBinaryAdapter().marshal(messageDigest.digest(bytes));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return "Unknown";
-    }
+//    private static String getSha256(byte[] bytes) {
+//        MessageDigest messageDigest;
+//        try {
+//            messageDigest = MessageDigest.getInstance("SHA-256");
+//            return new HexBinaryAdapter().marshal(messageDigest.digest(bytes));
+//        } catch (NoSuchAlgorithmException e) {
+//            e.printStackTrace();
+//        }
+//        return "Unknown";
+//    }
 
     // this should be moved to core-mgmt when stable.
     private static class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {

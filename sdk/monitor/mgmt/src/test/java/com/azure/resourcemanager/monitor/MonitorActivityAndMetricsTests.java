@@ -12,7 +12,7 @@ import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.MetricCollection;
 import com.azure.resourcemanager.monitor.models.MetricDefinition;
 import com.azure.resourcemanager.monitor.models.ResultType;
-import com.azure.resourcemanager.resources.core.TestUtilities;
+import com.azure.resourcemanager.resources.module.core.TestUtilities;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

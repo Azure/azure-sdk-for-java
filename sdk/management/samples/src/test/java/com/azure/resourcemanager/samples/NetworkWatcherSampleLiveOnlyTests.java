@@ -3,7 +3,7 @@
 package com.azure.resourcemanager.samples;
 
 import com.azure.resourcemanager.network.samples.ManageNetworkWatcher;
-import com.azure.resourcemanager.resources.core.TestBase;
+import com.azure.resourcemanager.resources.module.core.TestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
