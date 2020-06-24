@@ -21,6 +21,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProxy;
 import com.azure.search.documents.SearchServiceVersion;
 
 import java.net.MalformedURLException;
@@ -71,6 +73,7 @@ public final class SearchIndexClientBuilder {
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private Configuration configuration;
     private RetryPolicy retryPolicy;
+    private JsonSerializer jsonSerializer;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link SearchIndexClient
@@ -115,8 +118,12 @@ public final class SearchIndexClientBuilder {
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
+        JsonSerializer buildSerializer = (jsonSerializer == null)
+            ? JsonSerializerProxy.createInstance()
+            : jsonSerializer;
+
         if (httpPipeline != null) {
-            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline);
+            return new SearchIndexAsyncClient(endpoint, buildVersion, httpPipeline, buildSerializer);
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -147,7 +154,7 @@ public final class SearchIndexClientBuilder {
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new SearchIndexAsyncClient(endpoint, buildVersion, buildPipeline);
+        return new SearchIndexAsyncClient(endpoint, buildVersion, buildPipeline, buildSerializer);
     }
 
     /**
@@ -280,6 +287,19 @@ public final class SearchIndexClientBuilder {
      */
     public SearchIndexClientBuilder serviceVersion(SearchServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+        return this;
+    }
+
+    /**
+     * {@link JsonSerializer} used when serializing and deserializing custom types.
+     * <p>
+     * {@link JsonSerializerProxy#createInstance()} will be used if {@code jsonSerializer} is {@code null}.
+     *
+     * @param jsonSerializer Serializer used when handling custom types.
+     * @return The updated SearchIndexClientBuilder object.
+     */
+    public SearchIndexClientBuilder jsonSerializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = jsonSerializer;
         return this;
     }
 }

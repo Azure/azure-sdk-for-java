@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -49,6 +50,9 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -96,6 +100,8 @@ public final class SearchAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
+    private final JsonSerializer jsonSerializer;
+
     private static final ObjectMapper MAPPER;
 
     static {
@@ -107,12 +113,13 @@ public final class SearchAsyncClient {
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
     SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline) {
+        HttpPipeline httpPipeline, JsonSerializer jsonSerializer) {
 
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.jsonSerializer = jsonSerializer;
 
         restClient = new SearchIndexRestClientBuilder()
             .endpoint(endpoint)
@@ -405,7 +412,7 @@ public final class SearchAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all fucntional calls below. 
+        // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
@@ -416,7 +423,7 @@ public final class SearchAsyncClient {
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-        // The firstPageResponse shared among all fucntional calls below. 
+        // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
@@ -483,13 +490,16 @@ public final class SearchAsyncClient {
     Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
         try {
-
             return restClient.documents()
                 .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
-                .map(res -> {
-                    SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
-                    return new SimpleResponse<>(res, document);
+                .flatMap(res -> {
+                    try {
+                        return jsonSerializer.deserialize(new ByteArrayInputStream(MAPPER.writeValueAsBytes(res)),
+                            SearchDocument.class).map(document -> new SimpleResponse<>(res, document));
+                    } catch (IOException e) {
+                        return monoError(logger, new UncheckedIOException(e));
+                    }
                 })
                 .map(Function.identity());
         } catch (RuntimeException ex) {

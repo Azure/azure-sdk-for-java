@@ -13,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClientBuilder;
 import com.azure.search.documents.SearchServiceVersion;
@@ -27,8 +28,8 @@ import com.azure.search.documents.indexes.implementation.models.ListIndexesResul
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexStatistics;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.RequestOptions;
@@ -72,10 +73,14 @@ public final class SearchIndexAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchIndexAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+    private final JsonSerializer jsonSerializer;
+
+    SearchIndexAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
+        JsonSerializer jsonSerializer) {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
+        this.jsonSerializer = jsonSerializer;
 
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)
@@ -118,7 +123,8 @@ public final class SearchIndexAsyncClient {
             .endpoint(endpoint)
             .indexName(indexName)
             .serviceVersion(serviceVersion)
-            .pipeline(httpPipeline);
+            .pipeline(httpPipeline)
+            .jsonSerializer(jsonSerializer);
     }
 
     /**
