@@ -38,6 +38,11 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     protected void afterTest() {
         dispose(sender);
 
+        final int numberOfMessages = messagesPending.get();
+        if (numberOfMessages < 1) {
+            dispose(receiver);
+            return;
+        }
         try {
             receiver.receive()
                 .take(messagesPending.get())
