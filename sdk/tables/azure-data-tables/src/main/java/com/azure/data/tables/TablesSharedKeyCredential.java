@@ -8,6 +8,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -53,7 +54,7 @@ public class TablesSharedKeyCredential {
 
     public String generateAuthorizationHeader(URL requestURL, String httpMethod, Map<String, String> headers) {
         String signature = StorageImplUtils.computeHMac256(this.accountKey, this.buildStringToSign(requestURL, httpMethod, headers));
-        return String.format("SharedKey %s:%s", this.accountName, signature);
+        return String.format("SharedKeyLite %s:%s", this.accountName, signature);
     }
 
     public String computeHmac256(String stringToSign) {
@@ -64,18 +65,15 @@ public class TablesSharedKeyCredential {
         String contentLength = (String)headers.get("Content-Length");
         contentLength = contentLength.equals("0") ? "" : contentLength;
         String dateHeader = headers.containsKey("x-ms-date") ? "" : this.getStandardHeaderValue(headers, "Date");
-        String a = String.join("\n",
-            httpMethod,
-            this.getStandardHeaderValue(headers, "Content-MD5"), //content-md5
-            this.getStandardHeaderValue(headers, "Content-Type"), //content-type
-            dateHeader,
-            "/telboytrial/table3()&$select=name"
-            );
+//        String a = String.join("\n",
+//            httpMethod,
+//            this.getStandardHeaderValue(headers, "Content-MD5"), //content-md5
+//            this.getStandardHeaderValue(headers, "Content-Type"), //content-type
+//            dateHeader,
+//            "/telboytrial/table3()&$select=name"
+//            );
 
         String s = String.join("\n",
-            httpMethod, //verb
-            this.getStandardHeaderValue(headers, "Content-MD5"), //content-md5
-            this.getStandardHeaderValue(headers, "Content-Type"), //content-type
             dateHeader,  //date
             this.getCanonicalizedResource(requestURL)); //canonicalized resoucre
         System.out.println("EB-t  vvv");
@@ -137,9 +135,11 @@ public class TablesSharedKeyCredential {
                 String[] queryParamValues = (String[])queryParams.get(queryParamName);
                 Arrays.sort(queryParamValues);
                 String queryParamValuesStr = String.join(",", queryParamValues);
-                canonicalizedResource.append("\n").append(queryParamName.toLowerCase(Locale.ROOT)).append(":").append(queryParamValuesStr);
+                if(queryParamName.equals("comp")) {
+                    canonicalizedResource.append("?").append(queryParamName.toLowerCase(Locale.ROOT)).append("=").append(queryParamValuesStr);
+                }
             }
-
+//            canonicalizedResource.append("?").append("comp".toLowerCase(Locale.ROOT)).append("=").append("metadata");
             return canonicalizedResource.toString();
         }
     }
