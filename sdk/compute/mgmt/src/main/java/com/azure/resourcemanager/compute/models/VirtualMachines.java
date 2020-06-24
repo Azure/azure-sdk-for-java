@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -248,4 +249,13 @@ public interface VirtualMachines
      * @return handle to the asynchronous execution
      */
     Mono<RunCommandResult> runCommandAsync(String groupName, String name, RunCommandInput inputCommand);
+
+    /**
+     * Begins deleting a virtual machine from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the virtual machine name
+     * @return the accepted deleting operation
+     */
+    Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name);
 }

@@ -15,12 +15,12 @@ that is optimized for ease of use, succinctness and consistency.
 
 ### Include the package
 
-[//]: # ({x-version-update-start;com.azure:azure-management;current})
+[//]: # ({x-version-update-start;com.azure:azure-resourcemanager;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0-beta.1</version>
+  <version>2.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,7 +38,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.0-beta.3</version>
+  <version>1.1.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,7 +50,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.5.0</version>
+  <version>1.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -93,7 +93,7 @@ The key concepts of Azure Management Libraries includes:
 - Dependency across Azure resources.
 - Batch Azure resource provisioning.
 - Integration with Azure role-based access control.
-- Asynchronous operations with [Reactor][reactor].
+- Asynchronous operations with [Reactor][reactor]. (Preview)
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 
 ### Service features
@@ -135,7 +135,7 @@ linuxVM.update()
     .apply();
 ```
 
-### Dependency across Azure resources.
+### Dependency across Azure resources
 
 You can create a function app, together with required storage account and app service plan created on specification.
 
@@ -201,9 +201,9 @@ RoleAssignment roleAssignment = azure.accessManagement().roleAssignments()
     .create();
 ```
 
-### Asynchronous operations
+### Asynchronous operations (Preview)
 
-You can create storage account, then blob container, in reactive programming. 
+You can create storage account, then blob container, in reactive programming.
 
 ```java
 azure.storageAccounts().define(storageAccountName)
@@ -251,12 +251,12 @@ Instead of include the complete Azure Management Libraries, you can choose to in
 
 For example, here is sample maven dependency for Compute package.
 
-[//]: # ({x-version-update-start;com.azure:azure-mgmt-compute;current})
+[//]: # ({x-version-update-start;com.azure:azure-resourcemanager-compute;current})
 ```xml
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0-beta.1</version>
+  <version>2.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -316,4 +316,5 @@ If you would like to become an active contributor to this project please follow 
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [authenticate]: docs/AUTH.md
 [sample]: docs/SAMPLE.md
+[design]: docs/DESIGN.md
 [reactor]: https://projectreactor.io/

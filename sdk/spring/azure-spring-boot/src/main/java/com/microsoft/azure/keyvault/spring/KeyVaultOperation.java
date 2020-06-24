@@ -3,90 +3,159 @@
 
 package com.microsoft.azure.keyvault.spring;
 
+import com.azure.core.exception.HttpRequestException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import org.springframework.lang.NonNull;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 
-/**
- * Encapsulate key vault secret client in this class to provide a delegate of key vault operations.
- */
 public class KeyVaultOperation {
+
+    private static final Logger LOG = LoggerFactory.getLogger(KeyVaultOperation.class);
 
     /**
      * Stores the case sensitive flag.
      */
     private final boolean caseSensitive;
 
-    private final SecretClient keyVaultClient;
-    private final String vaultUri;
-    private volatile List<String> secretNames;
-    private final boolean secretNamesAlreadyConfigured;
-    private final long secretNamesRefreshIntervalInMs;
-    private volatile long secretNamesLastUpdateTime;
+    /**
+     * Stores the properties.
+     */
+    private Map<String, String> properties = new HashMap<>();
 
+    /**
+     * Stores the secret client.
+     */
+    private final SecretClient secretClient;
+
+    /**
+     * Stores the secret keys.
+     */
+    private final List<String> secretKeys;
+
+    /**
+     * Constructor.
+     *
+     * @param secretClient    the Key Vault secret client.
+     * @param refreshInMillis the refresh in milliseconds (0 or less disables refresh).
+     * @param secretKeys      the secret keys to look for.
+     * @param caseSensitive   the case sensitive flag.
+     */
     public KeyVaultOperation(
-        final SecretClient keyVaultClient,
-        final String vaultUri,
-        final long secretKeysRefreshIntervalInMs,
-        final List<String> secretNames,
-        final boolean caseSensitive
+        final SecretClient secretClient,
+        final long refreshInMillis,
+        List<String> secretKeys,
+        boolean caseSensitive
     ) {
+
         this.caseSensitive = caseSensitive;
-        this.keyVaultClient = keyVaultClient;
-        // TODO(pan): need to validate why last '/' need to be truncated.
-        this.vaultUri = StringUtils.trimTrailingCharacter(vaultUri.trim(), '/');
-        this.secretNames = Optional.ofNullable(secretNames)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map(this::toKeyVaultSecretName)
-                .distinct()
-                .collect(Collectors.toList());
-        this.secretNamesAlreadyConfigured = !this.secretNames.isEmpty();
-        this.secretNamesRefreshIntervalInMs = secretKeysRefreshIntervalInMs;
-        this.secretNamesLastUpdateTime = 0;
+        this.secretClient = secretClient;
+        this.secretKeys = secretKeys;
+
+        refreshProperties();
+
+        if (refreshInMillis > 0) {
+            final Timer timer = new Timer();
+            final TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    refreshProperties();
+                }
+            };
+            timer.scheduleAtFixedRate(task, refreshInMillis, refreshInMillis);
+        }
     }
 
+    /**
+     * Get the property.
+     *
+     * @param property the property to get.
+     * @return the property value.
+     */
+    public String getProperty(String property) {
+        return properties.get(toKeyVaultSecretName(property));
+    }
+
+    /**
+     * Get the property names.
+     *
+     * @return the property names.
+     */
     public String[] getPropertyNames() {
-        refreshSecretKeysIfNeeded();
         if (!caseSensitive) {
-            return Optional.ofNullable(secretNames)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
+            return properties
+                .keySet()
+                .stream()
                 .flatMap(p -> Stream.of(p, p.replaceAll("-", ".")))
                 .distinct()
                 .toArray(String[]::new);
         } else {
-            return Optional.ofNullable(secretNames)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .distinct()
-                .toArray(String[]::new);
+            return properties
+                .keySet()
+                .toArray(new String[0]);
         }
     }
 
+    /**
+     * Refresh the properties by accessing key vault.
+     */
+    private void refreshProperties() {
+        if (secretKeys == null || secretKeys.isEmpty()) {
+            properties = Optional.of(secretClient)
+                .map(SecretClient::listPropertiesOfSecrets)
+                .map(ContinuablePagedIterable::iterableByPage)
+                .map(i -> StreamSupport.stream(i.spliterator(), false))
+                .orElseGet(Stream::empty)
+                .map(PagedResponse::getElements)
+                .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+                .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                    s -> toKeyVaultSecretName(s.getName()),
+                    KeyVaultSecret::getValue
+                ));
+        } else {
+            properties = secretKeys.stream()
+                .map(this::toKeyVaultSecretName)
+                .map(secretClient::getSecret)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(
+                    s -> toKeyVaultSecretName(s.getName()),
+                    KeyVaultSecret::getValue
+                ));
+        }
+    }
 
     /**
      * For convention we need to support all relaxed binding format from spring, these may include:
-     * <ul>
-     * <li>Spring relaxed binding names</li>
-     * <li>acme.my-project.person.first-name</li>
-     * <li>acme.myProject.person.firstName</li>
-     * <li>acme.my_project.person.first_name</li>
-     * <li>ACME_MYPROJECT_PERSON_FIRSTNAME</li>
-     * </ul>
-     * But azure keyvault only allows ^[0-9a-zA-Z-]+$ and case insensitive, so there must be some conversion
-     * between spring names and azure keyvault names.
-     * For example, the 4 properties stated above should be convert to acme-myproject-person-firstname in keyvault.
+     * <table>
+     * <tr><td>Spring relaxed binding names</td></tr>
+     * <tr><td>acme.my-project.person.first-name</td></tr>
+     * <tr><td>acme.myProject.person.firstName</td></tr>
+     * <tr><td>acme.my_project.person.first_name</td></tr>
+     * <tr><td>ACME_MYPROJECT_PERSON_FIRSTNAME</td></tr>
+     * </table>
+     * But azure keyvault only allows ^[0-9a-zA-Z-]+$ and case insensitive, so
+     * there must be some conversion between spring names and azure keyvault
+     * names. For example, the 4 properties stated above should be convert to
+     * acme-myproject-person-firstname in keyvault.
      *
      * @param property of secret instance.
      * @return the value of secret with given name or null.
@@ -99,60 +168,39 @@ public class KeyVaultOperation {
                 return property.toLowerCase(Locale.US).replaceAll("_", "-");
             } else {
                 return property.toLowerCase(Locale.US)
-                        .replaceAll("-", "")     // my-project -> myproject
-                        .replaceAll("_", "")     // my_project -> myproject
-                        .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
+                    .replaceAll("-", "") // my-project -> myproject
+                    .replaceAll("_", "") // my_project -> myproject
+                    .replaceAll("\\.", "-"); // acme.myproject -> acme-myproject
             }
         } else {
             return property;
         }
     }
 
-    public String get(final String property) {
-        Assert.hasText(property, "property should contain text.");
-        refreshSecretKeysIfNeeded();
-        return Optional.of(property)
-                .map(this::toKeyVaultSecretName)
-                .filter(secretNames::contains)
-                .map(this::getValueFromKeyVault)
-                .orElse(null);
+    /**
+     * Set the properties.
+     *
+     * @param properties the properties.
+     */
+    void setProperties(HashMap<String, String> properties) {
+        this.properties = properties;
     }
 
-    private synchronized void refreshSecretKeysIfNeeded() {
-        if (needRefreshSecretKeys()) {
-            refreshKeyVaultSecretNames();
+    boolean isUp() {
+        boolean result;
+        try {
+            final Response<KeyVaultSecret> response = secretClient
+                .getSecretWithResponse("it-is-ok-to-be-empty", null, Context.NONE);
+            result = response.getStatusCode() < 500;
+        } catch (ResourceNotFoundException resourceNotFoundException) {
+            result = true;
+        } catch (HttpRequestException httpRequestException) {
+            LOG.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
+            result = true;
+        } catch (RuntimeException runtimeException) {
+            LOG.error("A runtime error occurred while checking key vault connectivity", runtimeException);
+            result = false;
         }
+        return result;
     }
-
-    private boolean needRefreshSecretKeys() {
-        return !secretNamesAlreadyConfigured
-                && System.currentTimeMillis() - this.secretNamesLastUpdateTime > this.secretNamesRefreshIntervalInMs;
-    }
-
-    private void refreshKeyVaultSecretNames() {
-        secretNames = Optional.of(keyVaultClient)
-                .map(SecretClient::listPropertiesOfSecrets)
-                .map(secretProperties -> {
-                    final List<String> secretNameList = new ArrayList<>();
-                    secretProperties.forEach(s -> {
-                        final String secretName = s.getName().replace(vaultUri + "/secrets/", "");
-                        secretNameList.add(secretName);
-                    });
-                    return secretNameList;
-                })
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map(this::toKeyVaultSecretName)
-                .distinct()
-                .collect(Collectors.toList());
-        this.secretNamesLastUpdateTime = System.currentTimeMillis();
-    }
-
-    private String getValueFromKeyVault(String name) {
-        return Optional.ofNullable(name)
-                .map(keyVaultClient::getSecret)
-                .map(KeyVaultSecret::getValue)
-                .orElse(null);
-    }
-
 }

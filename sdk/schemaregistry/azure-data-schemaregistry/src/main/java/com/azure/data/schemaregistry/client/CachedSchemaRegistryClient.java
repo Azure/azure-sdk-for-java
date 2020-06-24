@@ -9,11 +9,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.Codec;
 import com.azure.data.schemaregistry.client.implementation.AzureSchemaRegistryRestService;
+import com.azure.data.schemaregistry.client.implementation.models.CreateSchemaResponse;
+import com.azure.data.schemaregistry.client.implementation.models.GetIdBySchemaContentResponse;
 import com.azure.data.schemaregistry.client.implementation.models.GetSchemaByIdResponse;
 import com.azure.data.schemaregistry.client.implementation.models.SchemaId;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -47,6 +50,7 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
     public static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
     static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
+    private static final Duration HTTP_REQUEST_TIMEOUT = Duration.ofMillis(20000);
 
     private final AzureSchemaRegistryRestService restService;
     private final Integer maxSchemaMapSize;
@@ -118,12 +122,25 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
             "Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
                 schemaGroup, schemaName, schemaType, schemaString);
 
-        SchemaId schemaId;
+        CreateSchemaResponse response;
         try {
-            schemaId = this.restService.createSchema(schemaGroup, schemaName, schemaType, schemaString);
+            response = this.restService.createSchemaWithResponseAsync(schemaGroup, schemaName, schemaType, schemaString)
+                .block(HTTP_REQUEST_TIMEOUT);
         } catch (HttpResponseException e) {
-            throw logger.logExceptionAsError(new SchemaRegistryClientException("Register operation failed.", e));
+            throw logger.logExceptionAsError(
+                new SchemaRegistryClientException("Register operation failed, unexpected service response.", e));
         }
+
+        if (response == null) {
+            throw logger.logExceptionAsError(new SchemaRegistryClientException("Client returned null response"));
+        }
+
+        if (response.getStatusCode() == 400) {
+            throw logger.logExceptionAsError(
+                new SchemaRegistryClientException("Invalid schema registration attempted"));
+        }
+
+        SchemaId schemaId = response.getValue();
 
         SchemaRegistryObject registered = new SchemaRegistryObject(schemaId.getId(),
             schemaType,
@@ -147,14 +164,20 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
 
         GetSchemaByIdResponse response;
         try {
-            response = this.restService.getSchemaByIdWithResponseAsync(schemaId).block();
+            response = this.restService.getSchemaByIdWithResponseAsync(schemaId).block(HTTP_REQUEST_TIMEOUT);
         } catch (HttpResponseException e) {
-            throw logger.logExceptionAsError(new SchemaRegistryClientException("Fetching schema failed.", e));
+            throw logger.logExceptionAsError(
+                new SchemaRegistryClientException("Fetching schema failed, unexpected service response.", e));
         }
 
         if (response == null) {
+            throw logger.logExceptionAsError(new SchemaRegistryClientException("Client returned null response"));
+        }
+
+        if (response.getStatusCode() == 404) {
             throw logger.logExceptionAsError(
-                new SchemaRegistryClientException("HTTP client returned null schema response"));
+                new SchemaRegistryClientException(String.format("Schema does not exist, id %s", schemaId))
+            );
         }
 
         String schemaType = response.getDeserializedHeaders().getXSchemaType();
@@ -171,22 +194,34 @@ public final class CachedSchemaRegistryClient implements SchemaRegistryClient {
     }
 
     @Override
-    public String getSchemaId(
-        String schemaGroup, String schemaName, String schemaString, String schemaType) {
+    public String getSchemaId(String schemaGroup, String schemaName, String schemaString, String schemaType) {
         if (schemaStringCache.containsKey(schemaString)) {
             logger.verbose("Cache hit schema string. Group: '{}', name: '{}'", schemaGroup, schemaName);
             return schemaStringCache.get(schemaString).getSchemaId();
         }
 
-        SchemaId schemaId;
+        GetIdBySchemaContentResponse response;
         try {
-            schemaId = this.restService.getIdBySchemaContent(schemaGroup, schemaName, schemaType, schemaString);
+            response = this.restService
+                .getIdBySchemaContentWithResponseAsync(schemaGroup, schemaName, schemaType, schemaString)
+                .block(HTTP_REQUEST_TIMEOUT);
         } catch (HttpResponseException e) {
             throw logger.logExceptionAsError(new SchemaRegistryClientException(
-                String.format("Failed to fetch schema guid for schema. Group: '%s', name: '%s'",
+                String.format(
+                    "Failed to fetch ID for schema, unexpected service response. Group: '%s', name: '%s'",
                     schemaGroup, schemaName),
                 e));
         }
+
+        if (response == null) {
+            throw logger.logExceptionAsError(new SchemaRegistryClientException("Client returned null response"));
+        }
+
+        if (response.getStatusCode() == 404) {
+            throw logger.logExceptionAsError(new SchemaRegistryClientException("Existing matching schema not found."));
+        }
+
+        SchemaId schemaId = response.getValue();
 
         resetIfNeeded();
         schemaStringCache.putIfAbsent(
