@@ -64,7 +64,7 @@ public final class IndexActionConverter {
         SerializationUtil.configureMapper(mapper);
         if (obj.getParamMap() != null) {
             Map<String, Object> properties = obj.getParamMap();
-            mapper.setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS);
+            mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
             additionalProperties = mapper.convertValue(properties, typeRef);
         } else {
             T properties = obj.getDocument();
