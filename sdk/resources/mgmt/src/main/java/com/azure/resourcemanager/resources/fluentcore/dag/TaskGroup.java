@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -271,6 +272,29 @@ public class TaskGroup
     }
 
     /**
+     * Invokes dependency tasks in the group, but not.
+     *
+     * @param context group level shared context that need be passed to invokeAsync(cxt)
+     *                method of each task item in the group when it is selected for invocation.
+     * @return an observable that emits the result of tasks in the order they finishes.
+     */
+    public Flux<Indexable> invokeDependencyAsync(final InvocationContext context) {
+        context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
+        return Flux.defer(() -> {
+            if (proxyTaskGroupWrapper.isActive()) {
+                return Flux.error(new IllegalStateException("postRunDependent is not supported"));
+            } else {
+                Set<String> processedKeys = runBeforeGroupInvoke(null);
+                if (proxyTaskGroupWrapper.isActive()) {
+                    return Flux.error(new IllegalStateException("postRunDependent is not supported"));
+                } else {
+                    return invokeInternAsync(context, false, null);
+                }
+            }
+        });
+    }
+
+    /**
      * Invokes tasks in the group.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
@@ -404,7 +428,13 @@ public class TaskGroup
                 boolean ignoreCachedResult = isRootEntry(entry)
                     || (entry.proxy() != null && isRootEntry(entry.proxy()));
 
-                Mono<Indexable> taskObservable = entry.invokeTaskAsync(ignoreCachedResult, context);
+                Mono<Indexable> taskObservable;
+                Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
+                if (skipTasks instanceof Set && ((Set) skipTasks).contains(entry.key())) {
+                    taskObservable = Mono.just(new VoidIndexable(entry.key()));
+                } else {
+                    taskObservable = entry.invokeTaskAsync(ignoreCachedResult, context);
+                }
                 return taskObservable.flatMapMany((indexable) -> Flux.just(indexable),
                     (throwable) -> processFaultedTaskAsync(entry, throwable, context),
                     () -> processCompletedTaskAsync(entry, context));
@@ -562,6 +592,8 @@ public class TaskGroup
      * of the TaskGroup.
      */
     public static final class InvocationContext {
+        public static final String KEY_SKIP_TASKS = "SKIP_TASKS";
+
         private final Map<String, Object> properties;
         private final TaskGroup taskGroup;
         private TaskGroupTerminateOnErrorStrategy terminateOnErrorStrategy;

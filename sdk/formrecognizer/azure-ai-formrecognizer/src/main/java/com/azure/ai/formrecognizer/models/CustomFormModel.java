@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,7 +44,7 @@ public final class CustomFormModel {
      * List of sub model that are part of this model, each of which can recognize and extract fields
      * from a different type of form.
      */
-    private final IterableStream<CustomFormSubmodel> submodels;
+    private final List<CustomFormSubmodel> submodels;
 
     /*
      * List of the documents used to train the model.
@@ -65,15 +65,16 @@ public final class CustomFormModel {
      */
     public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
         final OffsetDateTime requestedOn, final OffsetDateTime completedOn,
-        final IterableStream<CustomFormSubmodel> submodels, final List<FormRecognizerError> modelError,
+        final List<CustomFormSubmodel> submodels, final List<FormRecognizerError> modelError,
         final List<TrainingDocumentInfo> trainingDocuments) {
         this.modelId = modelId;
         this.modelStatus = modelStatus;
         this.requestedOn = requestedOn;
         this.completedOn = completedOn;
-        this.submodels = submodels;
-        this.modelError = modelError;
-        this.trainingDocuments = trainingDocuments;
+        this.submodels = submodels == null ? null : Collections.unmodifiableList(submodels);
+        this.modelError = modelError == null ? null : Collections.unmodifiableList(modelError);
+        this.trainingDocuments = trainingDocuments == null ? null
+            : Collections.unmodifiableList(trainingDocuments);
     }
 
     /**
@@ -115,7 +116,7 @@ public final class CustomFormModel {
     /**
      * Get the errors returned during the training operation.
      *
-     * @return the {@code modelError} value.
+     * @return the unmodifiable list of model errors returned during the training operation.
      */
     public List<FormRecognizerError> getModelError() {
         return this.modelError;
@@ -125,16 +126,16 @@ public final class CustomFormModel {
      * Get the list of sub model that are part of this model, each of which can recognize
      * and extract fields from a different type of form.
      *
-     * @return the {@code submodels} value.
+     * @return the unmodifiable list of submodels that are a part of this model.
      */
-    public IterableStream<CustomFormSubmodel> getSubmodels() {
+    public List<CustomFormSubmodel> getSubmodels() {
         return this.submodels;
     }
 
     /**
      * Get the list of the documents used to train the model and any errors reported in each document.
      *
-     * @return the {@code trainingDocuments} value.
+     * @return the unmodifiable list of documents used to train the model.
      */
     public List<TrainingDocumentInfo> getTrainingDocuments() {
         return this.trainingDocuments;
