@@ -4,7 +4,9 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +17,12 @@ import java.util.Objects;
  * Representation of GeographyPoint as used Azure Cognitive Search.
  */
 @Fluent
+@JsonPropertyOrder({ "type", "coordinates", "crs"})
 public final class GeoPoint {
-    private static final String TYPE = "Point";
+    private static final String POINT = "Point";
+
+    @JsonProperty
+    private String type;
 
     @JsonProperty
     private List<Double> coordinates;
@@ -26,6 +32,7 @@ public final class GeoPoint {
 
     private GeoPoint() {
         this.coordinateSystem = CoordinateSystem.create();
+        this.type = POINT;
     }
 
     /**
@@ -34,7 +41,7 @@ public final class GeoPoint {
      */
     @JsonProperty
     public String getType() {
-        return TYPE;
+        return type;
     }
 
     /**
@@ -63,8 +70,10 @@ public final class GeoPoint {
      *
      * @return true if valid, false if invalid
      */
+    @JsonIgnore
     public boolean isValid() {
         return coordinates != null && coordinates.size() == 2
+            && coordinates.get(0) != null && coordinates.get(1) != null
             && coordinates.get(0) >= -180.0 && coordinates.get(0) <= 180.0
             && coordinates.get(1) >= -90.0 && coordinates.get(1) <= 90.0
             && (coordinateSystem == null || coordinateSystem.isValid());
@@ -108,10 +117,13 @@ public final class GeoPoint {
     @Override
     public String toString() {
         if (isValid()) {
+            String longitude = Double.toString(coordinates.get(0));
+            String latitude = Double.toString(coordinates.get(1));
+
             return String.format(
-                Locale.US,
-                "%+02f%+02f%s/",
-                coordinates.get(1), coordinates.get(0), coordinateSystem.toString());
+                Locale.ROOT,
+                "{type=Point, coordinates=[%s, %s], crs={%s}}", "" + longitude, latitude,
+                coordinateSystem);
         }
         return "";
     }
@@ -120,6 +132,7 @@ public final class GeoPoint {
      * Return latitude
      * @return value of latitude coordinate
      */
+    @JsonIgnore
     public double getLatitude() {
         return coordinates.get(1);
     }
@@ -128,6 +141,7 @@ public final class GeoPoint {
      * Return longitude
      * @return value of longitude coordinate
      */
+    @JsonIgnore
     public double getLongitude() {
         return coordinates.get(0);
     }

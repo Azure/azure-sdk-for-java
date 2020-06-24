@@ -169,7 +169,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     orderByExpressions);
 
             int targetIndex = targetIndexAndFilters.left;
-            targetRangeToOrderByContinuationTokenMap.put(String.valueOf(targetIndex), orderByContinuationToken);
+            targetRangeToOrderByContinuationTokenMap.put(partitionKeyRanges.get(targetIndex).getId(), orderByContinuationToken);
             FormattedFilterInfo formattedFilterInfo = targetIndexAndFilters.right;
 
             // Left

@@ -6,7 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
@@ -67,7 +67,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
+        return InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -434,8 +434,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
-        return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
+    public static <T> InternalObjectNode getProperties(CosmosItemResponse<T> cosmosItemResponse) {
+        return ModelBridgeInternal.getInternalObjectNode(cosmosItemResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -182,7 +182,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
     @Test
     public void canCreateVirtualMachineScaleSetFromCustomImageWithManagedDisk() throws Exception {
         final String userName = "tirekicker";
-        final String password = "12NewPA$$w0rd!";
+        final String password = password();
         final String publicIpDnsLabel = generateRandomResourceName("pip", 10);
         final String customImageName = generateRandomResourceName("img", 10);
         final String vmssName = generateRandomResourceName("vmss", 10);

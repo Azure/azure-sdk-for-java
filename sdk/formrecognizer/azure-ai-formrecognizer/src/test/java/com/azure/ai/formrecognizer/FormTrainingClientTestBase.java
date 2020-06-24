@@ -147,10 +147,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
             final List<FormFieldsReport> fields = modelRawResponse.getTrainResult().getFields();
             for (final FormFieldsReport expectedField : fields) {
                 final CustomFormModelField actualFormField =
-                    subModelList.get(0).getFieldMap().get(expectedField.getFieldName());
+                    subModelList.get(0).getFields().get(expectedField.getFieldName());
                 assertEquals(expectedField.getFieldName(), actualFormField.getName());
                 assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
-
             }
             assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
             assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
@@ -158,7 +157,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         } else {
             modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
                 assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
-                subModelList.get(Integer.parseInt(clusterId)).getFieldMap().values().forEach(customFormModelField ->
+                subModelList.get(Integer.parseInt(clusterId)).getFields().values().forEach(customFormModelField ->
                     assertTrue(fields.contains(customFormModelField.getLabel())));
             });
         }

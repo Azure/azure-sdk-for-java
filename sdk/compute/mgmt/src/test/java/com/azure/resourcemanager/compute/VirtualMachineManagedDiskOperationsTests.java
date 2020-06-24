@@ -47,7 +47,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         final String vmName1 = "myvm1";
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
 
         VirtualMachine virtualMachine =
             computeManager
@@ -94,7 +94,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     public void canCreateUpdateVirtualMachineWithEmptyManagedDataDisks() {
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
         // Create with implicit + explicit empty disks, check default and override
         //
         final String vmName1 = "myvm1";
@@ -254,7 +254,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     public void canCreateVirtualMachineFromCustomImageWithManagedDisks() {
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
         // Create with implicit + explicit empty disks, check default and override
         //
         final String vmName1 = "myvm1";
@@ -429,7 +429,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     public void canUpdateVirtualMachineByAddingAndRemovingManagedDisks() {
         final String publicIpDnsLabel = generateRandomResourceName("pip", 20);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
         // Create with implicit + explicit empty disks, check default and override
         //
         final String vmName1 = "myvm1";
@@ -507,7 +507,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     @Test
     public void canCreateVirtualMachineByAttachingManagedOsDisk() {
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
         final String vmName = "myvm6";
         final String storageAccountName = generateRandomResourceName("stg", 17);
 
@@ -572,7 +572,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     public void canCreateVirtualMachineWithManagedDiskInManagedAvailabilitySet() {
         final String availSetName = generateRandomResourceName("av-", 15);
         final String uname = "juser";
-        final String password = "123tEst!@|ac";
+        final String password = password();
         final String vmName = "myvm6";
 
         VirtualMachine managedVm =

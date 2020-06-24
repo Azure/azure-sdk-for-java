@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class CoordinateSystem {
      *
      * @return true if valid, false if invalid
      */
+    @JsonIgnore
     public boolean isValid() {
         return NAME_PROPERTY.equals(type)
             && properties != null
@@ -58,7 +60,8 @@ public class CoordinateSystem {
     @Override
     public String toString() {
         if (isValid()) {
-            return String.format("CRS%s", properties == null ? "" : properties.get(NAME_PROPERTY));
+            return String.format("type=name, properties={name=%s}", properties == null ? ""
+                : properties.get(NAME_PROPERTY));
         }
         return "";
     }

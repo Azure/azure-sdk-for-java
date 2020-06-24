@@ -33,6 +33,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -623,7 +624,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
         return this
@@ -650,7 +651,7 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+    public PollerFlux<PollResult<StorageAccountInner>, StorageAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             createWithResponseAsync(resourceGroupName, accountName, parameters, context);
@@ -677,13 +678,54 @@ public final class StorageAccountsClient
      * @return the storage account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
+        return beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
+     * a subsequent create request is issued with different properties, the account properties will be updated. If an
+     * account is already created and a subsequent create or update request is issued with the exact same set of
+     * properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters used when creating a storage account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<StorageAccountInner>, StorageAccountInner> beginCreate(
+        String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Asynchronously creates a new storage account with the specified parameters. If an account is already created and
+     * a subsequent create request is issued with different properties, the account properties will be updated. If an
+     * account is already created and a subsequent create or update request is issued with the exact same set of
+     * properties, the request will succeed.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param parameters The parameters used when creating a storage account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
-        return this
-            .client
-            .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class)
+        return beginCreateAsync(resourceGroupName, accountName, parameters)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -708,12 +750,7 @@ public final class StorageAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StorageAccountInner> createAsync(
         String resourceGroupName, String accountName, StorageAccountCreateParameters parameters, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, parameters, context);
-        return this
-            .client
-            .<StorageAccountInner, StorageAccountInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), StorageAccountInner.class, StorageAccountInner.class)
+        return beginCreateAsync(resourceGroupName, accountName, parameters, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -2654,7 +2691,7 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
     }
@@ -2675,7 +2712,7 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginFailover(
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
         String resourceGroupName, String accountName, Context context) {
         Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
         return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class);
@@ -2696,13 +2733,48 @@ public final class StorageAccountsClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String accountName) {
+        return beginFailoverAsync(resourceGroupName, accountName).getSyncPoller();
+    }
+
+    /**
+     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
+     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
+     * primary after failover.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(
+        String resourceGroupName, String accountName, Context context) {
+        return beginFailoverAsync(resourceGroupName, accountName, context).getSyncPoller();
+    }
+
+    /**
+     * Failover request can be triggered for a storage account in case of availability issues. The failover occurs from
+     * the storage account's primary cluster to secondary cluster for RA-GRS accounts. The secondary cluster will become
+     * primary after failover.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
+        return beginFailoverAsync(resourceGroupName, accountName).last().flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
@@ -2722,10 +2794,7 @@ public final class StorageAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> failoverAsync(String resourceGroupName, String accountName, Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, accountName, context);
-        return this
-            .client
-            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return beginFailoverAsync(resourceGroupName, accountName, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -2907,7 +2976,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
@@ -2933,7 +3002,7 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+    public PollerFlux<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRangesAsync(
         String resourceGroupName,
         String accountName,
         OffsetDateTime timeToRestore,
@@ -2962,14 +3031,55 @@ public final class StorageAccountsClient
      * @return blob restore status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+        String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges).getSyncPoller();
+    }
+
+    /**
+     * Restore blobs in the specified blob ranges.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param timeToRestore Restore blob to the specified time.
+     * @param blobRanges Blob ranges to restore.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return blob restore status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<BlobRestoreStatusInner>, BlobRestoreStatusInner> beginRestoreBlobRanges(
+        String resourceGroupName,
+        String accountName,
+        OffsetDateTime timeToRestore,
+        List<BlobRestoreRange> blobRanges,
+        Context context) {
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Restore blobs in the specified blob ranges.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param timeToRestore Restore blob to the specified time.
+     * @param blobRanges Blob ranges to restore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return blob restore status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobRestoreStatusInner> restoreBlobRangesAsync(
         String resourceGroupName, String accountName, OffsetDateTime timeToRestore, List<BlobRestoreRange> blobRanges) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges);
-        return this
-            .client
-            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BlobRestoreStatusInner.class, BlobRestoreStatusInner.class)
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -2996,12 +3106,7 @@ public final class StorageAccountsClient
         OffsetDateTime timeToRestore,
         List<BlobRestoreRange> blobRanges,
         Context context) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreBlobRangesWithResponseAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context);
-        return this
-            .client
-            .<BlobRestoreStatusInner, BlobRestoreStatusInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), BlobRestoreStatusInner.class, BlobRestoreStatusInner.class)
+        return beginRestoreBlobRangesAsync(resourceGroupName, accountName, timeToRestore, blobRanges, context)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }

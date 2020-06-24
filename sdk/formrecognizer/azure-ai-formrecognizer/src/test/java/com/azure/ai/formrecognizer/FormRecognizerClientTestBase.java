@@ -27,7 +27,6 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -141,7 +140,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                         readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                     TextLine expectedTextLine = readResults.get(readResultIndex).getLines().get(lineIndex);
 
-                    if (actualFormContentList.get(i).getTextContentType().equals(TextContentType.LINE)) {
+                    if (actualFormContentList.get(i) instanceof FormLine) {
                         FormLine actualFormLine = (FormLine) actualFormContentList.get(i);
                         validateFormWordData(expectedTextLine.getWords(), actualFormLine.getFormWords());
                     }
@@ -183,7 +182,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
             validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
             if (includeTextDetails) {
-                validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getElements(),
+                validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getTextContent(),
                     readResults);
             }
         }
@@ -367,10 +366,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeContentInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void recognizeContentFromUrlWithEncodedBlankSpace(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeContentFromUrlMultiPage(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);

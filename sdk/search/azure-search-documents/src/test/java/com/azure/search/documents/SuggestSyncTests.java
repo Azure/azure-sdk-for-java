@@ -31,6 +31,7 @@ import java.util.TimeZone;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
@@ -373,7 +374,7 @@ public class SuggestSyncTests extends SearchTestBase {
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat df = new SimpleDateFormat(ISO8601_FORMAT);
         df.setTimeZone(TimeZone.getDefault());
         objectMapper.setDateFormat(df);
         objectMapper.registerModule(new JavaTimeModule());

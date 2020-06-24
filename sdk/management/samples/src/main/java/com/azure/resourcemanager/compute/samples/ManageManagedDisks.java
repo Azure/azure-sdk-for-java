@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.samples.Utils;
 import com.jcraft.jsch.JSchException;
 import com.azure.resourcemanager.Azure;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -382,8 +383,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedUnmanagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
         final String publicIpDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 
@@ -421,8 +421,7 @@ public final class ManageManagedDisks {
 
     private static VirtualMachine prepareSpecializedManagedVirtualMachine(Azure azure, Region region, String rgName) {
         final String userName = "tirekicker";
-        // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String password = "12NewPA$$w0rd!";
+        final String password = Utils.password();
         final String linuxVMName1 = azure.sdkContext().randomResourceName("vm" + "-", 10);
         final String publicIPDnsLabel = azure.sdkContext().randomResourceName("pip" + "-", 20);
 

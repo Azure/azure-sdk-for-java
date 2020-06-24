@@ -5,9 +5,13 @@ package com.azure.resourcemanager.resources;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.resources.core.TestUtilities;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.Deployment;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentOperation;
@@ -197,13 +201,14 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         final String dp = "dpC" + testId;
 
         // Begin create
-        Deployment createdDeployment = resourceClient.deployments()
+        Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
                 .define(dp)
                 .withExistingResourceGroup(rgName)
                 .withTemplateLink(templateUri, contentVersion)
                 .withParametersLink(parametersUri, contentVersion)
                 .withMode(DeploymentMode.COMPLETE)
                 .beginCreate();
+        Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
         Deployment deployment = resourceClient.deployments().getByResourceGroup(rgName, dp);
         Assertions.assertEquals(createdDeployment.correlationId(), deployment.correlationId());
         Assertions.assertEquals(dp, deployment.name());
@@ -223,5 +228,38 @@ public class DeploymentsTests extends ResourceManagerTestBase {
         GenericResource genericVnet = resourceClient.genericResources().get(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
         Assertions.assertNotNull(genericVnet);
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet2", "2015-06-15");
+    }
+
+    @Test
+    public void canDeployVirtualNetworkSyncPoll() throws Exception {
+        final String dp = "dpD" + testId;
+
+        // Begin create
+        Accepted<Deployment> acceptedDeployment = resourceClient.deployments()
+            .define(dp)
+            .withExistingResourceGroup(rgName)
+            .withTemplateLink(templateUri, contentVersion)
+            .withParametersLink(parametersUri, contentVersion)
+            .withMode(DeploymentMode.COMPLETE)
+            .beginCreate();
+        Deployment createdDeployment = acceptedDeployment.getAcceptedResult().getValue();
+        Assertions.assertNotEquals("Succeeded", createdDeployment.provisioningState());
+
+        LongRunningOperationStatus pollStatus = acceptedDeployment.getAcceptedResult().getStatus();
+        int delayInMills = acceptedDeployment.getAcceptedResult().getRetryAfter() == null
+            ? 0
+            : (int) acceptedDeployment.getAcceptedResult().getRetryAfter().toMillis();
+        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            SdkContext.sleep(delayInMills);
+
+            PollResponse<Void> pollResponse = acceptedDeployment.getSyncPoller().poll();
+            pollStatus = pollResponse.getStatus();
+            delayInMills = pollResponse.getRetryAfter() == null
+                ? 10000
+                : (int) pollResponse.getRetryAfter().toMillis();
+        }
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
+        Deployment deployment = acceptedDeployment.getFinalResult();
+        Assertions.assertEquals("Succeeded", deployment.provisioningState());
     }
 }

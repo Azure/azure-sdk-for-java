@@ -14,8 +14,6 @@ param (
   $DocRepoContentLocation = "docs-ref-services/" # within the doc repo, where does our readme go?
 )
 
-Write-Host "> $PSCommandPath $args"
-
 
 # import artifact parsing and semver handling
 . (Join-Path $PSScriptRoot artifact-metadata-parsing.ps1)
@@ -58,7 +56,7 @@ function GetAdjustedReadmeContent($pkgInfo, $lang){
     $pkgId = $pkgInfo.PackageId.Replace("@azure/", "")
 
     try {
-      $metadata = GetMetaData -lang $lang 
+      $metadata = GetMetaData -lang $lang
 
       $service = $metadata | ? { $_.Package -eq $pkgId }
 
@@ -99,7 +97,7 @@ $pkgs = VerifyPackages -pkgRepository $Repository `
 
 if ($pkgs) {
   Write-Host "Given the visible artifacts, readmes will be copied for the following packages"
-  Write-Host ($pkgs | % { $_.PackageId }) 
+  Write-Host ($pkgs | % { $_.PackageId })
 
   foreach ($packageInfo in $pkgs) {
     # sync the doc repo
