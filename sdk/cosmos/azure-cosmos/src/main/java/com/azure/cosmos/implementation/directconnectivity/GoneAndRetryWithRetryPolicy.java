@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,8 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
-
     private final static Logger logger = LoggerFactory.getLogger(GoneAndRetryWithRetryPolicy.class);
+    private final static int LIMITED_STACK_TRACE_FAILURE_DEPTH = 3;
     private final static int DEFAULT_WAIT_TIME_IN_SECONDS = 30;
     private final static int MAXIMUM_BACKOFF_TIME_IN_SECONDS = 15;
     private final static int INITIAL_BACKOFF_TIME = 1;
@@ -83,11 +84,10 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                                 exception, this.lastRetryWithException);
                         exceptionToThrow = this.lastRetryWithException;
                     } else {
-                        logger.warn("Received gone exception after backoff/retry. Will fail the request. {}",
-                                exception.toString());
+                        logger.warn("Received gone exception after backoff/retry. Will fail the request. {}, short stackTrace = [{}]",
+                                exception.toString(), Utils.limitedStackTrace(exception, LIMITED_STACK_TRACE_FAILURE_DEPTH));
                         exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
-
                 } else if (exception instanceof PartitionKeyRangeGoneException) {
                     if (this.lastRetryWithException != null) {
                         logger.warn(
@@ -132,7 +132,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
         timeout = timeoutInMillSec > 0 ? Duration.ofMillis(timeoutInMillSec)
                 : Duration.ofSeconds(GoneAndRetryWithRetryPolicy.MAXIMUM_BACKOFF_TIME_IN_SECONDS);
         if (exception instanceof GoneException) {
-            logger.warn("Received gone exception, will retry, {}", exception.toString());
+            logger.info("Received gone exception, will retry, {}", exception.toString());
             forceRefreshAddressCache = true; // indicate we are in retry.
         } else if (exception instanceof PartitionIsMigratingException) {
             logger.warn("Received PartitionIsMigratingException, will retry, {}", exception.toString());

@@ -18,6 +18,8 @@ import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -644,6 +646,25 @@ public class Utils {
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
+        }
+    }
+
+    public static String limitedStackTrace(Exception e, int depth) {
+        StackTraceElement[] stacktrace = e.getStackTrace();
+        if (stacktrace == null) {
+            return "null";
+        } else {
+            StringWriter strWriter = new StringWriter();
+            PrintWriter writer = new PrintWriter(strWriter);
+            writer.print("[");
+            for (int i = 0; i < stacktrace.length && i < depth; i++) {
+                if (i > 0) {
+                    writer.print(";");
+                }
+                writer.print(stacktrace[i].toString());
+            }
+            writer.print("]");
+            return strWriter.toString();
         }
     }
 }
