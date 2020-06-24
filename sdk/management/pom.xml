@@ -69,7 +69,7 @@
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-core-management</artifactId>
-                <version>1.0.0-beta.2</version>
+                <version>1.0.0-beta.1</version>
             </dependency>
             <dependency>
                 <groupId>com.azure</groupId>
@@ -273,6 +273,27 @@
                     <showDeprecation>true</showDeprecation>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
+                <executions>
+                  <execution>
+                    <id>default-cli</id>
+                    <configuration>
+                      <release>11</release>
+                    </configuration>
+                  </execution>
+                  <execution>
+                    <id>java8</id>
+                    <goals>
+                      <goal>compile</goal>
+                    </goals>
+                    <configuration>
+                      <source>8</source>
+                      <target>8</target>
+                      <excludes>
+                        <exclude>module-info.java</exclude>
+                      </excludes>
+                    </configuration>
+                  </execution>
+                </executions>
             </plugin>
 
             <plugin>
