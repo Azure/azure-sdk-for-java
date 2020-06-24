@@ -1977,10 +1977,6 @@
     <Package name="~com\.azure\.resourcemanager\.(.+)\.fluent"/>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG"/>
   </Match>
-  <Match>
-    <Package name="~com\.azure\.management\.(.+)\.fluent"/>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG"/>
-  </Match>
 
   <!-- Exclude REC_CATCH_EXCEPTION for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
