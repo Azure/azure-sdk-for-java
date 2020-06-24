@@ -26,7 +26,7 @@
     <scm>
         <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
         <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-        <tag>v2.0.0-SNAPSHOT</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
