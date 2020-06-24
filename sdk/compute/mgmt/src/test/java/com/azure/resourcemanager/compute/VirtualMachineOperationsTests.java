@@ -6,6 +6,8 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
@@ -27,6 +29,8 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -114,7 +118,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .create();
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
@@ -149,9 +153,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_D3)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -187,6 +191,75 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    public void canCreateVirtualMachineSyncPoll() throws Exception {
+        Accepted<VirtualMachine> acceptedVirtualMachine = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2016_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .beginCreate();
+        VirtualMachine createdVirtualMachine = acceptedVirtualMachine.getAcceptedResult().getValue();
+        Assertions.assertNotEquals("Succeeded", createdVirtualMachine.provisioningState());
+
+        LongRunningOperationStatus pollStatus = acceptedVirtualMachine.getAcceptedResult().getStatus();
+        int delayInMills = acceptedVirtualMachine.getAcceptedResult().getRetryAfter() == null
+            ? 0
+            : (int) acceptedVirtualMachine.getAcceptedResult().getRetryAfter().toMillis();
+        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            SdkContext.sleep(delayInMills);
+
+            PollResponse<Void> pollResponse = acceptedVirtualMachine.getSyncPoller().poll();
+            pollStatus = pollResponse.getStatus();
+            delayInMills = pollResponse.getRetryAfter() == null
+                ? 10000
+                : (int) pollResponse.getRetryAfter().toMillis();
+        }
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollStatus);
+        VirtualMachine virtualMachine = acceptedVirtualMachine.getFinalResult();
+        Assertions.assertEquals("Succeeded", virtualMachine.provisioningState());
+
+        Accepted<Void> acceptedDelete = computeManager.virtualMachines()
+            .beginDeleteByResourceGroup(virtualMachine.resourceGroupName(), virtualMachine.name());
+
+        pollStatus = acceptedDelete.getAcceptedResult().getStatus();
+        delayInMills = acceptedDelete.getAcceptedResult().getRetryAfter() == null
+            ? 0
+            : (int) acceptedDelete.getAcceptedResult().getRetryAfter().toMillis();
+
+        while (pollStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+            SdkContext.sleep(delayInMills);
+
+            PollResponse<Void> pollResponse = acceptedDelete.getSyncPoller().poll();
+            pollStatus = pollResponse.getStatus();
+            delayInMills = pollResponse.getRetryAfter() == null
+                ? 10000
+                : (int) pollResponse.getRetryAfter().toMillis();
+        }
+
+        boolean deleted = false;
+        try {
+            computeManager.virtualMachines().getById(virtualMachine.id());
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404
+                && ("NotFound".equals(e.getValue().getCode()) || "ResourceNotFound".equals(e.getValue().getCode()))) {
+                deleted = true;
+            }
+        }
+        Assertions.assertTrue(deleted);
+    }
+
+    @Test
     public void canCreateUpdatePriorityAndPrice() throws Exception {
         // Create
         computeManager
@@ -197,9 +270,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2016_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_A2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -312,9 +385,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
             .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -407,9 +480,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
             .withProximityPlacementGroup(setCreated.proximityPlacementGroup().id())
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_DATACENTER)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .withUnmanagedDisks()
             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
@@ -606,7 +679,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .defineUnmanagedDataDisk("disk1")
                 .withNewVhd(100)
@@ -652,7 +725,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
-                .withRootPassword("abc!@#F0orL")
+                .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
                 .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)

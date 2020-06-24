@@ -84,7 +84,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.4")
                 .withNewPrimaryPublicIPAddress(primaryPipName)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_A9)

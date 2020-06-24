@@ -43,7 +43,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-cosmosdb-spring-boot-starter</artifactId>
-    <version>2.2.5-beta.1</version>
+    <version>2.3.3-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

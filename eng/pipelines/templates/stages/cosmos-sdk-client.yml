@@ -3,12 +3,12 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200514.1
+      ref: refs/tags/azure-sdk-build-tools_20200618.4
     - repository: azure-sdk-tools
       type: github
       name: Azure/azure-sdk-tools
       endpoint: azure
-      ref: refs/tags/azure-sdk-tools_20200514.1
+      ref: refs/tags/azure-sdk-tools_20200618.1
 
 parameters:
 - name: Artifacts
@@ -42,37 +42,37 @@ stages:
         TestMatrix:
           Linux - Java 8:
             OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
           macOS - Java 8:
             OSVmImage: 'macOS-10.15'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
           Windows - Java 8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
           Linux - Java 11:
             OSVmImage: 'ubuntu-18.04'
-            JavaVersion: '1.11'
+            JavaTestVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
           macOS - Java 11:
             OSVmImage: 'macOS-10.15'
-            JavaVersion: '1.11'
+            JavaTestVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
           Windows - Java 11:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.11'
+            JavaTestVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
           Windows From Source - Java 8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             RunTitle: 'From Source: Windows on Java 1.8'
             TestFromSource: true
             ProfileFlag: '-Punit'
@@ -89,14 +89,14 @@ stages:
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Tcp"]'
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
           Https_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
-            JavaVersion: '1.8'
+            JavaTestVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
             PROTOCOLS: '["Https"]'
@@ -106,7 +106,7 @@ stages:
           goals: 'verify'
           options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
           mavenAuthenticateFeed: true
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
 
         PreRunSteps:
         - powershell: |
@@ -170,4 +170,4 @@ stages:
         Artifacts: ${{parameters.Artifacts}}
         ArtifactName: packages
         TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}} 
+        TargetDocRepoName: ${{parameters.TargetDocRepoName}}

@@ -4,34 +4,17 @@ package com.azure.resourcemanager.compute.models;
 
 /** The popular Azure Windows images. */
 public enum KnownWindowsVirtualMachineImage {
-    /** Windows Server 2008 R2 SP1. */
-    WINDOWS_SERVER_2008_R2_SP1("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1"),
-    /** Windows Server 2012 Data center. */
-    WINDOWS_SERVER_2012_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-Datacenter"),
+    /** Windows 10 2020 H1 Pro */
+    WINDOWS_DESKTOP_10_20H1_PRO("MicrosoftWindowsDesktop", "Windows-10", "20h1-pro"),
+    /** Windows Server 2019 Data center. */
+    WINDOWS_SERVER_2019_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2019-Datacenter"),
+    /** Windows Server 2019 Data center with containers. */
+    WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS(
+        "MicrosoftWindowsServer", "WindowsServer", "2019-Datacenter-with-Containers"),
+    /** Windows Server 2016 Data center. */
+    WINDOWS_SERVER_2016_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter"),
     /** Windows Server 2012 R2 Data center. */
-    WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"),
-    /**
-     * Windows Server 2016 technical preview with container.
-     *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String
-     *     publisher, String offer, String sku)} and for virtual machine scale set use {@link
-     *     VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
-     *     with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as
-     *     "2016-Datacenter-with-Containers")}.
-     */
-    @Deprecated
-    WINDOWS_SERVER_2016_TECHNICAL_PREVIEW_WITH_CONTAINERS(
-        "MicrosoftWindowsServer", "WindowsServer", "2016-Technical-Preview-with-Containers"),
-    /**
-     * Windows Server 2016 technical preview.
-     *
-     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String
-     *     publisher, String offer, String sku)} and for virtual machine scale set use {@link
-     *     VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
-     *     with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as "2016-Datacenter")}.
-     */
-    @Deprecated
-    WINDOWS_SERVER_TECHNICAL_PREVIEW("MicrosoftWindowsServer", "WindowsServer", "Windows-Server-Technical-Preview");
+    WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter");
 
     private final String publisher;
     private final String offer;

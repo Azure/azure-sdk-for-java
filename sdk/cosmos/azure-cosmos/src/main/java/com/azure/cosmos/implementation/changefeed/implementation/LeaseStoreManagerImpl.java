@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -181,7 +181,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                     return null;
                 }
 
-                CosmosItemProperties document = BridgeInternal.getProperties(documentResourceResponse);
+                InternalObjectNode document = BridgeInternal.getProperties(documentResourceResponse);
 
                 logger.info("Created lease for partition {}.", leaseToken);
 
@@ -251,7 +251,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createItemRequestOptions(lease),
-                                                 CosmosItemProperties.class)
+                                                 InternalObjectNode.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
@@ -297,7 +297,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createItemRequestOptions(lease),
-                                                 CosmosItemProperties.class)
+                                                 InternalObjectNode.class)
             .onErrorResume( ex -> {
                 if (ex instanceof CosmosException) {
                     CosmosException e = (CosmosException) ex;
@@ -366,7 +366,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.leaseDocumentClient.readItem(lease.getId(),
                                                  new PartitionKey(lease.getId()),
                                                  this.requestOptionsFactory.createItemRequestOptions(lease),
-                                                 CosmosItemProperties.class)
+                                                 InternalObjectNode.class)
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
@@ -419,11 +419,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
             Collections.singletonList(param));
 
-        Flux<FeedResponse<CosmosItemProperties>> query = this.leaseDocumentClient.queryItems(
+        Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),
             querySpec,
             this.requestOptionsFactory.createQueryRequestOptions(),
-            CosmosItemProperties.class);
+            InternalObjectNode.class);
 
         return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
             .map(ServiceItemLease::fromDocument);
