@@ -62,7 +62,7 @@ steps:
   condition: ne(variables['Snapshot'], true)
   inputs:
     mavenPomFile: 'sdk/management/pom.xml'
-    mavenOptions: '-Xmx3072m -Dversion=$(VERSION) -DdevVersion=$(DEVVERSION)-SNAPSHOT'
+    options: '-Dversion=$(VERSION) -DdevVersion=$(DEVVERSION)-SNAPSHOT'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
