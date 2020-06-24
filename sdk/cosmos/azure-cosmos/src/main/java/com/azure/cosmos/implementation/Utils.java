@@ -47,6 +47,7 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
     private static final int LIMITED_STACKTRACE_DEPTH = Configs.getLimitedStackTraceDepth();
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
@@ -670,6 +671,7 @@ public class Utils {
                 writer.print("]");
                 return strWriter.toString();
             } catch (Exception dummy) {
+                LOGGER.error("unexpected failure in generating short stacktrace {}", dummy);
                 return "null";
             }
         }
