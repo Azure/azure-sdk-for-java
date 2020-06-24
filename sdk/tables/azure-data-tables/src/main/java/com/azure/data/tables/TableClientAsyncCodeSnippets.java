@@ -50,7 +50,6 @@ public class TableClientAsyncCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-        String tableName = "OfficeSupplies";
         String row = "crayolaMarkers";
         String partitionKey = "markers";
         HashMap<String, Object> tableEntityProperties = new HashMap<>();
@@ -74,7 +73,7 @@ public class TableClientAsyncCodeSnippets {
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
         String selectString = "$select = RowKey eq 'crayolaMarkers'";
 
-        tableAsyncClient.queryEntity("OfficeSupplies", selectString).flatMap(tableEntity -> {
+        tableAsyncClient.queryEntity(null,"OfficeSupplies", selectString).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
             Mono<Void> deleteEntityMono = tableAsyncClient.deleteEntity(tableEntity);
             return deleteEntityMono;
@@ -95,7 +94,7 @@ public class TableClientAsyncCodeSnippets {
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
         String selectString2 = "$select = RowKey eq 'crayolaMarkers'";
 
-        tableAsyncClient.queryEntity("OfficeSupplies", selectString2).flatMap(tableEntity -> {
+        tableAsyncClient.queryEntity(null,"OfficeSupplies", selectString2).flatMap(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
             tableEntity.addProperty("Price", "5");
             Mono<Void> updateEntityMono = tableAsyncClient.updateEntity(tableEntity);
@@ -117,10 +116,10 @@ public class TableClientAsyncCodeSnippets {
             .buildAsyncClient();
 
         TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getClient("OfficeSupplies");
-        String filterString2 = "$filter = price eq '5'";
-        String selectString2 = "$select = PartitionKey eq 'markers'";
+        String filterString2 = "$filter = Product eq 'markers'";
+        String selectString2 = "$select = Seller, Price";
 
-        tableAsyncClient.queryEntity(filterString2, selectString2).subscribe(tableEntity -> {
+        tableAsyncClient.queryEntity(null,filterString2, selectString2).subscribe(tableEntity -> {
             System.out.println("Table Entity: " + tableEntity);
         }, error -> {
             System.out.println("There was an error querying the table. Error: " + error);

@@ -19,6 +19,16 @@ public class TableAsyncClient {
         this.tableName = tableName;
     }
 
+
+    /**
+     * returns the table associated with this table client
+     * @param tableName the name of the table
+     * @return the table
+     */
+    public Mono<AzureTable> getTable(String tableName){
+        return null;
+    }
+
     /**
      * Queries and returns entities in the given table using the select and filter strings
      *

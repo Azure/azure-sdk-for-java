@@ -17,6 +17,15 @@ public class TableClient {
     }
 
     /**
+     * returns the table associated with this TableClient
+     * @param tableName name of the table
+     * @return the AzureTable
+     */
+    public AzureTable getTable(String tableName){
+        return null;
+    }
+
+    /**
      * Queries and returns entities in the given table using the select and filter strings
      *
      * @param top          odata top integer

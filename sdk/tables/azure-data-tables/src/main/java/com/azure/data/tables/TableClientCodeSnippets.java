@@ -50,11 +50,12 @@ public class TableClientCodeSnippets {
 
 
         //insert entity
-        String tableName = "OfficeSupplies";
         String row = "crayola markers";
         String partitionKey = "markers";
         HashMap<String, Object> tableEntityProperties = new HashMap<>();
-        TableEntity tableEntity = new TableEntity(tableName, row, partitionKey, tableEntityProperties);
+        tableEntityProperties.put("RowKey", "crayolaMarkers");
+        tableEntityProperties.put("ParitionKey", "markers");
+        TableEntity tableEntity = new TableEntity(tableEntityProperties);
         try {
             tableEntity = tableClient.insertEntity(tableEntity);
         } catch (HttpResponseException e) {
@@ -98,9 +99,9 @@ public class TableClientCodeSnippets {
 
         //query a table
         String filterString2 = "$filter = Product eq 'markers'";
-        String selectString2 = "$select = Seller eq 'crayola'";
+        String selectString2 = "$select = Seller, Price";
         try {
-            List<TableEntity> list = tableClient.queryEntity(filterString2, selectString2);
+            List<TableEntity> list = tableClient.queryEntity(null, filterString2, selectString2);
         } catch (HttpResponseException e) {
             System.out.println("Query Table Entities Unsuccessful. Error: " + e);
         }

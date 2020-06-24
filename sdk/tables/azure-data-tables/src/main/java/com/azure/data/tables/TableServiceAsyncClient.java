@@ -35,6 +35,15 @@ public class TableServiceAsyncClient {
     }
 
     /**
+     * retrieves the table client for the provided table or creates one if it doesn't exist
+     * @param name the name of the table
+     * @return associated TableClient
+     */
+    public Mono<TableClient> getTableClient(String name) {
+        return null;
+    }
+
+    /**
      * query all the tables under the storage account and return them
      *
      * @param filterString the odata filter string
