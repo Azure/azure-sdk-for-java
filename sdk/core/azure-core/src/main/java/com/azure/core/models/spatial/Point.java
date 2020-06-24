@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.model;
+package com.azure.core.models.spatial;
 
 import com.azure.core.annotation.Immutable;
 
 /**
- * The Point model.
+ * Represents a location in (x, y) coordinate space.
  */
 @Immutable
 public final class Point {
@@ -22,7 +22,7 @@ public final class Point {
     private final float yCoordinate;
 
     /**
-     * Creates a Point object.
+     * Constructs a Point object.
      *
      * @param xCoordinate The x-axis point coordinate.
      * @param yCoordinate The y-axis point coordinate.
@@ -48,5 +48,23 @@ public final class Point {
      */
     public float getY() {
         return this.yCoordinate;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Point point = (Point) o;
+
+        if (Float.compare(point.xCoordinate, xCoordinate) != 0) return false;
+        return Float.compare(point.yCoordinate, yCoordinate) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (xCoordinate != +0.0f ? Float.floatToIntBits(xCoordinate) : 0);
+        result = 31 * result + (yCoordinate != +0.0f ? Float.floatToIntBits(yCoordinate) : 0);
+        return result;
     }
 }

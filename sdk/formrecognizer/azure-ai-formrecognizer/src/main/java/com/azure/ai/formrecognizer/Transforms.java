@@ -24,8 +24,8 @@ import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
-import com.azure.core.model.BoundingBox;
-import com.azure.core.model.Point;
+import com.azure.core.models.spatial.BoundingBox;
+import com.azure.core.models.spatial.Point;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 

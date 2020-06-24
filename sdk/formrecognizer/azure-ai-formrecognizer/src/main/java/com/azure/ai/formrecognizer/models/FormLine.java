@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.model.BoundingBox;
+import com.azure.core.models.spatial.BoundingBox;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.model;
+package com.azure.core.models.spatial;
 
 import com.azure.core.annotation.Immutable;
 
@@ -40,5 +40,28 @@ public final class BoundingBox {
      */
     public List<Point> getPoints() {
         return this.points;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final BoundingBox that = (BoundingBox) o;
+
+        return points.equals(that.points);
+    }
+
+    @Override
+    public int hashCode() {
+        return points.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder boundingBoxStr = new StringBuilder();
+        points.forEach(point ->
+            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+        return boundingBoxStr.toString();
     }
 }
