@@ -324,6 +324,8 @@ public final class PollingState {
             || ProvisioningState.CANCELED.equalsIgnoreCase(value);
         if (isCompleted && ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
             return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        } else if (ProvisioningState.IN_PROGRESS.equalsIgnoreCase(value)) {
+            return LongRunningOperationStatus.IN_PROGRESS;
         }
         return LongRunningOperationStatus.fromString(value, isCompleted);
     }
