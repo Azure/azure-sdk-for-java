@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,7 +82,7 @@ public final class FormTableCell extends FormContent {
         this.confidence = confidence;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.textContent = textContent;
+        this.textContent = textContent == null ? null : Collections.unmodifiableList(textContent);
     }
 
     /**
@@ -158,7 +159,7 @@ public final class FormTableCell extends FormContent {
      * Get the list of references to the text elements constituting this table cell
      * When includeTextContent is set to true.
      *
-     * @return the {@code textContent} value.
+     * @return the unmodifiable list of list of references to the text elements constituting this table cell.
      */
     public List<FormContent> getTextContent() {
         return this.textContent;

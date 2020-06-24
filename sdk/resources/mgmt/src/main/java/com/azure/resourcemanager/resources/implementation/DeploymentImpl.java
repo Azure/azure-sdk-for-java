@@ -3,7 +3,12 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.models.DebugSetting;
 import com.azure.resourcemanager.resources.models.Dependency;
 import com.azure.resourcemanager.resources.models.Deployment;
@@ -26,15 +31,16 @@ import com.azure.resourcemanager.resources.models.WhatIfResultFormat;
 import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentExtendedInner;
 import com.azure.resourcemanager.resources.fluent.inner.DeploymentInner;
 import com.azure.resourcemanager.resources.fluent.inner.ProviderInner;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +55,8 @@ public final class DeploymentImpl extends
         Deployment.Definition,
         Deployment.Update,
         Deployment.Execution {
+
+    private final ClientLogger logger = new ClientLogger(DeploymentImpl.class);
 
     private final ResourceManager resourceManager;
     private String resourceGroupName;
@@ -297,13 +305,26 @@ public final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl beginCreate() {
+    public Accepted<Deployment> beginCreate() {
         if (this.creatableResourceGroup != null) {
             this.creatableResourceGroup.create();
         }
-        setInner(this.manager().inner().getDeployments()
-            .beginCreateOrUpdateWithoutPolling(resourceGroupName(), name(), createRequestFromInner()));
-        return this;
+
+        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getDeployments()
+            .createOrUpdateWithResponseAsync(resourceGroupName(), name(), createRequestFromInner()).block();
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            Accepted<Deployment> accepted = new AcceptedImpl<DeploymentExtendedInner, Deployment>(activationResponse,
+                this.manager().inner().getSerializerAdapter(),
+                this.manager().inner().getHttpPipeline(),
+                DeploymentExtendedInner.class,
+                DeploymentExtendedInner.class,
+                inner -> new DeploymentImpl(inner, inner.name(), resourceManager));
+
+            setInner(accepted.getAcceptedResult().getValue().inner());
+            return accepted;
+        }
     }
 
     @Override

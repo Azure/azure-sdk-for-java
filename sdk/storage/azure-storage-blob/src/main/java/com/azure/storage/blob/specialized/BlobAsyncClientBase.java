@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
+import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
@@ -1018,9 +1019,7 @@ public class BlobAsyncClientBase {
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         // blobSize determination - contentLength only returns blobSize if the download is not chunked.
-        long blobSize = response.getDeserializedHeaders().getContentRange() == null
-            ? response.getDeserializedHeaders().getContentLength()
-            : extractTotalBlobLength(response.getDeserializedHeaders().getContentRange());
+        long blobSize = getBlobLength(response.getDeserializedHeaders());
         BlobProperties properties = new BlobProperties(null, response.getDeserializedHeaders().getLastModified(),
             response.getDeserializedHeaders().getETag(), blobSize, response.getDeserializedHeaders().getContentType(),
             null, response.getDeserializedHeaders().getContentEncoding(),
@@ -1038,6 +1037,11 @@ public class BlobAsyncClientBase {
             response.getDeserializedHeaders().getMetadata(),
             response.getDeserializedHeaders().getBlobCommittedBlockCount());
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), properties);
+    }
+
+    static long getBlobLength(BlobDownloadHeaders headers) {
+        return headers.getContentRange() == null ? headers.getContentLength()
+            : extractTotalBlobLength(headers.getContentRange());
     }
 
     private static long extractTotalBlobLength(String contentRange) {

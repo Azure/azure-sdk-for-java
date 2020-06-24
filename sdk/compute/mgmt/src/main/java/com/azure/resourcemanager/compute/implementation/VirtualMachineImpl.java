@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -72,7 +73,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceNamer;
 import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
@@ -83,10 +87,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -110,6 +116,7 @@ class VirtualMachineImpl
     // Clients
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
+    private final AuthorizationManager authorizationManager;
     // the name of the virtual machine
     private final String vmName;
     // used to generate unique name for any dependency resources
@@ -184,6 +191,7 @@ class VirtualMachineImpl
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
+        this.authorizationManager = authorizationManager;
         this.vmName = name;
         this.isMarketplaceLinuxImage = false;
         this.namer = this.manager().sdkContext().getResourceNamerFactory().createResourceNamer(this.vmName);
@@ -1675,6 +1683,16 @@ class VirtualMachineImpl
     @Override
     public Mono<VirtualMachine> createResourceAsync() {
         // -- set creation-time only properties
+        return prepareCreateResourceAsync()
+            .flatMap(virtualMachine -> this.manager().inner().getVirtualMachines()
+                .createOrUpdateAsync(resourceGroupName(), vmName, inner())
+                .map(virtualMachineInner -> {
+                    reset(virtualMachineInner);
+                    return this;
+                }));
+    }
+
+    private Mono<VirtualMachine> prepareCreateResourceAsync() {
         setOSDiskDefaults();
         setOSProfileDefaults();
         setHardwareProfileDefaults();
@@ -1686,25 +1704,42 @@ class VirtualMachineImpl
         this.handleUnManagedOSAndDataDisksStorageSettings();
         this.bootDiagnosticsHandler.handleDiagnosticsSettings();
         this.handleNetworkSettings();
-        final VirtualMachineImpl self = this;
         return this
             .createNewProximityPlacementGroupAsync()
-            .flatMap(
+            .map(
                 virtualMachine -> {
                     this.handleAvailabilitySettings();
                     this.virtualMachineMsiHandler.processCreatedExternalIdentities();
                     this.virtualMachineMsiHandler.handleExternalIdentities();
-                    return this
-                        .manager()
-                        .inner()
-                        .getVirtualMachines()
-                        .createOrUpdateAsync(resourceGroupName(), vmName, inner())
-                        .map(
-                            virtualMachineInner -> {
-                                reset(virtualMachineInner);
-                                return self;
-                            });
+                    return virtualMachine;
                 });
+    }
+
+    public Accepted<VirtualMachine> beginCreate() {
+        Flux<Indexable> dependencyTasksAsync = taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+        dependencyTasksAsync.blockLast();
+
+        // same as createResourceAsync
+        prepareCreateResourceAsync().block();
+
+        Response<Flux<ByteBuffer>> activationResponse = this.manager().inner().getVirtualMachines()
+            .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, inner()).block();
+
+        if (activationResponse == null) {
+            throw logger.logExceptionAsError(new NullPointerException());
+        } else {
+            Accepted<VirtualMachine> accepted = new AcceptedImpl<VirtualMachineInner, VirtualMachine>(
+                activationResponse,
+                this.manager().inner().getSerializerAdapter(),
+                this.manager().inner().getHttpPipeline(),
+                VirtualMachineInner.class,
+                VirtualMachineInner.class,
+                inner -> new VirtualMachineImpl(inner.name(), inner, this.manager(),
+                    this.storageManager, this.networkManager, this.authorizationManager));
+
+            reset(accepted.getAcceptedResult().getValue().inner());
+            return accepted;
+        }
     }
 
     @Override

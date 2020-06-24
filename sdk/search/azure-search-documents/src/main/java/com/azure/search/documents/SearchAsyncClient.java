@@ -11,8 +11,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+<<<<<<< HEAD
 import com.azure.search.documents.implementation.SearchIndexClientImpl;
 import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
+=======
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
+import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+>>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
 import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
@@ -22,6 +28,7 @@ import com.azure.search.documents.implementation.converters.RequestOptionsConver
 import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
+import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
@@ -45,10 +52,13 @@ import com.azure.search.documents.util.SearchPagedFlux;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.util.SuggestPagedFlux;
 import com.azure.search.documents.util.SuggestPagedResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -96,10 +106,17 @@ public final class SearchAsyncClient {
     private final HttpPipeline httpPipeline;
 
     private static final ObjectMapper MAPPER;
+<<<<<<< HEAD
 
     static {
         MAPPER = new ObjectMapper();
         SerializationUtil.configureMapper(MAPPER);
+=======
+    static {
+        MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+>>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
     }
 
     /**
@@ -118,7 +135,11 @@ public final class SearchAsyncClient {
             .indexName(indexName)
          //   .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
+<<<<<<< HEAD
             .buildClient();
+=======
+            .build();
+>>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
     }
 
     /**
@@ -413,28 +434,44 @@ public final class SearchAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all fucntional calls below.
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
-            search(request, requestOptions, continuationToken, context));
+            search(request, requestOptions, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
+        // The firstPageResponse shared among all fucntional calls below.
+        // Do not initial new instance directly in func call.
+        final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
-            search(request, requestOptions, continuationToken, context);
+            search(request, requestOptions, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
-        String continuationToken, Context context) {
+        String continuationToken, SearchFirstPageResponseWrapper firstPageResponseWrapper, Context context) {
+
+        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
+            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
+        }
         SearchRequest requestToUse = (continuationToken == null) ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.getDocuments().searchPostWithResponseAsync(requestToUse,
             RequestOptionsConverter.map(requestOptions), context)
             .onErrorMap(MappingUtils::exceptionMapper)
-            .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
+            .map(searchDocumentResponse -> {
+                SearchPagedResponse response = new SearchPagedResponse(searchDocumentResponse, serviceVersion);
+                if (continuationToken == null) {
+                    firstPageResponseWrapper.setFirstPageResponse(response);
+                }
+                return response;
+            });
     }
 
     /**
@@ -444,12 +481,14 @@ public final class SearchAsyncClient {
      * constructing valid document keys.
      *
      * @param key The key of the document to retrieve.
+     * @param modelClass The model class converts to.
+     * @param <T> Convert document to the generic type.
      * @return the document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchDocument> getDocument(String key) {
-        return getDocumentWithResponse(key, null, null).map(Response::getValue);
+    public <T> Mono<T> getDocument(String key, Class<T> modelClass) {
+        return getDocumentWithResponse(key, modelClass, null, null).map(Response::getValue);
     }
 
     /**
@@ -459,6 +498,8 @@ public final class SearchAsyncClient {
      * constructing valid document keys.
      *
      * @param key The key of the document to retrieve.
+     * @param modelClass The model class converts to.
+     * @param <T> Convert document to the generic type.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
      * default as its corresponding property value in the returned object.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -467,19 +508,30 @@ public final class SearchAsyncClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
-        RequestOptions requestOptions) {
-        return withContext(context -> getDocumentWithResponse(key, selectedFields, requestOptions, context));
+    public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
+        List<String> selectedFields, RequestOptions requestOptions) {
+        return withContext(context -> getDocumentWithResponse(key, modelClass,
+            selectedFields, requestOptions, context));
     }
 
-    Mono<Response<SearchDocument>> getDocumentWithResponse(String key, List<String> selectedFields,
-        RequestOptions requestOptions, Context context) {
+    @SuppressWarnings("unchecked")
+    <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass,
+        List<String> selectedFields, RequestOptions requestOptions, Context context) {
         try {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
                 .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
+<<<<<<< HEAD
                     SearchDocument document = MAPPER.convertValue(res.getValue(), SearchDocument.class);
+=======
+                    if (SearchDocument.class == modelClass) {
+                        TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() { };
+                        SearchDocument doc = new SearchDocument(MAPPER.convertValue(res.getValue(), typeReference));
+                        return new SimpleResponse<T>(res, (T) doc);
+                    }
+                    T document = MAPPER.convertValue(res.getValue(), modelClass);
+>>>>>>> 3f84177e84cc9d80a93a551d1d630e3894dc7bcd
                     return new SimpleResponse<>(res, document);
                 })
                 .map(Function.identity());

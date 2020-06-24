@@ -441,7 +441,6 @@
               <baseDir>.</baseDir>
               <reportFile>target/dependency-whitelist.json</reportFile>
               <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
                 <param>com.azure:azure-core-test</param>
                 <param>com.azure:azure-e2e</param>
@@ -719,7 +718,17 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <dependencies>
+            <dependency>
+              <groupId>com.azure</groupId>
+              <artifactId>azure-test-watcher</artifactId>
+              <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-test-watcher;dependency} -->
+            </dependency>
+          </dependencies>
           <configuration>
+            <additionalClasspathElements>
+              <additionalClasspathElement>../../../common/azure-test-watcher/target/azure-test-watcher-1.0.0-beta.1.jar</additionalClasspathElement>
+            </additionalClasspathElements>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <systemPropertyVariables combine.children="append">

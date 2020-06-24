@@ -319,12 +319,14 @@ public final class SearchClient {
      * constructing valid document keys.
      *
      * @param key The key of the document to retrieve.
+     * @param modelClass The model class converts to.
+     * @param <T> Convert document to the generic type.
      * @return document object
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchDocument getDocument(String key) {
-        return getDocumentWithResponse(key, null, null, Context.NONE).getValue();
+    public <T> T getDocument(String key, Class<T> modelClass) {
+        return getDocumentWithResponse(key, modelClass, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -334,6 +336,8 @@ public final class SearchClient {
      * constructing valid document keys.
      *
      * @param key The key of the document to retrieve.
+     * @param modelClass The model class converts to.
+     * @param <T> Convert document to the generic type.
      * @param selectedFields List of field names to retrieve for the document; Any field not retrieved will have null or
      * default as its corresponding property value in the returned object.
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
@@ -343,9 +347,9 @@ public final class SearchClient {
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchDocument> getDocumentWithResponse(String key, List<String> selectedFields,
+    public <T> Response<T> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.getDocumentWithResponse(key, selectedFields, requestOptions, context).block();
+        return asyncClient.getDocumentWithResponse(key, modelClass, selectedFields, requestOptions, context).block();
     }
 
     /**

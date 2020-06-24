@@ -8,6 +8,8 @@ import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
@@ -16,6 +18,16 @@ import java.util.Map;
  * A converter between {@link com.azure.search.documents.implementation.models.IndexAction} and {@link IndexAction}.
  */
 public final class IndexActionConverter {
+    private static final ObjectMapper DYNAMIC_TYPE_MAPPER;
+    private static final ObjectMapper STRONGLY_TYPE_MAPPER;
+
+    static {
+        DYNAMIC_TYPE_MAPPER = new JacksonAdapter().serializer();
+        STRONGLY_TYPE_MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(DYNAMIC_TYPE_MAPPER);
+        SerializationUtil.configureMapper(STRONGLY_TYPE_MAPPER);
+    }
+
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.IndexAction} to {@link IndexAction}.
      */
@@ -54,18 +66,19 @@ public final class IndexActionConverter {
             indexAction.setActionType(actionType);
         }
 
-        T document = obj.getDocument();
-
-        ObjectMapper mapper = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(mapper);
-        Map<String, Object> additionalProperties = mapper.convertValue(document, Map.class);
-
-        indexAction.setAdditionalProperties(additionalProperties);
+        Map<String, Object> additionalProperties;
+        TypeReference<Map<String, Object>> typeRef = new TypeReference<Map<String, Object>>() {};
 
         if (obj.getParamMap() != null) {
             Map<String, Object> properties = obj.getParamMap();
-            PrivateFieldAccessHelper.set(indexAction, "additionalProperties", properties);
+            DYNAMIC_TYPE_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+            additionalProperties = DYNAMIC_TYPE_MAPPER.convertValue(properties, typeRef);
+        } else {
+            T properties = obj.getDocument();
+            additionalProperties = STRONGLY_TYPE_MAPPER.convertValue(properties, typeRef);
         }
+
+        indexAction.setAdditionalProperties(additionalProperties);
         return indexAction;
     }
 

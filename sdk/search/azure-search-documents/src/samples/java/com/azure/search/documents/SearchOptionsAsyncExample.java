@@ -44,11 +44,8 @@ public class SearchOptionsAsyncExample {
 
         searchResultsAsList(searchClient);
         searchResultAsStreamOfPagedResponse(searchClient);
-        searchResultsCountFromStream(searchClient);
-        searchResultsCountFromPage(searchClient);
-        searchResultsCoverage(searchClient);
+        searchResultsCountFormPage(searchClient);
         searchResultsCoverageFromPage(searchClient);
-        searchResultsFacetsFromStream(searchClient);
         searchResultsFacetsFromPage(searchClient);
     }
 
@@ -59,10 +56,7 @@ public class SearchOptionsAsyncExample {
             new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
             new RequestOptions());
 
-        Map<String, List<FacetResult>> facetResults = results
-            .byPage()
-            .take(1)
-            .map(SearchPagedResponse::getFacets).blockLast();
+        Map<String, List<FacetResult>> facetResults = results.getFacets().block();
 
         facetResults.forEach((k, v) -> {
             v.forEach(result -> {
@@ -73,29 +67,6 @@ public class SearchOptionsAsyncExample {
         });
     }
 
-    private static void searchResultsFacetsFromStream(SearchAsyncClient searchClient) {
-        // Each page in the response of the search query holds the facets value
-        // Accessing Facets property with stream
-        SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setFacets("Rooms/BaseRate,values:5|8|10"),
-            new RequestOptions());
-
-        Stream<Map<String, List<FacetResult>>> facetsMapStream = results
-            .byPage()
-            .map(SearchPagedResponse::getFacets)
-            .toStream();
-
-        facetsMapStream.forEach(result ->
-            result.forEach((k, v) -> v.forEach(facetResult -> {
-                System.out.println(k + " :");
-                System.out.println("    count: " + facetResult.getCount());
-                facetResult.getAdditionalProperties().forEach((f, d) ->
-                    System.out.println("    " + f + " : " + d)
-                );
-            }))
-        );
-    }
-
     private static void searchResultsCoverageFromPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the coverage value
         // Get Coverage property from the first page in the response
@@ -103,25 +74,10 @@ public class SearchOptionsAsyncExample {
             new SearchOptions().setMinimumCoverage(80.0),
             new RequestOptions());
 
-        System.out.println("Coverage = " + results
-            .byPage()
-            .take(1)
-            .map(SearchPagedResponse::getCoverage).blockLast());
+        System.out.println("Coverage = " + results.getCoverage().block());
     }
 
-    private static void searchResultsCoverage(SearchAsyncClient searchClient) {
-        // Each page in the response of the search query holds the coverage value
-        // Accessing Coverage property when iterating by page
-        SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setMinimumCoverage(80.0),
-            new RequestOptions());
-
-        System.out.println("Coverage = " + results
-            .byPage()
-            .map(SearchPagedResponse::getCoverage).blockLast());
-    }
-
-    private static void searchResultsCountFromPage(SearchAsyncClient searchClient) {
+    private static void searchResultsCountFormPage(SearchAsyncClient searchClient) {
         // Each page in the response of the search query holds the count value
         // Get total search results count
         // Get count property from the first page in the response
@@ -129,23 +85,9 @@ public class SearchOptionsAsyncExample {
             new SearchOptions().setIncludeTotalCount(true),
             new RequestOptions());
 
-        System.out.println("Count = " + results.byPage()
-            .take(1)
-            .map(SearchPagedResponse::getCount).blockLast());
+        System.out.println("Count = " + results.getTotalCount().block());
     }
 
-    private static void searchResultsCountFromStream(SearchAsyncClient searchClient) {
-        // Each page in the response of the search query holds the count value
-        // Get total search results count by accessing the SearchPagedResponse
-        // Access Count property when iterating by page
-        SearchPagedFlux results = searchClient.search("*",
-            new SearchOptions().setIncludeTotalCount(true),
-            new RequestOptions());
-
-        Stream<Long> countStream = results.byPage().map(SearchPagedResponse::getCount).toStream();
-        countStream.forEach(System.out::println);
-
-    }
 
     private static void searchResultAsStreamOfPagedResponse(SearchAsyncClient searchClient) {
         // Converting search results to stream
@@ -154,7 +96,8 @@ public class SearchOptionsAsyncExample {
 
         streamResponse.collect(Collectors.toList()).forEach(searchPagedResponse -> {
             searchPagedResponse.getElements().forEach(result ->
-                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+                result.getDocument(SearchDocument.class).forEach((field, value) ->
+                    System.out.println((field + ":" + value)))
             );
         });
     }
@@ -165,7 +108,8 @@ public class SearchOptionsAsyncExample {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println("Subscribed to paged flux processing items"))
             .doOnNext(result ->
-                result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+                result.getDocument(SearchDocument.class).forEach((field, value) ->
+                    System.out.println((field + ":" + value)))
             )
             .doOnComplete(() -> System.out.println("Completed processing"))
             .collectList().block();
