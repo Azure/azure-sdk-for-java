@@ -4,12 +4,12 @@
     <parent>
         <groupId>com.azure.resourcemanager</groupId>
         <artifactId>azure-resourcemanager-parent</artifactId>
-        <version>2.0.0-beta.1</version>
+        <version>2.0.0-beta.2</version>
         <relativePath>../../management/pom.xml</relativePath>
     </parent>
 
     <artifactId>azure-resourcemanager-monitor</artifactId>
-  <version>2.0.0-beta.1</version>
+  <version>2.0.0-beta.2</version>
     <packaging>jar</packaging>
 
     <name>Microsoft Azure SDK for Monitor Management</name>
@@ -27,7 +27,7 @@
     <scm>
         <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
         <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
-        <tag>v2.0.0-beta.1</tag>
+        <tag>v2.0.0-beta.2</tag>
     </scm>
 
     <properties>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-resources</artifactId>
-            <version>2.0.0-beta.1</version>
+            <version>2.0.0-beta.2</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -71,25 +71,25 @@
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-compute</artifactId>
-            <version>2.0.0-beta.1</version>
+            <version>2.0.0-beta.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-appservice</artifactId>
-            <version>2.0.0-beta.1</version>
+            <version>2.0.0-beta.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-storage</artifactId>
-            <version>2.0.0-beta.1</version>
+            <version>2.0.0-beta.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.azure.resourcemanager</groupId>
             <artifactId>azure-resourcemanager-compute</artifactId>
-            <version>2.0.0-beta.1</version>
+            <version>2.0.0-beta.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -122,7 +122,7 @@
                 <dependency>
                     <groupId>com.azure.resourcemanager</groupId>
                     <artifactId>azure-resourcemanager-resources</artifactId>
-                    <version>2.0.0-beta.1</version>
+                    <version>2.0.0-beta.2</version>
                     <type>test-jar</type>
                     <scope>test</scope>
                 </dependency>
