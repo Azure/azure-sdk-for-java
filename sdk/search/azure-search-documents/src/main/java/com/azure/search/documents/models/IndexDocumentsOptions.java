@@ -10,10 +10,12 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class IndexDocumentsOptions {
-    private boolean throwOnAnyError = false;
+    private boolean throwOnAnyError = true;
 
     /**
      * Returns whether an exception will be thrown if any operation in the batch fails.
+     * <p>
+     * Default value is {@code true}.
      *
      * @return Flag indicating if an exception will be thrown if any operation in the batch fails.
      */
@@ -23,6 +25,8 @@ public class IndexDocumentsOptions {
 
     /**
      * Sets whether an exception is thrown if any operation in a batch fails.
+     * <p>
+     * Default value is {@code true}.
      *
      * @param throwOnAnyError Flag indicating whether to throw on batch operation failure.
      * @return The updated IndexDocumentsOptions object.

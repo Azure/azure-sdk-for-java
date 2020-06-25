@@ -36,19 +36,19 @@ import com.azure.search.documents.implementation.util.DocumentResponseConversion
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.AutocompleteOptions;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
-import com.azure.search.documents.models.SearchResult;
-import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
+import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -668,13 +668,17 @@ public final class SearchAsyncClient {
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch,
         IndexDocumentsOptions options, Context context) {
         try {
-            boolean throwOnAnyError = (options != null) && options.throwOnAnyError();
+            IndexDocumentsOptions documentsOptions = (options == null)
+                ? new IndexDocumentsOptions()
+                : options;
+
             return restClient.documents()
                 .indexWithRestResponseAsync(IndexBatchBaseConverter.map(batch), context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError)
-                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
-                    : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
+                .flatMap(response ->
+                    (response.getStatusCode() == MULTI_STATUS_CODE && documentsOptions.throwOnAnyError())
+                        ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                        : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
