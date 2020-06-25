@@ -83,18 +83,24 @@ public abstract class SearchTestBase extends TestBase {
         }
     }
 
-    protected String setupIndexFromJsonFile(String jsonFile) throws Exception {
+    protected String setupIndexFromJsonFile(String jsonFile) {
         Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
             .getResourceAsStream(jsonFile)));
-
-        return setupIndex(new ObjectMapper().readValue(indexData, SearchIndex.class));
+        try {
+            return setupIndex(new ObjectMapper().readValue(indexData, SearchIndex.class));
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
+        }
     }
 
-    protected String setupIndex(SearchIndex index) throws Exception {
-        Field searchIndexName = index.getClass().getDeclaredField("name");
-        searchIndexName.setAccessible(true);
+    protected String setupIndex(SearchIndex index) {        try {
+            Field searchIndexName = index.getClass().getDeclaredField("name");
+            searchIndexName.setAccessible(true);
 
-        searchIndexName.set(index, testResourceNamer.randomName(index.getName(), 64));
+            searchIndexName.set(index, testResourceNamer.randomName(index.getName(), 64));
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
+        }
         getSearchIndexClientBuilder().buildClient().createOrUpdateIndex(index);
 
         return index.getName();

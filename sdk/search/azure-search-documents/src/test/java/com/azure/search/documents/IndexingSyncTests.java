@@ -293,11 +293,8 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
-        SearchIndex indexWithReservedName = new SearchIndex()
-            .setName(indexName)
-            .setFields(Collections.singletonList(new SearchField()
-                .setName("ID")
-                .setType(SearchFieldDataType.STRING)
+        SearchIndex indexWithReservedName = new SearchIndex(indexName)
+            .setFields(Collections.singletonList(new SearchField("ID", SearchFieldDataType.STRING)
                 .setKey(Boolean.TRUE)
             ));
 
