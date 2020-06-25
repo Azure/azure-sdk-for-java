@@ -18,9 +18,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.TreeTraversingParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,26 +72,26 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
 
     @Override
     public Geometry deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        return read(ctxt.readTree(p), ctxt);
+        return read(ctxt.readTree(p));
     }
 
-    private static Geometry read(JsonNode node, DeserializationContext ctxt) throws IOException {
+    private static Geometry read(JsonNode node) {
         String type = getRequiredProperty(node, TYPE_PROPERTY).asText();
 
         if (GEOMETRY_COLLECTION_TYPE.equalsIgnoreCase(type)) {
             List<Geometry> geometries = new ArrayList<>();
             for (JsonNode geometryNode : getRequiredProperty(node, GEOMETRIES_PROPERTY)) {
-                geometries.add(read(geometryNode, ctxt));
+                geometries.add(read(geometryNode));
             }
 
             return new CollectionGeometry(geometries, readBoundingBox(node),
-                readProperties(node, GEOMETRIES_PROPERTY, ctxt));
+                readProperties(node, GEOMETRIES_PROPERTY));
         }
 
         JsonNode coordinates = getRequiredProperty(node, COORDINATES_PROPERTY);
 
         GeometryBoundingBox boundingBox = readBoundingBox(node);
-        Map<String, Object> properties = readProperties(node, ctxt);
+        Map<String, Object> properties = readProperties(node);
 
         switch (type) {
             case POINT_TYPE:
@@ -176,12 +174,11 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         return null;
     }
 
-    private static Map<String, Object> readProperties(JsonNode node, DeserializationContext ctxt) throws IOException {
-        return readProperties(node, COORDINATES_PROPERTY, ctxt);
+    private static Map<String, Object> readProperties(JsonNode node) {
+        return readProperties(node, COORDINATES_PROPERTY);
     }
 
-    private static Map<String, Object> readProperties(JsonNode node, String knownProperty,
-        DeserializationContext ctxt) throws IOException {
+    private static Map<String, Object> readProperties(JsonNode node, String knownProperty) {
         Map<String, Object> additionalProperties = null;
         Iterator<Map.Entry<String, JsonNode>> fieldsIterator = node.fields();
         while (fieldsIterator.hasNext()) {
@@ -197,13 +194,13 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
                 additionalProperties = new HashMap<>();
             }
 
-            additionalProperties.put(propertyName, readAdditionalPropertyValue(field.getValue(), ctxt));
+            additionalProperties.put(propertyName, readAdditionalPropertyValue(field.getValue()));
         }
 
         return additionalProperties;
     }
 
-    private static Object readAdditionalPropertyValue(JsonNode node, DeserializationContext ctxt) throws IOException {
+    private static Object readAdditionalPropertyValue(JsonNode node) {
         switch (node.getNodeType()) {
             case STRING:
                 return node.asText();
@@ -223,9 +220,16 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
             case MISSING:
                 return null;
             case OBJECT:
+                Map<String, Object> object = new HashMap<>();
+                node.fields().forEachRemaining(field ->
+                    object.put(field.getKey(), readAdditionalPropertyValue(field.getValue())));
+
+                return object;
             case ARRAY:
-                JsonParser parser = new TreeTraversingParser(node);
-                return UntypedObjectDeserializer.Vanilla.std.deserialize(parser, ctxt);
+                List<Object> array = new ArrayList<>();
+                node.forEach(element -> array.add(readAdditionalPropertyValue(element)));
+
+                return array;
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     String.format("Unsupported additional property type %s.", node.getNodeType())));
@@ -262,7 +266,7 @@ final class GeometryDeserializer extends JsonDeserializer<Geometry> {
         return new JsonDeserializer<T>() {
             @Override
             public T deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-                return subclass.cast(read(ctxt.readTree(p), ctxt));
+                return subclass.cast(read(ctxt.readTree(p)));
             }
         };
     }
