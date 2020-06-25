@@ -14,11 +14,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -68,6 +70,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "Some-contents";
         final int numberToSend = 5;
+        final List<String> lockTokens = new ArrayList<>();
 
         setSenderAndReceiver(entityType, entityIndex, TIMEOUT,
             builder -> builder.maxAutoLockRenewalDuration(Duration.ofMinutes(2)));
@@ -92,10 +95,11 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
                 .assertNext(context -> assertMessageEquals(sessionId, messageId, contents, context))
-                .expectComplete()
+                .thenCancel()
                 .verify(Duration.ofMinutes(2));
         } finally {
             subscription.dispose();
+            completeMessages(receiver, lockTokens, sessionId);
         }
     }
 
@@ -206,5 +210,13 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         assertEquals(contents, new String(message.getBody(), StandardCharsets.UTF_8));
 
         assertNull(actual.getThrowable());
+    }
+
+    private int completeMessages(ServiceBusReceiverAsyncClient client, List<String> lockTokens, String sessionId) {
+        Mono.when(lockTokens.stream().map(e -> client.complete(MessageLockToken.fromString(e), sessionId))
+            .collect(Collectors.toList()))
+            .block(TIMEOUT);
+
+        return lockTokens.size();
     }
 }
