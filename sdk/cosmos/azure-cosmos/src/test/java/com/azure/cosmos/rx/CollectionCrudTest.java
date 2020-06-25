@@ -270,7 +270,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-                        .indexingMode(IndexingMode.LAZY).build();
+                        .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
     }
@@ -297,7 +297,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         // validate
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .indexingMode(IndexingMode.LAZY).withDefaultTimeToLive(defaultTimeToLive * 2).build();
+            .indexingMode(IndexingMode.CONSISTENT).withDefaultTimeToLive(defaultTimeToLive * 2).build();
         validateSuccess(readObservable, validator);
         safeDeleteAllCollections(database);
     }
