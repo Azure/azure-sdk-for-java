@@ -255,6 +255,7 @@ public class ModelHelper {
 
     private static List<ObjectReplicationPolicy> transformObjectReplicationMetadata(
         Map<String, String> objectReplicationMetadata) {
+
         Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
         objectReplicationMetadata = objectReplicationMetadata == null ? new HashMap<>() : objectReplicationMetadata;
         for (Map.Entry<String, String> entry : objectReplicationMetadata.entrySet()) {
@@ -271,6 +272,9 @@ public class ModelHelper {
             internalSourcePolicies.get(policyId).add(rule);
         }
 
+        if (internalSourcePolicies.isEmpty()) {
+            return null;
+        }
         List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
         for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
