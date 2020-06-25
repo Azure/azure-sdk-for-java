@@ -3,7 +3,8 @@
 ## 4.1.0 (2020-06-25)
 ### New Features
 * Added support for `GROUP BY` query.
-* Increased the default value for RntbdTransportClient.Options.maxChannelsPerEndpoint to 130.
+* Increased the default value of maxConnectionsPerEndpoint to 130 in DirectConnectionConfig.
+* Increased the default value of maxRequestsPerConnection to 30 in DirectConnectionConfig.
 ### Key Bug Fixes
 * Fixed issues with order by query returning duplicate results when resuming by using continuation token. 
 * Fixed issues with value query returning null values for nested object.
