@@ -82,7 +82,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
                                 exception, this.lastRetryWithException);
                         exceptionToThrow = this.lastRetryWithException;
                     } else {
-                        logger.warn("Received gone exception after backoff/retry. Will fail the request. {}, short stackTrace = [{}]",
+                        logger.warn("Received gone exception after backoff/retry. Will fail the request. {}",
                                 exception.toString());
                         exceptionToThrow = BridgeInternal.createServiceUnavailableException(exception);
                     }
