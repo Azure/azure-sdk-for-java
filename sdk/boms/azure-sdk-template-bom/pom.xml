@@ -49,6 +49,7 @@
         <artifactId>azure-sdk-template</artifactId>
         <version>1.0.4-beta.19</version>
       </dependency>
+    </dependencies>
   </dependencyManagement>
 
   <build>
