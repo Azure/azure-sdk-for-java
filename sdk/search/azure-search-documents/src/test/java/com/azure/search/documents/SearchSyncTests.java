@@ -18,7 +18,7 @@ import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.options.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.ValueFacetResult;
 import com.azure.search.documents.test.environment.models.Bucket;

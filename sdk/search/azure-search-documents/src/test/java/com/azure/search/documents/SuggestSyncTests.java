@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.models.SuggestOptions;
+import com.azure.search.documents.options.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;

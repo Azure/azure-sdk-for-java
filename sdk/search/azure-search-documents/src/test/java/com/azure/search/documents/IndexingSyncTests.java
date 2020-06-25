@@ -12,6 +12,7 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
+import com.azure.search.documents.options.IndexDocumentsOptions;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
@@ -208,7 +209,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotel2);
 
         try {
-            client.indexDocuments(batch);
+            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -251,7 +252,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotel2);
 
         try {
-            client.indexDocuments(batch);
+            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -523,7 +524,7 @@ public class IndexingSyncTests extends SearchTestBase {
 
 
         try {
-            client.mergeDocuments(hotels);
+            client.mergeDocumentsWithResponse(hotels, new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
             fail("merge did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -805,14 +806,16 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotelsToUpload)
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
-        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload, Context.NONE);
+        Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload,
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, indexResponse.getStatusCode());
         IndexDocumentsResult result = indexResponse.getValue();
         assertEquals(2, result.getResults().size());
 
-        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge, Context.NONE);
+        Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge,
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, updateResponse.getStatusCode());
@@ -820,21 +823,23 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
-            hotelsToMergeOrUpload, Context.NONE);
+            hotelsToMergeOrUpload, new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, mergeOrUploadResponse.getStatusCode());
         result = mergeOrUploadResponse.getValue();
         assertEquals(2, result.getResults().size());
 
-        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete, Context.NONE);
+        Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete,
+            new IndexDocumentsOptions().setThrowOnAnyError(true) ,Context.NONE);
         waitForIndexing();
 
         assertEquals(200, deleteResponse.getStatusCode());
         result = deleteResponse.getValue();
         assertEquals(1, result.getResults().size());
 
-        Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch, Context.NONE);
+        Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch,
+            new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE);
         waitForIndexing();
 
         assertEquals(200, batchResponse.getStatusCode());

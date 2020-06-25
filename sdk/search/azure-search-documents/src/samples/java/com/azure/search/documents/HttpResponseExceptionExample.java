@@ -8,7 +8,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.options.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.util.SearchPagedFlux;
 

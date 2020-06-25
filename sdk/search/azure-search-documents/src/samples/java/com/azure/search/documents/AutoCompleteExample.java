@@ -9,7 +9,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteItem;
 import com.azure.search.documents.models.AutocompleteMode;
-import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.options.AutocompleteOptions;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 

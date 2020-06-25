@@ -69,7 +69,7 @@ import com.azure.search.documents.indexes.models.TruncateTokenFilter;
 import com.azure.search.documents.indexes.models.UaxUrlEmailTokenizer;
 import com.azure.search.documents.indexes.models.UniqueTokenFilter;
 import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.options.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

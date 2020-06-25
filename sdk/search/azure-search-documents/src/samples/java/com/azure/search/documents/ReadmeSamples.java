@@ -19,7 +19,7 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.options.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
 import java.util.ArrayList;

@@ -4,7 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
-import com.azure.search.documents.models.SuggestOptions;
+import com.azure.search.documents.options.SuggestOptions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

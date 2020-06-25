@@ -4,14 +4,13 @@
 package com.azure.search.documents.util;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.search.documents.implementation.converters.SuggestResultConverter;
-import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.models.SuggestResult;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Represents an HTTP response from the suggest API request that contains a list of items deserialized into a {@link
@@ -38,16 +37,16 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
     /**
      * Constructor
      *
-     * @param documentSearchResponse an http response with the results
+     * @param request Request that generated this response.
+     * @param statusCode Status code for the response.
+     * @param headers HTTP headers of the response.
+     * @param suggestResults Results from the suggest operation.
+     * @param coverage Percent of the index used in the suggest operation.
      */
-    public SuggestPagedResponse(SimpleResponse<SuggestDocumentsResult> documentSearchResponse) {
-        super(documentSearchResponse.getRequest(),
-            documentSearchResponse.getStatusCode(),
-            documentSearchResponse.getHeaders(),
-            documentSearchResponse.getValue().getResults().stream().map(SuggestResultConverter::map)
-                .collect(Collectors.toList()),
-            null,
-            null);
-        this.coverage = documentSearchResponse.getValue().getCoverage();
+    public SuggestPagedResponse(HttpRequest request, int statusCode, HttpHeaders headers,
+        List<SuggestResult> suggestResults, Double coverage) {
+        super(request, statusCode, headers, suggestResults, null, null);
+
+        this.coverage = coverage;
     }
 }
