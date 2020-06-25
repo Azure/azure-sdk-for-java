@@ -133,11 +133,7 @@ The credential types in Azure Identity differ in the types of AAD identities the
     <tr>
       <td><code>DefaultAzureCredential</code></td>
       <td>service principal or managed identity</td>
-      <td>
-        none for managed identity;
-        <a href="#environment-variables">environment variables</a> for service
-        principal
-      </td>
+      <td>none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
     </tr>
     <tr>
       <td><code>ManagedIdentityCredential</code></td>
@@ -176,6 +172,7 @@ The credential types in Azure Identity differ in the types of AAD identities the
     </tr>
   </tbody>
 </table>
+
 
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
