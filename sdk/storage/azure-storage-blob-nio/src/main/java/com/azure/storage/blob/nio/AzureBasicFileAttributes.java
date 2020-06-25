@@ -11,27 +11,43 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AzureBasicFileAttributes implements BasicFileAttributes {
     private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
 
-    // TODO: Add is virtual directory method to the AzureStorage ones
-    // TODO: Should also implement UserDefined
-    // Should have a way for people to know if it's a virtual or concrete directory. Shouldn't require an extra network call
-    // Could leverage the checkDirectoryStatus list call to get properties out, but that requires refactoring all of that and
-    // ensuring that the first element in the list for a directory is always the one we want.
-    // I think for now we can just do a get properties and if that throws a 404, we can check the directory status. Directories
-    // Don't really have very many properties anyway, so making two calls for virtual directories isn't terrible I suppose.
-    // And we can always optimize later.
+    // For verifying parameters on FileSystemProvider.readAttributes
+    static final Set<String> attributeStrings;
+    static {
+        Set<String> set = new HashSet<>();
+        set.add("lastModifiedTime");
+        set.add("isRegularFile");
+        set.add("isDirectory");
+        set.add("isSymbolicLink");
+        set.add("isOther");
+        set.add("size");
+        set.add("creationTime");
+        attributeStrings = Collections.unmodifiableSet(set);
+    }
 
     private final BlobProperties properties;
 
+    /*
+    There are some work-arounds we could do to try to accommodate virtual directories such as making a checkDirStatus
+    call before or after getProperties to throw an appropriate error or adding an isVirtualDirectory method. However,
+    the former wastes network time only to throw a slightly more specific error when we will throw on 404 anyway. The
+    latter introduces virtual directories into the actual code path/api surface. While we are clear in our docs about
+    the possible pitfalls of virtual directories, and customers should be aware of it, they shouldn't have to code
+    against it. Therefore, we fall back to documenting that reading attributes on a virtual directory will throw. And
+    who reads attributes on a directory anyway?
+     */
     AzureBasicFileAttributes(Path path) throws IOException {
         try {
             this.properties = new AzureResource(path).getBlobClient().getProperties();
         } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException("The specified file was not found. This could be "
-                + "because the file does not exist or because it is a virtual directory. Path: " + path.toString(), e));
+            throw LoggingUtility.logError(logger, new IOException(e));
         }
     }
 
@@ -47,7 +63,7 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
 
     @Override
     public FileTime creationTime() {
-        throw new UnsupportedOperationException();
+        return FileTime.from(properties.getCreationTime().toInstant());
     }
 
     @Override
@@ -55,6 +71,10 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
         return !this.properties.getMetadata().getOrDefault(AzureResource.DIR_METADATA_MARKER, "false").equals("true");
     }
 
+    /**
+     * Will only return true if a marker blob exists.
+     * @return
+     */
     @Override
     public boolean isDirectory() {
         return !this.isRegularFile();
