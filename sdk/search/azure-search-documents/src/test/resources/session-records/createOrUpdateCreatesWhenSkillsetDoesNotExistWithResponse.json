@@ -1,52 +1,52 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('testskillset99735a2ede1d79fef4ca')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('testskillset97285b05a442df124471')?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "708e8a17-644d-41d6-a809-da9712783885",
+      "x-ms-client-request-id" : "c8494297-07fe-4040-a475-519a335b4790",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "708e8a17-644d-41d6-a809-da9712783885",
+      "request-id" : "c8494297-07fe-4040-a475-519a335b4790",
       "StatusCode" : "201",
-      "Date" : "Wed, 24 Jun 2020 19:03:27 GMT",
+      "Date" : "Thu, 25 Jun 2020 17:09:56 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "708e8a17-644d-41d6-a809-da9712783885",
-      "ETag" : "W/\"0x8D818714778BEA5\"",
-      "elapsed-time" : "53",
+      "client-request-id" : "c8494297-07fe-4040-a475-519a335b4790",
+      "ETag" : "W/\"0x8D8192A9603734F\"",
+      "elapsed-time" : "112",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "738",
-      "Body" : "{\"@odata.context\":\"https://sizhu-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D818714778BEA5\\\"\",\"name\":\"testskillset99735a2ede1d79fef4ca\",\"description\":\"Skillset for testing OCR\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr-0\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext0\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
+      "Body" : "{\"@odata.context\":\"https://sizhu-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D8192A9603734F\\\"\",\"name\":\"testskillset97285b05a442df124471\",\"description\":\"Skillset for testing OCR\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr-0\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext0\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "708e8a17-644d-41d6-a809-da9712783885",
+      "x-ms-client-request-id" : "c8494297-07fe-4040-a475-519a335b4790",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://sizhu-search.search.windows.net/skillsets('testskillset99735a2ede1d79fef4ca')?api-version=2019-05-06-Preview"
+      "Location" : "https://sizhu-search.search.windows.net/skillsets('testskillset97285b05a442df124471')?api-version=2020-06-30"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('testskillset99735a2ede1d79fef4ca')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('testskillset97285b05a442df124471')?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "a91bd9d9-083f-465f-a2fe-3198f46549fa"
+      "x-ms-client-request-id" : "60365260-ac89-4e27-832c-402767aad95b"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "a91bd9d9-083f-465f-a2fe-3198f46549fa",
-      "elapsed-time" : "60",
+      "client-request-id" : "60365260-ac89-4e27-832c-402767aad95b",
+      "elapsed-time" : "88",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "a91bd9d9-083f-465f-a2fe-3198f46549fa",
+      "request-id" : "60365260-ac89-4e27-832c-402767aad95b",
       "StatusCode" : "204",
-      "Date" : "Wed, 24 Jun 2020 19:03:28 GMT",
-      "x-ms-client-request-id" : "a91bd9d9-083f-465f-a2fe-3198f46549fa"
+      "Date" : "Thu, 25 Jun 2020 17:09:56 GMT",
+      "x-ms-client-request-id" : "60365260-ac89-4e27-832c-402767aad95b"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testskillset99735a2ede1d79fef4ca" ]
+  "variables" : [ "testskillset97285b05a442df124471" ]
 }

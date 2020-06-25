@@ -1,32 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/1.0.0-beta.5 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "4b6ca270-4c34-461b-9bc9-89760ca3964c",
+      "User-Agent" : "azsdk-java-azure-search-documents/1.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c709307a-ddf6-4832-ad28-d2574ef9aef8",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "4b6ca270-4c34-461b-9bc9-89760ca3964c",
+      "request-id" : "c709307a-ddf6-4832-ad28-d2574ef9aef8",
       "StatusCode" : "400",
-      "Date" : "Wed, 24 Jun 2020 19:14:52 GMT",
+      "Date" : "Thu, 25 Jun 2020 17:22:42 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "4b6ca270-4c34-461b-9bc9-89760ca3964c",
+      "client-request-id" : "c709307a-ddf6-4832-ad28-d2574ef9aef8",
       "elapsed-time" : "4",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "124",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.analyzers[0].name : The name field is required.\\r\\n\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "4b6ca270-4c34-461b-9bc9-89760ca3964c",
+      "x-ms-client-request-id" : "c709307a-ddf6-4832-ad28-d2574ef9aef8",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "hotelscanuseallregexflagsnullnameanalyzer3b4222439017281" ]
+  "variables" : [ "hotelscanuseallregexflagsnullnameanalyzer5c627560c524aa6" ]
 }
