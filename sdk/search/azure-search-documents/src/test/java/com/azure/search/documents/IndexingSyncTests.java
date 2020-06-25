@@ -10,6 +10,7 @@ import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsOptions;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.test.environment.models.Author;
@@ -40,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.function.Supplier;
+
 import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
@@ -208,7 +210,8 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotel2);
 
         try {
-            client.indexDocuments(batch);
+            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), null,
+                Context.NONE);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -251,7 +254,8 @@ public class IndexingSyncTests extends SearchTestBase {
             .addUploadActions(hotel2);
 
         try {
-            client.indexDocuments(batch);
+            client.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true), null,
+                Context.NONE);
             fail("indexing did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -438,7 +442,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] { "vcr/dvd" }),
+                    .tags(new String[]{"vcr/dvd"}),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -447,7 +451,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] {"vcr/dvd", "jacuzzi tub"})
+                    .tags(new String[]{"vcr/dvd", "jacuzzi tub"})
             ));
 
         // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
@@ -469,7 +473,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         // Fields whose values get updated are updated, and whose values get erased remain the same.
@@ -498,7 +502,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         List<Hotel> originalDocs = new ArrayList<>();
@@ -523,7 +527,8 @@ public class IndexingSyncTests extends SearchTestBase {
 
 
         try {
-            client.mergeDocuments(hotels);
+            client.mergeDocumentsWithResponse(hotels, new IndexDocumentsOptions().setThrowOnAnyError(true),
+                null, Context.NONE);
             fail("merge did not throw an expected Exception");
         } catch (IndexBatchException ex) {
             List<IndexingResult> results = ex.getIndexingResults();
@@ -566,7 +571,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] { "vcr/dvd" }),
+                    .tags(new String[]{"vcr/dvd"}),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -575,7 +580,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })
+                    .tags(new String[]{"vcr/dvd", "jacuzzi tub"})
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
@@ -594,7 +599,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .type("Budget Room")
                     .baseRate(10.5)
                     .smokingAllowed(false)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
@@ -626,7 +631,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions(null)
                     .sleepsCount(null)
                     .smokingAllowed(false)
-                    .tags(new String[] { "vcr/dvd", "balcony" })
+                    .tags(new String[]{"vcr/dvd", "balcony"})
             ));
 
         List<LoudHotel> originalDocs = new ArrayList<>();
@@ -806,7 +811,7 @@ public class IndexingSyncTests extends SearchTestBase {
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
         Response<IndexDocumentsResult> indexResponse = client.uploadDocumentsWithResponse(hotelsToUpload,
-            null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, indexResponse.getStatusCode());
@@ -814,7 +819,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> updateResponse = client.mergeDocumentsWithResponse(hotelsToMerge,
-            null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, updateResponse.getStatusCode());
@@ -822,7 +827,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> mergeOrUploadResponse = client.mergeOrUploadDocumentsWithResponse(
-            hotelsToMergeOrUpload, null, Context.NONE);
+            hotelsToMergeOrUpload, new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, mergeOrUploadResponse.getStatusCode());
@@ -830,7 +835,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(2, result.getResults().size());
 
         Response<IndexDocumentsResult> deleteResponse = client.deleteDocumentsWithResponse(hotelsToDelete,
-            null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, deleteResponse.getStatusCode());
@@ -838,7 +843,7 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(1, result.getResults().size());
 
         Response<IndexDocumentsResult> batchResponse = client.indexDocumentsWithResponse(batch,
-            null, Context.NONE);
+            new IndexDocumentsOptions().setThrowOnAnyError(true), null, Context.NONE);
         waitForIndexing();
 
         assertEquals(200, batchResponse.getStatusCode());
