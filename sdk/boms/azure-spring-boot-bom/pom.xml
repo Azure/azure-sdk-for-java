@@ -101,6 +101,7 @@
   </dependencyManagement>
 
   <build>
+    <plugins>
       <!-- Copy the pom file to output -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
