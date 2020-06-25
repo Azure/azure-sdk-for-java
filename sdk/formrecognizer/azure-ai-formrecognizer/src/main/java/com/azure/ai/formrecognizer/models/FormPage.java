@@ -4,7 +4,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The FormPage model.
@@ -18,14 +19,14 @@ public final class FormPage {
     private final float height;
 
     /*
-     * When includeTextDetails is set to true, a list of recognized text lines.
+     * When includeTextContent is set to true, a list of recognized text lines.
      */
-    private final IterableStream<FormLine> lines;
+    private final List<FormLine> lines;
 
     /*
      * List of data tables extracted from the page.
      */
-    private final IterableStream<FormTable> tables;
+    private final List<FormTable> tables;
 
     /*
      * The general orientation of the text in clockwise direction, measured in
@@ -37,12 +38,17 @@ public final class FormPage {
      * The unit used by the width, height and boundingBox properties. For
      * images, the unit is "pixel". For PDF, the unit is "inch".
      */
-    private final DimensionUnit unit;
+    private final LengthUnit unit;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
     private final float width;
+
+    /*
+     * The 1 based page number.
+     */
+    private final Integer pageNumber;
 
     /**
      * Constructs a FormPage object.
@@ -51,17 +57,19 @@ public final class FormPage {
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
      * @param width The width of the image/PDF in pixels/inches, respectively.
-     * @param lines When includeTextDetails is set to true, a list of recognized text lines.
+     * @param lines When includeTextContent is set to true, a list of recognized text lines.
      * @param tables List of data tables extracted from the page.
+     * @param pageNumber the 1-based page number in the input document.
      */
-    public FormPage(final float height, final float textAngle, final DimensionUnit unit,
-        final float width, final IterableStream<FormLine> lines, final IterableStream<FormTable> tables) {
+    public FormPage(final float height, final float textAngle, final LengthUnit unit,
+        final float width, final List<FormLine> lines, final List<FormTable> tables, final Integer pageNumber) {
         this.height = height;
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
-        this.lines = IterableStream.of(lines);
-        this.tables = IterableStream.of(tables);
+        this.lines = lines;
+        this.tables = tables;
+        this.pageNumber = pageNumber;
     }
 
     /**
@@ -75,12 +83,12 @@ public final class FormPage {
     }
 
     /**
-     * Get the lines property: When includeTextDetails is set to true, a list
+     * Get the lines property: When includeTextContent is set to true, a list
      * of recognized text lines.
      *
      * @return the lines value.
      */
-    public IterableStream<FormLine> getLines() {
+    public List<FormLine> getLines() {
         return this.lines;
     }
 
@@ -89,7 +97,7 @@ public final class FormPage {
      *
      * @return the tables value.
      */
-    public IterableStream<FormTable> getTables() {
+    public List<FormTable> getTables() {
         return this.tables;
     }
 
@@ -109,7 +117,7 @@ public final class FormPage {
      *
      * @return the unit value.
      */
-    public DimensionUnit getUnit() {
+    public LengthUnit getUnit() {
         return this.unit;
     }
 
@@ -121,6 +129,15 @@ public final class FormPage {
      */
     public float getWidth() {
         return this.width;
+    }
+
+    /**
+     * Get the 1-based page number in the input document.
+     *
+     * @return the page number value.
+     */
+    public Integer getPageNumber() {
+        return this.pageNumber;
     }
 }
 

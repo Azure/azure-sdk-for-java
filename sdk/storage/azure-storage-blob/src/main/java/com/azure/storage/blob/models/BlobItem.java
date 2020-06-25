@@ -5,12 +5,10 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.implementation.models.BlobItemInternal;
-import com.azure.storage.blob.implementation.models.BlobTag;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,56 +17,6 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItem {
-
-    /**
-     * Initializes a new BlobItem.
-     */
-    public BlobItem() {
-        tags = null;
-        objectReplicationSourcePolicies = null;
-    }
-
-    /**
-     * Initializes a new blob item.
-     *
-     * @param blobItemInternal The internal structure from which to pull state.
-     */
-    public BlobItem(BlobItemInternal blobItemInternal) {
-        this.name = blobItemInternal.getName();
-        this.deleted = blobItemInternal.isDeleted();
-        this.snapshot = blobItemInternal.getSnapshot();
-        this.properties = new BlobItemProperties(blobItemInternal.getProperties());
-        this.metadata = blobItemInternal.getMetadata();
-        this.versionId = blobItemInternal.getVersionId();
-        this.isCurrentVersion = blobItemInternal.isCurrentVersion();
-        this.isPrefix = blobItemInternal.isPrefix();
-
-        this.tags = new HashMap<>();
-        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
-            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
-                this.tags.put(tag.getKey(), tag.getValue());
-            }
-        }
-        this.objectReplicationSourcePolicies = null;
-        if (blobItemInternal.getObjectReplicationMetadata() != null) {
-            this.objectReplicationSourcePolicies = new HashMap<>();
-            for (Map.Entry<String, String> p : blobItemInternal.getObjectReplicationMetadata().entrySet()) {
-                String orString = p.getKey();
-                String str = orString.startsWith("or-") ? orString.substring(3) : orString;
-                String[] split = str.split("_");
-                String policyId = split[0];
-                String ruleId = split[1];
-                if (objectReplicationSourcePolicies.containsKey(policyId)) {
-                    objectReplicationSourcePolicies.get(policyId)
-                        .putRuleAndStatus(ruleId, p.getValue());
-                } else {
-                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, p.getValue());
-                    objectReplicationSourcePolicies.put(policyId, policy);
-                }
-            }
-        }
-    }
 
     /*
      * The name property.
@@ -100,7 +48,7 @@ public final class BlobItem {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
-    private final Map<String, String> tags;
+    private Map<String, String> tags;
 
     /*
      * The versionId property.
@@ -110,10 +58,11 @@ public final class BlobItem {
 
     private Boolean isCurrentVersion;
 
-     /*
-     * The objectReplicationSourcePolicies property.
+    /*
+     * The objectReplicationRuleStatus property.
      */
-    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+    @JsonProperty(value = "BlobObjectReplicationRuleStatus")
+    private List<ObjectReplicationPolicy> objectReplicationSourcePolicies;
 
     /*
      * The isPrefix property.
@@ -222,12 +171,23 @@ public final class BlobItem {
     }
 
     /**
-     * Get the tags property: The tag property.
+     * Get the tags property: The tags property.
      *
      * @return the metadata value.
      */
     public Map<String, String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags property.
+     *
+     * @param tags the tags value to set.
+     * @return the BlobItem object itself.
+     */
+    public BlobItem setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -265,7 +225,7 @@ public final class BlobItem {
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the BlobItem object itself.
      */
-    public BlobItem setIsCurrentVersion(Boolean isCurrentVersion) {
+    public BlobItem setCurrentVersion(Boolean isCurrentVersion) {
         this.isCurrentVersion = isCurrentVersion;
         return this;
     }
@@ -276,7 +236,7 @@ public final class BlobItem {
      *
      * @return the objectReplicationSourcePolicies value.
      */
-    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+    public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
         return this.objectReplicationSourcePolicies;
     }
 
@@ -289,7 +249,7 @@ public final class BlobItem {
      * @return the BlobItem object itself.
      */
     public BlobItem setObjectReplicationSourcePolicies(
-        Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
         this.objectReplicationSourcePolicies = objectReplicationSourcePolicies;
         return this;
     }

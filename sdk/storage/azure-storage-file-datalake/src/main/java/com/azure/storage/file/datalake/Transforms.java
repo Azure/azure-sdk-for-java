@@ -19,7 +19,7 @@ import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
-import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
@@ -44,7 +44,7 @@ import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryHeaders;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
-import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
@@ -459,9 +459,10 @@ class Transforms {
         if (pto == null) {
             return null;
         }
+
         return new com.azure.storage.blob.models.ParallelTransferOptions()
             .setBlockSizeLong(pto.getBlockSizeLong())
-            .setNumBuffers(pto.getNumBuffers())
+            .setMaxConcurrency(pto.getMaxConcurrency())
             .setProgressReceiver(Transforms.toBlobProgressReceiver(pto.getProgressReceiver()))
             .setMaxSingleUploadSizeLong(pto.getMaxSingleUploadSizeLong());
     }
@@ -549,7 +550,7 @@ class Transforms {
             .setContentType(h.getContentType())
             .setContentRange(h.getContentRange())
             .setETag(h.getETag())
-            .setContentMd5(h.getContentMD5())
+            .setContentMd5(h.getContentMd5())
             .setContentEncoding(h.getContentEncoding())
             .setCacheControl(h.getCacheControl())
             .setContentDisposition(h.getContentDisposition())
@@ -570,7 +571,7 @@ class Transforms {
             .setDateProperty(h.getDateProperty())
             .setServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
-            .setFileContentMd5(h.getBlobContentMD5())
+            .setFileContentMd5(h.getContentMd5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode());
     }
@@ -579,11 +580,21 @@ class Transforms {
         if (options == null) {
             return null;
         }
-        return new BlobQueryOptions()
-            .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
-            .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
-            .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-            .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
-            .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
+        if (options.getOutputStream() == null) {
+            return new BlobQueryOptions(options.getExpression())
+                .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
+                .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
+                .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
+                .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
+                .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
+        } else {
+            return new BlobQueryOptions(options.getExpression(), options.getOutputStream())
+                .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
+                .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
+                .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
+                .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
+                .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
+        }
+
     }
 }

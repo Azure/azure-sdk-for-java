@@ -9,10 +9,10 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.azure.storage.blob.models.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -220,7 +220,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              subscribe. */
             fbb.subscribe();
 
-            client.uploadWithResponse(fbb, new BlobParallelUploadOptions().
+            client.uploadWithResponse(new BlobParallelUploadOptions(fbb).
                 setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
@@ -262,6 +262,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         @Override
         protected void writeInternal(final byte[] data, int offset, int length) {
+            this.checkStreamState();
             sink.next(ByteBuffer.wrap(data, offset, length));
         }
 

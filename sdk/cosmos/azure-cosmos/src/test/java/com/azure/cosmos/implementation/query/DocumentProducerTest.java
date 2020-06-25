@@ -4,8 +4,8 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -437,8 +437,8 @@ public class DocumentProducerTest {
         subscriber.assertValueCount(responsesBeforeThrottle.size());
     }
 
-    private CosmosClientException mockThrottlingException(Duration retriesAfterDuration) {
-        CosmosClientException throttleException = mock(CosmosClientException.class);
+    private CosmosException mockThrottlingException(Duration retriesAfterDuration) {
+        CosmosException throttleException = mock(CosmosException.class);
         doReturn(429).when(throttleException).getStatusCode();
         doReturn(new StackTraceElement[0]).when(throttleException).getStackTrace();
         doReturn(retriesAfterDuration).when(throttleException).getRetryAfterDuration();
@@ -718,11 +718,11 @@ public class DocumentProducerTest {
             }
         }
 
-        private static CosmosClientException partitionKeyRangeGoneException() {
+        private static CosmosException partitionKeyRangeGoneException() {
             Map<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
-            return BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
+            return BridgeInternal.createCosmosException(HttpConstants.StatusCodes.GONE, new CosmosError(), headers);
         }
 
         protected void capture(String partitionId, CapturedInvocation captureInvocation) {

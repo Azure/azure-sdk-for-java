@@ -6,10 +6,8 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -18,54 +16,6 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "Properties")
 @Fluent
 public final class BlobItemProperties {
-
-    /**
-     * Initializes a new BlobItemProperties.
-     */
-    public BlobItemProperties() {
-
-    }
-
-    /**
-     * Initializes a new BlobItemPropertiesInternal.
-     *
-     * @param blobItemPropertiesInternal The internal object from which to pull state.
-     */
-    public BlobItemProperties(BlobItemPropertiesInternal blobItemPropertiesInternal) {
-        this.creationTime = blobItemPropertiesInternal.getCreationTime();
-        this.lastModified = blobItemPropertiesInternal.getLastModified();
-        this.eTag = blobItemPropertiesInternal.getETag();
-        this.contentLength = blobItemPropertiesInternal.getContentLength();
-        this.contentType = blobItemPropertiesInternal.getContentType();
-        this.contentEncoding = blobItemPropertiesInternal.getContentEncoding();
-        this.contentLanguage = blobItemPropertiesInternal.getContentLanguage();
-        this.contentMd5 = blobItemPropertiesInternal.getContentMd5();
-        this.contentDisposition = blobItemPropertiesInternal.getContentDisposition();
-        this.cacheControl = blobItemPropertiesInternal.getCacheControl();
-        this.blobSequenceNumber = blobItemPropertiesInternal.getBlobSequenceNumber();
-        this.blobType = blobItemPropertiesInternal.getBlobType();
-        this.leaseStatus = blobItemPropertiesInternal.getLeaseStatus();
-        this.leaseState = blobItemPropertiesInternal.getLeaseState();
-        this.leaseDuration = blobItemPropertiesInternal.getLeaseDuration();
-        this.copyId = blobItemPropertiesInternal.getCopyId();
-        this.copyStatus = blobItemPropertiesInternal.getCopyStatus();
-        this.copySource = blobItemPropertiesInternal.getCopySource();
-        this.copyProgress = blobItemPropertiesInternal.getCopyProgress();
-        this.copyCompletionTime = blobItemPropertiesInternal.getCopyCompletionTime();
-        this.copyStatusDescription = blobItemPropertiesInternal.getCopyStatusDescription();
-        this.serverEncrypted = blobItemPropertiesInternal.isServerEncrypted();
-        this.incrementalCopy = blobItemPropertiesInternal.isIncrementalCopy();
-        this.destinationSnapshot = blobItemPropertiesInternal.getDestinationSnapshot();
-        this.deletedTime = blobItemPropertiesInternal.getDeletedTime();
-        this.remainingRetentionDays = blobItemPropertiesInternal.getRemainingRetentionDays();
-        this.accessTier = blobItemPropertiesInternal.getAccessTier();
-        this.accessTierInferred = blobItemPropertiesInternal.isAccessTierInferred();
-        this.archiveStatus = blobItemPropertiesInternal.getArchiveStatus();
-        this.customerProvidedKeySha256 = blobItemPropertiesInternal.getCustomerProvidedKeySha256();
-        this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
-        this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
-        this.tagCount = blobItemPropertiesInternal.getTagCount();
-    }
 
     /*
      * The creationTime property.

@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
-import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -43,25 +42,24 @@ final class TestUtils {
     static final String INVALID_SOURCE_URL_ERROR = "Status code 400, \"{\"error\":{\"code\":\"1003\","
         + "\"message\":\"Parameter 'Source' is not a valid Uri.\"}}\"";
     static final String INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
-    static final String NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
+    static final String NULL_SOURCE_URL_ERROR = "'trainingFilesUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample_files/Test/contoso-allinone.jpg";
     static final String LAYOUT_LOCAL_URL = "src/test/resources/sample_files/Test/layout1.jpg";
     static final String FORM_LOCAL_URL = "src/test/resources/sample_files/Test/Invoice_6.pdf";
+    static final String MULTIPAGE_INVOICE_LOCAL_URL = "src/test/resources/sample_files/Test/multipage_invoice1.pdf";
     static final long RECEIPT_FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
     static final long LAYOUT_FILE_LENGTH = new File(LAYOUT_LOCAL_URL).length();
     static final long CUSTOM_FORM_FILE_LENGTH = new File(FORM_LOCAL_URL).length();
+    static final long MULTIPAGE_INVOICE_FILE_LENGTH = new File(MULTIPAGE_INVOICE_LOCAL_URL).length();
     static final String VALID_URL = "https://resources/contoso-allinone.jpg";
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS =
-        "AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS";
+    private static final String AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS =
+        "AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS";
+    static final String FORM_JPG = "Form_1.jpg";
 
     private TestUtils() {
-    }
-
-    static AccountProperties getExpectedAccountProperties() {
-        return new AccountProperties(14, 5000);
     }
 
     static InputStream getFileData(String fileName) {
@@ -98,7 +96,6 @@ final class TestUtils {
     static SerializerAdapter getSerializerAdapter() {
         return JacksonAdapter.createDefaultSerializerAdapter();
     }
-
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -137,7 +134,7 @@ final class TestUtils {
      */
     private static boolean shouldServiceVersionBeTested(FormRecognizerServiceVersion serviceVersion) {
         String serviceVersionFromEnv =
-            Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
+            Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS);
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return FormRecognizerServiceVersion.getLatest().equals(serviceVersion);
         }

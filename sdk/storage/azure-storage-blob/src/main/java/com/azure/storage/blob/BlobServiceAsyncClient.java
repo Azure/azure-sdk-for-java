@@ -20,7 +20,6 @@ import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.models.FilterBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -30,13 +29,13 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.FindBlobsOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
-import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -46,6 +45,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -110,6 +110,13 @@ public final class BlobServiceAsyncClient {
     BlobServiceAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(url);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -351,7 +358,7 @@ public final class BlobServiceAsyncClient {
      * @return A reactive response emitting the list of blobs.
      */
     public PagedFlux<FilterBlobItem> findBlobsByTags(String query) {
-        return this.findBlobsByTags(query, null, null);
+        return this.findBlobsByTags(new FindBlobsOptions(query));
     }
 
     /**
@@ -360,48 +367,55 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#String-FindBlobsOptions}
+     * {@codesnippet com.azure.storage.blob.BlobAsyncServiceClient.findBlobsByTag#FindBlobsOptions}
      *
-     * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @param options {@link FindBlobsOptions}
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options) {
+    public PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
-            return findBlobsByTags(query, options, null);
+            return findBlobsByTags(options, null);
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<FilterBlobItem> findBlobsByTags(String query, FindBlobsOptions options, Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
-        FindBlobsOptions finalOptions = options == null ? new FindBlobsOptions() : options;
-
-        Function<String, Mono<PagedResponse<FilterBlobItem>>> func =
-            marker -> findBlobsByTags(query, marker, finalOptions.getMaxResultsPerPage(), timeout)
-                .map(response -> {
-                    List<FilterBlobItem> value = response.getValue().getBlobs() == null
-                        ? Collections.emptyList()
-                        : response.getValue().getBlobs();
-
-                    return new PagedResponseBase<>(
-                        response.getRequest(),
-                        response.getStatusCode(),
-                        response.getHeaders(),
-                        value,
-                        response.getValue().getNextMarker(),
-                        response.getDeserializedHeaders());
-                });
-        return new PagedFlux<>(() -> func.apply(null), func);
+        return new PagedFlux<>(
+            () -> withContext(context -> this.findBlobsByTags(options, null, timeout, context)),
+            marker -> withContext(context -> this.findBlobsByTags(options, marker, timeout, context)));
     }
 
-    private Mono<ServicesFilterBlobsResponse> findBlobsByTags(String query, String marker, Integer maxResults,
-        Duration timeout) {
+    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         throwOnAnonymousAccess();
+        return new PagedFlux<>(
+            () -> this.findBlobsByTags(options, null, timeout, context),
+            marker -> this.findBlobsByTags(options, marker, timeout, context));
+    }
+
+    private Mono<PagedResponse<FilterBlobItem>> findBlobsByTags(
+        FindBlobsOptions options, String marker,
+        Duration timeout, Context context) {
+        throwOnAnonymousAccess();
+        StorageImplUtils.assertNotNull("options", options);
         return StorageImplUtils.applyOptionalTimeout(
-            this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null, query, marker, maxResults,
-                Context.NONE), timeout);
+            this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null,
+                options.getQuery(), marker, options.getMaxResultsPerPage(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
+            .map(response -> {
+                List<FilterBlobItem> value = response.getValue().getBlobs() == null
+                    ? Collections.emptyList()
+                    : response.getValue().getBlobs();
+
+                return new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    value,
+                    response.getValue().getNextMarker(),
+                    response.getDeserializedHeaders());
+            });
     }
 
     /**
@@ -833,8 +847,9 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(deletedContainerName,
-            deletedContainerVersion, null).flatMap(FluxUtil::toMono);
+        return this.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion)
+        ).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -850,35 +865,35 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#String-String-UndeleteBlobContainerOptions}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions}
      *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
      * @param options {@link UndeleteBlobContainerOptions}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
     public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options) {
+        UndeleteBlobContainerOptions options) {
         try {
             return withContext(context ->
                 undeleteBlobContainerWithResponse(
-                    deletedContainerName, deletedContainerVersion, options, context));
+                    options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options,
-        Context context) {
-        boolean hasOptionalDestinationContainerName = options != null && options.getDestinationContainerName() != null;
-        String destinationContainerName =
-            hasOptionalDestinationContainerName ? options.getDestinationContainerName() : deletedContainerName;
-        return this.azureBlobStorage.containers().restoreWithRestResponseAsync(destinationContainerName, null,
-            null, deletedContainerName, deletedContainerVersion,
+        UndeleteBlobContainerOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        boolean hasOptionalDestinationContainerName = options.getDestinationContainerName() != null;
+        String finalDestinationContainerName =
+            hasOptionalDestinationContainerName ? options.getDestinationContainerName()
+                : options.getDeletedContainerName();
+        context = context == null ? Context.NONE : context;
+        return this.azureBlobStorage.containers().restoreWithRestResponseAsync(finalDestinationContainerName, null,
+            null, options.getDeletedContainerName(), options.getDeletedContainerVersion(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
-                getBlobContainerAsyncClient(destinationContainerName)));
+                getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
 }

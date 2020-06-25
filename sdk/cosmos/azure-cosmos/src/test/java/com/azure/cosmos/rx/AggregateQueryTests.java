@@ -6,11 +6,12 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -49,7 +50,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<CosmosItemProperties> docs = new ArrayList<CosmosItemProperties>();
+    private ArrayList<InternalObjectNode> docs = new ArrayList<InternalObjectNode>();
     private ArrayList<QueryConfig> queryConfigs = new ArrayList<QueryConfig>();
 
     private String partitionKey = "mypk";
@@ -70,16 +71,17 @@ public class AggregateQueryTests extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
-        FeedOptions options = new FeedOptions();
-        
-        options.setPopulateQueryMetrics(qmEnabled);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        options.setQueryMetricsEnabled(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryConfig.query, options,
+                                                                                     JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator = new FeedResponseListValidator.Builder<JsonNode>()
                 .withAggregateValue(queryConfig.expected)
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
@@ -98,14 +100,14 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         Object[] values = new Object[]{null, false, true, "abc", "cdfg", "opqrs", "ttttttt", "xyz", "oo", "ppp"};
         for (int i = 0; i < values.length; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             d.setId(UUID.randomUUID().toString());
             BridgeInternal.setProperty(d, partitionKey, values[i]);
             docs.add(d);
         }
 
         for (int i = 0; i < numberOfDocsWithSamePartitionKey; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             BridgeInternal.setProperty(d, partitionKey, uniquePartitionKey);
             BridgeInternal.setProperty(d, "getResourceId", Integer.toString(i));
             BridgeInternal.setProperty(d, field, i + 1);
@@ -115,7 +117,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
         numberOfDocumentsWithNumericId = numberOfDocuments - values.length - numberOfDocsWithSamePartitionKey;
         for (int i = 0; i < numberOfDocumentsWithNumericId; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             BridgeInternal.setProperty(d, partitionKey, i + 1);
             d.setId(UUID.randomUUID().toString());
             docs.add(d);
@@ -196,7 +198,7 @@ public class AggregateQueryTests extends TestSuiteBase {
             truncateCollection(createdCollection);
         } catch (Throwable throwable) {
             throwable = Exceptions.unwrap(throwable);
-            if (!(throwable instanceof CosmosClientException)) {
+            if (!(throwable instanceof CosmosException)) {
                 throw new AssertionError(lenientFormat("stopping test due to collection %s truncation failure: ",
                     createdCollection,
                     throwable));

@@ -8,13 +8,17 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.converters.FacetResultConverter;
+import com.azure.search.documents.implementation.converters.SearchResultConverter;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Represents an HTTP response from the search API request that contains a list of items deserialized into a {@link
@@ -41,13 +45,20 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         super(documentSearchResponse.getRequest(),
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
-            documentSearchResponse.getValue().getResults(),
+            documentSearchResponse.getValue().getResults().stream()
+                .map(SearchResultConverter::map).collect(Collectors.toList()),
             createContinuationToken(documentSearchResponse, serviceVersion),
             null);
 
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
-        this.value = documentsResult.getResults();
-        this.facets = documentsResult.getFacets();
+        this.value = documentsResult.getResults().stream().map(SearchResultConverter::map)
+            .collect(Collectors.toList());
+        this.facets = documentsResult.getFacets() == null ? null : new HashMap<>();
+        if (this.facets != null) {
+            documentsResult.getFacets().forEach((key, values) -> {
+                this.facets.put(key, values.stream().map(FacetResultConverter::map).collect(Collectors.toList()));
+            });
+        }
         this.count = documentsResult.getCount();
         this.coverage = documentsResult.getCoverage();
     }
@@ -70,7 +81,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @return The percentage of the index covered in the search request if {@code minimumCoverage} was set in the
      * request, otherwise {@code null}.
      */
-    public Double getCoverage() {
+    Double getCoverage() {
         return coverage;
     }
 
@@ -81,7 +92,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      *
      * @return The facet query results if {@code facets} were supplied in the request, otherwise {@code null}.
      */
-    public Map<String, List<FacetResult>> getFacets() {
+    Map<String, List<FacetResult>> getFacets() {
         return facets;
     }
 
@@ -93,7 +104,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      * @return The approximate number of documents that match the request if {@code count} is {@code true}, otherwise
      * {@code null}.
      */
-    public Long getCount() {
+    Long getCount() {
         return count;
     }
 

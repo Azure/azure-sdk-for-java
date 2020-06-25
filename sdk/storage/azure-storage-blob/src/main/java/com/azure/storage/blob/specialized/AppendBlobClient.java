@@ -11,7 +11,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -177,7 +177,9 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlock#InputStream-long}
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @return The information of the append blob operation.
@@ -196,8 +198,9 @@ public final class AppendBlobClient extends BlobClientBase {
      *
      * {@codesnippet com.azure.storage.blob.specialized.AppendBlobClient.appendBlockWithResponse#InputStream-long-byte-AppendBlobRequestConditions-Duration-Context}
      *
-     * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
-     * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during

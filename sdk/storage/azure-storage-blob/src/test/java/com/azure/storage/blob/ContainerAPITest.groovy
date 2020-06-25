@@ -20,7 +20,9 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.PageBlobCreateOptions
+import com.azure.storage.blob.models.ObjectReplicationPolicy
+import com.azure.storage.blob.models.ObjectReplicationStatus
+import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -686,7 +688,7 @@ class ContainerAPITest extends APISpec {
         def tagsBlob = cc.getBlobClient(tagsName).getPageBlobClient()
         def tags = new HashMap<String, String>()
         tags.put("tag", "value")
-        tagsBlob.createWithResponse(512, new PageBlobCreateOptions().setTags(tags), null, null)
+        tagsBlob.createWithResponse(new PageBlobCreateOptions(512).setTags(tags), null, null)
 
         def uncommittedBlob = cc.getBlobClient(uncommittedName).getBlockBlobClient()
         uncommittedBlob.stageBlock(getBlockID(), defaultInputStream.get(), defaultData.remaining())
@@ -955,8 +957,7 @@ class ContainerAPITest extends APISpec {
             if (i == 1) {
                 assert blob.getObjectReplicationSourcePolicies() == null /* Why? */
             } else {
-                assert blob.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
-                    .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+                assert validateOR(blob.getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
             }
             i++
         }
@@ -965,6 +966,19 @@ class ContainerAPITest extends APISpec {
         for (def blob : destBlobs) {
             assert blob.getObjectReplicationSourcePolicies() == null
         }
+    }
+
+    def validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+        return policies.stream()
+            .filter({ policy -> policyId.equals(policy.getPolicyId()) })
+            .findFirst()
+            .get()
+            .getRules()
+            .stream()
+            .filter({ rule -> ruleId.equals(rule.getRuleId()) })
+            .findFirst()
+            .get()
+            .getStatus() == ObjectReplicationStatus.COMPLETE
     }
 
     def "List blobs flat error"() {

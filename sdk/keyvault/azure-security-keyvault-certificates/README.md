@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Certificate client library. Add it to y
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.0.0</version>
+    <version>4.0.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,8 +87,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 
-CertificateClient client = new CertificateClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+CertificateClient certificateClient = new CertificateClientBuilder()
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -130,7 +130,7 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy; 
 
 CertificateClient certificateClient = new CertificateClientBuilder()
-    .vaultUrl(<your-key-vault-url>)
+    .vaultUrl("<your-key-vault-url>")
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 
@@ -169,10 +169,15 @@ Delete an existing certificate by calling `beginDeleteCertificate`.
 ```Java
 SyncPoller<DeletedCertificate, Void> deleteCertificatePoller =
     certificateClient.beginDeleteCertificate("<certificate-name>");
+
 // Deleted certificate is accessible as soon as polling beings.
 PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
+
+// Deletion date only works for a SoftDelete-enabled Key Vault.
 System.out.printf("Deleted certificate with name \"%s\" and recovery id %s", pollResponse.getValue().getName(),
     pollResponse.getValue().getRecoveryId());
+
+// Certificate is being deleted on server.
 deleteCertificatePoller.waitForCompletion();
 ```
 
@@ -206,8 +211,13 @@ Create a certificate to be stored in the Azure Key Vault.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.CertificateAsyncClient;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy; 
+import com.azure.security.keyvault.certificates.CertificateClient;
+import com.azure.security.keyvault.certificates.CertificateClientBuilder;
+
+CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
+    .vaultUrl("<your-key-vault-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildAsyncClient();
 
 // Creates a certificate using the default policy and polls on its progress.
 certificateAsyncClient.beginCreateCertificate("<certificate-name>", CertificatePolicy.getDefault())
@@ -258,7 +268,7 @@ certificateAsyncClient.beginDeleteCertificate("<certificate-name>")
 ```
 
 ### List certificates asynchronously
-List the certificates in the Key Vault by calling `listPropertiesOfCertificates`.
+List the certificates in the Azure Key Vault by calling `listPropertiesOfCertificates`.
 
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned
@@ -266,10 +276,10 @@ List the certificates in the Key Vault by calling `listPropertiesOfCertificates`
 certificateAsyncClient.listPropertiesOfCertificates()
     .subscribe(certificateProperties ->
         certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
-            certificateProperties.getVersion());
-        .subscribe(certificateResponse ->
-            System.out.printf("Received certificate with name \"%s\" and key id %s",
-                certificateResponse.getName(), certificateResponse.getKeyId())));
+            certificateProperties.getVersion())
+            .subscribe(certificateResponse ->
+                System.out.printf("Received certificate with name \"%s\" and key id %s",
+                    certificateResponse.getName(), certificateResponse.getKeyId())));
 ```
 
 ## Troubleshooting
@@ -278,7 +288,7 @@ Azure Key Vault Certificate clients raise exceptions. For example, if you try to
 
 ```java
 try {
-    certificateClient.getCertificate("<certificate-name>")
+    certificateClient.getCertificate("<deleted-certificate-name>")
 } catch (ResourceNotFoundException e) {
     System.out.println(e.getMessage());
 }
@@ -293,10 +303,10 @@ All client libraries, by default, use the Tomcat-native Boring SSL library to en
 ## Next steps
 Several Key Vault Java SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Key Vault.
 
-## Next steps Samples
+## Next steps samples
 Samples are explained in detail [here][samples_readme].
 
-###  Additional Documentation
+### Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation][azkeyvault_rest].
 
 ## Contributing

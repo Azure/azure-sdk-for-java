@@ -5,16 +5,11 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
-import com.azure.cosmos.models.ConsistencyPolicy;
-import com.azure.cosmos.models.CosmosError;
-import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SerializationFormattingPolicy;
 import com.azure.cosmos.models.SpatialSpec;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -604,10 +599,10 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
     public <T> T toObject(Class<T> c) {
-        // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
+        // TODO: We have to remove this if we do not want to support InternalObjectNode anymore, and change all the
         //  tests accordingly
-        if (CosmosItemProperties.class.isAssignableFrom(c)) {
-            return (T) new CosmosItemProperties(this.propertyBag);
+        if (InternalObjectNode.class.isAssignableFrom(c)) {
+            return (T) new InternalObjectNode(this.propertyBag);
         }
         if (JsonSerializable.class.isAssignableFrom(c)
             || String.class.isAssignableFrom(c)
@@ -688,8 +683,6 @@ public class JsonSerializable {
     <T> boolean containsJsonSerializable(Class<T> c) {
         return CompositePath.class.equals(c)
             || ConflictResolutionPolicy.class.equals(c)
-            || ConsistencyPolicy.class.equals(c)
-            || DatabaseAccountLocation.class.equals(c)
             || ExcludedPath.class.equals(c)
             || IncludedPath.class.equals(c)
             || IndexingPolicy.class.equals(c)
@@ -698,8 +691,6 @@ public class JsonSerializable {
             || SqlParameter.class.equals(c)
             || SqlQuerySpec.class.equals(c)
             || UniqueKey.class.equals(c)
-            || UniqueKeyPolicy.class.equals(c)
-            || Index.class.isAssignableFrom(c)
-            || CosmosError.class.equals(c);
+            || UniqueKeyPolicy.class.equals(c);
     }
 }

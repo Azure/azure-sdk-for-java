@@ -15,7 +15,8 @@ import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
-import com.azure.storage.internal.avro.implementation.AvroParser;
+import com.azure.storage.internal.avro.implementation.AvroObject;
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import reactor.core.publisher.Flux;
@@ -37,7 +38,6 @@ public class BlobQueryReader {
     private final Flux<ByteBuffer> avro;
     private final Consumer<BlobQueryProgress> progressConsumer;
     private final Consumer<BlobQueryError> errorConsumer;
-    private final AvroParser parser;
 
     /**
      * Creates a new BlobQueryReader.
@@ -48,7 +48,6 @@ public class BlobQueryReader {
      */
     public BlobQueryReader(Flux<ByteBuffer> avro, Consumer<BlobQueryProgress> progressConsumer,
         Consumer<BlobQueryError> errorConsumer) {
-        this.parser = new AvroParser();
         this.avro = avro;
         this.progressConsumer = progressConsumer;
         this.errorConsumer = errorConsumer;
@@ -64,8 +63,8 @@ public class BlobQueryReader {
      * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
-        return avro
-            .concatMap(parser::parse)
+        return new AvroReaderFactory().getAvroReader(avro).read()
+            .map(AvroObject::getObject)
             .concatMap(this::parseRecord);
     }
 

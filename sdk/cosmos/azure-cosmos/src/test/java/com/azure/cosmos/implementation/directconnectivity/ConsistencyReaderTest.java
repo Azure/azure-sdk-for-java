@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.Configs;
@@ -58,7 +58,7 @@ public class ConsistencyReaderTest {
 
     @Test(groups = "unit", dataProvider = "deduceReadModeArgProvider")
     public void deduceReadMode(ConsistencyLevel accountConsistencyLevel, ConsistencyLevel requestConsistency, ReadMode expectedReadMode,
-                               ConsistencyLevel expectedConsistencyToUse, boolean expectedToUseSession) throws CosmosClientException {
+                               ConsistencyLevel expectedConsistencyToUse, boolean expectedToUseSession) {
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         TransportClient transportClient = Mockito.mock(TransportClient.class);

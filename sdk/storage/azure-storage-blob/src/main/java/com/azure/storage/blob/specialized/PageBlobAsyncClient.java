@@ -26,13 +26,14 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CpkInfo;
-import com.azure.storage.blob.models.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -187,7 +188,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<PageBlobItem>> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions) {
-        return this.createWithResponse(size, new PageBlobCreateOptions().setSequenceNumber(sequenceNumber)
+        return this.createWithResponse(new PageBlobCreateOptions(size).setSequenceNumber(sequenceNumber)
             .setHeaders(headers).setMetadata(metadata).setRequestConditions(requestConditions));
     }
 
@@ -200,31 +201,29 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#long-PageBlobCreateOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobAsyncClient.createWithResponse#PageBlobCreateOptions}
      *
-     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
-     * 512-byte boundary.
      * @param options {@link PageBlobCreateOptions}
      * @return A reactive response containing the information of the created page blob.
      *
      * @throws IllegalArgumentException If {@code size} isn't a multiple of {@link PageBlobAsyncClient#PAGE_BYTES} or
      * {@code sequenceNumber} isn't null and is less than 0.
      */
-    public Mono<Response<PageBlobItem>> createWithResponse(long size, PageBlobCreateOptions options) {
+    public Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options) {
         try {
             return withContext(context ->
-                createWithResponse(size, options, context));
+                createWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> createWithResponse(long size, PageBlobCreateOptions options, Context context) {
-        options = options == null ? new PageBlobCreateOptions() : options;
+    Mono<Response<PageBlobItem>> createWithResponse(PageBlobCreateOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions();
 
-        if (size % PAGE_BYTES != 0) {
+        if (options.getSize() % PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw logger.logExceptionAsError(
@@ -238,8 +237,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null,
-            options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+        return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, options.getSize(), null,
+            null, options.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), options.getSequenceNumber(), null, tagsToString(options.getTags()),
             options.getHeaders(), getCustomerProvidedKey(), encryptionScope, null,

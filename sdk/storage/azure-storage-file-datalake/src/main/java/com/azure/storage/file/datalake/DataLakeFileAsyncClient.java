@@ -26,7 +26,7 @@ import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
-import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
@@ -298,7 +298,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         Lock progressLock = new ReentrantLock();
 
         // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
+        /*
+        We use maxConcurrency + 1 for the number of buffers because one buffer will typically be being filled while the
+        others are being sent.
+         */
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getMaxConcurrency() + 1,
             parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
@@ -338,7 +342,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                     .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .map(resp -> currentBufferLength + currentOffset) /* End of file after append to pass to flush. */
                     .flux();
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
     }
@@ -492,7 +496,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
                 return appendWithResponse(progressData, fileOffset + chunk.getOffset(), chunk.getCount(), null,
                     requestConditions.getLeaseId());
-            })
+            }, parallelTransferOptions.getMaxConcurrency())
             .then(Mono.defer(() ->
                 flushWithResponse(fileSize, false, false, headers, requestConditions)))
             .then();
@@ -896,7 +900,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @return A reactive response containing the queried data.
      */
     public Flux<ByteBuffer> query(String expression) {
-        return queryWithResponse(expression, null)
+        return queryWithResponse(new FileQueryOptions(expression))
             .flatMapMany(FileQueryAsyncResponse::getValue);
     }
 
@@ -908,14 +912,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#String-FileQueryOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileAsyncClient.queryWithResponse#FileQueryOptions}
      *
-     * @param expression The query expression.
      * @param queryOptions {@link FileQueryOptions The query options}
      * @return A reactive response containing the queried data.
      */
-    public Mono<FileQueryAsyncResponse> queryWithResponse(String expression, FileQueryOptions queryOptions) {
-        return blockBlobAsyncClient.queryWithResponse(expression, Transforms.toBlobQueryOptions(queryOptions))
+    public Mono<FileQueryAsyncResponse> queryWithResponse(FileQueryOptions queryOptions) {
+        return blockBlobAsyncClient.queryWithResponse(Transforms.toBlobQueryOptions(queryOptions))
             .map(Transforms::toFileQueryAsyncResponse)
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }

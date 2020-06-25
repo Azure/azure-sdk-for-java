@@ -7,11 +7,10 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
-import com.azure.storage.blob.models.BlobBeginCopyOptions
-import com.azure.storage.blob.models.BlobCopyFromUrlOptions
+import com.azure.storage.blob.options.BlobBeginCopyOptions
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -25,10 +24,13 @@ import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.ObjectReplicationPolicy
+import com.azure.storage.blob.models.ObjectReplicationStatus
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.models.RehydratePriority
 import com.azure.storage.blob.models.SyncCopyStatusType
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -125,6 +127,9 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Upload numBlocks"() {
         setup:
+        if (numBlocks > 0 && !liveMode()) {
+            return // skip multipart upload for playback/record as it uses randomly generated block ids
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
@@ -143,6 +148,12 @@ class BlobAPITest extends APISpec {
         Constants.KB     | null          || 0 // default is MAX_UPLOAD_BYTES
         Constants.MB     | null          || 0 // default is MAX_UPLOAD_BYTES
         3 * Constants.MB | Constants.MB  || 3
+    }
+
+    def "Upload return value"() {
+        expect:
+        bc.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize), null)
+            .getValue().getETag() != null
     }
 
     @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.
@@ -979,16 +990,27 @@ class BlobAPITest extends APISpec {
             false, null, null)
 
         then:
-        sourceProperties.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
-            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
-        sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies()
-            .get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
-            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+        validateOR(sourceProperties.getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")
+
         // There is a sas token attached at the end. Only check that the path is the same.
         destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath())
         destProperties.getObjectReplicationDestinationPolicyId() == "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
         destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId() ==
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
+    }
+
+    def validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+        return policies.stream()
+            .filter({ policy -> policyId.equals(policy.getPolicyId()) })
+            .findFirst()
+            .get()
+            .getRules()
+            .stream()
+            .filter({ rule -> ruleId.equals(rule.getRuleId()) })
+            .findFirst()
+            .get()
+            .getStatus() == ObjectReplicationStatus.COMPLETE
     }
 
     // Test getting the properties from a listing
@@ -1491,7 +1513,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        def poller = bu2.beginCopy(bc.getBlobUrl(), new BlobBeginCopyOptions().setTags(tags)
+        def poller = bu2.beginCopy(new BlobBeginCopyOptions(bc.getBlobUrl()).setTags(tags)
             .setPollInterval(Duration.ofSeconds(1)))
         poller.blockLast()
 
@@ -1806,7 +1828,7 @@ class BlobAPITest extends APISpec {
         }
 
         when:
-        bu2.copyFromUrlWithResponse(bc.getBlobUrl(), new BlobCopyFromUrlOptions().setTags(tags), null, null)
+        bu2.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTags(tags), null, null)
 
         then:
         bu2.getTags() == tags

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-spring-boot-samples</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>azure-spring-boot-sample-servicebus</artifactId>
+  <packaging>jar</packaging>
+
+  <name>Azure Service Bus Spring Boot Starter Sample</name>
+  <description>Sample project for Spring Boot Service Bus Starter</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-servicebus</artifactId>
+      <version>7.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+    </dependency>
+  </dependencies>
+
+</project>

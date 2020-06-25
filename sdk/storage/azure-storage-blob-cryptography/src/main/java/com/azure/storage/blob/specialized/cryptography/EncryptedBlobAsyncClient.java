@@ -14,15 +14,17 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
-import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.BlobParallelUploadOptions;
-import com.azure.storage.blob.models.BlobUploadFromFileOptions;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
+import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
@@ -146,6 +148,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
         try {
             return this.upload(data, parallelTransferOptions, false);
@@ -187,6 +190,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
     public Mono<BlockBlobItem> upload(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions,
         boolean overwrite) {
         try {
@@ -242,10 +246,11 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
+    @Override
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions, BlobHttpHeaders headers, Map<String, String> metadata,
         AccessTier tier, BlobRequestConditions requestConditions) {
-        return this.uploadWithResponse(data, new BlobParallelUploadOptions()
+        return this.uploadWithResponse(new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
             .setTier(AccessTier.HOT).setRequestConditions(requestConditions));
     }
@@ -274,22 +279,28 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#BlobParallelUploadOptions}
      *
-     * @param data The data to write to the blob. Unlike other upload methods, this method does not require that the
      * {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not expected
      * to produce the same values across subscriptions.
      * @param options {@link BlobParallelUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
      */
-    public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, BlobParallelUploadOptions options) {
+    @Override
+    public Mono<Response<BlockBlobItem>> uploadWithResponse(BlobParallelUploadOptions options) {
         try {
-            BlobParallelUploadOptions finalOptions = options == null ? new BlobParallelUploadOptions() : options;
-            final Map<String, String> metadataFinal = finalOptions.getMetadata() == null
-                ? new HashMap<>() : finalOptions.getMetadata();
-            finalOptions.setMetadata(metadataFinal);
+            StorageImplUtils.assertNotNull("options", options);
+            // Can't use a Collections.emptyMap() because we add metadata for encryption.
+            final Map<String, String> metadataFinal = options.getMetadata() == null
+                ? new HashMap<>() : options.getMetadata();
+            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
+                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : options.getDataFlux();
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
-            return dataFinal.flatMap(df -> super.uploadWithResponse(df, finalOptions));
+            return dataFinal.flatMap(df -> super.uploadWithResponse(new BlobParallelUploadOptions(df)
+                .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
+                .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
+                .setRequestConditions(options.getRequestConditions())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -306,6 +317,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param filePath Path to the upload file
      * @return An empty response
      */
+    @Override
     public Mono<Void> uploadFromFile(String filePath) {
         try {
             return uploadFromFile(filePath, false);
@@ -326,6 +338,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param overwrite Whether or not to overwrite should data exist on the blob.
      * @return An empty response
      */
+    @Override
     public Mono<Void> uploadFromFile(String filePath, boolean overwrite) {
         try {
             Mono<Void> uploadTask = uploadFromFile(filePath, null, null, null, null, null);
@@ -361,12 +374,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB
      * @throws UncheckedIOException If an I/O error occurs
      */
+    @Override
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        return this.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+        return this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions));
+            .setTier(tier).setRequestConditions(requestConditions))
+            .then();
     }
 
     /**
@@ -375,24 +390,22 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions}
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFileWithResponse#BlobUploadFromFileOptions}
      *
-     * @param filePath Path to the upload file
      * @param options {@link BlobUploadFromFileOptions}
-     * @return An empty response
+     * @return A reactive response containing the information of the uploaded block blob.
      * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
      * @throws UncheckedIOException If an I/O error occurs
      */
-    public Mono<Void> uploadFromFile(String filePath, BlobUploadFromFileOptions options) {
+    @Override
+    public Mono<Response<BlockBlobItem>> uploadFromFileWithResponse(BlobUploadFromFileOptions options) {
         try {
-
-            BlobParallelUploadOptions finalOptions = options == null ? null : new BlobParallelUploadOptions()
-                .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
-                .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
-                .setRequestConditions(options.getRequestConditions());
-            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(filePath, logger),
-                channel -> this.uploadWithResponse(FluxUtil.readFile(channel), finalOptions)
-                    .then()
+            StorageImplUtils.assertNotNull("options", options);
+            return Mono.using(() -> UploadUtils.uploadFileResourceSupplier(options.getFilePath(), logger),
+                channel -> this.uploadWithResponse(new BlobParallelUploadOptions(FluxUtil.readFile(channel))
+                    .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
+                    .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
+                    .setRequestConditions(options.getRequestConditions()))
                     .doOnTerminate(() -> {
                         try {
                             channel.close();
@@ -527,7 +540,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
-    public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
+    public Mono<BlobQueryAsyncResponse> queryWithResponse(BlobQueryOptions queryOptions) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side"));
     }

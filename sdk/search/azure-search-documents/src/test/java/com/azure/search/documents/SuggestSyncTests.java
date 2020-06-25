@@ -5,6 +5,7 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.test.environment.models.Author;
@@ -30,6 +31,7 @@ import java.util.TimeZone;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
@@ -45,19 +47,19 @@ public class SuggestSyncTests extends SearchTestBase {
 
     private final List<String> indexesToDelete = new ArrayList<>();
 
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
@@ -372,7 +374,7 @@ public class SuggestSyncTests extends SearchTestBase {
         List<SuggestResult> hotelsList = suggestResultPagedResponse.getValue();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat df = new SimpleDateFormat(ISO8601_FORMAT);
         df.setTimeZone(TimeZone.getDefault());
         objectMapper.setDateFormat(df);
         objectMapper.registerModule(new JavaTimeModule());

@@ -22,6 +22,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmen
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -42,6 +43,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -56,8 +58,8 @@ import java.util.stream.Stream;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a container. It may only be instantiated through a {@link BlobContainerClientBuilder} or via the method
@@ -113,6 +115,13 @@ public final class BlobContainerAsyncClient {
     BlobContainerAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
         String accountName, String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(url);
+        } catch (IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
         this.azureBlobStorage = new AzureBlobStorageBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -168,7 +177,7 @@ public final class BlobContainerAsyncClient {
      * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobAsyncClient} object which references the blob with the specified name in this container.
      */
-    public BlobAsyncClient getBlobAsyncClientWithVersion(String blobName, String versionId) {
+    public BlobAsyncClient getBlobVersionAsyncClient(String blobName, String versionId) {
         return new BlobAsyncClient(getHttpPipeline(), StorageImplUtils.appendToUrlPath(getBlobContainerUrl(),
             Utility.urlEncode(Utility.urlDecode(blobName))).toString(), getServiceVersion(), getAccountName(),
             getBlobContainerName(), blobName, null, getCustomerProvidedKey(), encryptionScope, versionId);
@@ -780,7 +789,7 @@ public final class BlobContainerAsyncClient {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
                         : response.getValue().getSegment().getBlobItems().stream()
-                        .map(BlobItem::new)
+                        .map(ModelHelper::populateBlobItem)
                         .collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
@@ -921,7 +930,7 @@ public final class BlobContainerAsyncClient {
                     List<BlobItem> value = response.getValue().getSegment() == null
                         ? Collections.emptyList()
                         : Stream.concat(
-                        response.getValue().getSegment().getBlobItems().stream().map(BlobItem::new),
+                        response.getValue().getSegment().getBlobItems().stream().map(ModelHelper::populateBlobItem),
                         response.getValue().getSegment().getBlobPrefixes().stream()
                             .map(blobPrefix -> new BlobItem().setName(blobPrefix.getName()).setIsPrefix(true))
                     ).collect(Collectors.toList());

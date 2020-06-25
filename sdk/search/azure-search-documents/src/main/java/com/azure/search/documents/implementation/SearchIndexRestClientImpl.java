@@ -5,8 +5,6 @@
 // regenerated.
 
 package com.azure.search.documents.implementation;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -122,17 +120,16 @@ public final class SearchIndexRestClientImpl {
      * Initializes an instance of SearchIndexRestClient client.
      */
     public SearchIndexRestClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), new JacksonAdapter());
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
 
     /**
      * Initializes an instance of SearchIndexRestClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer the serializer to be used for service client requests.
      */
-    public SearchIndexRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializer) {
+    public SearchIndexRestClientImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
-        this.documents = new DocumentsImpl(this, serializer);
+        this.documents = new DocumentsImpl(this);
     }
 }

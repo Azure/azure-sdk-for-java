@@ -6,23 +6,22 @@ package com.azure.storage.blob
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.models.BlobParallelUploadOptions
+import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.FindBlobsOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
 
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.UndeleteBlobContainerOptions
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 import com.azure.storage.common.sas.AccountSasPermission
@@ -31,6 +30,7 @@ import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -262,11 +262,11 @@ class ServiceAPITest extends APISpec {
         setup:
         def containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlobParallelUploadOptions()
-            .setTags(Collections.singletonMap("key", "value")), null, null)
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+            .setTags(Collections.singletonMap("key", "value")), null)
         blobClient = containerClient.getBlobClient(generateBlobName())
-        blobClient.uploadWithResponse(defaultInputStream.get(), defaultDataSize, new BlobParallelUploadOptions()
-            .setTags(Collections.singletonMap("bar", "foo")), null, null)
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize)
+            .setTags(Collections.singletonMap("bar", "foo")), null)
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
@@ -285,18 +285,18 @@ class ServiceAPITest extends APISpec {
         def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
         def tags = Collections.singletonMap("tag", "value")
         for (int i = 0; i < 10; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize,
-                new BlobParallelUploadOptions().setTags(tags), null, null)
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
         }
 
-        def firstPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
-            new FindBlobsOptions().setMaxResultsPerPage(5), null)
+        def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
+            .setMaxResultsPerPage(5), null, Context.NONE)
             .iterableByPage().iterator().next()
         def marker = firstPage.getContinuationToken()
         def firstBlobName = firstPage.getValue().first().getName()
 
-        def secondPage = primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
-            new FindBlobsOptions().setMaxResultsPerPage(5), null)
+        def secondPage = primaryBlobServiceClient.findBlobsByTags(
+            new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(5), null, Context.NONE)
             .iterableByPage(marker).iterator().next()
 
         expect:
@@ -315,14 +315,15 @@ class ServiceAPITest extends APISpec {
         def tags = Collections.singletonMap("tag", "value")
 
         for (i in (1..NUM_BLOBS)) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize,
-                new BlobParallelUploadOptions().setTags(tags), null, null)
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
         }
 
         expect:
         for (ContinuablePage page :
-            primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
-                new FindBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), null).iterableByPage()) {
+            primaryBlobServiceClient.findBlobsByTags(
+                new FindBlobsOptions("\"tag\"='value'").setMaxResultsPerPage(PAGE_RESULTS), null, Context.NONE)
+                .iterableByPage()) {
             assert page.iterator().size() <= PAGE_RESULTS
         }
 
@@ -341,7 +342,7 @@ class ServiceAPITest extends APISpec {
     def "Find blobs anonymous"() {
         when:
         // Invalid query, but the anonymous check will fail before hitting the wire
-        anonymousClient.findBlobsByTags("foo=bar").iterator()
+        anonymousClient.findBlobsByTags("foo=bar").iterator().next()
 
         then:
         thrown(IllegalStateException)
@@ -355,13 +356,13 @@ class ServiceAPITest extends APISpec {
         def tags = Collections.singletonMap("tag", "value")
 
         for (i in (1..NUM_BLOBS)) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(defaultInputStream.get(), defaultDataSize,
-                new BlobParallelUploadOptions().setTags(tags), null, null)
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null)
         }
 
         when: "Consume results by page"
-        primaryBlobServiceClient.findBlobsByTags("\"tag\"='value'",
-            new FindBlobsOptions().setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10))
+        primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
+            .setMaxResultsPerPage(PAGE_RESULTS), Duration.ofSeconds(10), Context.NONE)
             .streamByPage().count()
 
         then: "Still have paging functionality"
@@ -751,9 +752,8 @@ class ServiceAPITest extends APISpec {
 
         when:
         def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(),
-            new UndeleteBlobContainerOptions().setDestinationContainerName(generateContainerName()),
-            null, Context.NONE)
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(generateContainerName()), null, Context.NONE)
             .getValue()
 
         then:
@@ -780,7 +780,7 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(), null,
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
             Duration.ofMinutes(1), Context.NONE)
         def restoredContainerClient = response.getValue()
 
@@ -840,7 +840,7 @@ class ServiceAPITest extends APISpec {
         when:
         def responseMono = blobContainerItemMono.flatMap {
             blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                blobContainerItem.getName(), blobContainerItem.getVersion(), null)
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
         }
 
         then:
@@ -881,9 +881,9 @@ class ServiceAPITest extends APISpec {
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        primaryBlobServiceClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion(),
-            new UndeleteBlobContainerOptions().setDestinationContainerName(cc2.getBlobContainerName()),
-            null, Context.NONE)
+        primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                .setDestinationContainerName(cc2.getBlobContainerName()), null, Context.NONE)
 
         then:
         thrown(BlobStorageException.class)
@@ -900,5 +900,30 @@ class ServiceAPITest extends APISpec {
 
         then:
         notThrown(Exception)
+    }
+
+    @Unroll
+    def "sas token does not show up on invalid uri"() {
+        setup:
+        /* random sas token. this does not actually authenticate anything. */
+        def mockSas = "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter"
+
+        when:
+        BlobServiceClient client = new BlobServiceClientBuilder()
+            .endpoint(service)
+            .sasToken(mockSas)
+            .buildClient()
+        client.getBlobContainerClient(container)
+            .getBlobClient("blobname")
+
+        then:
+        def e = thrown(IllegalArgumentException)
+        !e.getMessage().contains(mockSas)
+
+        where:
+        service                                       | container        || _
+        "https://doesntmatter. blob.core.windows.net" | "containername"  || _
+        "https://doesntmatter.blob.core.windows.net"  | "container name" || _
+        /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
     }
 }

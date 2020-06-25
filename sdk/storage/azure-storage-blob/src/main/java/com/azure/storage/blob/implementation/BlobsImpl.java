@@ -56,6 +56,7 @@ import com.azure.storage.blob.implementation.models.DirectoryHttpHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.blob.implementation.models.QueryRequest;
+import com.azure.storage.blob.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -184,7 +185,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-seal-blob") Boolean sealBlob, @HeaderParam("x-ms-if-tags") String ifTags, Context context);
+        Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-seal-blob") Boolean sealBlob, @HeaderParam("x-ms-source-if-tags") String sourceIfTags, @HeaderParam("x-ms-if-tags") String ifTags, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
@@ -564,7 +565,7 @@ public final class BlobsImpl {
      * @param posixPermissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX access permissions for the file owner, the file owning group, and others. Each class may be granted read, write, or execute permission.  The sticky bit is also supported.  Both symbolic (rwxrw-rw-) and 4-digit octal notation (e.g. 0766) are supported.
      * @param posixUmask Only valid if Hierarchical Namespace is enabled for the account. This umask restricts permission settings for file and directory, and will only be applied when default Acl does not exist in parent directory. If the umask bit has set, it means that the corresponding permission will be disabled. Otherwise the corresponding permission will be determined by the permission. A 4-digit octal notation (e.g. 0022) is supported here. If no umask was specified, a default umask - 0027 will be used.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the leaase ID must match.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
      * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the specified date/time.
      * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since the specified date/time.
      * @param ifMatch Specify an ETag value to operate only on blobs with a matching value.
@@ -1210,12 +1211,13 @@ public final class BlobsImpl {
         final String requestId = null;
         final String blobTagsString = null;
         final Boolean sealBlob = null;
+        final String sourceIfTags = null;
         final String ifTags = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob, ifTags, context);
+        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob, sourceIfTags, ifTags, context);
     }
 
     /**
@@ -1240,13 +1242,18 @@ public final class BlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional.  Used to set blob tags in various blob operations.
      * @param sealBlob Overrides the sealed state of the destination blob.  Service version 2019-12-12 and newer.
+     * @param sourceModifiedAccessConditions Additional parameters for the operation.
      * @param modifiedAccessConditions Additional parameters for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, RehydratePriority rehydratePriority, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, String blobTagsString, Boolean sealBlob, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, RehydratePriority rehydratePriority, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, String blobTagsString, Boolean sealBlob, SourceModifiedAccessConditions sourceModifiedAccessConditions, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        String sourceIfTags = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfTags = sourceModifiedAccessConditions.getSourceIfTags();
+        }
         String ifTags = null;
         if (modifiedAccessConditions != null) {
             ifTags = modifiedAccessConditions.getIfTags();
@@ -1255,7 +1262,7 @@ public final class BlobsImpl {
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob, ifTags, context);
+        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob, sourceIfTags, ifTags, context);
     }
 
     /**

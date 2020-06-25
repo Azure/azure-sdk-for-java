@@ -4,12 +4,13 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.test.environment.models.Author;
@@ -25,19 +26,25 @@ import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.ISO8601_FORMAT;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
@@ -53,19 +60,19 @@ public class IndexingSyncTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
 
     private final List<String> indexesToDelete = new ArrayList<>();
-    private SearchIndexClient client;
+    private SearchClient client;
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
@@ -262,13 +269,13 @@ public class IndexingSyncTests extends SearchTestBase {
         }
 
         SearchDocument actualHotel1 = client.getDocument(hotel1.get("HotelId").toString());
-        assertEquals(hotel1, actualHotel1);
+        assertMapEquals(hotel1, actualHotel1);
 
         SearchDocument actualHotel2 = client.getDocument(hotel2.get("HotelId").toString());
-        assertEquals(hotel2, actualHotel2);
+        assertMapEquals(hotel2, actualHotel2);
 
         SearchDocument actualHotel3 = client.getDocument(hotel3.get("HotelId").toString());
-        assertEquals(hotel3, actualHotel3);
+        assertMapEquals(hotel3, actualHotel3);
     }
 
     @Test
@@ -288,16 +295,16 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
-        Index indexWithReservedName = new Index()
+        SearchIndex indexWithReservedName = new SearchIndex()
             .setName(indexName)
-            .setFields(Collections.singletonList(new Field()
+            .setFields(Collections.singletonList(new SearchField()
                 .setName("ID")
-                .setType(DataType.EDM_STRING)
+                .setType(SearchFieldDataType.STRING)
                 .setKey(Boolean.TRUE)
             ));
 
-        SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-        searchServiceClient.createOrUpdateIndex(indexWithReservedName);
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        searchIndexClient.createOrUpdateIndex(indexWithReservedName);
         indexesToDelete.add(indexWithReservedName.getName());
 
         client = getSearchIndexClientBuilder(indexName).buildClient();
@@ -314,7 +321,7 @@ public class IndexingSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundtripBoundaryValues() throws ParseException {
+    public void canRoundtripBoundaryValues() {
         client = setupClient(this::createHotelIndex);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
@@ -360,11 +367,12 @@ public class IndexingSyncTests extends SearchTestBase {
         waitForIndexing();
 
         SearchDocument actualBook1 = client.getDocument("1");
-        assertEquals(utcTime, actualBook1.get("PublishDate"));
+        assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook1.get("PublishDate"));
 
         // Azure Cognitive Search normalizes to UTC, so we compare instants
         SearchDocument actualBook2 = client.getDocument("2");
-        assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC), ((OffsetDateTime) actualBook2.get("PublishDate")).withOffsetSameInstant(ZoneOffset.UTC));
+        assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook2.get("PublishDate"));
     }
 
     @Test
@@ -401,7 +409,8 @@ public class IndexingSyncTests extends SearchTestBase {
         client = setupClient(this::createHotelIndex);
 
         // Define commonly used values
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Define hotels
         Hotel originalDoc = new Hotel()
@@ -431,7 +440,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("vcr/dvd")),
+                    .tags(new String[] { "vcr/dvd" }),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -440,7 +449,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+                    .tags(new String[] {"vcr/dvd", "jacuzzi tub"})
             ));
 
         // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
@@ -462,7 +471,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         // Fields whose values get updated are updated, and whose values get erased remain the same.
@@ -491,7 +500,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .baseRate(10.5)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         List<Hotel> originalDocs = new ArrayList<>();
@@ -530,9 +539,8 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void canSetExplicitNullsInStaticallyTypedDocument() throws ParseException {
         client = setupClient(this::createHotelIndex);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         LoudHotel originalDoc = new LoudHotel()
             .HOTELID("1")
             .HOTELNAME("Secret Point Motel")
@@ -560,7 +568,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Collections.singletonList("vcr/dvd")),
+                    .tags(new String[] { "vcr/dvd" }),
                 new HotelRoom()
                     .description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
@@ -569,7 +577,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(Arrays.asList("vcr/dvd", "jacuzzi tub"))
+                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })
             ));
 
         LoudHotel updatedDoc = new LoudHotel()
@@ -588,7 +596,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .type("Budget Room")
                     .baseRate(10.5)
                     .smokingAllowed(false)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         LoudHotel expectedDoc = new LoudHotel()
@@ -620,7 +628,7 @@ public class IndexingSyncTests extends SearchTestBase {
                     .bedOptions(null)
                     .sleepsCount(null)
                     .smokingAllowed(false)
-                    .tags(Arrays.asList("vcr/dvd", "balcony"))
+                    .tags(new String[] { "vcr/dvd", "balcony" })
             ));
 
         List<LoudHotel> originalDocs = new ArrayList<>();
@@ -767,7 +775,7 @@ public class IndexingSyncTests extends SearchTestBase {
         waitForIndexing();
 
         actualDoc = client.getDocument("1");
-        assertEquals(originalDoc, actualDoc);
+        assertMapEquals(originalDoc, actualDoc);
     }
 
     @Test
@@ -850,7 +858,8 @@ public class IndexingSyncTests extends SearchTestBase {
     }
 
     Hotel prepareStaticallyTypedHotel(String hotelId) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        DateFormat dateFormat = new SimpleDateFormat(ISO8601_FORMAT);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         return new Hotel()
             .hotelId(hotelId)
             .hotelName("Fancy Stay")
@@ -951,13 +960,16 @@ public class IndexingSyncTests extends SearchTestBase {
         assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
-    List<Hotel> getBoundaryValues() throws ParseException {
+    List<Hotel> getBoundaryValues() {
+        Date maxEpoch = Date.from(Instant.ofEpochMilli(253402300799000L));
+        Date minEpoch = Date.from(Instant.ofEpochMilli(-2208988800000L));
         return Arrays.asList(
             // Minimum values
             new Hotel()
                 .hotelId("1")
                 .category("")
-                .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
+                .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(), minEpoch.getHours(),
+                    minEpoch.getMinutes(), minEpoch.getSeconds()))
                 .location(GeoPoint.create(-90, -180))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
@@ -971,7 +983,8 @@ public class IndexingSyncTests extends SearchTestBase {
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
+                .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(), maxEpoch.getHours(),
+                    maxEpoch.getMinutes(), maxEpoch.getSeconds()))
                 .location(GeoPoint.create(90, 180))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)

@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -76,7 +75,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
     @Test
     public void receiveMessage() {
         // Arrange
-        final String queueName = getQueueName();
+        final String queueName = getQueueName(0);
 
         Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
 
@@ -98,9 +97,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .queueName(queueName)
             .buildAsyncClient();
 
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(false);
-
         // Act & Assert
         try {
             StepVerifier.create(sender.createBatch()
@@ -113,7 +109,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
                 }))
                 .verifyComplete();
 
-            StepVerifier.create(receiver.receive(options).take(NUMBER_OF_EVENTS))
+            StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .expectComplete()
                 .verify(TIMEOUT);
