@@ -1,23 +1,27 @@
 package com.azure.data.tables;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.*;
-
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.AzureTableImpl;
 import com.azure.data.tables.implementation.AzureTableImplBuilder;
-
 import com.azure.data.tables.implementation.TablesImpl;
-import com.azure.data.tables.implementation.models.*;
+import com.azure.data.tables.implementation.models.OdataMetadataFormat;
+import com.azure.data.tables.implementation.models.QueryOptions;
+import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
-
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
-
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -59,17 +63,17 @@ public class autorestTest {
             .url("/https://telboytrial.table.core.windows.net")
             .buildClient();
 
-        try{
+        try {
             TablesImpl tables = azureTable.getTables();
 
-            StepVerifier.create(tables.deleteWithResponseAsync("ebTable","ID23",Context.NONE))
+            StepVerifier.create(tables.deleteWithResponseAsync("ebTable", "ID23", Context.NONE))
                 .assertNext(response -> {
                     System.out.println(response);
                     Assertions.assertEquals(200, response.getStatusCode());
                 })
                 .expectComplete()
                 .verify();
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.print(e);
         }
 
@@ -106,7 +110,7 @@ public class autorestTest {
 
 
     @BeforeEach
-     void beforeTests() {
+    void beforeTests() {
         createTableHelper(tableA);
         createTableHelper(tableB);
 
@@ -131,7 +135,7 @@ public class autorestTest {
 
     }
 
-    void createTableHelper(String tableName){
+    void createTableHelper(String tableName) {
         AzureTableImpl azureTable = auth();
 
         TableProperties tableProperties = new TableProperties().setTableName(tableName);
@@ -154,7 +158,7 @@ public class autorestTest {
 
     }
 
-    void insertEntityHelper(String tableName, Map<String, Object> properties){
+    void insertEntityHelper(String tableName, Map<String, Object> properties) {
         String requestId = UUID.randomUUID().toString();
 
         azureTable.getTables().insertEntityWithResponseAsync(tableName, 500,
@@ -194,7 +198,7 @@ public class autorestTest {
         createTableHelper(tableZ);
 
         //delete a table, successful path
-        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableZ,  UUID.randomUUID().toString(),
+        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableZ, UUID.randomUUID().toString(),
             Context.NONE))
             .assertNext(response -> {
                 Assertions.assertEquals(204, response.getStatusCode());
@@ -203,14 +207,14 @@ public class autorestTest {
             .verify();
 
         //try to delete table that is already deleted, should return a TableServiceError
-        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableZ,  UUID.randomUUID().toString(),
+        StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableZ, UUID.randomUUID().toString(),
             Context.NONE))
             .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify();
     }
 
     @Test
-    void queryTable(){
+    void queryTable() {
         String requestId = UUID.randomUUID().toString();
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
@@ -240,7 +244,7 @@ public class autorestTest {
     }
 
     @Test
-    void insertNoEtag(){
+    void insertNoEtag() {
         Map<String, Object> properties = new HashMap<>();
         properties.put(pk, "Store");
         properties.put(rk, "Seattle");
@@ -260,7 +264,7 @@ public class autorestTest {
     }
 
     @Test
-    void mergeEntity(){
+    void mergeEntity() {
         propertiesB.put("Address", "23 Newbury Street");
         StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableA, propertiesB.get("PartitionKey").toString(),
             propertiesB.get("RowKey").toString(), 500, UUID.randomUUID().toString(), "*", propertiesB, null, Context.NONE))
@@ -274,7 +278,7 @@ public class autorestTest {
     }
 
     @Test
-    void updateEntity(){
+    void updateEntity() {
         propertiesB.remove("Size");
         propertiesB.put("Manager", "Jessica Davis");
 
@@ -290,7 +294,7 @@ public class autorestTest {
     }
 
     @Test
-    void deleteEntity(){
+    void deleteEntity() {
         String requestId = UUID.randomUUID().toString();
         Map<String, Object> propertiesC = new HashMap<>();
         propertiesC.put(pk, "Store");

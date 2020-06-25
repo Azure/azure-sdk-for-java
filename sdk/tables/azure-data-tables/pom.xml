@@ -45,14 +45,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.7.0-beta.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
+      <version>12.7.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
       <dependency>
           <groupId>org.junit.jupiter</groupId>
@@ -66,18 +59,6 @@ Licensed under the MIT License.
       <version>3.3.5.RELEASE</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-common</artifactId>
-      <version>12.6.1</version>
-      <scope>compile</scope>
-    </dependency>
-      <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.8.2</version>
-          <scope>test</scope>
-      </dependency>
   </dependencies>
 
   <build>

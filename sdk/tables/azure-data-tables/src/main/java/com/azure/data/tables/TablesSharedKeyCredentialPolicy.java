@@ -7,7 +7,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
-public final class TablesSharedKeyCredentialPolicy  implements HttpPipelinePolicy{
+public final class TablesSharedKeyCredentialPolicy implements HttpPipelinePolicy {
 
     private final TablesSharedKeyCredential credential;
 

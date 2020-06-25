@@ -3,12 +3,10 @@ package com.azure.data.tables;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
-import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,14 +31,14 @@ public class TablesSharedKeyCredential {
         String[] var2 = connectionString.split(";");
         int var3 = var2.length;
 
-        for(int var4 = 0; var4 < var3; ++var4) {
+        for (int var4 = 0; var4 < var3; ++var4) {
             String connectionStringPiece = var2[var4];
             String[] kvp = connectionStringPiece.split("=", 2);
             connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
         }
 
-        String accountName = (String)connectionStringPieces.get("accountname");
-        String accountKey = (String)connectionStringPieces.get("accountkey");
+        String accountName = (String) connectionStringPieces.get("accountname");
+        String accountKey = (String) connectionStringPieces.get("accountkey");
         if (!CoreUtils.isNullOrEmpty(accountName) && !CoreUtils.isNullOrEmpty(accountKey)) {
             return new TablesSharedKeyCredential(accountName, accountKey);
         } else {
@@ -62,36 +60,20 @@ public class TablesSharedKeyCredential {
     }
 
     private String buildStringToSign(URL requestURL, String httpMethod, Map<String, String> headers) {
-        String contentLength = (String)headers.get("Content-Length");
-        contentLength = contentLength.equals("0") ? "" : contentLength;
         String dateHeader = headers.containsKey("x-ms-date") ? "" : this.getStandardHeaderValue(headers, "Date");
-//        String a = String.join("\n",
-//            httpMethod,
-//            this.getStandardHeaderValue(headers, "Content-MD5"), //content-md5
-//            this.getStandardHeaderValue(headers, "Content-Type"), //content-type
-//            dateHeader,
-//            "/telboytrial/table3()&$select=name"
-//            );
-
-        String s = String.join("\n",
+        return String.join("\n",
             dateHeader,  //date
-            this.getCanonicalizedResource(requestURL)); //canonicalized resoucre
-        System.out.println("EB-t  vvv");
-        System.out.println(s);
-        return s;
+            this.getCanonicalizedResource(requestURL)); //Canonicalized resource
     }
 
     private String getStandardHeaderValue(Map<String, String> headers, String headerName) {
-        String headerValue = (String)headers.get(headerName);
-//        if (headerName == "Content-Type"){
-//            return "application/atom+xml";
-//        }
+        String headerValue = (String) headers.get(headerName);
         return headerValue == null ? "" : headerValue;
     }
 
     private String getAdditionalXmsHeaders(Map<String, String> headers) {
-        List<String> xmsHeaderNameArray = (List)headers.entrySet().stream().filter((entry) -> {
-            return ((String)entry.getKey()).toLowerCase(Locale.ROOT).startsWith("x-ms-");
+        List<String> xmsHeaderNameArray = (List) headers.entrySet().stream().filter((entry) -> {
+            return ((String) entry.getKey()).toLowerCase(Locale.ROOT).startsWith("x-ms-");
         }).filter((entry) -> {
             return entry.getValue() != null;
         }).map(Map.Entry::getKey).collect(Collectors.toList());
@@ -102,8 +84,8 @@ public class TablesSharedKeyCredential {
             StringBuilder canonicalizedHeaders = new StringBuilder();
 
             String key;
-            for(Iterator var4 = xmsHeaderNameArray.iterator(); var4.hasNext(); canonicalizedHeaders.append(key.toLowerCase(Locale.ROOT)).append(':').append((String)headers.get(key))) {
-                key = (String)var4.next();
+            for (Iterator var4 = xmsHeaderNameArray.iterator(); var4.hasNext(); canonicalizedHeaders.append(key.toLowerCase(Locale.ROOT)).append(':').append((String) headers.get(key))) {
+                key = (String) var4.next();
                 if (canonicalizedHeaders.length() > 0) {
                     canonicalizedHeaders.append('\n');
                 }
@@ -130,25 +112,24 @@ public class TablesSharedKeyCredential {
             Collections.sort(queryParamNames);
             Iterator var5 = queryParamNames.iterator();
 
-            while(var5.hasNext()) {
-                String queryParamName = (String)var5.next();
-                String[] queryParamValues = (String[])queryParams.get(queryParamName);
+            while (var5.hasNext()) {
+                String queryParamName = (String) var5.next();
+                String[] queryParamValues = (String[]) queryParams.get(queryParamName);
                 Arrays.sort(queryParamValues);
                 String queryParamValuesStr = String.join(",", queryParamValues);
-                if(queryParamName.equals("comp")) {
+                if (queryParamName.equals("comp")) {
                     canonicalizedResource.append("?").append(queryParamName.toLowerCase(Locale.ROOT)).append("=").append(queryParamValuesStr);
                 }
             }
-//            canonicalizedResource.append("?").append("comp".toLowerCase(Locale.ROOT)).append("=").append("metadata");
             return canonicalizedResource.toString();
         }
     }
 
     public static com.azure.storage.common.StorageSharedKeyCredential getSharedKeyCredentialFromPipeline(HttpPipeline httpPipeline) {
-        for(int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
+        for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
             HttpPipelinePolicy httpPipelinePolicy = httpPipeline.getPolicy(i);
             if (httpPipelinePolicy instanceof TablesSharedKeyCredentialPolicy) {
-                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy = (StorageSharedKeyCredentialPolicy)httpPipelinePolicy;
+                StorageSharedKeyCredentialPolicy storageSharedKeyCredentialPolicy = (StorageSharedKeyCredentialPolicy) httpPipelinePolicy;
                 return storageSharedKeyCredentialPolicy.sharedKeyCredential();
             }
         }
