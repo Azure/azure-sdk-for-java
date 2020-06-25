@@ -290,7 +290,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.setIndexingMode(IndexingMode.LAZY);
+        indexingMode.setIndexingMode(IndexingMode.CONSISTENT);
         collectionSettings.setIndexingPolicy(indexingMode);
         collectionSettings.setDefaultTimeToLiveInSeconds(defaultTimeToLive * 2);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());

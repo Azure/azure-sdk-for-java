@@ -89,7 +89,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
 
         CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                                    .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
+                                                                       new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.CONSISTENT);
 

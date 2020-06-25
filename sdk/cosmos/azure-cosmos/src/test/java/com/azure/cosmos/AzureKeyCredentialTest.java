@@ -169,12 +169,11 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
-        indexingMode.setIndexingMode(IndexingMode.LAZY);
+        indexingMode.setIndexingMode(IndexingMode.CONSISTENT);
         collectionSettings.setIndexingPolicy(indexingMode);
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
-        // Lazy mode will be ignored by backend
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
             .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
