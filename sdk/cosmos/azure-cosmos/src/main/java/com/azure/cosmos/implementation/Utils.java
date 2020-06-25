@@ -16,12 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,8 +43,6 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Utils.class);
-    private static final int LIMITED_STACKTRACE_DEPTH = Configs.getLimitedStackTraceDepth();
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
@@ -650,30 +644,6 @@ public class Utils {
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to convert JSON to STRING", e);
-        }
-    }
-
-    public static String limitedStackTrace(Exception e) {
-        int depth = LIMITED_STACKTRACE_DEPTH;
-        StackTraceElement[] stacktrace = e.getStackTrace();
-        if (stacktrace == null) {
-            return "null";
-        } else {
-            try (StringWriter strWriter = new StringWriter();
-                 PrintWriter writer = new PrintWriter(strWriter)) {
-                writer.print("[");
-                for (int i = 0; i < stacktrace.length && i < depth; i++) {
-                    if (i > 0) {
-                        writer.print(";");
-                    }
-                    writer.print(stacktrace[i].toString());
-                }
-                writer.print("]");
-                return strWriter.toString();
-            } catch (Exception dummy) {
-                LOGGER.error("unexpected failure in generating short stacktrace {}", dummy);
-                return "null";
-            }
         }
     }
 }
