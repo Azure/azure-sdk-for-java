@@ -174,8 +174,9 @@ public class AzureKeyCredentialTest extends TestSuiteBase {
         Mono<CosmosContainerResponse> readObservable = collection.replace(collectionSettings, new CosmosContainerRequestOptions());
 
         // validate
+        // Lazy mode will be ignored by backend
         CosmosResponseValidator<CosmosContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosContainerResponse>()
-            .indexingMode(IndexingMode.LAZY).build();
+            .indexingMode(IndexingMode.CONSISTENT).build();
         validateSuccess(readObservable, validator);
 
         //  sanity check
