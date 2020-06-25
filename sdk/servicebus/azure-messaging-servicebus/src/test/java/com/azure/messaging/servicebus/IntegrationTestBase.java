@@ -233,7 +233,27 @@ public abstract class IntegrationTestBase extends TestBase {
 
             assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
                 "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+            String clientId = System.getenv("AZURE_CLIENT_ID");
+            String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
+            String tenantId = System.getenv("AZURE_TENANT_ID");
 
+            if (clientId != null ) {
+                logger.verbose("Getting Builder using credentials with clientId.length : ", clientId.length());
+            } else {
+                logger.error("Getting Builder using credentials clientId is null.");
+            }
+
+            if (clientSecret != null ) {
+                logger.verbose("Getting Builder using credentials with clientSecret.length : ", clientSecret.length());
+            } else {
+                logger.error("Getting Builder using credentials clientSecret is null.");
+            }
+
+            if (tenantId != null ) {
+                logger.verbose("Getting Builder using credentials with tenantId.length : ", tenantId.length());
+            } else {
+                logger.error("Getting Builder using credentials tenantId is null.");
+            }
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("AZURE_CLIENT_ID"))
                 .clientSecret(System.getenv("AZURE_CLIENT_SECRET"))

@@ -65,7 +65,7 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     void singleUnnamedSession(MessagingEntityType entityType) {
         // Arrange
-        final int entityIndex = 0;
+        final int entityIndex = TestUtils.USE_CASE_SINGLE_SESSION;
         final String messageId = "singleUnnamedSession";
         final String sessionId = "singleUnnamedSession-" + Instant.now().toString();
         final String contents = "Some-contents";
