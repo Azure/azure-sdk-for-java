@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,8 +68,8 @@ public final class FormPage {
         this.textAngle = textAngle;
         this.unit = unit;
         this.width = width;
-        this.lines = lines;
-        this.tables = tables;
+        this.lines = lines == null ? null : Collections.unmodifiableList(lines);
+        this.tables = tables == null ? null : Collections.unmodifiableList(tables);
         this.pageNumber = pageNumber;
     }
 
@@ -86,7 +87,7 @@ public final class FormPage {
      * Get the lines property: When includeTextContent is set to true, a list
      * of recognized text lines.
      *
-     * @return the lines value.
+     * @return the unmodifiable list of recognized lines.
      */
     public List<FormLine> getLines() {
         return this.lines;
@@ -95,7 +96,7 @@ public final class FormPage {
     /**
      * Get the tables property: List of data tables extracted from the page.
      *
-     * @return the tables value.
+     * @return the unmodifiable list of recognized tables.
      */
     public List<FormTable> getTables() {
         return this.tables;

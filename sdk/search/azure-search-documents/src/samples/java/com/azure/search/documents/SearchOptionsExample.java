@@ -85,13 +85,15 @@ public class SearchOptionsExample {
         SearchPagedIterable results = searchClient.search("*");
         Stream<SearchResult> resultStream = results.stream();
         resultStream.forEach(result ->
-            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+            result.getDocument(SearchDocument.class).forEach((field, value) ->
+                System.out.println((field + ":" + value)))
         );
     }
 
     private static void searchResultsAsPagedIterable(SearchClient searchClient) {
         searchClient.search("*").forEach(result ->
-            result.getDocument().forEach((field, value) -> System.out.println((field + ":" + value)))
+            result.getDocument(SearchDocument.class).forEach((field, value) ->
+                System.out.println((field + ":" + value)))
         );
     }
 }
