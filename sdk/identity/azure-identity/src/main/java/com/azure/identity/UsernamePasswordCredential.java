@@ -69,8 +69,8 @@ public class UsernamePasswordCredential implements TokenCredential {
             }
         }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
             .map(this::updateCache)
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(UsernamePasswordCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(UsernamePasswordCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     /**

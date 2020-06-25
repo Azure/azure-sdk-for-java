@@ -85,7 +85,7 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 cachedToken.set(msalToken);
                 return (AccessToken) msalToken;
             })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(SharedTokenCacheCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(SharedTokenCacheCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

@@ -65,7 +65,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
             logger.info("Azure Identity => Managed Identity environment: IMDS");
         }
         return accessTokenMono
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(ManagedIdentityCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(ManagedIdentityCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }

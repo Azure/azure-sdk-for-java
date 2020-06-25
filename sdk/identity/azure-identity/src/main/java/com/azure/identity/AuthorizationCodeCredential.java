@@ -68,7 +68,7 @@ public class AuthorizationCodeCredential implements TokenCredential {
                                         identityClient.getTenantId())));
                    return (AccessToken) msalToken;
                })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(AuthorizationCodeCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(AuthorizationCodeCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 }
