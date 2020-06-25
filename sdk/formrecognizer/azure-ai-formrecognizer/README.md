@@ -99,10 +99,6 @@ FormTrainingClient formTrainingClient = new FormTrainingClientBuilder()
 The Azure Form Recognizer client library provides a way to **rotate the existing key**.
 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L68-L74 -->
-<<<<<<< HEAD
-=======
->>>>>>> 66b3ab9031... receipt design update
->>>>>>> 407953ed61... receipt design update
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -199,11 +195,7 @@ The following section provides several code snippets covering some of the most c
 ### Recognize Forms Using a Custom Model
 Recognize name/value pairs and table data from forms. These models are trained with your own data,
 so they're tailored to your forms. You should only recognize forms of the same form type that the custom model was trained on.
-<<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L89-L106 -->
-=======
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L89-L104 -->
->>>>>>> 407953ed61... receipt design update
 ```java
 String formUrl = "{form_url}";
 String modelId = "{custom_trained_model_id}";
@@ -227,11 +219,7 @@ for (int i = 0; i < recognizedForms.size(); i++) {
 
 ### Recognize Content
 Recognize text and table structures, along with their bounding box coordinates, from documents.
-<<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L115-L140 -->
-=======
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L113-L136 -->
->>>>>>> 407953ed61... receipt design update
 ```java
 // recognize form content using file input stream
 File form = new File("local/file_path/filename.png");
@@ -261,10 +249,16 @@ for (int i = 0; i < contentPageResults.size(); i++) {
 
 ### Recognize receipts
 Recognize data from a USA sales receipts using a prebuilt model. [Here][service_recognize_receipt] are the fields the
+<<<<<<< HEAD
 service returns for a recognized receipt.
 <<<<<<< HEAD
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L144-L190-->
 =======
+=======
+service returns for a recognized receipt. See [StronglyTypedRecognizedForm.java][strongly_typed_sample] for a suggested approach to extract
+information from receipts.
+
+>>>>>>> f513bd8c12... change model names, inner class
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L141-L187-->
 >>>>>>> 407953ed61... receipt design update
 ```java
@@ -529,7 +523,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_doc_train_unlabeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-without-labels
 [service_doc_train_labeled]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview#train-with-labels
-[service_recognize_receipt]: https://westus2.dev.cognitive.microsoft.com/docs/services/form-recognizer-api-v2-preview/operations/GetAnalyzeReceiptResult
+[service_recognize_receipt]: https://aka.ms/azsdk/python/formrecognizer/receiptfields
+[strongly_typed_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/StronglyTypedRecognizedForm.java
 [source_code]: src
 [quickstart_training]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/quickstarts/curl-train-extract#train-a-form-recognizer-model
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication

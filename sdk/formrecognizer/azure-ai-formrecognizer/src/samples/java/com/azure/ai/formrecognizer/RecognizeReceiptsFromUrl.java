@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample for recognizing US receipt information using file source URL.
+ * Sample for recognizing commonly found US receipt fields from a file source URL. For a suggested approach to
+ * extracting information from receipts, see StronglyTypedRecognizedForm.java.
+ * See fields found on a receipt here:
+ * https://aka.ms/azsdk/python/formrecognizer/receiptfields
  */
 public class RecognizeReceiptsFromUrl {
 

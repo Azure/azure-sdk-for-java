@@ -121,9 +121,9 @@ public class Authentication {
                             ((Map<String, FormField<?>>) receiptItem.getValue()).forEach((key, formField) -> {
                                 if ("Name".equals(key)) {
                                     if (formField.getValue() instanceof String) {
-                                        String Name = (String) formField.getValue();
+                                        String name = (String) formField.getValue();
                                         System.out.printf("Name: %s, confidence: %.2fs%n",
-                                            Name, formField.getConfidence());
+                                            name, formField.getConfidence());
                                     }
                                 }
                                 if ("Quantity".equals(key)) {

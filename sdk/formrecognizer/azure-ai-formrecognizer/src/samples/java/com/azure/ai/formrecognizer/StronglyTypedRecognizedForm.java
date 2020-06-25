@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * Sample demonstrating converting recognized form fields to strongly typed US receipt field values.
  * See
- * <a href="https://westus2.dev.cognitive.microsoft.com/docs/services/form-recognizer-api-v2-preview/operations/GetAnalyzeReceiptResult"></a>
+ * <a href="https://aka.ms/azsdk/python/formrecognizer/receiptfields"></a>
  * for information on the strongly typed fields returned by service when recognizing receipts.
  */
-public class StronglyTypedRecognizedFormUSReceipt {
+public class StronglyTypedRecognizedForm {
 
     /**
      * Main method to invoke this demo.
@@ -40,8 +40,8 @@ public class StronglyTypedRecognizedFormUSReceipt {
         for (int i = 0; i < receiptPageResults.size(); i++) {
             final RecognizedForm recognizedReceipt = receiptPageResults.get(i);
             System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-            // Use extension method to convert the recognized form to strongly typed US receipt fields
-            USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+            // Use Receipt model transform the recognized form to strongly typed US receipt fields
+            Receipt usReceipt = new Receipt(recognizedReceipt);
             System.out.printf("Merchant Name: %s, confidence: %.2f%n", usReceipt.getMerchantName().getValue(),
                 usReceipt.getMerchantName().getConfidence());
             System.out.printf("Merchant Address: %s, confidence: %.2f%n",
