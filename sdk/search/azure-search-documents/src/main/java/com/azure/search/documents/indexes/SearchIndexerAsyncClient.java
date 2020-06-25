@@ -72,7 +72,6 @@ public class SearchIndexerAsyncClient {
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
-          //  .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .buildClient();
     }
