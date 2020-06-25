@@ -22,7 +22,6 @@ module com.azure.core {
     exports com.azure.core.http.policy;
     exports com.azure.core.http.rest;
     exports com.azure.core.models.spatial;
-    exports com.azure.core.model;
     exports com.azure.core.util;
     exports com.azure.core.util.logging;
     exports com.azure.core.util.paging;

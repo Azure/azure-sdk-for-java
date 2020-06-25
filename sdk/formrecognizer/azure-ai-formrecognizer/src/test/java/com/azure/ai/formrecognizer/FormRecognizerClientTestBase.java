@@ -44,6 +44,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -207,14 +208,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox, BoundingBox actualBoundingBox) {
-        if (actualBoundingBox != null && actualBoundingBox.getPoints() != null) {
-            int i = 0;
-            for (Point point : actualBoundingBox.getPoints()) {
-                assertEquals(expectedBoundingBox.get(i), point.getX());
-                assertEquals(expectedBoundingBox.get(++i), point.getY());
-                i++;
-            }
+        List<Point> expectedPointList = new ArrayList<>();
+        for (int i = 0; i < expectedBoundingBox.size(); i++) {
+            expectedPointList.add(new Point(expectedBoundingBox.get(i), expectedBoundingBox.get(++i)));
         }
+        assertEquals(new BoundingBox(expectedPointList), actualBoundingBox);
     }
 
     private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField actualFormField,

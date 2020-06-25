@@ -5,6 +5,7 @@ package com.azure.core.models.spatial;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public final class BoundingBox {
         if (points == null) {
             this.points = null;
         } else {
-            this.points = Collections.unmodifiableList(points);
+            this.points = Collections.unmodifiableList(new ArrayList<>(points));
         }
     }
 
@@ -44,8 +45,12 @@ public final class BoundingBox {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BoundingBox)) {
+            return false;
+        }
 
         final BoundingBox that = (BoundingBox) o;
 

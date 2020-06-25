@@ -14,12 +14,12 @@ public final class Point {
     /*
      * The x-axis point coordinate.
      */
-    private final float xCoordinate;
+    private final double xCoordinate;
 
     /*
      * The y-axis point coordinate.
      */
-    private final float yCoordinate;
+    private final double yCoordinate;
 
     /**
      * Constructs a Point object.
@@ -27,7 +27,7 @@ public final class Point {
      * @param xCoordinate The x-axis point coordinate.
      * @param yCoordinate The y-axis point coordinate.
      */
-    public Point(final float xCoordinate, final float yCoordinate) {
+    public Point(final double xCoordinate, final double yCoordinate) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
@@ -37,7 +37,7 @@ public final class Point {
      *
      * @return The x-axis coordinate value.
      */
-    public float getX() {
+    public double getX() {
         return this.xCoordinate;
     }
 
@@ -46,25 +46,33 @@ public final class Point {
      *
      * @return The y-axis coordinate value.
      */
-    public float getY() {
+    public double getY() {
         return this.yCoordinate;
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Point)) {
+            return false;
+        }
 
         final Point point = (Point) o;
 
-        if (Float.compare(point.xCoordinate, xCoordinate) != 0) return false;
-        return Float.compare(point.yCoordinate, yCoordinate) == 0;
+        return xCoordinate == point.xCoordinate
+            && yCoordinate == point.yCoordinate;
     }
 
     @Override
     public int hashCode() {
-        int result = (xCoordinate != +0.0f ? Float.floatToIntBits(xCoordinate) : 0);
-        result = 31 * result + (yCoordinate != +0.0f ? Float.floatToIntBits(yCoordinate) : 0);
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(xCoordinate);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(yCoordinate);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 }
