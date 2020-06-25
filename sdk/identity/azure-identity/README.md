@@ -119,7 +119,6 @@ A credential is a class which contains or can obtain the data needed for a servi
 
 
 The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
-
         
 <table border="1">
   <thead>
@@ -172,8 +171,6 @@ The credential types in Azure Identity differ in the types of AAD identities the
     </tr>
   </tbody>
 </table>
-
-
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
