@@ -13,12 +13,14 @@ import com.azure.messaging.servicebus.models.QueueDescription;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -39,8 +41,12 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
+    static Stream<Arguments> createHttpClients() {
+        return TestBase.getHttpClients().map(Arguments::of);
+    }
+
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("createHttpClients")
     void getQueue(HttpClient httpClient) {
         // Arrange
         final ServiceBusManagementAsyncClient client = createClient(httpClient);
@@ -48,7 +54,6 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
             ? "queue-5"
             : TestUtils.getEntityName(TestUtils.getQueueBaseName(), 5);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
-
         // Act & Assert
         StepVerifier.create(client.getQueue(queueName))
             .assertNext(queueDescription -> {
@@ -70,7 +75,7 @@ class ServiceBusManagementAsyncClientIntegrationTest extends TestBase {
     }
 
     @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @MethodSource("createHttpClients")
     void createQueueExistingName(HttpClient httpClient) {
         // Arrange
         final String queueName = interceptorManager.isPlaybackMode()

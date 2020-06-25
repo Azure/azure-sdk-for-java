@@ -5,6 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.models.spatial.GeometryPosition;
+import com.azure.core.models.spatial.PointGeometry;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -28,6 +30,7 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -52,6 +55,21 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+
+//    public static final ObjectMapper MAPPER;
+//    static {
+//
+//    }
+
+    public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
+        return new PointGeometry(new GeometryPosition(longitude, latitude),
+            null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+                {
+                    put("type", "name");
+                    put("properties", Collections.singletonMap("name", "EPSG:4326"));
+                }}));
+    }
+
     /**
      * Assert whether two objects are equal.
      *
@@ -86,7 +104,7 @@ public final class TestHelpers {
         } else if (expected instanceof Date) {
             assertDateEquals((Date) expected, (Date) actual);
         } else if (expected instanceof Map) {
-            assertMapEquals((Map) expected, (Map) actual, ignoredFields);
+            assertMapEquals((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
         } else {
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode expectedNode = mapper.valueToTree(expected);
@@ -103,15 +121,15 @@ public final class TestHelpers {
      */
     @SuppressWarnings("unchecked")
     public static void assertMapEquals(Map<String, Object> expectedMap, Map<String, Object> actualMap,
-        String... ignoredFields) {
+        boolean ignoreDefaults, String... ignoredFields) {
         expectedMap.forEach((key, value) -> {
             if (value != null && actualMap.get(key) != null) {
                 if (isComparableType(value)) {
                     assertEquals(value, actualMap.get(key));
                 } else if (value instanceof List) {
-                    assertListEquals((List) value, (List) actualMap.get(key));
+                    assertListEquals((List) value, (List) actualMap.get(key), ignoreDefaults, ignoredFields);
                 } else {
-                    assertObjectEquals(value, actualMap.get(key), false, ignoredFields);
+                    assertObjectEquals(value, actualMap.get(key), ignoreDefaults, ignoredFields);
                 }
             }
         });
@@ -122,9 +140,10 @@ public final class TestHelpers {
             .compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
     }
 
-    public static void assertListEquals(List<Object> expected, List<Object> actual) {
+    public static void assertListEquals(List<Object> expected, List<Object> actual, boolean ignoredDefaults,
+        String... ignoredFields) {
         for (int i = 0; i < expected.size(); i++) {
-            assertObjectEquals(expected.get(i), actual.get(i), false);
+            assertObjectEquals(expected.get(i), actual.get(i), ignoredDefaults, ignoredFields);
         }
     }
 
@@ -134,17 +153,18 @@ public final class TestHelpers {
     }
 
     private static void assertOnMapIterator(Iterator<Map.Entry<String, JsonNode>> expectedNode,
-        ObjectNode actualNode, boolean ignoredDefaults, String[] ignoredFields) {
+        ObjectNode actualNode, boolean ignoreDefaults, String[] ignoredFields) {
         Set<String> ignoredFieldSet = new HashSet<>(Arrays.asList(ignoredFields));
         while (expectedNode.hasNext()) {
             assertTrue(actualNode.fields().hasNext());
             Map.Entry<String, JsonNode> expectedField = expectedNode.next();
             String fieldName = expectedField.getKey();
-            if (shouldSkipField(fieldName, expectedField.getValue(), ignoredDefaults, ignoredFieldSet)) {
+            if (shouldSkipField(fieldName, expectedField.getValue(), ignoreDefaults, ignoredFieldSet)) {
                 continue;
             }
             if (expectedField.getValue().isValueNode()) {
-                assertEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()));
+                assertEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()),
+                    String.format("The key %s of the map has different values", expectedField.getKey()));
             } else if (expectedField.getValue().isArray()) {
                 Iterator<JsonNode> expectedArray = expectedField.getValue().elements();
                 Iterator<JsonNode> actualArray = actualNode.get(expectedField.getKey()).elements();
@@ -161,19 +181,19 @@ public final class TestHelpers {
                     assertEquals(a.asText(), b.asText());
                 }
             } else {
-                assertObjectEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()), ignoredDefaults,
+                assertObjectEquals(expectedField.getValue(), actualNode.get(fieldName), ignoreDefaults,
                     ignoredFields);
             }
         }
     }
 
     private static boolean shouldSkipField(String fieldName, JsonNode fieldValue,
-        boolean ignoredDefaults, Set<String> ignoredFields) {
+        boolean ignoreDefaults, Set<String> ignoredFields) {
         if (ignoredFields != null && ignoredFields.contains(fieldName)) {
             return true;
         }
 
-        if (ignoredDefaults) {
+        if (ignoreDefaults) {
             if (fieldValue.isNull()) {
                 return true;
             }
@@ -240,13 +260,6 @@ public final class TestHelpers {
         }
     }
 
-    public static <T> T convertToType(Object document, Class<T> cls) {
-        ObjectMapper mapper = new ObjectMapper();
-        SerializationUtil.configureMapper(mapper);
-        return mapper.convertValue(document, cls);
-    }
-
-
     public static <T> void uploadDocuments(SearchClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
         waitForIndexing();
@@ -285,11 +298,11 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        SerializationUtil.configureMapper(objectMapper);
+        ObjectMapper mapper = new JacksonAdapter().serializer();
+//        SerializationUtil.configureMapper(MAPPER);
+        SerializationUtil.configureMapper(mapper);
         try {
-            return objectMapper.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
+            return mapper.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

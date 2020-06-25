@@ -255,7 +255,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 <!-- LINKS -->
 [source_code]: src
 [cosmos_introduction]: https://docs.microsoft.com/en-us/azure/cosmos-db/
-[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/4.0.1-beta.3/index.html
+[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
 [cosmos_docs]: https://docs.microsoft.com/en-us/azure/cosmos-db/introduction
 [jdk]: https://docs.microsoft.com/java/azure/java-supported-jdk-runtime?view=azure-java-stable
 [maven]: https://maven.apache.org/
