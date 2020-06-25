@@ -23,6 +23,7 @@ public final class LoggingUtil {
     /**
      * Log an error message for a getToken() call.
      * @param logger the logger to output the log message
+     * @param context the context of the getToken() request
      * @param error the error thrown during getToken()
      */
     public static void logTokenError(ClientLogger logger, TokenRequestContext context, Throwable error) {
