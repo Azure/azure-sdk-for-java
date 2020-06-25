@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileTime;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -19,13 +20,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class AzureBlobFileAttributes implements BasicFileAttributes {
+/**
+ * File attributes associated with a file stored as a blob in Azure Storage.
+ * <p>
+ * Some of the attributes inherited from {@link BasicFileAttributes} are not supported. See the docs on each method for
+ * more information.
+ */
+public final class AzureBlobFileAttributes implements BasicFileAttributes {
     /*
-    Some properties do not have getters as they do not make sense in the context of nio. These properties are:
+    Some blob properties do not have getters as they do not make sense in the context of nio. These properties are:
         - incremental snapshot related properties
         - lease related properties
         - sequence number
-        - encryption key sha 256
+        - encryption key sha256
      */
 
     private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributes.class);
@@ -69,7 +76,7 @@ public class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * @return the time when the blob was created
+     * {@inheritDoc}
      */
     @Override
     public FileTime creationTime() {
@@ -77,7 +84,7 @@ public class AzureBlobFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * @return the time when the blob was last modified
+     * {@inheritDoc}
      */
     @Override
     public FileTime lastModifiedTime() {
@@ -216,42 +223,65 @@ public class AzureBlobFileAttributes implements BasicFileAttributes {
         return this.properties.getCommittedBlockCount();
     }
 
+    /**
+     * Unsupported.
+     * {@inheritDoc}
+     */
     @Override
     public FileTime lastAccessTime() {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isRegularFile() {
         return !this.properties.getMetadata().getOrDefault(AzureResource.DIR_METADATA_MARKER, "false").equals("true");
     }
 
     /**
-     * Only returns true if there is an actual marker blob present.
-     * @return
+     * {@inheritDoc}
+     * <p>
+     * Will only return true if the directory is a concrete directory. See
+     * {@link AzureFileSystemProvider#createDirectory(Path, FileAttribute[])} for more information on virtual and
+     * concrete directories.
      */
     @Override
     public boolean isDirectory() {
         return !this.isRegularFile();
     }
 
+    /**
+     * @return false. Symbolic links are not supported.
+     */
     @Override
     public boolean isSymbolicLink() {
         return false;
     }
 
+    /**
+     * @return false
+     */
     @Override
     public boolean isOther() {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public long size() {
-        return this.properties.getBlobSize();
+        return properties.getBlobSize();
     }
 
+    /**
+     * Unsupported.
+     * {@inheritDoc}
+     */
     @Override
     public Object fileKey() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

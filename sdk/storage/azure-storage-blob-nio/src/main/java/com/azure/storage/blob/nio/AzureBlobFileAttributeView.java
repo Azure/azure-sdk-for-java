@@ -4,22 +4,28 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.specialized.BlobClientBase;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
 
-public class AzureBlobFileAttributeView implements BasicFileAttributeView {
+/**
+ * A file attribute view that provides a view of attributes specific to files stored as blobs in Azure Storage.
+ * <p>
+ * All attributes are retrieved from the file system as a bulk operation.
+ * <p>
+ * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
+ */
+public final class AzureBlobFileAttributeView implements BasicFileAttributeView {
     private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributes.class);
+
+    static final String ATTR_CONSUMER_ERROR = "Exception thrown by attribute consumer";
 
     private final Path path;
 
@@ -33,12 +39,31 @@ public class AzureBlobFileAttributeView implements BasicFileAttributeView {
             try {
                 view.setBlobHttpHeaders((BlobHttpHeaders) obj);
             } catch (IOException e) {
-                throw new UncheckedIOException(e);
+                throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
             }
         });
-        map.put("lastModifiedTime", attributes::lastModifiedTime);
+        map.put("metadata", obj -> {
+            try {
+                view.setMetadata((Map<String, String>) obj);
+            } catch (IOException e) {
+                throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
+            }
+        });
+        map.put("tier", obj -> {
+            try {
+                view.setTier((AccessTier) obj);
+            } catch(IOException e) {
+                throw LoggingUtility.logError(view.logger, new UncheckedIOException(ATTR_CONSUMER_ERROR, e));
+            }
+        });
+
+        return map;
     }
 
+    /**
+     * Returns "azureBlob".
+     * {@inheritDoc}
+     */
     @Override
     public String name() {
         return "azureBlob";
@@ -46,14 +71,21 @@ public class AzureBlobFileAttributeView implements BasicFileAttributeView {
 
     /**
      * Gets a fresh copy every time it is called.
-     * @return
-     * @throws IOException
+     * @return {@link AzureBlobFileAttributes}
+     * @throws IOException if an IOException occurs.
      */
     @Override
-    public BasicFileAttributes readAttributes() throws IOException {
+    public AzureBlobFileAttributes readAttributes() throws IOException {
         return new AzureBlobFileAttributes(path);
     }
 
+    /**
+     * Sets the {@link BlobHttpHeaders} as an atomic operation.
+     * <p>
+     * See {@link BlobClientBase#setHttpHeaders(BlobHttpHeaders)} for more information.
+     * @param headers {@link BlobHttpHeaders}
+     * @throws IOException if an IOException occurs.
+     */
     public void setBlobHttpHeaders(BlobHttpHeaders headers) throws IOException {
         try {
             new AzureResource(this.path).getBlobClient().setHttpHeaders(headers);
@@ -62,6 +94,13 @@ public class AzureBlobFileAttributeView implements BasicFileAttributeView {
         }
     }
 
+    /**
+     * Sets the metadata as an atomic operation.
+     * <p>
+     * See {@link BlobClientBase#setMetadata(Map)} for more information.
+     * @param metadata The metadata to associate with the blob
+     * @throws IOException if an IOException occurs.
+     */
     public void setMetadata(Map<String, String> metadata) throws IOException {
         try {
             new AzureResource(this.path).getBlobClient().setMetadata(metadata);
@@ -70,6 +109,13 @@ public class AzureBlobFileAttributeView implements BasicFileAttributeView {
         }
     }
 
+    /**
+     * Sets the {@link AccessTier} on the file.
+     *
+     * See {@link BlobClientBase#setAccessTier(AccessTier)} for more information.
+     * @param tier {@link AccessTier}
+     * @throws IOException if an IOException occurs.
+     */
     public void setTier(AccessTier tier) throws IOException {
         try {
             new AzureResource(this.path).getBlobClient().setAccessTier(tier);
@@ -78,6 +124,11 @@ public class AzureBlobFileAttributeView implements BasicFileAttributeView {
         }
     }
 
+    /**
+     * Unsupported.
+     *
+     * {@inheritDoc}
+     */
     @Override
     public void setTimes(FileTime fileTime, FileTime fileTime1, FileTime fileTime2) throws IOException {
         throw new UnsupportedOperationException();

@@ -18,6 +18,10 @@ import java.nio.file.FileSystemNotFoundException
 import java.nio.file.NoSuchFileException
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
+import java.nio.file.attribute.BasicFileAttributeView
+import java.nio.file.attribute.BasicFileAttributes
+import java.nio.file.attribute.DosFileAttributeView
+import java.nio.file.attribute.DosFileAttributes
 import java.nio.file.attribute.FileAttribute
 import java.security.MessageDigest
 
@@ -908,7 +912,8 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    @Requires({ liveMode() }) // Because we upload in blocks
+    @Requires({ liveMode() })
+    // Because we upload in blocks
     def "OutputStream file system config"() {
         setup:
         def blockSize = 50L
@@ -951,6 +956,118 @@ class AzureFileSystemProviderTest extends APISpec {
         then:
         thrown(IOException)
     }
+
+    @Unroll
+    def "GetAttributeView"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        // No path validation is expected for getting the view
+        fs.provider().getFileAttributeView(fs.getPath("path"), type).class == expected
+
+        where:
+        type                              || expected
+        BasicFileAttributeView.class      || AzureBasicFileAttributeView.class
+        AzureBasicFileAttributeView.class || AzureBasicFileAttributeView.class
+        AzureBlobFileAttributeView.class  || AzureBlobFileAttributeView.class
+    }
+
+    def "GetAttributeView fail"() {
+        setup:
+        def fs = createFS(config)
+
+        expect:
+        // No path validation is expected for getting the view
+        fs.provider().getFileAttributeView(fs.getPath("path"), DosFileAttributeView.class) == null
+    }
+
+    @Unroll
+    def "ReadAttributes"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        expect:
+        fs.provider().readAttributes(path, type).class == expected
+
+        where:
+        type                           || expected
+        BasicFileAttributes.class      || AzureBasicFileAttributes.class
+        AzureBasicFileAttributes.class || AzureBasicFileAttributes.class
+        AzureBlobFileAttributes.class  || AzureBlobFileAttributes.class
+    }
+
+    def "ReadAttributes unsupported"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().readAttributes(fs.getPath("path"), DosFileAttributes.class)
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    def "ReadAttributes IOException"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().readAttributes(fs.getPath("path"), BasicFileAttributes.class)
+
+        then:
+        thrown(IOException)
+    }
+
+    @Unroll
+    def "ReadAttributes str parsing"() {
+        /*
+        This test checks that we correctly parse the attribute string and that all the requested attributes are
+        represented in the return value. We can also just test a subset of attributes for parsing logic.
+         */
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        def result = fs.provider().readAttributes(path, attrStr)
+
+        then:
+        for (String attr : attrList) {
+            assert result.keySet().contains(attr)
+        }
+        result.keySet().size() == attrList.size()
+
+        where:
+        attrStr                                          || attrList
+        "*"                                              || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "basic:*"                                        || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBasic:*"                                   || ["lastModifiedTime", "creationTime", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "azureBlob:*"                                    || ["lastModifiedTime", "creationTime", "eTag", "blobHttpHeaders", "blobType", "copyId", "copyStatus", "copySource", "copyProgress", "copyCompletionTime", "copyStatusDescription", "isServerEncrypted", "accessTier", "isAccessTierInferred", "archiveStatus", "accessTierChangeTime", "metadata", "committedBlockCount", "isRegularFile", "isDirectory", "isSymbolicLink", "isOther", "size"]
+        "lastModifiedTime,creationTime"                  || ["lastModifiedTime", "creationTime"]
+        "basic:isRegularFile,isDirectory"                || ["isRegularFile", "isDirectory"]
+        "azureBasic:size"                                || ["size"]
+        "azureBlob:eTag,blobHttpHeaders,blobType,copyId" || ["eTag", "blobHttpHeaders", "blobType", "copyId"]
+    }
+
+    def "ReadAttributes str suppliers"() {
+        // This test checks that for each requested attribute, we call the correct supplier and that the supplier maps to the correct property
+    }
+
+    // basic, azureBasic, azureBlob
+
+    // "*"
+
+    // invalid str format
+
+    // Invalid view
+
+    // Invalid attribute
 
     def basicSetupForCopyTest(FileSystem fs) {
         // Generate resource names.

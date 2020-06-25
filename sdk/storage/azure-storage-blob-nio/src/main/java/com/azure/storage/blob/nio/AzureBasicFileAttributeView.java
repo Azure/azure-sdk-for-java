@@ -9,11 +9,17 @@ import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.FileTime;
 
 /**
- * Provides support for properties specific to Azure Blob Storage such as tier.
+ * Provides support for basic file attributes.
+ *
+ * The operations supported by this view and the attributes it reads are a strict subset of
+ * {@link AzureBlobFileAttributeView} and has the same network behavior. Therefore, while this type is offered for
+ * compliance with the NIO spec, {@link AzureBlobFileAttributeView} is generally preferred.
+ *
+ * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
  *
  * {@inheritDoc}
  */
-public class AzureBasicFileAttributeView implements BasicFileAttributeView {
+public final class AzureBasicFileAttributeView implements BasicFileAttributeView {
 
     private final Path path;
 
@@ -22,7 +28,7 @@ public class AzureBasicFileAttributeView implements BasicFileAttributeView {
     }
 
     /**
-     * Returns {@code "azureStorage"}
+     * Returns {@code "azureBasic"}
      * {@inheritDoc}
      */
     @Override
@@ -30,11 +36,19 @@ public class AzureBasicFileAttributeView implements BasicFileAttributeView {
         return "azureBasic";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBasicFileAttributes readAttributes() throws IOException {
         return new AzureBasicFileAttributes(path);
     }
 
+    /**
+     * Unsupported.
+     *
+     * {@inheritDoc}
+     */
     @Override
     public void setTimes(FileTime lastModifiedTime, FileTime lastAccessTime, FileTime createTime) throws IOException {
         throw new UnsupportedOperationException();

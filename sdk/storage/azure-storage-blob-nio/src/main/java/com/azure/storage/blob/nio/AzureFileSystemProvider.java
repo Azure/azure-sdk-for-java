@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
@@ -50,6 +51,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
@@ -649,7 +651,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Virtual directories not supported
+     * Returns a file attribute view of a given type.
+     *
+     * See {@link AzureBasicFileAttributeView} and {@link AzureBlobFileAttributeView} for more information.
+     *
+     * Reading or setting attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      * {@inheritDoc}
      */
     @Override
@@ -658,24 +665,29 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         No resource validation is necessary here. That can happen at the time of making a network requests internal to
         the view object.
          */
-        if (aClass == BasicFileAttributeView.class) {
+        if (aClass == BasicFileAttributeView.class || aClass == AzureBasicFileAttributeView.class) {
             return (V) new AzureBasicFileAttributeView(path);
         } else if (aClass == AzureBlobFileAttributeView.class) {
             return (V) new AzureBlobFileAttributeView(path);
         } else {
-            throw new UnsupportedOperationException();
+            return null;
         }
     }
 
     /**
-     * virtual directories not supported.
+     * Reads a file's attributes as a bulk operation.
+     *
+     * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
+     *
+     * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      * {@inheritDoc}
      */
     @Override
     public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> aClass, LinkOption... linkOptions)
         throws IOException {
         Class<? extends BasicFileAttributeView> view;
-        if (aClass == BasicFileAttributes.class) {
+        if (aClass == BasicFileAttributes.class || aClass == AzureBasicFileAttributes.class) {
             view = AzureBasicFileAttributeView.class;
         } else if (aClass == AzureBlobFileAttributes.class) {
             view = AzureBlobFileAttributeView.class;
@@ -684,19 +696,23 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         /*
-        Resource validity will happen in readAttributes of the view. We don't want to double check, and checking
+        Resource validation will happen in readAttributes of the view. We don't want to double check, and checking
         internal to the view ensures it is always checked no matter which code path is taken.
          */
         return (A) getFileAttributeView(path, view, linkOptions).readAttributes();
     }
 
     /**
-     * Will fail on virtual directories
+     * Reads a set of file attributes as a bulk operation.
      *
+     * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
+     *
+     * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      * {@inheritDoc}
      */
     @Override
-    public Map<String, Object> readAttributes(Path path, String s, LinkOption... linkOptions) throws IOException {
+    public final Map<String, Object> readAttributes(Path path, String s, LinkOption... linkOptions) throws IOException {
         if (s == null) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("Attribute string cannot be null."));
         }
@@ -710,37 +726,43 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         for a single attributes object.
          */
         Map<String, Supplier<Object>> attributeSuppliers = null; // Initialized later as needed.
+        String viewType;
+        String attributeList;
+        String[] parts = s.split(":");
 
-        for (String element : s.split(",")) {
-            String viewType;
-            String attributeName;
-            String[] parts = element.split(":");
-            if (parts.length > 2) {
-                throw LoggingUtility.logError(logger,
-                    new IllegalArgumentException("Invalid format for attribute string: " + s));
-            }
-            if (parts.length == 1) {
-                viewType = "basic"; // Per jdk docs.
-                attributeName = s;
-            } else {
-                viewType = parts[0];
-                attributeName = parts[1];
-            }
+        if (parts.length > 2) {
+            throw LoggingUtility.logError(logger,
+                new IllegalArgumentException("Invalid format for attribute string: " + s));
+        }
 
-            /*
-            For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
-            state that "basic" must be supported, so we funnel to azureBasic.
-             */
-            if (viewType.equals("basic")) {
-                viewType = "azureBasic";
-            }
+        if (parts.length == 1) {
+            viewType = "basic"; // Per jdk docs.
+            attributeList = s;
+        } else {
+            viewType = parts[0];
+            attributeList = parts[1];
+        }
 
+        /*
+        For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
+        state that "basic" must be supported, so we funnel to azureBasic.
+         */
+        if (viewType.equals("basic")) {
+            viewType = "azureBasic";
+        }
+        if (!viewType.equals("azureBasic") && !viewType.equals("azureBlob")) {
+            throw LoggingUtility.logError(logger,
+                new UnsupportedOperationException("Invalid attribute view: " + viewType));
+        }
+
+        for (String attributeName : attributeList.split(",")) {
             /*
             We rely on the azureBlobFAV to actually do the work here as mentioned above, but if basic is specified, we
             should at least validate that the attribute is available on a basic view.
              */
+            // TODO: Put these strings in constants
             if (viewType.equals("azureBasic")) {
-                if (!AzureBasicFileAttributes.attributeStrings.contains(attributeName)) {
+                if (!AzureBasicFileAttributes.attributeStrings.contains(attributeName) && !attributeName.equals("*")) {
                     throw LoggingUtility.logError(logger,
                         new IllegalArgumentException("Invalid attribute. View: " + viewType
                             + ". Attribute: " + attributeName));
@@ -748,36 +770,32 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             }
 
             // As mentioned, azure blob can fulfill requests to both kinds of views.
-            if (viewType.equals("azureBlob") || viewType.equals("azureBasic")) {
-                // Populate the supplier if we haven't already.
-                if (attributeSuppliers == null) {
-                    attributeSuppliers = AzureBlobFileAttributes.getAttributeSuppliers(
-                        this.readAttributes(path, AzureBlobFileAttributes.class, linkOptions));
-                }
+            // Populate the supplier if we haven't already.
+            if (attributeSuppliers == null) {
+                attributeSuppliers = AzureBlobFileAttributes.getAttributeSuppliers(
+                    this.readAttributes(path, AzureBlobFileAttributes.class, linkOptions));
+            }
 
-                // If "*" is specified, add all of the attributes from the specified set.
-                if (attributeName.equals("*")) {
-                    Set<String> attributesToAdd;
-                    if (viewType.equals("azureBasic")) {
-                        attributesToAdd = AzureBasicFileAttributes.attributeStrings;
-                    } else {
-                        // attributeSuppliers is guaranteed to have been set by this point.
-                        attributesToAdd = attributeSuppliers.keySet();
-                    }
-                    for (String attr : attributesToAdd) {
-                        results.put(attr, attributeSuppliers.get(attr).get());
-                    }
-                } else if (attributeSuppliers.containsKey(attributeName)) {
-                    // Validate that the attribute is legal and add the value returned by the supplier to the results.
-                    throw LoggingUtility.logError(logger,
-                        new IllegalArgumentException("Invalid attribute. View: " + viewType
-                            + ". Attribute: " + attributeName));
+            // If "*" is specified, add all of the attributes from the specified set.
+            if (attributeName.equals("*")) {
+                Set<String> attributesToAdd;
+                if (viewType.equals("azureBasic")) {
+                    attributesToAdd = AzureBasicFileAttributes.attributeStrings;
                 } else {
-                    results.put(attributeName, attributeSuppliers.get(attributeName).get());
+                    // attributeSuppliers is guaranteed to have been set by this point.
+                    attributesToAdd = attributeSuppliers.keySet();
                 }
-            } else {
+                for (String attr : attributesToAdd) {
+                    results.put(attr, attributeSuppliers.get(attr).get());
+                }
+            } else if (!attributeSuppliers.containsKey(attributeName)) {
+                // Validate that the attribute is legal and add the value returned by the supplier to the results.
                 throw LoggingUtility.logError(logger,
-                    new UnsupportedOperationException("Invalid attribute view: " + viewType));
+                    new IllegalArgumentException("Invalid attribute. View: " + viewType
+                        + ". Attribute: " + attributeName));
+            } else {
+                results.put(attributeName, attributeSuppliers.get(attributeName).get());
+
             }
         }
 
@@ -791,12 +809,64 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Will fail on virtual directories.
+     * Sets the value of a file attribue.
+     *
+     * See {@link AzureBlobFileAttributeView} for more information.
+     *
+     * Setting attributes on a virtual directory is not supported and will throw an {@link IOException}. See
+     * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
      * {@inheritDoc}
      */
     @Override
     public void setAttribute(Path path, String s, Object o, LinkOption... linkOptions) throws IOException {
-        // Try catch UncheckedIOException. Set a constant value for the message that we can validate and then throw the cause.
+        String viewType;
+        String attributeName;
+        String[] parts = s.split(":");
+        if (parts.length > 2) {
+            throw LoggingUtility.logError(logger,
+                new IllegalArgumentException("Invalid format for attribute string: " + s));
+        }
+        if (parts.length == 1) {
+            viewType = "basic"; // Per jdk docs.
+            attributeName = s;
+        } else {
+            viewType = parts[0];
+            attributeName = parts[1];
+        }
+
+        /*
+        For specificity, our basic implementation of BasicFileAttributes uses the name azureBasic. However, the docs
+        state that "basic" must be supported, so we funnel to azureBasic.
+         */
+        if (viewType.equals("basic")) {
+            viewType = "azureBasic";
+        }
+
+        // We don't actually support any setters on the basic view.
+        if (viewType.equals("azureBasic")) {
+            throw LoggingUtility.logError(logger,
+                new IllegalArgumentException("Invalid attribute. View: " + viewType
+                    + ". Attribute: " + attributeName));
+        } else if (viewType.equals("azureBlob")) {
+            Map<String, Consumer<Object>> attributeConsumers = AzureBlobFileAttributeView.setAttributeConsumers(
+                this.getFileAttributeView(path, AzureBlobFileAttributeView.class, linkOptions));
+            if (!attributeConsumers.containsKey(attributeName)) {
+                // Validate that the attribute is legal and add the value returned by the supplier to the results.
+                throw LoggingUtility.logError(logger,
+                    new IllegalArgumentException("Invalid attribute. View: " + viewType
+                        + ". Attribute: " + attributeName));
+            }
+            try {
+                attributeConsumers.get(attributeName).accept(o);
+            } catch (UncheckedIOException e) {
+                if (e.getMessage().equals(AzureBlobFileAttributeView.ATTR_CONSUMER_ERROR)) {
+                    throw LoggingUtility.logError(logger, e.getCause());
+                }
+            }
+        } else {
+            throw LoggingUtility.logError(logger,
+                new UnsupportedOperationException("Invalid attribute view: " + viewType));
+        }
     }
 
     void closeFileSystem(String fileSystemName) {
