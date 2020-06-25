@@ -1,12 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.search.documents.options;
+package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.ScoringParameter;
-import com.azure.search.documents.models.SearchMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.List;

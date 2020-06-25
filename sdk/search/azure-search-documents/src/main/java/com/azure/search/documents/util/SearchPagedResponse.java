@@ -4,10 +4,9 @@
 package com.azure.search.documents.util;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 
@@ -31,21 +30,18 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     /**
      * Constructor
      *
-     * @param request Request that generated this response.
-     * @param statusCode Status code for the response.
-     * @param headers HTTP headers of the response.
-     * @param searchResults Results from the search operation.
+     * @param response The response containing information such as the request, status code, headers, and values.
      * @param continuationToken Continuation token for the next operation.
      * @param facets Facets contained in the search.
      * @param count Total number of documents available as a result for the search.
      * @param coverage Percent of the index used in the search operation.
      */
-    public SearchPagedResponse(HttpRequest request, int statusCode, HttpHeaders headers,
-        List<SearchResult> searchResults, String continuationToken, Map<String, List<FacetResult>> facets, Long count,
-        Double coverage) {
-        super(request, statusCode, headers, searchResults, continuationToken, null);
+    public SearchPagedResponse(Response<List<SearchResult>> response, String continuationToken,
+        Map<String, List<FacetResult>> facets, Long count, Double coverage) {
+        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(),
+            continuationToken, null);
 
-        this.value = searchResults;
+        this.value = response.getValue();
         this.facets = facets;
         this.count = count;
         this.coverage = coverage;

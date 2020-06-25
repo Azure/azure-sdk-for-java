@@ -5,7 +5,7 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AutocompleteMode;
-import com.azure.search.documents.options.AutocompleteOptions;
+import com.azure.search.documents.models.AutocompleteOptions;
 
 import java.util.ArrayList;
 import java.util.List;

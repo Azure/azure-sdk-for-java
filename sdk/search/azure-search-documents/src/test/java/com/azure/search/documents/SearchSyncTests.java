@@ -18,7 +18,7 @@ import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.options.SearchOptions;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.ValueFacetResult;
 import com.azure.search.documents.test.environment.models.Bucket;
@@ -236,9 +236,9 @@ public class SearchSyncTests extends SearchTestBase {
                 actualResults.add(hotel);
             });
         }
-        ObjectMapper MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        List<Hotel> hotelsList = hotels.stream().map(hotel -> MAPPER.convertValue(hotel, Hotel.class))
+        ObjectMapper mapper = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(mapper);
+        List<Hotel> hotelsList = hotels.stream().map(hotel -> mapper.convertValue(hotel, Hotel.class))
             .collect(Collectors.toList());
 
         assertEquals(hotelsList.size(), actualResults.size());

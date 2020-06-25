@@ -4,7 +4,7 @@
 package com.azure.search.documents.implementation.util;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.options.SuggestOptions;
+import com.azure.search.documents.models.SuggestOptions;
 
 /**
  * Utility class that ensures all suggest parameters are correct, use this validate {@link SuggestOptions}.

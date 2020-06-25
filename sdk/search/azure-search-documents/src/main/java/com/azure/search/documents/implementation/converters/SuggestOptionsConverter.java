@@ -4,7 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
-import com.azure.search.documents.options.SuggestOptions;
+import com.azure.search.documents.models.SuggestOptions;
 
 import java.util.ArrayList;
 import java.util.List;

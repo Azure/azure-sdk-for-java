@@ -4,10 +4,9 @@
 package com.azure.search.documents.util;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.search.documents.models.SuggestResult;
 
 import java.util.List;
@@ -37,15 +36,11 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
     /**
      * Constructor
      *
-     * @param request Request that generated this response.
-     * @param statusCode Status code for the response.
-     * @param headers HTTP headers of the response.
-     * @param suggestResults Results from the suggest operation.
+     * @param response The response containing information such as the request, status code, headers, and values.
      * @param coverage Percent of the index used in the suggest operation.
      */
-    public SuggestPagedResponse(HttpRequest request, int statusCode, HttpHeaders headers,
-        List<SuggestResult> suggestResults, Double coverage) {
-        super(request, statusCode, headers, suggestResults, null, null);
+    public SuggestPagedResponse(Response<List<SuggestResult>> response, Double coverage) {
+        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), null, null);
 
         this.coverage = coverage;
     }

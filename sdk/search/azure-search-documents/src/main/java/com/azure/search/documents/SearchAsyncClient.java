@@ -45,10 +45,10 @@ import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestResult;
-import com.azure.search.documents.options.AutocompleteOptions;
-import com.azure.search.documents.options.IndexDocumentsOptions;
-import com.azure.search.documents.options.SearchOptions;
-import com.azure.search.documents.options.SuggestOptions;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.IndexDocumentsOptions;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SuggestOptions;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -466,9 +466,10 @@ public final class SearchAsyncClient {
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();
 
-                SearchPagedResponse page = new SearchPagedResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), getSearchResults(result), createContinuationToken(result, serviceVersion),
-                    getFacets(result), result.getCount(), result.getCoverage());
+                SearchPagedResponse page = new SearchPagedResponse(
+                    new SimpleResponse<>(response, getSearchResults(result)),
+                    createContinuationToken(result, serviceVersion), getFacets(result), result.getCount(),
+                    result.getCoverage());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -615,8 +616,8 @@ public final class SearchAsyncClient {
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
 
-                return new SuggestPagedResponse(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), getSuggestResults(result), result.getCoverage());
+                return new SuggestPagedResponse(new SimpleResponse<>(response, getSuggestResults(result)),
+                    result.getCoverage());
             });
     }
 
