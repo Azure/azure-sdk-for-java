@@ -8,6 +8,5 @@ package com.azure.cosmos.implementation.encryption.api;
  * Encryption types that may be supported.
  */
 public enum EncryptionType {
-    PLAIN_TEXT,
     RANDOMIZED;
 }

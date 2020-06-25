@@ -73,8 +73,8 @@ public class CosmosDataEncryptionKeyProvider implements DataEncryptionKeyProvide
     }
 
     @Override
-    public DataEncryptionKey loadDataEncryptionKey(String id,
-                                                   String encryptionAlgorithm) {
+    public DataEncryptionKey getDataEncryptionKey(String id,
+                                                  String encryptionAlgorithm) {
         Mono<Tuple2<DataEncryptionKeyProperties, InMemoryRawDek>> fetchUnwrapMono = this
             .dataEncryptionKeyContainerCore.FetchUnwrappedAsync(id);
 

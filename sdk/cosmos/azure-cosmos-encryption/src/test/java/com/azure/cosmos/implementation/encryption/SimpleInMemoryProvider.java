@@ -17,7 +17,7 @@ public class SimpleInMemoryProvider implements DataEncryptionKeyProvider {
     }
 
     @Override
-    public DataEncryptionKey loadDataEncryptionKey(String id, String algorithm) {
+    public DataEncryptionKey getDataEncryptionKey(String id, String algorithm) {
         return keyMap.get(id);
     }
 }

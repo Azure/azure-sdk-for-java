@@ -67,7 +67,7 @@ public class EncryptionProcessor {
         SensitiveDataTransformer serializer = new SensitiveDataTransformer();
         byte[] plainText = serializer.toByteArray(toEncryptJObj);
 
-        DataEncryptionKey dataEncryptionKey = dataEncryptionKeyProvider.loadDataEncryptionKey(encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
+        DataEncryptionKey dataEncryptionKey = dataEncryptionKeyProvider.getDataEncryptionKey(encryptionOptions.getDataEncryptionKeyId(), encryptionOptions.getEncryptionAlgorithm());
 
         EncryptionProperties encryptionProperties = new EncryptionProperties(
             /* encryptionFormatVersion: */ 2,
@@ -109,7 +109,7 @@ public class EncryptionProcessor {
         }
 
         // get key
-        DataEncryptionKey inMemoryRawDek = keyProvider.loadDataEncryptionKey(encryptionProperties.getDataEncryptionKeyId(), CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
+        DataEncryptionKey inMemoryRawDek = keyProvider.getDataEncryptionKey(encryptionProperties.getDataEncryptionKeyId(), CosmosEncryptionAlgorithm.AEAes256CbcHmacSha256Randomized);
 
         byte[] plainText = inMemoryRawDek.decryptData(encryptionProperties.getEncryptedData());
 

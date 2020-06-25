@@ -63,7 +63,7 @@ public class EncryptionCodeSnippet {
 
         return new DataEncryptionKeyProvider() {
             @Override
-            public DataEncryptionKey loadDataEncryptionKey(String id, String algorithm) {
+            public DataEncryptionKey getDataEncryptionKey(String id, String algorithm) {
                 return key;
             }
         };

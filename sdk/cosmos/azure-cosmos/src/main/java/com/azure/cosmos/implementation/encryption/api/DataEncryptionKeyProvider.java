@@ -16,7 +16,7 @@ public interface DataEncryptionKeyProvider {
      * @return Data encryption key bytes.
      * TODO: @moderakh look into if this method needs to be async.
      */
-    DataEncryptionKey loadDataEncryptionKey(
+    DataEncryptionKey getDataEncryptionKey(
         String id,
         String encryptionAlgorithm);
 }
