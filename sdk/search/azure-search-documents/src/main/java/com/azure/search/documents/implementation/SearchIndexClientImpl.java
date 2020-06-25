@@ -93,7 +93,7 @@ public final class SearchIndexClientImpl {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.indexName = indexName;
-        this.apiVersion = "2019-05-06-Preview";
+        this.apiVersion = "2020-06-30";
         this.documents = new DocumentsImpl(this);
     }
 }

@@ -56,11 +56,6 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-//    public static final ObjectMapper MAPPER;
-//    static {
-//
-//    }
-
     public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
         return new PointGeometry(new GeometryPosition(longitude, latitude),
             null, Collections.singletonMap("crs", new HashMap<String, Object>() {
@@ -299,7 +294,6 @@ public final class TestHelpers {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
         ObjectMapper MAPPER = new JacksonAdapter().serializer();
-//        SerializationUtil.configureMapper(MAPPER);
         SerializationUtil.configureMapper(MAPPER);
         try {
             return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });

@@ -166,6 +166,8 @@ public final class SearchAsyncClient {
      * Uploads a collection of documents to the target index.
      *
      * @param documents collection of documents to upload to the target Index.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return A response containing the result of the document indexing actions.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
@@ -222,6 +224,8 @@ public final class SearchAsyncClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return response containing the document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
@@ -280,6 +284,8 @@ public final class SearchAsyncClient {
      * be of type {@code Integer} instead of {@code int}).
      *
      * @param documents collection of documents to be merged, if exists, otherwise uploaded
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return document index result
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
@@ -323,6 +329,8 @@ public final class SearchAsyncClient {
      * Deletes a collection of documents from the target index.
      *
      * @param documents collection of documents to delete from the target Index. Fields other than the key are ignored.
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return response containing the document index result.
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly
@@ -335,7 +343,7 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
         RequestOptions requestOptions) {
-        return withContext(context -> deleteDocumentsWithResponse(documents,requestOptions, context));
+        return withContext(context -> deleteDocumentsWithResponse(documents, requestOptions, context));
     }
 
     Mono<Response<IndexDocumentsResult>> deleteDocumentsWithResponse(Iterable<?> documents,
@@ -365,6 +373,8 @@ public final class SearchAsyncClient {
     /**
      * Queries the number of documents in the search index.
      *
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return response containing the number of documents.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -593,6 +603,8 @@ public final class SearchAsyncClient {
      * Sends a batch of upload, merge, and/or delete actions to the search index.
      *
      * @param batch The batch of index actions
+     * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
+     * help with debugging
      * @return Response containing the status of operations for all actions in the batch
      * @throws IndexBatchException If some of the indexing actions fail but other actions succeed and modify the state
      * of the index. This can happen when the Search Service is under heavy indexing load. It is important to explicitly

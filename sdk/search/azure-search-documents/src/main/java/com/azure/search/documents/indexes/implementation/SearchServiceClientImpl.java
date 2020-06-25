@@ -148,7 +148,7 @@ public final class SearchServiceClientImpl {
     SearchServiceClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.apiVersion = "2019-05-06-Preview";
+        this.apiVersion = "2020-06-30";
         this.dataSources = new DataSourcesImpl(this);
         this.indexers = new IndexersImpl(this);
         this.skillsets = new SkillsetsImpl(this);

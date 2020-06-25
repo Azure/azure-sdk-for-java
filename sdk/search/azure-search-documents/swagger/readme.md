@@ -36,8 +36,8 @@ autorest --use=C:/work/autorest.java
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --use=C:/work/autorest.java --tag=package-2019-05-searchindex-preview
-autorest --use=C:/work/autorest.java --tag=package-2019-05-searchservice-preview 
+autorest --use=C:/work/autorest.java --tag=package-2020-06-searchindex
+autorest --use=C:/work/autorest.java --tag=package-2020-06-searchservice
 ```
 ## Configuration
 
@@ -47,6 +47,29 @@ These are the global settings for SearchServiceClient and SearchIndexClient.
 ``` yaml
 opt-in-extensible-enums: true
 openapi-type: data-plane
+```
+### Tag: package-2020-06-searchservice
+
+These settings apply only when `--tag=package-2020-06-searchservice` is specified on the command line.
+
+``` yaml $(tag) == 'package-2020-06-searchservice'
+namespace: com.azure.search.documents.indexes
+input-file:
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f487ebc93065fd42540aa422c04edd6a768a03e6/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchservice.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
+```
+
+### Tag: package-2020-06-searchindex
+
+These settings apply only when `--tag=package-2020-06-searchindex` is specified on the command line.
+
+``` yaml $(tag) == 'package-2020-06-searchindex'
+namespace: com.azure.search.documents
+input-file:
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f487ebc93065fd42540aa422c04edd6a768a03e6/specification/search/data-plane/Azure.Search/preview/2020-06-30/searchindex.json
+models-subpackage: implementation.models
+custom-types-subpackage: models
 ```
 
 ### Tag: package-2019-05-searchservice-preview
