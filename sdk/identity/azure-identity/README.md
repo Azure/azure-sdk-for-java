@@ -120,61 +120,62 @@ A credential is a class which contains or can obtain the data needed for a servi
 
 The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
 
-
-
         
 <table border="1">
-<thead>
-<tr>
-<th>credential class</th>
-<th>identity</th>
-<th>configuration</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>DefaultAzureCredential</code></td>
-<td>service principal or managed identity</td>
-<td>none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
-</tr>
-<tr>
-<td><code>ManagedIdentityCredential</code></td>
-<td>managed identity</td>
-<td><code>ManagedIdentityCredentialBuilder</code></td>
-</tr>
-<tr>
-<td><code>EnvironmentCredential</code></td>
-<td>service principal</td>
-<td><a href="#environment-variables">environment variables</a></td>
-</tr>
-<tr>
-<td><code>ClientSecretCredential</code></td>
-<td>service principal</td>
-<td><code>ClientSecretCredentialBuilder</code></td>
-</tr>
-<tr>
-<td><code>ClientCertificateCredential</code></td>
-<td>service principal</td>
-<td><code>ClientCertificateCredentialBuilder</code></td>
-</tr>
-<tr>
-<td><code>DeviceCodeCredential</code></td>
-<td>user account</td>
-<td><code>DeviceCodeCredentialBuilder</code></td>
-</tr>
-<tr>
-<td><code>InteractiveBrowserCredential</code></td>
-<td>user account</td>
-<td><code>InteractiveBrowserCredentialBuilder</code></td>
-</tr>
-<tr>
-<td><code>UsernamePasswordCredential</code></td>
-<td>user account</td>
-<td><code>UsernamePasswordCredentialBuilder</code></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>credential class</th>
+      <th>identity</th>
+      <th>configuration</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DefaultAzureCredential</code></td>
+      <td>service principal or managed identity</td>
+      <td>
+        none for managed identity;
+        <a href="#environment-variables">environment variables</a> for service
+        principal
+      </td>
+    </tr>
+    <tr>
+      <td><code>ManagedIdentityCredential</code></td>
+      <td>managed identity</td>
+      <td><code>ManagedIdentityCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>EnvironmentCredential</code></td>
+      <td>service principal</td>
+      <td><a href="#environment-variables">environment variables</a></td>
+    </tr>
+    <tr>
+      <td><code>ClientSecretCredential</code></td>
+      <td>service principal</td>
+      <td><code>ClientSecretCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>ClientCertificateCredential</code></td>
+      <td>service principal</td>
+      <td><code>ClientCertificateCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>DeviceCodeCredential</code></td>
+      <td>user account</td>
+      <td><code>DeviceCodeCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>InteractiveBrowserCredential</code></td>
+      <td>user account</td>
+      <td><code>InteractiveBrowserCredentialBuilder</code></td>
+    </tr>
+    <tr>
+      <td><code>UsernamePasswordCredential</code></td>
+      <td>user account</td>
+      <td><code>UsernamePasswordCredentialBuilder</code></td>
+    </tr>
+  </tbody>
 </table>
-
 
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
