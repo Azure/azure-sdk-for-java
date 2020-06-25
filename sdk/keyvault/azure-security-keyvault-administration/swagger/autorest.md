@@ -44,7 +44,7 @@ context-client-method-parameter: true
 ```
 
 ### Tag: rbac-preview
-These settings apply only when `--tag=package-2019-05-searchservice-preview` is specified on the command line.
+These settings apply only when `--tag=rbac-preview` is specified on the command line.
 
 ``` yaml $(tag) == 'rbac-preview'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/master/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.2-preview/rbac.json
