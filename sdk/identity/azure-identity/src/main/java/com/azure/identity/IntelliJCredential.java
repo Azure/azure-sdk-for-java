@@ -89,7 +89,7 @@ public class IntelliJCredential implements TokenCredential {
                        cachedToken.set(msalToken);
                        return (AccessToken) msalToken;
                    })
-            .doOnNext(token -> LoggingUtil.getTokenSuccess(IntelliJCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.getTokenError(IntelliJCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(IntelliJCredential.class, logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(IntelliJCredential.class, logger, error));
     }
 }

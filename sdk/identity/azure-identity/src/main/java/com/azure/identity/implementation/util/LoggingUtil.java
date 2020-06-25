@@ -12,24 +12,22 @@ import com.azure.core.util.logging.ClientLogger;
 public final class LoggingUtil {
     /**
      * Log a success message for a getToken() call.
-     * @param credential the credential class
      * @param logger the logger to output the log message
      * @param context the context of the getToken() request
      */
-    public static void getTokenSuccess(Class<?> credential, ClientLogger logger, TokenRequestContext context) {
-        logger.info("Azure Identity => getToken() result for {}: SUCCESS", credential.getSimpleName());
-        logger.verbose("Azure Identity => Scopes: [{}]", String.join(", ", context.getScopes()));
+    public static void logTokenSuccess(ClientLogger logger, TokenRequestContext context) {
+        logger.info("Azure Identity => getToken() result for scopes [{}]: SUCCESS",
+                String.join(", ", context.getScopes()));
     }
 
     /**
      * Log an error message for a getToken() call.
-     * @param credential the credential class
      * @param logger the logger to output the log message
      * @param error the error thrown during getToken()
      */
-    public static void getTokenError(Class<?> credential, ClientLogger logger, Throwable error) {
-        logger.error("Azure Identity => ERROR in getToken() call for {}: {}",
-            credential.getSimpleName(), error == null ? "" : error.getMessage());
+    public static void logTokenError(ClientLogger logger, TokenRequestContext context, Throwable error) {
+        logger.error("Azure Identity => ERROR in getToken() call for scopes [{}]: {}",
+                String.join(", ", context.getScopes()), error == null ? "" : error.getMessage());
     }
 
     private LoggingUtil() {

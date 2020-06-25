@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * A token credential provider that can provide a credential from a list of providers.
@@ -43,7 +42,7 @@ public class ChainedTokenCredential implements TokenCredential {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
                .flatMap(p -> p.getToken(request).onErrorResume(Exception.class, t -> {
-                   if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
+                   if (!(t instanceof CredentialUnavailableException)) {
                        return Mono.error(new ClientAuthenticationException(
                             unavailableError + p.getClass().getSimpleName()
                             + " authentication failed. Error Details: " + t.getMessage(),

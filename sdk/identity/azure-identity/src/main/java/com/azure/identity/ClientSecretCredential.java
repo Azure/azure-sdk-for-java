@@ -55,7 +55,7 @@ public class ClientSecretCredential implements TokenCredential {
         return identityClient.authenticateWithConfidentialClientCache(request)
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
-            .doOnNext(token -> LoggingUtil.getTokenSuccess(ClientSecretCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.getTokenError(ClientSecretCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(ClientSecretCredential.class, logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(ClientSecretCredential.class, logger, error));
     }
 }

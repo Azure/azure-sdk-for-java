@@ -34,7 +34,7 @@ public class AzureCliCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request)
-            .doOnNext(token -> LoggingUtil.getTokenSuccess(AzureCliCredential.class, logger, request))
-            .doOnError(error -> LoggingUtil.getTokenError(AzureCliCredential.class, logger, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(AzureCliCredential.class, logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(AzureCliCredential.class, logger, error));
     }
 }
