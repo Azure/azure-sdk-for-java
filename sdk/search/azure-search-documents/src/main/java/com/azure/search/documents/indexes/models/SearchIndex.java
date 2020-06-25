@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -105,6 +106,30 @@ public final class SearchIndex {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
+
+    /**
+     * Constructor of {@link SearchIndex}.
+     * @param name The name of the index.
+     */
+    @JsonCreator
+    public SearchIndex(
+        @JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SearchIndex}.
+     * @param name The name of the index.
+     * @param fields The fields of the index.
+     */
+    @JsonCreator
+    public SearchIndex(
+        @JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "fields", required = true) List<SearchField> fields) {
+        this.name = name;
+        this.fields = fields;
+    }
+
     /**
      * Get the name property: The name of the index.
      *
@@ -112,17 +137,6 @@ public final class SearchIndex {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the index.
-     *
-     * @param name the name value to set.
-     * @return the SearchIndex object itself.
-     */
-    public SearchIndex setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

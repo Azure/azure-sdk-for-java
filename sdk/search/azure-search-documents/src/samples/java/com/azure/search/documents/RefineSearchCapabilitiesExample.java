@@ -67,33 +67,27 @@ public class RefineSearchCapabilitiesExample {
     private static void addCustomWebSkillset(SearchIndexerClient client) {
         String skillsetName = "custom-web-skillset";
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
-            new InputFieldMappingEntry()
-                .setName("text")
+            new InputFieldMappingEntry("text")
                 .setSource("/document/Description")
         );
 
         List<OutputFieldMappingEntry> outputs = Collections.singletonList(
-            new OutputFieldMappingEntry()
-                .setName("textItems")
+            new OutputFieldMappingEntry("textItems")
                 .setTargetName("TextItems")
         );
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "Bing entity search API key");
 
-        SearchIndexerSkill webApiSkill = new WebApiSkill()
-            .setUri("https://api.cognitive.microsoft.com/bing/v7.0/entities/")
+        SearchIndexerSkill webApiSkill = new WebApiSkill(inputs, outputs,
+            "https://api.cognitive.microsoft.com/bing/v7.0/entities/")
             .setHttpMethod("POST") // Supports only "POST" and "PUT" HTTP methods
             .setHttpHeaders(headers)
-            .setInputs(inputs)
-            .setOutputs(outputs)
             .setName("webapi-skill")
             .setDescription("A WebApi skill that can be used as a custom skillset");
 
-        SearchIndexerSkillset skillset = new SearchIndexerSkillset()
-            .setName(skillsetName)
-            .setDescription("Skillset for testing custom skillsets")
-            .setSkills(Collections.singletonList(webApiSkill));
+        SearchIndexerSkillset skillset = new SearchIndexerSkillset(skillsetName, Collections.singletonList(webApiSkill))
+            .setDescription("Skillset for testing custom skillsets");
 
         client.createOrUpdateSkillset(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
@@ -128,9 +122,8 @@ public class RefineSearchCapabilitiesExample {
 
     private static void addSynonymMapToIndex(SearchIndexClient client) {
         String synonymMapName = "hotel-synonym-sample";
-        SynonymMap synonymMap = new SynonymMap()
-            .setName(synonymMapName)
-            .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
+        SynonymMap synonymMap = new SynonymMap(synonymMapName,
+            "hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
 
         client.createOrUpdateSynonymMap(synonymMap);
 

@@ -29,7 +29,7 @@ public final class TagScoringFunction extends ScoringFunction {
             @JsonProperty(value = "boost", required = true) double boost,
             @JsonProperty(value = "fieldName", required = true) String fieldName,
             @JsonProperty(value = "tag", required = true) TagScoringParameters parameters) {
-        super(boost, fieldName);
+        super(fieldName, boost);
         this.parameters = parameters;
     }
 

@@ -24,24 +24,22 @@ public final class SearchIndexerDataSourceConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection();
 
-        if (obj.getContainer() != null) {
-            SearchIndexerDataContainer container = SearchIndexerDataContainerConverter.map(obj.getContainer());
-            searchIndexerDataSourceConnection.setContainer(container);
-        }
+        SearchIndexerDataSourceType type = obj.getType() == null ? null
+        : SearchIndexerDataSourceTypeConverter.map(obj.getType());
+        String connectionString = obj.getCredentials() == null ? null
+            : obj.getCredentials().getConnectionString();
+        SearchIndexerDataContainer container = obj.getContainer() == null ? null
+            : SearchIndexerDataContainerConverter.map(obj.getContainer());
+        SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection(
+            obj.getName(), type, connectionString, container);
+
 
         if (obj.getDataChangeDetectionPolicy() != null) {
             DataChangeDetectionPolicy dataChangeDetectionPolicy =
                 DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
             searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
-        if (obj.getCredentials() != null) {
-            searchIndexerDataSourceConnection.setConnectionString(obj.getCredentials().getConnectionString());
-        }
-
-        String name = obj.getName();
-        searchIndexerDataSourceConnection.setName(name);
 
         String description = obj.getDescription();
         searchIndexerDataSourceConnection.setDescription(description);
@@ -55,10 +53,6 @@ public final class SearchIndexerDataSourceConverter {
         String eTag = obj.getETag();
         searchIndexerDataSourceConnection.setETag(eTag);
 
-        if (obj.getType() != null) {
-            SearchIndexerDataSourceType type = SearchIndexerDataSourceTypeConverter.map(obj.getType());
-            searchIndexerDataSourceConnection.setType(type);
-        }
         return searchIndexerDataSourceConnection;
     }
 
@@ -70,27 +64,24 @@ public final class SearchIndexerDataSourceConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerDataSource searchIndexerDataSource =
-            new SearchIndexerDataSource();
 
-        if (obj.getContainer() != null) {
-            com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer container =
-                SearchIndexerDataContainerConverter.map(obj.getContainer());
-            searchIndexerDataSource.setContainer(container);
-        }
+        com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSourceType type =
+            obj.getType() == null ? null
+            : SearchIndexerDataSourceTypeConverter.map(obj.getType());
+
+        com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer container =
+            obj.getContainer() == null ? null
+            : SearchIndexerDataContainerConverter.map(obj.getContainer());
+        DataSourceCredentials credentials = new DataSourceCredentials();
+        credentials.setConnectionString(obj.getConnectionString());
+        SearchIndexerDataSource searchIndexerDataSource =
+            new SearchIndexerDataSource(obj.getName(), type, credentials, container);
 
         if (obj.getDataChangeDetectionPolicy() != null) {
             com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy
                 dataChangeDetectionPolicy = DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
             searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
-
-        DataSourceCredentials credentials = new DataSourceCredentials();
-        credentials.setConnectionString(obj.getConnectionString());
-        searchIndexerDataSource.setCredentials(credentials);
-
-        String name = obj.getName();
-        searchIndexerDataSource.setName(name);
 
         String description = obj.getDescription();
         searchIndexerDataSource.setDescription(description);
@@ -104,11 +95,6 @@ public final class SearchIndexerDataSourceConverter {
         String eTag = obj.getETag();
         searchIndexerDataSource.setETag(eTag);
 
-        if (obj.getType() != null) {
-            com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSourceType type =
-                SearchIndexerDataSourceTypeConverter.map(obj.getType());
-            searchIndexerDataSource.setType(type);
-        }
         return searchIndexerDataSource;
     }
 

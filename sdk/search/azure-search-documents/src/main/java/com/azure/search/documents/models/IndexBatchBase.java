@@ -36,15 +36,4 @@ public class IndexBatchBase<T> {
     public List<IndexAction<T>> getActions() {
         return this.actions;
     }
-
-    /**
-     * Set the actions property: The actions in the batch.
-     *
-     * @param actions the actions value to set.
-     * @return the IndexBatchBase object itself.
-     */
-    protected IndexBatchBase<T> setActions(List<IndexAction<T>> actions) {
-        this.actions = actions;
-        return this;
-    }
 }

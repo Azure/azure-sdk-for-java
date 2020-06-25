@@ -21,19 +21,12 @@ public final class MergeSkillConverter {
         if (obj == null) {
             return null;
         }
-        MergeSkill mergeSkill = new MergeSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setInputs(inputs);
-        }
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        MergeSkill mergeSkill = new MergeSkill(inputs, outputs);
 
         String name = obj.getName();
         mergeSkill.setName(name);
@@ -59,20 +52,16 @@ public final class MergeSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
+            obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.MergeSkill mergeSkill =
-            new com.azure.search.documents.indexes.implementation.models.MergeSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            mergeSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.MergeSkill(outputs, inputs);
 
         String name = obj.getName();
         mergeSkill.setName(name);
@@ -88,6 +77,7 @@ public final class MergeSkillConverter {
 
         String insertPreTag = obj.getInsertPreTag();
         mergeSkill.setInsertPreTag(insertPreTag);
+        mergeSkill.validate();
         return mergeSkill;
     }
 

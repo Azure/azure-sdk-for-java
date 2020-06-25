@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -21,6 +22,17 @@ public final class TextWeights {
     private Map<String, Double> weights;
 
     /**
+     * Constructor of {@link TextWeights}.
+     *
+     * @param weights The dictionary of per-field weights to boost document scoring. The keys
+     * are field names and the values are the weights for each field.
+     */
+    @JsonCreator
+    public TextWeights(@JsonProperty(value = "weights", required = true) Map<String, Double> weights) {
+        this.weights = weights;
+    }
+
+    /**
      * Get the weights property: The dictionary of per-field weights to boost
      * document scoring. The keys are field names and the values are the
      * weights for each field.
@@ -29,18 +41,5 @@ public final class TextWeights {
      */
     public Map<String, Double> getWeights() {
         return this.weights;
-    }
-
-    /**
-     * Set the weights property: The dictionary of per-field weights to boost
-     * document scoring. The keys are field names and the values are the
-     * weights for each field.
-     *
-     * @param weights the weights value to set.
-     * @return the TextWeights object itself.
-     */
-    public TextWeights setWeights(Map<String, Double> weights) {
-        this.weights = weights;
-        return this;
     }
 }

@@ -56,11 +56,6 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-//    public static final ObjectMapper MAPPER;
-//    static {
-//
-//    }
-
     public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
         return new PointGeometry(new GeometryPosition(longitude, latitude),
             null, Collections.singletonMap("crs", new HashMap<String, Object>() {

@@ -50,7 +50,7 @@ public class TextTranslationSkill extends SearchIndexerSkill {
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
             @JsonProperty(value = "defaultToLanguageCode", required = true)
                     TextTranslationSkillLanguage defaultToLanguageCode) {
-        super(outputs, inputs);
+        super(inputs, outputs);
         this.defaultToLanguageCode = defaultToLanguageCode;
     }
 

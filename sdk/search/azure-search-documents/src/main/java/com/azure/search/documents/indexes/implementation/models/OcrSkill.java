@@ -38,7 +38,7 @@ public class OcrSkill extends SearchIndexerSkill {
     public OcrSkill(
             @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs,
             @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs) {
-        super(outputs, inputs);
+        super(inputs, outputs);
     }
 
     /**

@@ -18,13 +18,7 @@ public final class SynonymMapConverter {
         if (obj == null) {
             return null;
         }
-        SynonymMap synonymMap = new SynonymMap();
-
-        String synonyms = obj.getSynonyms();
-        synonymMap.setSynonyms(synonyms);
-
-        String name = obj.getName();
-        synonymMap.setName(name);
+        SynonymMap synonymMap = new SynonymMap(obj.getName(), obj.getSynonyms());
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);
@@ -45,13 +39,8 @@ public final class SynonymMapConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SynonymMap synonymMap =
-            new com.azure.search.documents.indexes.implementation.models.SynonymMap();
-
-        String synonyms = obj.getSynonyms();
-        synonymMap.setSynonyms(synonyms);
-
-        String name = obj.getName();
-        synonymMap.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.SynonymMap(obj.getName(), "solr",
+                obj.getSynonyms());
 
         String eTag = obj.getETag();
         synonymMap.setETag(eTag);

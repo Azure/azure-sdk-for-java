@@ -52,6 +52,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -785,11 +786,10 @@ public final class SearchAsyncClient {
     }
 
     private static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
-        IndexDocumentsBatch<T> batch = new IndexDocumentsBatch<>();
-        List<IndexAction<T>> actions = batch.getActions();
+        List<IndexAction<T>> actions = new ArrayList<IndexAction<T>>();
         documents.forEach(d -> actions.add(new IndexAction<T>()
             .setActionType(actionType)
             .setDocument(d)));
-        return batch;
+        return new IndexDocumentsBatch<T>(actions);
     }
 }

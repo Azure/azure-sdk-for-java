@@ -48,6 +48,17 @@ public final class PathHierarchyTokenizer extends LexicalTokenizer {
     private Integer numberOfTokensToSkip;
 
     /**
+     * Constructor of {@link PathHierarchyTokenizer}.
+     *
+     * @param name The name of the tokenizer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PathHierarchyTokenizer(String name) {
+        super(name);
+    }
+
+    /**
      * Get the delimiter property: The delimiter character to use. Default is
      * "/".
      *
