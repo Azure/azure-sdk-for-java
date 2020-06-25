@@ -29,7 +29,7 @@ public final class FreshnessScoringFunction extends ScoringFunction {
             @JsonProperty(value = "boost", required = true) double boost,
             @JsonProperty(value = "fieldName", required = true) String fieldName,
             @JsonProperty(value = "freshness", required = true) FreshnessScoringParameters parameters) {
-        super(boost, fieldName);
+        super(fieldName, boost);
         this.parameters = parameters;
     }
 

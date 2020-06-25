@@ -71,6 +71,14 @@ public abstract class SearchIndexerSkill {
     @JsonProperty(value = "outputs", required = true)
     private List<OutputFieldMappingEntry> outputs;
 
+    /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     */
     @JsonCreator
     public SearchIndexerSkill(
         @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,

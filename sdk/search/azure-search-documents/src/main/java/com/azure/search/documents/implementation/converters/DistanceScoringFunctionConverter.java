@@ -20,7 +20,11 @@ public final class DistanceScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
-        DistanceScoringFunction distanceScoringFunction = new DistanceScoringFunction();
+
+        DistanceScoringParameters parameters = obj.getParameters() == null ? null
+            : DistanceScoringParametersConverter.map(obj.getParameters());
+        DistanceScoringFunction distanceScoringFunction = new DistanceScoringFunction(obj.getFieldName(),
+            obj.getBoost(), parameters);
 
         if (obj.getInterpolation() != null) {
             ScoringFunctionInterpolation interpolation =
@@ -28,16 +32,6 @@ public final class DistanceScoringFunctionConverter {
             distanceScoringFunction.setInterpolation(interpolation);
         }
 
-        String fieldName = obj.getFieldName();
-        distanceScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        distanceScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            DistanceScoringParameters parameters = DistanceScoringParametersConverter.map(obj.getParameters());
-            distanceScoringFunction.setParameters(parameters);
-        }
         return distanceScoringFunction;
     }
 
@@ -49,26 +43,21 @@ public final class DistanceScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
+
+        com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters parameters =
+            obj.getParameters() == null ? null
+            : DistanceScoringParametersConverter.map(obj.getParameters());
+
         com.azure.search.documents.indexes.implementation.models.DistanceScoringFunction distanceScoringFunction =
-            new com.azure.search.documents.indexes.implementation.models.DistanceScoringFunction();
+            new com.azure.search.documents.indexes.implementation.models.DistanceScoringFunction(obj.getBoost(),
+                obj.getFieldName(), parameters);
 
         if (obj.getInterpolation() != null) {
             com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
                 ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
             distanceScoringFunction.setInterpolation(interpolation);
         }
-
-        String fieldName = obj.getFieldName();
-        distanceScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        distanceScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            com.azure.search.documents.indexes.implementation.models.DistanceScoringParameters parameters =
-                DistanceScoringParametersConverter.map(obj.getParameters());
-            distanceScoringFunction.setParameters(parameters);
-        }
+        distanceScoringFunction.validate();
         return distanceScoringFunction;
     }
 

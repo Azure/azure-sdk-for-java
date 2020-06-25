@@ -24,11 +24,8 @@ public final class EdgeNGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter();
+        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
         PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V1_ODATA_TYPE);
-
-        String name = obj.getName();
-        edgeNGramTokenFilter.setName(name);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -51,11 +48,8 @@ public final class EdgeNGramTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter();
+        EdgeNGramTokenFilter edgeNGramTokenFilter = new EdgeNGramTokenFilter(obj.getName());
         PrivateFieldAccessHelper.set(edgeNGramTokenFilter, ODATA_FIELD_NAME, V2_ODATA_TYPE);
-
-        String name = obj.getName();
-        edgeNGramTokenFilter.setName(name);
 
         Integer maxGram = obj.getMaxGram();
         edgeNGramTokenFilter.setMaxGram(maxGram);
@@ -83,18 +77,23 @@ public final class EdgeNGramTokenFilterConverter {
         String identifier = PrivateFieldAccessHelper.get(obj, ODATA_FIELD_NAME, String.class);
         com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterSide side = obj.getSide() == null ?
             null : EdgeNGramTokenFilterSideConverter.map(obj.getSide());
+
         if (V1_ODATA_TYPE.equals(identifier)) {
-            return new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter()
+            com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter edgeNGramTokenFilter =
+                new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilter(obj.getName())
                 .setSide(side)
                 .setMaxGram(obj.getMaxGram())
-                .setMinGram(obj.getMinGram())
-                .setName(obj.getName());
+                .setMinGram(obj.getMinGram());
+            edgeNGramTokenFilter.validate();
+            return edgeNGramTokenFilter;
         } else {
-            return new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV2()
-                .setSide(side)
-                .setMaxGram(obj.getMaxGram())
-                .setMinGram(obj.getMinGram())
-                .setName(obj.getName());
+            com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV2 edgeNGramTokenFilter =
+                new com.azure.search.documents.indexes.implementation.models.EdgeNGramTokenFilterV2(obj.getName())
+                    .setSide(side)
+                    .setMaxGram(obj.getMaxGram())
+                    .setMinGram(obj.getMinGram());
+            edgeNGramTokenFilter.validate();
+            return edgeNGramTokenFilter;
         }
     }
 

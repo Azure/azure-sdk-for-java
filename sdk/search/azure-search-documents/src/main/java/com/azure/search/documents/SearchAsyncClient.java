@@ -723,9 +723,8 @@ public final class SearchAsyncClient {
      */
     private static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
         SuggestOptions suggestOptions) {
-        SuggestRequest suggestRequest = new SuggestRequest()
-            .setSearchText(searchText)
-            .setSuggesterName(suggesterName);
+        SuggestRequest suggestRequest = new SuggestRequest(searchText, suggesterName);
+        suggestRequest.validate();
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
@@ -764,9 +763,8 @@ public final class SearchAsyncClient {
      */
     private static AutocompleteRequest createAutoCompleteRequest(String searchText, String suggesterName,
         AutocompleteOptions autocompleteOptions) {
-        AutocompleteRequest autoCompleteRequest = new AutocompleteRequest()
-            .setSearchText(searchText)
-            .setSuggesterName(suggesterName);
+        AutocompleteRequest autoCompleteRequest = new AutocompleteRequest(searchText, suggesterName);
+        autoCompleteRequest.validate();
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())

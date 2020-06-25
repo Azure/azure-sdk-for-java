@@ -29,7 +29,7 @@ public final class DistanceScoringFunction extends ScoringFunction {
             @JsonProperty(value = "boost", required = true) double boost,
             @JsonProperty(value = "fieldName", required = true) String fieldName,
             @JsonProperty(value = "distance", required = true) DistanceScoringParameters parameters) {
-        super(boost, fieldName);
+        super(fieldName, boost);
         this.parameters = parameters;
     }
 
