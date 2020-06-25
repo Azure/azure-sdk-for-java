@@ -238,19 +238,19 @@ public abstract class IntegrationTestBase extends TestBase {
             String tenantId = System.getenv("AZURE_TENANT_ID");
 
             if (clientId != null ) {
-                logger.verbose("Getting Builder using credentials with clientId.length : ", clientId.length());
+                logger.info("Getting Builder using credentials with clientId.length : ", clientId.length());
             } else {
                 logger.error("Getting Builder using credentials clientId is null.");
             }
 
             if (clientSecret != null ) {
-                logger.verbose("Getting Builder using credentials with clientSecret.length : ", clientSecret.length());
+                logger.info("Getting Builder using credentials with clientSecret.length : ", clientSecret.length());
             } else {
                 logger.error("Getting Builder using credentials clientSecret is null.");
             }
 
             if (tenantId != null ) {
-                logger.verbose("Getting Builder using credentials with tenantId.length : ", tenantId.length());
+                logger.info("Getting Builder using credentials with tenantId.length : ", tenantId.length());
             } else {
                 logger.error("Getting Builder using credentials tenantId is null.");
             }
