@@ -7,17 +7,25 @@ import com.azure.cosmos.implementation.routing.MurmurHash3_128;
 import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public final class DistinctHash {
 
     private static final UInt128 RootHashSeed = new UInt128(0xbfc2359eafc0e2b7L, 0x8846e00284c4cf1fL);
+    private static final ObjectMapper OBJECT_MAPPER =
+        new ObjectMapper()
+            .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
+            .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 
     private static class HashSeeds
     {
@@ -76,11 +84,19 @@ public final class DistinctHash {
             return getHash(JsonSerializable.getValue((JsonNode) resource), seed);
         }
 
+        if (resource instanceof List) {
+            return getHashFromList((List<Object>) resource);
+        }
+
+        if (resource instanceof JsonSerializable) {
+            return getHashFromJsonSerializable((JsonSerializable) resource);
+        }
+
         throw new IllegalArgumentException(String.format("Unexpected type: %s", resource.getClass().toString()));
     }
 
     private static UInt128 getHashFromJsonSerializable(JsonSerializable resource) {
-        final ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        final ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(resource, OBJECT_MAPPER);
         final byte[] bytes = byteBuffer.array();
         return MurmurHash3_128.hash128(bytes, bytes.length);
     }
@@ -115,6 +131,21 @@ public final class DistinctHash {
             hash = MurmurHash3_128.hash128(intermediateHash, hash);
         }
 
+        return hash;
+    }
+
+    private static UInt128 getHashFromList(List<Object> resource) {
+        UInt128 hash = HashSeeds.Array;
+        for (Object obj : resource) {
+            if (obj instanceof JsonSerializable) {
+                byte[] bytes = hash.toByteBuffer().array();
+                if (bytes.length == 0) {
+                    throw new IllegalStateException("Failed to hash!");
+                }
+                hash = MurmurHash3_128.hash128(bytes, bytes.length,
+                                               getHashFromJsonSerializable((JsonSerializable) obj));
+            }
+        }
         return hash;
     }
 }

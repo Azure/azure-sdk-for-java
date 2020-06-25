@@ -45,7 +45,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
     @Test
     public void testAADAppRoleStatelessAuthenticationFilter() {
         final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_CLIENT_ID),
-                System.getenv(AAD_CLIENT_SECRET));
+            System.getenv(AAD_CLIENT_SECRET));
         assertNotNull(authResponse);
 
         try (AppRunner app = new AppRunner(DumbApp.class)) {
@@ -56,13 +56,13 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
             app.start();
 
             final ResponseEntity<String> response = restTemplate.exchange(app.root() + "public",
-                    HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
+                HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
             assertEquals(HttpStatus.OK, response.getStatusCode());
             assertEquals("public endpoint response", response.getBody());
 
             try {
                 restTemplate.exchange(app.root() + "authorized",
-                        HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
+                    HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
             } catch (Exception e) {
                 assertEquals(HttpClientErrorException.Forbidden.class, e.getClass());
             }
@@ -72,7 +72,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
             final HttpEntity<Object> entity = new HttpEntity<>(headers);
 
             final ResponseEntity<String> response2 = restTemplate.exchange(app.root() + "authorized",
-                    HttpMethod.GET, entity, String.class, new HashMap<>());
+                HttpMethod.GET, entity, String.class, new HashMap<>());
             assertEquals(HttpStatus.OK, response2.getStatusCode());
             assertEquals("authorized endpoint response", response2.getBody());
 
@@ -102,9 +102,9 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
             http.authorizeRequests()
-                    .antMatchers("/admin/**").hasRole("Admin")
-                    .antMatchers("/", "/index.html", "/public").permitAll()
-                    .anyRequest().authenticated();
+                .antMatchers("/admin/**").hasRole("Admin")
+                .antMatchers("/", "/index.html", "/public").permitAll()
+                .anyRequest().authenticated();
 
             http.addFilterBefore(aadAuthFilter, UsernamePasswordAuthenticationFilter.class);
         }
