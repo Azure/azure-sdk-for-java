@@ -236,9 +236,9 @@ public class SearchSyncTests extends SearchTestBase {
                 actualResults.add(hotel);
             });
         }
-        ObjectMapper MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        List<Hotel> hotelsList = hotels.stream().map(hotel -> MAPPER.convertValue(hotel, Hotel.class))
+        ObjectMapper mapper = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(mapper);
+        List<Hotel> hotelsList = hotels.stream().map(hotel -> mapper.convertValue(hotel, Hotel.class))
             .collect(Collectors.toList());
 
         assertEquals(hotelsList.size(), actualResults.size());
