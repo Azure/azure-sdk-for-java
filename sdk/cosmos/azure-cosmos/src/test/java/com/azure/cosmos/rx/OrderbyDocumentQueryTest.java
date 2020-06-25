@@ -377,7 +377,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(order);
 
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"propInt"), validatorComparator);
-        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100}, expectedResourceIds);
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 10, 100}, expectedResourceIds);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
@@ -407,6 +407,30 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> ModelBridgeInternal.getStringFromJsonSerializable(d,"id"), validatorComparator);
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByArray(String sortOrder) throws Exception {
+        String query = String.format("SELECT * FROM r ORDER BY r.propArray %s", sortOrder);
+
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, 3);
+        List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
+
+        // If order by item is array, we can not get a predictable ordering, only check it always return consistent order
+        assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
+            .containsExactlyElementsOf(results2.stream().map(r -> r.getResourceId()).collect(Collectors.toList()));
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
+    public void queryOrderByObject(String sortOrder) throws Exception {
+        String query = String.format("SELECT * FROM r ORDER BY r.propObject %s", sortOrder);
+
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, 3);
+        List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
+
+        // If order by item is object, we can not get a predictable ordering, only check it always return with consistent order
+        assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
+            .containsExactlyElementsOf(results2.stream().map(r -> r.getResourceId()).collect(Collectors.toList()));
     }
 
     public InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps) {
@@ -446,6 +470,16 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             props = new HashMap<>();
             props.put("propInt", i);
             props.put("propStr", String.valueOf(i));
+
+            List<Integer> orderByArray = new ArrayList<Integer>();
+            Map<String, String> orderByObject = new HashMap<>();
+            for (int k = 0; k < 3; k++) {
+                orderByArray.add(k + i);
+                orderByObject.put("key1", String.valueOf(i));
+                orderByObject.put("key2", String.valueOf(orderByArray.get(k)));
+            }
+            props.put("propArray", orderByArray);
+            props.put("propObject", orderByObject);
             keyValuePropsList.add(props);
         }
 
@@ -511,6 +545,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             assertThat(actualIds).containsExactlyElementsOf(expectedIds);
         }
     }
+
 
     private List<InternalObjectNode> queryWithContinuationTokens(String query, int pageSize) {
         String requestContinuation = null;

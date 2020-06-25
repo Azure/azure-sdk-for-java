@@ -76,7 +76,7 @@ public class CosmosDatabaseForTest {
     }
 
     public static CosmosDatabaseForTest create(DatabaseManager client) {
-        CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties(generateId());
+        CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties("testDatabase");
 
         client.createDatabase(dbDef).block();
         CosmosAsyncDatabase db = client.getDatabase(dbDef.getId());
