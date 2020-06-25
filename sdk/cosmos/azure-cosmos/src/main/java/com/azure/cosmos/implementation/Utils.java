@@ -30,6 +30,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.Collections;
@@ -563,7 +564,8 @@ public class Utils {
         try {
             return getSimpleObjectMapper().readValue(itemResponseBodyAsString, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse string [%s] to POJO.", itemResponseBodyAsString, e));
         }
     }
 
@@ -571,10 +573,12 @@ public class Utils {
         if (Utils.isEmpty(item)) {
             return null;
         }
+
         try {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to get POJO.", e);
+            throw new IllegalStateException(
+                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
         }
     }
 

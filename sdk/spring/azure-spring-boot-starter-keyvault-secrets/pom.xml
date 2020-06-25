@@ -179,7 +179,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>      
+      </plugin>
       <!-- END: Empty Sources -->
     </plugins>
   </build>
