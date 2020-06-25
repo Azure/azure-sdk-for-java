@@ -58,8 +58,8 @@ public class UInt128 implements Comparable<UInt128>{
         return high;
     }
 
-    public UInt128 add(int addAug) {
-        UInt128 add = new UInt128((long)addAug, 0);
+    public UInt128 add(int value) {
+        UInt128 add = new UInt128(value, 0);
         long low = this.low + add.low;
         long high = this.high + add.high;
 

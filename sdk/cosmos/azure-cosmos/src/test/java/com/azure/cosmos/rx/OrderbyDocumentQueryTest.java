@@ -377,7 +377,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(order);
 
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"propInt"), validatorComparator);
-        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 10, 100}, expectedResourceIds);
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100}, expectedResourceIds);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 10, dataProvider = "sortOrder")
@@ -413,12 +413,14 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void queryOrderByArray(String sortOrder) throws Exception {
         String query = String.format("SELECT * FROM r ORDER BY r.propArray %s", sortOrder);
 
-        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, 3);
+        int pageSize = 3;
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, pageSize);
         List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
 
-        // If order by item is array, we can not get a predictable ordering, only check it always return consistent order
+        // If order by item type is array (for exampel [1, 2]), we can not get a predictable ordering, only check it always return consistent order
+        // and also continuation token is not supported
         assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
-            .containsExactlyElementsOf(results2.stream().map(r -> r.getResourceId()).collect(Collectors.toList()));
+            .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT, dataProvider = "sortOrder")
@@ -428,7 +430,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, 3);
         List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
 
-        // If order by item is object, we can not get a predictable ordering, only check it always return with consistent order
+        // If order by item type is object (for example {"prop": "value"}, we can not get a predictable ordering, only check it always return with consistent order
+        // and also continuation token is not supported
         assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
             .containsExactlyElementsOf(results2.stream().map(r -> r.getResourceId()).collect(Collectors.toList()));
     }

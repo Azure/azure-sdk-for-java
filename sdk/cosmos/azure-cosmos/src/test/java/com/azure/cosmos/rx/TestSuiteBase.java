@@ -93,7 +93,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
-    protected static final int TIMEOUT = 400000;
+    protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;

@@ -5,16 +5,12 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.routing.MurmurHash3_128;
 import com.azure.cosmos.implementation.routing.UInt128;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ValueNode;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +18,6 @@ import java.util.Map;
 public final class DistinctHash {
 
     private static final UInt128 RootHashSeed = new UInt128(0xbfc2359eafc0e2b7L, 0x8846e00284c4cf1fL);
-    private static final ObjectMapper OBJECT_MAPPER =
-        new ObjectMapper()
-            .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
-            .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 
     private static class HashSeeds
     {
@@ -53,7 +45,10 @@ public final class DistinctHash {
             return MurmurHash3_128.hash128(HashSeeds.Null, seed);
         }
         if (resource instanceof JsonSerializable) {
-            return getHashFromJsonSerializable((JsonSerializable) resource);
+            return getHashFromJsonSerializable((JsonSerializable) resource, seed);
+        }
+        if (resource instanceof List) {
+            return getHashFromList((List<Object>) resource, seed);
         }
         if (resource instanceof Boolean) {
             return (Boolean)resource ? MurmurHash3_128.hash128(HashSeeds.True, seed) : MurmurHash3_128.hash128(HashSeeds.False, seed);
@@ -74,31 +69,22 @@ public final class DistinctHash {
             UInt128 hash = MurmurHash3_128.hash128(HashSeeds.String, seed);
             return MurmurHash3_128.hash128(resource, hash);
         }
+        if (resource instanceof ValueNode) {
+            return getHash(JsonSerializable.getValue((JsonNode) resource));
+        }
         if (resource instanceof ArrayNode) {
             return getHashFromArrayNode((ArrayNode) resource, seed);
         }
         if (resource instanceof ObjectNode) {
             return getHashFromObjectNode((ObjectNode) resource, seed);
         }
-        if (resource instanceof JsonNode) {
-            return getHash(JsonSerializable.getValue((JsonNode) resource), seed);
-        }
-
-        if (resource instanceof List) {
-            return getHashFromList((List<Object>) resource);
-        }
-
-        if (resource instanceof JsonSerializable) {
-            return getHashFromJsonSerializable((JsonSerializable) resource);
-        }
 
         throw new IllegalArgumentException(String.format("Unexpected type: %s", resource.getClass().toString()));
     }
 
-    private static UInt128 getHashFromJsonSerializable(JsonSerializable resource) {
-        final ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(resource, OBJECT_MAPPER);
-        final byte[] bytes = byteBuffer.array();
-        return MurmurHash3_128.hash128(bytes, bytes.length);
+    private static UInt128 getHashFromJsonSerializable(JsonSerializable resource, UInt128 seed) throws IOException {
+        resource.populatePropertyBag();
+        return getHash(resource.getPropertyBag(), seed);
     }
 
     private static UInt128 getHashFromArrayNode(ArrayNode arrayNode, UInt128 seed) throws IOException {
@@ -134,17 +120,13 @@ public final class DistinctHash {
         return hash;
     }
 
-    private static UInt128 getHashFromList(List<Object> resource) {
-        UInt128 hash = HashSeeds.Array;
-        for (Object obj : resource) {
-            if (obj instanceof JsonSerializable) {
-                byte[] bytes = hash.toByteBuffer().array();
-                if (bytes.length == 0) {
-                    throw new IllegalStateException("Failed to hash!");
-                }
-                hash = MurmurHash3_128.hash128(bytes, bytes.length,
-                                               getHashFromJsonSerializable((JsonSerializable) obj));
-            }
+    private static UInt128 getHashFromList(List<Object> resource, UInt128 seed) throws IOException {
+        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Array, seed);
+
+        for (int i = 0; i < resource.size(); i++) {
+            // index matters
+            UInt128 arrayItemSeed = HashSeeds.ArrayIndex.add(i);
+            hash = MurmurHash3_128.hash128(hash, getHash(resource.get(i), arrayItemSeed));
         }
         return hash;
     }

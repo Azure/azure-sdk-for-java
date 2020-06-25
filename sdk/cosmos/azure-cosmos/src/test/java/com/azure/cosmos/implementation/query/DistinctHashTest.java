@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -105,6 +107,45 @@ public class DistinctHashTest {
         UInt128 hash3 = DistinctHash.getHash(mapper.readValue(jsonString3, ObjectNode.class));
 
         assertThat(hash1.equals(hash2)).isTrue(); // the sequence of the key does not change the hash
+        assertThat(hash1.equals(hash3)).isFalse();
+    }
+
+    @Test(groups = {"unit"})
+    public void TestHashForList() throws IOException {
+        List<String> list1 = new ArrayList<>();
+        list1.add("string1");
+        list1.add("string2");
+
+        List<String> list2 = new ArrayList<>();
+        list2.add("string1");
+        list2.add("string2");
+
+        List<String> list3 = new ArrayList<>();
+        list3.add("string2");
+        list3.add("string1");
+
+        UInt128 hash1 = DistinctHash.getHash(list1);
+        UInt128 hash2 = DistinctHash.getHash(list2);
+        UInt128 hash3 = DistinctHash.getHash(list3);
+
+        assertThat(hash1.equals(hash2)).isTrue();
+        assertThat(hash1.equals(hash3)).isFalse();
+    }
+
+    @Test(groups = {"unit"})
+    public void TestHashForJsonSeriables() throws IOException {
+        String queryItemString = "{\"item\":10}";
+        String queryItemString2 = "{\"item\":20}";
+
+        QueryItem item1 = new QueryItem(queryItemString);
+        QueryItem item2 = new QueryItem(queryItemString);
+        QueryItem item3 = new QueryItem(queryItemString2);
+
+        UInt128 hash1 = DistinctHash.getHash(item1);
+        UInt128 hash2 = DistinctHash.getHash(item2);
+        UInt128 hash3 = DistinctHash.getHash(item3);
+
+        assertThat(hash1.equals(hash2)).isTrue();
         assertThat(hash1.equals(hash3)).isFalse();
     }
 }
