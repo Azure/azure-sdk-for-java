@@ -445,6 +445,11 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
+  files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
+  <suppress checks="ExternalDependencyExposed" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
