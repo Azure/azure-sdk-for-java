@@ -57,14 +57,20 @@ public final class TestHelpers {
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
-        return new PointGeometry(new GeometryPosition(longitude, latitude),
-            null, Collections.singletonMap("crs", new HashMap<String, Object>() {
-                {
-                    put("type", "name");
-                    put("properties", Collections.singletonMap("name", "EPSG:4326"));
-                }}));
+        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+            {
+                put("type", "name");
+                put("properties", Collections.singletonMap("name", "EPSG:4326"));
+            }
+        }));
     }
 
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+    }
     /**
      * Assert whether two objects are equal.
      *
@@ -293,8 +299,6 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
-        ObjectMapper MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
         try {
             return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
         } catch (IOException e) {
