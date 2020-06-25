@@ -230,7 +230,7 @@ public class CosmosAsyncContainer {
                                    item,
                                    requestOptions,
                                    true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializerWithoutDecryption()))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -271,7 +271,7 @@ public class CosmosAsyncContainer {
                    .upsertDocument(this.getLink(), item,
                        ModelBridgeInternal.toRequestOptions(options),
                                    true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializerWithoutDecryption()))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -507,7 +507,7 @@ public class CosmosAsyncContainer {
         return this.getDatabase()
                    .getDocClientWrapper()
                    .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializerWithoutDecryption()))
+                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
                    .single();
     }
 
@@ -716,9 +716,5 @@ public class CosmosAsyncContainer {
 
     ItemDeserializer getItemDeserializer() {
         return getDatabase().getDocClientWrapper().getItemDeserializer();
-    }
-
-    ItemDeserializer getItemDeserializerWithoutDecryption() {
-        return getDatabase().getDocClientWrapper().getItemDeserializerWithoutDecryption();
     }
 }
