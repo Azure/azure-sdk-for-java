@@ -226,7 +226,7 @@ public class TokenCacheTests {
             .subscribe();
 
         latch.await(20, TimeUnit.SECONDS);
-        Assertions.assertEquals(2 , refreshes.get());
+        Assertions.assertEquals(2, refreshes.get());
         Assertions.assertEquals(0, latch.getCount());
     }
 
