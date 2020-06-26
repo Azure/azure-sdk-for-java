@@ -8,8 +8,11 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Skills.Util.ShaperSkill")
 @JsonFlatten
 @Immutable
+<<<<<<< HEAD
 public class ShaperSkill extends SearchIndexerSkill {
     /** Creates an instance of ShaperSkill class. */
     @JsonCreator
@@ -38,3 +42,6 @@ public class ShaperSkill extends SearchIndexerSkill {
         super.validate();
     }
 }
+=======
+public class ShaperSkill extends SearchIndexerSkill {}
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487

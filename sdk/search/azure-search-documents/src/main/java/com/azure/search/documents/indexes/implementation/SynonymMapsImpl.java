@@ -142,6 +142,7 @@ public final class SynonymMapsImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -158,6 +159,8 @@ public final class SynonymMapsImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -196,6 +199,7 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String synonymMapName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -212,6 +216,13 @@ public final class SynonymMapsImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.delete(
                 this.client.getEndpoint(),
@@ -238,6 +249,7 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> getWithResponseAsync(
             String synonymMapName, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -254,6 +266,13 @@ public final class SynonymMapsImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.get(
                 this.client.getEndpoint(),
@@ -279,6 +298,7 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSynonymMapsResult>> listWithResponseAsync(
             String select, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -292,6 +312,13 @@ public final class SynonymMapsImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.list(
                 this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept, context);
@@ -311,6 +338,7 @@ public final class SynonymMapsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SynonymMap>> createWithResponseAsync(
             SynonymMap synonymMap, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -324,6 +352,8 @@ public final class SynonymMapsImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

@@ -161,6 +161,7 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> createWithResponseAsync(
             SearchIndex index, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -179,6 +180,13 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.create(
                 this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, index, context);
@@ -199,6 +207,7 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SearchIndex>> listSinglePageAsync(
             String select, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -212,6 +221,13 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.list(
                         this.client.getEndpoint(),
@@ -260,6 +276,7 @@ public final class IndexesImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -276,6 +293,8 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -317,6 +336,7 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String indexName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -333,6 +353,13 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.delete(
                 this.client.getEndpoint(),
@@ -359,6 +386,7 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndex>> getWithResponseAsync(
             String indexName, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -375,6 +403,13 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.get(
                 this.client.getEndpoint(), indexName, xMsClientRequestId, this.client.getApiVersion(), accept, context);
@@ -394,6 +429,7 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GetIndexStatisticsResult>> getStatisticsWithResponseAsync(
             String indexName, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -410,6 +446,13 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
+=======
+        final String accept = "application/json; odata.metadata=minimal";
+        UUID xMsClientRequestIdInternal = null;
+        if (requestOptions != null) {
+            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
+        }
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.getStatistics(
                 this.client.getEndpoint(), indexName, xMsClientRequestId, this.client.getApiVersion(), accept, context);
@@ -430,6 +473,7 @@ public final class IndexesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeResult>> analyzeWithResponseAsync(
             String indexName, AnalyzeRequest request, RequestOptions requestOptions, Context context) {
+<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -446,6 +490,8 @@ public final class IndexesImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

@@ -7,7 +7,10 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonCreator;
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutocompleteItem model. */

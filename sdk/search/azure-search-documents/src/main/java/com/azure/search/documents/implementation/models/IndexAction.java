@@ -27,6 +27,7 @@ public final class IndexAction {
      * Represents an index action that operates on a document.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+<<<<<<< HEAD
 
     /**
      * Get the actionType property: The operation to perform on a document in an indexing batch.
@@ -48,6 +49,51 @@ public final class IndexAction {
         return this;
     }
 
+    /**
+     * Get the additionalProperties property: Represents an index action that operates on a document.
+=======
+
+    /**
+     * Get the actionType property: The operation to perform on a document in an indexing batch.
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
+     *
+     * @return the actionType value.
+     */
+    public IndexActionType getActionType() {
+        return this.actionType;
+    }
+
+    /**
+<<<<<<< HEAD
+     * Set the additionalProperties property: Represents an index action that operates on a document.
+=======
+     * Set the actionType property: The operation to perform on a document in an indexing batch.
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
+     *
+     * @param actionType the actionType value to set.
+     * @return the IndexAction object itself.
+     */
+    public IndexAction setActionType(IndexActionType actionType) {
+        this.actionType = actionType;
+        return this;
+    }
+
+<<<<<<< HEAD
+    @JsonAnySetter
+    void setAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
+=======
     /**
      * Get the additionalProperties property: Represents an index action that operates on a document.
      *
@@ -76,11 +122,5 @@ public final class IndexAction {
         }
         additionalProperties.put(key, value);
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
 }

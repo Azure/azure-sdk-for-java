@@ -8,7 +8,10 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonCreator;
+=======
+>>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
