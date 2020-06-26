@@ -40,7 +40,7 @@ public final class DistinctHash {
     }
 
     @SuppressWarnings("unchecked")
-    public static UInt128 getHash(Object resource, UInt128 seed) throws IOException {
+    private static UInt128 getHash(Object resource, UInt128 seed) throws IOException {
         if (resource == null) {
             return MurmurHash3_128.hash128(HashSeeds.Null, seed);
         }
