@@ -25,8 +25,10 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -174,10 +176,14 @@ class ServiceBusManagementSerializerTest {
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueDescription));
 
+
+        final Map<String, String> titleMap = new HashMap<>();
+        titleMap.put("", "Queues");
+        titleMap.put("type", "text");
         final List<QueueDescriptionEntry> entries = Arrays.asList(entry1, entry2, entry3);
         final QueueDescriptionFeed expected = new QueueDescriptionFeed()
             .setId("feed-id")
-            .setTitle("Queues")
+            .setTitle(titleMap)
             .setUpdated(OffsetDateTime.parse("2020-12-05T07:17:21Z"))
             .setLink(responseLinks)
             .setEntry(entries);
