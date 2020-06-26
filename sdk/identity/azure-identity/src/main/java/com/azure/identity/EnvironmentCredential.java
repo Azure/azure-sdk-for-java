@@ -12,6 +12,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A credential provider that provides token credentials based on environment variables.  The environment variables
  * expected are:
@@ -56,6 +59,7 @@ public class EnvironmentCredential implements TokenCredential {
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
+        logAvailableEnvironmentVariables(clientId, tenantId, clientSecret, certPath, username, password);
         if (verifyNotNull(clientId)) {
             if (verifyNotNull(tenantId, clientSecret)) {
                 logger.info("Azure Identity => EnvironmentCredential invoking ClientSecretCredential");
@@ -100,5 +104,29 @@ public class EnvironmentCredential implements TokenCredential {
             }
         }
         return true;
+    }
+
+    private void logAvailableEnvironmentVariables(String clientId, String tenantId, String clientSecret,
+                                                  String certPath, String username, String password) {
+        List<String> envVars = new ArrayList<>();
+        if (clientId != null) {
+            envVars.add(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        }
+        if (tenantId != null) {
+            envVars.add(Configuration.PROPERTY_AZURE_TENANT_ID);
+        }
+        if (clientSecret != null) {
+            envVars.add(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+        }
+        if (certPath != null) {
+            envVars.add(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+        }
+        if (username != null) {
+            envVars.add(Configuration.PROPERTY_AZURE_USERNAME);
+        }
+        if (password != null) {
+            envVars.add(Configuration.PROPERTY_AZURE_PASSWORD);
+        }
+        logger.verbose("Azure Identity => Found the following environment variables: {}", String.join(", ", envVars));
     }
 }
