@@ -11,8 +11,12 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-if ((Test-Path $ArtifactDirectory) -ne $true) { throw "Artifact directory does not exist." }
-if ((Test-Path $GPGExecutablePath) -ne $true) { throw "GPG executable path does not exist." }
+# The Resolve-Path will normalize the path separators and throw if they don't exist.
+# This is necessary because, the yml passes in ${{parameters.BuildToolsPath}}/ which
+# on Windows means <drive>:\<BuildToolsPath>/<whatever>/<else>. Maven doesn't always
+# behave well with different separators in the path.
+$ArtifactDirectory = Resolve-Path $ArtifactDirectory
+$GPGExecutablePath = Resolve-Path $GPGExecutablePath
 
 # This class is the top level representation of a Maven package
 # for this script. A MavenPackageDetail maps to one physical POM
@@ -50,7 +54,7 @@ function Get-AssociatedArtifacts([MavenPackageDetail]$PackageDetail) {
   Write-Information "Detecting associated artifacts for $($PackageDetail.FullyQualifiedName)"
   $associtedArtifactFileFilter = "$($PackageDetail.ArtifactID)-$($PackageDetail.Version)*"
   Write-Information "Search filter is: $associtedArtifactFileFilter (jar, aar and pom files only)"
-  
+
   $associatedArtifactFiles = @(Get-ChildItem -Path $PackageDetail.File.Directory -Filter $associtedArtifactFileFilter | Where-Object { $_ -match "^*\.(jar|pom|aar|module)$" })
   Write-Information "Found $($associatedArtifactFiles.Length) possible artifacts:"
 
@@ -69,7 +73,7 @@ function Get-AssociatedArtifacts([MavenPackageDetail]$PackageDetail) {
     $artifactPrefix = "$($PackageDetail.ArtifactID)-$($PackageDetail.Version)-"
     if ($associatedArtifact.File.BaseName.Contains($artifactPrefix)) {
       $associatedArtifact.Classifier = $associatedArtifact.File.BaseName.Replace($artifactPrefix, "")
-    } 
+    }
     Write-Information "Classifier is: $($associatedArtifact.Classifier)"
 
     $associatedArtifacts += $associatedArtifact
@@ -122,7 +126,7 @@ function Get-MavenPackageDetails([string]$ArtifactDirectory) {
     Write-Information "Processing POM file: $pomFile"
     [xml]$pomDocument = Get-Content $pomFile
 
-    $packageDetail.GroupID = $pomDocument.project.groupId    
+    $packageDetail.GroupID = $pomDocument.project.groupId
     Write-Information "Group ID is: $($packageDetail.GroupID)"
 
     $packageDetail.ArtifactID = $pomDocument.project.artifactId
@@ -235,16 +239,16 @@ foreach ($packageDetail in $packageDetails) {
     $commaDelimitedFileNames = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedFileNames += ",$($_.File.FullName)" }
     $filesOption = "-Dfiles=$($commaDelimitedFileNames.Substring(1))"
-    
+
     $commaDelimitedClassifiers = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedClassifiers += ",$($_.Classifier)" }
     $classifiersOption = "-Dclassifiers=$($commaDelimitedClassifiers.Substring(1))"
-    
+
     $commaDelimitedTypes = ""
     $additionalAssociatedArtifacts | ForEach-Object { $commaDelimitedTypes += ",$($_.Type)" }
     $typesOption = "-Dtypes=$($commaDelimitedTypes.Substring(1))"
   }
-  
+
   Write-Information "Files Option is: $filesOption"
   Write-Information "Classifiers Option is: $classifiersOption"
   Write-Information "Types Option is: $typesOption"
@@ -271,13 +275,13 @@ foreach ($packageDetail in $packageDetails) {
   elseif ($RepositoryUrl -like "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
     Write-Information "Signing and deploying package to $localRepositoryDirectoryUri"
     mvn gpg:sign-and-deploy-file "--batch-mode" "$pomOption" "$fileOption" "$javadocOption" "$sourcesOption" "$filesOption" $classifiersOption "$typesOption" "$urlOption" "$gpgexeOption" "-DrepositoryId=target-repo" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
-  
+
     Write-Information "Staging package to Maven Central"
     mvn org.sonatype.plugins:nexus-staging-maven-plugin:deploy-staged-repository "--batch-mode" "-DnexusUrl=https://oss.sonatype.org" "$repositoryDirectoryOption" "$stagingProfileIdOption" "$stagingDescriptionOption" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
 
     Write-Information "Reading staging properties."
     $stagedRepositoryProperties = ConvertFrom-StringData (Get-Content "$localRepositoryDirectory\$($packageDetails.SonaTypeProfileID).properties" -Raw)
-    
+
     $stagedRepositoryId = $stagedRepositoryProperties["stagingRepository.id"]
     Write-Information "Staging Repository ID is: $stagedRepositoryId"
 
@@ -289,7 +293,7 @@ foreach ($packageDetail in $packageDetails) {
     }
     else {
       Write-Information "Releasing staging repostiory $stagedRepositoryId"
-      mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"  
+      mvn org.sonatype.plugins:nexus-staging-maven-plugin:rc-release "-DstagingRepositoryId=$stagedRepositoryId" "-DnexusUrl=https://oss.sonatype.org" "-DrepositoryId=target-repo" "-DserverId=target-repo" "-Drepo.username=$RepositoryUsername" "-Drepo.password=""$RepositoryPassword""" "--settings=$PSScriptRoot\..\maven.publish.settings.xml"
     }
   }
   else {
