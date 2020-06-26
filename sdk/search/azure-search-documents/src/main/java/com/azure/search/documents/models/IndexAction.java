@@ -24,11 +24,6 @@ public final class IndexAction<T> {
     @JsonIgnore
     private Map<String, Object> properties;
 
-//    @JsonAnyGetter
-//    public Map<String, Object> getParamMap() {
-//        return properties;
-//    }
-
     /*
      * The operation to perform on a document in an indexing batch. Possible
      * values include: 'Upload', 'Merge', 'MergeOrUpload', 'Delete'
