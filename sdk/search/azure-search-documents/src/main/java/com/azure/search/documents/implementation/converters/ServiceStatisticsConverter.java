@@ -3,9 +3,9 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.ServiceCounters;
-import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
+import com.azure.search.documents.indexes.models.SearchServiceLimits;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.ServiceStatistics} and
@@ -21,18 +21,17 @@ public final class ServiceStatisticsConverter {
             return null;
         }
 
-        ServiceCounters counters = null;
+        SearchServiceCounters counters = null;
         if (obj.getCounters() != null) {
             counters = ServiceCountersConverter.map(obj.getCounters());
         }
 
-        ServiceLimits limits = null;
+        SearchServiceLimits limits = null;
         if (obj.getLimits() != null) {
             limits = ServiceLimitsConverter.map(obj.getLimits());
         }
 
-        SearchServiceStatistics searchServiceStatistics = new SearchServiceStatistics(counters, limits);
-        return searchServiceStatistics;
+        return new SearchServiceStatistics(counters, limits);
     }
 
     /**

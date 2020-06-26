@@ -21,10 +21,8 @@ public final class FieldMappingFunctionConverter {
         if (obj == null) {
             return null;
         }
-        FieldMappingFunction fieldMappingFunction = new FieldMappingFunction();
+        FieldMappingFunction fieldMappingFunction = new FieldMappingFunction(obj.getName());
 
-        String name = obj.getName();
-        fieldMappingFunction.setName(name);
 
         if (obj.getParameters() != null) {
             Map<String, Object> parameters =

@@ -134,18 +134,12 @@ There are several types of operations that can be executed against the service:
 
 Create Index using `searchIndexClient` instantiated in [Create a SearchIndexClient](#create-a-searchindexclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L127 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L116-L121 -->
 ```java
-SearchIndex newIndex = new SearchIndex()
-    .setName("index_name")
-    .setFields(
-        Arrays.asList(new SearchField()
-                .setName("Name")
-                .setType(SearchFieldDataType.STRING)
-                .setKey(Boolean.TRUE),
-            new SearchField()
-                .setName("Cuisine")
-                .setType(SearchFieldDataType.STRING)));
+SearchIndex newIndex = new SearchIndex("index_name", Arrays.asList(
+    new SearchField("Name", SearchFieldDataType.STRING)
+        .setKey(Boolean.TRUE),
+    new SearchField("Cuisine", SearchFieldDataType.STRING)));
 // Create index.
 searchIndexClient.createIndex(newIndex);
 ```
@@ -153,7 +147,7 @@ searchIndexClient.createIndex(newIndex);
 
 Upload hotel document to Search Index using `searchClient` instantiated [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L131-L136 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L125-L130 -->
 ```java
 List<Hotel> hotels = new ArrayList<>();
 hotels.add(new Hotel().setHotelId("100"));
@@ -167,7 +161,7 @@ searchClient.uploadDocuments(hotels);
 
 Search hotel using keyword using `searchClient` instantiated in [Create a SearchClient](#create-a-searchclient)
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L140-L150 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L134-L144 -->
 ```java
 // Perform a text-based search
 for (SearchResult result : searchClient.search("luxury hotel",

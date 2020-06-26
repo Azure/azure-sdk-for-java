@@ -18,11 +18,7 @@ public final class TagScoringParametersConverter {
         if (obj == null) {
             return null;
         }
-        TagScoringParameters tagScoringParameters = new TagScoringParameters();
-
-        String tagsParameter = obj.getTagsParameter();
-        tagScoringParameters.setTagsParameter(tagsParameter);
-        return tagScoringParameters;
+        return new TagScoringParameters(obj.getTagsParameter());
     }
 
     /**

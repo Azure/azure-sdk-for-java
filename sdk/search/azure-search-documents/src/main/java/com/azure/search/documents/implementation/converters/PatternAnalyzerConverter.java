@@ -23,10 +23,7 @@ public final class PatternAnalyzerConverter {
         if (obj == null) {
             return null;
         }
-        PatternAnalyzer patternAnalyzer = new PatternAnalyzer();
-
-        String name = obj.getName();
-        patternAnalyzer.setName(name);
+        PatternAnalyzer patternAnalyzer = new PatternAnalyzer(obj.getName());
 
         Boolean lowerCaseTerms = obj.isLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);

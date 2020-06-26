@@ -18,13 +18,11 @@ public final class SuggestResultConverter {
         if (obj == null) {
             return null;
         }
-        SuggestResult suggestResult = new SuggestResult();
+        SuggestResult suggestResult = new SuggestResult(obj.getText());
 
         SearchDocument additionalProperties = new SearchDocument(obj.getAdditionalProperties());
         PrivateFieldAccessHelper.set(suggestResult, "additionalProperties", additionalProperties);
 
-        String text = obj.getText();
-        PrivateFieldAccessHelper.set(suggestResult, "text", text);
         return suggestResult;
     }
 

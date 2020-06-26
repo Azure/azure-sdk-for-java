@@ -22,10 +22,7 @@ public final class SearchResultConverter {
         if (obj == null) {
             return null;
         }
-        SearchResult searchResult = new SearchResult();
-
-        double score = obj.getScore();
-        PrivateFieldAccessHelper.set(searchResult, "score", score);
+        SearchResult searchResult = new SearchResult(obj.getScore());
 
         if (obj.getHighlights() != null) {
             Map<String, List<String>> highlights =

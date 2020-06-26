@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 
 /**
@@ -19,20 +18,8 @@ public final class AnalyzedTokenInfoConverter {
         if (obj == null) {
             return null;
         }
-        AnalyzedTokenInfo analyzedTokenInfo = new AnalyzedTokenInfo();
-
-        int endOffset = obj.getEndOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", endOffset);
-
-        int startOffset = obj.getStartOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "startOffset", startOffset);
-
-        int position = obj.getPosition();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "position", position);
-
-        String token = obj.getToken();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "token", token);
-        return analyzedTokenInfo;
+        return new AnalyzedTokenInfo(obj.getToken(), obj.getStartOffset(),
+            obj.getEndOffset(), obj.getPosition());
     }
 
     /**

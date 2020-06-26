@@ -23,19 +23,12 @@ public final class SplitSkillConverter {
         if (obj == null) {
             return null;
         }
-        SplitSkill splitSkill = new SplitSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setInputs(inputs);
-        }
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        SplitSkill splitSkill = new SplitSkill(inputs, outputs);
 
         String name = obj.getName();
         splitSkill.setName(name);

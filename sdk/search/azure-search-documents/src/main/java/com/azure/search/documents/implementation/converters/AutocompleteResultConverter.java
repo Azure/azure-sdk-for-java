@@ -23,16 +23,14 @@ public final class AutocompleteResultConverter {
         if (obj == null) {
             return null;
         }
-        AutocompleteResult autocompleteResult = new AutocompleteResult();
+
+        List<AutocompleteItem> results =
+            obj.getResults().stream().map(AutocompleteItemConverter::map).collect(Collectors.toList());
+        AutocompleteResult autocompleteResult = new AutocompleteResult(results);
 
         Double coverage = obj.getCoverage();
         PrivateFieldAccessHelper.set(autocompleteResult, "coverage", coverage);
 
-        if (obj.getResults() != null) {
-            List<AutocompleteItem> results =
-                obj.getResults().stream().map(AutocompleteItemConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(autocompleteResult, "results", results);
-        }
         return autocompleteResult;
     }
 

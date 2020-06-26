@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents various service level limits.
  */
 @Fluent
-public final class ServiceLimits {
+public final class SearchServiceLimits {
     /*
      * The maximum allowed fields per index.
      */
@@ -56,7 +56,7 @@ public final class ServiceLimits {
      * @param maxFieldsPerIndex the maxFieldsPerIndex value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits setMaxFieldsPerIndex(Integer maxFieldsPerIndex) {
+    public SearchServiceLimits setMaxFieldsPerIndex(Integer maxFieldsPerIndex) {
         this.maxFieldsPerIndex = maxFieldsPerIndex;
         return this;
     }
@@ -81,7 +81,7 @@ public final class ServiceLimits {
      * value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits setMaxFieldNestingDepthPerIndex(Integer maxFieldNestingDepthPerIndex) {
+    public SearchServiceLimits setMaxFieldNestingDepthPerIndex(Integer maxFieldNestingDepthPerIndex) {
         this.maxFieldNestingDepthPerIndex = maxFieldNestingDepthPerIndex;
         return this;
     }
@@ -104,7 +104,7 @@ public final class ServiceLimits {
      * maxComplexCollectionFieldsPerIndex value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits setMaxComplexCollectionFieldsPerIndex(Integer maxComplexCollectionFieldsPerIndex) {
+    public SearchServiceLimits setMaxComplexCollectionFieldsPerIndex(Integer maxComplexCollectionFieldsPerIndex) {
         this.maxComplexCollectionFieldsPerIndex = maxComplexCollectionFieldsPerIndex;
         return this;
     }
@@ -127,7 +127,7 @@ public final class ServiceLimits {
      * maxComplexObjectsInCollectionsPerDocument value to set.
      * @return the ServiceLimits object itself.
      */
-    public ServiceLimits setMaxComplexObjectsInCollectionsPerDocument(
+    public SearchServiceLimits setMaxComplexObjectsInCollectionsPerDocument(
         Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
         return this;

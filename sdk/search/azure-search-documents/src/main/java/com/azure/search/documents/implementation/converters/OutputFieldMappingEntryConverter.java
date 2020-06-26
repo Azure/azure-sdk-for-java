@@ -18,13 +18,11 @@ public final class OutputFieldMappingEntryConverter {
         if (obj == null) {
             return null;
         }
-        OutputFieldMappingEntry outputFieldMappingEntry = new OutputFieldMappingEntry();
+        OutputFieldMappingEntry outputFieldMappingEntry = new OutputFieldMappingEntry(obj.getName());
 
         String targetName = obj.getTargetName();
         outputFieldMappingEntry.setTargetName(targetName);
 
-        String name = obj.getName();
-        outputFieldMappingEntry.setName(name);
         return outputFieldMappingEntry;
     }
 

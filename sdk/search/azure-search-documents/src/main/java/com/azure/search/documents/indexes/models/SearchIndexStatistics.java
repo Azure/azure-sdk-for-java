@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -23,6 +24,22 @@ public final class SearchIndexStatistics {
      */
     @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private long storageSize;
+
+    /**
+     * Constructor of {@link SearchIndexStatistics}
+     * @param documentCount The number of documents in the index.
+     * @param storageSize The amount of storage in bytes consumed by the index.
+     */
+    @JsonCreator
+    public SearchIndexStatistics(
+        @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            long documentCount,
+        @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
+            long storageSize) {
+        this.documentCount = documentCount;
+        this.storageSize = storageSize;
+    }
+
 
     /**
      * Get the documentCount property: The number of documents in the index.

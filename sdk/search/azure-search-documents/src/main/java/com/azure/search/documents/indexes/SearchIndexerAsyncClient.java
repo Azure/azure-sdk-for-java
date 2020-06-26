@@ -72,6 +72,7 @@ public class SearchIndexerAsyncClient {
 
         this.restClient = new SearchServiceClientImplBuilder()
             .endpoint(endpoint)
+          //  .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
             .buildClient();
     }
@@ -128,6 +129,9 @@ public class SearchIndexerAsyncClient {
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
+        if (dataSource.getConnectionString() == null) {
+            dataSource.setConnectionString("<unchanged>");
+        }
         try {
             return restClient
                 .getDataSources()

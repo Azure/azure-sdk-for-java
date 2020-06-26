@@ -24,19 +24,14 @@ public final class KeyPhraseExtractionSkillConverter {
         if (obj == null) {
             return null;
         }
-        KeyPhraseExtractionSkill keyPhraseExtractionSkill = new KeyPhraseExtractionSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            keyPhraseExtractionSkill.setOutputs(outputs);
-        }
+        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
+            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            keyPhraseExtractionSkill.setInputs(inputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
+        KeyPhraseExtractionSkill keyPhraseExtractionSkill = new KeyPhraseExtractionSkill(inputs, outputs);
 
         String name = obj.getName();
         keyPhraseExtractionSkill.setName(name);
