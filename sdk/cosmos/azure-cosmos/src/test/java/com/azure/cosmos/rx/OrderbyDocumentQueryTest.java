@@ -427,13 +427,14 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void queryOrderByObject(String sortOrder) throws Exception {
         String query = String.format("SELECT * FROM r ORDER BY r.propObject %s", sortOrder);
 
-        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, 3);
+        int pageSize = 3;
+        List<InternalObjectNode> results1 = this.queryWithContinuationTokens(query, pageSize);
         List<InternalObjectNode> results2 = this.queryWithContinuationTokens(query, this.createdDocuments.size());
 
         // If order by item type is object (for example {"prop": "value"}, we can not get a predictable ordering, only check it always return with consistent order
         // and also continuation token is not supported
         assertThat(results1.stream().map(r -> r.getResourceId()).collect(Collectors.toList()))
-            .containsExactlyElementsOf(results2.stream().map(r -> r.getResourceId()).collect(Collectors.toList()));
+            .containsExactlyElementsOf(results2.stream().limit(pageSize).map(r -> r.getResourceId()).collect(Collectors.toList()));
     }
 
     public InternalObjectNode createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps) {
