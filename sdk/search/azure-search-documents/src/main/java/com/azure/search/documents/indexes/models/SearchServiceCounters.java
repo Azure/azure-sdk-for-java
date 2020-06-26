@@ -85,35 +85,12 @@ public final class SearchServiceCounters {
     }
 
     /**
-     * Set the documentCounter property: Total number of documents across all
-     * indexes in the service.
-     *
-     * @param documentCounter the documentCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public SearchServiceCounters setDocumentCounter(ResourceCounter documentCounter) {
-        this.documentCounter = documentCounter;
-        return this;
-    }
-
-    /**
      * Get the indexCounter property: Total number of indexes.
      *
      * @return the indexCounter value.
      */
     public ResourceCounter getIndexCounter() {
         return this.indexCounter;
-    }
-
-    /**
-     * Set the indexCounter property: Total number of indexes.
-     *
-     * @param indexCounter the indexCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public SearchServiceCounters setIndexCounter(ResourceCounter indexCounter) {
-        this.indexCounter = indexCounter;
-        return this;
     }
 
     /**
@@ -126,34 +103,12 @@ public final class SearchServiceCounters {
     }
 
     /**
-     * Set the indexerCounter property: Total number of indexers.
-     *
-     * @param indexerCounter the indexerCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public SearchServiceCounters setIndexerCounter(ResourceCounter indexerCounter) {
-        this.indexerCounter = indexerCounter;
-        return this;
-    }
-
-    /**
      * Get the dataSourceCounter property: Total number of data sources.
      *
      * @return the dataSourceCounter value.
      */
     public ResourceCounter getDataSourceCounter() {
         return this.dataSourceCounter;
-    }
-
-    /**
-     * Set the dataSourceCounter property: Total number of data sources.
-     *
-     * @param dataSourceCounter the dataSourceCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public SearchServiceCounters setDataSourceCounter(ResourceCounter dataSourceCounter) {
-        this.dataSourceCounter = dataSourceCounter;
-        return this;
     }
 
     /**
@@ -167,18 +122,6 @@ public final class SearchServiceCounters {
     }
 
     /**
-     * Set the storageSizeCounter property: Total size of used storage in
-     * bytes.
-     *
-     * @param storageSizeCounter the storageSizeCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public SearchServiceCounters setStorageSizeCounter(ResourceCounter storageSizeCounter) {
-        this.storageSizeCounter = storageSizeCounter;
-        return this;
-    }
-
-    /**
      * Get the synonymMapCounter property: Total number of synonym maps.
      *
      * @return the synonymMapCounter value.
@@ -187,14 +130,4 @@ public final class SearchServiceCounters {
         return this.synonymMapCounter;
     }
 
-    /**
-     * Set the synonymMapCounter property: Total number of synonym maps.
-     *
-     * @param synonymMapCounter the synonymMapCounter value to set.
-     * @return the ServiceCounters object itself.
-     */
-    public SearchServiceCounters setSynonymMapCounter(ResourceCounter synonymMapCounter) {
-        this.synonymMapCounter = synonymMapCounter;
-        return this;
-    }
 }
