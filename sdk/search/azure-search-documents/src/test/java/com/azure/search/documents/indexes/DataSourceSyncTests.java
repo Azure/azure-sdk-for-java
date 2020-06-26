@@ -150,7 +150,6 @@ public class DataSourceSyncTests extends SearchTestBase {
                 .setSoftDeleteColumnName("isDeleted"));
 
         SearchIndexerDataSourceConnection updatedActual = client.createOrUpdateDataSourceConnection(updatedExpected);
-        client.createOrUpdateDataSourceConnection(updatedActual);
 
         updatedExpected.setConnectionString(null); // Create doesn't return connection strings.
         TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
