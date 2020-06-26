@@ -201,6 +201,35 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendWithCredentials(MessagingEntityType entityType) {
         // Arrange
+        String clientId = System.getenv("AZURE_CLIENT_ID");
+        String domainName = System.getenv("AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME");
+        String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
+        String tenantId = System.getenv("AZURE_TENANT_ID");
+
+        if (domainName != null ) {
+            logger.info("Getting Builder using credentials with domainName.length : [{}] ", domainName.length());
+        } else {
+            logger.error("Getting Builder using credentials domainName is null.");
+        }
+
+        if (clientId != null ) {
+            logger.info("Getting Builder using credentials with clientId.length : [{}] ", clientId.length());
+        } else {
+            logger.error("Getting Builder using credentials clientId is null.");
+        }
+
+        if (clientSecret != null ) {
+            logger.info("Getting Builder using credentials with clientSecret.length :[{}]", clientSecret.length());
+        } else {
+            logger.error("Getting Builder using credentials clientSecret is null.");
+        }
+
+        if (tenantId != null ) {
+            logger.info("Getting Builder using credentials with tenantId.length : [{}]", tenantId.length());
+        } else {
+            logger.error("Getting Builder using credentials tenantId is null.");
+        }
+
         setSenderAndReceiver(entityType, 0, true);
 
         final String messageId = UUID.randomUUID().toString();
