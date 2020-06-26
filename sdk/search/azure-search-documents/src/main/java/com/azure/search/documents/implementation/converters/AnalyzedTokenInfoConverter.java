@@ -44,19 +44,9 @@ public final class AnalyzedTokenInfoConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo analyzedTokenInfo =
-            new com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo();
-
-        int endOffset = obj.getEndOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "endOffset", endOffset);
-
-        int startOffset = obj.getStartOffset();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "startOffset", startOffset);
-
-        int position = obj.getPosition();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "position", position);
-
-        String token = obj.getToken();
-        PrivateFieldAccessHelper.set(analyzedTokenInfo, "token", token);
+            new com.azure.search.documents.indexes.implementation.models.AnalyzedTokenInfo(obj.getToken(),
+                obj.getStartOffset(), obj.getEndOffset(), obj.getPosition());
+        analyzedTokenInfo.validate();
         return analyzedTokenInfo;
     }
 

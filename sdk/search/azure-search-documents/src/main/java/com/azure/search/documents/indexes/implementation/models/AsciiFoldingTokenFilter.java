@@ -7,20 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Converts alphabetic, numeric, and symbolic Unicode characters which are not
- * in the first 127 ASCII characters (the "Basic Latin" Unicode block) into
- * their ASCII equivalents, if such equivalents exist. This token filter is
- * implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The AsciiFoldingTokenFilter model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.AsciiFoldingTokenFilter")
+@JsonFlatten
 @Fluent
-public final class AsciiFoldingTokenFilter extends TokenFilter {
+public class AsciiFoldingTokenFilter extends TokenFilter {
     /*
      * A value indicating whether the original token will be kept. Default is
      * false.
@@ -28,9 +26,14 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     @JsonProperty(value = "preserveOriginal")
     private Boolean preserveOriginal;
 
+    /** Creates an instance of AsciiFoldingTokenFilter class. */
+    @JsonCreator
+    public AsciiFoldingTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
     /**
-     * Get the preserveOriginal property: A value indicating whether the
-     * original token will be kept. Default is false.
+     * Get the preserveOriginal property: A value indicating whether the original token will be kept. Default is false.
      *
      * @return the preserveOriginal value.
      */
@@ -39,8 +42,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the preserveOriginal property: A value indicating whether the
-     * original token will be kept. Default is false.
+     * Set the preserveOriginal property: A value indicating whether the original token will be kept. Default is false.
      *
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the AsciiFoldingTokenFilter object itself.
@@ -48,5 +50,15 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     public AsciiFoldingTokenFilter setPreserveOriginal(Boolean preserveOriginal) {
         this.preserveOriginal = preserveOriginal;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

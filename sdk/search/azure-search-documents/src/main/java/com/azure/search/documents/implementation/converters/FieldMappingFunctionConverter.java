@@ -44,10 +44,7 @@ public final class FieldMappingFunctionConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.FieldMappingFunction fieldMappingFunction =
-            new com.azure.search.documents.indexes.implementation.models.FieldMappingFunction();
-
-        String name = obj.getName();
-        fieldMappingFunction.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.FieldMappingFunction(obj.getName());
 
         if (obj.getParameters() != null) {
             Map<String, Object> parameters =
@@ -55,6 +52,7 @@ public final class FieldMappingFunctionConverter {
                     Map.Entry::getValue));
             fieldMappingFunction.setParameters(parameters);
         }
+        fieldMappingFunction.validate();
         return fieldMappingFunction;
     }
 

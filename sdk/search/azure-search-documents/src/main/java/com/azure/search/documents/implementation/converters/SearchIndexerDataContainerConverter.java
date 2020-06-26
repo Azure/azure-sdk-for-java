@@ -37,13 +37,11 @@ public final class SearchIndexerDataContainerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer searchIndexerDataContainer =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer();
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer(obj.getName());
 
         String query = obj.getQuery();
         searchIndexerDataContainer.setQuery(query);
 
-        String name = obj.getName();
-        searchIndexerDataContainer.setName(name);
         return searchIndexerDataContainer;
     }
 

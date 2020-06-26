@@ -41,14 +41,13 @@ public final class IndexDocumentsResultConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexDocumentsResult indexDocumentsResult =
-            new com.azure.search.documents.implementation.models.IndexDocumentsResult();
 
-        if (obj.getResults() != null) {
-            List<com.azure.search.documents.implementation.models.IndexingResult> results =
-                obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexDocumentsResult, "results", results);
-        }
+        List<com.azure.search.documents.implementation.models.IndexingResult> results = obj.getResults() == null
+            ? null : obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
+        com.azure.search.documents.implementation.models.IndexDocumentsResult indexDocumentsResult =
+            new com.azure.search.documents.implementation.models.IndexDocumentsResult(results);
+
+        indexDocumentsResult.validate();
         return indexDocumentsResult;
     }
 

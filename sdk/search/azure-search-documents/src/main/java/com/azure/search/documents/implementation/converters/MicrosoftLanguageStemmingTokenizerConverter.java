@@ -47,10 +47,8 @@ public final class MicrosoftLanguageStemmingTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer = new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageStemmingTokenizer.setName(name);
+        com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer microsoftLanguageStemmingTokenizer
+            = new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageStemmingTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageStemmingTokenizer.setMaxTokenLength(maxTokenLength);

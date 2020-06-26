@@ -45,15 +45,8 @@ public final class PatternCaptureTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter patternCaptureTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter();
-
-        String name = obj.getName();
-        patternCaptureTokenFilter.setName(name);
-
-        if (obj.getPatterns() != null) {
-            List<String> patterns = new ArrayList<>(obj.getPatterns());
-            patternCaptureTokenFilter.setPatterns(patterns);
-        }
+            new com.azure.search.documents.indexes.implementation.models.PatternCaptureTokenFilter(obj.getName(),
+                obj.getPatterns());
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
         patternCaptureTokenFilter.setPreserveOriginal(preserveOriginal);

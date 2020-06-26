@@ -44,23 +44,16 @@ public final class SearchResourceEncryptionKeyConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey searchResourceEncryptionKey =
-            new com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey();
-
-        String keyVersion = obj.getKeyVersion();
-        searchResourceEncryptionKey.setKeyVersion(keyVersion);
+            new com.azure.search.documents.indexes.implementation.models.SearchResourceEncryptionKey(obj.getKeyName(),
+                obj.getKeyVersion(), obj.getVaultUrl());
 
         AzureActiveDirectoryApplicationCredentials accessCredentials =
-            new AzureActiveDirectoryApplicationCredentials();
-        accessCredentials.setApplicationId(obj.getApplicationId());
+            new AzureActiveDirectoryApplicationCredentials(obj.getApplicationId());
         accessCredentials.setApplicationSecret(obj.getApplicationSecret());
+        accessCredentials.validate();
         searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
 
-
-        String keyName = obj.getKeyName();
-        searchResourceEncryptionKey.setKeyName(keyName);
-
-        String vaultUri = obj.getVaultUrl();
-        searchResourceEncryptionKey.setVaultUri(vaultUri);
+        searchResourceEncryptionKey.validate();
         return searchResourceEncryptionKey;
     }
 

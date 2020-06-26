@@ -36,13 +36,9 @@ public final class AutocompleteItemConverter {
             return null;
         }
         com.azure.search.documents.implementation.models.AutocompleteItem autocompleteItem =
-            new com.azure.search.documents.implementation.models.AutocompleteItem();
+            new com.azure.search.documents.implementation.models.AutocompleteItem(obj.getText(), obj.getQueryPlusText());
 
-        String text = obj.getText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "text", text);
-
-        String queryPlusText = obj.getQueryPlusText();
-        PrivateFieldAccessHelper.set(autocompleteItem, "queryPlusText", queryPlusText);
+        autocompleteItem.validate();
         return autocompleteItem;
     }
 

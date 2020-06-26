@@ -63,20 +63,16 @@ public final class OcrSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
+            obj.getOutputs() == null ? null
+                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
         com.azure.search.documents.indexes.implementation.models.OcrSkill ocrSkill =
-            new com.azure.search.documents.indexes.implementation.models.OcrSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setInputs(inputs);
-        }
+            obj.getOutputs() == null ? null
+                : new com.azure.search.documents.indexes.implementation.models.OcrSkill(inputs, outputs);
 
         String name = obj.getName();
         ocrSkill.setName(name);

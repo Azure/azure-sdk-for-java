@@ -48,21 +48,15 @@ public final class SynonymTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter synonymTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter();
-
-        String name = obj.getName();
-        synonymTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter(obj.getName(),
+                obj.getSynonyms());
 
         Boolean expand = obj.getExpand();
         synonymTokenFilter.setExpand(expand);
 
-        if (obj.getSynonyms() != null) {
-            List<String> synonyms = new ArrayList<>(obj.getSynonyms());
-            synonymTokenFilter.setSynonyms(synonyms);
-        }
-
         Boolean ignoreCase = obj.isCaseIgnored();
         synonymTokenFilter.setIgnoreCase(ignoreCase);
+        synonymTokenFilter.validate();
         return synonymTokenFilter;
     }
 

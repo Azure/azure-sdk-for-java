@@ -7,27 +7,27 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/**
- * A skill to split a string into chunks of text.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** The SplitSkill model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Text.SplitSkill")
+@JsonFlatten
 @Fluent
-public final class SplitSkill extends SearchIndexerSkill {
+public class SplitSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which language code to use. Default is en. Possible
-     * values include: 'da', 'de', 'en', 'es', 'fi', 'fr', 'it', 'ko', 'pt'
+     * A value indicating which language code to use. Default is en.
      */
     @JsonProperty(value = "defaultLanguageCode")
     private SplitSkillLanguage defaultLanguageCode;
 
     /*
-     * A value indicating which split mode to perform. Possible values include:
-     * 'Pages', 'Sentences'
+     * A value indicating which split mode to perform.
      */
     @JsonProperty(value = "textSplitMode")
     private TextSplitMode textSplitMode;
@@ -38,10 +38,16 @@ public final class SplitSkill extends SearchIndexerSkill {
     @JsonProperty(value = "maximumPageLength")
     private Integer maximumPageLength;
 
+    /** Creates an instance of SplitSkill class. */
+    @JsonCreator
+    public SplitSkill(
+            @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
     /**
-     * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'da', 'de', 'en',
-     * 'es', 'fi', 'fr', 'it', 'ko', 'pt'.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @return the defaultLanguageCode value.
      */
@@ -50,9 +56,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'da', 'de', 'en',
-     * 'es', 'fi', 'fr', 'it', 'ko', 'pt'.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SplitSkill object itself.
@@ -63,8 +67,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the textSplitMode property: A value indicating which split mode to
-     * perform. Possible values include: 'Pages', 'Sentences'.
+     * Get the textSplitMode property: A value indicating which split mode to perform.
      *
      * @return the textSplitMode value.
      */
@@ -73,8 +76,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the textSplitMode property: A value indicating which split mode to
-     * perform. Possible values include: 'Pages', 'Sentences'.
+     * Set the textSplitMode property: A value indicating which split mode to perform.
      *
      * @param textSplitMode the textSplitMode value to set.
      * @return the SplitSkill object itself.
@@ -85,8 +87,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the maximumPageLength property: The desired maximum page length.
-     * Default is 10000.
+     * Get the maximumPageLength property: The desired maximum page length. Default is 10000.
      *
      * @return the maximumPageLength value.
      */
@@ -95,8 +96,7 @@ public final class SplitSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the maximumPageLength property: The desired maximum page length.
-     * Default is 10000.
+     * Set the maximumPageLength property: The desired maximum page length. Default is 10000.
      *
      * @param maximumPageLength the maximumPageLength value to set.
      * @return the SplitSkill object itself.
@@ -104,5 +104,15 @@ public final class SplitSkill extends SearchIndexerSkill {
     public SplitSkill setMaximumPageLength(Integer maximumPageLength) {
         this.maximumPageLength = maximumPageLength;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -47,10 +47,7 @@ public final class CjkBigramTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter cjkBigramTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter();
-
-        String name = obj.getName();
-        cjkBigramTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.CjkBigramTokenFilter(obj.getName());
 
         Boolean outputUnigrams = obj.areOutputUnigrams();
         cjkBigramTokenFilter.setOutputUnigrams(outputUnigrams);
@@ -60,6 +57,7 @@ public final class CjkBigramTokenFilterConverter {
                 obj.getIgnoreScripts().stream().map(CjkBigramTokenFilterScriptsConverter::map).collect(Collectors.toList());
             cjkBigramTokenFilter.setIgnoreScripts(ignoreScripts);
         }
+        cjkBigramTokenFilter.validate();
         return cjkBigramTokenFilter;
     }
 

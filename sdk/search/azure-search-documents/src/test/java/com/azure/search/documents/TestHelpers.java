@@ -56,20 +56,21 @@ public final class TestHelpers {
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
     public static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
-//    public static final ObjectMapper MAPPER;
-//    static {
-//
-//    }
-
     public static PointGeometry createPointGeometry(Double latitude, Double longitude) {
-        return new PointGeometry(new GeometryPosition(longitude, latitude),
-            null, Collections.singletonMap("crs", new HashMap<String, Object>() {
-                {
-                    put("type", "name");
-                    put("properties", Collections.singletonMap("name", "EPSG:4326"));
-                }}));
+        return new PointGeometry(new GeometryPosition(longitude, latitude), null, Collections.singletonMap("crs", new HashMap<String, Object>() {
+            {
+                put("type", "name");
+                put("properties", Collections.singletonMap("name", "EPSG:4326"));
+            }
+        }));
     }
 
+    private static final ObjectMapper MAPPER;
+
+    static {
+        MAPPER = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(MAPPER);
+    }
     /**
      * Assert whether two objects are equal.
      *
@@ -298,11 +299,8 @@ public final class TestHelpers {
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
         Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
-        ObjectMapper mapper = new JacksonAdapter().serializer();
-//        SerializationUtil.configureMapper(MAPPER);
-        SerializationUtil.configureMapper(mapper);
         try {
-            return mapper.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
+            return MAPPER.readValue(reader, new TypeReference<List<Map<String, Object>>>() { });
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

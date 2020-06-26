@@ -39,14 +39,13 @@ public final class IndexBatchBaseConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexBatch indexBatch =
-            new com.azure.search.documents.implementation.models.IndexBatch();
 
-        if (obj.getActions() != null) {
-            List<com.azure.search.documents.implementation.models.IndexAction> actions =
-                obj.getActions().stream().map(IndexActionConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexBatch, "actions", actions);
-        }
+        List<com.azure.search.documents.implementation.models.IndexAction> actions = obj.getActions() == null ? null
+            : obj.getActions().stream().map(IndexActionConverter::map).collect(Collectors.toList());
+        com.azure.search.documents.implementation.models.IndexBatch indexBatch =
+            new com.azure.search.documents.implementation.models.IndexBatch(actions);
+
+        indexBatch.validate();
         return indexBatch;
     }
 

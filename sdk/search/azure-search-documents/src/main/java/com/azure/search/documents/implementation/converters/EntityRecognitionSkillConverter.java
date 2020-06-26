@@ -76,20 +76,16 @@ public final class EntityRecognitionSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
+            obj.getOutputs() == null ? null
+                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getInputs() == null ? null
+                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill entityRecognitionSkill =
-            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            entityRecognitionSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.EntityRecognitionSkill(inputs, outputs);
 
         String name = obj.getName();
         entityRecognitionSkill.setName(name);
@@ -117,6 +113,7 @@ public final class EntityRecognitionSkillConverter {
 
         Double minimumPrecision = obj.getMinimumPrecision();
         entityRecognitionSkill.setMinimumPrecision(minimumPrecision);
+        entityRecognitionSkill.validate();
         return entityRecognitionSkill;
     }
 

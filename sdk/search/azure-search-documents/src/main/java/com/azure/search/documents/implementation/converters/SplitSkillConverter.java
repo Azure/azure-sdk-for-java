@@ -68,20 +68,17 @@ public final class SplitSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
+            obj.getOutputs() == null ? null
+                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getOutputs() == null ? null
+                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
         com.azure.search.documents.indexes.implementation.models.SplitSkill splitSkill =
-            new com.azure.search.documents.indexes.implementation.models.SplitSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.SplitSkill(inputs, outputs);
 
         String name = obj.getName();
         splitSkill.setName(name);
@@ -106,6 +103,7 @@ public final class SplitSkillConverter {
                 SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
             splitSkill.setDefaultLanguageCode(defaultLanguageCode);
         }
+        splitSkill.validate();
         return splitSkill;
     }
 

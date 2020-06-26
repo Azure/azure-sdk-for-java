@@ -53,10 +53,8 @@ public final class DictionaryDecompounderTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter = new com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter();
-
-        String name = obj.getName();
-        dictionaryDecompounderTokenFilter.setName(name);
+        com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter dictionaryDecompounderTokenFilter
+            = new com.azure.search.documents.indexes.implementation.models.DictionaryDecompounderTokenFilter(obj.getName(), obj.getWordList());
 
         Integer minSubwordSize = obj.getMinSubwordSize();
         dictionaryDecompounderTokenFilter.setMinSubwordSize(minSubwordSize);
@@ -67,13 +65,10 @@ public final class DictionaryDecompounderTokenFilterConverter {
         Integer maxSubwordSize = obj.getMaxSubwordSize();
         dictionaryDecompounderTokenFilter.setMaxSubwordSize(maxSubwordSize);
 
-        if (obj.getWordList() != null) {
-            List<String> wordList = new ArrayList<>(obj.getWordList());
-            dictionaryDecompounderTokenFilter.setWordList(wordList);
-        }
 
         Integer minWordSize = obj.getMinWordSize();
         dictionaryDecompounderTokenFilter.setMinWordSize(minWordSize);
+        dictionaryDecompounderTokenFilter.validate();
         return dictionaryDecompounderTokenFilter;
     }
 
