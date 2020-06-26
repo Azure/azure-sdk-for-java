@@ -593,6 +593,9 @@ public final class ServiceBusManagementAsyncClient {
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        } else if (entry.getContent() == null) {
+            logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
         final QueueDescription result = entry.getContent().getQueueDescription();
@@ -690,7 +693,7 @@ public final class ServiceBusManagementAsyncClient {
      * @return The XML text inside the title. {@code null} is returned if there is no value.
      */
     @SuppressWarnings("unchecked")
-    private static String getTitleValue(Object responseTitle) {
+    private String getTitleValue(Object responseTitle) {
         if (!(responseTitle instanceof Map)) {
             return null;
         }
@@ -699,7 +702,8 @@ public final class ServiceBusManagementAsyncClient {
         try {
             map = (Map<String, String>) responseTitle;
             return map.get("");
-        } catch (ClassCastException ignored) {
+        } catch (ClassCastException error) {
+            logger.warning("Unable to cast to Map<String,String>. Title: {}", responseTitle, error);
             return null;
         }
     }
