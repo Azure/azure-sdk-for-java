@@ -154,24 +154,6 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     /**
-     * Gets the name of the first subscription.
-     *
-     * @return Name of the first subscription.
-     */
-    public String getSubscriptionName() {
-        return getSubscriptionBaseName();
-    }
-
-    /**
-     * Gets the name of the first session-enabled subscription.
-     *
-     * @return Name of the first session-enabled subscription.
-     */
-    public String getSessionSubscriptionName() {
-        return getSessionSubscriptionBaseName();
-    }
-
-    /**
      * Gets the configured ProxyConfiguration from environment variables.
      */
     public ProxyOptions getProxyConfiguration() {
@@ -288,7 +270,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 return builder.receiver().queueName(queueName);
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSubscriptionName();
+                final String subscriptionName = getSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
@@ -314,7 +296,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
-                final String subscriptionName = getSessionSubscriptionName();
+                final String subscriptionName = getSessionSubscriptionBaseName();
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
                 return onBuilderCreate.apply(builder)

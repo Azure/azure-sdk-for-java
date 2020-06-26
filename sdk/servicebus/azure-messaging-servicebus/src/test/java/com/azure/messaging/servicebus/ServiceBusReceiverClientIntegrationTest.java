@@ -438,7 +438,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-
     }
 
     /**
@@ -840,7 +839,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     private int completeMessages(ServiceBusReceiverClient client, int totalMessages) {
         final IterableStream<ServiceBusReceivedMessageContext> contextStream = client.receive(totalMessages, TIMEOUT);
         final List<ServiceBusReceivedMessageContext> asList = contextStream.stream().collect(Collectors.toList());
-        for (ServiceBusReceivedMessageContext context:asList) {
+        for (ServiceBusReceivedMessageContext context : asList) {
             receiver.complete(context.getMessage());
         }
         return asList.size();
@@ -854,6 +853,5 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
             message = client.receiveDeferredMessage(receivedMessage.getSequenceNumber());
         }
         receiver.complete(message);
-
     }
 }
