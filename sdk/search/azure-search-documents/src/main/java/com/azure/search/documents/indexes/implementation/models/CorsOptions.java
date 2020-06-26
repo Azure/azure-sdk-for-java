@@ -55,14 +55,6 @@ public final class CorsOptions {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsOptions object itself.
      */
-<<<<<<< HEAD
-=======
-    public CorsOptions setAllowedOrigins(List<String> allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
-        return this;
-    }
-
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
     /**
      * Get the maxAgeInSeconds property: The duration for which browsers should cache CORS preflight responses. Defaults
      * to 5 minutes.

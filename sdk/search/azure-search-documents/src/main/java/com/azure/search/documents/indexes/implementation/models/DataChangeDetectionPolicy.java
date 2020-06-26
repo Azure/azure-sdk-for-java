@@ -29,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-<<<<<<< HEAD
 public class DataChangeDetectionPolicy {
     /**
      * Validates the instance.
@@ -38,6 +37,3 @@ public class DataChangeDetectionPolicy {
      */
     public void validate() {}
 }
-=======
-public class DataChangeDetectionPolicy {}
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487

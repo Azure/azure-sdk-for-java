@@ -166,7 +166,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -183,13 +182,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-=======
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.reset(
                 this.client.getEndpoint(),
@@ -214,7 +206,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -231,13 +222,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-=======
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.run(
                 this.client.getEndpoint(),
@@ -272,7 +256,6 @@ public final class IndexersImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -289,8 +272,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
-=======
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -329,7 +310,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String indexerName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -346,13 +326,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-=======
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.delete(
                 this.client.getEndpoint(),
@@ -379,7 +352,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> getWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -396,13 +368,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-=======
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.get(
                 this.client.getEndpoint(),
@@ -428,7 +393,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListIndexersResult>> listWithResponseAsync(
             String select, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -442,13 +406,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-=======
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.list(
                 this.client.getEndpoint(), select, xMsClientRequestId, this.client.getApiVersion(), accept, context);
@@ -468,7 +425,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexer>> createWithResponseAsync(
             SearchIndexer indexer, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -487,13 +443,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
-=======
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.create(
                 this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, indexer, context);
@@ -513,7 +462,6 @@ public final class IndexersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerStatus>> getStatusWithResponseAsync(
             String indexerName, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -525,8 +473,6 @@ public final class IndexersImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
-=======
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

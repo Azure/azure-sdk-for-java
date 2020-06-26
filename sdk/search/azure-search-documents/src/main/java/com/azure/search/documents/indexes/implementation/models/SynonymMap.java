@@ -55,15 +55,11 @@ public final class SynonymMap {
     private String eTag;
 
     /** Creates an instance of SynonymMap class. */
-<<<<<<< HEAD
     @JsonCreator
     public SynonymMap(
             @JsonProperty(value = "name") String name,
             @JsonProperty(value = "format") String format,
             @JsonProperty(value = "synonyms") String synonyms) {
-=======
-    public SynonymMap() {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         format = "solr";
         this.name = name;
         this.format = format;

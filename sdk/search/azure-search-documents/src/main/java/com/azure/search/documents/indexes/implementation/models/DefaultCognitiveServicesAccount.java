@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Azure.Search.DefaultCognitiveServices")
 @JsonFlatten
 @Immutable
-<<<<<<< HEAD
 public class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
     /**
      * Validates the instance.
@@ -28,6 +27,3 @@ public class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {
         super.validate();
     }
 }
-=======
-public class DefaultCognitiveServicesAccount extends CognitiveServicesAccount {}
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487

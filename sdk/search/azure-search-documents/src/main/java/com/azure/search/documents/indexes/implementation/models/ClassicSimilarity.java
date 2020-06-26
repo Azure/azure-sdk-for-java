@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.Azure.Search.ClassicSimilarity")
 @JsonFlatten
 @Immutable
-<<<<<<< HEAD
 public class ClassicSimilarity extends Similarity {
     /**
      * Validates the instance.
@@ -28,6 +27,3 @@ public class ClassicSimilarity extends Similarity {
         super.validate();
     }
 }
-=======
-public class ClassicSimilarity extends Similarity {}
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487

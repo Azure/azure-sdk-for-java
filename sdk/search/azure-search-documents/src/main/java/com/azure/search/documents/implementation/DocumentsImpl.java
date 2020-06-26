@@ -225,7 +225,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Long>> countWithResponseAsync(RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -242,11 +241,6 @@ public final class DocumentsImpl {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
@@ -274,7 +268,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchGetWithResponseAsync(
             String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -291,8 +284,6 @@ public final class DocumentsImpl {
         if (requestOptions != null) {
             requestOptions.validate();
         }
-=======
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         final String accept = "application/json; odata.metadata=none";
         Boolean includeTotalResultCountInternal = null;
         if (searchOptions != null) {
@@ -431,7 +422,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(
             SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -453,11 +443,6 @@ public final class DocumentsImpl {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
@@ -486,7 +471,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync(
             String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -506,11 +490,6 @@ public final class DocumentsImpl {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
@@ -549,7 +528,6 @@ public final class DocumentsImpl {
             SuggestOptions suggestOptions,
             RequestOptions requestOptions,
             Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -617,53 +595,6 @@ public final class DocumentsImpl {
         if (suggestOptions != null) {
             topInternal = suggestOptions.getTop();
         }
-=======
-        final String accept = "application/json; odata.metadata=none";
-        String filterInternal = null;
-        if (suggestOptions != null) {
-            filterInternal = suggestOptions.getFilter();
-        }
-        String filter = filterInternal;
-        Boolean useFuzzyMatchingInternal = null;
-        if (suggestOptions != null) {
-            useFuzzyMatchingInternal = suggestOptions.isUseFuzzyMatching();
-        }
-        Boolean useFuzzyMatching = useFuzzyMatchingInternal;
-        String highlightPostTagInternal = null;
-        if (suggestOptions != null) {
-            highlightPostTagInternal = suggestOptions.getHighlightPostTag();
-        }
-        String highlightPostTag = highlightPostTagInternal;
-        String highlightPreTagInternal = null;
-        if (suggestOptions != null) {
-            highlightPreTagInternal = suggestOptions.getHighlightPreTag();
-        }
-        String highlightPreTag = highlightPreTagInternal;
-        Double minimumCoverageInternal = null;
-        if (suggestOptions != null) {
-            minimumCoverageInternal = suggestOptions.getMinimumCoverage();
-        }
-        Double minimumCoverage = minimumCoverageInternal;
-        List<String> orderByInternal = null;
-        if (suggestOptions != null) {
-            orderByInternal = suggestOptions.getOrderBy();
-        }
-        List<String> orderBy = orderByInternal;
-        List<String> searchFieldsInternal = null;
-        if (suggestOptions != null) {
-            searchFieldsInternal = suggestOptions.getSearchFields();
-        }
-        List<String> searchFields = searchFieldsInternal;
-        List<String> selectInternal = null;
-        if (suggestOptions != null) {
-            selectInternal = suggestOptions.getSelect();
-        }
-        List<String> select = selectInternal;
-        Integer topInternal = null;
-        if (suggestOptions != null) {
-            topInternal = suggestOptions.getTop();
-        }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
         Integer top = topInternal;
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -710,7 +641,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SuggestDocumentsResult>> suggestPostWithResponseAsync(
             SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -732,11 +662,6 @@ public final class DocumentsImpl {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
@@ -764,7 +689,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IndexDocumentsResult>> indexWithResponseAsync(
             IndexBatch batch, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -786,11 +710,6 @@ public final class DocumentsImpl {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
@@ -825,7 +744,6 @@ public final class DocumentsImpl {
             RequestOptions requestOptions,
             AutocompleteOptions autocompleteOptions,
             Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -891,51 +809,6 @@ public final class DocumentsImpl {
         List<String> searchFields = searchFieldsInternal;
         Integer topInternal = null;
         if (autocompleteOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        AutocompleteMode autocompleteModeInternal = null;
-        if (autocompleteOptions != null) {
-            autocompleteModeInternal = autocompleteOptions.getAutocompleteMode();
-        }
-        AutocompleteMode autocompleteMode = autocompleteModeInternal;
-        String filterInternal = null;
-        if (autocompleteOptions != null) {
-            filterInternal = autocompleteOptions.getFilter();
-        }
-        String filter = filterInternal;
-        Boolean useFuzzyMatchingInternal = null;
-        if (autocompleteOptions != null) {
-            useFuzzyMatchingInternal = autocompleteOptions.isUseFuzzyMatching();
-        }
-        Boolean useFuzzyMatching = useFuzzyMatchingInternal;
-        String highlightPostTagInternal = null;
-        if (autocompleteOptions != null) {
-            highlightPostTagInternal = autocompleteOptions.getHighlightPostTag();
-        }
-        String highlightPostTag = highlightPostTagInternal;
-        String highlightPreTagInternal = null;
-        if (autocompleteOptions != null) {
-            highlightPreTagInternal = autocompleteOptions.getHighlightPreTag();
-        }
-        String highlightPreTag = highlightPreTagInternal;
-        Double minimumCoverageInternal = null;
-        if (autocompleteOptions != null) {
-            minimumCoverageInternal = autocompleteOptions.getMinimumCoverage();
-        }
-        Double minimumCoverage = minimumCoverageInternal;
-        List<String> searchFieldsInternal = null;
-        if (autocompleteOptions != null) {
-            searchFieldsInternal = autocompleteOptions.getSearchFields();
-        }
-        List<String> searchFields = searchFieldsInternal;
-        Integer topInternal = null;
-        if (autocompleteOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             topInternal = autocompleteOptions.getTop();
         }
         Integer top = topInternal;
@@ -974,7 +847,6 @@ public final class DocumentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AutocompleteResult>> autocompletePostWithResponseAsync(
             AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
-<<<<<<< HEAD
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                     new IllegalArgumentException(
@@ -997,11 +869,6 @@ public final class DocumentsImpl {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
-=======
-        final String accept = "application/json; odata.metadata=none";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;

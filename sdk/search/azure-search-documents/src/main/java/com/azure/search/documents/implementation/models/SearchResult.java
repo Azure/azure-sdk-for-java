@@ -9,10 +9,7 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-<<<<<<< HEAD
 import com.fasterxml.jackson.annotation.JsonCreator;
-=======
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -42,7 +39,6 @@ public final class SearchResult {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
-<<<<<<< HEAD
     /** Creates an instance of SearchResult class. */
     @JsonCreator
     public SearchResult(@JsonProperty(value = "@search.score") double score) {
@@ -68,55 +64,6 @@ public final class SearchResult {
         return this.highlights;
     }
 
-    /**
-     * Get the additionalProperties property: Contains a document found by a search query, plus associated metadata.
-=======
-    /**
-     * Get the score property: The relevance score of the document compared to other documents returned by the query.
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
-     *
-     * @return the score value.
-     */
-<<<<<<< HEAD
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Contains a document found by a search query, plus associated metadata.
-=======
-    public double getScore() {
-        return this.score;
-    }
-
-    /**
-     * Get the highlights property: Text fragments from the document that indicate the matching search terms, organized
-     * by each applicable field; null if hit highlighting was not enabled for the query.
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
-     *
-     * @return the highlights value.
-     */
-    public Map<String, List<String>> getHighlights() {
-        return this.highlights;
-    }
-
-<<<<<<< HEAD
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
-=======
     /**
      * Get the additionalProperties property: Contains a document found by a search query, plus associated metadata.
      *
@@ -145,5 +92,11 @@ public final class SearchResult {
         }
         additionalProperties.put(key, value);
     }
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

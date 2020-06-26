@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-<<<<<<< HEAD
 public class Similarity {
     /**
      * Validates the instance.
@@ -34,6 +33,3 @@ public class Similarity {
      */
     public void validate() {}
 }
-=======
-public class Similarity {}
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487

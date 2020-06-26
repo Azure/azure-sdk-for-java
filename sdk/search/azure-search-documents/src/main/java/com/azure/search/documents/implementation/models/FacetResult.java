@@ -70,7 +70,6 @@ public final class FacetResult {
         }
         additionalProperties.put(key, value);
     }
-<<<<<<< HEAD
 
     /**
      * Validates the instance.
@@ -78,6 +77,4 @@ public final class FacetResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {}
-=======
->>>>>>> b58ce026c9fe5fc4ad488b3aa7c0985968f73487
 }
