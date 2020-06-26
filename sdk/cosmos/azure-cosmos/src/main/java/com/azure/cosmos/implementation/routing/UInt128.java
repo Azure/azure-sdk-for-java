@@ -71,7 +71,7 @@ public class UInt128 implements Comparable<UInt128>{
         return new UInt128(low, high);
     }
 
-    public UInt128 XOR(UInt128 other) {
+    public UInt128 xor(UInt128 other) {
         return new UInt128(this.low ^ other.low, this.high ^ other.high);
     }
 

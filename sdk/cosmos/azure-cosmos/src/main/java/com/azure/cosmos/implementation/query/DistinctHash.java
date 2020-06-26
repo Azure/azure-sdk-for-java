@@ -19,19 +19,18 @@ public final class DistinctHash {
 
     private static final UInt128 RootHashSeed = new UInt128(0xbfc2359eafc0e2b7L, 0x8846e00284c4cf1fL);
 
-    private static class HashSeeds
-    {
-        public static final UInt128 Null = new UInt128(0x1380f68bb3b0cfe4L, 0x156c918bf564ee48L);
-        public static final UInt128 False = new UInt128(0xc1be517fe893b40cL, 0xe9fc8a4c531cd0ddL);
-        public static final UInt128 True = new UInt128(0xf86d4abf9a412e74L, 0x788488365c8a985dL);
-        public static final UInt128 String = new UInt128(0x61f53f0a44204cfbL, 0x09481be8ef4b56ddL);
-        public static final UInt128 Array = new UInt128(0xfa573b014c4dc18eL, 0xa014512c858eb115L);
-        public static final UInt128 Object = new UInt128(0x77b285ac511aef30L, 0x3dcf187245822449L);
-        public static final UInt128 Integer = new UInt128(0x0320dc908e0d3e71L, 0xf575de218f09ffa5L);
-        public static final UInt128 Long = new UInt128(0xed93baf7fdc76638L, 0x0d5733c37e079869L);
-        public static final UInt128 Double = new UInt128(0x62fb48cc659963a0L, 0xe9e690779309c403L);
-        public static final UInt128 ArrayIndex = new UInt128(0xfe057204216db999L, 0x5b1cc3178bd9c593L);
-        public static final UInt128 PropertyName = new UInt128(0xc915dde058492a8aL, 0x7c8be2eba72e4634L);
+    private static class HashSeeds {
+        public static final UInt128 NULL = new UInt128(0x1380f68bb3b0cfe4L, 0x156c918bf564ee48L);
+        public static final UInt128 FALSE = new UInt128(0xc1be517fe893b40cL, 0xe9fc8a4c531cd0ddL);
+        public static final UInt128 TRUE = new UInt128(0xf86d4abf9a412e74L, 0x788488365c8a985dL);
+        public static final UInt128 STRING = new UInt128(0x61f53f0a44204cfbL, 0x09481be8ef4b56ddL);
+        public static final UInt128 ARRAY = new UInt128(0xfa573b014c4dc18eL, 0xa014512c858eb115L);
+        public static final UInt128 OBJECT = new UInt128(0x77b285ac511aef30L, 0x3dcf187245822449L);
+        public static final UInt128 INTEGER = new UInt128(0x0320dc908e0d3e71L, 0xf575de218f09ffa5L);
+        public static final UInt128 LONG = new UInt128(0xed93baf7fdc76638L, 0x0d5733c37e079869L);
+        public static final UInt128 DOUBLE = new UInt128(0x62fb48cc659963a0L, 0xe9e690779309c403L);
+        public static final UInt128 ARRAY_INDEX = new UInt128(0xfe057204216db999L, 0x5b1cc3178bd9c593L);
+        public static final UInt128 PROPERTY_NAME = new UInt128(0xc915dde058492a8aL, 0x7c8be2eba72e4634L);
     }
 
     @SuppressWarnings("unchecked")
@@ -42,7 +41,7 @@ public final class DistinctHash {
     @SuppressWarnings("unchecked")
     private static UInt128 getHash(Object resource, UInt128 seed) throws IOException {
         if (resource == null) {
-            return MurmurHash3_128.hash128(HashSeeds.Null, seed);
+            return MurmurHash3_128.hash128(HashSeeds.NULL, seed);
         }
         if (resource instanceof JsonSerializable) {
             return getHashFromJsonSerializable((JsonSerializable) resource, seed);
@@ -51,22 +50,22 @@ public final class DistinctHash {
             return getHashFromList((List<Object>) resource, seed);
         }
         if (resource instanceof Boolean) {
-            return (Boolean)resource ? MurmurHash3_128.hash128(HashSeeds.True, seed) : MurmurHash3_128.hash128(HashSeeds.False, seed);
+            return (Boolean)resource ? MurmurHash3_128.hash128(HashSeeds.TRUE, seed) : MurmurHash3_128.hash128(HashSeeds.FALSE, seed);
         }
         if (resource instanceof Integer) {
-            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Integer, seed);
+            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.INTEGER, seed);
             return MurmurHash3_128.hash128(resource, hash);
         }
         if (resource instanceof Long) {
-            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Long, seed);
+            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.LONG, seed);
             return MurmurHash3_128.hash128(resource, hash);
         }
         if (resource instanceof Double) {
-            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Double, seed);
+            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.DOUBLE, seed);
             return MurmurHash3_128.hash128(resource, hash);
         }
         if (resource instanceof String) {
-            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.String, seed);
+            UInt128 hash = MurmurHash3_128.hash128(HashSeeds.STRING, seed);
             return MurmurHash3_128.hash128(resource, hash);
         }
         if (resource instanceof ValueNode) {
@@ -89,18 +88,18 @@ public final class DistinctHash {
 
     private static UInt128 getHashFromArrayNode(ArrayNode arrayNode, UInt128 seed) throws IOException {
         // Start the array with a distinct hash, so that empty array doesn't hash to another value.
-        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Array, seed);
+        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.ARRAY, seed);
 
         for (int i = 0; i < arrayNode.size(); i++) {
             // Order of array items matter in equality check, so add the index just in case that property does not hold in the future.
-            UInt128 arrayItemSeed = HashSeeds.ArrayIndex.add(i);
+            UInt128 arrayItemSeed = HashSeeds.ARRAY_INDEX.add(i);
             hash = MurmurHash3_128.hash128(hash, getHash(arrayNode.get(i), arrayItemSeed));
         }
         return hash;
     }
 
     private static UInt128 getHashFromObjectNode(ObjectNode objectNode, UInt128 seed) throws IOException {
-        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Object, seed);
+        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.OBJECT, seed);
         UInt128 intermediateHash = UInt128.ZERO;
 
         // Property order should not result in a different hash.
@@ -108,9 +107,9 @@ public final class DistinctHash {
         Iterator<Map.Entry<String, JsonNode>> children = objectNode.fields();
         while ((children.hasNext())) {
             Map.Entry child = children.next();
-            UInt128 nameHash = MurmurHash3_128.hash128(child.getKey(), HashSeeds.PropertyName);
+            UInt128 nameHash = MurmurHash3_128.hash128(child.getKey(), HashSeeds.PROPERTY_NAME);
             UInt128 propertyHash = getHash(child.getValue(), nameHash);
-            intermediateHash = intermediateHash.XOR(propertyHash);
+            intermediateHash = intermediateHash.xor(propertyHash);
         }
 
         if (intermediateHash.compareTo(UInt128.ZERO) == 1) {
@@ -121,11 +120,11 @@ public final class DistinctHash {
     }
 
     private static UInt128 getHashFromList(List<Object> resource, UInt128 seed) throws IOException {
-        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.Array, seed);
+        UInt128 hash = MurmurHash3_128.hash128(HashSeeds.ARRAY, seed);
 
         for (int i = 0; i < resource.size(); i++) {
             // index matters
-            UInt128 arrayItemSeed = HashSeeds.ArrayIndex.add(i);
+            UInt128 arrayItemSeed = HashSeeds.ARRAY_INDEX.add(i);
             hash = MurmurHash3_128.hash128(hash, getHash(resource.get(i), arrayItemSeed));
         }
         return hash;

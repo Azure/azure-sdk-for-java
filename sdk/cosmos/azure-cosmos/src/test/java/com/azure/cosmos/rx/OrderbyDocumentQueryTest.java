@@ -548,7 +548,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             assertThat(actualIds).containsExactlyElementsOf(expectedIds);
         }
     }
-    
+
     private List<InternalObjectNode> queryWithContinuationTokens(String query, int pageSize) {
         String requestContinuation = null;
         List<String> continuationTokens = new ArrayList<String>();

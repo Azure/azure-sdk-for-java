@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DistinctHashTest {
 
     @Test(groups = {"unit"})
-    public void TestHashForNull() throws IOException {
+    public void nullHash() throws IOException {
         UInt128 hash1 = DistinctHash.getHash(null);
         UInt128 hash2 = DistinctHash.getHash(null);
 
@@ -23,7 +23,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForBoolean() throws IOException {
+    public void booleanHash() throws IOException {
         UInt128 hash1 = DistinctHash.getHash(Boolean.TRUE);
         UInt128 hash2 = DistinctHash.getHash(Boolean.TRUE);
         UInt128 hash3 = DistinctHash.getHash(Boolean.FALSE);
@@ -33,7 +33,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForInteger() throws IOException {
+    public void integerHash() throws IOException {
         UInt128 hash1 = DistinctHash.getHash(Integer.valueOf("2"));
         UInt128 hash2 = DistinctHash.getHash(Integer.valueOf("2"));
         UInt128 hash3 = DistinctHash.getHash(Integer.valueOf("3"));
@@ -43,7 +43,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForLong() throws IOException {
+    public void longHash() throws IOException {
         UInt128 hash1 = DistinctHash.getHash(Long.valueOf("2"));
         UInt128 hash2 = DistinctHash.getHash(Long.valueOf("2"));
         UInt128 hash3 = DistinctHash.getHash(Long.valueOf("3"));
@@ -53,7 +53,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForDouble() throws IOException {
+    public void doubleHash() throws IOException {
         UInt128 hash1 = DistinctHash.getHash(Double.valueOf("2.0"));
         UInt128 hash2 = DistinctHash.getHash(Double.valueOf("2.00"));
         UInt128 hash3 = DistinctHash.getHash(Double.valueOf("3.0"));
@@ -63,7 +63,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForString() throws IOException {
+    public void stringHash() throws IOException {
         UInt128 hash1 = DistinctHash.getHash("testString1");
         UInt128 hash2 = DistinctHash.getHash("testString1");
         UInt128 hash3 = DistinctHash.getHash("testString2");
@@ -73,7 +73,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForArrayNode() throws IOException {
+    public void arrayNodeHash() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ArrayNode node1 = mapper.createArrayNode();
         node1.add(1);
@@ -95,7 +95,7 @@ public class DistinctHashTest {
 
 
     @Test(groups = {"unit"})
-    public void TestHashFJsonorObject() throws IOException {
+    public void jsonObjectHash() throws IOException {
         String jsonString1 = "{ \"nameProp\": \"name\", \"idProp\": \"1\"}";
         String jsonString2 = "{ \"idProp\": \"1\", \"nameProp\": \"name\"}";
         String jsonString3 = "{ \"nameProp\": \"name\", \"idProp\": \"2\"}";
@@ -111,7 +111,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForList() throws IOException {
+    public void listHash() throws IOException {
         List<String> list1 = new ArrayList<>();
         list1.add("string1");
         list1.add("string2");
@@ -133,7 +133,7 @@ public class DistinctHashTest {
     }
 
     @Test(groups = {"unit"})
-    public void TestHashForJsonSeriables() throws IOException {
+    public void jsonSerializableHash() throws IOException {
         String queryItemString = "{\"item\":10}";
         String queryItemString2 = "{\"item\":20}";
 
