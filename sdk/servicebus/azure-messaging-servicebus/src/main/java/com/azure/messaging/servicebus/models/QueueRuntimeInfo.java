@@ -30,7 +30,7 @@ public class QueueRuntimeInfo {
      */
     public QueueRuntimeInfo(QueueDescription queueDescription) {
         Objects.requireNonNull(queueDescription, "'queueDescription' cannot be null.");
-        this.name = queueDescription.getQueueName();
+        this.name = queueDescription.getName();
         this.details = queueDescription.getMessageCountDetails();
         this.messageCount = queueDescription.getMessageCount();
         this.sizeInBytes = queueDescription.getSizeInBytes();
