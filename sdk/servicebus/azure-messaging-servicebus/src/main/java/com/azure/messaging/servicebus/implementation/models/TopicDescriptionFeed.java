@@ -26,8 +26,8 @@ public final class TopicDescriptionFeed {
     /*
      * The entity type for the feed.
      */
-    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
-    private String title;
+    @JsonProperty(value = "title")
+    private Object title;
 
     /*
      * Datetime of the query.
@@ -72,7 +72,7 @@ public final class TopicDescriptionFeed {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -82,7 +82,7 @@ public final class TopicDescriptionFeed {
      * @param title the title value to set.
      * @return the TopicDescriptionFeed object itself.
      */
-    public TopicDescriptionFeed setTitle(String title) {
+    public TopicDescriptionFeed setTitle(Object title) {
         this.title = title;
         return this;
     }

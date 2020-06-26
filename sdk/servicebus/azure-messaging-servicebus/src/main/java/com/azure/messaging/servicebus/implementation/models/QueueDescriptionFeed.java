@@ -26,8 +26,8 @@ public final class QueueDescriptionFeed {
     /*
      * The entity type for the feed.
      */
-    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
-    private String title;
+    @JsonProperty(value = "title")
+    private Object title;
 
     /*
      * Datetime of the query.
@@ -72,7 +72,7 @@ public final class QueueDescriptionFeed {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -82,7 +82,7 @@ public final class QueueDescriptionFeed {
      * @param title the title value to set.
      * @return the QueueDescriptionFeed object itself.
      */
-    public QueueDescriptionFeed setTitle(String title) {
+    public QueueDescriptionFeed setTitle(Object title) {
         this.title = title;
         return this;
     }
