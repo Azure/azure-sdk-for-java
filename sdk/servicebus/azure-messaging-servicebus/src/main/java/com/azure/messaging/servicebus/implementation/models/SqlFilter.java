@@ -10,12 +10,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The FalseFilter model. */
+/** The SqlFilter model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("FalseFilter")
-@JacksonXmlRootElement(localName = "FalseFilter")
+@JsonTypeName("SqlFilter")
+@JacksonXmlRootElement(localName = "SqlFilter")
 @Fluent
-public final class FalseFilter extends RuleFilter {
+public final class SqlFilter extends RuleFilter {
     /*
      * The SqlExpression property.
      */
@@ -37,9 +37,9 @@ public final class FalseFilter extends RuleFilter {
      * Set the sqlExpression property: The SqlExpression property.
      *
      * @param sqlExpression the sqlExpression value to set.
-     * @return the FalseFilter object itself.
+     * @return the SqlFilter object itself.
      */
-    public FalseFilter setSqlExpression(String sqlExpression) {
+    public SqlFilter setSqlExpression(String sqlExpression) {
         this.sqlExpression = sqlExpression;
         return this;
     }

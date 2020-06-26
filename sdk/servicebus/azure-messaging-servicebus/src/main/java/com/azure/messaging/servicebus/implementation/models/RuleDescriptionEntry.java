@@ -28,13 +28,13 @@ public final class RuleDescriptionEntry {
     private Object title;
 
     /*
-     * The timestamp for when this queue was published
+     * The timestamp for when this rule was published
      */
     @JacksonXmlProperty(localName = "published", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime published;
 
     /*
-     * The timestamp for when this queue was last updated
+     * The timestamp for when this rule was last updated
      */
     @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
@@ -46,7 +46,7 @@ public final class RuleDescriptionEntry {
     private ResponseLink link;
 
     /*
-     * The contents of the entry.
+     * The RuleDescription
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private RuleDescriptionEntryContent content;
@@ -92,7 +92,7 @@ public final class RuleDescriptionEntry {
     }
 
     /**
-     * Get the published property: The timestamp for when this queue was published.
+     * Get the published property: The timestamp for when this rule was published.
      *
      * @return the published value.
      */
@@ -101,7 +101,7 @@ public final class RuleDescriptionEntry {
     }
 
     /**
-     * Set the published property: The timestamp for when this queue was published.
+     * Set the published property: The timestamp for when this rule was published.
      *
      * @param published the published value to set.
      * @return the RuleDescriptionEntry object itself.
@@ -112,7 +112,7 @@ public final class RuleDescriptionEntry {
     }
 
     /**
-     * Get the updated property: The timestamp for when this queue was last updated.
+     * Get the updated property: The timestamp for when this rule was last updated.
      *
      * @return the updated value.
      */
@@ -121,7 +121,7 @@ public final class RuleDescriptionEntry {
     }
 
     /**
-     * Set the updated property: The timestamp for when this queue was last updated.
+     * Set the updated property: The timestamp for when this rule was last updated.
      *
      * @param updated the updated value to set.
      * @return the RuleDescriptionEntry object itself.
@@ -152,7 +152,7 @@ public final class RuleDescriptionEntry {
     }
 
     /**
-     * Get the content property: The contents of the entry.
+     * Get the content property: The RuleDescription.
      *
      * @return the content value.
      */
@@ -161,7 +161,7 @@ public final class RuleDescriptionEntry {
     }
 
     /**
-     * Set the content property: The contents of the entry.
+     * Set the content property: The RuleDescription.
      *
      * @param content the content value to set.
      * @return the RuleDescriptionEntry object itself.

@@ -18,7 +18,7 @@ import java.util.List;
 @Fluent
 public final class TopicDescriptionFeed {
     /*
-     * URL of the list queues query.
+     * URL of the list topics query.
      */
     @JacksonXmlProperty(localName = "id", namespace = "http://www.w3.org/2005/Atom")
     private String id;
@@ -48,7 +48,7 @@ public final class TopicDescriptionFeed {
     private List<TopicDescriptionEntry> entry = new ArrayList<>();
 
     /**
-     * Get the id property: URL of the list queues query.
+     * Get the id property: URL of the list topics query.
      *
      * @return the id value.
      */
@@ -57,7 +57,7 @@ public final class TopicDescriptionFeed {
     }
 
     /**
-     * Set the id property: URL of the list queues query.
+     * Set the id property: URL of the list topics query.
      *
      * @param id the id value to set.
      * @return the TopicDescriptionFeed object itself.

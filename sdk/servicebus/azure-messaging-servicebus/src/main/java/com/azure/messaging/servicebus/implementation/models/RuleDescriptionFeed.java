@@ -26,8 +26,8 @@ public final class RuleDescriptionFeed {
     /*
      * The entity type for the feed.
      */
-    @JacksonXmlProperty(localName = "title", namespace = "http://www.w3.org/2005/Atom")
-    private String title;
+    @JsonProperty(value = "title")
+    private Object title;
 
     /*
      * Datetime of the query.
@@ -42,7 +42,7 @@ public final class RuleDescriptionFeed {
     private List<ResponseLink> link = new ArrayList<>();
 
     /*
-     * RuleDescription entries.
+     * Rules entries.
      */
     @JsonProperty("entry")
     private List<RuleDescriptionEntry> entry = new ArrayList<>();
@@ -72,7 +72,7 @@ public final class RuleDescriptionFeed {
      *
      * @return the title value.
      */
-    public String getTitle() {
+    public Object getTitle() {
         return this.title;
     }
 
@@ -82,7 +82,7 @@ public final class RuleDescriptionFeed {
      * @param title the title value to set.
      * @return the RuleDescriptionFeed object itself.
      */
-    public RuleDescriptionFeed setTitle(String title) {
+    public RuleDescriptionFeed setTitle(Object title) {
         this.title = title;
         return this;
     }
@@ -128,7 +128,7 @@ public final class RuleDescriptionFeed {
     }
 
     /**
-     * Get the entry property: RuleDescription entries.
+     * Get the entry property: Rules entries.
      *
      * @return the entry value.
      */
@@ -137,7 +137,7 @@ public final class RuleDescriptionFeed {
     }
 
     /**
-     * Set the entry property: RuleDescription entries.
+     * Set the entry property: Rules entries.
      *
      * @param entry the entry value to set.
      * @return the RuleDescriptionFeed object itself.

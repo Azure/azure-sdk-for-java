@@ -14,7 +14,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class SubscriptionDescriptionEntryContent {
     /*
-     * Type of content in subscription response
+     * Type of content in queue response
      */
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
@@ -28,7 +28,7 @@ public final class SubscriptionDescriptionEntryContent {
     private SubscriptionDescription subscriptionDescription;
 
     /**
-     * Get the type property: Type of content in subscription response.
+     * Get the type property: Type of content in queue response.
      *
      * @return the type value.
      */
@@ -37,7 +37,7 @@ public final class SubscriptionDescriptionEntryContent {
     }
 
     /**
-     * Set the type property: Type of content in subscription response.
+     * Set the type property: Type of content in queue response.
      *
      * @param type the type value to set.
      * @return the SubscriptionDescriptionEntryContent object itself.

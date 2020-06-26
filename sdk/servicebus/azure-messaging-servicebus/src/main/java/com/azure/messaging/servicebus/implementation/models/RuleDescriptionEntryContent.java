@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.servicebus.models.RuleDescription;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -14,13 +13,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class RuleDescriptionEntryContent {
     /*
-     * Type of content in rule response
+     * Type of content in queue response
      */
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
 
     /*
-     * Represents a description of a rule.
+     * The RuleDescription property.
      */
     @JacksonXmlProperty(
             localName = "RuleDescription",
@@ -28,7 +27,7 @@ public final class RuleDescriptionEntryContent {
     private RuleDescription ruleDescription;
 
     /**
-     * Get the type property: Type of content in rule response.
+     * Get the type property: Type of content in queue response.
      *
      * @return the type value.
      */
@@ -37,7 +36,7 @@ public final class RuleDescriptionEntryContent {
     }
 
     /**
-     * Set the type property: Type of content in rule response.
+     * Set the type property: Type of content in queue response.
      *
      * @param type the type value to set.
      * @return the RuleDescriptionEntryContent object itself.
@@ -48,7 +47,7 @@ public final class RuleDescriptionEntryContent {
     }
 
     /**
-     * Get the ruleDescription property: Represents a description of a rule.
+     * Get the ruleDescription property: The RuleDescription property.
      *
      * @return the ruleDescription value.
      */
@@ -57,7 +56,7 @@ public final class RuleDescriptionEntryContent {
     }
 
     /**
-     * Set the ruleDescription property: Represents a description of a rule.
+     * Set the ruleDescription property: The RuleDescription property.
      *
      * @param ruleDescription the ruleDescription value to set.
      * @return the RuleDescriptionEntryContent object itself.

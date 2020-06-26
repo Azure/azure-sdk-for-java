@@ -28,13 +28,13 @@ public final class SubscriptionDescriptionEntry {
     private Object title;
 
     /*
-     * The timestamp for when this queue was published
+     * The timestamp for when this subscription was published
      */
     @JacksonXmlProperty(localName = "published", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime published;
 
     /*
-     * The timestamp for when this queue was last updated
+     * The timestamp for when this subscription was last updated
      */
     @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
@@ -92,7 +92,7 @@ public final class SubscriptionDescriptionEntry {
     }
 
     /**
-     * Get the published property: The timestamp for when this queue was published.
+     * Get the published property: The timestamp for when this subscription was published.
      *
      * @return the published value.
      */
@@ -101,7 +101,7 @@ public final class SubscriptionDescriptionEntry {
     }
 
     /**
-     * Set the published property: The timestamp for when this queue was published.
+     * Set the published property: The timestamp for when this subscription was published.
      *
      * @param published the published value to set.
      * @return the SubscriptionDescriptionEntry object itself.
@@ -112,7 +112,7 @@ public final class SubscriptionDescriptionEntry {
     }
 
     /**
-     * Get the updated property: The timestamp for when this queue was last updated.
+     * Get the updated property: The timestamp for when this subscription was last updated.
      *
      * @return the updated value.
      */
@@ -121,7 +121,7 @@ public final class SubscriptionDescriptionEntry {
     }
 
     /**
-     * Set the updated property: The timestamp for when this queue was last updated.
+     * Set the updated property: The timestamp for when this subscription was last updated.
      *
      * @param updated the updated value to set.
      * @return the SubscriptionDescriptionEntry object itself.

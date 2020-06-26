@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -19,48 +18,23 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SubscriptionDescription {
     /*
-     * Last time a message was sent, or the last time there was a receive
-     * request to this entity.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
+     * that the message is locked for other receivers. The maximum value for
+     * LockDuration is 5 minutes; the default value is 1 minute.
      */
     @JacksonXmlProperty(
-            localName = "AccessedAt",
+            localName = "LockDuration",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private OffsetDateTime accessedAt;
+    private Duration lockDuration;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the entity is automatically
-     * deleted. The minimum duration is 5 minutes.
+     * A value that indicates whether the queue supports the concept of
+     * sessions.
      */
     @JacksonXmlProperty(
-            localName = "AutoDeleteOnIdle",
+            localName = "RequiresSession",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Duration autoDeleteOnIdle;
-
-    /*
-     * The exact time the entity was created.
-     */
-    @JacksonXmlProperty(
-            localName = "CreatedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private OffsetDateTime createdAt;
-
-    /*
-     * A value that indicates whether this entity has dead letter support when
-     * a message expires.
-     */
-    @JacksonXmlProperty(
-            localName = "DeadLetteringOnMessageExpiration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean deadLetteringOnMessageExpiration;
-
-    /*
-     * A value that indicates whether this entity deadletters a message when
-     * evaluation of the rule throws an exception.
-     */
-    @JacksonXmlProperty(
-            localName = "DeadLetteringOnFilterEvaluationExceptions",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean deadLetteringOnFilterEvaluationExceptions;
+    private Boolean requiresSession;
 
     /*
      * ISO 8601 default message timespan to live value. This is the duration
@@ -74,48 +48,30 @@ public final class SubscriptionDescription {
     private Duration defaultMessageTimeToLive;
 
     /*
-     * Value that indicates whether server-side batched operations are enabled.
+     * A value that indicates whether this subscription has dead letter support
+     * when a message expires.
      */
     @JacksonXmlProperty(
-            localName = "EnableBatchedOperations",
+            localName = "DeadLetteringOnMessageExpiration",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean enableBatchedOperations;
+    private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * Availability status of the entity
+     * A value that indicates whether this subscription has dead letter support
+     * when a message expires.
      */
     @JacksonXmlProperty(
-            localName = "EntityAvailabilityStatus",
+            localName = "DeadLetteringOnFilterEvaluationExceptions",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private EntityAvailabilityStatus entityAvailabilityStatus;
+    private Boolean deadLetteringOnFilterEvaluationExceptions;
 
     /*
-     * The name of the recipient entity to which all the dead-lettered messages
-     * of this subscription are forwarded to.
+     * The number of messages in the subscription.
      */
     @JacksonXmlProperty(
-            localName = "ForwardDeadLetteredMessagesTo",
+            localName = "MessageCount",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private String forwardDeadLetteredMessagesTo;
-
-    /*
-     * The name of the recipient entity to which all the messages sent to the
-     * subscription are forwarded to.
-     */
-    @JacksonXmlProperty(
-            localName = "ForwardTo",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private String forwardTo;
-
-    /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time
-     * that the message is locked for other receivers. The maximum value for
-     * LockDuration is 5 minutes; the default value is 1 minute.
-     */
-    @JacksonXmlProperty(
-            localName = "LockDuration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Duration lockDuration;
+    private Integer messageCount;
 
     /*
      * The maximum delivery count. A message is automatically deadlettered
@@ -127,37 +83,12 @@ public final class SubscriptionDescription {
     private Integer maxDeliveryCount;
 
     /*
-     * The number of messages in the subscription.
+     * Value that indicates whether server-side batched operations are enabled.
      */
     @JacksonXmlProperty(
-            localName = "MessageCount",
+            localName = "EnableBatchedOperations",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer messageCount;
-
-    /*
-     * Details about the message counts in queue.
-     */
-    @JacksonXmlProperty(
-            localName = "CountDetails",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private MessageCountDetails messageCountDetails;
-
-    /*
-     * A value that indicates whether the entity supports the concept of
-     * sessions.
-     */
-    @JacksonXmlProperty(
-            localName = "RequiresSession",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Boolean requiresSession;
-
-    /*
-     * The size of the subscription, in bytes.
-     */
-    @JacksonXmlProperty(
-            localName = "SizeInBytes",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private Integer sizeInBytes;
+    private Boolean enableBatchedOperations;
 
     /*
      * Status of a Service Bus resource
@@ -168,6 +99,23 @@ public final class SubscriptionDescription {
     private EntityStatus status;
 
     /*
+     * The name of the recipient entity to which all the messages sent to the
+     * subscription are forwarded to.
+     */
+    @JacksonXmlProperty(
+            localName = "ForwardTo",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private String forwardTo;
+
+    /*
+     * The exact time the subscription was created.
+     */
+    @JacksonXmlProperty(
+            localName = "CreatedAt",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private OffsetDateTime createdAt;
+
+    /*
      * The exact time a message was updated in the subscription.
      */
     @JacksonXmlProperty(
@@ -176,177 +124,98 @@ public final class SubscriptionDescription {
     private OffsetDateTime updatedAt;
 
     /*
-     * Custom metadata that user can associate with the description.
+     * Last time a message was sent, or the last time there was a receive
+     * request to this subscription.
+     */
+    @JacksonXmlProperty(
+            localName = "AccessedAt",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private OffsetDateTime accessedAt;
+
+    /*
+     * Details about the message counts in entity.
+     */
+    @JacksonXmlProperty(
+            localName = "CountDetails",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private MessageCountDetails messageCountDetails;
+
+    /*
+     * Metadata associated with the subscription. Maximum number of characters
+     * is 1024.
      */
     @JacksonXmlProperty(
             localName = "UserMetadata",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String userMetadata;
 
-    private String topicName;
-    private String subscriptionName;
-
-    @JsonCreator
-    SubscriptionDescription() {
-    }
-
-    /**
-     * Creates an instance with the {@code topicName} and {@code subscriptionName}.
-     *
-     * @param topicName Name of the topic.
-     * @param subscriptionName Name of the subscription.
+    /*
+     * The name of the recipient entity to which all the messages sent to the
+     * subscription are forwarded to.
      */
-    public SubscriptionDescription(String topicName, String subscriptionName) {
-        this.topicName = topicName;
-        this.subscriptionName = subscriptionName;
-    }
+    @JacksonXmlProperty(
+            localName = "ForwardDeadLetteredMessagesTo",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private String forwardDeadLetteredMessagesTo;
 
-    /**
-     * Gets the topic name.
-     *
-     * @return Topic name for the subscription.
+    /*
+     * ISO 8601 timeSpan idle interval after which the subscription is
+     * automatically deleted. The minimum duration is 5 minutes.
      */
-    public String getTopicName() {
-        return topicName;
+    @JacksonXmlProperty(
+            localName = "AutoDeleteOnIdle",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private Duration autoDeleteOnIdle;
+
+    /*
+     * Availability status of the entity
+     */
+    @JacksonXmlProperty(
+            localName = "EntityAvailabilityStatus",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private EntityAvailabilityStatus entityAvailabilityStatus;
+
+    /**
+     * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
+     * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
+     * minute.
+     *
+     * @return the lockDuration value.
+     */
+    public Duration getLockDuration() {
+        return this.lockDuration;
     }
 
     /**
-     * Sets the name of the topic.
+     * Set the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
+     * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
+     * minute.
      *
-     * @param topicName Name of the topic.
+     * @param lockDuration the lockDuration value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setTopicName(String topicName) {
-        this.topicName = topicName;
+    public SubscriptionDescription setLockDuration(Duration lockDuration) {
+        this.lockDuration = lockDuration;
         return this;
     }
 
     /**
-     * Gets the name of the subscription.
+     * Get the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
      *
-     * @return Name of the subscription.
+     * @return the requiresSession value.
      */
-    public String getSubscriptionName() {
-        return subscriptionName;
+    public Boolean isRequiresSession() {
+        return this.requiresSession;
     }
 
     /**
-     * Sets the name of the subscription.
+     * Set the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
      *
-     * @param subscriptionName Name of the subscription.
+     * @param requiresSession the requiresSession value to set.
      * @return the SubscriptionDescription object itself.
      */
-    SubscriptionDescription setSubscriptionName(String subscriptionName) {
-        this.subscriptionName = subscriptionName;
-        return this;
-    }
-
-    /**
-     * Get the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
-     * entity.
-     *
-     * @return the accessedAt value.
-     */
-    public OffsetDateTime getAccessedAt() {
-        return this.accessedAt;
-    }
-
-    /**
-     * Set the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
-     * entity.
-     *
-     * @param accessedAt the accessedAt value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setAccessedAt(OffsetDateTime accessedAt) {
-        this.accessedAt = accessedAt;
-        return this;
-    }
-
-    /**
-     * Get the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the entity is automatically
-     * deleted. The minimum duration is 5 minutes.
-     *
-     * @return the autoDeleteOnIdle value.
-     */
-    public Duration getAutoDeleteOnIdle() {
-        return this.autoDeleteOnIdle;
-    }
-
-    /**
-     * Set the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the entity is automatically
-     * deleted. The minimum duration is 5 minutes.
-     *
-     * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
-        return this;
-    }
-
-    /**
-     * Get the createdAt property: The exact time the entity was created.
-     *
-     * @return the createdAt value.
-     */
-    public OffsetDateTime getCreatedAt() {
-        return this.createdAt;
-    }
-
-    /**
-     * Set the createdAt property: The exact time the entity was created.
-     *
-     * @param createdAt the createdAt value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    /**
-     * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this entity has dead letter
-     * support when a message expires.
-     *
-     * @return the deadLetteringOnMessageExpiration value.
-     */
-    public Boolean isDeadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
-    }
-
-    /**
-     * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this entity has dead letter
-     * support when a message expires.
-     *
-     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
-        return this;
-    }
-
-    /**
-     * Get the deadLetteringOnFilterEvaluationExceptions property: A value that indicates whether this entity
-     * deadletters a message when evaluation of the rule throws an exception.
-     *
-     * @return the deadLetteringOnFilterEvaluationExceptions value.
-     */
-    public Boolean isDeadLetteringOnFilterEvaluationExceptions() {
-        return this.deadLetteringOnFilterEvaluationExceptions;
-    }
-
-    /**
-     * Set the deadLetteringOnFilterEvaluationExceptions property: A value that indicates whether this entity
-     * deadletters a message when evaluation of the rule throws an exception.
-     *
-     * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setDeadLetteringOnFilterEvaluationExceptions(
-            Boolean deadLetteringOnFilterEvaluationExceptions) {
-        this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
+    public SubscriptionDescription setRequiresSession(Boolean requiresSession) {
+        this.requiresSession = requiresSession;
         return this;
     }
 
@@ -375,112 +244,67 @@ public final class SubscriptionDescription {
     }
 
     /**
-     * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
-     * enabled.
+     * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this subscription has dead
+     * letter support when a message expires.
      *
-     * @return the enableBatchedOperations value.
+     * @return the deadLetteringOnMessageExpiration value.
      */
-    public Boolean isEnableBatchedOperations() {
-        return this.enableBatchedOperations;
+    public Boolean isDeadLetteringOnMessageExpiration() {
+        return this.deadLetteringOnMessageExpiration;
     }
 
     /**
-     * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
-     * enabled.
+     * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this subscription has dead
+     * letter support when a message expires.
      *
-     * @param enableBatchedOperations the enableBatchedOperations value to set.
+     * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setEnableBatchedOperations(Boolean enableBatchedOperations) {
-        this.enableBatchedOperations = enableBatchedOperations;
+    public SubscriptionDescription setDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
+        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
         return this;
     }
 
     /**
-     * Get the entityAvailabilityStatus property: Availability status of the entity.
+     * Get the deadLetteringOnFilterEvaluationExceptions property: A value that indicates whether this subscription has
+     * dead letter support when a message expires.
      *
-     * @return the entityAvailabilityStatus value.
+     * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
-    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
-        return this.entityAvailabilityStatus;
+    public Boolean isDeadLetteringOnFilterEvaluationExceptions() {
+        return this.deadLetteringOnFilterEvaluationExceptions;
     }
 
     /**
-     * Set the entityAvailabilityStatus property: Availability status of the entity.
+     * Set the deadLetteringOnFilterEvaluationExceptions property: A value that indicates whether this subscription has
+     * dead letter support when a message expires.
      *
-     * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
+     * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
-        this.entityAvailabilityStatus = entityAvailabilityStatus;
+    public SubscriptionDescription setDeadLetteringOnFilterEvaluationExceptions(
+            Boolean deadLetteringOnFilterEvaluationExceptions) {
+        this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
     }
 
     /**
-     * Get the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
-     * messages of this subscription are forwarded to.
+     * Get the messageCount property: The number of messages in the subscription.
      *
-     * @return the forwardDeadLetteredMessagesTo value.
+     * @return the messageCount value.
      */
-    public String getForwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
+    public Integer getMessageCount() {
+        return this.messageCount;
     }
 
     /**
-     * Set the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the dead-lettered
-     * messages of this subscription are forwarded to.
+     * Set the messageCount property: The number of messages in the subscription.
      *
-     * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
+     * @param messageCount the messageCount value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
-        return this;
-    }
-
-    /**
-     * Get the forwardTo property: The name of the recipient entity to which all the messages sent to the subscription
-     * are forwarded to.
-     *
-     * @return the forwardTo value.
-     */
-    public String getForwardTo() {
-        return this.forwardTo;
-    }
-
-    /**
-     * Set the forwardTo property: The name of the recipient entity to which all the messages sent to the subscription
-     * are forwarded to.
-     *
-     * @param forwardTo the forwardTo value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
-        return this;
-    }
-
-    /**
-     * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
-     * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
-     * minute.
-     *
-     * @return the lockDuration value.
-     */
-    public Duration getLockDuration() {
-        return this.lockDuration;
-    }
-
-    /**
-     * Set the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
-     * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
-     * minute.
-     *
-     * @param lockDuration the lockDuration value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setLockDuration(Duration lockDuration) {
-        this.lockDuration = lockDuration;
+    public SubscriptionDescription setMessageCount(Integer messageCount) {
+        this.messageCount = messageCount;
         return this;
     }
 
@@ -507,82 +331,24 @@ public final class SubscriptionDescription {
     }
 
     /**
-     * Get the messageCount property: The number of messages in the subscription.
+     * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
+     * enabled.
      *
-     * @return the messageCount value.
+     * @return the enableBatchedOperations value.
      */
-    public Integer getMessageCount() {
-        return this.messageCount;
+    public Boolean isEnableBatchedOperations() {
+        return this.enableBatchedOperations;
     }
 
     /**
-     * Set the messageCount property: The number of messages in the subscription.
+     * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
+     * enabled.
      *
-     * @param messageCount the messageCount value to set.
+     * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SubscriptionDescription object itself.
      */
-    public SubscriptionDescription setMessageCount(Integer messageCount) {
-        this.messageCount = messageCount;
-        return this;
-    }
-
-    /**
-     * Get the messageCountDetails property: Details about the message counts in queue.
-     *
-     * @return the messageCountDetails value.
-     */
-    public MessageCountDetails getMessageCountDetails() {
-        return this.messageCountDetails;
-    }
-
-    /**
-     * Set the messageCountDetails property: Details about the message counts in queue.
-     *
-     * @param messageCountDetails the messageCountDetails value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
-        this.messageCountDetails = messageCountDetails;
-        return this;
-    }
-
-    /**
-     * Get the requiresSession property: A value that indicates whether the entity supports the concept of sessions.
-     *
-     * @return the requiresSession value.
-     */
-    public Boolean isRequiresSession() {
-        return this.requiresSession;
-    }
-
-    /**
-     * Set the requiresSession property: A value that indicates whether the entity supports the concept of sessions.
-     *
-     * @param requiresSession the requiresSession value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setRequiresSession(Boolean requiresSession) {
-        this.requiresSession = requiresSession;
-        return this;
-    }
-
-    /**
-     * Get the sizeInBytes property: The size of the subscription, in bytes.
-     *
-     * @return the sizeInBytes value.
-     */
-    public Integer getSizeInBytes() {
-        return this.sizeInBytes;
-    }
-
-    /**
-     * Set the sizeInBytes property: The size of the subscription, in bytes.
-     *
-     * @param sizeInBytes the sizeInBytes value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescription setSizeInBytes(Integer sizeInBytes) {
-        this.sizeInBytes = sizeInBytes;
+    public SubscriptionDescription setEnableBatchedOperations(Boolean enableBatchedOperations) {
+        this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
 
@@ -607,6 +373,48 @@ public final class SubscriptionDescription {
     }
 
     /**
+     * Get the forwardTo property: The name of the recipient entity to which all the messages sent to the subscription
+     * are forwarded to.
+     *
+     * @return the forwardTo value.
+     */
+    public String getForwardTo() {
+        return this.forwardTo;
+    }
+
+    /**
+     * Set the forwardTo property: The name of the recipient entity to which all the messages sent to the subscription
+     * are forwarded to.
+     *
+     * @param forwardTo the forwardTo value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setForwardTo(String forwardTo) {
+        this.forwardTo = forwardTo;
+        return this;
+    }
+
+    /**
+     * Get the createdAt property: The exact time the subscription was created.
+     *
+     * @return the createdAt value.
+     */
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
+    }
+
+    /**
+     * Set the createdAt property: The exact time the subscription was created.
+     *
+     * @param createdAt the createdAt value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    /**
      * Get the updatedAt property: The exact time a message was updated in the subscription.
      *
      * @return the updatedAt value.
@@ -627,7 +435,49 @@ public final class SubscriptionDescription {
     }
 
     /**
-     * Get the userMetadata property: Custom metadata that user can associate with the description.
+     * Get the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
+     * subscription.
+     *
+     * @return the accessedAt value.
+     */
+    public OffsetDateTime getAccessedAt() {
+        return this.accessedAt;
+    }
+
+    /**
+     * Set the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
+     * subscription.
+     *
+     * @param accessedAt the accessedAt value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setAccessedAt(OffsetDateTime accessedAt) {
+        this.accessedAt = accessedAt;
+        return this;
+    }
+
+    /**
+     * Get the messageCountDetails property: Details about the message counts in entity.
+     *
+     * @return the messageCountDetails value.
+     */
+    public MessageCountDetails getMessageCountDetails() {
+        return this.messageCountDetails;
+    }
+
+    /**
+     * Set the messageCountDetails property: Details about the message counts in entity.
+     *
+     * @param messageCountDetails the messageCountDetails value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setMessageCountDetails(MessageCountDetails messageCountDetails) {
+        this.messageCountDetails = messageCountDetails;
+        return this;
+    }
+
+    /**
+     * Get the userMetadata property: Metadata associated with the subscription. Maximum number of characters is 1024.
      *
      * @return the userMetadata value.
      */
@@ -636,13 +486,77 @@ public final class SubscriptionDescription {
     }
 
     /**
-     * Set the userMetadata property: Custom metadata that user can associate with the description.
+     * Set the userMetadata property: Metadata associated with the subscription. Maximum number of characters is 1024.
      *
      * @param userMetadata the userMetadata value to set.
      * @return the SubscriptionDescription object itself.
      */
     public SubscriptionDescription setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
+     * Get the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the messages sent
+     * to the subscription are forwarded to.
+     *
+     * @return the forwardDeadLetteredMessagesTo value.
+     */
+    public String getForwardDeadLetteredMessagesTo() {
+        return this.forwardDeadLetteredMessagesTo;
+    }
+
+    /**
+     * Set the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the messages sent
+     * to the subscription are forwarded to.
+     *
+     * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
+        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        return this;
+    }
+
+    /**
+     * Get the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the subscription is automatically
+     * deleted. The minimum duration is 5 minutes.
+     *
+     * @return the autoDeleteOnIdle value.
+     */
+    public Duration getAutoDeleteOnIdle() {
+        return this.autoDeleteOnIdle;
+    }
+
+    /**
+     * Set the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the subscription is automatically
+     * deleted. The minimum duration is 5 minutes.
+     *
+     * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
+        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        return this;
+    }
+
+    /**
+     * Get the entityAvailabilityStatus property: Availability status of the entity.
+     *
+     * @return the entityAvailabilityStatus value.
+     */
+    public EntityAvailabilityStatus getEntityAvailabilityStatus() {
+        return this.entityAvailabilityStatus;
+    }
+
+    /**
+     * Set the entityAvailabilityStatus property: Availability status of the entity.
+     *
+     * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescription setEntityAvailabilityStatus(EntityAvailabilityStatus entityAvailabilityStatus) {
+        this.entityAvailabilityStatus = entityAvailabilityStatus;
         return this;
     }
 }

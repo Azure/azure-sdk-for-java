@@ -28,19 +28,19 @@ public final class TopicDescriptionEntry {
     private String id;
 
     /*
-     * The name of the queue
+     * The name of the topic
      */
     @JsonProperty(value = "title")
     private Object title;
 
     /*
-     * The timestamp for when this queue was published
+     * The timestamp for when this topic was published
      */
     @JacksonXmlProperty(localName = "published", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime published;
 
     /*
-     * The timestamp for when this queue was last updated
+     * The timestamp for when this topic was last updated
      */
     @JacksonXmlProperty(localName = "updated", namespace = "http://www.w3.org/2005/Atom")
     private OffsetDateTime updated;
@@ -58,7 +58,7 @@ public final class TopicDescriptionEntry {
     private ResponseLink link;
 
     /*
-     * The QueueDescription
+     * The TopicDescription
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private TopicDescriptionEntryContent content;
@@ -104,7 +104,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Get the title property: The name of the queue.
+     * Get the title property: The name of the topic.
      *
      * @return the title value.
      */
@@ -113,7 +113,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Set the title property: The name of the queue.
+     * Set the title property: The name of the topic.
      *
      * @param title the title value to set.
      * @return the TopicDescriptionEntry object itself.
@@ -124,7 +124,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Get the published property: The timestamp for when this queue was published.
+     * Get the published property: The timestamp for when this topic was published.
      *
      * @return the published value.
      */
@@ -133,7 +133,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Set the published property: The timestamp for when this queue was published.
+     * Set the published property: The timestamp for when this topic was published.
      *
      * @param published the published value to set.
      * @return the TopicDescriptionEntry object itself.
@@ -144,7 +144,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Get the updated property: The timestamp for when this queue was last updated.
+     * Get the updated property: The timestamp for when this topic was last updated.
      *
      * @return the updated value.
      */
@@ -153,7 +153,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Set the updated property: The timestamp for when this queue was last updated.
+     * Set the updated property: The timestamp for when this topic was last updated.
      *
      * @param updated the updated value to set.
      * @return the TopicDescriptionEntry object itself.
@@ -204,7 +204,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Get the content property: The QueueDescription.
+     * Get the content property: The TopicDescription.
      *
      * @return the content value.
      */
@@ -213,7 +213,7 @@ public final class TopicDescriptionEntry {
     }
 
     /**
-     * Set the content property: The QueueDescription.
+     * Set the content property: The TopicDescription.
      *
      * @param content the content value to set.
      * @return the TopicDescriptionEntry object itself.
