@@ -687,7 +687,8 @@ public final class SearchAsyncClient {
                 .indexWithResponseAsync(IndexBatchBaseConverter.map(batch), RequestOptionsConverter.map(requestOptions),
                     context)
                 .onErrorMap(MappingUtils::exceptionMapper)
-                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE && documentsOptions.throwOnAnyError())
+                .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE &&
+                    documentsOptions.throwOnAnyError())
                     ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
                     : Mono.just(response).map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
