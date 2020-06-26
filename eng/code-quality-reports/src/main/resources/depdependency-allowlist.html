@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Maven Whitelist Report</title>
+    <title>Maven Allowlist Report</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -21,17 +21,17 @@
 <body>
     <div class="container">
 
-        <h1>Maven Whitelist Report</h1>
+        <h1>Maven Allowlist Report</h1>
 
         <p>
-            This report displays the whitelist of all maven dependencies. It is based on the <a href="dependency-whitelist.json">machine-readable JSON report</a>.
+            This report displays the allowlist of all maven dependencies. It is based on the <a href="dependency-allowlist.json">machine-readable JSON report</a>.
         </p>
 
         <table id="resultsTable" class="table table-hover">
             <thead class="thead-light">
             <tr>
                 <th>Maven and File Path</th>
-                <th>Whitelist</th>
+                <th>Allowlist</th>
             </tr>
             </thead>
         </table>
@@ -39,10 +39,10 @@
         <br/>
         <br/>
 
-        <table id="fullWhitelistTable" class="table table-hover">
+        <table id="fullAllowlistTable" class="table table-hover">
             <thead class="thead-light">
             <tr>
-                <th>Whitelist</th>
+                <th>Allowlist</th>
             </tr>
             </thead>
         </table>
@@ -53,9 +53,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script language="JavaScript">
         $(document).ready(function() {
-            $.getJSON('dependency-whitelist.json', function(json) {
+            $.getJSON('dependency-allowlist.json', function(json) {
                 for (var i = 0; i < json.fullWhitelist.length; i++) {
-                    drawFullWhitelist(json.fullWhitelist[i]);
+                    drawFullAllowlist(json.fullWhitelist[i]);
                 }
 
                 // draw out individual modules
@@ -65,9 +65,9 @@
             });
         });
 
-        function drawFullWhitelist(rowData) {
+        function drawFullAllowlist(rowData) {
             var row = $("<tr />");
-            $("#fullWhitelistTable").append(row);
+            $("#fullAllowlistTable").append(row);
 
             row.append($("<td>" + rowData + "</td>"));
         }
@@ -76,13 +76,13 @@
             var row = $("<tr />");
             $("#resultsTable").append(row);
 
-            var whitelist = "";
+            var allowlist = "";
             for (var i = 0; i < rowData.whitelist.length; i++) {
-                whitelist += rowData.whitelist[i] + "<br/>";
+                allowlist += rowData.whitelist[i] + "<br/>";
             }
 
             row.append($("<td>" + rowData.groupId + ":" + rowData.artifactId + ":" + rowData.version + "<br/>" + rowData.path + "</td>"));
-            row.append($("<td>" + whitelist + "</td>"));
+            row.append($("<td>" + allowlist + "</td>"));
         }
     </script>
     <small><center>Report generated with <a href="https://github.com/JonathanGiles/whitelistgenerator">whitelist-generator</a></center></small>
