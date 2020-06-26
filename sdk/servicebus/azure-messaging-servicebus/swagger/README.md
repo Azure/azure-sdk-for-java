@@ -27,8 +27,9 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/azure/azure-sdk-for-python/master/sdk/servicebus/azure-servicebus/swagger/servicebus-swagger.json
+input-file: E:\git\conniey\azure-rest-api-specs-pr\specification\servicebus\data-plane\servicebus-swagger.json
 java: true
+v3: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.messaging.servicebus
@@ -37,7 +38,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: AccessRights,AuthorizationRule,EntityAvailabilityStatus,EntityStatus,MessageCountDetails,QueueDescription,TopicDescription
+custom-types: AccessRights,AuthorizationRule,EntityStatus,MessageCountDetails,QueueDescription,MessagingSku,RuleDescription,RuleFilter,SubscriptionDescription,SqlFilter,TopicDescription,TrueFilter
 custom-types-subpackage: models
 context-client-method-parameter: true
 enable-xml: true
