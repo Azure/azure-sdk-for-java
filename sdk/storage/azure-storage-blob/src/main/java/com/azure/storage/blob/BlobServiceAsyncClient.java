@@ -848,12 +848,14 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
      * to interact with the restored container.
      */
-    private Mono<BlobContainerAsyncClient> undeleteBlobContainer(
+    /*
+    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteBlobContainerWithResponse(
             new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion)
         ).flatMap(FluxUtil::toMono);
     }
+    */
 
     /**
      * Restores a previously deleted container. The restored container
@@ -874,7 +876,8 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
-    private Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
+    /*
+    public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options) {
         try {
             return withContext(context ->
@@ -899,4 +902,5 @@ public final class BlobServiceAsyncClient {
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
+    */
 }
